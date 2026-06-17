@@ -137,11 +137,25 @@ var ANW_API = [
   "    fmt:function(iso){return fmtD(iso);},",
   "    openStudent:function(id){activeStudentId=id;var s=state.students.find(function(x){return x.id===id;});if(s){classFilter=s.level||classFilter;}renderAll();},",
   "    openNoteToday:function(){openNoteModal({date:today(),blockId:null,subject:null,level:null});},",
-  "    delNote:function(id){delNote(id);}",
+  "    delNote:function(id){delNote(id);},",
+  "    exportEntries:function(){return state.entries.map(function(e){return e;});},",
+  "    exportNotes:function(){return state.notes.map(function(n){return n;});},",
+  "    exportSettings:function(){return {id:'settings',timetable:state.timetable,periods:state.periods,ttVersion:state.ttVersion};},",
+  "    applyEntries:function(list){state.entries=(list||[]).slice();save();renderAll();},",
+  "    applyNotes:function(list){state.notes=(list||[]).slice();save();renderAll();},",
+  "    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();}",
   "  };",
   "  window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};"
 ].join("\n");
 anwScript = replaceOnce(anwScript, 'else init();\n})();', 'else init();\n' + ANW_API + '\n})();', 'anw:api-hook');
+
+/* Klassenbuch-Beiträge der Woche klar NACH TAG gruppiert anzeigen (unter dem Raster). */
+anwScript = replaceOnce(anwScript,
+  `return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
+  `var byDay={};list.forEach(function(n){(byDay[n.date]=byDay[n.date]||[]).push(n);});
+    var dayHtml=days.map(function(d){var dl=byDay[d]||[];if(!dl.length){return '';}return '<div class="kb-day-notes"><div class="kb-day-h">'+DOW[wdOf(d)]+', '+fmtD(d)+' <span class="badge">'+dl.length+'</span></div>'+dl.map(function(n){var nt=NOTE_TYPES[n.type]||NOTE_TYPES.allgemein;var b=BLOCKS.find(function(x){return x.id===n.blockId;});var meta=(n.subject||'Allgemein')+(b?' · '+b.start+'–'+b.end:'');return '<div class="wk-note '+n.type+'" data-noteopen="'+n.id+'"><span class="wn-ic">'+nt.icon+'</span><div class="wn-body"><div class="wn-meta">'+nt.label+' · '+esc(meta)+(n.byUser?' · <span style="color:var(--primary-dark);">'+esc(n.byUser)+'</span>':'')+'</div><div class="wn-txt">'+esc(n.text)+'</div></div></div>';}).join('')+'</div>';}).join('');
+    return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — Beiträge nach Tag</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+(dayHtml||'<div class="wk-notes-empty">Keine Notizen diese Woche.</div>')+'</div></div>';`,
+  'anw:weeknotes-byday');
 
 /* ============================================================
    Patch der dossier-Engine: Reconcile-Aufruf in den Bootstrap
@@ -150,6 +164,16 @@ dosScript = replaceOnce(dosScript,
   '    checkPersistenceAndWarn();\n    render();',
   '    checkPersistenceAndWarn();\n    if(window.KB_DOS_RECONCILE){try{window.KB_DOS_RECONCILE();}catch(e){}}\n    render();',
   'dos:reconcile-hook');
+
+/* Info-Chips (Aktive Stellen / Behandler / Laufende Themen) im Schüler-Dossier
+   anklickbar machen -> Suche zeigt sofort die Beiträge zu diesem Begriff. */
+(function(){
+  var find = `'<span class="chip">' + escapeHtml(i) + '</span>'`;
+  var repl = `'<button type="button" class="chip chip-link" data-route="#/search?student=' + encodeURIComponent(student.id) + '&q=' + encodeURIComponent(i) + '">' + escapeHtml(i) + '</button>'`;
+  var count = dosScript.split(find).length - 1;
+  if (count !== 3) throw new Error('Chip-Muster: erwartet 3, gefunden ' + count);
+  dosScript = dosScript.split(find).join(repl);
+})();
 
 /* ============================================================
    Statische Bausteine
@@ -244,6 +268,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-bnode-note{font-weight:400;color:var(--kb-muted);}
 .kb-bnode-meta{font-size:11.5px;color:var(--kb-muted);}
 @media(max-width:880px){.kb-bubble-cols{grid-template-columns:1fr;}}
+/* Klassenbuch-Beiträge pro Tag + klickbare Dossier-Chips */
+.kb-day-notes{margin:6px 0 2px;}
+.kb-day-h{font-weight:800;font-size:13px;color:var(--kb-accent-dark);margin:12px 0 5px;padding-bottom:3px;border-bottom:1px solid var(--kb-border);}
+.chip-link{cursor:pointer;}
+#dos-root .chip-link:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
 .kb-scrim{display:none;}
 @media(max-width:880px){
   .kb-app{flex-direction:column;}
@@ -281,8 +310,7 @@ var SHELL_BODY_TOP = `
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
       <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
-      <button class="kb-link" data-kb-nav="klassenbuch"><span class="kb-ic">📋</span>Klassenbuch</button>
-      <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📆</span>Absenzen</button>
+      <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
       <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse</button>
       <button class="kb-link kb-more-toggle" id="kb-more-toggle" type="button"><span class="kb-ic">⋯</span>Mehr<span class="kb-more-caret">▾</span></button>
       <div class="kb-more" id="kb-more">
@@ -302,11 +330,6 @@ var SHELL_BODY_TOP = `
 `;
 
 var SHELL_PANELS_EXTRA = `
-    <section class="kb-panel kb-pad" id="kb-klassenbuch">
-      <div class="kb-pagehead"><h2>📋 Klassenbuch</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Bemerkungen, Hausaufgaben und Prüfungen — der Tageslog der Klasse.</p></div>
-      <div style="margin-bottom:14px;"><button class="kb-btn kb-btn-primary" data-kb-act="add-note">+ Notiz erfassen</button></div>
-      <div id="kb-klassenbuch-body"></div>
-    </section>
     <section class="kb-panel kb-pad" id="kb-klasse">
       <div class="kb-pagehead"><h2>🏫 Klasse</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Struktur der Klasse: Schülerliste, Stundenplan und Schulkalender.</p></div>
       <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -489,7 +512,7 @@ var SHELL_CONTROLLER = `
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','kb-klassenbuch','kb-klasse','kb-data'];
+  var PANELS=['anw-root','dos-root','kb-klasse','kb-data'];
   var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
@@ -505,8 +528,6 @@ var SHELL_CONTROLLER = `
       showPanel('anw-root'); setActive('absenzen'); closeAnwModals();
     } else if(nav==='absenzen-pdf'){
       showPanel('anw-root'); setActive('absenzen'); closeAnwModals(); clickAnwBtn('btn-pdf');
-    } else if(nav==='klassenbuch'){
-      showPanel('kb-klassenbuch'); setActive('klassenbuch'); renderKlassenbuch();
     } else if(nav==='klasse'){
       showPanel('kb-klasse'); setActive('klasse'); renderRoster();
     } else if(nav==='data'){
@@ -545,26 +566,7 @@ var SHELL_CONTROLLER = `
     if(act==='open-absenzen'){go('absenzen');if(window.KB_ANW){window.KB_ANW.openStudent(arg);}}
     else if(act==='open-tt'){go('absenzen');clickAnwBtn('btn-tt');}
     else if(act==='open-cal'){go('absenzen');clickAnwBtn('btn-cal');}
-    else if(act==='add-note'){go('absenzen');if(window.KB_ANW){window.KB_ANW.openNoteToday();}}
-    else if(act==='del-note'){if(confirm('Notiz löschen?')&&window.KB_ANW){window.KB_ANW.delNote(arg);renderKlassenbuch();}}
   });
-
-  // Klassenbuch-Liste
-  function renderKlassenbuch(){
-    var body=$('kb-klassenbuch-body'); if(!body)return;
-    if(!window.KB_ANW){body.innerHTML='<div class="kb-card">Klassenbuch-Modul nicht geladen.</div>';return;}
-    var notes=window.KB_ANW.notes();
-    if(!notes.length){body.innerHTML='<div class="kb-card" style="color:var(--kb-muted)">Noch keine Einträge. Notizen werden in den Absenzen am jeweiligen Tag erfasst — oder hier über „+ Notiz erfassen".</div>';return;}
-    var TYPE={pruefung:['📝','Prüfung'],hausaufgabe:['📒','Hausaufgabe'],bemerkung:['💬','Bemerkung'],allgemein:['📌','Allgemein']};
-    var byDate={},order=[];
-    notes.forEach(function(n){if(!byDate[n.date]){byDate[n.date]=[];order.push(n.date);}byDate[n.date].push(n);});
-    body.innerHTML=order.map(function(date){
-      var items=byDate[date].map(function(n){var t=TYPE[n.type]||['📌',n.type];
-        return '<div class="kb-note"><div class="kb-note-badge">'+t[0]+'</div><div class="kb-note-main"><div class="kb-note-meta">'+esc(t[1])+(n.subject?' · '+esc(n.subject):'')+(n.level?' · '+esc(n.level):'')+(n.byUser?' · '+esc(n.byUser):'')+'</div><div>'+esc(n.text)+'</div></div><button class="kb-btn kb-btn-ghost" data-kb-act="del-note" data-kb-arg="'+esc(n.id)+'" title="Löschen">🗑</button></div>';
-      }).join('');
-      return '<div class="kb-card"><div class="kb-note-date">'+esc(window.KB_ANW.fmt(date))+'</div>'+items+'</div>';
-    }).join('');
-  }
 
   // Gemeinsame Schülerliste (im Bereich "Klasse")
   function renderRoster(){
