@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Klassebuch — Annexe Junglinster</title>
+<meta name="theme-color" content="#6C5CE7" id="theme-color-meta">
+<meta name="description" content="Klassebuch der Annexe Junglinster — Anwesenheit/Absenzen und Dossiers, Organisation &amp; Réunion-Vorbereitung in einer App.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E">
+<style>
+/* ============================================================
+   Klassebuch — gemeinsame Hülle für zwei Werkzeuge
+   ------------------------------------------------------------
+   Diese Datei kombiniert die beiden eigenständigen Apps zu EINER
+   kohärenten Oberfläche, ohne ihre Logik zu vermischen:
+
+     • anwesenheit.html  → Bereich "Anwesenheit" (Absenzen/Stundenplan)
+     • dossier.html      → Bereich "Dossiers & Réunion" (Orga/Schüler)
+
+   Beide Apps werden unverändert in je einem <iframe> geladen und
+   behalten ihre komplette Funktion, ihr eigenes Design und ihren
+   eigenen Speicher. Oben wird zwischen den Bereichen umgeschaltet;
+   die Hülle übernimmt dabei dezent die Farbe des aktiven Bereichs.
+   Läuft vollständig offline, in einer Datei.
+   ============================================================ */
+:root{
+  --app-accent:#6C5CE7;          /* wechselt je nach aktivem Bereich */
+  --app-accent-dark:#5A4BD1;
+  --bg:#eef0f6;
+  --surface:#ffffff;
+  --border:#e4e7f0;
+  --text:#1d2230;
+  --muted:#6b7184;
+  --shadow:0 1px 2px rgba(20,25,45,.05), 0 8px 24px rgba(20,25,45,.07);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text); background:var(--bg);
+  height:100vh; height:100dvh;
+  display:flex; flex-direction:column;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+
+/* ---------------- Kopfleiste (Umschalter) ---------------- */
+.appbar{
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  padding:10px 16px;
+  padding-top:max(10px, env(safe-area-inset-top));
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 0 rgba(20,25,45,.02), 0 6px 18px rgba(20,25,45,.05);
+  position:relative; z-index:5;
+}
+
+.brand{display:flex; align-items:center; gap:11px; min-width:0;}
+.brand .logo{
+  flex:0 0 auto; width:38px; height:38px; border-radius:11px;
+  display:grid; place-items:center; font-size:20px; line-height:1;
+  color:#fff; background:linear-gradient(135deg, var(--app-accent), var(--app-accent-dark));
+  box-shadow:0 4px 12px color-mix(in srgb, var(--app-accent) 38%, transparent);
+  transition:background .35s ease, box-shadow .35s ease;
+}
+.brand .name{display:flex; flex-direction:column; min-width:0; line-height:1.15;}
+.brand .name b{font-weight:800; font-size:16px; letter-spacing:-.02em;}
+.brand .name small{font-size:11px; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+/* Segmentierter Bereichs-Umschalter (Tabs) */
+.switcher{
+  display:flex; gap:4px; padding:4px; margin:0 auto;
+  background:#eef0f5; border-radius:13px;
+}
+.seg{
+  display:flex; align-items:center; gap:10px;
+  padding:7px 15px 7px 9px; border:none; background:transparent;
+  border-radius:10px; cursor:pointer; color:var(--muted);
+  font:inherit; text-align:left; transition:.18s ease;
+}
+.seg:hover{background:rgba(20,25,45,.05); color:var(--text);}
+.seg:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--app-accent) 30%, transparent);}
+.seg .ic{
+  flex:0 0 auto; width:30px; height:30px; border-radius:8px;
+  display:grid; place-items:center; font-size:17px; line-height:1;
+  background:rgba(20,25,45,.06); transition:.18s ease;
+}
+.seg .txt{display:flex; flex-direction:column; line-height:1.15; min-width:0;}
+.seg .txt .t{font-weight:700; font-size:13.5px; white-space:nowrap;}
+.seg .txt .s{font-size:11px; font-weight:600; color:var(--muted); white-space:nowrap; transition:.18s ease;}
+.seg.active{
+  color:#fff; background:linear-gradient(135deg, var(--app-accent), var(--app-accent-dark));
+  box-shadow:0 4px 14px color-mix(in srgb, var(--app-accent) 36%, transparent);
+}
+.seg.active .ic{background:rgba(255,255,255,.22);}
+.seg.active .txt .s{color:rgba(255,255,255,.82);}
+
+/* Rechte Aktionen */
+.actions{display:flex; align-items:center; gap:6px; margin-left:auto;}
+.iconbtn{
+  display:inline-grid; place-items:center; width:38px; height:38px;
+  border-radius:10px; border:1px solid var(--border); background:var(--surface);
+  color:var(--muted); cursor:pointer; font-size:17px; text-decoration:none;
+  transition:.16s ease;
+}
+.iconbtn:hover{color:var(--app-accent); border-color:color-mix(in srgb, var(--app-accent) 45%, var(--border)); background:color-mix(in srgb, var(--app-accent) 7%, var(--surface));}
+.iconbtn:focus-visible{outline:none; box-shadow:0 0 0 3px color-mix(in srgb, var(--app-accent) 30%, transparent);}
+
+/* ---------------- Willkommens-/Info-Hinweis ---------------- */
+.welcome{
+  flex:0 0 auto;
+  display:flex; align-items:center; gap:12px;
+  padding:11px 18px;
+  background:color-mix(in srgb, var(--app-accent) 9%, var(--surface));
+  border-bottom:1px solid var(--border);
+  color:var(--text); font-size:13.5px;
+}
+.welcome .wi{flex:0 0 auto; font-size:18px;}
+.welcome .wt{flex:1 1 auto; min-width:0;}
+.welcome .wt b{color:var(--app-accent-dark);}
+.welcome[hidden]{display:none;}
+.welcome .wx{
+  flex:0 0 auto; border:none; background:transparent; cursor:pointer;
+  color:var(--muted); font-size:20px; line-height:1; padding:4px 8px; border-radius:8px;
+}
+.welcome .wx:hover{background:rgba(20,25,45,.06); color:var(--text);}
+
+/* ---------------- Bühne mit beiden Apps ---------------- */
+.stage{flex:1 1 auto; position:relative; min-height:0; background:var(--bg);}
+.panel{position:absolute; inset:0; display:none;}
+.panel.active{display:block;}
+.panel iframe{display:block; width:100%; height:100%; border:0; background:var(--surface);}
+
+/* Ladezustand je Bereich */
+.panel .loader{
+  position:absolute; inset:0; display:none;
+  place-items:center; align-content:center;
+  gap:14px; background:var(--bg); z-index:2;
+}
+.panel.loading .loader{display:grid;}
+.spinner{
+  width:38px; height:38px; border-radius:50%;
+  border:3px solid color-mix(in srgb, var(--app-accent) 22%, transparent);
+  border-top-color:var(--app-accent);
+  animation:spin .8s linear infinite;
+}
+.loader .lt{font-size:13px; font-weight:600; color:var(--muted);}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ---------------- Responsiv ---------------- */
+@media (max-width:680px){
+  .appbar{gap:10px; padding:9px 12px;}
+  .brand .name small{display:none;}
+  .switcher{order:3; width:100%; margin:6px 0 0; justify-content:center;}
+  .seg{flex:1 1 0; justify-content:center; padding:7px 10px;}
+  .seg .txt .s{display:none;}
+}
+@media (max-width:420px){
+  .brand .name b{font-size:15px;}
+  .seg .txt .t{font-size:12.5px;}
+  .seg .ic{width:26px; height:26px; font-size:15px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important; animation-duration:.001ms !important; animation-iteration-count:1 !important;}
+}
+</style>
+</head>
+<body>
+
+<header class="appbar">
+  <div class="brand">
+    <div class="logo" id="brand-logo">📘</div>
+    <div class="name">
+      <b>Klassebuch</b>
+      <small>Annexe Junglinster · Team</small>
+    </div>
+  </div>
+
+  <div class="switcher" role="tablist" aria-label="Bereich wählen">
+    <button class="seg" id="tab-anwesenheit" role="tab" aria-controls="panel-anwesenheit" aria-selected="true" tabindex="0">
+      <span class="ic" aria-hidden="true">📋</span>
+      <span class="txt"><span class="t">Anwesenheit</span><span class="s">Absenzen &amp; Stundenplan</span></span>
+    </button>
+    <button class="seg" id="tab-dossier" role="tab" aria-controls="panel-dossier" aria-selected="false" tabindex="-1">
+      <span class="ic" aria-hidden="true">🗂️</span>
+      <span class="txt"><span class="t">Dossiers &amp; Réunion</span><span class="s">Orga &amp; Schüler-Infos</span></span>
+    </button>
+  </div>
+
+  <div class="actions">
+    <button class="iconbtn" id="btn-info" type="button" title="Über diese App" aria-label="Über diese App">ℹ️</button>
+    <a class="iconbtn" id="open-standalone" href="anwesenheit.html" target="_blank" rel="noopener" title="Aktuellen Bereich in neuem Tab öffnen" aria-label="Aktuellen Bereich in neuem Tab öffnen">↗</a>
+  </div>
+</header>
+
+<div class="welcome" id="welcome" role="note">
+  <span class="wi" aria-hidden="true">👋</span>
+  <span class="wt">
+    Zwei Werkzeuge, eine App: <b>Anwesenheit</b> für Absenzen nach Stundenplan und
+    <b>Dossiers &amp; Réunion</b> für Schüler-Infos, Organisation und die Vorbereitung eurer Réunionen.
+    Oben jederzeit umschalten. Alle Daten bleiben lokal auf diesem Gerät.
+  </span>
+  <button class="wx" id="welcome-dismiss" type="button" title="Hinweis schließen" aria-label="Hinweis schließen">×</button>
+</div>
+
+<main class="stage">
+  <section class="panel active loading" id="panel-anwesenheit" role="tabpanel" aria-labelledby="tab-anwesenheit">
+    <div class="loader"><div class="spinner"></div><div class="lt">Anwesenheit wird geladen …</div></div>
+    <iframe id="frame-anwesenheit" data-src="anwesenheit.html" title="Anwesenheit — Absenzen nach Stundenplan"
+            allow="clipboard-read; clipboard-write"></iframe>
+  </section>
+  <section class="panel" id="panel-dossier" role="tabpanel" aria-labelledby="tab-dossier" aria-hidden="true">
+    <div class="loader"><div class="spinner"></div><div class="lt">Dossiers &amp; Réunion werden geladen …</div></div>
+    <iframe id="frame-dossier" data-src="dossier.html" title="Dossiers, Organisation &amp; Réunion-Vorbereitung"
+            allow="clipboard-read; clipboard-write"></iframe>
+  </section>
+</main>
+
+<noscript>
+  <div style="padding:20px;font-family:sans-serif;">
+    Diese kombinierte Ansicht benötigt JavaScript. Du kannst die beiden Werkzeuge aber auch
+    direkt öffnen: <a href="anwesenheit.html">Anwesenheit</a> · <a href="dossier.html">Dossiers &amp; Réunion</a>.
+  </div>
+</noscript>
+
+<script>
+"use strict";
+(function () {
+
+  /* Konfiguration der beiden Bereiche.
+     accent/accentDark steuern die Einfärbung der Hülle. */
+  var APPS = {
+    anwesenheit: { file:'anwesenheit.html', accent:'#6C5CE7', accentDark:'#5A4BD1', docTitle:'Anwesenheit' },
+    dossier:     { file:'dossier.html',     accent:'#3a5a78', accentDark:'#2c4459', docTitle:'Dossiers & Réunion' }
+  };
+  var ORDER = ['anwesenheit', 'dossier'];
+  var DEFAULT_APP = 'anwesenheit';
+  var LS_ACTIVE = 'klassebuch_active_app';
+  var LS_WELCOME = 'klassebuch_welcome_dismissed';
+
+  var current = null;
+  var loaded = {};   // bereits geladene iframes (key -> true)
+
+  function byId(id){ return document.getElementById(id); }
+  function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function lsSet(k,v){ try { localStorage.setItem(k,v); } catch(e){ /* privater Modus o.ä. */ } }
+
+  /* iframe erst beim ersten Aufruf laden (spart Start-Zeit, v.a. fürs große Dossier). */
+  function ensureLoaded(key){
+    if (loaded[key]) return;
+    var frame = byId('frame-' + key);
+    var panel = byId('panel-' + key);
+    panel.classList.add('loading');
+    frame.addEventListener('load', function(){ panel.classList.remove('loading'); }, { once:true });
+    frame.src = frame.getAttribute('data-src');
+    loaded[key] = true;
+  }
+
+  function applyAccent(app){
+    var root = document.documentElement.style;
+    root.setProperty('--app-accent', app.accent);
+    root.setProperty('--app-accent-dark', app.accentDark);
+    var meta = byId('theme-color-meta');
+    if (meta) meta.setAttribute('content', app.accent);
+  }
+
+  function switchTo(key, opts){
+    opts = opts || {};
+    if (!APPS[key]) key = DEFAULT_APP;
+    if (current === key && !opts.force) return;
+    current = key;
+    var app = APPS[key];
+
+    applyAccent(app);
+    document.title = 'Klassebuch · ' + app.docTitle;
+
+    ORDER.forEach(function(k){
+      var active = (k === key);
+      var tab = byId('tab-' + k);
+      var panel = byId('panel-' + k);
+      tab.classList.toggle('active', active);
+      tab.setAttribute('aria-selected', active ? 'true' : 'false');
+      tab.tabIndex = active ? 0 : -1;
+      panel.classList.toggle('active', active);
+      panel.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    ensureLoaded(key);
+    lsSet(LS_ACTIVE, key);
+
+    var open = byId('open-standalone');
+    if (open){
+      open.setAttribute('href', app.file);
+      open.setAttribute('title', app.docTitle + ' in neuem Tab öffnen');
+    }
+
+    if (!opts.fromHash && location.hash.replace(/^#/, '') !== key){
+      location.hash = key;                 // erzeugt History-Eintrag → Zurück-Taste funktioniert
+    }
+    if (opts.focusTab) byId('tab-' + key).focus();
+  }
+
+  function initialKey(){
+    var h = (location.hash || '').replace(/^#/, '');
+    if (APPS[h]) return h;
+    var saved = lsGet(LS_ACTIVE);
+    if (APPS[saved]) return saved;
+    return DEFAULT_APP;
+  }
+
+  /* --- Ereignisse --- */
+  ORDER.forEach(function(k){
+    byId('tab-' + k).addEventListener('click', function(){ switchTo(k); });
+  });
+
+  // Pfeiltasten innerhalb der Tableiste (ARIA-Muster)
+  document.querySelector('.switcher').addEventListener('keydown', function(ev){
+    var i = ORDER.indexOf(current);
+    if (i < 0) return;
+    if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown'){ ev.preventDefault(); switchTo(ORDER[(i+1) % ORDER.length], {focusTab:true}); }
+    else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp'){ ev.preventDefault(); switchTo(ORDER[(i-1+ORDER.length) % ORDER.length], {focusTab:true}); }
+    else if (ev.key === 'Home'){ ev.preventDefault(); switchTo(ORDER[0], {focusTab:true}); }
+    else if (ev.key === 'End'){ ev.preventDefault(); switchTo(ORDER[ORDER.length-1], {focusTab:true}); }
+  });
+
+  // Schnellwechsel: Alt+1 / Alt+2
+  document.addEventListener('keydown', function(ev){
+    if (!ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    if (ev.key === '1'){ ev.preventDefault(); switchTo('anwesenheit', {focusTab:true}); }
+    else if (ev.key === '2'){ ev.preventDefault(); switchTo('dossier', {focusTab:true}); }
+  });
+
+  // Zurück/Vorwärts bzw. manuelle Hash-Änderung
+  window.addEventListener('hashchange', function(){
+    var h = (location.hash || '').replace(/^#/, '');
+    if (APPS[h] && h !== current) switchTo(h, {fromHash:true});
+  });
+
+  /* --- Willkommens-Hinweis --- */
+  var welcome = byId('welcome');
+  if (lsGet(LS_WELCOME)) welcome.hidden = true;
+  byId('welcome-dismiss').addEventListener('click', function(){
+    welcome.hidden = true; lsSet(LS_WELCOME, '1');
+  });
+  byId('btn-info').addEventListener('click', function(){
+    welcome.hidden = !welcome.hidden;        // Hinweis wieder ein-/ausblenden
+  });
+
+  /* --- Start --- */
+  var start = initialKey();
+  switchTo(start, { force:true, fromHash:true });
+  // Hash setzen, damit der Bereich lesbar/teilbar ist, ohne History-Eintrag
+  if (location.hash.replace(/^#/, '') !== start){
+    try { history.replaceState(null, '', '#' + start); } catch(e){ location.hash = start; }
+  }
+})();
+</script>
+</body>
+</html>
