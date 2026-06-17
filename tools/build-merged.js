@@ -149,6 +149,9 @@ var ANW_API = [
 ].join("\n");
 anwScript = replaceOnce(anwScript, 'else init();\n})();', 'else init();\n' + ANW_API + '\n})();', 'anw:api-hook');
 
+/* Alte anwesenheit-eigene Datei-Sync abschalten (KB_SYNC deckt jetzt ALLES ab) */
+anwScript = replaceOnce(anwScript, 'initSync();', '/* initSync deaktiviert (KB_SYNC) */', 'anw:drop-initsync');
+
 /* Klassenbuch-Beiträge der Woche klar NACH TAG gruppiert anzeigen (unter dem Raster). */
 anwScript = replaceOnce(anwScript,
   `return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
@@ -273,6 +276,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-day-h{font-weight:800;font-size:13px;color:var(--kb-accent-dark);margin:12px 0 5px;padding-bottom:3px;border-bottom:1px solid var(--kb-border);}
 .chip-link{cursor:pointer;}
 #dos-root .chip-link:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.kb-sync-status{font-size:13.5px;line-height:1.55;}
 .kb-scrim{display:none;}
 @media(max-width:880px){
   .kb-app{flex-direction:column;}
@@ -296,6 +300,7 @@ var ACCENT_OVERRIDE = `
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
 #anw-root #btn-tt,#anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
+#anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
 #dos-root .main{ max-width:none; }
 `;
 
@@ -347,7 +352,13 @@ var SHELL_PANELS_EXTRA = `
       <div id="kb-roster-body"></div>
     </section>
     <section class="kb-panel kb-pad" id="kb-data">
-      <div class="kb-pagehead"><h2>💾 Daten & Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Sicherung und Export — getrennt nach Bereich, da beide unterschiedliche Daten enthalten.</p></div>
+      <div class="kb-pagehead"><h2>💾 Daten & Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Gemeinsame Speicherung für das Team, plus lokale Sicherung/Export.</p></div>
+      <div class="kb-card" id="kb-sync-card">
+        <h3 style="margin:0 0 6px;">🗄️ Gemeinsamer Speicher (Team-Datei auf O:\\)</h3>
+        <p style="margin:0 0 10px;color:var(--kb-muted);">Eine gemeinsame Datei auf eurem Netzlaufwerk — alle Geräte schreiben hinein, Änderungen werden <b>pro Eintrag zusammengeführt</b> (nichts wird überschrieben). Nur in Chrome/Edge; jede Person verbindet die Datei einmal. Eine Person legt sie an, alle anderen wählen „Bestehende Datei öffnen".</p>
+        <div id="kb-sync-status" class="kb-sync-status">…</div>
+        <div id="kb-sync-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+      </div>
       <div class="kb-card"><h3 style="margin:0 0 6px;">📋 Anwesenheit & Klassenbuch</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export, gemeinsame Datei.</p><button class="kb-btn kb-btn-primary" id="kb-data-anw">Anwesenheit-Daten öffnen</button></div>
       <div class="kb-card"><h3 style="margin:0 0 6px;">🗂️ Dossiers & Réunion</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Schüler-Dossiers, Réunionen und Organisation — Backup exportieren/importieren.</p><button class="kb-btn kb-btn-primary" id="kb-data-dos">Dossier-Backup öffnen</button></div>
     </section>
@@ -388,7 +399,9 @@ window.KB_ROSTER=(function(){
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
     remove:function(id){list=list.filter(function(s){return s.id!==id;});notify();},
-    onChange:function(fn){hooks.push(fn);}
+    onChange:function(fn){hooks.push(fn);},
+    syncExport:function(){return list.map(clone);},
+    syncApply:function(arr){list=(arr||[]).map(clone);persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   };
 })();
 `;
@@ -504,6 +517,13 @@ var DOS_OVERRIDES = `
       }
     }catch(e){}
   };
+  function kbDosPersist(store,arr){try{if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){Storage.clear(store).then(function(){return Storage.putAll(store,arr);}).catch(function(){});}}catch(e){}}
+  window.KB_DOS_SYNC={
+    exportEntries:function(){return (Repo.entries||[]).slice();},
+    exportReunions:function(){return (Repo.reunions||[]).slice();},
+    applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render();}catch(e){}}},
+    applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render();}catch(e){}}}
+  };
 })();
 `;
 
@@ -606,6 +626,31 @@ var SHELL_CONTROLLER = `
     });
   }
 
+  // Gemeinsamer Speicher (KB_SYNC) — Status + Aktionen
+  function renderSync(){
+    var st=$('kb-sync-status'),ac=$('kb-sync-actions'); if(!st||!ac||!window.KB_SYNC)return;
+    var s=window.KB_SYNC.getStatus();
+    if(!s.supported){st.innerHTML='<span style="color:#b3432d">Nur in Chrome oder Edge verfügbar (dieser Browser unterstützt die gemeinsame Datei nicht).</span>';ac.innerHTML='';return;}
+    var info;
+    if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'');}
+    else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — bitte „Verbinden" klicken ('+esc(s.fileName)+').';}
+    else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
+    if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
+    st.innerHTML=info;
+    var b;
+    if(s.connected){b='<button class="kb-btn" id="kbs-now">🔄 Jetzt synchronisieren</button><button class="kb-btn" id="kbs-disc">Trennen</button>';}
+    else if(s.error==='reconnect'){b='<button class="kb-btn kb-btn-primary" id="kbs-recon">Verbinden</button>';}
+    else{b='<button class="kb-btn kb-btn-primary" id="kbs-open">📂 Bestehende Datei öffnen</button><button class="kb-btn" id="kbs-new">➕ Neue gemeinsame Datei</button>';}
+    ac.innerHTML=b;
+    function w(id,fn){var e=$(id);if(e)e.addEventListener('click',fn);}
+    w('kbs-now',function(){window.KB_SYNC.syncNow();});
+    w('kbs-disc',function(){if(confirm('Verbindung trennen? Lokale Daten bleiben erhalten.'))window.KB_SYNC.disconnect();});
+    w('kbs-recon',function(){window.KB_SYNC.reconnect();});
+    w('kbs-open',function(){window.KB_SYNC.connectExisting();});
+    w('kbs-new',function(){window.KB_SYNC.connectNew();});
+  }
+  if(window.KB_SYNC){window.KB_SYNC.onStatus(function(){renderSync();});window.KB_SYNC.init();}
+
   // Startseite: Schüler
   go('students');
 })();
@@ -634,7 +679,9 @@ window.KB_BUBBLE=(function(){
     setMeta:function(sid,f){var r=get(sid);for(var k in f){r[k]=f[k];}set(sid,r);},
     addNode:function(sid,n){var r=get(sid);n.id='bn_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);r.nodes.push(n);set(sid,r);return n.id;},
     updateNode:function(sid,id,f){var r=get(sid);r.nodes.forEach(function(n){if(n.id===id){for(var k in f){n[k]=f[k];}}});set(sid,r);},
-    removeNode:function(sid,id){var r=get(sid);r.nodes=r.nodes.filter(function(n){return n.id!==id;});set(sid,r);}
+    removeNode:function(sid,id){var r=get(sid);r.nodes=r.nodes.filter(function(n){return n.id!==id;});set(sid,r);},
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:r.nodes||[]});}return out;},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){data[r.id]={matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:r.nodes||[]};});saveAll(data);}
   };
 })();
 
@@ -775,6 +822,118 @@ window.KB_BUBBLE=(function(){
 })();
 `;
 
+/* ============================================================
+   KB_SYNC — gemeinsame Datei auf O:\ (File System Access API)
+   Zusammenführung PRO EINTRAG (kein Überschreiben bei mehreren
+   Schreibenden). Reine Merge-/Diff-Funktionen sind testbar (_test).
+   ============================================================ */
+var SYNC_MODULE = `
+window.KB_SYNC=(function(){
+  var FMT='klassebuch-shared-v1';
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble'];
+  var BASE_LS='klassebuch_sync_base';
+  var DBNAME='klassebuch-sync';
+  function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
+
+  function eqPayload(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+  function mergeColl(remote,local){
+    var by={},i,r,ex;
+    for(i=0;i<(remote||[]).length;i++){r=remote[i];by[r.id]=r;}
+    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||(r._ts||0)>=(ex._ts||0)){by[r.id]=r;}}
+    var out=[];for(var k in by){out.push(by[k]);}return out;
+  }
+  function diffColl(base,live,now){
+    var baseBy={},liveBy={},i,out=[];
+    for(i=0;i<(base||[]).length;i++){baseBy[base[i].id]=base[i];}
+    for(i=0;i<(live||[]).length;i++){liveBy[live[i].id]=live[i];}
+    for(i=0;i<(live||[]).length;i++){var p=live[i];var b=baseBy[p.id];if(!b||b._del||!eqPayload(b.d,p)){out.push({id:p.id,_ts:now,d:p});}}
+    for(i=0;i<(base||[]).length;i++){var bb=base[i];if(!bb._del&&!liveBy[bb.id]){out.push({id:bb.id,_ts:now,_del:true});}}
+    return out;
+  }
+  function liveOf(coll){var out=[];for(var i=0;i<(coll||[]).length;i++){if(!coll[i]._del){out.push(coll[i].d);}}return out;}
+  function emptyDoc(){var d={_format:FMT,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
+  function buildLocalDoc(base,live,now){var ld=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var bc=(base&&base.colls&&base.colls[n])||[];ld.colls[n]=mergeColl(bc,diffColl(bc,live[n]||[],now));}return ld;}
+  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return nb;}
+  function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
+  function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
+  function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
+
+  function collGet(){
+    function c(o,m){return (o&&o[m])?o[m]():[];}
+    var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st};
+  }
+  function collSet(doc){
+    function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
+    s(window.KB_ROSTER,'syncApply',liveOf(doc.colls.roster));
+    s(window.KB_DOS_SYNC,'applyEntries',liveOf(doc.colls.dosEntries));
+    s(window.KB_DOS_SYNC,'applyReunions',liveOf(doc.colls.dosReunions));
+    s(window.KB_ANW,'applyEntries',liveOf(doc.colls.anwEntries));
+    s(window.KB_ANW,'applyNotes',liveOf(doc.colls.anwNotes));
+    var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);
+    s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
+  }
+
+  var base=null,busy=false,applying=false,timer=null,fileHandle=null;
+  var status={connected:false,supported:fsSupported(),fileName:'',lastSync:0,lastBy:'',error:'',pending:false};
+  var statusCb=null;
+  function setStatus(p){for(var k in p){status[k]=p[k];}if(statusCb){try{statusCb(status);}catch(e){}}}
+  function loadBase(){try{var r=localStorage.getItem(BASE_LS);if(r)return JSON.parse(r);}catch(e){}return null;}
+  function saveBase(b){try{localStorage.setItem(BASE_LS,JSON.stringify(b));}catch(e){}}
+  function operator(){try{return localStorage.getItem('anwesenheit_user')||'';}catch(e){return '';}}
+
+  function idb(){return new Promise(function(res,rej){var r=indexedDB.open(DBNAME,1);r.onupgradeneeded=function(){r.result.createObjectStore('h');};r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};});}
+  function idbSet(h){return idb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction('h','readwrite');tx.objectStore('h').put(h,'handle');tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});});}
+  function idbGet(){return idb().then(function(db){return new Promise(function(res){var tx=db.transaction('h','readonly');var rq=tx.objectStore('h').get('handle');rq.onsuccess=function(){res(rq.result||null);};rq.onerror=function(){res(null);};});}).catch(function(){return null;});}
+  function idbDel(){return idb().then(function(db){return new Promise(function(res){var tx=db.transaction('h','readwrite');tx.objectStore('h').delete('handle');tx.oncomplete=function(){res();};tx.onerror=function(){res();};});}).catch(function(){});}
+  function verifyPermission(h,req){var o={mode:'readwrite'};return h.queryPermission(o).then(function(p){if(p==='granted')return true;if(req)return h.requestPermission(o).then(function(p2){return p2==='granted';});return false;});}
+
+  function readFile(){
+    if(!fileHandle)return Promise.resolve(undefined);
+    return fileHandle.getFile().then(function(f){return f.text();}).then(function(txt){
+      if(!txt||!txt.trim())return null;
+      var d;try{d=JSON.parse(txt);}catch(e){return 'INVALID';}
+      if(!d||d._format!==FMT||!d.colls)return 'INVALID';
+      return d;
+    });
+  }
+  function writeFile(doc){if(!fileHandle)return Promise.resolve();doc._savedAt=Date.now();doc._savedBy=operator();var json=JSON.stringify(doc);return fileHandle.createWritable().then(function(w){return w.write(json).then(function(){return w.close();});});}
+
+  function cycle(){
+    if(!fileHandle||busy||applying)return Promise.resolve();
+    busy=true;setStatus({pending:true});
+    var now=Date.now();var live=collGet();
+    return readFile().then(function(remote){
+      if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unveraendert).',pending:false});busy=false;return;}
+      var nb,apply;
+      if(!base){nb=firstReconcile(live,remote||null,now);apply=true;}
+      else{var ld=buildLocalDoc(base,live,now);nb=mergeDocs(remote||null,ld);apply=!sameDoc(nb,ld);}
+      if(apply){applying=true;try{collSet(nb);}catch(e){}applying=false;}
+      base=nb;saveBase(nb);
+      var changed=!remote||!sameDoc(nb,remote);
+      var p=changed?writeFile(nb):Promise.resolve();
+      return p.then(function(){setStatus({error:'',lastSync:Date.now(),lastBy:(remote&&remote._savedBy)||status.lastBy,pending:false});busy=false;});
+    }).catch(function(e){setStatus({error:'Sync-Fehler: '+((e&&e.message)||e),pending:false});busy=false;});
+  }
+  function start(){stop();timer=setInterval(cycle,5000);cycle();}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function afterPick(h){return verifyPermission(h,true).then(function(ok){if(!ok){setStatus({error:'Kein Zugriff auf die Datei erteilt.'});return;}fileHandle=h;base=loadBase();return idbSet(h).then(function(){setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();});});}
+
+  return {
+    supported:fsSupported,
+    getStatus:function(){return status;},
+    onStatus:function(cb){statusCb=cb;try{cb(status);}catch(e){}},
+    connectNew:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge moeglich.'});return;}window.showSaveFilePicker({suggestedName:'klassebuch-team.json',types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(afterPick).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
+    connectExisting:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge moeglich.'});return;}window.showOpenFilePicker({multiple:false,types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(function(a){return afterPick(a[0]);}).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
+    disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
+    syncNow:function(){return cycle();},
+    reconnect:function(){idbGet().then(function(h){if(h)return afterPick(h);});},
+    init:function(){if(!fsSupported())return;idbGet().then(function(h){if(!h)return;h.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei'});start();}else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});}});});},
+    _test:{mergeColl:mergeColl,diffColl:diffColl,buildLocalDoc:buildLocalDoc,mergeDocs:mergeDocs,firstReconcile:firstReconcile,liveOf:liveOf,sameDoc:sameDoc,emptyDoc:emptyDoc,COLLS:COLLS}
+  };
+})();
+`;
+
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
 var parts = [
@@ -808,6 +967,7 @@ var parts = [
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
   '<script>' + BUBBLE_MODULE + '</' + 'script>',
   '<script>' + anwScript + '</' + 'script>',
+  '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '</body>',
   '</html>',
