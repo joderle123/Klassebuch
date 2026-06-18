@@ -241,6 +241,29 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hub-body{padding:18px 24px 56px;max-width:1080px;}
 .kb-hub-pad{max-width:840px;}
 .kb-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;align-items:start;}
+.kb-mini-grid{margin-top:4px;}
+/* ELDiB-Förderziele + Wochenziele */
+.kb-hub-sec{margin:0 0 24px;}
+.kb-sec-head{display:flex;align-items:baseline;gap:10px;margin:0 0 12px;border-bottom:2px solid var(--kb-accent-50);padding-bottom:7px;}
+.kb-sec-head h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.01em;color:var(--kb-text);}
+.kb-sec-sub{color:var(--kb-muted);font-size:12.5px;font-weight:600;}
+.kb-goals{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;}
+.kb-goal{background:var(--kb-surface,#fff);border:1px solid var(--kb-border);border-left:5px solid var(--gc,#999);border-radius:13px;padding:13px 15px;box-shadow:0 1px 3px rgba(20,30,50,.05);transition:box-shadow .15s ease,transform .15s ease;}
+.kb-goal:hover{box-shadow:0 5px 16px rgba(20,30,50,.11);transform:translateY(-1px);}
+.kb-goal-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:7px;}
+.kb-goal-badge{background:var(--gc,#999);color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:.02em;}
+.kb-goal-code{font-size:12.5px;font-weight:800;color:var(--gc,#666);}
+.kb-goal-title{font-size:13px;font-weight:600;color:var(--kb-muted);}
+.kb-goal-form{font-size:14.5px;line-height:1.5;color:var(--kb-text);margin:2px 0 10px;font-weight:600;}
+.kb-goal-methods{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.kb-method-lbl{font-size:10.5px;font-weight:800;color:var(--kb-muted);text-transform:uppercase;letter-spacing:.05em;margin-right:2px;}
+.kb-method{background:var(--kb-accent-50);color:var(--kb-text);font-size:12px;font-weight:600;padding:3px 10px;border-radius:8px;border:1px solid var(--kb-border);}
+.kb-weekly{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;}
+.kb-weekly li{background:var(--kb-surface,#fff);border:1px solid var(--kb-border);border-radius:10px;padding:10px 12px 10px 34px;font-size:14px;font-weight:600;position:relative;box-shadow:0 1px 2px rgba(20,30,50,.04);}
+.kb-weekly li:before{content:'📌';position:absolute;left:11px;top:9px;}
+.kb-empty-card{background:var(--kb-accent-50);border:1px dashed var(--kb-border);border-radius:12px;padding:16px;color:var(--kb-muted);font-size:14px;}
+.kb-mini h4{display:flex;align-items:center;gap:6px;}
+.kb-btn-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;}
 .kb-stat-row{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px;}
 .kb-stat{text-align:center;}
 .kb-stat-n{font-size:24px;font-weight:800;color:var(--kb-accent);line-height:1;}
@@ -435,23 +458,45 @@ var DOS_OVERRIDES = `
     var sum=window.KB_ANW?window.KB_ANW.summaryForStudent(sid):{entschuldigt:0,unentschuldigt:0,verspaetet:0};
     var entries=Repo.entriesForStudent(sid).slice().sort(function(a,b){return a.date<b.date?1:-1;});
     var last=entries[0];
-    var reu=Repo.listReunions(); var lastReu=null,lastReuDate=null,goals=[];
-    for(var i=0;i<reu.length;i++){var e=Repo.reunionEntryFor(reu[i].date,sid);if(e&&!lastReu){lastReu=e;lastReuDate=reu[i].date;}if(reu[i].goals&&reu[i].goals[sid]&&reu[i].goals[sid].length&&!goals.length){goals=reu[i].goals[sid];}}
+    var reu=Repo.listReunions(); var lastReu=null,lastReuDate=null,weekly=[],weeklyDate=null;
+    for(var i=0;i<reu.length;i++){var e=Repo.reunionEntryFor(reu[i].date,sid);if(e&&!lastReu){lastReu=e;lastReuDate=reu[i].date;}if(reu[i].goals&&reu[i].goals[sid]&&reu[i].goals[sid].length&&!weekly.length){weekly=reu[i].goals[sid];weeklyDate=reu[i].date;}}
     var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null;
     var cg=window.KB_REPORTS?window.KB_REPORTS.currentGoals(sid):null;
     var impBtn='<button class="btn btn-sm" data-route="#/report-import?student='+encodeURIComponent(sid)+'">📄 DS/PEI importieren</button>';
-    var zieleCard;
-    if(cg&&cg.goals&&cg.goals.length){zieleCard='<div class="card"><h4>Aktuelle Förderziele <span class="muted" style="font-weight:600;font-size:.8em;">ELDiB · Stand '+escapeHtml(formatDate(cg.date))+'</span></h4><ul style="margin:6px 0 0;padding-left:18px;">'+cg.goals.map(function(g){return '<li><strong>['+escapeHtml(g.code)+']</strong> '+escapeHtml(g.title||'')+(g.formulation?' — „'+escapeHtml(g.formulation)+'“':'')+'</li>';}).join('')+'</ul></div>';}
-    else if(goals.length){zieleCard='<div class="card"><h4>Aktuelle Ziele</h4><ul style="margin:6px 0 0;padding-left:18px;">'+goals.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';}
-    else{zieleCard='<div class="card"><h4>Aktuelle Förderziele</h4><p class="muted">Keine Ziele hinterlegt.</p>'+impBtn+'</div>';}
-    var diagCard='<div class="card"><h4>Diagnostik & Förderpläne</h4>'+(rep?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">Neuester Bericht: '+escapeHtml(rep.type||'—')+' · '+escapeHtml(formatDate(rep.date))+(rep.count>1?' · '+rep.count+' Berichte':'')+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div style="margin-bottom:6px;"><strong>Empfehlung:</strong> '+escapeHtml(rep.recommendations.join('; '))+'</div>':'')+(rep.schoolClass?'<div class="muted" style="font-size:.85em;margin-bottom:6px;">'+escapeHtml(rep.schoolClass)+'</div>':'')+'<button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier öffnen</button> '+impBtn:'<p class="muted">Noch kein DS/PEI-Bericht importiert.</p>'+impBtn)+'</div>';
-    return '<div class="kb-hub-grid">'+
-      '<div class="card"><h4>Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">In Absenzen öffnen</button></div>'+
-      zieleCard+
-      diagCard+
-      '<div class="card"><h4>Letztes Réunion-Update'+(lastReuDate?' · '+escapeHtml(formatDate(lastReuDate)):'')+'</h4>'+(lastReu?'<div class="entry-body">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Réunion-Update.</p>')+'</div>'+
-      '<div class="card"><h4>Letzter Dossier-Eintrag</h4>'+(last?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body">'+escapeHtml(String(last.text||'').slice(0,260))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>'+
-    '</div>';
+    var DM={V:{l:'Verhalten',c:'#c0562d'},K:{l:'Kommunikation',c:'#2f6fb0'},SOZ:{l:'Sozialisation',c:'#3a8a5f'},KOG:{l:'Kognition',c:'#7a52b3'}};
+
+    /* ---- ELDiB-Förderziele (mit Methodiken) ---- */
+    var eldibHtml;
+    if(cg&&cg.goals&&cg.goals.length){
+      var goalCards=cg.goals.map(function(g){
+        var dm=DM[g.domain]||{l:g.domain,c:'#777'};
+        var meth=(g.methods||[]).map(function(x){return '<span class="kb-method">'+escapeHtml(x)+'</span>';}).join('');
+        return '<div class="kb-goal" style="--gc:'+dm.c+'">'+
+          '<div class="kb-goal-head"><span class="kb-goal-badge">'+escapeHtml(dm.l)+'</span><span class="kb-goal-code">'+escapeHtml(g.code)+'</span>'+(g.title?'<span class="kb-goal-title">'+escapeHtml(g.title)+'</span>':'')+'</div>'+
+          (g.formulation?'<div class="kb-goal-form">„'+escapeHtml(g.formulation)+'“</div>':'')+
+          (meth?'<div class="kb-goal-methods"><span class="kb-method-lbl">Umsetzung</span>'+meth+'</div>':'')+
+        '</div>';
+      }).join('');
+      eldibHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>🎯 ELDiB-Förderziele</h3><span class="kb-sec-sub">Stand '+escapeHtml(formatDate(cg.date))+' · '+cg.goals.length+' Ziele</span></div><div class="kb-goals">'+goalCards+'</div></section>';
+    } else {
+      eldibHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>🎯 ELDiB-Förderziele</h3></div><div class="kb-empty-card">Noch keine ELDiB-Ziele hinterlegt — importiere einen PEI, um sie hier zu sehen. <div class="kb-btn-row" style="margin-top:10px;">'+impBtn+'</div></div></section>';
+    }
+
+    /* ---- Wochenziele (Annexe Junglinster, aus den Réunionen) ---- */
+    var weeklyHtml;
+    if(weekly.length){
+      weeklyHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>📌 Wochenziele</h3><span class="kb-sec-sub">Annexe Junglinster'+(weeklyDate?' · Réunion '+escapeHtml(formatDate(weeklyDate)):'')+'</span></div><ul class="kb-weekly">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></section>';
+    } else {
+      weeklyHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>📌 Wochenziele</h3></div><div class="kb-empty-card">Noch keine Wochenziele — legt sie in der <a href="#/reunion" data-route="#/reunion">Réunion</a> fest.</div></section>';
+    }
+
+    /* ---- kompakte Karten unten ---- */
+    var absCard='<div class="card kb-mini"><h4>📉 Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button></div>';
+    var diagCard='<div class="card kb-mini"><h4>🩺 Diagnostik &amp; Förderpläne</h4>'+(rep?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">Neuester Bericht: <strong>'+escapeHtml(rep.type||'—')+'</strong> · '+escapeHtml(formatDate(rep.date))+(rep.count>1?' · '+rep.count+' Berichte':'')+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div style="margin-bottom:6px;font-size:.9em;"><strong>Empfehlung:</strong> '+escapeHtml(rep.recommendations.join('; '))+'</div>':'')+(rep.schoolClass?'<div class="muted" style="font-size:.85em;margin-bottom:8px;">'+escapeHtml(rep.schoolClass)+'</div>':'')+'<div class="kb-btn-row"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier</button>'+impBtn+'</div>':'<p class="muted">Noch kein DS/PEI-Bericht importiert.</p><div class="kb-btn-row">'+impBtn+'</div>')+'</div>';
+    var reuCard='<div class="card kb-mini"><h4>🗣️ Réunion-Update'+(lastReuDate?' · '+escapeHtml(formatDate(lastReuDate)):'')+'</h4>'+(lastReu?'<div class="entry-body">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Réunion-Update.</p>')+'</div>';
+    var lastCard='<div class="card kb-mini"><h4>🗒️ Letzter Dossier-Eintrag</h4>'+(last?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body">'+escapeHtml(String(last.text||'').slice(0,260))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>';
+
+    return eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+absCard+diagCard+reuCard+lastCard+'</div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];

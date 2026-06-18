@@ -3663,7 +3663,20 @@ function kbParseGoals(zieleText) {
     var s = marks[i].titleStart, e = (i + 1 < marks.length) ? marks[i + 1].idx : zieleText.length, block = zieleText.slice(s, e);
     var zf = block.match(/Zielformulierung\s*:?\s*[„“"']?\s*([\s\S]*?)[”"'„“]?\s*(?:M[öo]gliche Umsetzung|$)/i);
     var formul = zf ? zf[1].replace(/\s+/g, ' ').replace(/[”"'„“]+$/, '').trim() : '';
-    goals.push({ code: marks[i].code, domain: marks[i].domain, title: marks[i].title.replace(/\s+/g, ' ').trim(), formulation: formul });
+    /* „Mögliche Umsetzung" -> Liste der Methodiken (DBT-Skills, Rollenspiele …) */
+    var methods = [], mu = block.match(/M[öo]gliche Umsetzung\s*:?/i);
+    if (mu) {
+      var after = block.slice(mu.index + mu[0].length).split('\n');
+      for (var k = 0; k < after.length; k++) {
+        var ln = after[k].replace(/^[\s\-–—•·*]+/, '').replace(/\s+/g, ' ').trim();
+        if (!ln) continue;
+        if (/^(Verhalten|Kommunikation|Sozialisation|Kognition)\b/i.test(ln)) break;
+        if (/^Aufgrund der Tatsache|^Zielerfassung|^Datum\s*:/i.test(ln)) break;
+        methods.push(ln.length > 90 ? ln.slice(0, 90) + '…' : ln);
+        if (methods.length >= 8) break;
+      }
+    }
+    goals.push({ code: marks[i].code, domain: marks[i].domain, title: marks[i].title.replace(/\s+/g, ' ').trim(), formulation: formul, methods: methods });
   }
   return goals;
 }
@@ -3709,7 +3722,17 @@ window.KB_REPORTS = {
   latest: function (id) { return kbStudentReports(id)[0] || null; },
   currentGoals: function (id) {
     var reps = kbStudentReports(id);
-    for (var i = 0; i < reps.length; i++) { var rp = reps[i].report; if (rp && rp.goals && rp.goals.length) return { date: reps[i].date, goals: rp.goals, type: rp.type }; }
+    for (var i = 0; i < reps.length; i++) {
+      var rp = reps[i].report; if (!rp) continue;
+      var goals = rp.goals || [];
+      /* Methodiken nachliefern (frühere Importe hatten sie noch nicht):
+         falls vorhanden, Ziele aus dem gespeicherten ELDiB-Abschnitt neu lesen. */
+      if (rp.sections && rp.sections.ziele && rp.sections.ziele.text) {
+        var reparsed = kbParseGoals(rp.sections.ziele.text);
+        if (reparsed && reparsed.length) goals = reparsed;
+      }
+      if (goals.length) return { date: reps[i].date, goals: goals, type: rp.type };
+    }
     return null;
   },
   summary: function (id) {
