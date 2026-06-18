@@ -4531,14 +4531,19 @@ function viewReportImport(params, query) {
 
   function structurePreviewHtml() {
     var r = st.report, parts = [];
-    if (r.recommendations && r.recommendations.length) parts.push('<p><strong>Empfehlung des CDSE:</strong> ' + escapeHtml(r.recommendations.join('; ')) + '</p>');
+    if (r.recommendations && r.recommendations.length) parts.push('<p style="margin:0 0 6px;"><strong>Empfehlung des CDSE:</strong> ' + escapeHtml(r.recommendations.join('; ')) + '</p>');
     var secKeys = Object.keys(r.sections || {});
-    if (secKeys.length) parts.push('<p><strong>Erkannte Abschnitte:</strong> ' + secKeys.map(function (k) { return escapeHtml(r.sections[k].label); }).join(' · ') + '</p>');
+    if (secKeys.length) parts.push('<p style="margin:0 0 6px;"><strong>Erkannte Abschnitte:</strong> ' + secKeys.map(function (k) { return escapeHtml(r.sections[k].label); }).join(' · ') + '</p>');
     if (r.goals && r.goals.length) {
-      parts.push('<p style="margin-bottom:2px;"><strong>Förderziele (' + r.goals.length + '):</strong></p><ul style="margin:0;padding-left:18px;">' +
+      parts.push('<p style="margin:0 0 2px;"><strong>Förderziele (' + r.goals.length + '):</strong></p><ul style="margin:0 0 6px;padding-left:18px;">' +
         r.goals.map(function (g) { return '<li><strong>[' + escapeHtml(g.code) + ']</strong> ' + escapeHtml(g.title) + (g.formulation ? ' — „' + escapeHtml(g.formulation) + '"' : '') + '</li>'; }).join('') + '</ul>');
     }
-    return parts.join('') || '<p class="muted">Keine strukturierten Felder erkannt — der volle Text wird trotzdem gespeichert.</p>';
+    /* Vollständiger Text, der wirklich gespeichert wird — damit ersichtlich ist,
+       dass der GANZE Bericht übernommen wird (nicht nur die Ziele). */
+    var body = kbReportToEntryText(r);
+    parts.push('<p style="margin:10px 0 4px;"><strong>Vollständig übernommener Text</strong> <span class="muted">(' + body.length + ' Zeichen — genau so landet er im Dossier):</span></p>');
+    parts.push('<div class="preview-box" style="max-height:340px;overflow:auto;white-space:pre-wrap;font-size:13px;line-height:1.5;">' + escapeHtml(body) + '</div>');
+    return parts.join('');
   }
 
   function reviewHtml() {
@@ -4563,7 +4568,7 @@ function viewReportImport(params, query) {
       '</div>' +
       '<p class="muted" style="margin:2px 0 12px;">Stammdaten aus dem Bericht (bleiben <strong>nur lokal</strong> im Dossier): ' +
         escapeHtml(idn.name || '—') + (idn.matricule ? ' · Matrikel ' + escapeHtml(idn.matricule.slice(0, 4)) + '…' : '') + (idn.birthDate ? ' · *' + escapeHtml(idn.birthDate) : '') + (idn.schoolClass ? ' · ' + escapeHtml(idn.schoolClass) : '') + '</p>' +
-      '<details style="margin-bottom:12px;"><summary style="cursor:pointer;font-weight:600;">Erkannte Struktur ansehen</summary><div style="margin-top:8px;">' + structurePreviewHtml() + '</div></details>' +
+      '<details open style="margin-bottom:12px;"><summary style="cursor:pointer;font-weight:600;">Erkannte Struktur &amp; vollständiger Text</summary><div style="margin-top:8px;">' + structurePreviewHtml() + '</div></details>' +
       '<hr class="divider">' +
       '<h4 style="margin:0 0 4px;">Schutz beim KI-Export</h4>' +
       '<p class="muted" style="margin:0 0 8px;">Matrikelnummer, Geburtsdatum, E-Mail und Telefon werden <strong>immer automatisch entfernt</strong>. Die folgenden Namen/Orte werden beim KI-Export ersetzt und für künftige Berichte gemerkt:</p>' +
@@ -4591,12 +4596,12 @@ function viewReportImport(params, query) {
         var sid = st.studentId;
         if (st.createNew) {
           var nm = (st.newName || r.identity.name || '').trim();
-          if (!nm) { toast('Bitte einen Namen für den neuen Schüler eingeben.'); return; }
-          if (!window.KB_ROSTER || !window.KB_ROSTER.add) { toast('Schülerliste nicht verfügbar.'); return; }
+          if (!nm) { showToast('Bitte einen Namen für den neuen Schüler eingeben.'); return; }
+          if (!window.KB_ROSTER || !window.KB_ROSTER.add) { showToast('Schülerliste nicht verfügbar.'); return; }
           sid = window.KB_ROSTER.add(nm);
           try { if (window.KB_ROSTER.update) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() }); } catch (e) {}
         }
-        if (!sid) { toast('Bitte einen Schüler zuordnen.'); return; }
+        if (!sid) { showToast('Bitte einen Schüler zuordnen.'); return; }
         var dateIso = st.dateIso || (new Date().toISOString().slice(0, 10));
         var body = kbReportToEntryText(r);
         var tags = [r.type === 'PEI' ? 'PEI' : (r.type === 'DS' ? 'DS' : 'Bericht')];
@@ -4619,9 +4624,9 @@ function viewReportImport(params, query) {
           studentId: sid, date: dateIso, author: 'Import', category: st.category,
           tags: tags, text: body, report: report, source: { name: st.fileName, kind: st.kind }
         }).then(function () {
-          toast('✓ Bericht importiert');
+          showToast('✓ Bericht importiert');
           navigate('#/student/' + encodeURIComponent(sid) + '?hub=uebersicht');
-        }).catch(function (e) { toast('Speichern fehlgeschlagen: ' + ((e && e.message) || e)); });
+        }).catch(function (e) { showToast('Speichern fehlgeschlagen: ' + ((e && e.message) || e), { error: true }); });
       }
       function wire() {
         var fileEl = qs('#imp-file', wrap);
