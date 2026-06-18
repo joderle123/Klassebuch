@@ -437,9 +437,18 @@ var DOS_OVERRIDES = `
     var last=entries[0];
     var reu=Repo.listReunions(); var lastReu=null,lastReuDate=null,goals=[];
     for(var i=0;i<reu.length;i++){var e=Repo.reunionEntryFor(reu[i].date,sid);if(e&&!lastReu){lastReu=e;lastReuDate=reu[i].date;}if(reu[i].goals&&reu[i].goals[sid]&&reu[i].goals[sid].length&&!goals.length){goals=reu[i].goals[sid];}}
+    var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null;
+    var cg=window.KB_REPORTS?window.KB_REPORTS.currentGoals(sid):null;
+    var impBtn='<button class="btn btn-sm" data-route="#/report-import?student='+encodeURIComponent(sid)+'">📄 DS/PEI importieren</button>';
+    var zieleCard;
+    if(cg&&cg.goals&&cg.goals.length){zieleCard='<div class="card"><h4>Aktuelle Förderziele <span class="muted" style="font-weight:600;font-size:.8em;">ELDiB · Stand '+escapeHtml(formatDate(cg.date))+'</span></h4><ul style="margin:6px 0 0;padding-left:18px;">'+cg.goals.map(function(g){return '<li><strong>['+escapeHtml(g.code)+']</strong> '+escapeHtml(g.title||'')+(g.formulation?' — „'+escapeHtml(g.formulation)+'“':'')+'</li>';}).join('')+'</ul></div>';}
+    else if(goals.length){zieleCard='<div class="card"><h4>Aktuelle Ziele</h4><ul style="margin:6px 0 0;padding-left:18px;">'+goals.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';}
+    else{zieleCard='<div class="card"><h4>Aktuelle Förderziele</h4><p class="muted">Keine Ziele hinterlegt.</p>'+impBtn+'</div>';}
+    var diagCard='<div class="card"><h4>Diagnostik & Förderpläne</h4>'+(rep?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">Neuester Bericht: '+escapeHtml(rep.type||'—')+' · '+escapeHtml(formatDate(rep.date))+(rep.count>1?' · '+rep.count+' Berichte':'')+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div style="margin-bottom:6px;"><strong>Empfehlung:</strong> '+escapeHtml(rep.recommendations.join('; '))+'</div>':'')+(rep.schoolClass?'<div class="muted" style="font-size:.85em;margin-bottom:6px;">'+escapeHtml(rep.schoolClass)+'</div>':'')+'<button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier öffnen</button> '+impBtn:'<p class="muted">Noch kein DS/PEI-Bericht importiert.</p>'+impBtn)+'</div>';
     return '<div class="kb-hub-grid">'+
       '<div class="card"><h4>Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">In Absenzen öffnen</button></div>'+
-      '<div class="card"><h4>Aktuelle Ziele</h4>'+(goals.length?'<ul style="margin:6px 0 0;padding-left:18px;">'+goals.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul>':'<p class="muted">Keine Ziele hinterlegt.</p>')+'</div>'+
+      zieleCard+
+      diagCard+
       '<div class="card"><h4>Letztes Réunion-Update'+(lastReuDate?' · '+escapeHtml(formatDate(lastReuDate)):'')+'</h4>'+(lastReu?'<div class="entry-body">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Réunion-Update.</p>')+'</div>'+
       '<div class="card"><h4>Letzter Dossier-Eintrag</h4>'+(last?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body">'+escapeHtml(String(last.text||'').slice(0,260))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>'+
     '</div>';

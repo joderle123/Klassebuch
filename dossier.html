@@ -308,7 +308,8 @@ var CATEGORIES = [
   'Termine & RDV',
   'Anwesenheit & Mobibus',
   'Wochenziel',
-  'Team-Réunion'
+  'Team-Réunion',
+  'Bericht (DS/PEI)'
 ];
 
 /* Dezente, gut unterscheidbare Farben pro Kategorie (HSL, gedeckt) */
@@ -325,7 +326,8 @@ var CATEGORY_COLORS = {
   'Termine & RDV':                'hsl(225, 30%, 50%)',
   'Anwesenheit & Mobibus':        'hsl(50, 50%, 40%)',
   'Wochenziel':                   'hsl(120, 30%, 38%)',
-  'Team-Réunion':                 'hsl(335, 35%, 44%)'
+  'Team-Réunion':                 'hsl(335, 35%, 44%)',
+  'Bericht (DS/PEI)':             'hsl(262, 45%, 50%)'
 };
 function categoryColor(cat){ return CATEGORY_COLORS[cat] || 'hsl(210, 15%, 45%)'; }
 
@@ -473,9 +475,21 @@ var NAME_PATTERNS = [
   { regex: /\bDr\.?\s?[A-ZÄÖÜ][\wäöüÄÖÜß.\-]{2,}/g, category: 'Arzt' },
   { regex: /\bDokter\s[A-ZÄÖÜ][\wäöüÄÖÜß.\-]{2,}/g, category: 'Arzt' },
   { regex: /\bDoktesch\s[A-ZÄÖÜ][\wäöüÄÖÜß.\-]{2,}/g, category: 'Arzt' },
-  { regex: /\b(Mme|Madame|Madamm)\.?\s[A-ZÄÖÜ][\wäöüÄÖÜß.\-]{2,}/g, category: 'Mataarbechter' },
-  { regex: /\b(Här|Herr|Monsieur)\.?\s[A-ZÄÖÜ][\wäöüÄÖÜß.\-]{2,}/g, category: 'Mataarbechter' }
+  { regex: /\b(Mme|Madame|Madamm)\.?\s[A-ZÄÖÜÀ-Ý][\wäöüÄÖÜßÀ-ÿ.\-]{2,}/g, category: 'Mataarbechter' },
+  { regex: /\b(Här|Herr|Monsieur|Mr)\.?\s[A-ZÄÖÜÀ-Ý][\wäöüÄÖÜßÀ-ÿ.\-]{2,}/g, category: 'Mataarbechter' },
+  /* Deutsch/Lëtzebuergesch „Frau …" — taucht in DS/PEI-Berichten häufig auf (Eltern, Mitarbeiterinnen). */
+  { regex: /\b(Frau|Fra)\.?\s[A-ZÄÖÜÀ-Ý][\wäöüÄÖÜßÀ-ÿ.\-]{2,}/g, category: 'Mataarbechter' }
 ];
+
+/* Schul-/Institutions- und Ortsnamen (für die Berichts-Anonymisierung).
+   Bewusst breit — im Prüf-Schritt vor dem KI-Export kann der Nutzer
+   einzelne Treffer wieder abwählen. */
+var SCHOOL_NAME_REGEX = /\b(?:Lënster Lyc[ée]e|Maacher Lyc[ée]e|Lyc[ée]e Technique|Lyc[ée]e|Internat|[ÉE]cole|Schoul|Foyer|Annexe|Centre)\s+[A-ZÀ-Ÿ][\wÀ-ÿ.'\-]+(?:[ \-][A-ZÀ-Ÿ][\wÀ-ÿ.'\-]+){0,2}/g;
+var LU_PLACES = ['Dudelange','Junglinster','Munsbach','Roodt-Syre','Roodt sur Syre','Roodt/Syre','Sandweiler','Grevenmacher','Esch-sur-Alzette','Esch/Alzette','Betzdorf','Ettelbrück','Ettelbruck','Clausen','Diekirch','Wiltz','Mersch','Echternach','Remich','Bettembourg','Differdange','Walferdange','Bertrange','Strassen','Mondorf','Vianden','Redange','Capellen','Steinfort'];
+/* 13-stellige Sozialversicherungs-/Matrikelnummer (LU) + Kontaktdaten */
+var MATRICULE_REGEX = /\b\d{13}\b/g;
+var EMAIL_REGEX = /\b[\w.+\-]+@[\w.\-]+\.[A-Za-z]{2,}\b/g;
+var PHONE_REGEX = /(?:\+352[\s.\-]?)?(?:GSM|Gsm|T[ée]l\.?|Tel\.?|Handy)?\s?:?\s?\(?\d{2,3}\)?[\s.\/\-]?\d{2,3}[\s.\/\-]?\d{2,3}(?:[\s.\/\-]?\d{2,3})?/g;
 
 /* Familien-/Elternbegriffe → einheitlicher Platzhalter "Elteren" */
 var FAMILY_TERM_REGEX = /\b(d['’]?Elteren|Elteren|d['’]?Mamm|Mamm|d['’]?Papp|Papp|Stéifpapp|Stéifmamm|Adoptivelteren|d['’]?Boma|Boma|d['’]?Bopp|Bopp|d['’]?Bop|Bop)\b/g;
@@ -851,6 +865,11 @@ var Repo = {
       createdAt: data.createdAt || nowIso(),
       updatedAt: nowIso()
     };
+    /* Strukturierte Berichts-Daten (DS/PEI-Import) + Quelle mitspeichern,
+       falls vorhanden. Reisen über Sync & Backup mit, da das ganze
+       Entry-Objekt serialisiert wird. */
+    if (data.report && typeof data.report === 'object') clean.report = data.report;
+    if (data.source && typeof data.source === 'object') clean.source = data.source;
     var idx = self.entries.findIndex(function (e) { return e.id === clean.id; });
     if (idx >= 0) self.entries[idx] = clean; else self.entries.push(clean);
     return Storage.put('entries', clean).then(function () { return clean; });
@@ -1236,6 +1255,28 @@ function detectNamesInText(texts, opts) {
     if (familyRe.lastIndex === fm.index) familyRe.lastIndex++;
   }
 
+  /* Gelernte Namen aus früheren Berichts-Importen (Eltern, Geschwister, …) */
+  (getLearnedNames ? getLearnedNames() : []).forEach(function (ln) {
+    if (ln && ln.name && exclude.indexOf(ln.name) === -1 && fullText.indexOf(ln.name) !== -1) {
+      if (!found.hasOwnProperty(ln.name)) found[ln.name] = ln.category || 'Person';
+    }
+  });
+
+  /* Schul-/Institutionsnamen */
+  var schoolRe = new RegExp(SCHOOL_NAME_REGEX.source, SCHOOL_NAME_REGEX.flags);
+  var sm;
+  while ((sm = schoolRe.exec(fullText)) !== null) {
+    var sname = sm[0].replace(/\s+/g, ' ').trim();
+    if (!found.hasOwnProperty(sname)) found[sname] = 'Schule';
+    if (schoolRe.lastIndex === sm.index) schoolRe.lastIndex++;
+  }
+
+  /* Bekannte Ortsnamen */
+  LU_PLACES.forEach(function (pl) {
+    var re = new RegExp('\\b' + pl.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&') + '\\b');
+    if (re.test(fullText) && !found.hasOwnProperty(pl)) found[pl] = 'Ort';
+  });
+
   return found;
 }
 
@@ -1304,6 +1345,18 @@ function anonymizeText(text, ctx) {
   ctx.studentNameMap.forEach(function (m) {
     out = splitJoin(out, m.name, m.anonLabel);
   });
+
+  // 4) Hochsensible, eindeutige Kennungen IMMER entfernen (unabhängig von der
+  //    Namensprüfung): Matrikel-/Sozialversicherungsnummer, E-Mail, Telefon.
+  //    Die Matrikelnummer enthält u. a. das Geburtsdatum — darf nie zur KI.
+  if (ctx.maskIdentifiers !== false) {
+    out = out.replace(new RegExp(MATRICULE_REGEX.source, MATRICULE_REGEX.flags), '[Matrikelnr.]');
+    out = out.replace(new RegExp(EMAIL_REGEX.source, EMAIL_REGEX.flags), '[E-Mail]');
+    out = out.replace(new RegExp(PHONE_REGEX.source, PHONE_REGEX.flags), function (mtch) {
+      // nur maskieren, wenn genug Ziffern (vermeidet Treffer auf einzelne Zahlen)
+      return (mtch.replace(/\D/g, '').length >= 6) ? '[Tel.]' : mtch;
+    });
+  }
 
   return out;
 }
@@ -1716,6 +1769,7 @@ function viewStudentDetail(params) {
       '<div class="actions">' +
         '<button type="button" class="btn" data-route="#/export?student=' + encodeURIComponent(student.id) + '">PDF-Export</button>' +
         '<button type="button" class="btn" data-route="#/ai-export?student=' + encodeURIComponent(student.id) + '">An externe KI geben</button>' +
+        '<button type="button" class="btn" data-route="#/report-import?student=' + encodeURIComponent(student.id) + '">📄 DS/PEI importieren</button>' +
         '<button type="button" class="btn btn-primary" data-route="#/entry/new/' + student.id + '">+ Neuer Eintrag</button>' +
       '</div>' +
     '</div>' +
@@ -3297,6 +3351,548 @@ function parseHash() {
   return { parts: parts, query: query };
 }
 
+
+/* ===== DS/PEI-Berichts-Import (generiert/integriert) ===== */
+/* ============================================================
+   DS/PEI-Berichts-Import (Word .docx / PDF) — komplett lokal.
+   Liest den Text im Browser, erkennt Struktur (DS vs. PEI),
+   legt einen strukturierten Dossier-Eintrag an und stellt die
+   Daten für den Schüler-Hub bereit. Anonymisierung erfolgt wie
+   gewohnt erst beim KI-Export.
+   ============================================================ */
+
+/* ---- gelernte Namen (Eltern/Geschwister etc. aus Importen) ---- */
+function getLearnedNames() {
+  try { return JSON.parse(localStorage.getItem(LS_PREFIX + 'learned_names') || '[]') || []; }
+  catch (e) { return []; }
+}
+function addLearnedNames(arr) {
+  try {
+    var cur = getLearnedNames(), seen = {};
+    cur.forEach(function (x) { if (x && x.name) seen[x.name] = 1; });
+    (arr || []).forEach(function (x) {
+      if (x && x.name && !seen[x.name]) { cur.push({ name: x.name, category: x.category || 'Person' }); seen[x.name] = 1; }
+    });
+    localStorage.setItem(LS_PREFIX + 'learned_names', JSON.stringify(cur));
+  } catch (e) {}
+}
+
+/* ---- Inflate via DecompressionStream (Edge/Chrome) ---- */
+function kbInflate(bytes, fmt) {
+  var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(fmt));
+  return new Response(stream).arrayBuffer().then(function (ab) { return new Uint8Array(ab); });
+}
+function kbInflateAuto(bytes) {
+  return kbInflate(bytes, 'deflate').catch(function () {
+    return kbInflate(bytes, 'deflate-raw').catch(function () { return null; });
+  });
+}
+
+/* ---- DOCX ---- */
+function kbU16(b, o) { return b[o] | (b[o + 1] << 8); }
+function kbU32(b, o) { return (b[o] | (b[o + 1] << 8) | (b[o + 2] << 16) | (b[o + 3] << 24)) >>> 0; }
+function kbUnzip(bytes, wantName) {
+  var eocd = -1;
+  for (var i = bytes.length - 22; i >= 0 && i > bytes.length - 22 - 65536; i--) {
+    if (bytes[i] === 0x50 && bytes[i + 1] === 0x4b && bytes[i + 2] === 0x05 && bytes[i + 3] === 0x06) { eocd = i; break; }
+  }
+  if (eocd < 0) return Promise.reject(new Error('ZIP: kein EOCD'));
+  var cdOff = kbU32(bytes, eocd + 16), cnt = kbU16(bytes, eocd + 10), p = cdOff;
+  for (var k = 0; k < cnt; k++) {
+    if (kbU32(bytes, p) !== 0x02014b50) break;
+    var method = kbU16(bytes, p + 10), csize = kbU32(bytes, p + 20);
+    var nlen = kbU16(bytes, p + 28), elen = kbU16(bytes, p + 30), clen = kbU16(bytes, p + 32);
+    var lho = kbU32(bytes, p + 42);
+    var name = new TextDecoder().decode(bytes.subarray(p + 46, p + 46 + nlen));
+    if (name === wantName) {
+      var lnlen = kbU16(bytes, lho + 26), lelen = kbU16(bytes, lho + 28);
+      var dstart = lho + 30 + lnlen + lelen, comp = bytes.subarray(dstart, dstart + csize);
+      if (method === 0) return Promise.resolve(comp.slice());
+      return kbInflate(comp, 'deflate-raw');
+    }
+    p += 46 + nlen + elen + clen;
+  }
+  return Promise.reject(new Error('ZIP: ' + wantName + ' nicht gefunden'));
+}
+function kbXmlToText(xml) {
+  var s = xml;
+  s = s.replace(/<w:tab\b[^>]*\/>/g, '\t').replace(/<w:br\b[^>]*\/>/g, '\n').replace(/<w:cr\b[^>]*\/>/g, '\n');
+  s = s.replace(/<\/w:tc>/g, '').replace(/<\/w:tr>/g, '').replace(/<\/w:p>/g, '\n');
+  s = s.replace(/<w:t\b[^>]*>([\s\S]*?)<\/w:t>/g, function (_, t) { return t; });
+  s = s.replace(/<[^>]+>/g, '');
+  s = s.replace(//g, '\t').replace(//g, '\n');
+  s = s.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+  s = s.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').replace(/[ \t]{2,}/g, ' ');
+  return s.trim();
+}
+function kbExtractDocx(bytes) {
+  return kbUnzip(bytes, 'word/document.xml').then(function (xml) {
+    return kbXmlToText(new TextDecoder('utf-8').decode(xml));
+  });
+}
+
+/* ---- PDF (klassische xref-Tabelle, FlateDecode, CID/ToUnicode) ---- */
+function kbLatin1(bytes) { var out = '', CH = 0x8000; for (var i = 0; i < bytes.length; i += CH) { out += String.fromCharCode.apply(null, bytes.subarray(i, i + CH)); } return out; }
+function kbToBytes(str) { var u = new Uint8Array(str.length); for (var i = 0; i < str.length; i++) u[i] = str.charCodeAt(i) & 0xFF; return u; }
+function kbGetDict(obj) {
+  var i = obj.indexOf('<<'); if (i < 0) return '';
+  var depth = 0, j = i;
+  while (j < obj.length - 1) {
+    if (obj[j] === '<' && obj[j + 1] === '<') { depth++; j += 2; continue; }
+    if (obj[j] === '>' && obj[j + 1] === '>') { depth--; j += 2; if (depth === 0) return obj.slice(i, j); continue; }
+    j++;
+  }
+  return obj.slice(i);
+}
+function kbFindKey(d, key) {
+  var re = new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\function resolveView(parts, query) {') + '\\s*(\\d+\\s+\\d+\\s+R|\\[[^\\]]*\\]|<<[\\s\\S]*?>>|\\/[^\\s/<>\\[\\]]+|[-+]?\\d+\\.?\\d*)');
+  var m = d.match(re); return m ? m[1] : null;
+}
+function kbRefNum(tok) { var m = tok && tok.match(/(\d+)\s+\d+\s+R/); return m ? parseInt(m[1], 10) : null; }
+function kbBuildObjMap(s) {
+  var map = {}, re = /(\d+)\s+(\d+)\s+obj\b/g, m;
+  while ((m = re.exec(s))) { var num = parseInt(m[1], 10), start = m.index + m[0].length, end = s.indexOf('endobj', start); if (end < 0) continue; map[num] = s.slice(start, end); }
+  return map;
+}
+function kbStreamBytes(obj) {
+  var m = obj.match(/stream\r?\n/); if (!m) return Promise.resolve(null);
+  var start = m.index + m[0].length, e = obj.indexOf('endstream', start), raw = obj.slice(start, e);
+  if (raw.slice(-2) === '\r\n') raw = raw.slice(0, -2); else if (raw.slice(-1) === '\n' || raw.slice(-1) === '\r') raw = raw.slice(0, -1);
+  var d = kbGetDict(obj);
+  if (d.indexOf('FlateDecode') >= 0) return kbInflateAuto(kbToBytes(raw)).then(function (out) { return out ? kbLatin1(out) : null; });
+  return Promise.resolve(raw);
+}
+function kbParseToUnicode(s) {
+  var cmap = {}, re = /beginbfchar([\s\S]*?)endbfchar/g, bm;
+  while ((bm = re.exec(s))) { var cre = /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g, cm; while ((cm = cre.exec(bm[1]))) { var src = parseInt(cm[1], 16), dh = cm[2], dst = ''; for (var i = 0; i < dh.length; i += 4) dst += String.fromCharCode(parseInt(dh.substr(i, 4), 16)); cmap[src] = dst; } }
+  re = /beginbfrange([\s\S]*?)endbfrange/g;
+  while ((bm = re.exec(s))) { var cre2 = /<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>\s*<([0-9A-Fa-f]+)>/g, cm2; while ((cm2 = cre2.exec(bm[1]))) { var lo = parseInt(cm2[1], 16), hi = parseInt(cm2[2], 16), base = parseInt(cm2[3], 16); for (var c = lo; c <= hi && c - lo < 65536; c++) cmap[c] = String.fromCharCode(base + (c - lo)); } }
+  return cmap;
+}
+function kbFontMap(resTok, map) {
+  var fonts = {};
+  if (!resTok) return Promise.resolve(fonts);
+  var res = /^\s*\d+\s+\d+\s+R/.test(resTok) ? kbGetDict(map[kbRefNum(resTok)] || '') : resTok;
+  var fk = kbFindKey(res, '/Font'); if (!fk) return Promise.resolve(fonts);
+  var fd = /^\s*\d+\s+\d+\s+R/.test(fk) ? kbGetDict(map[kbRefNum(fk)] || '') : fk;
+  var jobs = [], fre = /\/([A-Za-z0-9_.+-]+)\s+(\d+)\s+\d+\s+R/g, fm;
+  while ((fm = fre.exec(fd))) {
+    (function (fname, fobj) {
+      if (!fobj) return;
+      var fdct = kbGetDict(fobj), two = (fdct.indexOf('/Type0') >= 0) || (fdct.indexOf('Identity-H') >= 0), tou = kbFindKey(fdct, '/ToUnicode');
+      if (tou && /^\s*\d+\s+\d+\s+R/.test(tou)) {
+        jobs.push(kbStreamBytes(map[kbRefNum(tou)] || '').then(function (sb) { fonts[fname] = { two: two, cmap: sb ? kbParseToUnicode(sb) : {} }; }));
+      } else { fonts[fname] = { two: two, cmap: {} }; }
+    })(fm[1], map[parseInt(fm[2], 10)]);
+  }
+  return Promise.all(jobs).then(function () { return fonts; });
+}
+function kbDecodeStr(bytes, font) {
+  if (!font || !font.cmap) return bytes;
+  var cmap = font.cmap, out = '', i;
+  if (font.two) { for (i = 0; i + 1 < bytes.length; i += 2) { var code = (bytes.charCodeAt(i) << 8) | bytes.charCodeAt(i + 1); out += (cmap[code] !== undefined ? cmap[code] : ''); } }
+  else { for (i = 0; i < bytes.length; i++) { var c = bytes.charCodeAt(i); out += (cmap[c] !== undefined ? cmap[c] : String.fromCharCode(c)); } }
+  return out;
+}
+function kbPdfLiteral(cs, i) {
+  var depth = 1, buf = ''; i++;
+  while (i < cs.length && depth > 0) {
+    var ch = cs[i];
+    if (ch === '\\') {
+      var n = cs[i + 1], mp = { 'n': '\n', 'r': '\r', 't': '\t', 'b': '\b', 'f': '\f', '(': '(', ')': ')', '\\': '\\' };
+      if (mp[n] !== undefined) { buf += mp[n]; i += 2; continue; }
+      var om = cs.slice(i + 1, i + 4).match(/^[0-7]{1,3}/);
+      if (om) { buf += String.fromCharCode(parseInt(om[0], 8) & 0xFF); i += 1 + om[0].length; continue; }
+      i += 2; continue;
+    }
+    if (ch === '(') { depth++; buf += ch; i++; continue; }
+    if (ch === ')') { depth--; if (depth === 0) { i++; break; } buf += ch; i++; continue; }
+    buf += ch; i++;
+  }
+  return [buf, i];
+}
+function kbPdfHex(cs, i) {
+  var j = cs.indexOf('>', i), h = cs.slice(i + 1, j).replace(/\s+/g, ''); if (h.length % 2) h += '0';
+  var out = ''; for (var k = 0; k < h.length; k += 2) out += String.fromCharCode(parseInt(h.substr(k, 2), 16));
+  return [out, j + 1];
+}
+function kbExtractPageText(cs, fonts) {
+  var out = '', cur = null, operands = [], i = 0, n = cs.length;
+  function flushTJ(arr) { for (var a = 0; a < arr.length; a++) { var el = arr[a]; if (el && el.s !== undefined) out += kbDecodeStr(el.s, cur); else if (typeof el === 'number') { if (el < -100) out += ' '; } } }
+  while (i < n) {
+    var ch = cs[i];
+    if (ch === ' ' || ch === '\t' || ch === '\r' || ch === '\n') { i++; continue; }
+    if (ch === '(') { var r = kbPdfLiteral(cs, i); operands.push({ s: r[0] }); i = r[1]; continue; }
+    if (ch === '<' && cs[i + 1] !== '<') { var r2 = kbPdfHex(cs, i); operands.push({ s: r2[0] }); i = r2[1]; continue; }
+    if (ch === '<' && cs[i + 1] === '<') { var depth = 0, j = i; while (j < n - 1) { if (cs[j] === '<' && cs[j + 1] === '<') { depth++; j += 2; continue; } if (cs[j] === '>' && cs[j + 1] === '>') { depth--; j += 2; if (depth === 0) break; continue; } j++; } i = j; continue; }
+    if (ch === '[') {
+      var arr = [], jj = i + 1;
+      while (jj < n && cs[jj] !== ']') {
+        var c2 = cs[jj];
+        if (c2 === ' ' || c2 === '\t' || c2 === '\r' || c2 === '\n') { jj++; continue; }
+        if (c2 === '(') { var rr = kbPdfLiteral(cs, jj); arr.push({ s: rr[0] }); jj = rr[1]; continue; }
+        if (c2 === '<') { var rh = kbPdfHex(cs, jj); arr.push({ s: rh[0] }); jj = rh[1]; continue; }
+        var nm2 = cs.slice(jj).match(/^[-+]?\d*\.?\d+/); if (nm2) { arr.push(parseFloat(nm2[0])); jj += nm2[0].length; continue; }
+        jj++;
+      }
+      operands.push({ arr: arr }); i = jj + 1; continue;
+    }
+    if (ch === '/') { var mn = cs.slice(i).match(/^\/([^\s/<>\[\]()]+)/); operands.push({ name: mn ? mn[1] : '' }); i += mn ? mn[0].length : 1; continue; }
+    var nm = cs.slice(i).match(/^[-+]?\d*\.?\d+/); if (nm) { operands.push(parseFloat(nm[0])); i += nm[0].length; continue; }
+    var op = cs.slice(i).match(/^[A-Za-z'"*]+/);
+    if (op) {
+      var v = op[0];
+      if (v === 'Tf') { for (var o1 = 0; o1 < operands.length; o1++) if (operands[o1] && operands[o1].name !== undefined) cur = fonts[operands[o1].name] || null; }
+      else if (v === 'Tj') { for (var o2 = 0; o2 < operands.length; o2++) if (operands[o2] && operands[o2].s !== undefined) out += kbDecodeStr(operands[o2].s, cur); }
+      else if (v === "'" || v === '"') { out += '\n'; for (var o3 = 0; o3 < operands.length; o3++) if (operands[o3] && operands[o3].s !== undefined) out += kbDecodeStr(operands[o3].s, cur); }
+      else if (v === 'TJ') { for (var o4 = 0; o4 < operands.length; o4++) if (operands[o4] && operands[o4].arr !== undefined) flushTJ(operands[o4].arr); }
+      else if (v === 'Td' || v === 'TD' || v === 'T*') { out += '\n'; }
+      operands = []; i += v.length; continue;
+    }
+    i++;
+  }
+  return out;
+}
+function kbExtractPdf(bytes) {
+  var s = kbLatin1(bytes), map = kbBuildObjMap(s), catalog = null;
+  for (var k in map) { if (map[k].indexOf('/Catalog') >= 0) { catalog = map[k]; break; } }
+  if (!catalog) return Promise.resolve('');
+  var pagesRef = kbFindKey(catalog, '/Pages'), pages = [];
+  function walk(num, inhRes) {
+    var obj = map[num]; if (!obj) return;
+    var d = kbGetDict(obj), res = kbFindKey(d, '/Resources') || inhRes;
+    if (d.indexOf('/Page') >= 0 && d.indexOf('/Pages') < 0) { pages.push({ num: num, res: res }); return; }
+    var kids = kbFindKey(d, '/Kids');
+    if (kids) { var kre = /(\d+)\s+\d+\s+R/g, km; while ((km = kre.exec(kids))) walk(parseInt(km[1], 10), res); }
+  }
+  walk(kbRefNum(pagesRef), null);
+  var full = '';
+  return pages.reduce(function (chain, pg) {
+    return chain.then(function () {
+      var obj = map[pg.num], d = kbGetDict(obj);
+      return kbFontMap(pg.res, map).then(function (fonts) {
+        var contents = kbFindKey(d, '/Contents'), parts = [];
+        if (!contents) return;
+        if (/^\s*\[/.test(contents)) {
+          var cre = /(\d+)\s+\d+\s+R/g, cm, refs = [];
+          while ((cm = cre.exec(contents))) refs.push(parseInt(cm[1], 10));
+          return refs.reduce(function (ch2, rn) { return ch2.then(function () { return kbStreamBytes(map[rn] || '').then(function (sb) { if (sb) parts.push(sb); }); }); }, Promise.resolve())
+            .then(function () { full += kbExtractPageText(parts.join('\n'), fonts) + '\n'; });
+        }
+        return kbStreamBytes(map[kbRefNum(contents)] || '').then(function (sb) { full += kbExtractPageText(sb || '', fonts) + '\n'; });
+      });
+    });
+  }, Promise.resolve()).then(function () { return full; });
+}
+
+/* ---- Datei -> Text ---- */
+function kbExtractFileText(file) {
+  return file.arrayBuffer().then(function (ab) {
+    var bytes = new Uint8Array(ab), name = (file.name || '').toLowerCase();
+    var isPdf = (bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46) || /\.pdf$/.test(name);
+    var isZip = (bytes[0] === 0x50 && bytes[1] === 0x4b);
+    if (isPdf && !isZip) return kbExtractPdf(bytes).then(function (t) { return { text: t, kind: 'pdf' }; });
+    if (isZip) return kbExtractDocx(bytes).then(function (t) { return { text: t, kind: 'docx' }; });
+    return kbExtractPdf(bytes).then(function (t) { return { text: t, kind: 'pdf' }; });
+  });
+}
+
+/* ---- Struktur-Parser (DS/PEI) ---- */
+function kbNorm(t) { return String(t || '').replace(/ /g, ' ').replace(/[ \t]+/g, ' ').replace(/ ?\n ?/g, '\n'); }
+function kbDetectType(t) {
+  if (/Individueller F[öo]rderplan|Zielerfassung und Umsetzung|Anzugehende Themen/i.test(t)) return 'PEI';
+  if (/Empfehlungen des CDSE|Anlass des Berichtes|Diagnostic sp[ée]cialis[ée]|Sozialbericht|Diagnosebogen/i.test(t)) return 'DS';
+  return 'unknown';
+}
+function kbFirstDate(s) { var m = s && s.match(/(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/); if (!m) return null; return { d: +m[1], mo: +m[2], y: +m[3], raw: m[0] }; }
+function kbDateKey(d) { return d ? (d.y * 10000 + d.mo * 100 + d.d) : 0; }
+function kbReportDate(t) {
+  var labeled = [], re = /Datum\s*:?\s*(\d{1,2}[.\/]\d{1,2}[.\/]\d{4})/gi, m;
+  while ((m = re.exec(t))) { var d = kbFirstDate(m[1]); if (d) labeled.push(d); }
+  if (labeled.length) { labeled.sort(function (a, b) { return kbDateKey(b) - kbDateKey(a); }); return labeled[0].raw; }
+  var all = [], re2 = /(\d{1,2}[.\/]\d{1,2}[.\/]\d{4})/g, m2;
+  while ((m2 = re2.exec(t))) { var d2 = kbFirstDate(m2[1]); if (d2 && d2.y >= 2015 && d2.y <= 2035) all.push(d2); }
+  all.sort(function (a, b) { return kbDateKey(b) - kbDateKey(a); });
+  return all[0] ? all[0].raw : '';
+}
+function kbReportDateIso(raw) {
+  var m = String(raw || '').match(/(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/);
+  if (!m) return '';
+  return m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2);
+}
+function kbParseIdentity(t) {
+  var id = { name: '', matricule: '', birthDate: '', schoolClass: '' };
+  var mm = t.match(/\b(\d{13})\b/); if (mm) id.matricule = mm[1];
+  var gb = t.match(/Geburtsdatum[^:\n]*:?\s*\(?[^\d]*(\d{1,2}[.\/]\d{1,2}[.\/]\d{4})/i); if (gb) id.birthDate = gb[1];
+  var b = t.match(/Betrifft\s*:?\s*\(?\s*([A-Za-zÀ-ÿ' .\-]+?)\s*(?:\/|\d{6,}|,|\))/);
+  if (b) id.name = b[1].trim();
+  if (!id.name) { var p = t.match(/Name des Sch[üu]lers\/?\s*(?:der Sch[üu]lerin)?\s*:?\s*\n?\s*([A-Za-zÀ-ÿ' .\-]{3,60})/i); if (p) id.name = p[1].split('\n')[0].trim(); }
+  var sc = t.match(/Schule\/Klasse\s*\n?\s*([^\n]+)/i); if (sc) id.schoolClass = sc[1].trim();
+  return id;
+}
+function kbSliceSections(t, heads) {
+  var hits = [];
+  heads.forEach(function (h) { for (var i = 0; i < h.res.length; i++) { var m = t.match(h.res[i]); if (m) { hits.push({ key: h.key, label: h.label, idx: m.index, end: m.index + m[0].length }); break; } } });
+  hits.sort(function (a, b) { return a.idx - b.idx; });
+  var out = {};
+  for (var i = 0; i < hits.length; i++) { var s = hits[i].end, e = (i + 1 < hits.length) ? hits[i + 1].idx : t.length; out[hits[i].key] = { label: hits[i].label, text: t.slice(s, e).trim() }; }
+  return out;
+}
+var KB_DS_HEADS = [
+  { key: 'anlass', label: 'Anlass des Berichtes', res: [/Anlass des Berichtes\s*:?/i] },
+  { key: 'situation', label: 'Aktuelle Schulsituation', res: [/Aktuelle schulische Situation[^\n]*/i, /Aktuelle Schulsituation[^\n]*/i] },
+  { key: 'sozial', label: 'Sozialbericht', res: [/Sozialbericht\s*:?/i] },
+  { key: 'schule', label: 'Aus Sicht der Schule', res: [/Aus Sicht der Schule\s*:?/i] },
+  { key: 'cdse', label: 'Standpunkt des CDSE', res: [/Standpunkt des CDSE\s*:?/i, /Sichtweise des CDSE\s*:?/i] },
+  { key: 'schueler', label: 'Standpunkt des Schülers', res: [/Standpunkt der Sch[üu]ler(?:in)?\s*:?/i, /(?:Die )?Sichtweise des Jugendlichen\s*:?/i] },
+  { key: 'eltern', label: 'Standpunkt der Eltern', res: [/Standpunkt der Eltern\s*:?/i, /Sichtweise der Eltern\s*:?/i] },
+  { key: 'beduerfnisse', label: 'Spezifische Bedürfnisse', res: [/Spezifische Bed[üu]rfnisse[^\n]*/i] },
+  { key: 'diagnose', label: 'Spezialisierte Diagnose / ELDiB', res: [/Spezialisierte Diagnose\s*:?/i, /Resultate des ELDiB/i] },
+  { key: 'zusammenfassung', label: 'Zusammenfassung & Empfehlungen', res: [/Zusammenfassung\s*\/?\s*Schlussfolgerungen[^\n]*/i, /Zusammenfassung[^\n]*Empfehlung/i] }
+];
+var KB_PEI_HEADS = [
+  { key: 'fortschritte', label: 'Fortschritte', res: [/Fortschritte des Sch[üu]lers[^\n]*/i] },
+  { key: 'themen', label: 'Anzugehende Themen', res: [/Anzugehende Themen\b/i] },
+  { key: 'ziele', label: 'Zielerfassung und Umsetzung', res: [/Zielerfassung und Umsetzung/i] }
+];
+function kbParseGoals(zieleText) {
+  if (!zieleText) return [];
+  var goals = [], re = /\b(V|K|SOZ|KOG)-(\d+)\b\s*([^:\n]*):?/g, m, marks = [];
+  while ((m = re.exec(zieleText))) marks.push({ code: m[1] + '-' + m[2], domain: m[1], idx: m.index, titleStart: m.index + m[0].length, title: (m[3] || '').trim() });
+  for (var i = 0; i < marks.length; i++) {
+    var s = marks[i].titleStart, e = (i + 1 < marks.length) ? marks[i + 1].idx : zieleText.length, block = zieleText.slice(s, e);
+    var zf = block.match(/Zielformulierung\s*:?\s*[„“"']?\s*([\s\S]*?)[”"'„“]?\s*(?:M[öo]gliche Umsetzung|$)/i);
+    var formul = zf ? zf[1].replace(/\s+/g, ' ').replace(/[”"'„“]+$/, '').trim() : '';
+    goals.push({ code: marks[i].code, domain: marks[i].domain, title: marks[i].title.replace(/\s+/g, ' ').trim(), formulation: formul });
+  }
+  return goals;
+}
+function kbParseRecommendations(t) {
+  var out = [], re = /☒\s*([^\n☐☒]{1,200})/g, m;
+  while ((m = re.exec(t))) { var v = m[1].split(/Sehr geehrte|Betrifft|Anlass des/)[0].replace(/\s+/g, ' ').trim(); if (v.length > 110) v = v.slice(0, 110).trim() + '…'; if (v) out.push(v); }
+  return out;
+}
+function kbParseReport(raw) {
+  var t = kbNorm(raw), type = kbDetectType(t), id = kbParseIdentity(t);
+  var res = { type: type, identity: id, reportDate: kbReportDate(t), sections: {}, goals: [], recommendations: [] };
+  if (type === 'PEI') { res.sections = kbSliceSections(t, KB_PEI_HEADS); res.goals = kbParseGoals(res.sections.ziele && res.sections.ziele.text); }
+  else { res.sections = kbSliceSections(t, KB_DS_HEADS); res.recommendations = kbParseRecommendations(t); res.goals = []; }
+  return res;
+}
+
+/* ---- Bericht -> lesbarer Dossier-Eintragstext (ohne Matrikel/Geburtsdatum) ---- */
+function kbReportToEntryText(r) {
+  var L = [], typeLabel = r.type === 'PEI' ? 'Individueller Förderplan (PEI)' : (r.type === 'DS' ? 'Spezialisierte Diagnose (DS)' : 'Bericht');
+  L.push('=== ' + typeLabel + ' ===');
+  if (r.reportDate) L.push('Stand: ' + r.reportDate);
+  if (r.identity && r.identity.schoolClass) L.push('Schule/Klasse: ' + r.identity.schoolClass);
+  L.push('');
+  if (r.recommendations && r.recommendations.length) { L.push('Empfehlung des CDSE: ' + r.recommendations.join('; ')); L.push(''); }
+  var order = r.type === 'PEI'
+    ? [['fortschritte', 'Fortschritte'], ['themen', 'Anzugehende Themen']]
+    : [['anlass', 'Anlass des Berichtes'], ['situation', 'Aktuelle Schulsituation'], ['sozial', 'Sozialbericht'], ['schule', 'Aus Sicht der Schule'], ['cdse', 'Standpunkt des CDSE'], ['schueler', 'Standpunkt des Schülers'], ['eltern', 'Standpunkt der Eltern'], ['beduerfnisse', 'Spezifische Bedürfnisse'], ['diagnose', 'Spezialisierte Diagnose / ELDiB'], ['zusammenfassung', 'Zusammenfassung & Empfehlungen']];
+  order.forEach(function (o) { var sec = r.sections && r.sections[o[0]]; if (sec && sec.text) { L.push('— ' + o[1] + ' —'); L.push(sec.text.trim()); L.push(''); } });
+  if (r.goals && r.goals.length) {
+    L.push('— Förderziele (ELDiB) —');
+    r.goals.forEach(function (g) { L.push('• [' + g.code + '] ' + (g.title || '') + (g.formulation ? ': „' + g.formulation + '"' : '')); });
+    L.push('');
+  }
+  return L.join('\n').trim();
+}
+
+/* ---- Hub-Datenzugriff ---- */
+function kbStudentReports(id) {
+  return Repo.entriesForStudent(id).filter(function (e) { return e.report; }).sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
+}
+window.KB_REPORTS = {
+  forStudent: kbStudentReports,
+  latest: function (id) { return kbStudentReports(id)[0] || null; },
+  currentGoals: function (id) {
+    var reps = kbStudentReports(id);
+    for (var i = 0; i < reps.length; i++) { var rp = reps[i].report; if (rp && rp.goals && rp.goals.length) return { date: reps[i].date, goals: rp.goals, type: rp.type }; }
+    return null;
+  },
+  summary: function (id) {
+    var r = kbStudentReports(id)[0]; if (!r) return null; var rp = r.report || {};
+    return { date: r.date, type: rp.type || '', recommendations: rp.recommendations || [], goalsCount: (rp.goals || []).length, schoolClass: (rp.identity || {}).schoolClass || '', count: kbStudentReports(id).length, entryId: r.id };
+  },
+  importRoute: function (id) { return '#/report-import' + (id ? '?student=' + encodeURIComponent(id) : ''); }
+};
+
+function kbGenAnonLabel() {
+  var used = {}; Repo.listStudents().forEach(function (s) { if (s.anonLabel) used[s.anonLabel] = 1; });
+  var Lt = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (var i = 0; i < Lt.length; i++) { var c = 'Schüler ' + Lt[i]; if (!used[c]) return c; }
+  return 'Schüler ' + (Repo.listStudents().length + 1);
+}
+
+
+/* ============================================================
+   Ansicht: DS/PEI-Bericht importieren
+   ============================================================ */
+function viewReportImport(params, query) {
+  var q = query || {};
+  var students = Repo.listStudents();
+  var st = {
+    phase: 'pick', busy: false, err: '', warnLowText: false,
+    kind: '', rawText: '', report: null, fileName: '',
+    studentId: q.student || '', createNew: false, newName: '',
+    dateIso: '', category: 'Bericht (DS/PEI)', detected: [], extra: ''
+  };
+
+  function backRoute() { return (st.studentId && !st.createNew) ? ('#/student/' + encodeURIComponent(st.studentId)) : '#/dashboard'; }
+
+  function pickHtml() {
+    return '<div class="card export-config">' +
+      '<h3 style="margin-top:0;">1. DS- oder PEI-Bericht wählen</h3>' +
+      '<p class="muted">Word- (<code>.docx</code>) oder PDF-Datei. Die Datei wird <strong>vollständig im Browser</strong> gelesen — nichts wird hochgeladen oder versendet.</p>' +
+      '<input type="file" id="imp-file" accept=".docx,.pdf,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document">' +
+      (st.busy ? '<p class="muted" style="margin-top:10px;">⏳ Datei wird gelesen und ausgewertet …</p>' : '') +
+      (st.err ? '<p style="color:#b3432d;margin-top:10px;"><strong>' + escapeHtml(st.err) + '</strong></p>' : '') +
+    '</div>';
+  }
+
+  function autoMatchStudent() {
+    var nm = ((st.report && st.report.identity && st.report.identity.name) || '').toLowerCase();
+    if (!nm) return '';
+    var first = nm.split(' ')[0];
+    var hit = students.filter(function (s) {
+      var sn = (s.name || '').toLowerCase();
+      return sn && (nm.indexOf(sn) >= 0 || first === sn || sn.indexOf(first) >= 0);
+    })[0];
+    return hit ? hit.id : '';
+  }
+
+  function structurePreviewHtml() {
+    var r = st.report, parts = [];
+    if (r.recommendations && r.recommendations.length) parts.push('<p><strong>Empfehlung des CDSE:</strong> ' + escapeHtml(r.recommendations.join('; ')) + '</p>');
+    var secKeys = Object.keys(r.sections || {});
+    if (secKeys.length) parts.push('<p><strong>Erkannte Abschnitte:</strong> ' + secKeys.map(function (k) { return escapeHtml(r.sections[k].label); }).join(' · ') + '</p>');
+    if (r.goals && r.goals.length) {
+      parts.push('<p style="margin-bottom:2px;"><strong>Förderziele (' + r.goals.length + '):</strong></p><ul style="margin:0;padding-left:18px;">' +
+        r.goals.map(function (g) { return '<li><strong>[' + escapeHtml(g.code) + ']</strong> ' + escapeHtml(g.title) + (g.formulation ? ' — „' + escapeHtml(g.formulation) + '"' : '') + '</li>'; }).join('') + '</ul>');
+    }
+    return parts.join('') || '<p class="muted">Keine strukturierten Felder erkannt — der volle Text wird trotzdem gespeichert.</p>';
+  }
+
+  function reviewHtml() {
+    var r = st.report;
+    var typeLabel = r.type === 'PEI' ? 'PEI — Individueller Förderplan' : (r.type === 'DS' ? 'DS — Spezialisierte Diagnose' : 'Bericht (Typ nicht sicher erkannt)');
+    var studentOpts = students.map(function (s) { return '<option value="' + escapeAttr(s.id) + '"' + (s.id === st.studentId && !st.createNew ? ' selected' : '') + '>' + escapeHtml(s.name) + '</option>'; }).join('');
+    var detRows = st.detected.map(function (d, i) {
+      return '<label class="checkbox-row" style="display:inline-flex;align-items:center;margin:0 12px 6px 0;">' +
+        '<input type="checkbox" data-det="' + i + '" ' + (d.on ? 'checked' : '') + '> ' +
+        '<span style="margin-left:4px;">' + escapeHtml(d.name) + ' <span class="muted">(' + escapeHtml(d.category) + ')</span></span></label>';
+    }).join('');
+    var idn = r.identity || {};
+    return '<div class="card export-config">' +
+      '<h3 style="margin-top:0;">2. Erkannt: ' + escapeHtml(typeLabel) + '</h3>' +
+      (st.warnLowText ? '<div class="warn-banner" style="margin-bottom:10px;">Es wurde nur sehr wenig Text gefunden. Falls dies ein <strong>gescanntes</strong> PDF ist, bitte die <strong>Word-Version</strong> (.docx) verwenden.</div>' : '') +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">' +
+        '<div class="field"><label for="imp-student">Schüler zuordnen</label>' +
+          '<select id="imp-student">' + studentOpts + '<option value="__new__"' + (st.createNew ? ' selected' : '') + '>➕ Neuen Schüler anlegen …</option></select>' +
+          (st.createNew ? '<input type="text" id="imp-newname" style="margin-top:6px;" placeholder="Name des neuen Schülers" value="' + escapeAttr(st.newName || idn.name || '') + '">' : '') +
+        '</div>' +
+        '<div class="field"><label for="imp-date">Datum des Berichts</label><input type="date" id="imp-date" value="' + escapeAttr(st.dateIso) + '"></div>' +
+      '</div>' +
+      '<p class="muted" style="margin:2px 0 12px;">Stammdaten aus dem Bericht (bleiben <strong>nur lokal</strong> im Dossier): ' +
+        escapeHtml(idn.name || '—') + (idn.matricule ? ' · Matrikel ' + escapeHtml(idn.matricule.slice(0, 4)) + '…' : '') + (idn.birthDate ? ' · *' + escapeHtml(idn.birthDate) : '') + (idn.schoolClass ? ' · ' + escapeHtml(idn.schoolClass) : '') + '</p>' +
+      '<details style="margin-bottom:12px;"><summary style="cursor:pointer;font-weight:600;">Erkannte Struktur ansehen</summary><div style="margin-top:8px;">' + structurePreviewHtml() + '</div></details>' +
+      '<hr class="divider">' +
+      '<h4 style="margin:0 0 4px;">Schutz beim KI-Export</h4>' +
+      '<p class="muted" style="margin:0 0 8px;">Matrikelnummer, Geburtsdatum, E-Mail und Telefon werden <strong>immer automatisch entfernt</strong>. Die folgenden Namen/Orte werden beim KI-Export ersetzt und für künftige Berichte gemerkt:</p>' +
+      (detRows || '<p class="muted">Keine Namen automatisch erkannt.</p>') +
+      '<div class="field" style="margin-top:8px;"><label for="imp-extra">Weitere zu schützende Namen <span class="hint">(eine pro Zeile, z. B. Eltern/Geschwister)</span></label>' +
+        '<textarea id="imp-extra" rows="2" placeholder="z. B. Sabrina Scheffen">' + escapeHtml(st.extra) + '</textarea></div>' +
+      '<div class="page-head" style="margin-top:14px;">' +
+        '<button type="button" class="btn" id="imp-cancel">Abbrechen</button>' +
+        '<button type="button" class="btn btn-primary" id="imp-save">📥 Bericht im Dossier speichern</button>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function phaseHtml() { return st.phase === 'review' ? reviewHtml() : pickHtml(); }
+
+  return {
+    navKey: 'students',
+    html: '<div class="page-head no-print"><div><h2>📄 DS/PEI-Bericht importieren</h2><p class="muted">Lädt einen Diagnostik- (DS) oder Förderplan-Bericht (PEI) ein, übernimmt ihn strukturiert ins Dossier und macht ihn für den anonymisierten KI-Export nutzbar.</p></div></div>' +
+      '<div id="imp-wrap">' + phaseHtml() + '</div>',
+    afterRender: function (root) {
+      var wrap = qs('#imp-wrap', root);
+      function rerender() { wrap.innerHTML = phaseHtml(); wire(); }
+      function doSave() {
+        var r = st.report; if (!r) return;
+        var sid = st.studentId;
+        if (st.createNew) {
+          var nm = (st.newName || r.identity.name || '').trim();
+          if (!nm) { toast('Bitte einen Namen für den neuen Schüler eingeben.'); return; }
+          if (!window.KB_ROSTER || !window.KB_ROSTER.add) { toast('Schülerliste nicht verfügbar.'); return; }
+          sid = window.KB_ROSTER.add(nm);
+          try { if (window.KB_ROSTER.update) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() }); } catch (e) {}
+        }
+        if (!sid) { toast('Bitte einen Schüler zuordnen.'); return; }
+        var dateIso = st.dateIso || (new Date().toISOString().slice(0, 10));
+        var body = kbReportToEntryText(r);
+        var tags = [r.type === 'PEI' ? 'PEI' : (r.type === 'DS' ? 'DS' : 'Bericht')];
+        if (r.goals && r.goals.length) tags.push('ELDiB');
+        tags.push('Import');
+        var report = {
+          v: 1, type: r.type, reportDate: r.reportDate, dateIso: dateIso,
+          identity: r.identity, recommendations: r.recommendations || [], goals: r.goals || [],
+          sections: r.sections || {}, sourceName: st.fileName, kind: st.kind, importedAt: nowIso()
+        };
+        var learn = [];
+        st.detected.forEach(function (d) {
+          if (d.on && ['Arzt', 'Mataarbechter', 'Therapeut', 'Elteren', 'Person', 'Schüler'].indexOf(d.category) >= 0) {
+            learn.push({ name: d.name, category: d.category === 'Schüler' ? 'Schüler (extern)' : d.category });
+          }
+        });
+        (st.extra || '').split('\n').map(function (x) { return x.trim(); }).filter(Boolean).forEach(function (x) { learn.push({ name: x, category: 'Person' }); });
+        addLearnedNames(learn);
+        Repo.saveEntry({
+          studentId: sid, date: dateIso, author: 'Import', category: st.category,
+          tags: tags, text: body, report: report, source: { name: st.fileName, kind: st.kind }
+        }).then(function () {
+          toast('✓ Bericht importiert');
+          navigate('#/student/' + encodeURIComponent(sid) + '?hub=uebersicht');
+        }).catch(function (e) { toast('Speichern fehlgeschlagen: ' + ((e && e.message) || e)); });
+      }
+      function wire() {
+        var fileEl = qs('#imp-file', wrap);
+        if (fileEl) fileEl.addEventListener('change', function () {
+          var f = fileEl.files && fileEl.files[0]; if (!f) return;
+          st.busy = true; st.err = ''; st.fileName = f.name || ''; rerender();
+          kbExtractFileText(f).then(function (ext) {
+            st.kind = ext.kind; st.rawText = ext.text || '';
+            st.warnLowText = (st.rawText.replace(/\s/g, '').length < 200);
+            st.report = kbParseReport(st.rawText);
+            st.dateIso = kbReportDateIso(st.report.reportDate) || (new Date().toISOString().slice(0, 10));
+            if (!st.studentId) { var mid = autoMatchStudent(); if (mid) st.studentId = mid; else { st.createNew = true; st.newName = st.report.identity.name || ''; } }
+            var body = kbReportToEntryText(st.report);
+            var detMap = detectNamesInText([body], { excludeNames: st.report.identity.name ? [st.report.identity.name] : [] });
+            st.detected = Object.keys(detMap).map(function (nm) { return { name: nm, category: detMap[nm], on: true }; });
+            st.busy = false; st.phase = 'review'; rerender();
+          }).catch(function (e) {
+            st.busy = false;
+            st.err = 'Datei konnte nicht gelesen werden: ' + ((e && e.message) || e) + (/\.pdf$/i.test(st.fileName) ? ' — bei gescannten PDFs bitte die Word-Version (.docx) nutzen.' : '');
+            rerender();
+          });
+        });
+        var selEl = qs('#imp-student', wrap);
+        if (selEl) selEl.addEventListener('change', function () { st.createNew = (selEl.value === '__new__'); st.studentId = st.createNew ? '' : selEl.value; rerender(); });
+        var nnEl = qs('#imp-newname', wrap); if (nnEl) nnEl.addEventListener('input', function () { st.newName = nnEl.value; });
+        var dEl = qs('#imp-date', wrap); if (dEl) dEl.addEventListener('change', function () { st.dateIso = dEl.value; });
+        var exEl = qs('#imp-extra', wrap); if (exEl) exEl.addEventListener('input', function () { st.extra = exEl.value; });
+        var dets = wrap.querySelectorAll('[data-det]');
+        for (var i = 0; i < dets.length; i++) (function (cb) { cb.addEventListener('change', function () { st.detected[+cb.getAttribute('data-det')].on = cb.checked; }); })(dets[i]);
+        var cEl = qs('#imp-cancel', wrap); if (cEl) cEl.addEventListener('click', function () { navigate(backRoute()); });
+        var sEl = qs('#imp-save', wrap); if (sEl) sEl.addEventListener('click', doSave);
+      }
+      wire();
+    }
+  };
+}
+
 function resolveView(parts, query) {
   if (parts.length === 0 || parts[0] === 'dashboard') return viewDashboard({}, query);
 
@@ -3322,6 +3918,7 @@ function resolveView(parts, query) {
   if (parts[0] === 'themes') return viewThemeAnalysis({}, query);
   if (parts[0] === 'export') return viewPdfExport({}, query);
   if (parts[0] === 'ai-export') return viewAiExport({}, query);
+  if (parts[0] === 'report-import') return viewReportImport({}, query);
   if (parts[0] === 'backup') return viewBackup();
 
   return viewDashboard({}, query);
