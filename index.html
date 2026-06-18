@@ -789,15 +789,35 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 
 /* === Akzent-Vereinheitlichung === */
 
-#dos-root{ --accent:var(--kb-accent); --accent-soft:var(--kb-accent-50); }
-#anw-root{ --primary:var(--kb-accent); --primary-dark:var(--kb-accent-dark); --primary-light:var(--kb-accent-light); --primary-50:var(--kb-accent-50); --primary-100:var(--kb-accent-100); }
+/* ===== Look der eingebetteten Apps an die Hülle (kb-*) angleichen ===== */
+#dos-root{
+  --bg:var(--kb-bg); --surface:var(--kb-surface); --border:var(--kb-border);
+  --text:var(--kb-text); --text-muted:var(--kb-muted);
+  --accent:var(--kb-accent); --accent-soft:var(--kb-accent-50);
+  --radius:11px; --shadow:0 1px 2px rgba(20,25,45,.05);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+#dos-root .card{ border-radius:14px; box-shadow:0 1px 2px rgba(20,25,45,.05); }
+#dos-root .btn{ border-radius:9px; font-weight:700; }
+#dos-root .btn-primary{ box-shadow:0 4px 12px rgba(79,91,213,.22); }
+#dos-root .main{ max-width:none; }
+/* hand-gebaute Hub-Karten brauchen Innenabstand (bare .card hat keinen) */
+#dos-root .kb-mini, #dos-root .kb-tabcard{ padding:15px 16px; }
+#dos-root .card h3, #dos-root .card h4, #dos-root .kb-mini h4{ font-weight:800; letter-spacing:-.01em; }
+/* Réunion-Zielbox: beige -> Akzent-Look (wie Übersicht) */
+#dos-root .goal-box{ background:var(--kb-accent-50); border:1px solid var(--kb-border); border-left:4px solid var(--kb-accent); border-radius:10px; }
+#dos-root .empty-state{ border:1px dashed var(--kb-border); border-radius:12px; background:var(--kb-accent-50); margin:6px 0; }
+#anw-root{
+  --primary:var(--kb-accent); --primary-dark:var(--kb-accent-dark); --primary-light:var(--kb-accent-light); --primary-50:var(--kb-accent-50); --primary-100:var(--kb-accent-100);
+  --bg:var(--kb-bg); --card:var(--kb-surface); --line:var(--kb-border); --text:var(--kb-text); --muted:var(--kb-muted);
+  --radius:14px; --radius-sm:9px;
+}
 #anw-root header{ position:static; background:linear-gradient(120deg,var(--kb-accent),var(--kb-accent-dark)); box-shadow:0 2px 12px rgba(79,91,213,.22); }
 #anw-root header::after{ background:rgba(255,255,255,.2); }
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
 #anw-root #btn-tt,#anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
 #anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
-#dos-root .main{ max-width:none; }
 
 </style>
 </head>
@@ -4921,7 +4941,7 @@ Repo.init()
     reu.forEach(function(r){
       var e=Repo.reunionEntryFor(r.date,sid); var g=(r.goals&&r.goals[sid])||[];
       if(!e&&!g.length){return;}
-      out.push('<div class="card"><div class="muted" style="font-size:.85em;">Réunion '+escapeHtml(formatDate(r.date))+'</div>'+
+      out.push('<div class="card kb-tabcard"><div class="muted" style="font-size:.85em;">Réunion '+escapeHtml(formatDate(r.date))+'</div>'+
         (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
         (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul></div>':'')+'</div>');
     });
@@ -4940,7 +4960,7 @@ Repo.init()
     var lvl=rosterLevel(student.id);
     if(!window.KB_ANW){return '<div class="empty-state">Klassenbuch-Modul nicht geladen.</div>';}
     var tasks=window.KB_ANW.tasksForLevel(lvl);
-    var rows=tasks.map(function(n){var icon=n.type==='pruefung'?'📝':'📒';return '<div class="card"><div class="muted" style="font-size:.85em;">'+icon+' '+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+'</div><div>'+escapeHtml(n.text)+'</div></div>';}).join('');
+    var rows=tasks.map(function(n){var icon=n.type==='pruefung'?'📝':'📒';return '<div class="card kb-tabcard"><div class="muted" style="font-size:.85em;">'+icon+' '+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+'</div><div style="margin-top:4px;">'+escapeHtml(n.text)+'</div></div>';}).join('');
     return '<div class="kb-hub-pad"><p class="muted">Hausaufgaben & Prüfungen aus dem Klassenbuch für Niveau '+escapeHtml(lvl)+'. (Individuell zugewiesene Aufgaben folgen später.)</p>'+(tasks.length?rows:'<div class="empty-state">Keine Aufgaben/Prüfungen hinterlegt.</div>')+'</div>';
   }
   function hubHelfernetz(student){
