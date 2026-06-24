@@ -378,6 +378,37 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-stat-tile .l{font-size:11.5px;color:var(--kb-muted);font-weight:600;margin-top:4px;}
 .kb-subhead{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--kb-text);}
 .kb-subhead.kb-subhead-mt{margin-top:30px;border-top:1px solid var(--kb-border);padding-top:24px;}
+/* Hub-Karten-Inhalte */
+.hub-list{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:13.5px;}
+.hub-list li{display:flex;align-items:flex-start;gap:8px;line-height:1.4;}
+.hub-dot{flex:0 0 auto;width:8px;height:8px;border-radius:50%;margin-top:5px;}
+.hub-count{font-size:11.5px;font-weight:800;color:var(--kb-accent);background:var(--kb-accent-50);padding:1px 8px;border-radius:999px;margin-left:4px;}
+.hub-line{font-size:13.5px;margin:4px 0;line-height:1.45;}
+.hub-clamp{display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px;line-height:1.45;}
+.hub-hero-risk{display:flex;align-items:center;gap:14px;background:var(--kb-danger-50);border:1px solid var(--kb-danger);border-radius:16px;padding:14px 18px;margin:0 0 22px;}
+.hub-hero-risk .hub-hero-ic{font-size:24px;line-height:1;}
+.hub-hero-risk .hub-hero-t{font-weight:800;color:var(--kb-danger-dark);}
+.hub-hero-risk .hub-hero-s{font-size:13px;color:var(--kb-text-soft);margin-top:2px;}
+.hub-hero-risk .btn{margin-left:auto;flex:0 0 auto;}
+/* Screening-Ansicht (kurz & einklappbar) */
+.sv-h{margin:8px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-muted);font-weight:800;}
+.sv-axes{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;}
+.sv-axis{font-size:13px;font-weight:600;padding:5px 12px;border-radius:10px;background:var(--kb-surface-2);border:1px solid var(--kb-border);}
+.sv-axis em{font-style:normal;font-weight:800;font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;margin-left:5px;opacity:.85;}
+.sv-axis-deutlich{background:var(--kb-danger-50);border-color:transparent;color:var(--kb-danger-dark);}
+.sv-axis-mittel{background:var(--kb-warn-50);border-color:transparent;color:#8a5a00;}
+.sv-axis-mild{background:var(--kb-accent-50);border-color:transparent;color:var(--kb-accent-dark);}
+.sv-muster{margin-top:16px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:16px;padding:18px 20px;}
+.sv-muster-name{margin:.1em 0 .5em;font-size:18px;letter-spacing:-.01em;}
+.sv-teaser{font-size:14px;line-height:1.55;color:var(--kb-text-soft);margin:0 0 6px;}
+.sv-acc{border-top:1px solid var(--kb-border);}
+.sv-acc summary{cursor:pointer;padding:11px 0;font-weight:700;font-size:14px;list-style:none;display:flex;align-items:center;gap:8px;color:var(--kb-text);}
+.sv-acc summary::-webkit-details-marker{display:none;}
+.sv-acc summary::before{content:'▸';color:var(--kb-muted);font-size:12px;transition:transform .15s;}
+.sv-acc[open] summary::before{transform:rotate(90deg);}
+.sv-acc .sv-prose{padding:0 0 14px;}
+.sv-do strong{color:var(--kb-accent2-dark);}
+.sv-dont strong{color:var(--kb-danger-dark);}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -456,7 +487,6 @@ var SHELL_BODY_TOP = `
         <div class="kb-navlabel">Unterricht</div>
         <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
         <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
-        <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse &amp; Stundenplan</button>
       </div>
       <div class="kb-navgroup">
         <div class="kb-navlabel">Klinisch</div>
@@ -467,6 +497,7 @@ var SHELL_BODY_TOP = `
         <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
         <button class="kb-link" data-kb-nav="themes"><span class="kb-ic">🏷️</span>Themen-Analyse</button>
         <button class="kb-link" data-kb-nav="orga"><span class="kb-ic">🗒️</span>Organisation</button>
+        <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse &amp; Stundenplan</button>
         <button class="kb-link" data-kb-nav="absenzen-pdf"><span class="kb-ic">📄</span>Absenzen-PDF</button>
         <button class="kb-link" data-kb-nav="export"><span class="kb-ic">📑</span>Dossier-PDF</button>
         <button class="kb-link" data-kb-nav="ai"><span class="kb-ic">🤖</span>KI-Export</button>
@@ -587,52 +618,43 @@ var DOS_OVERRIDES = `
     var impBtn='<button class="btn btn-sm" data-route="#/report-import?student='+encodeURIComponent(sid)+'">📄 DS/PEI importieren</button>';
     var DM={V:{l:'Verhalten',c:'#c0562d'},K:{l:'Kommunikation',c:'#2f6fb0'},SOZ:{l:'Sozialisation',c:'#3a8a5f'},KOG:{l:'Kognition',c:'#7a52b3'}};
 
-    /* ---- ELDiB-Förderziele (mit Methodiken) ---- */
-    var eldibHtml;
+    /* ---- Förderziele (kompakt) ---- */
+    var foerderCard;
     if(cg&&cg.goals&&cg.goals.length){
-      var goalCards=cg.goals.map(function(g){
-        var dm=DM[g.domain]||{l:g.domain,c:'#777'};
-        var meth=(g.methods||[]).map(function(x){return '<span class="kb-method">'+escapeHtml(x)+'</span>';}).join('');
-        return '<div class="kb-goal" style="--gc:'+dm.c+'">'+
-          '<div class="kb-goal-head"><span class="kb-goal-badge">'+escapeHtml(dm.l)+'</span><span class="kb-goal-code">'+escapeHtml(g.code)+'</span>'+(g.title?'<span class="kb-goal-title">'+escapeHtml(g.title)+'</span>':'')+'</div>'+
-          (g.formulation?'<div class="kb-goal-form">„'+escapeHtml(g.formulation)+'“</div>':'')+
-          (meth?'<div class="kb-goal-methods"><span class="kb-method-lbl">Umsetzung</span>'+meth+'</div>':'')+
-        '</div>';
-      }).join('');
-      eldibHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>🎯 ELDiB-Förderziele</h3><span class="kb-sec-sub">Stand '+escapeHtml(formatDate(cg.date))+' · '+cg.goals.length+' Ziele</span></div><div class="kb-goals">'+goalCards+'</div></section>';
+      var gl=cg.goals.slice(0,4).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};return '<li><span class="hub-dot" style="background:'+dm.c+'"></span>'+escapeHtml(g.formulation||g.title||g.code)+'</li>';}).join('');
+      foerderCard='<div class="card kb-mini"><h4>🎯 Förderziele <span class="hub-count">'+cg.goals.length+'</span></h4><ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>4?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-4)+' weitere</div>':'')+'</div>';
     } else {
-      eldibHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>🎯 ELDiB-Förderziele</h3></div><div class="kb-empty-card">Noch keine ELDiB-Ziele hinterlegt — importiere einen PEI, um sie hier zu sehen. <div class="kb-btn-row" style="margin-top:10px;">'+impBtn+'</div></div></section>';
+      foerderCard='<div class="card kb-mini"><h4>🎯 Förderziele</h4><p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
     }
-
-    /* ---- Wochenziele (Annexe Junglinster, aus den Réunionen) ---- */
-    var weeklyHtml;
+    /* ---- Wochenziele (kompakt) ---- */
+    var wochenCard;
     if(weekly.length){
-      weeklyHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>📌 Wochenziele</h3><span class="kb-sec-sub">Annexe Junglinster'+(weeklyDate?' · Réunion '+escapeHtml(formatDate(weeklyDate)):'')+'</span></div><ul class="kb-weekly">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></section>';
+      wochenCard='<div class="card kb-mini"><h4>📌 Wochenziele</h4><ul class="hub-list">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';
     } else {
-      weeklyHtml='<section class="kb-hub-sec"><div class="kb-sec-head"><h3>📌 Wochenziele</h3></div><div class="kb-empty-card">Noch keine Wochenziele — legt sie in der <a href="#/reunion" data-route="#/reunion">Réunion</a> fest.</div></section>';
+      wochenCard='<div class="card kb-mini"><h4>📌 Wochenziele</h4><p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
     }
 
-    /* ---- kompakte Karten unten ---- */
-    var absCard='<div class="card kb-mini"><h4>📉 Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button></div>';
-    var diagCard='<div class="card kb-mini"><h4>🩺 Diagnostik &amp; Förderpläne</h4>'+(rep?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">Neuester Bericht: <strong>'+escapeHtml(rep.type||'—')+'</strong> · '+escapeHtml(formatDate(rep.date))+(rep.count>1?' · '+rep.count+' Berichte':'')+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div style="margin-bottom:6px;font-size:.9em;"><strong>Empfehlung:</strong> '+escapeHtml(rep.recommendations.join('; '))+'</div>':'')+(rep.schoolClass?'<div class="muted" style="font-size:.85em;margin-bottom:8px;">'+escapeHtml(rep.schoolClass)+'</div>':'')+'<div class="kb-btn-row"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier</button>'+impBtn+'</div>':'<p class="muted">Noch kein DS/PEI-Bericht importiert.</p><div class="kb-btn-row">'+impBtn+'</div>')+'</div>';
-    var reuCard='<div class="card kb-mini"><h4>🗣️ Réunion-Update'+(lastReuDate?' · '+escapeHtml(formatDate(lastReuDate)):'')+'</h4>'+(lastReu?'<div class="entry-body">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Réunion-Update.</p>')+'</div>';
-    var lastCard='<div class="card kb-mini"><h4>🗒️ Letzter Dossier-Eintrag</h4>'+(last?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body">'+escapeHtml(String(last.text||'').slice(0,260))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>';
+    /* ---- kompakte Karten ---- */
+    var absCard='<div class="card kb-mini"><h4>📉 Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><div class="kb-btn-row"><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button></div></div>';
+    var diagCard='<div class="card kb-mini"><h4>🩺 Diagnostik</h4>'+(rep?'<div class="muted" style="font-size:.85em;">'+escapeHtml(rep.type||'—')+' · '+escapeHtml(formatDate(rep.date))+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div class="hub-line">'+escapeHtml(rep.recommendations.slice(0,2).join('; '))+'</div>':'')+'<div class="kb-btn-row"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier</button></div>':'<p class="muted">Kein DS/PEI importiert.</p><div class="kb-btn-row">'+impBtn+'</div>')+'</div>';
+    var reuCard='<div class="card kb-mini"><h4>🗣️ Réunion-Update'+(lastReuDate?' <span class="muted" style="font-weight:600;font-size:.78em;">'+escapeHtml(formatDate(lastReuDate))+'</span>':'')+'</h4>'+(lastReu?'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Update.</p>')+'</div>';
+    var lastCard='<div class="card kb-mini"><h4>🗒️ Letzter Eintrag</h4>'+(last?'<div class="muted" style="font-size:.8em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body hub-clamp">'+escapeHtml(String(last.text||'').slice(0,200))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>';
 
     var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
     var screenCard;
     if(scr&&scr.hasData){
       var sTop=scr.achsen&&scr.achsen[0];
-      var sRisk=(scr.risiken&&scr.risiken.length)?'<div class="kb-screen-risk">⚠ Risiko-Hinweis: '+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join(', ')+'</div>':'';
-      var sAx=sTop?('<div style="margin:2px 0;">'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+' <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>'):'';
-      var sMus=scr.topMuster?('<div class="muted" style="font-size:.85em;margin-top:2px;">Submuster: '+escapeHtml(scr.topMuster.name||'?')+'</div>'):'';
-      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+sRisk+sAx+sMus+'<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
+      var sAx=sTop?('<div class="hub-line"><strong>'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+'</strong> <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>'):'';
+      var sMus=scr.topMuster?('<div class="hub-line muted">Submuster: '+escapeHtml(scr.topMuster.name||'?')+'</div>'):'';
+      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+sAx+sMus+'<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
     } else {
-      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch kein Screening erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
+      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch nicht erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
     }
     function tile(v,l,cls){return '<div class="kb-stat-tile"><div class="v'+(cls?(' '+cls):'')+'">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div>';}
     var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn'):tile('erfasst','Screening','ok')):tile('—','Screening');
     var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''))+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele')+tile(weekly.length,'Wochenziele')+'</div>';
-    return stripHtml+eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+absCard+diagCard+reuCard+lastCard+'</div>';
+    var heroRisk=(scr&&scr.hasData&&scr.risiken&&scr.risiken.length)?('<div class="hub-hero-risk"><span class="hub-hero-ic">⚠</span><div class="hub-hero-tx"><div class="hub-hero-t">Screening-Risiko</div><div class="hub-hero-s">'+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join(' · ')+(scr.topMuster?' — '+escapeHtml(scr.topMuster.name):'')+'</div></div><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ansehen</button></div>'):'';
+    return stripHtml+heroRisk+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+foerderCard+wochenCard+absCard+reuCard+lastCard+diagCard+'</div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
@@ -670,31 +692,36 @@ var DOS_OVERRIDES = `
     var r=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
     var has=r&&r.hasData;
     var btn='<button class="btn btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">'+(has?'Screening öffnen / bearbeiten':'Screening durchführen')+'</button>';
-    var hint='<p class="muted" style="font-size:.85em;margin:.2em 0 1em;">Klinisches Screening (Savoir). Die Ergebnisse sind <strong>Beobachtungs-Hypothesen, keine Diagnosen</strong> — Grundlage fürs Gespräch mit Fachpersonen, nicht zur Etikettierung.</p>';
+    var hint='<p class="muted" style="font-size:.85em;margin:.2em 0 1.1em;">Klinisches Screening (Savoir) — <strong>Hypothesen, keine Diagnosen</strong>.</p>';
     if(!has){
       var why=(r&&r.noApi)?'Das Screening-Modul wird noch geladen — bitte kurz warten und erneut öffnen.':('Für '+escapeHtml(student.name)+' wurde noch kein Screening erfasst.');
       return '<div class="kb-hub-pad">'+hint+'<div class="empty-state">'+why+'<div style="margin-top:12px;">'+btn+'</div></div></div>';
     }
+    var when=r.updatedAt?('<span class="muted" style="font-size:.8em;"> · Stand '+escapeHtml(formatDate(String(r.updatedAt).slice(0,10)))+'</span>'):'';
     var riskHtml='';
     if(r.risiken&&r.risiken.length){
       var chips=r.risiken.map(function(x){return '<span class="sv-risk">'+escapeHtml((x.risiko&&x.risiko.name)||'?')+' · '+escapeHtml(x.staerke)+'</span>';}).join('');
-      riskHtml='<div class="sv-riskbox"><strong>⚠ Risiko-Hinweise:</strong> '+chips+'<div class="muted" style="font-size:.8em;margin-top:6px;">Bei akuter Gefährdung den Notfall-/Fachweg einschalten (siehe Helfernetz).</div></div>';
+      riskHtml='<div class="sv-riskbox"><strong>⚠ Risiko-Hinweise:</strong> '+chips+'<div class="muted" style="font-size:.8em;margin-top:6px;">Bei akuter Gefährdung den Fachweg einschalten (siehe Umfeld → Helfernetz).</div></div>';
     }
-    var axHtml=r.achsen.length?('<table class="kb-table" style="margin-top:6px;"><thead><tr><th>Verdachtsachse</th><th>Ausprägung</th></tr></thead><tbody>'+r.achsen.map(function(a){return '<tr><td>'+escapeHtml((a.achse&&a.achse.name)||'?')+'</td><td><span class="sv-staerke sv-'+escapeHtml(a.staerke)+'">'+escapeHtml(a.staerke)+'</span></td></tr>';}).join('')+'</tbody></table>'):'<p class="muted">Keine Verdachtsachse über der Schwelle.</p>';
+    var axHtml=r.achsen.length?('<div class="sv-axes">'+r.achsen.map(function(a){return '<span class="sv-axis sv-axis-'+escapeHtml(a.staerke)+'">'+escapeHtml((a.achse&&a.achse.name)||'?')+' <em>'+escapeHtml(a.staerke)+'</em></span>';}).join('')+'</div>'):'<p class="muted">Keine Verdachtsachse über der Schwelle.</p>';
     var subHtml;
     if(r.topMuster){
       var b=r.topMuster.bloecke||{};
-      var appParts=[b.ansatzHaupt||'',b.ansatzTust?('<p><strong>Konkret tun:</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p><strong>Vermeiden:</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
-      var approachHtml=appParts?('<details style="margin-top:8px;" open><summary><strong>Umgang mit diesem Profil</strong></summary><div class="sv-prose">'+appParts+'</div></details>'):'';
-      var stepsHtml='';
-      if(b.phasen&&b.phasen[0]){stepsHtml='<details style="margin-top:6px;"><summary><strong>Nächste Schritte</strong></summary><div class="sv-prose"><p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')+'</div></details>';}
-      var schoolHtml=b.schuleAnpassungen?('<details style="margin-top:6px;"><summary><strong>Schulanpassungen</strong></summary><div class="sv-prose">'+b.schuleAnpassungen+'</div></details>'):'';
-      subHtml='<div class="card" style="margin-top:14px;"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 style="margin:.2em 0 .5em;">'+escapeHtml(r.topMuster.name||'?')+'</h3><div class="sv-prose">'+(b.profil||'')+'</div>'+approachHtml+stepsHtml+schoolHtml+'<p class="muted" style="font-size:.8em;margin-top:10px;">Vollständiger Plan (alle Phasen, Gegenübertragung, Krisenampel) im <strong>Screening</strong> öffnen.</p></div>';
+      function sec(title,html){ if(!html) return ''; return '<details class="sv-acc"><summary>'+title+'</summary><div class="sv-prose">'+html+'</div></details>'; }
+      var profilText=String(b.profil||'').replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim();
+      var teaser=profilText?('<p class="sv-teaser">'+escapeHtml(profilText.slice(0,210))+(profilText.length>210?'…':'')+'</p>'):'';
+      var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
+      var phase0=(b.phasen&&b.phasen[0])?('<p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')):'';
+      subHtml='<div class="sv-muster"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 class="sv-muster-name">'+escapeHtml(r.topMuster.name||'?')+'</h3>'+teaser+
+        sec('Worum es geht (ausführlich)',b.profil)+
+        sec('Umgang mit diesem Profil',umgang)+
+        sec('Nächste Schritte',phase0)+
+        sec('Schulanpassungen',b.schuleAnpassungen)+
+        '<p class="muted" style="font-size:.8em;margin-top:12px;">Tipp: Abschnitte aufklappen für Details. Vollständiger Plan im <strong>Screening</strong> (Button oben).</p></div>';
     } else {
-      subHtml='<div class="kb-empty-card" style="margin-top:14px;">Noch kein Submuster bestimmt. Öffne das Screening und vertiefe die Top-Achse (Krankheitsbild / „Vertiefte Diagnostik"), um das Submuster zu erhalten.</div>';
+      subHtml='<div class="kb-empty-card" style="margin-top:14px;">Noch kein Submuster bestimmt. Öffne das Screening und vertiefe die Top-Achse, um es zu erhalten.</div>';
     }
-    var when=r.updatedAt?('<span class="muted" style="font-size:.8em;"> · Stand '+escapeHtml(formatDate(String(r.updatedAt).slice(0,10)))+'</span>'):'';
-    return '<div class="kb-hub-pad">'+hint+riskHtml+'<div class="kb-btn-row" style="margin-bottom:12px;">'+btn+when+'</div><h4 style="margin:6px 0;">Verdachtsachsen</h4>'+axHtml+subHtml+'</div>';
+    return '<div class="kb-hub-pad kb-hub-screening">'+hint+riskHtml+'<div class="kb-btn-row" style="margin-bottom:16px;">'+btn+when+'</div><h4 class="sv-h">Verdachtsachsen</h4>'+axHtml+subHtml+'</div>';
   }
 
   if(typeof viewStudentDetail!=='undefined'){
