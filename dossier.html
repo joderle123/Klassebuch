@@ -1783,11 +1783,12 @@ function viewStudentDetail(params) {
       '</div>' +
     '</div>' +
 
+    '<details class="dossier-fold"><summary>👥 Beteiligte Stellen, Behandler &amp; laufende Themen</summary>' +
     '<div class="detail-head">' +
       '<div class="info-block"><h4>Aktive externe Stellen</h4>' + (institutions.length ? '<div class="chip-row">' + institutions.map(function (i) { return '<span class="chip">' + escapeHtml(i) + '</span>'; }).join('') + '</div>' : '<p class="muted">Keine erkannt</p>') + '</div>' +
       '<div class="info-block"><h4>Beteiligte Behandler / Mitarbeiter</h4>' + (persons.length ? '<div class="chip-row">' + persons.map(function (i) { return '<span class="chip">' + escapeHtml(i) + '</span>'; }).join('') + '</div>' : '<p class="muted">Keine erkannt</p>') + '</div>' +
       '<div class="info-block"><h4>Laufende Themen</h4>' + (themes.length ? '<div class="chip-row">' + themes.map(function (i) { return '<span class="chip">' + escapeHtml(i) + '</span>'; }).join('') + '</div>' : '<p class="muted">Keine erkannt</p>') + '</div>' +
-    '</div>' +
+    '</div></details>' +
 
     '<details class="dossier-fold">' +
       '<summary>📊 Analyse &amp; Verlauf <span class="muted" style="font-weight:600;font-size:.85em;">— Themen-Erkennung und Bewertungs-Charts (aufklappen)</span></summary>' +
@@ -1797,8 +1798,9 @@ function viewStudentDetail(params) {
       chartsHtml() +
     '</details>' +
 
-    '<h3 class="section-title">Thematische Bündelung</h3>' +
+    '<details class="dossier-fold"><summary>🔍 Filtern nach Kategorien &amp; Themen</summary>' +
     '<div id="filter-bar-wrap">' + filterBarHtml() + '</div>' +
+    '</details>' +
 
     '<h3 class="section-title">Zeitleiste (' + allEntries.length + ' Einträge, chronologisch)</h3>' +
     '<div id="timeline-wrap">' + timelineHtml() + '</div>';
