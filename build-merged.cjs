@@ -524,6 +524,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .gd-result-badge{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-accent2-dark);background:var(--kb-accent2-50);padding:4px 12px;border-radius:999px;}
 .gd-result-name{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:10px 0 2px;color:var(--kb-text);line-height:1.2;}
 .gd-result-axis{font-size:13px;color:var(--kb-muted);}
+.gd-acute{background:var(--kb-danger-50);border:1.5px solid var(--kb-danger);border-radius:14px;padding:14px 16px;margin:0 0 16px;}
+.gd-acute.is-krit{background:var(--kb-danger);color:#fff;border-color:var(--kb-danger-dark);}
+.gd-acute-h{font-weight:900;font-size:15px;color:var(--kb-danger-dark);margin:0 0 6px;}
+.gd-acute.is-krit .gd-acute-h{color:#fff;}
+.gd-acute-list{margin:0 0 8px;padding-left:20px;font-size:13.5px;font-weight:600;}
+.gd-acute-do{font-size:13px;line-height:1.5;}
+.gd-acute:not(.is-krit) .gd-acute-do{color:var(--kb-danger-dark);}
+.gd-caveat{font-size:12.5px;line-height:1.5;color:var(--kb-text-soft);background:var(--kb-warn-50);border-radius:10px;padding:10px 13px;margin:14px 0 0;}
+.gd-altbox{margin-top:16px;border:1px dashed var(--kb-accent-200);border-radius:12px;padding:13px 15px;background:var(--kb-accent-50);}
+.gd-altbox-h{font-weight:800;font-size:13px;color:var(--kb-accent-dark);margin:0 0 4px;}
+.gd-altbox p{font-size:13px;color:var(--kb-text-soft);margin:0 0 10px;line-height:1.5;}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -765,7 +776,8 @@ var DOS_OVERRIDES = `
     function mh(ic,t,c){return '<h4><span class="mi mi-'+(c||'a')+'">'+ic+'</span><span class="mt">'+t+'</span></h4>';}
     function tile(v,l,cls,ic){return '<div class="kb-stat-tile'+(cls?(' kt-'+cls):'')+'"><div class="kt-ic">'+(ic||'')+'</div><div class="kt-b"><div class="v">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div></div>';}
     var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
-    var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn','🧠'):tile('erfasst','Screening','ok','🧠')):tile('—','Screening','','🧠');
+    var scrAcute=scr&&scr.acute&&scr.acute.length;
+    var scrTile=scrAcute?tile('Krise','Screening','warn','🚨'):((scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn','🧠'):tile('erfasst','Screening','ok','🧠')):tile('—','Screening','','🧠'));
     var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''),'📉')+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele','','🎯')+tile(weekly.length,'Wochenziele','','📌')+'</div>';
 
     /* ---- Schüler ohne Daten: klare Erste-Schritte statt leerer Karten ---- */
@@ -780,10 +792,11 @@ var DOS_OVERRIDES = `
       var risk=scr.risiken&&scr.risiken.length;
       var sTop=scr.achsen&&scr.achsen[0];
       var body='';
+      if(scrAcute){body+='<div class="hub-line"><span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Akute Krise — Sicherheit zuerst</span></div>';}
       if(risk){body+='<div class="hub-line"><span class="sv-risk">⚠ '+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join('</span> <span class="sv-risk">')+'</span></div>';}
       if(sTop){body+='<div class="hub-line"><strong>'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+'</strong> <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>';}
       if(scr.topMuster){body+='<div class="hub-line muted">Submuster: <strong style="color:var(--kb-text)">'+escapeHtml(scr.topMuster.name||'?')+'</strong></div>';}
-      scrPanel='<div class="scr-panel'+(risk?' is-risk':'')+'"><div class="scr-panel-h"><span class="mi mi-'+(risk?'r':'a')+'">🧠</span><span class="scr-panel-t">Screening</span></div>'+body+'<div class="kb-btn-row" style="margin-top:12px;"><button class="btn btn-sm btn-primary" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
+      scrPanel='<div class="scr-panel'+((risk||scrAcute)?' is-risk':'')+'"><div class="scr-panel-h"><span class="mi mi-'+((risk||scrAcute)?'r':'a')+'">🧠</span><span class="scr-panel-t">Screening</span></div>'+body+'<div class="kb-btn-row" style="margin-top:12px;"><button class="btn btn-sm btn-primary" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
     } else {
       scrPanel='<div class="scr-panel"><div class="scr-panel-h"><span class="mi mi-a">🧠</span><span class="scr-panel-t">Screening</span></div><p class="muted">'+(scr&&scr.noApi?'Modul lädt …':'Noch kein Screening — erfasse Beobachtungen, um Verdachtsachsen & Submuster zu erhalten.')+'</p><div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
     }
@@ -1492,10 +1505,22 @@ window.KB_SCREENING=(function(){
     if(a&&a.setScreening){try{a.setScreening(get(sid));}catch(e){}}
   }
   function plain(html){return String(html==null?'':html).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
+  /* Akut-Risiko (Sicherheits-Wrapper): bestimmte K16-Items lösen — UNABHÄNGIG
+     vom Score — sofort einen Krisen-Alarm aus. Das verändert das Savoir-Scoring
+     NICHT, sondern legt eine Sicherheitsschicht darüber. Ein konkreter Plan zählt
+     schwerer als vage Gedanken (im reinen Score sind beide gleich). */
+  var ACUTE_ITEMS={
+    '16.2':{sev:'kritisch',label:'Konkreter Suizidplan / Vorbereitungshandlungen'},
+    '16.1':{sev:'akut',label:'Suizidale Gedanken berichtet'},
+    '16.3':{sev:'akut',label:'Aktive Selbstverletzung'}
+  };
+  var RARE_AXES={A13:'Psychose-Erstmanifestation',A04:'Bipolare Spektrum-Störung'};
+  var CRISIS_LINE='Sofort Fachweg einschalten: KJP-Notdienst, SOS Détresse 454545, im Notfall 112. Schüler/in nicht allein lassen.';
+  function acuteFlags(symptome){var out=[];(symptome||[]).forEach(function(id){if(ACUTE_ITEMS[id])out.push({id:id,sev:ACUTE_ITEMS[id].sev,label:ACUTE_ITEMS[id].label});});out.sort(function(a,b){return (a.sev==='kritisch'?-1:0)-(b.sev==='kritisch'?-1:0);});return out;}
   function result(sid){
     var a=api(); var d=get(sid);
     if(!a||!a.scoreVerdachtsachsen)return {hasData:false,noApi:true};
-    if(!d.symptome||!d.symptome.length)return {hasData:false};
+    if(!d.symptome||!d.symptome.length)return {hasData:false,acute:acuteFlags(d.symptome)};
     var res; try{res=a.scoreVerdachtsachsen(d.symptome.slice());}catch(e){return {hasData:false};}
     var achsen=((res&&res.achsenSortiert)||[]).filter(function(x){return x&&x.staerke;});
     var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
@@ -1504,7 +1529,7 @@ window.KB_SCREENING=(function(){
       var ac=achsen[i].achse||{}; var tk=ac.topicKey; if(!tk||!d.plans[tk])continue;
       if(a.computeSymptomScores){try{var ms=a.computeSymptomScores(d.plans[tk],tk);if(ms&&ms.length&&ms[0].muster){topMuster=ms[0].muster;topTopicKey=tk;topAchseName=ac.name;}}catch(e){}}
     }
-    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,updatedAt:d.updatedAt};
+    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,acute:acuteFlags(d.symptome),globalCount:(d.symptome||[]).length,updatedAt:d.updatedAt};
   }
   function symTextMap(){
     var m={}; try{var a=api(); var pool=a&&a.SAVOIR_GLOBAL&&a.SAVOIR_GLOBAL.symptomPool; (pool&&pool.symptome||[]).forEach(function(s){m[s.id]=s.text;});}catch(e){} return m;
@@ -1512,6 +1537,13 @@ window.KB_SCREENING=(function(){
   function detail(sid){
     var a=api(); var r=result(sid); if(!r.hasData)return null;
     var d=get(sid); var L=[]; var sm=symTextMap();
+    var acute=acuteFlags(d.symptome);
+    if(acute.length){
+      L.push('⚠⚠ AKUTE KRISE — SICHERHEIT HAT VORRANG ⚠⚠');
+      acute.forEach(function(x){L.push('  - '+x.label+' ['+x.sev+']');});
+      L.push('  '+CRISIS_LINE);
+      L.push('');
+    }
     L.push('A) Erfasste Beobachtungen im Screening (die Antworten):');
     if(d.symptome&&d.symptome.length){d.symptome.forEach(function(id){L.push('  - '+(sm[id]||id));});}else{L.push('  - (keine globalen Symptome markiert)');}
     if(r.topTopicKey&&a&&a.symptomDiagnoseFor){
@@ -1542,6 +1574,12 @@ window.KB_SCREENING=(function(){
       var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
       if(krise)L.push('  Krisen-/Risikohinweis: '+plain(krise));
     }
+    /* Ehrliche methodische Einordnung (Wrapper, ändert das Scoring nicht) */
+    var rare=(r.achsen||[]).filter(function(x){return x.achse&&RARE_AXES[x.achse.id];}).map(function(x){return x.achse.name;});
+    L.push('');
+    L.push('Methodischer Hinweis: rechnerische Verdachts-/Triage-Hilfe (KI-Programm Savoir), KEINE Diagnose. Es prüft KEINE Dauer-, Verlaufs- oder Beeinträchtigungs-Kriterien und gewichtet keine Basisraten; das Ergebnis ist eine Beobachtungs-Schwerpunkt-Hypothese, die einen Fachblick verdient. Fachliche Abklärung (Mehr-Informanten, Anamnese, Goldstandards) bleibt erforderlich.');
+    if(rare.length)L.push('Basisraten-Vorsicht: '+rare.join(', ')+' sind selten — wenige unspezifische Zeichen genügen hier rechnerisch für einen Verdacht; mit besonderer Zurückhaltung lesen.');
+    if((d.symptome||[]).length<3)L.push('Schwache Datenbasis: beruht auf wenigen Beobachtungen ('+(d.symptome||[]).length+') — als vorläufig behandeln.');
     return {text:L.join('\\n'), updatedAt:r.updatedAt};
   }
   return {
@@ -1564,6 +1602,7 @@ window.KB_SCREENING=(function(){
     },
     capture:capture,
     openStudent:openStudent,
+    acuteFlags:function(sid){return acuteFlags((get(sid).symptome)||[]);},
     result:result,
     detail:detail,
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''});}return out;},
@@ -1622,6 +1661,19 @@ window.KB_GUIDE=(function(){
     if(hasSym){st.stage='verdacht';return st;}
     return st;
   }
+
+  /* ---------- Sicherheits-/Klarheits-Wrapper (ändern das Scoring nicht) ---------- */
+  var RARE={A13:1,A04:1};
+  function acuteBanner(){
+    var fl=(window.KB_SCREENING&&window.KB_SCREENING.acuteFlags)?window.KB_SCREENING.acuteFlags(ST.sid):[];
+    if(!fl.length)return '';
+    var krit=fl.some(function(x){return x.sev==='kritisch';});
+    return '<div class="gd-acute'+(krit?' is-krit':'')+'"><div class="gd-acute-h">🚨 Akute Krise — Sicherheit hat Vorrang</div>'+
+      '<ul class="gd-acute-list">'+fl.map(function(x){return '<li>'+esc(x.label)+(x.sev==='kritisch'?' <strong>(kritisch)</strong>':'')+'</li>';}).join('')+'</ul>'+
+      '<div class="gd-acute-do">Sofort Fachweg: <strong>KJP-Notdienst</strong> · <strong>SOS Détresse 454545</strong> · im Notfall <strong>112</strong>. Schüler/in nicht allein lassen.</div></div>';
+  }
+  function axisEvidence(symptome,axisId){var g=SG();if(!g)return 0;var map=g.symptomMapping||{};var n=0;(symptome||[]).forEach(function(id){if(map[id]&&map[id][axisId])n++;});return n;}
+  function rankedAxes(){var a=api();var d=read();var res=a.scoreVerdachtsachsen((d.symptome||[]).slice());return (res&&res.achsenSortiert)||[];}
 
   /* ---------- Phasen-Stepper ---------- */
   function phaseBar(){
@@ -1692,11 +1744,10 @@ window.KB_GUIDE=(function(){
     if(risiken.length){
       h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — bei akuter Gefährdung den Fachweg einschalten (Helfernetz / KJP-Notdienst, 112).</div>';
     }
-    h+='<div class="gd-card"><p class="gd-kicker">Phase 2 · Verdacht</p>';
+    h+='<div class="gd-card"><p class="gd-kicker">Phase 2 · Beobachtungs-Schwerpunkte</p>';
     if(achsen.length){
-      var deutlich=achsen.filter(function(x){return x.staerke==='deutlich';});
-      h+='<h3 class="gd-q">'+(deutlich.length?'Das verdichtet sich:':'Diese Spur(en) zeichnen sich ab:')+'</h3>'+
-         '<p class="gd-sub">Wähle die Achse, die du jetzt vertiefst — dann grenzen ein paar gezielte Fragen das konkrete Submuster ein.</p>';
+      h+='<h3 class="gd-q">Diese Schwerpunkte verdienen einen Fachblick</h3>'+
+         '<p class="gd-sub">Reihung nach rechnerischer Symptomdichte — <strong>kein Diagnose-Ranking</strong>. Wähle einen Schwerpunkt zum Vertiefen; die Stärke-Marke sagt nur, wie dicht Beobachtungen zusammenkamen.</p>';
       var strong=achsen.filter(function(x){return x.staerke!=='mild';});
       var mild=achsen.filter(function(x){return x.staerke==='mild';});
       var list=strong.length?strong:achsen;
@@ -1704,6 +1755,11 @@ window.KB_GUIDE=(function(){
       if(strong.length&&mild.length){
         h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+')</summary><div class="sv-prose">'+mild.map(function(x,i){return axisRow(x,strong.length+i+1);}).join('')+'</div></details>';
       }
+      var rareShown=achsen.filter(function(x){return x.achse&&RARE[x.achse.id];}).map(function(x){return x.achse.name||'';});
+      h+='<div class="gd-caveat">Das Programm prüft <strong>keine</strong> Dauer, keinen Verlauf und keine Beeinträchtigung — das gehört in die fachliche Abklärung.';
+      if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten — wenige unspezifische Zeichen genügen hier rechnerisch.';
+      if((d.symptome||[]).length<3)h+='<br>⚖ Schwache Datenbasis: beruht auf nur '+(d.symptome||[]).length+' Beobachtung(en).';
+      h+='</div>';
     } else {
       var scores=(res&&res.achsenScores)||{};var g=SG();
       var raw=g.achsen.map(function(ac){return {achse:ac,score:scores[ac.id]||0};}).filter(function(x){return x.score>0;}).sort(function(a2,b2){return b2.score-a2.score;}).slice(0,3);
@@ -1784,7 +1840,19 @@ window.KB_GUIDE=(function(){
       h+='<div class="gd-result-head"><span class="gd-result-badge">'+esc((ax&&ax.name)||ST.axisName||'Achse')+'</span><div class="gd-result-name">Noch kein eindeutiges Submuster</div></div>'+
          '<p class="gd-sub" style="margin-top:14px;">Ergänze noch ein paar vertiefende Merkmale, dann lässt sich das Submuster bestimmen.</p>';
     }
-    h+='<p class="muted" style="font-size:12px;margin-top:16px;line-height:1.5;">Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Dieses Ergebnis erscheint im Schüler-Hub und im KI-Export des Dossiers.</p>';
+    /* Mindest-Evidenz- & Basisraten-Hinweis */
+    var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
+    if(evN<=2||(d.symptome||[]).length<3){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> dieser Schwerpunkt stützt sich auf nur '+evN+' passende Beobachtung(en) — als vorläufige Hypothese behandeln.</div>';}
+    if(ax&&RARE[ax.id]){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — wenige unspezifische Zeichen genügen hier rechnerisch. Mit besonderer Zurückhaltung lesen, früh fachlich abklären.</div>';}
+    /* Anti-Tunnelblick: Gegenprobe mit der zweitstärksten Achse */
+    var ranked=rankedAxes(),second=null;
+    for(var si=0;si<ranked.length;si++){var rac=ranked[si].achse||{};if(rac.topicKey&&rac.topicKey!==ST.axisTopicKey){second=ranked[si];break;}}
+    if(second&&second.achse){
+      h+='<div class="gd-altbox"><div class="gd-altbox-h">🔀 Gegenprobe — nicht im Tunnel bleiben</div>'+
+         '<p>Zweitstärkste Spur: <strong>'+esc(second.achse.name||'?')+'</strong>'+(second.staerke?(' ('+esc(second.staerke)+')'):'')+'. Differential prüfen, bevor du dich festlegst.</p>'+
+         '<button class="btn btn-sm" data-g="deepen-second" data-topic="'+esc(second.achse.topicKey||'')+'" data-name="'+esc(second.achse.name||'')+'">'+esc(second.achse.name||'')+' vertiefen</button></div>';
+    }
+    h+='<p class="muted" style="font-size:12px;margin-top:16px;line-height:1.5;">Beobachtungs-Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Dauer, Verlauf und Beeinträchtigung sind nicht geprüft und gehören in die fachliche Abklärung. Erscheint so im Schüler-Hub und im KI-Export des Dossiers.</p>';
     h+='<div class="gd-nav"><button class="gd-back" data-g="ergebnis-back">‹ Merkmale anpassen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="goto-verdacht">Andere Achse</button> <button class="btn btn-sm" data-g="restart">Neu starten</button></div>';
     return h+'</div>';
   }
@@ -1796,11 +1864,12 @@ window.KB_GUIDE=(function(){
     if(!api()||!SG()){host.innerHTML=loading();if(!ST||!ST._retry){if(ST)ST._retry=1;setTimeout(function(){if(host)paint();},450);}return;}
     var h='';
     try{
-      if(ST.stage==='breit')h=renderBreit();
-      else if(ST.stage==='verdacht')h=renderVerdacht();
-      else if(ST.stage==='tiefe')h=renderTiefe();
-      else if(ST.stage==='ergebnis')h=renderErgebnis();
-      else h=renderBreit();
+      h=acuteBanner();
+      if(ST.stage==='breit')h+=renderBreit();
+      else if(ST.stage==='verdacht')h+=renderVerdacht();
+      else if(ST.stage==='tiefe')h+=renderTiefe();
+      else if(ST.stage==='ergebnis')h+=renderErgebnis();
+      else h+=renderBreit();
     }catch(e){h='<div class="gd-card"><p class="gd-sub">Fehler im Trichter: '+esc((e&&e.message)||String(e))+'</p></div>';}
     host.innerHTML=h;
   }
@@ -1819,7 +1888,7 @@ window.KB_GUIDE=(function(){
       if(ST.stage==='verdacht'){ST.stage='breit';ST.breitSub='drill';var c2=drillCats();ST.catIdx=Math.max(0,c2.length-1);paint();return;}
       return;
     }
-    if(g==='axis'){var tk=el.getAttribute('data-topic');if(!tk)return;ST.axisTopicKey=tk;ST.axisName=el.getAttribute('data-name')||tk;ST.tiefeSteps=buildTiefe(tk);ST.tiefeIdx=0;d=read();ensurePlan(tk,d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'ergebnis';paint();return;}
+    if(g==='axis'||g==='deepen-second'){var tk=el.getAttribute('data-topic');if(!tk)return;ST.axisTopicKey=tk;ST.axisName=el.getAttribute('data-name')||tk;ST.tiefeSteps=buildTiefe(tk);ST.tiefeIdx=0;d=read();ensurePlan(tk,d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'ergebnis';paint();return;}
     if(g==='opt'){var fid=el.getAttribute('data-fid'),val=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);if(ps.kontext[fid]===val)delete ps.kontext[fid];else ps.kontext[fid]=val;write(d);paint();return;}
     if(g==='tsym'){var tid=el.getAttribute('data-id');d=read();ps=ensurePlan(ST.axisTopicKey,d);var k2=ps.symptome.indexOf(tid);if(k2>=0)ps.symptome.splice(k2,1);else ps.symptome.push(tid);write(d);paint();return;}
     if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{ST.stage='ergebnis';}paint();return;}
