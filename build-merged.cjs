@@ -458,6 +458,72 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-acc .sv-prose{padding:0 0 14px;}
 .sv-do strong{color:var(--kb-accent2-dark);}
 .sv-dont strong{color:var(--kb-danger-dark);}
+/* ===== Geführter klinischer Trichter (KB_GUIDE) ===== */
+.kb-guide-disc{font-size:13px;line-height:1.55;color:var(--kb-text-soft);background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:12px;padding:11px 14px;margin:0 0 16px;}
+.kb-guide-host{margin:0;}
+.kb-guide-footer{margin-top:16px;text-align:center;}
+.kb-guide-expert{color:var(--kb-muted);}
+.gd-steps{display:flex;align-items:center;gap:4px;margin:0 0 18px;flex-wrap:wrap;}
+.gd-step{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--kb-muted-2);}
+.gd-step .gd-num{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--kb-surface-2);border:1px solid var(--kb-border);color:var(--kb-muted);}
+.gd-step.is-on{color:var(--kb-accent);}
+.gd-step.is-on .gd-num{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
+.gd-step.is-done{color:var(--kb-accent2-dark);}
+.gd-step.is-done .gd-num{background:var(--kb-accent2-50);border-color:transparent;color:var(--kb-accent2-dark);}
+.gd-sep{flex:0 0 12px;height:2px;border-radius:2px;background:var(--kb-border);}
+.gd-card{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:18px;padding:22px 24px;box-shadow:var(--kb-shadow-sm);}
+.gd-kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--kb-accent);margin:0 0 6px;}
+.gd-q{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:0 0 4px;color:var(--kb-text);line-height:1.25;}
+.gd-sub{font-size:13.5px;color:var(--kb-muted);margin:0 0 16px;line-height:1.5;}
+.gd-progress{height:6px;border-radius:6px;background:var(--kb-surface-2);overflow:hidden;margin:0 0 18px;}
+.gd-progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--kb-accent),var(--kb-accent-light));border-radius:6px;transition:width .3s ease;}
+.gd-chips{display:flex;flex-wrap:wrap;gap:9px;}
+.gd-chip{font:inherit;font-size:13.5px;font-weight:600;text-align:left;padding:10px 14px;border-radius:12px;background:var(--kb-surface);border:1.5px solid var(--kb-border);color:var(--kb-text);cursor:pointer;transition:border-color .12s ease,background .12s ease;line-height:1.35;}
+.gd-chip:hover{border-color:var(--kb-accent-light);background:var(--kb-accent-50);}
+.gd-chip.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);color:var(--kb-accent-dark);}
+.gd-chip.is-sel::before{content:'✓ ';font-weight:900;}
+.gd-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:10px;}
+.gd-cat{font:inherit;text-align:left;padding:13px 15px;border-radius:14px;background:var(--kb-surface);border:1.5px solid var(--kb-border);cursor:pointer;transition:border-color .12s ease,background .12s ease;}
+.gd-cat:hover{border-color:var(--kb-accent-light);}
+.gd-cat.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);}
+.gd-cat.is-lock{border-color:transparent;background:var(--kb-danger-50);cursor:default;}
+.gd-cat-t{font-weight:800;font-size:13.5px;color:var(--kb-text);display:flex;align-items:center;gap:6px;}
+.gd-cat-t .gd-cat-n{margin-left:auto;font-size:11px;font-weight:800;color:#fff;background:var(--kb-accent);border-radius:999px;padding:1px 7px;}
+.gd-cat-f{font-size:11.5px;color:var(--kb-muted);margin-top:3px;line-height:1.4;}
+.gd-opts{display:flex;flex-direction:column;gap:8px;}
+.gd-opt{font:inherit;font-size:14px;font-weight:600;text-align:left;padding:12px 16px;border-radius:12px;background:var(--kb-surface);border:1.5px solid var(--kb-border);color:var(--kb-text);cursor:pointer;display:flex;align-items:center;gap:11px;transition:border-color .12s ease,background .12s ease;}
+.gd-opt:hover{border-color:var(--kb-accent-light);background:var(--kb-accent-50);}
+.gd-opt.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);color:var(--kb-accent-dark);}
+.gd-opt .gd-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--kb-border);flex:0 0 auto;}
+.gd-opt.is-sel .gd-radio{border-color:var(--kb-accent);background:radial-gradient(circle at center,var(--kb-accent) 0 4px,transparent 5px);}
+.gd-conv{margin-top:18px;background:var(--kb-accent2-50);border-radius:12px;padding:12px 15px;}
+.gd-conv-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--kb-accent2-dark);margin:0 0 8px;}
+.gd-conv-row{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:13px;}
+.gd-conv-row:last-child{margin-bottom:0;}
+.gd-conv-n{flex:1;font-weight:700;color:var(--kb-text);}
+.gd-conv-bar{flex:0 0 90px;height:7px;border-radius:7px;background:#fff;overflow:hidden;}
+.gd-conv-bar>i{display:block;height:100%;background:var(--kb-accent2);border-radius:7px;transition:width .3s ease;}
+.gd-nav{display:flex;align-items:center;gap:10px;margin-top:20px;}
+.gd-nav .gd-spacer{flex:1;}
+.gd-back{font:inherit;font-weight:700;font-size:14px;background:none;border:none;color:var(--kb-muted);cursor:pointer;padding:10px 4px;}
+.gd-back:hover{color:var(--kb-text);}
+.gd-count{font-size:12.5px;color:var(--kb-muted);font-weight:600;}
+.gd-axis{width:100%;font:inherit;text-align:left;padding:14px 18px;border-radius:14px;background:var(--kb-surface);border:1.5px solid var(--kb-border);cursor:pointer;margin:0 0 10px;display:flex;align-items:center;gap:14px;transition:border-color .12s ease,transform .12s ease,box-shadow .12s ease;}
+.gd-axis:hover{border-color:var(--kb-accent);transform:translateX(2px);box-shadow:var(--kb-shadow-sm);}
+.gd-axis-rank{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--kb-accent-50);color:var(--kb-accent-dark);flex:0 0 auto;}
+.gd-axis-b{flex:1;}
+.gd-axis-n{font-weight:800;font-size:15px;color:var(--kb-text);}
+.gd-axis-meta{font-size:12px;color:var(--kb-muted);margin-top:2px;}
+.gd-axis-go{color:var(--kb-accent);font-weight:800;font-size:20px;}
+.gd-sb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle;}
+.gd-sb-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
+.gd-sb-mittel{background:var(--kb-warn-50);color:#8a5a00;}
+.gd-sb-mild{background:var(--kb-accent-50);color:var(--kb-accent-dark);}
+.gd-risk{background:var(--kb-danger-50);border-radius:12px;padding:12px 15px;margin:0 0 16px;color:var(--kb-danger-dark);font-size:13.5px;font-weight:600;line-height:1.5;}
+.gd-result-head{text-align:center;padding:4px 0 2px;}
+.gd-result-badge{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-accent2-dark);background:var(--kb-accent2-50);padding:4px 12px;border-radius:999px;}
+.gd-result-name{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:10px 0 2px;color:var(--kb-text);line-height:1.2;}
+.gd-result-axis{font-size:13px;color:var(--kb-muted);}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -515,6 +581,17 @@ var ACCENT_OVERRIDE = `
 #sav-root .verdacht-mild>summary::-webkit-details-marker{ display:none; }
 #sav-root .verdacht-mild>summary::before{ content:'▸ '; color:var(--kb-muted); }
 #sav-root .verdacht-mild[open]>summary::before{ content:'▾ '; }
+/* Optionale "System & Kontext"-Sektion: standardmäßig ruhig & zugeklappt */
+#sav-root .kontext-modul-fold{ border:1px dashed var(--kb-border); border-radius:12px; background:var(--kb-surface-2); padding:0; }
+#sav-root .kontext-modul-fold>.kontext-modul-summary{ cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:13px 16px; font-weight:800; color:var(--kb-text); }
+#sav-root .kontext-modul-fold>.kontext-modul-summary::-webkit-details-marker{ display:none; }
+#sav-root .kontext-modul-fold>.kontext-modul-summary::before{ content:'▸'; color:var(--kb-muted); font-size:13px; transition:transform .15s; }
+#sav-root .kontext-modul-fold[open]>.kontext-modul-summary::before{ transform:rotate(90deg); }
+#sav-root .kontext-modul-fold .kontext-modul-opt{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--kb-muted); }
+#sav-root .kontext-modul-fold .kontext-modul-badge{ margin-left:auto; font-size:11.5px; font-weight:800; color:#fff; background:var(--kb-accent2); border-radius:999px; padding:2px 9px; }
+#sav-root .kontext-modul-fold>:not(summary){ padding-left:16px; padding-right:16px; }
+#sav-root .kontext-modul-fold>.symdia-sym-grid{ padding-bottom:14px; }
+#sav-root .kontext-modul-fold .kontext-modul-subline{ padding-top:2px; padding-bottom:10px; }
 /* Kontext-Leiste über dem eingebetteten Screening */
 .sav-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--kb-accent-50);border-bottom:1px solid var(--kb-border);}
 .sav-bar .sav-back{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:#fff;color:var(--kb-text);padding:7px 12px;border-radius:9px;cursor:pointer;}
@@ -792,39 +869,11 @@ var DOS_OVERRIDES = `
   }
   function hubScreening(student){
     var sid=student.id;
-    var r=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
-    var has=r&&r.hasData;
-    var btn='<button class="btn btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">'+(has?'Screening öffnen / bearbeiten':'Screening durchführen')+'</button>';
-    var hint='<p class="muted" style="font-size:.85em;margin:.2em 0 1.1em;">Klinisches Screening (Savoir) — <strong>Hypothesen, keine Diagnosen</strong>.</p>';
-    if(!has){
-      var why=(r&&r.noApi)?'Das Screening-Modul wird noch geladen — bitte kurz warten und erneut öffnen.':('Für '+escapeHtml(student.name)+' wurde noch kein Screening erfasst.');
-      return '<div class="kb-hub-pad">'+hint+'<div class="empty-state">'+why+'<div style="margin-top:12px;">'+btn+'</div></div></div>';
-    }
-    var when=r.updatedAt?('<span class="muted" style="font-size:.8em;"> · Stand '+escapeHtml(formatDate(String(r.updatedAt).slice(0,10)))+'</span>'):'';
-    var riskHtml='';
-    if(r.risiken&&r.risiken.length){
-      var chips=r.risiken.map(function(x){return '<span class="sv-risk">'+escapeHtml((x.risiko&&x.risiko.name)||'?')+' · '+escapeHtml(x.staerke)+'</span>';}).join('');
-      riskHtml='<div class="sv-riskbox"><strong>⚠ Risiko-Hinweise:</strong> '+chips+'<div class="muted" style="font-size:.8em;margin-top:6px;">Bei akuter Gefährdung den Fachweg einschalten (siehe Umfeld → Helfernetz).</div></div>';
-    }
-    var axHtml=r.achsen.length?('<div class="sv-axes">'+r.achsen.map(function(a){return '<span class="sv-axis sv-axis-'+escapeHtml(a.staerke)+'">'+escapeHtml((a.achse&&a.achse.name)||'?')+' <em>'+escapeHtml(a.staerke)+'</em></span>';}).join('')+'</div>'):'<p class="muted">Keine Verdachtsachse über der Schwelle.</p>';
-    var subHtml;
-    if(r.topMuster){
-      var b=r.topMuster.bloecke||{};
-      function sec(title,html){ if(!html) return ''; return '<details class="sv-acc"><summary>'+title+'</summary><div class="sv-prose">'+html+'</div></details>'; }
-      var profilText=String(b.profil||'').replace(/<[^>]*>/g,' ').replace(/\\s+/g,' ').trim();
-      var teaser=profilText?('<p class="sv-teaser">'+escapeHtml(profilText.slice(0,210))+(profilText.length>210?'…':'')+'</p>'):'';
-      var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
-      var phase0=(b.phasen&&b.phasen[0])?('<p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')):'';
-      subHtml='<div class="sv-muster"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 class="sv-muster-name">'+escapeHtml(r.topMuster.name||'?')+'</h3>'+teaser+
-        sec('Worum es geht (ausführlich)',b.profil)+
-        sec('Umgang mit diesem Profil',umgang)+
-        sec('Nächste Schritte',phase0)+
-        sec('Schulanpassungen',b.schuleAnpassungen)+
-        '<p class="muted" style="font-size:.8em;margin-top:12px;">Tipp: Abschnitte aufklappen für Details. Vollständiger Plan im <strong>Screening</strong> (Button oben).</p></div>';
-    } else {
-      subHtml='<div class="kb-empty-card" style="margin-top:14px;">Noch kein Submuster bestimmt. Öffne das Screening und vertiefe die Top-Achse, um es zu erhalten.</div>';
-    }
-    return '<div class="kb-hub-pad kb-hub-screening">'+hint+riskHtml+'<div class="kb-btn-row" style="margin-bottom:16px;">'+btn+when+'</div><h4 class="sv-h">Verdachtsachsen</h4>'+axHtml+subHtml+'</div>';
+    var disc='<p class="kb-guide-disc">Geführtes klinisches Screening (Savoir): Schritt für Schritt durchklicken — die Antworten verdichten sich wie ein Spinnennetz zum konkreten Submuster. <strong>Hypothesen, keine Diagnosen.</strong></p>';
+    var host='<div id="kb-guide-host" class="kb-guide-host" data-sid="'+escapeAttr(sid)+'">'+
+      '<div class="gd-card"><p class="gd-sub" style="margin:0;">Screening-Modul lädt …</p></div></div>';
+    var expert='<div class="kb-guide-footer"><button class="btn btn-sm kb-guide-expert" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Experten-Ansicht öffnen (vollständiges Savoir)</button></div>';
+    return '<div class="kb-hub-pad kb-hub-screening">'+disc+host+expert+'</div>';
   }
 
   if(typeof viewStudentDetail!=='undefined'){
@@ -848,6 +897,7 @@ var DOS_OVERRIDES = `
         html: hubHeader(student,tab)+'<div class="kb-hub-body">'+sectionHtml+'</div>',
         afterRender: function(root){
         if(baseAfter){try{baseAfter(root);}catch(e){}}
+        if(tab==='screening'&&window.KB_GUIDE){try{var gh=root.querySelector('#kb-guide-host');if(gh){window.KB_GUIDE.mount(gh,student);}}catch(e){}}
         if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
         if(tab==='reunion'){try{
           var rbtn=root.querySelector('.reu-save'), rta=root.querySelector('.reu-input'), rgta=root.querySelector('.reu-goals'), rst=root.querySelector('.reu-status');
@@ -1499,12 +1549,295 @@ window.KB_SCREENING=(function(){
     hasData:function(sid){var d=get(sid);return !!(d.symptome&&d.symptome.length);},
     get activeId(){return activeId;},
     setActive:function(sid){activeId=sid;},
+    /* Direkter Schreibzugriff für den geführten Trichter (KB_GUIDE):
+       schreibt {symptome, plans} pro Schüler, ohne die Experten-Ansicht zu
+       laden. activeId wird neutralisiert, damit ein späteres capture() aus der
+       Experten-Ansicht die frisch geführten Daten nicht überschreibt. */
+    update:function(sid,d){
+      d=d||{}; var r=get(sid);
+      r={ symptome:(d.symptome!=null?d.symptome.slice():(r.symptome||[])),
+          plans:(d.plans!=null?d.plans:(r.plans||{})),
+          updatedAt:new Date().toISOString() };
+      set(sid,r); activeId=null;
+      if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
+      return r;
+    },
     capture:capture,
     openStudent:openStudent,
     result:result,
     detail:detail,
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''});}return out;},
     syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''};}});saveAll(data);}
+  };
+})();
+`;
+
+/* ============================================================
+   KB_GUIDE — Geführter klinischer Trichter ("durchklicken").
+   Reine Präsentations-Schicht über der UNVERÄNDERTEN Savoir-Engine:
+   - Phase 1 "Beobachten": Triage der 16 Kategorien → gezieltes Ankreuzen
+     der beobachtbaren Items (K16/Krise IMMER dabei). Ergebnis = globale
+     Symptom-IDs, die 1:1 an scoreVerdachtsachsen gehen.
+   - Phase 2 "Verdacht": scoreVerdachtsachsen verdichtet zur/zu den Top-Achse(n)
+     (+ Risikofilter R01-R03). Nutzer wählt die Achse zum Vertiefen.
+   - Phase 3 "Vertiefen": symptomDiagnoseFor(topicKey) liefert die exakten
+     kontextFragen + symptomKategorien. Eine Frage pro Schritt; nach jeder
+     Antwort zeigt computeSymptomScores live, welches Submuster führt
+     (Spinnennetz, das sich zusammenzieht).
+   - Phase 4 "Ergebnis": konkretes Submuster + Erklärung + Umgang + Goldstandards.
+   Scores sind per Konstruktion identisch zur Engine — es werden dieselben
+   Funktionen mit denselben Eingaben aufgerufen. Daten landen in KB_SCREENING
+   ({symptome, plans}); result()/detail() und KI-Export lesen daraus.
+   Die OPTIONALE "System & Kontext"-Schicht (verändert NIE das Ranking) ist
+   bewusst nicht Teil des Trichters; sie bleibt der Experten-Ansicht vorbehalten.
+   ============================================================ */
+var GUIDE_MODULE = `
+window.KB_GUIDE=(function(){
+  function api(){return window.SAVOIR_API||null;}
+  function SG(){var a=api();return (a&&a.SAVOIR_GLOBAL)?a.SAVOIR_GLOBAL:null;}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+  function plain(h){return String(h==null?'':h).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
+  function clamp(s,n){s=String(s||'');return s.length>n?(s.slice(0,n).replace(/\\s+\\S*$/,'')+'…'):s;}
+
+  var host=null, student=null, ST=null;
+
+  function symById(id){var g=SG();if(!g)return null;var p=g.symptomPool.symptome;for(var i=0;i<p.length;i++){if(p[i].id===id)return p[i];}return null;}
+  function axisByTopic(tk){var g=SG();if(!g)return null;for(var i=0;i<g.achsen.length;i++){if(g.achsen[i].topicKey===tk)return g.achsen[i];}return null;}
+  function symsOfCat(catId){var g=SG();if(!g)return [];return g.symptomPool.symptome.filter(function(s){return s.kategorie===catId;});}
+  function buildTiefe(tk){var a=api();var diag=(a&&a.symptomDiagnoseFor)?a.symptomDiagnoseFor(tk):null;var steps=[];if(diag){(diag.kontextFragen||[]).forEach(function(f){steps.push({type:'kontext',frage:f});});(diag.symptomKategorien||[]).forEach(function(k){if(k&&k.symptome&&k.symptome.length){steps.push({type:'symptome',kat:k});}});}return steps;}
+
+  function read(){return window.KB_SCREENING?window.KB_SCREENING.get(ST.sid):{symptome:[],plans:{}};}
+  function write(d){if(window.KB_SCREENING&&window.KB_SCREENING.update){window.KB_SCREENING.update(ST.sid,d);}}
+  function ensurePlan(tk,d){d.plans=d.plans||{};if(!d.plans[tk]){d.plans[tk]={symptome:[],kontext:{}};}var p=d.plans[tk];if(!p.symptome)p.symptome=[];if(!p.kontext)p.kontext={};return p;}
+
+  function initState(sid){
+    var st={sid:sid,stage:'breit',breitSub:'triage',cats:[],catIdx:0,axisTopicKey:null,axisName:null,tiefeSteps:[],tiefeIdx:0};
+    if(!api()||!SG())return st;
+    var d=window.KB_SCREENING?window.KB_SCREENING.get(sid):{symptome:[],plans:{}};
+    var hasSym=d.symptome&&d.symptome.length;
+    if(hasSym){var seen={};(d.symptome||[]).forEach(function(id){var s=symById(id);if(s)seen[s.kategorie]=1;});st.cats=Object.keys(seen);}
+    var planKey=null;
+    if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length))){planKey=k;break;}}}
+    if(planKey){var ax=axisByTopic(planKey);st.axisTopicKey=planKey;st.axisName=ax?ax.name:planKey;st.tiefeSteps=buildTiefe(planKey);st.stage='ergebnis';return st;}
+    if(hasSym){st.stage='verdacht';return st;}
+    return st;
+  }
+
+  /* ---------- Phasen-Stepper ---------- */
+  function phaseBar(){
+    var order=['breit','verdacht','tiefe','ergebnis'];
+    var labels={breit:'Beobachten',verdacht:'Verdacht',tiefe:'Vertiefen',ergebnis:'Ergebnis'};
+    var cur=order.indexOf(ST.stage);
+    var h='<div class="gd-steps">';
+    order.forEach(function(s,i){
+      var cls=i<cur?'is-done':(i===cur?'is-on':'');
+      var num=i<cur?'✓':String(i+1);
+      h+=(i?'<span class="gd-sep"></span>':'')+'<span class="gd-step '+cls+'"><span class="gd-num">'+num+'</span>'+esc(labels[s])+'</span>';
+    });
+    return h+'</div>';
+  }
+  function navBar(backLabel,nextLabel,nextG,count){
+    var h='<div class="gd-nav">';
+    h+=backLabel?('<button class="gd-back" data-g="back">‹ '+esc(backLabel)+'</button>'):'<span></span>';
+    h+='<span class="gd-spacer"></span>';
+    if(count)h+='<span class="gd-count">'+esc(count)+'</span>';
+    if(nextLabel)h+='<button class="btn btn-primary" data-g="'+esc(nextG||'next')+'">'+esc(nextLabel)+'</button>';
+    return h+'</div>';
+  }
+
+  /* ---------- Phase 1: Beobachten ---------- */
+  function drillCats(){var g=SG();if(!g)return [];return g.symptomPool.kategorien.filter(function(c){return ST.cats.indexOf(c.id)>=0||c.id==='K16';});}
+
+  function renderBreit(){
+    var g=SG();if(!g)return loading();
+    if(ST.breitSub==='triage'){
+      var d=read();var counts={};(d.symptome||[]).forEach(function(id){var s=symById(id);if(s)counts[s.kategorie]=(counts[s.kategorie]||0)+1;});
+      var tiles=g.symptomPool.kategorien.map(function(c){
+        var lock=(c.id==='K16');var sel=lock||ST.cats.indexOf(c.id)>=0;var n=counts[c.id]||0;
+        return '<button class="gd-cat'+(sel?' is-sel':'')+(lock?' is-lock':'')+'" data-g="cat" data-id="'+esc(c.id)+'"'+(lock?' disabled':'')+'>'+
+          '<div class="gd-cat-t">'+esc(c.name)+(lock?' 🔒':'')+(n?'<span class="gd-cat-n">'+n+'</span>':'')+'</div>'+
+          '<div class="gd-cat-f">'+esc(clamp(c.fokus,90))+'</div></button>';
+      }).join('');
+      return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 1 · Beobachten</p>'+
+        '<h3 class="gd-q">In welchen Bereichen zeigt sich etwas?</h3>'+
+        '<p class="gd-sub">Tippe die auffälligen Bereiche an — danach kreuzt du nur dort die konkreten Beobachtungen an. <strong>Krise &amp; Selbstgefährdung</strong> wird immer geprüft.</p>'+
+        '<div class="gd-cats">'+tiles+'</div>'+
+        navBar('',(ST.cats.length?'Weiter · '+ST.cats.length+' Bereich'+(ST.cats.length>1?'e':''):'Nur Krise prüfen')+' ›','breit-drill','')+'</div>';
+    }
+    /* drill */
+    var cats=drillCats();var c=cats[ST.catIdx]||cats[0];
+    var d2=read();var sel=d2.symptome||[];
+    var chips=symsOfCat(c.id).map(function(s){
+      var on=sel.indexOf(s.id)>=0;
+      return '<button class="gd-chip'+(on?' is-sel':'')+'" data-g="sym" data-id="'+esc(s.id)+'">'+esc(s.text)+'</button>';
+    }).join('');
+    var pct=Math.round(((ST.catIdx+1)/Math.max(1,cats.length))*100);
+    var last=ST.catIdx>=cats.length-1;
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 1 · Beobachten · '+esc(c.id==='K16'?'Krise':('Bereich '+(ST.catIdx+1)+'/'+cats.length))+'</p>'+
+      '<h3 class="gd-q">'+esc(c.name)+'</h3>'+
+      '<p class="gd-sub">'+esc(c.fokus)+'</p>'+
+      '<div class="gd-progress"><i style="width:'+pct+'%"></i></div>'+
+      '<div class="gd-chips">'+(chips||'<span class="muted">Keine Items.</span>')+'</div>'+
+      navBar('Zurück',(last?'Zur Auswertung ›':'Weiter ›'),'breit-next',(ST.catIdx+1)+' / '+cats.length)+'</div>';
+  }
+
+  /* ---------- Phase 2: Verdacht ---------- */
+  function staerkeBadge(s){return '<span class="gd-sb gd-sb-'+esc(s)+'">'+esc(s)+'</span>';}
+  function renderVerdacht(){
+    var a=api();if(!a||!a.scoreVerdachtsachsen)return loading();
+    var d=read();var res=a.scoreVerdachtsachsen((d.symptome||[]).slice());
+    var achsen=(res&&res.achsenSortiert)||[];
+    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
+    var h=phaseBar();
+    if(risiken.length){
+      h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — bei akuter Gefährdung den Fachweg einschalten (Helfernetz / KJP-Notdienst, 112).</div>';
+    }
+    h+='<div class="gd-card"><p class="gd-kicker">Phase 2 · Verdacht</p>';
+    if(achsen.length){
+      var deutlich=achsen.filter(function(x){return x.staerke==='deutlich';});
+      h+='<h3 class="gd-q">'+(deutlich.length?'Das verdichtet sich:':'Diese Spur(en) zeichnen sich ab:')+'</h3>'+
+         '<p class="gd-sub">Wähle die Achse, die du jetzt vertiefst — dann grenzen ein paar gezielte Fragen das konkrete Submuster ein.</p>';
+      var strong=achsen.filter(function(x){return x.staerke!=='mild';});
+      var mild=achsen.filter(function(x){return x.staerke==='mild';});
+      var list=strong.length?strong:achsen;
+      h+=list.map(function(x,i){return axisRow(x,i+1);}).join('');
+      if(strong.length&&mild.length){
+        h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+')</summary><div class="sv-prose">'+mild.map(function(x,i){return axisRow(x,strong.length+i+1);}).join('')+'</div></details>';
+      }
+    } else {
+      var scores=(res&&res.achsenScores)||{};var g=SG();
+      var raw=g.achsen.map(function(ac){return {achse:ac,score:scores[ac.id]||0};}).filter(function(x){return x.score>0;}).sort(function(a2,b2){return b2.score-a2.score;}).slice(0,3);
+      if(raw.length){
+        h+='<h3 class="gd-q">Noch kein klares Muster</h3><p class="gd-sub">Keine Achse über der Schwelle. Du kannst zurück und mehr beobachten — oder einer dieser leichten Tendenzen nachgehen:</p>';
+        h+=raw.map(function(x,i){return axisRow({achse:x.achse,staerke:'mild',score:x.score},i+1);}).join('');
+      } else {
+        h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>';
+      }
+    }
+    h+=navBar('Beobachtungen ergänzen','','','');
+    return h+'</div>';
+  }
+  function axisRow(x,rank){
+    var ac=x.achse||{};
+    var meta=(ac.goldstandards&&ac.goldstandards.length)?('Absicherung: '+clamp(ac.goldstandards.join(', '),60)):'';
+    return '<button class="gd-axis" data-g="axis" data-topic="'+esc(ac.topicKey||'')+'" data-name="'+esc(ac.name||'')+'">'+
+      '<span class="gd-axis-rank">'+rank+'</span>'+
+      '<span class="gd-axis-b"><span class="gd-axis-n">'+esc(ac.name||'?')+(x.staerke?staerkeBadge(x.staerke):'')+'</span>'+(meta?'<span class="gd-axis-meta">'+esc(meta)+'</span>':'')+'</span>'+
+      '<span class="gd-axis-go">›</span></button>';
+  }
+
+  /* ---------- Phase 3: Vertiefen ---------- */
+  function convergence(ps){
+    var a=api();if(!a||!a.computeSymptomScores)return '';
+    var scores=[];try{scores=a.computeSymptomScores(ps,ST.axisTopicKey)||[];}catch(e){}
+    if(!scores.length)return '<div class="gd-conv"><div class="gd-conv-h">Spur</div><div class="gd-conv-row"><span class="gd-conv-n muted">Noch zu wenig — wähle ein paar Merkmale.</span></div></div>';
+    var top=scores.slice(0,2);var max=top[0].score||1;
+    var rows=top.map(function(s){var w=Math.max(12,Math.round((s.score/max)*100));return '<div class="gd-conv-row"><span class="gd-conv-n">'+esc((s.muster&&s.muster.name)||'?')+'</span><span class="gd-conv-bar"><i style="width:'+w+'%"></i></span></div>';}).join('');
+    return '<div class="gd-conv"><div class="gd-conv-h">🕸 Aktuell am wahrscheinlichsten</div>'+rows+'</div>';
+  }
+  function renderTiefe(){
+    var steps=ST.tiefeSteps||[];if(!steps.length)return renderErgebnis();
+    if(ST.tiefeIdx>=steps.length)ST.tiefeIdx=steps.length-1;
+    var step=steps[ST.tiefeIdx];var d=read();var ps=ensurePlan(ST.axisTopicKey,d);
+    var pct=Math.round(((ST.tiefeIdx+1)/steps.length)*100);
+    var body='';
+    if(step.type==='kontext'){
+      var f=step.frage;var cur=ps.kontext[f.id];
+      body='<h3 class="gd-q">'+esc(f.titel)+'</h3><p class="gd-sub">'+esc(ST.axisName||'')+' · eine Auswahl</p>'+
+        '<div class="gd-progress"><i style="width:'+pct+'%"></i></div><div class="gd-opts">'+
+        (f.optionen||[]).map(function(o){var on=cur===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="opt" data-fid="'+esc(f.id)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+
+        '</div>';
+    } else {
+      var k=step.kat;
+      body='<h3 class="gd-q">'+esc(k.titel)+'</h3><p class="gd-sub">'+esc(ST.axisName||'')+' · zutreffende Merkmale ankreuzen</p>'+
+        '<div class="gd-progress"><i style="width:'+pct+'%"></i></div><div class="gd-chips">'+
+        (k.symptome||[]).map(function(s){var on=ps.symptome.indexOf(s.id)>=0;return '<button class="gd-chip'+(on?' is-sel':'')+'" data-g="tsym" data-id="'+esc(s.id)+'">'+esc(s.text)+'</button>';}).join('')+
+        '</div>';
+    }
+    var last=ST.tiefeIdx>=steps.length-1;
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 3 · Vertiefen — '+esc(ST.axisName||'')+'</p>'+body+
+      convergence(ps)+
+      navBar('Zurück',(last?'Ergebnis ansehen ›':'Weiter ›'),'tiefe-next',(ST.tiefeIdx+1)+' / '+steps.length)+'</div>';
+  }
+
+  /* ---------- Phase 4: Ergebnis ---------- */
+  function sec(title,html){if(!html)return '';return '<details class="sv-acc"><summary>'+esc(title)+'</summary><div class="sv-prose">'+html+'</div></details>';}
+  function renderErgebnis(){
+    var a=api();if(!a)return loading();
+    var d=read();var ps=(d.plans&&d.plans[ST.axisTopicKey])||{symptome:[],kontext:{}};
+    var scores=[];try{scores=a.computeSymptomScores(ps,ST.axisTopicKey)||[];}catch(e){}
+    var top=scores[0];var ax=axisByTopic(ST.axisTopicKey);
+    var res=a.scoreVerdachtsachsen?a.scoreVerdachtsachsen((d.symptome||[]).slice()):null;
+    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
+    var h=phaseBar();
+    if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — Sicherheit hat Vorrang (Helfernetz / KJP-Notdienst, 112).</div>';}
+    h+='<div class="gd-card">';
+    if(top&&top.muster){
+      var m=top.muster;var b=m.bloecke||{};
+      h+='<div class="gd-result-head"><span class="gd-result-badge">Erkanntes Submuster</span><div class="gd-result-name">'+esc(m.name||'?')+'</div><div class="gd-result-axis">'+esc((ax&&ax.name)||ST.axisName||'')+'</div></div>';
+      var teaser=plain(b.profil);if(teaser)h+='<p class="sv-teaser" style="margin-top:14px;">'+esc(clamp(teaser,260))+'</p>';
+      var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
+      var phase0=(b.phasen&&b.phasen[0])?('<p><strong>'+esc(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')):'';
+      h+=sec('Worum es geht (ausführlich)',b.profil)+sec('Umgang mit diesem Profil',umgang)+sec('Nächste Schritte',phase0)+sec('Schulanpassungen',b.schuleAnpassungen);
+      if(ax&&ax.goldstandards&&ax.goldstandards.length){h+=sec('Womit fachlich absichern (Goldstandards)','<ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>');}
+    } else {
+      h+='<div class="gd-result-head"><span class="gd-result-badge">'+esc((ax&&ax.name)||ST.axisName||'Achse')+'</span><div class="gd-result-name">Noch kein eindeutiges Submuster</div></div>'+
+         '<p class="gd-sub" style="margin-top:14px;">Ergänze noch ein paar vertiefende Merkmale, dann lässt sich das Submuster bestimmen.</p>';
+    }
+    h+='<p class="muted" style="font-size:12px;margin-top:16px;line-height:1.5;">Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Dieses Ergebnis erscheint im Schüler-Hub und im KI-Export des Dossiers.</p>';
+    h+='<div class="gd-nav"><button class="gd-back" data-g="ergebnis-back">‹ Merkmale anpassen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="goto-verdacht">Andere Achse</button> <button class="btn btn-sm" data-g="restart">Neu starten</button></div>';
+    return h+'</div>';
+  }
+
+  function loading(){return '<div class="gd-card"><p class="gd-sub" style="margin:0;">Screening-Modul lädt … einen Moment.</p></div>';}
+
+  function paint(){
+    if(!host)return;
+    if(!api()||!SG()){host.innerHTML=loading();if(!ST||!ST._retry){if(ST)ST._retry=1;setTimeout(function(){if(host)paint();},450);}return;}
+    var h='';
+    try{
+      if(ST.stage==='breit')h=renderBreit();
+      else if(ST.stage==='verdacht')h=renderVerdacht();
+      else if(ST.stage==='tiefe')h=renderTiefe();
+      else if(ST.stage==='ergebnis')h=renderErgebnis();
+      else h=renderBreit();
+    }catch(e){h='<div class="gd-card"><p class="gd-sub">Fehler im Trichter: '+esc((e&&e.message)||String(e))+'</p></div>';}
+    host.innerHTML=h;
+  }
+
+  function onClick(ev){
+    var el=ev.target.closest&&ev.target.closest('[data-g]');
+    if(!el||!host.contains(el))return;
+    var g=el.getAttribute('data-g');ev.preventDefault();
+    var d,ps;
+    if(g==='cat'){var id=el.getAttribute('data-id');if(id==='K16')return;var i=ST.cats.indexOf(id);if(i>=0)ST.cats.splice(i,1);else ST.cats.push(id);paint();return;}
+    if(g==='breit-drill'){ST.breitSub='drill';ST.catIdx=0;paint();return;}
+    if(g==='sym'){var sid=el.getAttribute('data-id');d=read();d.symptome=d.symptome||[];var j=d.symptome.indexOf(sid);if(j>=0)d.symptome.splice(j,1);else d.symptome.push(sid);write(d);paint();return;}
+    if(g==='breit-next'){var cats=drillCats();if(ST.catIdx<cats.length-1){ST.catIdx++;}else{ST.stage='verdacht';}paint();return;}
+    if(g==='back'){
+      if(ST.stage==='breit'){if(ST.breitSub==='drill'){if(ST.catIdx>0){ST.catIdx--;}else{ST.breitSub='triage';}}paint();return;}
+      if(ST.stage==='verdacht'){ST.stage='breit';ST.breitSub='drill';var c2=drillCats();ST.catIdx=Math.max(0,c2.length-1);paint();return;}
+      return;
+    }
+    if(g==='axis'){var tk=el.getAttribute('data-topic');if(!tk)return;ST.axisTopicKey=tk;ST.axisName=el.getAttribute('data-name')||tk;ST.tiefeSteps=buildTiefe(tk);ST.tiefeIdx=0;d=read();ensurePlan(tk,d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'ergebnis';paint();return;}
+    if(g==='opt'){var fid=el.getAttribute('data-fid'),val=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);if(ps.kontext[fid]===val)delete ps.kontext[fid];else ps.kontext[fid]=val;write(d);paint();return;}
+    if(g==='tsym'){var tid=el.getAttribute('data-id');d=read();ps=ensurePlan(ST.axisTopicKey,d);var k2=ps.symptome.indexOf(tid);if(k2>=0)ps.symptome.splice(k2,1);else ps.symptome.push(tid);write(d);paint();return;}
+    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{ST.stage='ergebnis';}paint();return;}
+    if(g==='ergebnis-back'){ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';ST.tiefeIdx=0;paint();return;}
+    if(g==='goto-verdacht'){ST.stage='verdacht';paint();return;}
+    if(g==='restart'){ST=initState(ST.sid);ST.stage='breit';ST.breitSub='triage';ST.catIdx=0;paint();return;}
+  }
+
+  return {
+    mount:function(hostEl,stu){
+      if(!hostEl||!stu)return;
+      host=hostEl;student=stu;
+      if(!ST||ST.sid!==stu.id){ST=initState(stu.id);}
+      else{ST._retry=0;}
+      host.addEventListener('click',onClick);
+      paint();
+    },
+    reset:function(sid){if(ST&&ST.sid===sid){ST=initState(sid);}}
   };
 })();
 `;
@@ -1549,6 +1882,7 @@ var parts = [
   '<script>' + anwScript + '</' + 'script>',
   '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SCREENING_MODULE + '</' + 'script>',
+  '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '</body>',
