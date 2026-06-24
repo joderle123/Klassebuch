@@ -432,6 +432,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .hub-empty h3{margin:0 0 6px;font-size:21px;letter-spacing:-.01em;}
 .hub-empty p{color:var(--kb-muted);margin:0 0 20px;}
 .hub-empty-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+/* Réunion-Beitrag direkt beim Schüler schreiben */
+.reu-h{font-size:15px;font-weight:800;margin:0 0 10px;color:var(--kb-text);}
+.reu-write .reu-input{width:100%;border:1px solid var(--kb-border);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:var(--kb-surface);color:var(--kb-text);box-sizing:border-box;}
+.reu-write .reu-input:focus{outline:none;border-color:var(--kb-accent);box-shadow:0 0 0 3px var(--kb-accent-50);}
 /* Screening-Ansicht (kurz & einklappbar) */
 .sv-h{margin:8px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-muted);font-weight:800;}
 .sv-axes{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;}
@@ -738,7 +742,20 @@ var DOS_OVERRIDES = `
         (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
         (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul></div>':'')+'</div>');
     });
-    return '<div class="kb-hub-pad"><p class="muted">Alle Réunion-Beiträge von '+escapeHtml(student.name)+'. Neue Updates erfasst ihr unter <a href="#/reunion" data-route="#/reunion">Réunionen</a>.</p>'+(out.length?out.join(''):'<div class="empty-state">Noch keine Réunion-Beiträge.</div>')+'</div>';
+    var today=(new Date()).toISOString().slice(0,10);
+    var up=reu.filter(function(r){return r.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
+    var nextR=up[0]||reu[0]||null;
+    var writeBox;
+    if(nextR){
+      var ex=Repo.reunionEntryFor(nextR.date,sid);
+      writeBox='<div class="card reu-write"><h4 class="reu-h">✍️ Beitrag für die Réunion am '+escapeHtml(formatDate(nextR.date))+'</h4>'+
+        '<textarea class="reu-input" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextR.date)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+' rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' in der nächsten Réunion besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
+        '<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-primary reu-save">'+(ex?'Aktualisieren':'Speichern')+'</button> <span class="reu-status muted" style="font-size:.85em;"></span></div>'+
+        '<p class="muted" style="font-size:.8em;margin-top:6px;">Wird als Réunion-Eintrag gespeichert und synchronisiert automatisch (Team-Datei & überall in der App).</p></div>';
+    } else {
+      writeBox='<div class="kb-empty-card">Noch keine Réunion angelegt. <a href="#/reunion" data-route="#/reunion">Réunion anlegen</a> — danach kannst du hier direkt Beiträge schreiben.</div>';
+    }
+    return '<div class="kb-hub-pad">'+writeBox+'<h4 class="reu-h" style="margin-top:22px;">Bisherige Réunion-Beiträge</h4>'+(out.length?out.join(''):'<div class="empty-state">Noch keine Réunion-Beiträge.</div>')+'</div>';
   }
   function hubAbsenzen(student){
     var sid=student.id;
@@ -816,7 +833,20 @@ var DOS_OVERRIDES = `
       return {
         navKey:'students',
         html: hubHeader(student,tab)+'<div class="kb-hub-body">'+sectionHtml+'</div>',
-        afterRender: function(root){ if(baseAfter){try{baseAfter(root);}catch(e){}} if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}} }
+        afterRender: function(root){
+        if(baseAfter){try{baseAfter(root);}catch(e){}}
+        if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
+        if(tab==='reunion'){try{
+          var ta=root.querySelector('.reu-input'), btn=root.querySelector('.reu-save'), st=root.querySelector('.reu-status');
+          if(btn&&ta){btn.addEventListener('click',function(){
+            var text=(ta.value||'').trim(); if(!text){ta.focus();return;}
+            var payload={studentId:ta.getAttribute('data-sid'),date:ta.getAttribute('data-date'),category:'Team-Réunion',text:text};
+            var eid=ta.getAttribute('data-eid'); if(eid){payload.id=eid;}
+            btn.disabled=true; if(st){st.textContent='Speichert …';}
+            Repo.saveEntry(payload).then(function(){ if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}} if(window.render){try{window.render();}catch(e){}} }).catch(function(){ btn.disabled=false; if(st){st.textContent='Fehler beim Speichern'; } });
+          });}
+        }catch(e){}}
+      }
       };
     };
   }
