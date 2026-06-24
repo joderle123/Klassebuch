@@ -1789,11 +1789,13 @@ function viewStudentDetail(params) {
       '<div class="info-block"><h4>Laufende Themen</h4>' + (themes.length ? '<div class="chip-row">' + themes.map(function (i) { return '<span class="chip">' + escapeHtml(i) + '</span>'; }).join('') + '</div>' : '<p class="muted">Keine erkannt</p>') + '</div>' +
     '</div>' +
 
-    '<h3 class="section-title">Automatisch erkannte Themen (aus den Texten, ohne Tags)</h3>' +
-    '<div class="card" style="padding:14px 16px; margin-bottom:6px;">' + autoThemesHtml() + '</div>' +
-
-    '<h3 class="section-title">Verlauf</h3>' +
-    chartsHtml() +
+    '<details class="dossier-fold">' +
+      '<summary>📊 Analyse &amp; Verlauf <span class="muted" style="font-weight:600;font-size:.85em;">— Themen-Erkennung und Bewertungs-Charts (aufklappen)</span></summary>' +
+      '<h3 class="section-title">Automatisch erkannte Themen (aus den Texten, ohne Tags)</h3>' +
+      '<div class="card" style="padding:14px 16px; margin-bottom:6px;">' + autoThemesHtml() + '</div>' +
+      '<h3 class="section-title">Verlauf</h3>' +
+      chartsHtml() +
+    '</details>' +
 
     '<h3 class="section-title">Thematische Bündelung</h3>' +
     '<div id="filter-bar-wrap">' + filterBarHtml() + '</div>' +

@@ -516,6 +516,15 @@ var ACCENT_OVERRIDE = `
 #dos-root .card.kb-mini{ box-shadow:var(--kb-shadow-sm); transition:box-shadow .15s ease, transform .15s ease; }
 #dos-root .card.kb-mini:hover{ box-shadow:var(--kb-shadow); transform:translateY(-2px); }
 #dos-root .sv-muster{ box-shadow:var(--kb-shadow-sm); }
+/* Einklappbarer Analyse-Block in der Dossier-Ansicht (entschlackt) */
+#dos-root .dossier-fold{ border:1px solid var(--kb-border); border-radius:14px; background:var(--kb-surface); margin:0 0 16px; box-shadow:var(--kb-shadow-sm); }
+#dos-root .dossier-fold>summary{ cursor:pointer; padding:14px 18px; font-weight:800; font-size:15px; list-style:none; display:flex; align-items:center; gap:8px; }
+#dos-root .dossier-fold>summary::-webkit-details-marker{ display:none; }
+#dos-root .dossier-fold>summary::before{ content:'▸'; color:var(--kb-muted); font-size:13px; transition:transform .15s; }
+#dos-root .dossier-fold[open]>summary::before{ transform:rotate(90deg); }
+#dos-root .dossier-fold>:not(summary){ margin-left:18px; margin-right:18px; }
+#dos-root .dossier-fold .section-title{ margin-top:14px; }
+#dos-root .dossier-fold .charts-grid{ padding-bottom:16px; }
 `;
 
 var SHELL_BODY_TOP = `
@@ -698,6 +707,14 @@ var DOS_OVERRIDES = `
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele','g')+'<p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
     }
 
+    /* ---- Wochenziele (sichtbar mit Ziel-Texten) ---- */
+    var wochenCard;
+    if(weekly.length){
+      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<ul class="hub-list">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';
+    } else {
+      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
+    }
+
     /* ---- Réunion-Update (Hauptbereich) ---- */
     var reuCard=lastReu?('<div class="card kb-mini">'+mh('🗣️','Réunion-Update <span class="muted" style="font-weight:600;font-size:.78em;">'+(lastReuDate?escapeHtml(formatDate(lastReuDate)):'')+'</span>','a')+'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div></div>'):'';
 
@@ -705,13 +722,12 @@ var DOS_OVERRIDES = `
     function row(ic,l,v,act){return '<div class="hub-row"><span class="ri">'+ic+'</span><div class="rb"><div class="rl">'+l+'</div>'+(v?'<div class="rv">'+v+'</div>':'')+'</div>'+(act||'')+'</div>';}
     var sideRows='';
     sideRows+=row('📉','Absenzen',(sum.total?(sum.entschuldigt+' E · '+sum.unentschuldigt+' NE · '+sum.verspaetet+' R'):'keine'),'<button class="btn btn-sm ra" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button>');
-    sideRows+=row('📌','Wochenziele',(weekly.length?weekly.length+' Ziele':'keine'),'');
     sideRows+=row('🩺','Diagnostik',(rep?escapeHtml((rep.type||'Bericht')+' · '+formatDate(rep.date)):'kein DS/PEI'),(rep?'<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Dossier</button>':''));
     sideRows+=row('🗒️','Letzter Eintrag',(last?escapeHtml(formatDate(last.date)+' · '+last.category):'keiner'),'');
     sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
     var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
 
-    return stripHtml+'<div class="hub2"><div class="hub2-main">'+scrPanel+foerderCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
+    return stripHtml+'<div class="hub2"><div class="hub2-main">'+scrPanel+foerderCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
