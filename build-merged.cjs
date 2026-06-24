@@ -334,6 +334,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
   .kb-app.kb-open .kb-scrim{display:block;position:fixed;inset:0;background:rgba(15,20,35,.45);z-index:39;}
   .kb-pad,.kb-hub-head,.kb-hub-body{padding-left:16px;padding-right:16px;}
 }
+/* Screening-Ergebnis (kompakt, im Schüler-Hub) */
+.sv-riskbox{background:var(--kb-danger-50);border:1px solid var(--kb-danger);border-radius:12px;padding:12px 14px;margin-bottom:14px;color:var(--kb-text);}
+.sv-risk{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;margin:2px 4px 2px 0;background:#fff;border:1px solid var(--kb-danger);color:var(--kb-danger-dark);}
+.sv-staerke{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;}
+.sv-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
+.sv-mittel{background:var(--kb-warn-50);color:#8a5a00;}
+.sv-mild{background:var(--kb-accent-50);color:var(--kb-accent-dark);}
+.sv-prose{font-size:14px;line-height:1.55;}
+.sv-prose p{margin:.4em 0;}
+.sv-prose ul,.sv-prose ol{margin:.4em 0 .4em 1.2em;}
+.sv-prose h3,.sv-prose h4{font-size:14px;margin:.6em 0 .2em;}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -504,7 +515,7 @@ var DOS_OVERRIDES = `
   function stat(n,l){return '<div class="kb-stat"><div class="kb-stat-n">'+n+'</div><div class="kb-stat-l">'+escapeHtml(l)+'</div></div>';}
   function hubHeader(student,tab){
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));} meta.push('Niveau '+escapeHtml(rosterLevel(sid)));
-    var tabs=[['uebersicht','Übersicht'],['reunion','Réunion'],['dossier','Dossier'],['absenzen','Absenzen'],['aufgaben','Aufgaben'],['helfernetz','Helfernetz']];
+    var tabs=[['uebersicht','Übersicht'],['reunion','Réunion'],['dossier','Dossier'],['screening','Screening'],['absenzen','Absenzen'],['aufgaben','Aufgaben'],['helfernetz','Helfernetz']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -588,6 +599,35 @@ var DOS_OVERRIDES = `
     if(window.KB_BUBBLE_RENDER){return window.KB_BUBBLE_RENDER(student);}
     return '<div class="kb-hub-pad"><div class="kb-placeholder"><div class="kb-placeholder-ic">🕸️</div><h3>Helfernetz</h3><p>Modul wird geladen …</p></div></div>';
   }
+  function hubScreening(student){
+    var sid=student.id;
+    var r=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
+    var has=r&&r.hasData;
+    var btn='<button class="btn btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">'+(has?'Screening öffnen / bearbeiten':'Screening durchführen')+'</button>';
+    var hint='<p class="muted" style="font-size:.85em;margin:.2em 0 1em;">Klinisches Screening (Savoir). Die Ergebnisse sind <strong>Beobachtungs-Hypothesen, keine Diagnosen</strong> — Grundlage fürs Gespräch mit Fachpersonen, nicht zur Etikettierung.</p>';
+    if(!has){
+      var why=(r&&r.noApi)?'Das Screening-Modul wird noch geladen — bitte kurz warten und erneut öffnen.':('Für '+escapeHtml(student.name)+' wurde noch kein Screening erfasst.');
+      return '<div class="kb-hub-pad">'+hint+'<div class="empty-state">'+why+'<div style="margin-top:12px;">'+btn+'</div></div></div>';
+    }
+    var riskHtml='';
+    if(r.risiken&&r.risiken.length){
+      var chips=r.risiken.map(function(x){return '<span class="sv-risk">'+escapeHtml((x.risiko&&x.risiko.name)||'?')+' · '+escapeHtml(x.staerke)+'</span>';}).join('');
+      riskHtml='<div class="sv-riskbox"><strong>⚠ Risiko-Hinweise:</strong> '+chips+'<div class="muted" style="font-size:.8em;margin-top:6px;">Bei akuter Gefährdung den Notfall-/Fachweg einschalten (siehe Helfernetz).</div></div>';
+    }
+    var axHtml=r.achsen.length?('<table class="kb-table" style="margin-top:6px;"><thead><tr><th>Verdachtsachse</th><th>Ausprägung</th></tr></thead><tbody>'+r.achsen.map(function(a){return '<tr><td>'+escapeHtml((a.achse&&a.achse.name)||'?')+'</td><td><span class="sv-staerke sv-'+escapeHtml(a.staerke)+'">'+escapeHtml(a.staerke)+'</span></td></tr>';}).join('')+'</tbody></table>'):'<p class="muted">Keine Verdachtsachse über der Schwelle.</p>';
+    var subHtml;
+    if(r.topMuster){
+      var b=r.topMuster.bloecke||{};
+      var stepsHtml='';
+      if(b.phasen&&b.phasen[0]){stepsHtml='<details style="margin-top:8px;"><summary><strong>Nächste Schritte</strong></summary><div class="sv-prose"><p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')+'</div></details>';}
+      var schoolHtml=b.schuleAnpassungen?('<details style="margin-top:6px;"><summary><strong>Schulanpassungen</strong></summary><div class="sv-prose">'+b.schuleAnpassungen+'</div></details>'):'';
+      subHtml='<div class="card" style="margin-top:14px;"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 style="margin:.2em 0 .5em;">'+escapeHtml(r.topMuster.name||'?')+'</h3><div class="sv-prose">'+(b.profil||'')+'</div>'+stepsHtml+schoolHtml+'</div>';
+    } else {
+      subHtml='<div class="kb-empty-card" style="margin-top:14px;">Noch kein Submuster bestimmt. Öffne das Screening und vertiefe die Top-Achse (Krankheitsbild / „Vertiefte Diagnostik"), um das Submuster zu erhalten.</div>';
+    }
+    var when=r.updatedAt?('<span class="muted" style="font-size:.8em;"> · Stand '+escapeHtml(formatDate(String(r.updatedAt).slice(0,10)))+'</span>'):'';
+    return '<div class="kb-hub-pad">'+hint+riskHtml+'<div class="kb-btn-row" style="margin-bottom:12px;">'+btn+when+'</div><h4 style="margin:6px 0;">Verdachtsachsen</h4>'+axHtml+subHtml+'</div>';
+  }
 
   if(typeof viewStudentDetail!=='undefined'){
     var _origDetail=viewStudentDetail;
@@ -603,6 +643,7 @@ var DOS_OVERRIDES = `
         else if(tab==='absenzen'){sectionHtml=hubAbsenzen(student);}
         else if(tab==='aufgaben'){sectionHtml=hubAufgaben(student);}
         else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
+        else if(tab==='screening'){sectionHtml=hubScreening(student);}
         else {tab='uebersicht';sectionHtml=hubOverview(student);}
       }catch(err){sectionHtml='<div class="empty-state">Fehler im Hub-Bereich: '+escapeHtml((err&&err.message)||String(err))+'</div>';}
       return {
@@ -654,6 +695,7 @@ var SHELL_CONTROLLER = `
   function closeDrawer(){app.classList.remove('kb-open');}
 
   function go(nav){
+    if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}
     if(DOS_ROUTES[nav]){
       showPanel('dos-root'); setActive(nav);
       if(window.navigate){window.navigate(DOS_ROUTES[nav]);}
@@ -703,6 +745,16 @@ var SHELL_CONTROLLER = `
     if(act==='open-absenzen'){go('absenzen');if(window.KB_ANW){window.KB_ANW.openStudent(arg);}}
     else if(act==='open-tt'){go('absenzen');clickAnwBtn('btn-tt');}
     else if(act==='open-cal'){go('absenzen');clickAnwBtn('btn-cal');}
+    else if(act==='open-screening'){
+      showPanel('sav-root'); setActive('students');
+      var sb=$('sav-bar'); if(sb){sb.style.display='';}
+      var who=$('sav-who'); var nm=(window.KB_ROSTER&&window.KB_ROSTER.byId(arg));
+      if(who){who.textContent=nm?('Screening: '+nm.name):'Screening';}
+      window.__SAV_RETURN=arg;
+      if(window.KB_SCREENING){try{window.KB_SCREENING.openStudent(arg);}catch(e){}}
+      else if(window.SAVOIR_API&&window.SAVOIR_API.gotoScreening){window.SAVOIR_API.gotoScreening();}
+      closeDrawer();
+    }
   });
 
   // Gemeinsame Schülerliste (im Bereich "Klasse")
@@ -777,6 +829,20 @@ var SHELL_CONTROLLER = `
     w('kbs-new',function(){window.KB_SYNC.connectNew();});
   }
   if(window.KB_SYNC){window.KB_SYNC.onStatus(function(){renderSync();});window.KB_SYNC.init();}
+
+  // Savoir-Kontextleiste: zurück zum Schüler (Eingaben werden gesichert)
+  var savBack=$('sav-back');
+  if(savBack){savBack.addEventListener('click',function(){
+    if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}
+    var sid=window.__SAV_RETURN||(window.KB_SCREENING&&window.KB_SCREENING.activeId);
+    var sb=$('sav-bar'); if(sb){sb.style.display='none';}
+    showPanel('dos-root'); setActive('students');
+    if(sid&&window.navigate){window.navigate('#/student/'+encodeURIComponent(sid)+'?hub=screening');}
+    else if(window.navigate){window.navigate('#/dashboard');}
+  });}
+  // Sicherheitsnetz: Screening-Eingaben beim Verlassen/Tab-Wechsel sichern
+  window.addEventListener('beforeunload',function(){if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
+  document.addEventListener('visibilitychange',function(){if(document.hidden&&window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
 
   // Startseite: Schüler
   go('students');
@@ -957,7 +1023,7 @@ window.KB_BUBBLE=(function(){
 var SYNC_MODULE = `
 window.KB_SYNC=(function(){
   var FMT='klassebuch-shared-v1';
-  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble'];
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening'];
   var BASE_LS='klassebuch_sync_base';
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
@@ -989,7 +1055,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -1000,6 +1066,7 @@ window.KB_SYNC=(function(){
     s(window.KB_ANW,'applyNotes',liveOf(doc.colls.anwNotes));
     var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);
     s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
+    s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -1129,6 +1196,77 @@ var savScriptPatched = replaceOnce(savScript, '(function init() {',
   'sav:api-before-init');
 var SAVOIR_MODULE = '(function(){\ntry{\n/* === SAVOIR.html <script> — gewrappt, JS-Globals isoliert === */\n' + savScriptPatched + '\n}catch(__savErr){try{console.error("SAVOIR embed error", __savErr);}catch(_){ }}\n})();';
 
+/* ============================================================
+   KB_SCREENING — Pro-Schüler-Speicher fürs Savoir-Screening.
+   Hält je Schüler {symptome, plans} (= Savoirs Eingabe-Puffer),
+   lädt sie beim Öffnen ins Savoir-Modul (setScreening) und liest
+   sie beim Verlassen zurück (capture). result()/detail() berechnen
+   über SAVOIR_API das kompakte Ergebnis (Achsen + Risiken + Submuster).
+   ============================================================ */
+var SCREENING_MODULE = `
+window.KB_SCREENING=(function(){
+  var LS='klassebuch_screening_v1';
+  var activeId=null;
+  function loadAll(){try{var r=localStorage.getItem(LS);if(r){return JSON.parse(r)||{};}}catch(e){}return {};}
+  function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+  var data=loadAll();
+  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}return r;}
+  function set(sid,r){data[sid]=r;saveAll(data);}
+  function api(){return window.SAVOIR_API||null;}
+  function capture(){
+    if(!activeId)return;var a=api();if(!a||!a.getScreening)return;
+    try{var s=a.getScreening();set(activeId,{symptome:(s.symptome||[]).slice(),plans:s.plans||{},updatedAt:new Date().toISOString()});}catch(e){}
+  }
+  function openStudent(sid){
+    capture(); activeId=sid; var a=api();
+    if(a&&a.setScreening){try{a.setScreening(get(sid));}catch(e){}}
+  }
+  function plain(html){return String(html==null?'':html).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
+  function result(sid){
+    var a=api(); var d=get(sid);
+    if(!a||!a.scoreVerdachtsachsen)return {hasData:false,noApi:true};
+    if(!d.symptome||!d.symptome.length)return {hasData:false};
+    var res; try{res=a.scoreVerdachtsachsen(d.symptome.slice());}catch(e){return {hasData:false};}
+    var achsen=((res&&res.achsenSortiert)||[]).filter(function(x){return x&&x.staerke;});
+    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
+    var topMuster=null,topTopicKey=null,topAchseName=null;
+    for(var i=0;i<achsen.length && !topMuster;i++){
+      var ac=achsen[i].achse||{}; var tk=ac.topicKey; if(!tk||!d.plans[tk])continue;
+      if(a.computeSymptomScores){try{var ms=a.computeSymptomScores(d.plans[tk],tk);if(ms&&ms.length&&ms[0].muster){topMuster=ms[0].muster;topTopicKey=tk;topAchseName=ac.name;}}catch(e){}}
+    }
+    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,updatedAt:d.updatedAt};
+  }
+  function detail(sid){
+    var r=result(sid); if(!r.hasData)return null;
+    var L=[];
+    L.push('Verdachtsachsen (Ausprägung):');
+    if(r.achsen.length){r.achsen.forEach(function(a){L.push('  - '+((a.achse&&a.achse.name)||(a.achse&&a.achse.id)||'?')+': '+a.staerke);});}else{L.push('  - keine über Schwelle');}
+    if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+(x.risiko&&x.risiko.name||'?')+': '+x.staerke);});}
+    if(r.topMuster){var b=r.topMuster.bloecke||{};
+      L.push('Erkanntes Submuster: '+(r.topMuster.name||'?')+(r.topAchseName?' ('+r.topAchseName+')':''));
+      if(b.profil)L.push('  Profil: '+plain(b.profil));
+      if(b.phasen&&b.phasen[0])L.push('  Nächste Schritte: '+(b.phasen[0].titel||'')+' — '+plain(b.phasen[0].was||b.phasen[0].ziele||''));
+      if(b.schuleAnpassungen)L.push('  Schulanpassungen: '+plain(b.schuleAnpassungen));
+      var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
+      if(krise)L.push('  Krisen-/Risikohinweis: '+plain(krise));
+    }
+    return {text:L.join('\\n'), updatedAt:r.updatedAt};
+  }
+  return {
+    get:function(sid){return get(sid);},
+    hasData:function(sid){var d=get(sid);return !!(d.symptome&&d.symptome.length);},
+    get activeId(){return activeId;},
+    setActive:function(sid){activeId=sid;},
+    capture:capture,
+    openStudent:openStudent,
+    result:result,
+    detail:detail,
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''});}return out;},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''};}});saveAll(data);}
+  };
+})();
+`;
+
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
 var parts = [
@@ -1168,6 +1306,7 @@ var parts = [
   '<script>' + BUBBLE_MODULE + '</' + 'script>',
   '<script>' + anwScript + '</' + 'script>',
   '<script>' + SAVOIR_MODULE + '</' + 'script>',
+  '<script>' + SCREENING_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '</body>',

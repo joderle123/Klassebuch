@@ -1392,6 +1392,15 @@ function buildAiExportText(opts) {
       lines.push('[' + formatDate(e.date) + '] ' + e.category + (e.tags && e.tags.length ? ' — Themen: ' + e.tags.join(', ') : ''));
       lines.push(anonymizeText(e.text, opts.ctx));
     });
+  if (opts.screeningText) {
+    lines.push('');
+    lines.push('--- Klinisches Screening (Savoir) — Hypothesen, keine Diagnosen ---');
+    lines.push('Hinweis: Aus dem integrierten Screening abgeleitete, beobachtungsbasierte ' +
+      'Hypothesen zur fachlichen Einordnung — ausdrücklich KEINE Diagnose. Dient nur als ' +
+      'zusätzlicher Kontext für die fachliche Beurteilung.');
+    lines.push('');
+    lines.push(anonymizeText(opts.screeningText, opts.ctx));
+  }
   return lines.join('\n');
 }
 
@@ -2585,11 +2594,19 @@ function viewAiExport(params, query) {
   function previewHtml() {
     var entries = scopedEntries();
     var ctx = buildAnonymizationContext();
+    var screeningText = '';
+    try {
+      if (window.KB_SCREENING && state.studentId) {
+        var sd = window.KB_SCREENING.detail(state.studentId);
+        if (sd && sd.text) screeningText = sd.text;
+      }
+    } catch (e) {}
     state.builtText = buildAiExportText({
       scopeLabel: scopeLabel(),
       taskText: taskText(),
       entries: entries,
-      ctx: ctx
+      ctx: ctx,
+      screeningText: screeningText
     });
     return '<div class="card export-config no-print">' +
       '<h3 style="margin-top:0;">4. Vorschau &amp; Übergabe</h3>' +
