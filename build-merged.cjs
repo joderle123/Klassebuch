@@ -8,12 +8,12 @@
        Dossier / Absenzen / Aufgaben / Helfernetz (Platzhalter)
      • gemeinsame Schülerliste (KB_ROSTER, 8 Schüler) für beide Bereiche
      • CSS jeder App unter ihren Wurzel-Container gescoped
-   Aufruf:  node tools/build-merged.js
+   Aufruf:  node build-merged.cjs
    ============================================================ */
 'use strict';
 var fs = require('fs');
 var path = require('path');
-var ROOT = path.join(__dirname, '..');
+var ROOT = __dirname;
 
 function read(f) { return fs.readFileSync(path.join(ROOT, f), 'utf8'); }
 function between(s, a, b) {
@@ -184,10 +184,27 @@ dosScript = replaceOnce(dosScript,
 var SHELL_CSS = `
 *{box-sizing:border-box;}
 :root{
-  --kb-accent:#4f5bd5; --kb-accent-dark:#3e49b0; --kb-accent-light:#7c86e6;
-  --kb-accent-50:#eef0fc; --kb-accent-100:#dde1f8;
-  --kb-bg:#eef1f7; --kb-surface:#ffffff; --kb-border:#e3e7f1;
-  --kb-text:#1d2433; --kb-muted:#5c6478;
+  /* Markenfarbe — Indigo (verfeinert) */
+  --kb-accent:#4f5bd5; --kb-accent-dark:#3b46b8; --kb-accent-light:#8b93ea;
+  --kb-accent-50:#eef0fc; --kb-accent-100:#dde1f8; --kb-accent-200:#c3c9f3;
+  /* Sekundär-Akzent — ruhiges Grün */
+  --kb-accent2:#2f9e7a; --kb-accent2-dark:#268063; --kb-accent2-50:#e7f6f1;
+  /* Status */
+  --kb-ok:#0f9d6b; --kb-ok-50:#e6f6ef;
+  --kb-warn:#d98a0b; --kb-warn-50:#fbf2e0;
+  --kb-danger:#d6492f; --kb-danger-dark:#b3432d; --kb-danger-50:#fbeae6;
+  --kb-info:#3b6fd4; --kb-info-50:#eaf1fc;
+  /* Flächen, Linien, Text (kühl & ruhig) */
+  --kb-bg:#eef1f7; --kb-surface:#ffffff; --kb-surface-2:#f7f8fc;
+  --kb-border:#e3e7f1; --kb-border-strong:#cfd5e6;
+  --kb-text:#1d2433; --kb-text-soft:#3a4256; --kb-muted:#5c6478; --kb-muted-2:#8b92a4;
+  /* Radien & Schatten */
+  --kb-radius-lg:18px; --kb-radius:12px; --kb-radius-sm:9px;
+  --kb-shadow-sm:0 1px 2px rgba(20,25,45,.05);
+  --kb-shadow:0 1px 2px rgba(20,25,45,.05),0 6px 18px rgba(20,25,45,.06);
+  --kb-shadow-lg:0 10px 30px rgba(20,25,45,.10),0 30px 60px rgba(20,25,45,.10);
+  --kb-ring:0 0 0 3px rgba(79,91,213,.18);
+  --kb-font:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 html,body{margin:0;padding:0;}
 body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--kb-text);background:var(--kb-bg);-webkit-font-smoothing:antialiased;}
@@ -316,8 +333,29 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 `;
 
 var ACCENT_OVERRIDE = `
-#dos-root{ --accent:var(--kb-accent); --accent-soft:var(--kb-accent-50); }
-#anw-root{ --primary:var(--kb-accent); --primary-dark:var(--kb-accent-dark); --primary-light:var(--kb-accent-light); --primary-50:var(--kb-accent-50); --primary-100:var(--kb-accent-100); }
+/* ---- Dossier auf gemeinsame Tokens mappen ---- */
+#dos-root{
+  --bg:var(--kb-bg); --surface:var(--kb-surface); --border:var(--kb-border);
+  --text:var(--kb-text); --text-muted:var(--kb-muted);
+  --accent:var(--kb-accent); --accent-soft:var(--kb-accent-50);
+  --danger:var(--kb-danger); --danger-soft:var(--kb-danger-50);
+  --radius:var(--kb-radius); --shadow:var(--kb-shadow);
+  font-family:var(--kb-font);
+}
+/* ---- Anwesenheit auf gemeinsame Tokens mappen ---- */
+#anw-root{
+  --primary:var(--kb-accent); --primary-dark:var(--kb-accent-dark); --primary-light:var(--kb-accent-light);
+  --primary-50:var(--kb-accent-50); --primary-100:var(--kb-accent-100);
+  --ok:var(--kb-ok); --ok-50:var(--kb-ok-50);
+  --warn:var(--kb-warn); --warn-50:var(--kb-warn-50);
+  --danger:var(--kb-danger); --danger-50:var(--kb-danger-50); --danger-dark:var(--kb-danger-dark);
+  --info:var(--kb-info); --info-50:var(--kb-info-50);
+  --bg:var(--kb-bg); --card:var(--kb-surface);
+  --text:var(--kb-text); --muted:var(--kb-muted); --line:var(--kb-border);
+  --radius-lg:var(--kb-radius-lg); --radius:var(--kb-radius); --radius-sm:var(--kb-radius-sm);
+  --shadow-sm:var(--kb-shadow-sm); --shadow:var(--kb-shadow); --shadow-lg:var(--kb-shadow-lg);
+  --ring:var(--kb-ring);
+}
 #anw-root header{ position:static; background:linear-gradient(120deg,var(--kb-accent),var(--kb-accent-dark)); box-shadow:0 2px 12px rgba(79,91,213,.22); }
 #anw-root header::after{ background:rgba(255,255,255,.2); }
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
