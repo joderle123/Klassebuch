@@ -346,6 +346,38 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-prose ul,.sv-prose ol{margin:.4em 0 .4em 1.2em;}
 .sv-prose h3,.sv-prose h4{font-size:14px;margin:.6em 0 .2em;}
 .kb-screen-risk{background:var(--kb-danger-50);color:var(--kb-danger-dark);border:1px solid var(--kb-danger);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:700;margin-bottom:6px;}
+/* ============ Übersichtlichkeit: ruhiger & luftiger ============ */
+.kb-pad{padding:30px 34px 76px;max-width:1080px;}
+.kb-pagehead h2{font-size:25px;margin:0 0 6px;letter-spacing:-.02em;}
+.kb-card{padding:20px 22px;border-radius:16px;box-shadow:none;}
+.kb-hub-body{padding:22px 28px 64px;}
+.kb-hub-grid{gap:18px;}
+.kb-hub-sec{margin:0 0 28px;}
+/* Sidebar-Gruppen */
+.kb-navgroup{margin-top:16px;}
+.kb-navlabel{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--kb-muted-2);padding:2px 11px 5px;}
+/* Schüler-Status-Karten */
+.st-card{display:flex;flex-direction:column;gap:12px;border-radius:16px;box-shadow:none;transition:box-shadow .15s ease,transform .15s ease,border-color .15s ease;}
+.st-card:hover{box-shadow:var(--kb-shadow);transform:translateY(-1px);border-color:var(--kb-accent-200);}
+.st-top{display:flex;align-items:center;gap:12px;}
+.st-avatar{flex:0 0 auto;width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--kb-accent),var(--kb-accent-dark));color:#fff;display:grid;place-items:center;font-size:19px;font-weight:800;}
+.st-name{font-size:16.5px;font-weight:800;letter-spacing:-.01em;color:var(--kb-text);line-height:1.2;}
+.st-sub{font-size:12.5px;color:var(--kb-muted);font-weight:600;margin-top:2px;}
+.st-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.st-chip{font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--kb-surface-2);color:var(--kb-text-soft);border:1px solid var(--kb-border);}
+.st-chip.st-warn{background:var(--kb-warn-50);color:#8a5a00;border-color:transparent;}
+.st-chip.st-danger{background:var(--kb-danger-50);color:var(--kb-danger-dark);border-color:transparent;}
+.st-chip.st-ok{background:var(--kb-accent2-50);color:var(--kb-accent2-dark);border-color:transparent;}
+.st-foot{font-size:12px;color:var(--kb-muted);margin-top:auto;}
+/* Hub-Status-Leiste */
+.kb-statstrip{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px;}
+.kb-stat-tile{flex:1 1 140px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:14px 16px;}
+.kb-stat-tile .v{font-size:22px;font-weight:800;color:var(--kb-text);line-height:1.1;}
+.kb-stat-tile .v.warn{color:var(--kb-danger-dark);}
+.kb-stat-tile .v.ok{color:var(--kb-accent2-dark);}
+.kb-stat-tile .l{font-size:11.5px;color:var(--kb-muted);font-weight:600;margin-top:4px;}
+.kb-subhead{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--kb-text);}
+.kb-subhead.kb-subhead-mt{margin-top:30px;border-top:1px solid var(--kb-border);padding-top:24px;}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -403,6 +435,11 @@ var ACCENT_OVERRIDE = `
 .sav-bar .sav-back:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
 .sav-bar .sav-who{font-weight:800;}
 .sav-bar .sav-hint{font-size:12px;color:var(--kb-muted);}
+/* Dossier ruhiger & luftiger */
+#dos-root .card{ border-radius:16px; box-shadow:none; }
+#dos-root .card-grid{ gap:18px; }
+#dos-root .page-head h2{ font-size:25px; letter-spacing:-.02em; }
+#dos-root .empty-state{ border-radius:16px; }
 `;
 
 var SHELL_BODY_TOP = `
@@ -415,19 +452,25 @@ var SHELL_BODY_TOP = `
     <div class="kb-brand"><span class="kb-logo">📘</span><span class="kb-brandtext"><b>Klassebuch</b><small>Annexe Junglinster</small></span></div>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
-      <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
-      <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
-      <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse</button>
-      <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
-      <button class="kb-link kb-more-toggle" id="kb-more-toggle" type="button"><span class="kb-ic">⋯</span>Mehr<span class="kb-more-caret">▾</span></button>
-      <div class="kb-more" id="kb-more">
+      <div class="kb-navgroup">
+        <div class="kb-navlabel">Unterricht</div>
+        <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
+        <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
+        <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse &amp; Stundenplan</button>
+      </div>
+      <div class="kb-navgroup">
+        <div class="kb-navlabel">Klinisch</div>
+        <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
+      </div>
+      <div class="kb-navgroup">
+        <div class="kb-navlabel">Werkzeuge</div>
         <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
         <button class="kb-link" data-kb-nav="themes"><span class="kb-ic">🏷️</span>Themen-Analyse</button>
         <button class="kb-link" data-kb-nav="orga"><span class="kb-ic">🗒️</span>Organisation</button>
         <button class="kb-link" data-kb-nav="absenzen-pdf"><span class="kb-ic">📄</span>Absenzen-PDF</button>
         <button class="kb-link" data-kb-nav="export"><span class="kb-ic">📑</span>Dossier-PDF</button>
         <button class="kb-link" data-kb-nav="ai"><span class="kb-ic">🤖</span>KI-Export</button>
-        <button class="kb-link" data-kb-nav="data"><span class="kb-ic">💾</span>Daten & Backup</button>
+        <button class="kb-link" data-kb-nav="data"><span class="kb-ic">💾</span>Daten &amp; Backup</button>
       </div>
     </nav>
     <div class="kb-foot">Alle Daten bleiben lokal auf diesem Gerät. Kein Server, keine Cloud.</div>
@@ -524,7 +567,7 @@ var DOS_OVERRIDES = `
   function stat(n,l){return '<div class="kb-stat"><div class="kb-stat-n">'+n+'</div><div class="kb-stat-l">'+escapeHtml(l)+'</div></div>';}
   function hubHeader(student,tab){
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));} meta.push('Niveau '+escapeHtml(rosterLevel(sid)));
-    var tabs=[['uebersicht','Übersicht'],['reunion','Réunion'],['dossier','Dossier'],['screening','Screening'],['absenzen','Absenzen'],['aufgaben','Aufgaben'],['helfernetz','Helfernetz']];
+    var tabs=[['uebersicht','Übersicht'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['umfeld','Umfeld']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -586,7 +629,10 @@ var DOS_OVERRIDES = `
     } else {
       screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch kein Screening erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
     }
-    return eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+absCard+diagCard+reuCard+lastCard+'</div>';
+    function tile(v,l,cls){return '<div class="kb-stat-tile"><div class="v'+(cls?(' '+cls):'')+'">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div>';}
+    var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn'):tile('erfasst','Screening','ok')):tile('—','Screening');
+    var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''))+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele')+tile(weekly.length,'Wochenziele')+'</div>';
+    return stripHtml+eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+absCard+diagCard+reuCard+lastCard+'</div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
@@ -661,17 +707,15 @@ var DOS_OVERRIDES = `
       var sectionHtml='', baseAfter=null;
       try{
         if(tab==='dossier'){var base=_origDetail(params);sectionHtml=base.html;baseAfter=base.afterRender;}
-        else if(tab==='reunion'){sectionHtml=hubReunion(student);}
-        else if(tab==='absenzen'){sectionHtml=hubAbsenzen(student);}
-        else if(tab==='aufgaben'){sectionHtml=hubAufgaben(student);}
-        else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
+        else if(tab==='schule'){sectionHtml='<h3 class="kb-subhead">📉 Absenzen</h3>'+hubAbsenzen(student)+'<h3 class="kb-subhead kb-subhead-mt">📒 Aufgaben &amp; Prüfungen</h3>'+hubAufgaben(student);}
+        else if(tab==='umfeld'){sectionHtml='<h3 class="kb-subhead">🗣️ Réunion</h3>'+hubReunion(student)+'<h3 class="kb-subhead kb-subhead-mt">🕸️ Helfernetz</h3>'+hubHelfernetz(student);}
         else {tab='uebersicht';sectionHtml=hubOverview(student);}
       }catch(err){sectionHtml='<div class="empty-state">Fehler im Hub-Bereich: '+escapeHtml((err&&err.message)||String(err))+'</div>';}
       return {
         navKey:'students',
         html: hubHeader(student,tab)+'<div class="kb-hub-body">'+sectionHtml+'</div>',
-        afterRender: function(root){ if(baseAfter){try{baseAfter(root);}catch(e){}} if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}} }
+        afterRender: function(root){ if(baseAfter){try{baseAfter(root);}catch(e){}} if(tab==='umfeld'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}} }
       };
     };
   }

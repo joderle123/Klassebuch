@@ -1559,26 +1559,23 @@ function viewDashboard(params, query) {
     var entries = Repo.entriesForStudent(s.id);
     var sorted = entries.slice().sort(function (a, b) { return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
     var lastEntry = sorted[0];
-    var riskValue = latestSliderValue(entries, 'risk');
-    var hasAnyValue = entries.some(function (e) {
-      return e.sliders && SLIDER_DEFS.some(function (d) { return e.sliders[d.key] != null; });
-    });
-
-    var riskBlock = '';
-    if (riskValue != null) {
-      riskBlock = '<div class="spark-row">' +
-        '<span class="risk-pill" style="background:' + sliderColor(sliderDef('risk'), riskValue) + '">Risiko: ' + riskValue + '</span>' +
-        '<span style="width:96px; flex-shrink:0;">' + renderSparkline(entries, 'risk') + '</span>' +
-        '</div>';
-    } else if (!hasAnyValue) {
-      riskBlock = '<div class="meta-line">Noch keine Bewertungen erfasst</div>';
-    }
-
-    return '<article class="card student-card" data-route="#/student/' + s.id + '" tabindex="0" role="button" aria-label="Dossier von ' + escapeAttr(s.name) + ' öffnen">' +
-      '<h3>' + escapeHtml(s.name) + '</h3>' +
-      '<div class="meta-line">' + pluralize(entries.length, 'Eintrag', 'Einträge') +
-      (lastEntry ? ' &middot; letzter Eintrag ' + escapeHtml(formatDate(lastEntry.date)) : ' &middot; noch keine Einträge') + '</div>' +
-      riskBlock +
+    var roster = window.KB_ROSTER && window.KB_ROSTER.byId(s.id);
+    var level = roster && roster.level ? roster.level : '';
+    var klasse = roster && roster.klasse ? roster.klasse : '';
+    var abs = window.KB_ANW ? window.KB_ANW.summaryForStudent(s.id) : null;
+    var scr = window.KB_SCREENING ? window.KB_SCREENING.result(s.id) : null;
+    var cg = (window.KB_REPORTS && window.KB_REPORTS.currentGoals) ? window.KB_REPORTS.currentGoals(s.id) : null;
+    var initial = escapeHtml((s.name || '?').charAt(0).toUpperCase());
+    var meta = []; if (klasse) meta.push(escapeHtml(klasse)); if (level) meta.push('Niveau ' + escapeHtml(level));
+    var chips = [];
+    if (abs && abs.total) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + abs.total + ' Absenzen' + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
+    if (scr && scr.hasData) chips.push(scr.risiken && scr.risiken.length ? '<span class="st-chip st-danger">⚠ Screening-Risiko</span>' : '<span class="st-chip st-ok">Screening erfasst</span>');
+    if (cg && cg.goals && cg.goals.length) chips.push('<span class="st-chip">' + cg.goals.length + ' Förderziele</span>');
+    var foot = lastEntry ? ('Letzter Eintrag ' + escapeHtml(formatDate(lastEntry.date)) + ' · ' + pluralize(entries.length, 'Eintrag', 'Einträge')) : 'Noch keine Einträge';
+    return '<article class="card student-card st-card" data-route="#/student/' + s.id + '" tabindex="0" role="button" aria-label="Dossier von ' + escapeAttr(s.name) + ' öffnen">' +
+      '<div class="st-top"><div class="st-avatar">' + initial + '</div><div class="st-idblock"><div class="st-name">' + escapeHtml(s.name) + '</div>' + (meta.length ? '<div class="st-sub">' + meta.join(' · ') + '</div>' : '') + '</div></div>' +
+      (chips.length ? '<div class="st-chips">' + chips.join('') + '</div>' : '') +
+      '<div class="st-foot">' + foot + '</div>' +
       '</article>';
   }
 
@@ -1601,7 +1598,7 @@ function viewDashboard(params, query) {
 
   var html =
     '<div class="page-head">' +
-      '<div><h2>Dashboard</h2><p class="muted">' + students.length + ' Schüler &middot; ' + Repo.entries.length + ' Einträge insgesamt</p></div>' +
+      '<div><h2>Schüler</h2><p class="muted">' + students.length + ' Schüler · Klick auf eine Karte öffnet den Schüler</p></div>' +
       '<div class="actions"><button class="btn btn-primary" data-route="#/entry/new">+ Neuer Eintrag</button></div>' +
     '</div>' +
     '<div class="search-bar">' +
