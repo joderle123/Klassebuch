@@ -345,6 +345,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-prose p{margin:.4em 0;}
 .sv-prose ul,.sv-prose ol{margin:.4em 0 .4em 1.2em;}
 .sv-prose h3,.sv-prose h4{font-size:14px;margin:.6em 0 .2em;}
+.kb-screen-risk{background:var(--kb-danger-50);color:var(--kb-danger-dark);border:1px solid var(--kb-danger);border-radius:8px;padding:4px 8px;font-size:12px;font-weight:700;margin-bottom:6px;}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -386,8 +387,16 @@ var ACCENT_OVERRIDE = `
   --line:var(--kb-border);
   font-family:var(--kb-font);
 }
-#sav-root .topnav{ position:static; }
+/* Savoir-Innenansicht an den Klassenbuch-Look angleichen (nur CSS, keine Struktur) */
+#sav-root .topnav{ position:static; background:var(--kb-surface); padding:14px 28px; }
+#sav-root .topnav-inner,#sav-root .global-nav,#sav-root .main{ max-width:1120px; }
+#sav-root .global-nav{ padding:16px 28px 0; }
+#sav-root .main{ padding:26px 28px 80px; }
 #sav-root .brand-logo,#sav-root .brand-sub{ font-family:var(--kb-font); }
+#sav-root .brand-logo{ font-size:20px; font-weight:800; letter-spacing:-.02em; color:var(--kb-text); }
+#sav-root .brand-sub{ letter-spacing:.08em; }
+#sav-root .global-nav-btn,#sav-root .diag-subtab{ font-family:var(--kb-font); text-transform:none; letter-spacing:0; font-size:13.5px; font-weight:700; }
+#sav-root .global-nav-btn.active,#sav-root .diag-subtab.active{ color:var(--kb-accent); border-bottom-color:var(--kb-accent); }
 /* Kontext-Leiste über dem eingebetteten Screening */
 .sav-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--kb-accent-50);border-bottom:1px solid var(--kb-border);}
 .sav-bar .sav-back{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:#fff;color:var(--kb-text);padding:7px 12px;border-radius:9px;cursor:pointer;}
@@ -566,7 +575,18 @@ var DOS_OVERRIDES = `
     var reuCard='<div class="card kb-mini"><h4>🗣️ Réunion-Update'+(lastReuDate?' · '+escapeHtml(formatDate(lastReuDate)):'')+'</h4>'+(lastReu?'<div class="entry-body">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Réunion-Update.</p>')+'</div>';
     var lastCard='<div class="card kb-mini"><h4>🗒️ Letzter Dossier-Eintrag</h4>'+(last?'<div class="muted" style="font-size:.85em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body">'+escapeHtml(String(last.text||'').slice(0,260))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>';
 
-    return eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+absCard+diagCard+reuCard+lastCard+'</div>';
+    var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
+    var screenCard;
+    if(scr&&scr.hasData){
+      var sTop=scr.achsen&&scr.achsen[0];
+      var sRisk=(scr.risiken&&scr.risiken.length)?'<div class="kb-screen-risk">⚠ Risiko-Hinweis: '+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join(', ')+'</div>':'';
+      var sAx=sTop?('<div style="margin:2px 0;">'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+' <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>'):'';
+      var sMus=scr.topMuster?('<div class="muted" style="font-size:.85em;margin-top:2px;">Submuster: '+escapeHtml(scr.topMuster.name||'?')+'</div>'):'';
+      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+sRisk+sAx+sMus+'<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
+    } else {
+      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch kein Screening erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
+    }
+    return eldibHtml+weeklyHtml+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+absCard+diagCard+reuCard+lastCard+'</div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
