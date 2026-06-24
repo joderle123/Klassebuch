@@ -1459,6 +1459,7 @@ var SAVOIR_API_EXPORT = `
   try{
     window.SAVOIR_API = {
       SAVOIR_GLOBAL: (typeof SAVOIR_GLOBAL!=='undefined')?SAVOIR_GLOBAL:null,
+      SAVOIR_TUNING: (typeof SAVOIR_TUNING!=='undefined')?SAVOIR_TUNING:null,
       scoreVerdachtsachsen: (typeof scoreVerdachtsachsen!=='undefined')?scoreVerdachtsachsen:null,
       computeSymptomScores: (typeof computeSymptomScores!=='undefined')?computeSymptomScores:null,
       planMusterFor: (typeof planMusterFor!=='undefined')?planMusterFor:null,
@@ -1516,29 +1517,33 @@ window.KB_SCREENING=(function(){
     if(a&&a.setScreening){try{a.setScreening(get(sid));}catch(e){}}
   }
   function plain(html){return String(html==null?'':html).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
-  /* Akut-Risiko (Sicherheits-Wrapper): bestimmte K16-Items lösen — UNABHÄNGIG
-     vom Score — sofort einen Krisen-Alarm aus. Das verändert das Savoir-Scoring
-     NICHT, sondern legt eine Sicherheitsschicht darüber. Ein konkreter Plan zählt
-     schwerer als vage Gedanken (im reinen Score sind beide gleich). */
-  var ACUTE_ITEMS={
-    '16.2':{sev:'kritisch',label:'Konkreter Suizidplan / Vorbereitungshandlungen'},
-    '16.1':{sev:'akut',label:'Suizidale Gedanken berichtet'},
-    '16.3':{sev:'akut',label:'Aktive Selbstverletzung'}
-  };
-  var RARE_AXES={A13:'Psychose-Erstmanifestation',A04:'Bipolare Spektrum-Störung'};
+  /* Klinische Stellschrauben kommen zentral aus SAVOIR_TUNING (SAVOIR.html) via
+     SAVOIR_API. Fallbacks greifen nur, falls die API mal nicht bereit ist.
+     Diese Schicht verändert das Savoir-Scoring NICHT — sie liest dieselbe Config. */
+  function TUNE(){var a=window.SAVOIR_API;return (a&&a.SAVOIR_TUNING)?a.SAVOIR_TUNING:null;}
+  var ACUTE_FALLBACK={'16.2':{sev:'kritisch',forcesRisk:'R01',label:'Konkreter Suizidplan / Vorbereitungshandlungen'},'16.1':{sev:'akut',forcesRisk:null,label:'Suizidale Gedanken berichtet'},'16.3':{sev:'akut',forcesRisk:'R02',label:'Aktive Selbstverletzung'}};
   var CRISIS_LINE='Sofort Fachweg einschalten: KJP-Notdienst, SOS Détresse 454545, im Notfall 112. Schüler/in nicht allein lassen.';
-  function acuteFlags(symptome){var out=[];(symptome||[]).forEach(function(id){if(ACUTE_ITEMS[id])out.push({id:id,sev:ACUTE_ITEMS[id].sev,label:ACUTE_ITEMS[id].label});});out.sort(function(a,b){return (a.sev==='kritisch'?-1:0)-(b.sev==='kritisch'?-1:0);});return out;}
-  /* Klinische Konfidenz aus dem Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss).
-     Bildet das DSM/ICD-Prinzip "Symptome + Dauer + klinisch bedeutsame
-     Beeinträchtigung + Ausschluss" als Konfidenz-Stufe ab. Ändert NICHT, WELCHE
-     Achse/welches Submuster führt — nur, wie belastbar der Verdacht ist. */
+  function acuteMap(){var t=TUNE();return (t&&t.acuteItems)?t.acuteItems:ACUTE_FALLBACK;}
+  function weakBelow(){var t=TUNE();return (t&&typeof t.weakGlobalBelow==='number')?t.weakGlobalBelow:3;}
+  function isRareAxis(id){var t=TUNE();if(t&&t.axisPrior&&t.axisPrior[id]!=null)return t.axisPrior[id]<=0.6;return (id==='A13'||id==='A04'||id==='A12');}
+  function acuteFlags(symptome){var M=acuteMap();var out=[];(symptome||[]).forEach(function(id){if(M[id])out.push({id:id,sev:M[id].sev,label:M[id].label});});out.sort(function(a,b){return (a.sev==='kritisch'?-1:0)-(b.sev==='kritisch'?-1:0);});return out;}
+  function matchGate(when,g){when=when||{};for(var k in when){if(k.slice(-2)==='In'){var f=k.slice(0,-2);if((when[k]||[]).indexOf(g[f])<0)return false;}else if(g[k]!==when[k]){return false;}}return true;}
+  /* Klinische Konfidenz aus dem Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss),
+     regelbasiert aus SAVOIR_TUNING.confidenceRules. Bildet das DSM/ICD-Prinzip
+     "Symptome + Dauer + klinisch bedeutsame Beeinträchtigung + Ausschluss" ab.
+     Ändert NICHT, WELCHE Achse führt — nur, wie belastbar der Verdacht ist. */
   function confidenceOf(gate){
     var g=gate||{}; if(!g.dauer&&!g.beeintr&&!g.alt)return null;
-    if(g.alt==='ja')return {key:'differential',tone:'warn',label:'Differential zuerst klären',text:'Es gibt eine naheliegendere Erklärung — die zuerst ausschließen, bevor dieser Verdacht gewichtet wird.'};
-    if(g.beeintr==='kaum')return {key:'subklinisch',tone:'muted',label:'Beobachten — aktuell kein bedeutsamer Leidensdruck',text:'Auffälligkeiten ja, aber (noch) ohne deutliche Beeinträchtigung — beobachten statt pathologisieren.'};
-    if(g.dauer==='kurz')return {key:'akut',tone:'warn',label:'Mögliche akute Belastungsreaktion — beobachten',text:'Sehr kurze Dauer; kann vorübergehend sein. Verlauf abwarten.'};
-    if((g.dauer==='mittel'||g.dauer==='lang')&&(g.beeintr==='merklich'||g.beeintr==='stark'))return {key:'erhaertet',tone:'ok',label:'Verdacht erhärtet — fachliche Abklärung empfohlen',text:'Dauer und Beeinträchtigung sprechen für klinische Relevanz. Strukturierte Abklärung (Goldstandards) einleiten.'};
-    return {key:'hinweis',tone:'muted',label:'Hinweis — weiter beobachten, Daten ergänzen',text:''};
+    var t=TUNE();
+    var rules=(t&&t.confidenceRules)?t.confidenceRules:[
+      {when:{alt:'ja'},tone:'warn',label:'Differential zuerst klären',text:''},
+      {when:{beeintr:'kaum'},tone:'muted',label:'Beobachten — aktuell kein bedeutsamer Leidensdruck',text:''},
+      {when:{dauer:'kurz'},tone:'warn',label:'Mögliche akute Belastungsreaktion — beobachten',text:''},
+      {when:{dauerIn:['mittel','lang'],beeintrIn:['merklich','stark']},tone:'ok',label:'Verdacht erhärtet — fachliche Abklärung empfohlen',text:''},
+      {when:{},tone:'muted',label:'Hinweis — weiter beobachten, Daten ergänzen',text:''}
+    ];
+    for(var i=0;i<rules.length;i++){if(matchGate(rules[i].when,g))return {key:'r'+i,tone:rules[i].tone,label:rules[i].label,text:rules[i].text||''};}
+    return null;
   }
   function result(sid){
     var a=api(); var d=get(sid);
@@ -1600,11 +1605,11 @@ window.KB_SCREENING=(function(){
       if(krise)L.push('  Krisen-/Risikohinweis: '+plain(krise));
     }
     /* Ehrliche methodische Einordnung (Wrapper, ändert das Scoring nicht) */
-    var rare=(r.achsen||[]).filter(function(x){return x.achse&&RARE_AXES[x.achse.id];}).map(function(x){return x.achse.name;});
+    var rare=(r.achsen||[]).filter(function(x){return x.achse&&isRareAxis(x.achse.id);}).map(function(x){return x.achse.name;});
     L.push('');
-    L.push('Methodischer Hinweis: rechnerische Verdachts-/Triage-Hilfe (KI-Programm Savoir), KEINE Diagnose. Es prüft KEINE Dauer-, Verlaufs- oder Beeinträchtigungs-Kriterien und gewichtet keine Basisraten; das Ergebnis ist eine Beobachtungs-Schwerpunkt-Hypothese, die einen Fachblick verdient. Fachliche Abklärung (Mehr-Informanten, Anamnese, Goldstandards) bleibt erforderlich.');
-    if(rare.length)L.push('Basisraten-Vorsicht: '+rare.join(', ')+' sind selten — wenige unspezifische Zeichen genügen hier rechnerisch für einen Verdacht; mit besonderer Zurückhaltung lesen.');
-    if((d.symptome||[]).length<3)L.push('Schwache Datenbasis: beruht auf wenigen Beobachtungen ('+(d.symptome||[]).length+') — als vorläufig behandeln.');
+    L.push('Methodischer Hinweis: rechnerische Verdachts-/Triage-Hilfe (KI-Programm Savoir), KEINE Diagnose. Das Ergebnis ist eine Beobachtungs-Schwerpunkt-Hypothese, die einen Fachblick verdient; die klinische Bedeutung hängt von Dauer, Beeinträchtigung und Ausschluss ab (Kriterien-Check). Fachliche Abklärung (Mehr-Informanten, Anamnese, Goldstandards) bleibt erforderlich.');
+    if(rare.length)L.push('Basisraten-Vorsicht: '+rare.join(', ')+' sind selten — mit besonderer Zurückhaltung lesen.');
+    if((d.symptome||[]).length<weakBelow())L.push('Schwache Datenbasis: beruht auf wenigen Beobachtungen ('+(d.symptome||[]).length+') — als vorläufig behandeln.');
     return {text:L.join('\\n'), updatedAt:r.updatedAt};
   }
   return {
@@ -1688,8 +1693,16 @@ window.KB_GUIDE=(function(){
     return st;
   }
 
-  /* ---------- Sicherheits-/Klarheits-Wrapper (ändern das Scoring nicht) ---------- */
-  var RARE={A13:1,A04:1};
+  /* ---------- Sicherheits-/Klarheits-Wrapper (lesen SAVOIR_TUNING, ändern das Scoring nicht) ---------- */
+  function TUNE(){var a=api();return (a&&a.SAVOIR_TUNING)?a.SAVOIR_TUNING:null;}
+  function rareAxis(id){var t=TUNE();if(t&&t.axisPrior&&t.axisPrior[id]!=null)return t.axisPrior[id]<=0.6;return id==='A13'||id==='A04'||id==='A12';}
+  function weakGlobalBelow(){var t=TUNE();return (t&&typeof t.weakGlobalBelow==='number')?t.weakGlobalBelow:3;}
+  function weakAxisMax(){var t=TUNE();return (t&&typeof t.weakAxisEvidenceMax==='number')?t.weakAxisEvidenceMax:2;}
+  function gateQs(){var t=TUNE();return (t&&t.gateQuestions&&t.gateQuestions.length)?t.gateQuestions:[
+    {key:'dauer',titel:'Seit wann bestehen die Auffälligkeiten?',optionen:[{val:'kurz',text:'unter ~2 Wochen'},{val:'mittel',text:'einige Wochen bis Monate'},{val:'lang',text:'über ~6 Monate / anhaltend'}]},
+    {key:'beeintr',titel:'Wie stark ist der Alltag beeinträchtigt (Schule, Familie, Freunde)?',optionen:[{val:'kaum',text:'kaum oder nicht'},{val:'merklich',text:'merklich'},{val:'stark',text:'stark'}]},
+    {key:'alt',titel:'Gibt es eine naheliegendere Erklärung (akute Belastung, Substanz, somatisch)?',optionen:[{val:'nein',text:'eher nicht'},{val:'ja',text:'ja, möglich'}]}
+  ];}
   function acuteBanner(){
     var fl=(window.KB_SCREENING&&window.KB_SCREENING.acuteFlags)?window.KB_SCREENING.acuteFlags(ST.sid):[];
     if(!fl.length)return '';
@@ -1781,7 +1794,7 @@ window.KB_GUIDE=(function(){
       if(strong.length&&mild.length){
         h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+')</summary><div class="sv-prose">'+mild.map(function(x,i){return axisRow(x,strong.length+i+1);}).join('')+'</div></details>';
       }
-      var rareShown=achsen.filter(function(x){return x.achse&&RARE[x.achse.id];}).map(function(x){return x.achse.name||'';});
+      var rareShown=achsen.filter(function(x){return x.achse&&rareAxis(x.achse.id);}).map(function(x){return x.achse.name||'';});
       h+='<div class="gd-caveat">Das Programm prüft <strong>keine</strong> Dauer, keinen Verlauf und keine Beeinträchtigung — das gehört in die fachliche Abklärung.';
       if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten — wenige unspezifische Zeichen genügen hier rechnerisch.';
       h+='</div>';
@@ -1795,7 +1808,7 @@ window.KB_GUIDE=(function(){
         h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>';
       }
     }
-    if((d.symptome||[]).length<3){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — für einen belastbaren Verdacht zu wenig. Ein einzelnes Zeichen ist kein Syndrom.</div>';}
+    if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — für einen belastbaren Verdacht zu wenig. Ein einzelnes Zeichen ist kein Syndrom.</div>';}
     h+=navBar('Beobachtungen ergänzen','','','');
     return h+'</div>';
   }
@@ -1843,16 +1856,11 @@ window.KB_GUIDE=(function(){
   }
 
   /* ---------- Phase 3b: Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss) ---------- */
-  var GATE_Q=[
-    {key:'dauer',titel:'Seit wann bestehen die Auffälligkeiten?',opts:[{v:'kurz',t:'unter ~2 Wochen'},{v:'mittel',t:'einige Wochen bis Monate'},{v:'lang',t:'über ~6 Monate / anhaltend'}]},
-    {key:'beeintr',titel:'Wie stark ist der Alltag beeinträchtigt (Schule, Familie, Freunde)?',opts:[{v:'kaum',t:'kaum oder nicht'},{v:'merklich',t:'merklich'},{v:'stark',t:'stark'}]},
-    {key:'alt',titel:'Gibt es eine naheliegendere Erklärung (akute Belastung, Substanz, somatisch)?',opts:[{v:'nein',t:'eher nicht'},{v:'ja',t:'ja, möglich'}]}
-  ];
   function renderKriterien(){
     var d=read();var ps=ensurePlan(ST.axisTopicKey,d);var g=ps.gate||{};
-    var blocks=GATE_Q.map(function(q){
+    var blocks=gateQs().map(function(q){
       return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(q.titel)+'</div><div class="gd-opts">'+
-        q.opts.map(function(o){var on=g[q.key]===o.v;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="gate" data-key="'+esc(q.key)+'" data-val="'+esc(o.v)+'"><span class="gd-radio"></span>'+esc(o.t)+'</button>';}).join('')+
+        (q.optionen||[]).map(function(o){var on=g[q.key]===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="gate" data-key="'+esc(q.key)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+
         '</div></div>';
     }).join('');
     var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(g):null;
@@ -1893,8 +1901,8 @@ window.KB_GUIDE=(function(){
     }
     /* Mindest-Evidenz- & Basisraten-Hinweis */
     var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
-    if(evN<=2||(d.symptome||[]).length<3){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> dieser Schwerpunkt stützt sich auf nur '+evN+' passende Beobachtung(en) — als vorläufige Hypothese behandeln.</div>';}
-    if(ax&&RARE[ax.id]){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — wenige unspezifische Zeichen genügen hier rechnerisch. Mit besonderer Zurückhaltung lesen, früh fachlich abklären.</div>';}
+    if(evN<=weakAxisMax()||(d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> dieser Schwerpunkt stützt sich auf nur '+evN+' passende Beobachtung(en) — als vorläufige Hypothese behandeln.</div>';}
+    if(ax&&rareAxis(ax.id)){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — wenige unspezifische Zeichen genügen hier rechnerisch. Mit besonderer Zurückhaltung lesen, früh fachlich abklären.</div>';}
     /* Anti-Tunnelblick: Gegenprobe mit der zweitstärksten Achse */
     var ranked=rankedAxes(),second=null;
     for(var si=0;si<ranked.length;si++){var rac=ranked[si].achse||{};if(rac.topicKey&&rac.topicKey!==ST.axisTopicKey){second=ranked[si];break;}}
