@@ -31,6 +31,7 @@ function replaceOnce(s, find, repl, label) {
 
 var anw = read('anwesenheit.html');
 var dos = read('dossier.html');
+var sav = read('SAVOIR.html');
 
 /* ---- Teile extrahieren ---- */
 var anwStyle  = between(anw, '<style>', '</style>');
@@ -39,6 +40,9 @@ var anwScript = between(anw, '<script>', '</script>');
 var dosStyle  = between(dos, '<style>', '</style>');
 var dosBody   = between(dos, '<body>', '<script>');
 var dosScript = between(dos, '<script>', '</script>');
+var savStyle  = between(sav, '<style>', '</style>');
+var savBody   = between(sav, '<body>', '<script>');
+var savScript = between(sav, '<script>', '</script>');
 
 /* ============================================================
    CSS-Scoper
@@ -108,6 +112,7 @@ function scopeCss(css, scope) {
 }
 var anwStyleScoped = scopeCss(anwStyle, '#anw-root');
 var dosStyleScoped = scopeCss(dosStyle, '#dos-root');
+var savStyleScoped = scopeCss(savStyle, '#sav-root');
 
 /* ============================================================
    Patches der anwesenheit-Engine
@@ -363,6 +368,21 @@ var ACCENT_OVERRIDE = `
 #anw-root #btn-tt,#anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
 #anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
 #dos-root .main{ max-width:none; }
+/* ---- Savoir (Screening) auf gemeinsame Tokens mappen ---- */
+#sav-root{
+  --ink:var(--kb-text); --paper:var(--kb-bg); --cream:var(--kb-surface-2);
+  --gold:var(--kb-accent2); --rust:var(--kb-accent); --sage:var(--kb-muted);
+  --line:var(--kb-border);
+  font-family:var(--kb-font);
+}
+#sav-root .topnav{ position:static; }
+#sav-root .brand-logo,#sav-root .brand-sub{ font-family:var(--kb-font); }
+/* Kontext-Leiste über dem eingebetteten Screening */
+.sav-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--kb-accent-50);border-bottom:1px solid var(--kb-border);}
+.sav-bar .sav-back{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:#fff;color:var(--kb-text);padding:7px 12px;border-radius:9px;cursor:pointer;}
+.sav-bar .sav-back:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.sav-bar .sav-who{font-weight:800;}
+.sav-bar .sav-hint{font-size:12px;color:var(--kb-muted);}
 `;
 
 var SHELL_BODY_TOP = `
@@ -378,6 +398,7 @@ var SHELL_BODY_TOP = `
       <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
       <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
       <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse</button>
+      <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
       <button class="kb-link kb-more-toggle" id="kb-more-toggle" type="button"><span class="kb-ic">⋯</span>Mehr<span class="kb-more-caret">▾</span></button>
       <div class="kb-more" id="kb-more">
         <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
@@ -624,7 +645,7 @@ var SHELL_CONTROLLER = `
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','kb-klasse','kb-data'];
+  var PANELS=['anw-root','dos-root','sav-root','kb-klasse','kb-data'];
   var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
@@ -644,6 +665,10 @@ var SHELL_CONTROLLER = `
       showPanel('kb-klasse'); setActive('klasse'); renderRoster();
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
+    } else if(nav==='patho'){
+      showPanel('sav-root'); setActive('patho');
+      var sb=$('sav-bar'); if(sb){sb.style.display='none';}
+      if(window.SAVOIR_API&&window.SAVOIR_API.gotoInfos){window.SAVOIR_API.gotoInfos();}
     }
     closeDrawer();
   }
@@ -1060,6 +1085,50 @@ window.KB_SYNC=(function(){
 })();
 `;
 
+/* ============================================================
+   SAVOIR (klinisches Screening) — als #sav-root eingebettet.
+   Das gesamte Original-Skript wird in eine Funktion gewrappt
+   (JS-Globals isoliert, keine Kollision mit anw/dos) und gibt
+   eine schmale window.SAVOIR_API nach außen: reine Scoring-/
+   Daten-Funktionen + getScreening/setScreening (Pro-Schüler-
+   Puffer) + Moduswechsel (Diagnostik / Krankheitsbilder).
+   ============================================================ */
+var SAVOIR_API_EXPORT = `
+  /* === Savoir-API nach außen (für Klassenbuch-Hub & KI-Export) === */
+  try{
+    window.SAVOIR_API = {
+      SAVOIR_GLOBAL: (typeof SAVOIR_GLOBAL!=='undefined')?SAVOIR_GLOBAL:null,
+      scoreVerdachtsachsen: (typeof scoreVerdachtsachsen!=='undefined')?scoreVerdachtsachsen:null,
+      computeSymptomScores: (typeof computeSymptomScores!=='undefined')?computeSymptomScores:null,
+      planMusterFor: (typeof planMusterFor!=='undefined')?planMusterFor:null,
+      symptomDiagnoseFor: (typeof symptomDiagnoseFor!=='undefined')?symptomDiagnoseFor:null,
+      STATE: (typeof STATE!=='undefined')?STATE:null,
+      showMode: (typeof showMode!=='undefined')?showMode:null,
+      showView: (typeof showView!=='undefined')?showView:null,
+      renderDiagnostik: (typeof renderDiagnostik!=='undefined')?renderDiagnostik:null,
+      getScreening: function(){
+        var g={symptome:[]}; try{ g=loadGlobalDiag()||g; }catch(e){}
+        var plans={}; try{ plans=JSON.parse(window.localStorage.getItem('savoir_plans')||'{}')||{}; }catch(e){}
+        return { symptome:(g.symptome||[]).slice(), plans:plans };
+      },
+      setScreening: function(data){
+        data=data||{};
+        try{ saveGlobalDiag({symptome:(data.symptome||[]).slice(), lastAchse:null}); }catch(e){}
+        try{ window.localStorage.setItem('savoir_plans', JSON.stringify(data.plans||{})); }catch(e){}
+        try{ if(typeof STATE!=='undefined'){STATE.diagSubtab='eingabe';} if(typeof showMode!=='undefined'){showMode('diagnostik');} }catch(e){}
+      },
+      gotoInfos: function(){ try{ if(typeof showMode!=='undefined'){showMode('krankheitsbilder');} }catch(e){} },
+      gotoScreening: function(){ try{ if(typeof STATE!=='undefined'){STATE.diagSubtab='eingabe';} if(typeof showMode!=='undefined'){showMode('diagnostik');} }catch(e){} }
+    };
+  }catch(e){ try{console.error('SAVOIR_API export failed',e);}catch(_){ } }
+`;
+/* API VOR dem Original-init() exportieren, damit SAVOIR_API auch dann steht,
+   falls init() in einer Umgebung mal stolpert. Alles in try/catch gekapselt. */
+var savScriptPatched = replaceOnce(savScript, '(function init() {',
+  SAVOIR_API_EXPORT + '\n/* --- danach folgt der originale Savoir-init --- */\n(function init() {',
+  'sav:api-before-init');
+var SAVOIR_MODULE = '(function(){\ntry{\n/* === SAVOIR.html <script> — gewrappt, JS-Globals isoliert === */\n' + savScriptPatched + '\n}catch(__savErr){try{console.error("SAVOIR embed error", __savErr);}catch(_){ }}\n})();';
+
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
 var parts = [
@@ -1080,6 +1149,7 @@ var parts = [
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
   '/* === anwesenheit (gescoped) === */', anwStyleScoped,
+  '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
   '</style>',
   '</head>',
@@ -1087,12 +1157,17 @@ var parts = [
   SHELL_BODY_TOP,
   '<section class="kb-panel" id="anw-root">', anwBody, '</section>',
   '<section class="kb-panel" id="dos-root">', dosBody, '</section>',
+  '<section class="kb-panel" id="sav-root">',
+  '<div class="sav-bar" id="sav-bar" style="display:none"><button class="sav-back" id="sav-back">← Zurück zum Schüler</button><span class="sav-who" id="sav-who"></span><span class="sav-hint">Screening-Befunde sind Beobachtungs-Hypothesen, keine Diagnosen.</span></div>',
+  savBody,
+  '</section>',
   SHELL_PANELS_EXTRA,
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
   '<script>' + BUBBLE_MODULE + '</' + 'script>',
   '<script>' + anwScript + '</' + 'script>',
+  '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '</body>',
