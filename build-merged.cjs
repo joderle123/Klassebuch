@@ -370,12 +370,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .st-chip.st-ok{background:var(--kb-accent2-50);color:var(--kb-accent2-dark);border-color:transparent;}
 .st-foot{font-size:12px;color:var(--kb-muted);margin-top:auto;}
 /* Hub-Status-Leiste */
-.kb-statstrip{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 24px;}
-.kb-stat-tile{flex:1 1 140px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:14px 16px;}
-.kb-stat-tile .v{font-size:22px;font-weight:800;color:var(--kb-text);line-height:1.1;}
-.kb-stat-tile .v.warn{color:var(--kb-danger-dark);}
-.kb-stat-tile .v.ok{color:var(--kb-accent2-dark);}
-.kb-stat-tile .l{font-size:11.5px;color:var(--kb-muted);font-weight:600;margin-top:4px;}
+.kb-statstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:0 0 22px;}
+.kb-stat-tile{display:flex;align-items:center;gap:12px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:13px 15px;box-shadow:var(--kb-shadow-sm);}
+.kb-stat-tile .kt-ic{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:var(--kb-accent-50);}
+.kb-stat-tile .v{font-size:21px;font-weight:800;color:var(--kb-text);line-height:1;}
+.kb-stat-tile .l{font-size:11px;color:var(--kb-muted);font-weight:600;margin-top:3px;}
+.kb-stat-tile.kt-warn .kt-ic{background:var(--kb-danger-50);}
+.kb-stat-tile.kt-warn .v{color:var(--kb-danger-dark);}
+.kb-stat-tile.kt-ok .kt-ic{background:var(--kb-accent2-50);}
+.kb-stat-tile.kt-ok .v{color:var(--kb-accent2-dark);}
+.kb-hub-avatar{width:54px;height:54px;border-radius:15px;font-size:23px;box-shadow:0 6px 16px rgba(79,91,213,.28);}
+.kb-hub-name{font-size:22px;}
+.kb-hub-head{padding-top:22px;}
+.card.kb-mini h4{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;margin:0 0 11px;padding-bottom:10px;border-bottom:1px solid var(--kb-border);}
 .kb-subhead{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--kb-text);}
 .kb-subhead.kb-subhead-mt{margin-top:30px;border-top:1px solid var(--kb-border);padding-top:24px;}
 /* Hub-Karten-Inhalte */
@@ -471,6 +478,9 @@ var ACCENT_OVERRIDE = `
 #dos-root .card-grid{ gap:18px; }
 #dos-root .page-head h2{ font-size:25px; letter-spacing:-.02em; }
 #dos-root .empty-state{ border-radius:16px; }
+#dos-root .card.kb-mini{ box-shadow:var(--kb-shadow-sm); transition:box-shadow .15s ease, transform .15s ease; }
+#dos-root .card.kb-mini:hover{ box-shadow:var(--kb-shadow); transform:translateY(-2px); }
+#dos-root .sv-muster{ box-shadow:var(--kb-shadow-sm); }
 `;
 
 var SHELL_BODY_TOP = `
@@ -598,7 +608,7 @@ var DOS_OVERRIDES = `
   function stat(n,l){return '<div class="kb-stat"><div class="kb-stat-n">'+n+'</div><div class="kb-stat-l">'+escapeHtml(l)+'</div></div>';}
   function hubHeader(student,tab){
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));} meta.push('Niveau '+escapeHtml(rosterLevel(sid)));
-    var tabs=[['uebersicht','Übersicht'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['umfeld','Umfeld']];
+    var tabs=[['uebersicht','Übersicht'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['reunion','Réunion'],['helfernetz','Helfernetz']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -650,9 +660,9 @@ var DOS_OVERRIDES = `
     } else {
       screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch nicht erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
     }
-    function tile(v,l,cls){return '<div class="kb-stat-tile"><div class="v'+(cls?(' '+cls):'')+'">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div>';}
-    var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn'):tile('erfasst','Screening','ok')):tile('—','Screening');
-    var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''))+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele')+tile(weekly.length,'Wochenziele')+'</div>';
+    function tile(v,l,cls,ic){return '<div class="kb-stat-tile'+(cls?(' kt-'+cls):'')+'"><div class="kt-ic">'+(ic||'')+'</div><div class="kt-b"><div class="v">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div></div>';}
+    var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn','🧠'):tile('erfasst','Screening','ok','🧠')):tile('—','Screening','','🧠');
+    var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''),'📉')+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele','','🎯')+tile(weekly.length,'Wochenziele','','📌')+'</div>';
     var heroRisk=(scr&&scr.hasData&&scr.risiken&&scr.risiken.length)?('<div class="hub-hero-risk"><span class="hub-hero-ic">⚠</span><div class="hub-hero-tx"><div class="hub-hero-t">Screening-Risiko</div><div class="hub-hero-s">'+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join(' · ')+(scr.topMuster?' — '+escapeHtml(scr.topMuster.name):'')+'</div></div><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ansehen</button></div>'):'';
     return stripHtml+heroRisk+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+foerderCard+wochenCard+absCard+reuCard+lastCard+diagCard+'</div>';
   }
@@ -736,13 +746,14 @@ var DOS_OVERRIDES = `
         if(tab==='dossier'){var base=_origDetail(params);sectionHtml=base.html;baseAfter=base.afterRender;}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
         else if(tab==='schule'){sectionHtml='<h3 class="kb-subhead">📉 Absenzen</h3>'+hubAbsenzen(student)+'<h3 class="kb-subhead kb-subhead-mt">📒 Aufgaben &amp; Prüfungen</h3>'+hubAufgaben(student);}
-        else if(tab==='umfeld'){sectionHtml='<h3 class="kb-subhead">🗣️ Réunion</h3>'+hubReunion(student)+'<h3 class="kb-subhead kb-subhead-mt">🕸️ Helfernetz</h3>'+hubHelfernetz(student);}
+        else if(tab==='reunion'){sectionHtml=hubReunion(student);}
+        else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
         else {tab='uebersicht';sectionHtml=hubOverview(student);}
       }catch(err){sectionHtml='<div class="empty-state">Fehler im Hub-Bereich: '+escapeHtml((err&&err.message)||String(err))+'</div>';}
       return {
         navKey:'students',
         html: hubHeader(student,tab)+'<div class="kb-hub-body">'+sectionHtml+'</div>',
-        afterRender: function(root){ if(baseAfter){try{baseAfter(root);}catch(e){}} if(tab==='umfeld'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}} }
+        afterRender: function(root){ if(baseAfter){try{baseAfter(root);}catch(e){}} if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}} }
       };
     };
   }
