@@ -397,6 +397,41 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .hub-hero-risk .hub-hero-t{font-weight:800;color:var(--kb-danger-dark);}
 .hub-hero-risk .hub-hero-s{font-size:13px;color:var(--kb-text-soft);margin-top:2px;}
 .hub-hero-risk .btn{margin-left:auto;flex:0 0 auto;}
+/* Karten-Kopf mit Icon-Badge */
+.card.kb-mini h4 .mi{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:15px;}
+.card.kb-mini h4 .mt{flex:1;min-width:0;}
+.mi-a{background:var(--kb-accent-50);}
+.mi-g{background:var(--kb-accent2-50);}
+.mi-w{background:var(--kb-warn-50);}
+.mi-r{background:var(--kb-danger-50);}
+.mi-b{background:var(--kb-info-50);}
+/* Zwei-Spalten-Layout */
+.hub2{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:20px;align-items:start;}
+.hub2-main{display:flex;flex-direction:column;gap:16px;min-width:0;}
+.hub2-side{display:flex;flex-direction:column;gap:16px;}
+@media(max-width:980px){.hub2{grid-template-columns:1fr;}}
+/* Fokus-Panel: Screening */
+.scr-panel{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:18px;padding:20px 22px;box-shadow:var(--kb-shadow);}
+.scr-panel.is-risk{border-color:var(--kb-danger);background:linear-gradient(180deg,var(--kb-danger-50),var(--kb-surface) 70%);}
+.scr-panel-h{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.scr-panel-h .mi{flex:0 0 auto;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;font-size:18px;}
+.scr-panel-t{font-size:17px;font-weight:800;letter-spacing:-.01em;}
+.scr-panel .hub-line{margin:6px 0;}
+/* Info-Zeilen-Karte (Seitenspalte) */
+.hub-side-card{padding:4px 0;}
+.hub-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--kb-border);}
+.hub-row:first-child{border-top:none;}
+.hub-row .ri{flex:0 0 auto;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:16px;background:var(--kb-surface-2);}
+.hub-row .rb{flex:1;min-width:0;}
+.hub-row .rl{font-size:13.5px;font-weight:700;line-height:1.2;}
+.hub-row .rv{font-size:12px;color:var(--kb-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.hub-row .ra{flex:0 0 auto;}
+/* Leerer Schüler: Erste Schritte */
+.hub-empty{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:20px;padding:44px 28px;text-align:center;box-shadow:var(--kb-shadow);}
+.hub-empty-ic{font-size:46px;margin-bottom:8px;}
+.hub-empty h3{margin:0 0 6px;font-size:21px;letter-spacing:-.01em;}
+.hub-empty p{color:var(--kb-muted);margin:0 0 20px;}
+.hub-empty-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
 /* Screening-Ansicht (kurz & einklappbar) */
 .sv-h{margin:8px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-muted);font-weight:800;}
 .sv-axes{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;}
@@ -628,43 +663,55 @@ var DOS_OVERRIDES = `
     var impBtn='<button class="btn btn-sm" data-route="#/report-import?student='+encodeURIComponent(sid)+'">📄 DS/PEI importieren</button>';
     var DM={V:{l:'Verhalten',c:'#c0562d'},K:{l:'Kommunikation',c:'#2f6fb0'},SOZ:{l:'Sozialisation',c:'#3a8a5f'},KOG:{l:'Kognition',c:'#7a52b3'}};
 
-    /* ---- Förderziele (kompakt) ---- */
-    var foerderCard;
-    if(cg&&cg.goals&&cg.goals.length){
-      var gl=cg.goals.slice(0,4).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};return '<li><span class="hub-dot" style="background:'+dm.c+'"></span>'+escapeHtml(g.formulation||g.title||g.code)+'</li>';}).join('');
-      foerderCard='<div class="card kb-mini"><h4>🎯 Förderziele <span class="hub-count">'+cg.goals.length+'</span></h4><ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>4?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-4)+' weitere</div>':'')+'</div>';
-    } else {
-      foerderCard='<div class="card kb-mini"><h4>🎯 Förderziele</h4><p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
-    }
-    /* ---- Wochenziele (kompakt) ---- */
-    var wochenCard;
-    if(weekly.length){
-      wochenCard='<div class="card kb-mini"><h4>📌 Wochenziele</h4><ul class="hub-list">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';
-    } else {
-      wochenCard='<div class="card kb-mini"><h4>📌 Wochenziele</h4><p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
-    }
-
-    /* ---- kompakte Karten ---- */
-    var absCard='<div class="card kb-mini"><h4>📉 Absenzen</h4><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+'</div><div class="kb-btn-row"><button class="btn btn-sm" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button></div></div>';
-    var diagCard='<div class="card kb-mini"><h4>🩺 Diagnostik</h4>'+(rep?'<div class="muted" style="font-size:.85em;">'+escapeHtml(rep.type||'—')+' · '+escapeHtml(formatDate(rep.date))+'</div>'+(rep.recommendations&&rep.recommendations.length?'<div class="hub-line">'+escapeHtml(rep.recommendations.slice(0,2).join('; '))+'</div>':'')+'<div class="kb-btn-row"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Im Dossier</button></div>':'<p class="muted">Kein DS/PEI importiert.</p><div class="kb-btn-row">'+impBtn+'</div>')+'</div>';
-    var reuCard='<div class="card kb-mini"><h4>🗣️ Réunion-Update'+(lastReuDate?' <span class="muted" style="font-weight:600;font-size:.78em;">'+escapeHtml(formatDate(lastReuDate))+'</span>':'')+'</h4>'+(lastReu?'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div>':'<p class="muted">Noch kein Update.</p>')+'</div>';
-    var lastCard='<div class="card kb-mini"><h4>🗒️ Letzter Eintrag</h4>'+(last?'<div class="muted" style="font-size:.8em;margin-bottom:4px;">'+escapeHtml(formatDate(last.date))+' · '+escapeHtml(last.category)+'</div><div class="entry-body hub-clamp">'+escapeHtml(String(last.text||'').slice(0,200))+'</div>':'<p class="muted">Noch keine Einträge.</p>')+'</div>';
-
-    var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
-    var screenCard;
-    if(scr&&scr.hasData){
-      var sTop=scr.achsen&&scr.achsen[0];
-      var sAx=sTop?('<div class="hub-line"><strong>'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+'</strong> <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>'):'';
-      var sMus=scr.topMuster?('<div class="hub-line muted">Submuster: '+escapeHtml(scr.topMuster.name||'?')+'</div>'):'';
-      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+sAx+sMus+'<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
-    } else {
-      screenCard='<div class="card kb-mini"><h4>🧠 Screening</h4>'+(scr&&scr.noApi?'<p class="muted">Modul lädt …</p>':'<p class="muted">Noch nicht erfasst.</p>')+'<div class="kb-btn-row"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
-    }
+    function mh(ic,t,c){return '<h4><span class="mi mi-'+(c||'a')+'">'+ic+'</span><span class="mt">'+t+'</span></h4>';}
     function tile(v,l,cls,ic){return '<div class="kb-stat-tile'+(cls?(' kt-'+cls):'')+'"><div class="kt-ic">'+(ic||'')+'</div><div class="kt-b"><div class="v">'+v+'</div><div class="l">'+escapeHtml(l)+'</div></div></div>';}
+    var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
     var scrTile=(scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn','🧠'):tile('erfasst','Screening','ok','🧠')):tile('—','Screening','','🧠');
     var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''),'📉')+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele','','🎯')+tile(weekly.length,'Wochenziele','','📌')+'</div>';
-    var heroRisk=(scr&&scr.hasData&&scr.risiken&&scr.risiken.length)?('<div class="hub-hero-risk"><span class="hub-hero-ic">⚠</span><div class="hub-hero-tx"><div class="hub-hero-t">Screening-Risiko</div><div class="hub-hero-s">'+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join(' · ')+(scr.topMuster?' — '+escapeHtml(scr.topMuster.name):'')+'</div></div><button class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ansehen</button></div>'):'';
-    return stripHtml+heroRisk+'<div class="kb-hub-grid kb-mini-grid">'+screenCard+foerderCard+wochenCard+absCard+reuCard+lastCard+diagCard+'</div>';
+
+    /* ---- Schüler ohne Daten: klare Erste-Schritte statt leerer Karten ---- */
+    var hasAny=(scr&&scr.hasData)||(cg&&cg.goals&&cg.goals.length)||weekly.length||entries.length||(sum&&sum.total)||lastReu;
+    if(!hasAny){
+      return stripHtml+'<div class="hub-empty"><div class="hub-empty-ic">🚀</div><h3>Noch nichts erfasst für '+escapeHtml(student.name)+'</h3><p>Leg los — alle Infos sammeln sich danach automatisch hier.</p><div class="hub-empty-actions"><button class="btn btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">🧠 Screening durchführen</button>'+impBtn+'<button class="btn" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">📉 Absenzen erfassen</button></div></div>';
+    }
+
+    /* ---- Fokus-Panel: Screening ---- */
+    var scrPanel;
+    if(scr&&scr.hasData){
+      var risk=scr.risiken&&scr.risiken.length;
+      var sTop=scr.achsen&&scr.achsen[0];
+      var body='';
+      if(risk){body+='<div class="hub-line"><span class="sv-risk">⚠ '+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join('</span> <span class="sv-risk">')+'</span></div>';}
+      if(sTop){body+='<div class="hub-line"><strong>'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+'</strong> <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>';}
+      if(scr.topMuster){body+='<div class="hub-line muted">Submuster: <strong style="color:var(--kb-text)">'+escapeHtml(scr.topMuster.name||'?')+'</strong></div>';}
+      scrPanel='<div class="scr-panel'+(risk?' is-risk':'')+'"><div class="scr-panel-h"><span class="mi mi-'+(risk?'r':'a')+'">🧠</span><span class="scr-panel-t">Screening</span></div>'+body+'<div class="kb-btn-row" style="margin-top:12px;"><button class="btn btn-sm btn-primary" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
+    } else {
+      scrPanel='<div class="scr-panel"><div class="scr-panel-h"><span class="mi mi-a">🧠</span><span class="scr-panel-t">Screening</span></div><p class="muted">'+(scr&&scr.noApi?'Modul lädt …':'Noch kein Screening — erfasse Beobachtungen, um Verdachtsachsen & Submuster zu erhalten.')+'</p><div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
+    }
+
+    /* ---- Förderziele ---- */
+    var foerderCard;
+    if(cg&&cg.goals&&cg.goals.length){
+      var gl=cg.goals.slice(0,5).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};return '<li><span class="hub-dot" style="background:'+dm.c+'"></span>'+escapeHtml(g.formulation||g.title||g.code)+'</li>';}).join('');
+      foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele <span class="hub-count">'+cg.goals.length+'</span>','g')+'<ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>5?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-5)+' weitere</div>':'')+'</div>';
+    } else {
+      foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele','g')+'<p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
+    }
+
+    /* ---- Réunion-Update (Hauptbereich) ---- */
+    var reuCard=lastReu?('<div class="card kb-mini">'+mh('🗣️','Réunion-Update <span class="muted" style="font-weight:600;font-size:.78em;">'+(lastReuDate?escapeHtml(formatDate(lastReuDate)):'')+'</span>','a')+'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div></div>'):'';
+
+    /* ---- Seitenspalte: kompakte Info-Zeilen statt Einzelkärtchen ---- */
+    function row(ic,l,v,act){return '<div class="hub-row"><span class="ri">'+ic+'</span><div class="rb"><div class="rl">'+l+'</div>'+(v?'<div class="rv">'+v+'</div>':'')+'</div>'+(act||'')+'</div>';}
+    var sideRows='';
+    sideRows+=row('📉','Absenzen',(sum.total?(sum.entschuldigt+' E · '+sum.unentschuldigt+' NE · '+sum.verspaetet+' R'):'keine'),'<button class="btn btn-sm ra" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button>');
+    sideRows+=row('📌','Wochenziele',(weekly.length?weekly.length+' Ziele':'keine'),'');
+    sideRows+=row('🩺','Diagnostik',(rep?escapeHtml((rep.type||'Bericht')+' · '+formatDate(rep.date)):'kein DS/PEI'),(rep?'<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Dossier</button>':''));
+    sideRows+=row('🗒️','Letzter Eintrag',(last?escapeHtml(formatDate(last.date)+' · '+last.category):'keiner'),'');
+    sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
+    var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
+
+    return stripHtml+'<div class="hub2"><div class="hub2-main">'+scrPanel+foerderCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
   }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
