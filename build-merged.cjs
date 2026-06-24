@@ -535,6 +535,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .gd-altbox{margin-top:16px;border:1px dashed var(--kb-accent-200);border-radius:12px;padding:13px 15px;background:var(--kb-accent-50);}
 .gd-altbox-h{font-weight:800;font-size:13px;color:var(--kb-accent-dark);margin:0 0 4px;}
 .gd-altbox p{font-size:13px;color:var(--kb-text-soft);margin:0 0 10px;line-height:1.5;}
+.gd-gate-q{margin:0 0 16px;}
+.gd-gate-t{font-weight:700;font-size:14px;color:var(--kb-text);margin:0 0 8px;}
+.gd-conf{border-radius:12px;padding:13px 15px;margin:0 0 16px;border-left:4px solid var(--kb-muted);background:var(--kb-surface-2);}
+.gd-conf-l{font-weight:800;font-size:14.5px;color:var(--kb-text);}
+.gd-conf-t{font-size:12.5px;color:var(--kb-text-soft);margin-top:4px;line-height:1.5;}
+.gd-conf-ok{border-left-color:var(--kb-accent2);background:var(--kb-accent2-50);}
+.gd-conf-ok .gd-conf-l{color:var(--kb-accent2-dark);}
+.gd-conf-warn{border-left-color:var(--kb-warn);background:var(--kb-warn-50);}
+.gd-conf-warn .gd-conf-l{color:#8a5a00;}
+.gd-conf-muted{border-left-color:var(--kb-muted-2);}
+.gd-linkbtn{font:inherit;font-weight:700;font-size:inherit;background:none;border:none;color:var(--kb-accent);cursor:pointer;padding:0;text-decoration:underline;}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -1517,6 +1528,18 @@ window.KB_SCREENING=(function(){
   var RARE_AXES={A13:'Psychose-Erstmanifestation',A04:'Bipolare Spektrum-Störung'};
   var CRISIS_LINE='Sofort Fachweg einschalten: KJP-Notdienst, SOS Détresse 454545, im Notfall 112. Schüler/in nicht allein lassen.';
   function acuteFlags(symptome){var out=[];(symptome||[]).forEach(function(id){if(ACUTE_ITEMS[id])out.push({id:id,sev:ACUTE_ITEMS[id].sev,label:ACUTE_ITEMS[id].label});});out.sort(function(a,b){return (a.sev==='kritisch'?-1:0)-(b.sev==='kritisch'?-1:0);});return out;}
+  /* Klinische Konfidenz aus dem Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss).
+     Bildet das DSM/ICD-Prinzip "Symptome + Dauer + klinisch bedeutsame
+     Beeinträchtigung + Ausschluss" als Konfidenz-Stufe ab. Ändert NICHT, WELCHE
+     Achse/welches Submuster führt — nur, wie belastbar der Verdacht ist. */
+  function confidenceOf(gate){
+    var g=gate||{}; if(!g.dauer&&!g.beeintr&&!g.alt)return null;
+    if(g.alt==='ja')return {key:'differential',tone:'warn',label:'Differential zuerst klären',text:'Es gibt eine naheliegendere Erklärung — die zuerst ausschließen, bevor dieser Verdacht gewichtet wird.'};
+    if(g.beeintr==='kaum')return {key:'subklinisch',tone:'muted',label:'Beobachten — aktuell kein bedeutsamer Leidensdruck',text:'Auffälligkeiten ja, aber (noch) ohne deutliche Beeinträchtigung — beobachten statt pathologisieren.'};
+    if(g.dauer==='kurz')return {key:'akut',tone:'warn',label:'Mögliche akute Belastungsreaktion — beobachten',text:'Sehr kurze Dauer; kann vorübergehend sein. Verlauf abwarten.'};
+    if((g.dauer==='mittel'||g.dauer==='lang')&&(g.beeintr==='merklich'||g.beeintr==='stark'))return {key:'erhaertet',tone:'ok',label:'Verdacht erhärtet — fachliche Abklärung empfohlen',text:'Dauer und Beeinträchtigung sprechen für klinische Relevanz. Strukturierte Abklärung (Goldstandards) einleiten.'};
+    return {key:'hinweis',tone:'muted',label:'Hinweis — weiter beobachten, Daten ergänzen',text:''};
+  }
   function result(sid){
     var a=api(); var d=get(sid);
     if(!a||!a.scoreVerdachtsachsen)return {hasData:false,noApi:true};
@@ -1529,7 +1552,8 @@ window.KB_SCREENING=(function(){
       var ac=achsen[i].achse||{}; var tk=ac.topicKey; if(!tk||!d.plans[tk])continue;
       if(a.computeSymptomScores){try{var ms=a.computeSymptomScores(d.plans[tk],tk);if(ms&&ms.length&&ms[0].muster){topMuster=ms[0].muster;topTopicKey=tk;topAchseName=ac.name;}}catch(e){}}
     }
-    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,acute:acuteFlags(d.symptome),globalCount:(d.symptome||[]).length,updatedAt:d.updatedAt};
+    var conf=(topTopicKey&&d.plans[topTopicKey])?confidenceOf(d.plans[topTopicKey].gate):null;
+    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,confidence:conf,acute:acuteFlags(d.symptome),globalCount:(d.symptome||[]).length,updatedAt:d.updatedAt};
   }
   function symTextMap(){
     var m={}; try{var a=api(); var pool=a&&a.SAVOIR_GLOBAL&&a.SAVOIR_GLOBAL.symptomPool; (pool&&pool.symptome||[]).forEach(function(s){m[s.id]=s.text;});}catch(e){} return m;
@@ -1560,6 +1584,7 @@ window.KB_SCREENING=(function(){
     }
     L.push('');
     L.push('B) Ergebnis (vom Programm berechnet):');
+    if(r.confidence)L.push('Klinische Einordnung (Kriterien-Check Dauer/Beeinträchtigung): '+r.confidence.label+'.');
     L.push('Verdachtsachsen (Ausprägung):');
     if(r.achsen.length){r.achsen.forEach(function(x){L.push('  - '+((x.achse&&x.achse.name)||(x.achse&&x.achse.id)||'?')+': '+x.staerke);});}else{L.push('  - keine über Schwelle');}
     if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+((x.risiko&&x.risiko.name)||'?')+': '+x.staerke);});}
@@ -1603,6 +1628,7 @@ window.KB_SCREENING=(function(){
     capture:capture,
     openStudent:openStudent,
     acuteFlags:function(sid){return acuteFlags((get(sid).symptome)||[]);},
+    confidenceOf:confidenceOf,
     result:result,
     detail:detail,
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''});}return out;},
@@ -1677,8 +1703,8 @@ window.KB_GUIDE=(function(){
 
   /* ---------- Phasen-Stepper ---------- */
   function phaseBar(){
-    var order=['breit','verdacht','tiefe','ergebnis'];
-    var labels={breit:'Beobachten',verdacht:'Verdacht',tiefe:'Vertiefen',ergebnis:'Ergebnis'};
+    var order=['breit','verdacht','tiefe','kriterien','ergebnis'];
+    var labels={breit:'Beobachten',verdacht:'Verdacht',tiefe:'Vertiefen',kriterien:'Prüfen',ergebnis:'Ergebnis'};
     var cur=order.indexOf(ST.stage);
     var h='<div class="gd-steps">';
     order.forEach(function(s,i){
@@ -1758,18 +1784,18 @@ window.KB_GUIDE=(function(){
       var rareShown=achsen.filter(function(x){return x.achse&&RARE[x.achse.id];}).map(function(x){return x.achse.name||'';});
       h+='<div class="gd-caveat">Das Programm prüft <strong>keine</strong> Dauer, keinen Verlauf und keine Beeinträchtigung — das gehört in die fachliche Abklärung.';
       if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten — wenige unspezifische Zeichen genügen hier rechnerisch.';
-      if((d.symptome||[]).length<3)h+='<br>⚖ Schwache Datenbasis: beruht auf nur '+(d.symptome||[]).length+' Beobachtung(en).';
       h+='</div>';
     } else {
       var scores=(res&&res.achsenScores)||{};var g=SG();
       var raw=g.achsen.map(function(ac){return {achse:ac,score:scores[ac.id]||0};}).filter(function(x){return x.score>0;}).sort(function(a2,b2){return b2.score-a2.score;}).slice(0,3);
       if(raw.length){
-        h+='<h3 class="gd-q">Noch kein klares Muster</h3><p class="gd-sub">Keine Achse über der Schwelle. Du kannst zurück und mehr beobachten — oder einer dieser leichten Tendenzen nachgehen:</p>';
+        h+='<h3 class="gd-q">Noch kein belastbares Muster</h3><p class="gd-sub">Keine Achse erreicht die Konvergenz-Schwelle (mind. zwei zusammenpassende Beobachtungen). Mehr beobachten — oder einer dieser leichten Tendenzen nachgehen:</p>';
         h+=raw.map(function(x,i){return axisRow({achse:x.achse,staerke:'mild',score:x.score},i+1);}).join('');
       } else {
         h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>';
       }
     }
+    if((d.symptome||[]).length<3){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — für einen belastbaren Verdacht zu wenig. Ein einzelnes Zeichen ist kein Syndrom.</div>';}
     h+=navBar('Beobachtungen ergänzen','','','');
     return h+'</div>';
   }
@@ -1816,7 +1842,29 @@ window.KB_GUIDE=(function(){
       navBar('Zurück',(last?'Ergebnis ansehen ›':'Weiter ›'),'tiefe-next',(ST.tiefeIdx+1)+' / '+steps.length)+'</div>';
   }
 
-  /* ---------- Phase 4: Ergebnis ---------- */
+  /* ---------- Phase 3b: Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss) ---------- */
+  var GATE_Q=[
+    {key:'dauer',titel:'Seit wann bestehen die Auffälligkeiten?',opts:[{v:'kurz',t:'unter ~2 Wochen'},{v:'mittel',t:'einige Wochen bis Monate'},{v:'lang',t:'über ~6 Monate / anhaltend'}]},
+    {key:'beeintr',titel:'Wie stark ist der Alltag beeinträchtigt (Schule, Familie, Freunde)?',opts:[{v:'kaum',t:'kaum oder nicht'},{v:'merklich',t:'merklich'},{v:'stark',t:'stark'}]},
+    {key:'alt',titel:'Gibt es eine naheliegendere Erklärung (akute Belastung, Substanz, somatisch)?',opts:[{v:'nein',t:'eher nicht'},{v:'ja',t:'ja, möglich'}]}
+  ];
+  function renderKriterien(){
+    var d=read();var ps=ensurePlan(ST.axisTopicKey,d);var g=ps.gate||{};
+    var blocks=GATE_Q.map(function(q){
+      return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(q.titel)+'</div><div class="gd-opts">'+
+        q.opts.map(function(o){var on=g[q.key]===o.v;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="gate" data-key="'+esc(q.key)+'" data-val="'+esc(o.v)+'"><span class="gd-radio"></span>'+esc(o.t)+'</button>';}).join('')+
+        '</div></div>';
+    }).join('');
+    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(g):null;
+    var live=conf?('<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div></div>'):'';
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 4 · Klinische Kriterien</p>'+
+      '<h3 class="gd-q">Kurz absichern, bevor wir einordnen</h3>'+
+      '<p class="gd-sub">Symptome allein sind keine Diagnose. Dauer, Beeinträchtigung und Ausschluss entscheiden über die klinische Bedeutung — diese drei Fragen schärfen die Einordnung.</p>'+
+      blocks+live+
+      '<div class="gd-nav"><button class="gd-back" data-g="kriterien-back">‹ Zurück</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="gate-skip">Überspringen</button> <button class="btn btn-primary btn-sm" data-g="gate-done">Ergebnis ansehen ›</button></div></div>';
+  }
+
+  /* ---------- Phase 5: Ergebnis ---------- */
   function sec(title,html){if(!html)return '';return '<details class="sv-acc"><summary>'+esc(title)+'</summary><div class="sv-prose">'+html+'</div></details>';}
   function renderErgebnis(){
     var a=api();if(!a)return loading();
@@ -1827,6 +1875,9 @@ window.KB_GUIDE=(function(){
     var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
     var h=phaseBar();
     if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — Sicherheit hat Vorrang (Helfernetz / KJP-Notdienst, 112).</div>';}
+    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(ps.gate):null;
+    if(conf){h+='<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div>'+(conf.text?'<div class="gd-conf-t">'+esc(conf.text)+'</div>':'')+'</div>';}
+    else{h+='<div class="gd-caveat">Klinische Kriterien (Dauer/Beeinträchtigung) noch nicht geprüft — <button class="gd-linkbtn" data-g="goto-kriterien">jetzt prüfen</button>, das schärft die Einordnung erheblich.</div>';}
     h+='<div class="gd-card">';
     if(top&&top.muster){
       var m=top.muster;var b=m.bloecke||{};
@@ -1868,6 +1919,7 @@ window.KB_GUIDE=(function(){
       if(ST.stage==='breit')h+=renderBreit();
       else if(ST.stage==='verdacht')h+=renderVerdacht();
       else if(ST.stage==='tiefe')h+=renderTiefe();
+      else if(ST.stage==='kriterien')h+=renderKriterien();
       else if(ST.stage==='ergebnis')h+=renderErgebnis();
       else h+=renderBreit();
     }catch(e){h='<div class="gd-card"><p class="gd-sub">Fehler im Trichter: '+esc((e&&e.message)||String(e))+'</p></div>';}
@@ -1891,7 +1943,11 @@ window.KB_GUIDE=(function(){
     if(g==='axis'||g==='deepen-second'){var tk=el.getAttribute('data-topic');if(!tk)return;ST.axisTopicKey=tk;ST.axisName=el.getAttribute('data-name')||tk;ST.tiefeSteps=buildTiefe(tk);ST.tiefeIdx=0;d=read();ensurePlan(tk,d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'ergebnis';paint();return;}
     if(g==='opt'){var fid=el.getAttribute('data-fid'),val=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);if(ps.kontext[fid]===val)delete ps.kontext[fid];else ps.kontext[fid]=val;write(d);paint();return;}
     if(g==='tsym'){var tid=el.getAttribute('data-id');d=read();ps=ensurePlan(ST.axisTopicKey,d);var k2=ps.symptome.indexOf(tid);if(k2>=0)ps.symptome.splice(k2,1);else ps.symptome.push(tid);write(d);paint();return;}
-    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{ST.stage='ergebnis';}paint();return;}
+    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{ST.stage='kriterien';}paint();return;}
+    if(g==='gate'){var gk=el.getAttribute('data-key'),gv=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);ps.gate=ps.gate||{};if(ps.gate[gk]===gv)delete ps.gate[gk];else ps.gate[gk]=gv;write(d);paint();return;}
+    if(g==='gate-done'||g==='gate-skip'){ST.stage='ergebnis';paint();return;}
+    if(g==='kriterien-back'){ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);paint();return;}
+    if(g==='goto-kriterien'){ST.stage='kriterien';paint();return;}
     if(g==='ergebnis-back'){ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';ST.tiefeIdx=0;paint();return;}
     if(g==='goto-verdacht'){ST.stage='verdacht';paint();return;}
     if(g==='restart'){ST=initState(ST.sid);ST.stage='breit';ST.breitSub='triage';ST.catIdx=0;paint();return;}
