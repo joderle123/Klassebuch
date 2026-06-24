@@ -638,10 +638,12 @@ var DOS_OVERRIDES = `
     var subHtml;
     if(r.topMuster){
       var b=r.topMuster.bloecke||{};
+      var appParts=[b.ansatzHaupt||'',b.ansatzTust?('<p><strong>Konkret tun:</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p><strong>Vermeiden:</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
+      var approachHtml=appParts?('<details style="margin-top:8px;" open><summary><strong>Umgang mit diesem Profil</strong></summary><div class="sv-prose">'+appParts+'</div></details>'):'';
       var stepsHtml='';
-      if(b.phasen&&b.phasen[0]){stepsHtml='<details style="margin-top:8px;"><summary><strong>Nächste Schritte</strong></summary><div class="sv-prose"><p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')+'</div></details>';}
+      if(b.phasen&&b.phasen[0]){stepsHtml='<details style="margin-top:6px;"><summary><strong>Nächste Schritte</strong></summary><div class="sv-prose"><p><strong>'+escapeHtml(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')+'</div></details>';}
       var schoolHtml=b.schuleAnpassungen?('<details style="margin-top:6px;"><summary><strong>Schulanpassungen</strong></summary><div class="sv-prose">'+b.schuleAnpassungen+'</div></details>'):'';
-      subHtml='<div class="card" style="margin-top:14px;"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 style="margin:.2em 0 .5em;">'+escapeHtml(r.topMuster.name||'?')+'</h3><div class="sv-prose">'+(b.profil||'')+'</div>'+stepsHtml+schoolHtml+'</div>';
+      subHtml='<div class="card" style="margin-top:14px;"><div class="muted" style="font-size:.8em;">Erkanntes Submuster'+(r.topAchseName?' · '+escapeHtml(r.topAchseName):'')+'</div><h3 style="margin:.2em 0 .5em;">'+escapeHtml(r.topMuster.name||'?')+'</h3><div class="sv-prose">'+(b.profil||'')+'</div>'+approachHtml+stepsHtml+schoolHtml+'<p class="muted" style="font-size:.8em;margin-top:10px;">Vollständiger Plan (alle Phasen, Gegenübertragung, Krisenampel) im <strong>Screening</strong> öffnen.</p></div>';
     } else {
       subHtml='<div class="kb-empty-card" style="margin-top:14px;">Noch kein Submuster bestimmt. Öffne das Screening und vertiefe die Top-Achse (Krankheitsbild / „Vertiefte Diagnostik"), um das Submuster zu erhalten.</div>';
     }
@@ -922,10 +924,10 @@ window.KB_BUBBLE=(function(){
     s+='<line x1="'+cx+'" y1="'+(cy-338)+'" x2="'+cx+'" y2="'+(cy+338)+'" stroke="#cdd4e6" stroke-width="1.4"/>';
     var rl=[['wöchentlich',150],['monatlich',244],['auf Anfrage',338]];
     for(i=0;i<rl.length;i++){s+='<text x="'+cx+'" y="'+(cy-rl[i][1]+17)+'" text-anchor="middle" font-size="11" font-style="italic" fill="#7a8295" paint-order="stroke" stroke="#ffffff" stroke-width="3">'+rl[i][0]+'</text>';}
-    s+='<text x="44" y="150" font-size="13" font-weight="700" fill="#3a5a78">Familie / familiäre Hilfen</text>';
-    s+='<text x="'+(W-44)+'" y="150" text-anchor="end" font-size="13" font-weight="700" fill="#3a5a78">Schule: lokal / regional</text>';
-    s+='<text x="44" y="'+(cy+356)+'" font-size="13" font-weight="700" fill="#3a5a78">Externe Akteur:innen</text>';
-    s+='<text x="'+(W-44)+'" y="'+(cy+356)+'" text-anchor="end" font-size="13" font-weight="700" fill="#3a5a78">Schule: national</text>';
+    s+='<text x="44" y="150" font-size="13" font-weight="700" fill="#3b46b8">Familie / familiäre Hilfen</text>';
+    s+='<text x="'+(W-44)+'" y="150" text-anchor="end" font-size="13" font-weight="700" fill="#3b46b8">Schule: lokal / regional</text>';
+    s+='<text x="44" y="'+(cy+356)+'" font-size="13" font-weight="700" fill="#3b46b8">Externe Akteur:innen</text>';
+    s+='<text x="'+(W-44)+'" y="'+(cy+356)+'" text-anchor="end" font-size="13" font-weight="700" fill="#3b46b8">Schule: national</text>';
     var groups={};
     (rec.nodes||[]).forEach(function(n){var k=n.area+'|'+n.freq;(groups[k]=groups[k]||[]).push(n);});
     Object.keys(groups).forEach(function(k){
@@ -1256,15 +1258,37 @@ window.KB_SCREENING=(function(){
     }
     return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,updatedAt:d.updatedAt};
   }
+  function symTextMap(){
+    var m={}; try{var a=api(); var pool=a&&a.SAVOIR_GLOBAL&&a.SAVOIR_GLOBAL.symptomPool; (pool&&pool.symptome||[]).forEach(function(s){m[s.id]=s.text;});}catch(e){} return m;
+  }
   function detail(sid){
-    var r=result(sid); if(!r.hasData)return null;
-    var L=[];
+    var a=api(); var r=result(sid); if(!r.hasData)return null;
+    var d=get(sid); var L=[]; var sm=symTextMap();
+    L.push('A) Erfasste Beobachtungen im Screening (die Antworten):');
+    if(d.symptome&&d.symptome.length){d.symptome.forEach(function(id){L.push('  - '+(sm[id]||id));});}else{L.push('  - (keine globalen Symptome markiert)');}
+    if(r.topTopicKey&&a&&a.symptomDiagnoseFor){
+      var diag=a.symptomDiagnoseFor(r.topTopicKey)||{}; var ps=d.plans[r.topTopicKey]||{};
+      if(ps.kontext&&diag.kontextFragen){
+        var cl=[]; diag.kontextFragen.forEach(function(f){var v=ps.kontext[f.id]; if(v){var opt=(f.optionen||[]).filter(function(o){return o.val===v;})[0]; cl.push((f.titel||f.id)+': '+((opt&&opt.text)||v));}});
+        if(cl.length)L.push('  Kontext ('+(r.topAchseName||r.topTopicKey)+'): '+cl.join('; '));
+      }
+      if(ps.symptome&&ps.symptome.length&&diag.symptomKategorien){
+        var tm={}; diag.symptomKategorien.forEach(function(k){(k.symptome||[]).forEach(function(s){tm[s.id]=s.text;});});
+        L.push('  Vertiefte Merkmale ('+(r.topAchseName||r.topTopicKey)+'):');
+        ps.symptome.forEach(function(id){L.push('    - '+(tm[id]||id));});
+      }
+    }
+    L.push('');
+    L.push('B) Ergebnis (vom Programm berechnet):');
     L.push('Verdachtsachsen (Ausprägung):');
-    if(r.achsen.length){r.achsen.forEach(function(a){L.push('  - '+((a.achse&&a.achse.name)||(a.achse&&a.achse.id)||'?')+': '+a.staerke);});}else{L.push('  - keine über Schwelle');}
-    if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+(x.risiko&&x.risiko.name||'?')+': '+x.staerke);});}
+    if(r.achsen.length){r.achsen.forEach(function(x){L.push('  - '+((x.achse&&x.achse.name)||(x.achse&&x.achse.id)||'?')+': '+x.staerke);});}else{L.push('  - keine über Schwelle');}
+    if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+((x.risiko&&x.risiko.name)||'?')+': '+x.staerke);});}
     if(r.topMuster){var b=r.topMuster.bloecke||{};
       L.push('Erkanntes Submuster: '+(r.topMuster.name||'?')+(r.topAchseName?' ('+r.topAchseName+')':''));
-      if(b.profil)L.push('  Profil: '+plain(b.profil));
+      if(b.profil)L.push('  Erklärung: '+plain(b.profil));
+      if(b.ansatzHaupt)L.push('  Umgang/Ansatz: '+plain(b.ansatzHaupt));
+      if(b.ansatzTust)L.push('  Konkret tun: '+plain(b.ansatzTust));
+      if(b.ansatzNicht)L.push('  Vermeiden: '+plain(b.ansatzNicht));
       if(b.phasen&&b.phasen[0])L.push('  Nächste Schritte: '+(b.phasen[0].titel||'')+' — '+plain(b.phasen[0].was||b.phasen[0].ziele||''));
       if(b.schuleAnpassungen)L.push('  Schulanpassungen: '+plain(b.schuleAnpassungen));
       var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));

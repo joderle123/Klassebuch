@@ -548,7 +548,7 @@ var THEME_LEXICON = [
 var SEVERITY_META = {
   3: { label: 'Sensibles Schlagwort', color: '#b3432d' },
   2: { label: 'Erhöhte Aufmerksamkeit', color: '#c07f1f' },
-  1: { label: 'Dokumentarisch', color: '#3a5a78' }
+  1: { label: 'Dokumentarisch', color: '#4f5bd5' }
 };
 
 /* Feste KI-Aufgaben-Bausteine (§4) */
@@ -1394,10 +1394,13 @@ function buildAiExportText(opts) {
     });
   if (opts.screeningText) {
     lines.push('');
-    lines.push('--- Klinisches Screening (Savoir) — Hypothesen, keine Diagnosen ---');
-    lines.push('Hinweis: Aus dem integrierten Screening abgeleitete, beobachtungsbasierte ' +
-      'Hypothesen zur fachlichen Einordnung — ausdrücklich KEINE Diagnose. Dient nur als ' +
-      'zusätzlicher Kontext für die fachliche Beurteilung.');
+    lines.push('--- Klinisches Screening (Savoir): Beobachtungen + automatische Auswertung ---');
+    lines.push('WICHTIGER HINWEIS ZUR HERKUNFT: Die Auswertung und Interpretation dieses ' +
+      'Screenings (Verdachtsachsen, Submuster, Empfehlungen) wird von einem KI-GENERIERTEN ' +
+      'Software-Programm (Savoir) regelbasiert berechnet — nicht von einer Fachperson. Es ' +
+      'handelt sich um beobachtungsbasierte HYPOTHESEN, ausdrücklich KEINE Diagnose. Bitte ' +
+      'entsprechend kritisch und nur als ergänzenden Kontext behandeln. Nachfolgend sowohl ' +
+      'die erfassten Beobachtungen (Antworten) als auch das vom Programm berechnete Ergebnis:');
     lines.push('');
     lines.push(anonymizeText(opts.screeningText, opts.ctx));
   }
