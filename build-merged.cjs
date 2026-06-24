@@ -436,6 +436,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .reu-h{font-size:15px;font-weight:800;margin:0 0 10px;color:var(--kb-text);}
 .reu-write .reu-input{width:100%;border:1px solid var(--kb-border);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:var(--kb-surface);color:var(--kb-text);box-sizing:border-box;}
 .reu-write .reu-input:focus{outline:none;border-color:var(--kb-accent);box-shadow:0 0 0 3px var(--kb-accent-50);}
+.reu-lbl{display:block;font-size:12px;font-weight:700;color:var(--kb-muted);margin:0 0 5px;}
+.reu-write .reu-goals{width:100%;border:1px solid var(--kb-border);border-radius:10px;padding:9px 12px;font:inherit;font-size:14px;line-height:1.5;resize:vertical;background:var(--kb-surface);color:var(--kb-text);box-sizing:border-box;}
+.reu-write .reu-goals:focus{outline:none;border-color:var(--kb-accent);box-shadow:0 0 0 3px var(--kb-accent-50);}
 /* Screening-Ansicht (kurz & einklappbar) */
 .sv-h{margin:8px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-muted);font-weight:800;}
 .sv-axes{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 4px;}
@@ -506,6 +509,12 @@ var ACCENT_OVERRIDE = `
 #sav-root .brand-sub{ letter-spacing:.08em; }
 #sav-root .global-nav-btn,#sav-root .diag-subtab{ font-family:var(--kb-font); text-transform:none; letter-spacing:0; font-size:13.5px; font-weight:700; }
 #sav-root .global-nav-btn.active,#sav-root .diag-subtab.active{ color:var(--kb-accent); border-bottom-color:var(--kb-accent); }
+#sav-root .verdacht-guide{ font-size:13.5px; color:var(--kb-text-soft); background:var(--kb-accent-50); border:1px solid var(--kb-border); border-radius:10px; padding:10px 14px; margin:0 0 16px; line-height:1.5; }
+#sav-root .verdacht-mild{ margin-top:14px; border-top:1px solid var(--kb-border); }
+#sav-root .verdacht-mild>summary{ cursor:pointer; font-weight:700; font-size:13.5px; color:var(--kb-muted); padding:10px 0; list-style:none; }
+#sav-root .verdacht-mild>summary::-webkit-details-marker{ display:none; }
+#sav-root .verdacht-mild>summary::before{ content:'▸ '; color:var(--kb-muted); }
+#sav-root .verdacht-mild[open]>summary::before{ content:'▾ '; }
 /* Kontext-Leiste über dem eingebetteten Screening */
 .sav-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--kb-accent-50);border-bottom:1px solid var(--kb-border);}
 .sav-bar .sav-back{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:#fff;color:var(--kb-text);padding:7px 12px;border-radius:9px;cursor:pointer;}
@@ -744,17 +753,21 @@ var DOS_OVERRIDES = `
     });
     var today=(new Date()).toISOString().slice(0,10);
     var up=reu.filter(function(r){return r.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
-    var nextR=up[0]||reu[0]||null;
-    var writeBox;
-    if(nextR){
-      var ex=Repo.reunionEntryFor(nextR.date,sid);
-      writeBox='<div class="card reu-write"><h4 class="reu-h">✍️ Beitrag für die Réunion am '+escapeHtml(formatDate(nextR.date))+'</h4>'+
-        '<textarea class="reu-input" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextR.date)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+' rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' in der nächsten Réunion besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
-        '<div class="kb-btn-row" style="margin-top:8px;"><button class="btn btn-primary reu-save">'+(ex?'Aktualisieren':'Speichern')+'</button> <span class="reu-status muted" style="font-size:.85em;"></span></div>'+
-        '<p class="muted" style="font-size:.8em;margin-top:6px;">Wird als Réunion-Eintrag gespeichert und synchronisiert automatisch (Team-Datei & überall in der App).</p></div>';
-    } else {
-      writeBox='<div class="kb-empty-card">Noch keine Réunion angelegt. <a href="#/reunion" data-route="#/reunion">Réunion anlegen</a> — danach kannst du hier direkt Beiträge schreiben.</div>';
-    }
+    function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return d.toISOString().slice(0,10);}
+    var nextDate=up.length?up[0].date:nextMondayISO();
+    var nObj=Repo.getReunionByDate?Repo.getReunionByDate(nextDate):null;
+    var ex=Repo.reunionEntryFor(nextDate,sid);
+    var exGoals=(nObj&&nObj.goals&&nObj.goals[sid])?nObj.goals[sid]:[];
+    var willCreate=!nObj;
+    var writeBox='<div class="card reu-write">'+
+      '<h4 class="reu-h">✍️ Für die Réunion am '+escapeHtml(formatDate(nextDate))+(willCreate?' <span class="muted" style="font-weight:600;font-size:.8em;">(wird neu angelegt)</span>':'')+'</h4>'+
+      '<label class="reu-lbl">Beitrag / Update für die Réunion</label>'+
+      '<textarea class="reu-input" rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
+      '<label class="reu-lbl" style="margin-top:12px;">Wochenziel(e) <span class="muted" style="font-weight:600;">— optional, je Zeile eins</span></label>'+
+      '<textarea class="reu-goals" rows="2" placeholder="z. B. Pünktlich zur Schule kommen">'+escapeHtml(exGoals.join('\\n'))+'</textarea>'+
+      '<div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-primary reu-save" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextDate)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+'>'+((ex||exGoals.length)?'Aktualisieren':'Speichern')+'</button> <span class="reu-status muted" style="font-size:.85em;"></span></div>'+
+      '<p class="muted" style="font-size:.8em;margin-top:6px;">Beitrag wird als Réunion-Eintrag gespeichert, Wochenziele wandern in die Réunion-Ziele — alles synchronisiert automatisch (Team-Datei & überall).</p>'+
+    '</div>';
     return '<div class="kb-hub-pad">'+writeBox+'<h4 class="reu-h" style="margin-top:22px;">Bisherige Réunion-Beiträge</h4>'+(out.length?out.join(''):'<div class="empty-state">Noch keine Réunion-Beiträge.</div>')+'</div>';
   }
   function hubAbsenzen(student){
@@ -837,13 +850,23 @@ var DOS_OVERRIDES = `
         if(baseAfter){try{baseAfter(root);}catch(e){}}
         if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
         if(tab==='reunion'){try{
-          var ta=root.querySelector('.reu-input'), btn=root.querySelector('.reu-save'), st=root.querySelector('.reu-status');
-          if(btn&&ta){btn.addEventListener('click',function(){
-            var text=(ta.value||'').trim(); if(!text){ta.focus();return;}
-            var payload={studentId:ta.getAttribute('data-sid'),date:ta.getAttribute('data-date'),category:'Team-Réunion',text:text};
-            var eid=ta.getAttribute('data-eid'); if(eid){payload.id=eid;}
-            btn.disabled=true; if(st){st.textContent='Speichert …';}
-            Repo.saveEntry(payload).then(function(){ if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}} if(window.render){try{window.render();}catch(e){}} }).catch(function(){ btn.disabled=false; if(st){st.textContent='Fehler beim Speichern'; } });
+          var rbtn=root.querySelector('.reu-save'), rta=root.querySelector('.reu-input'), rgta=root.querySelector('.reu-goals'), rst=root.querySelector('.reu-status');
+          if(rbtn){rbtn.addEventListener('click',function(){
+            var sid2=rbtn.getAttribute('data-sid'), date2=rbtn.getAttribute('data-date'), eid2=rbtn.getAttribute('data-eid');
+            var text2=((rta&&rta.value)||'').trim();
+            var goals2=((rgta&&rgta.value)||'').split('\\n').map(function(s){return s.trim();}).filter(Boolean);
+            if(!text2 && !goals2.length){ if(rta){rta.focus();} return; }
+            rbtn.disabled=true; if(rst){rst.textContent='Speichert …';}
+            var r2=Repo.getReunionByDate?Repo.getReunionByDate(date2):null;
+            var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
+            base.goals=base.goals||{};
+            if(goals2.length){base.goals[sid2]=goals2;}else if(base.goals[sid2]){delete base.goals[sid2];}
+            Repo.saveReunion(base).then(function(){
+              if(text2){var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:text2};if(eid2){p2.id=eid2;}return Repo.saveEntry(p2);}
+            }).then(function(){
+              if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
+              if(window.render){try{window.render();}catch(e){}}
+            }).catch(function(){rbtn.disabled=false;if(rst){rst.textContent='Fehler beim Speichern';}});
           });}
         }catch(e){}}
       }
