@@ -515,6 +515,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .gd-axis-n{font-weight:800;font-size:15px;color:var(--kb-text);}
 .gd-axis-meta{font-size:12px;color:var(--kb-muted);margin-top:2px;}
 .gd-axis-go{color:var(--kb-accent);font-weight:800;font-size:20px;}
+.gd-axis.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);}
+.gd-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--kb-border);flex:0 0 auto;display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px;line-height:1;}
+.gd-axis.is-sel .gd-check{background:var(--kb-accent);border-color:var(--kb-accent);}
+.gd-multi-h{font-size:13.5px;font-weight:800;color:var(--kb-text-soft);margin:2px 2px 12px;}
+.gd-axiscard{margin-bottom:14px;}
 .gd-sb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle;}
 .gd-sb-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
 .gd-sb-mittel{background:var(--kb-warn-50);color:#8a5a00;}
@@ -1505,7 +1510,7 @@ window.KB_SCREENING=(function(){
   function loadAll(){try{var r=localStorage.getItem(LS);if(r){return JSON.parse(r)||{};}}catch(e){}return {};}
   function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
   var data=loadAll();
-  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}return r;}
+  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},demografie:{},gate:{},updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}if(!r.demografie){r.demografie={};}if(!r.gate){r.gate={};}return r;}
   function set(sid,r){data[sid]=r;saveAll(data);}
   function api(){return window.SAVOIR_API||null;}
   function capture(){
@@ -1557,7 +1562,7 @@ window.KB_SCREENING=(function(){
       var ac=achsen[i].achse||{}; var tk=ac.topicKey; if(!tk||!d.plans[tk])continue;
       if(a.computeSymptomScores){try{var ms=a.computeSymptomScores(d.plans[tk],tk);if(ms&&ms.length&&ms[0].muster){topMuster=ms[0].muster;topTopicKey=tk;topAchseName=ac.name;}}catch(e){}}
     }
-    var conf=(topTopicKey&&d.plans[topTopicKey])?confidenceOf(d.plans[topTopicKey].gate):null;
+    var conf=confidenceOf(d.gate);
     return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,confidence:conf,acute:acuteFlags(d.symptome),globalCount:(d.symptome||[]).length,updatedAt:d.updatedAt};
   }
   function symTextMap(){
@@ -1575,17 +1580,30 @@ window.KB_SCREENING=(function(){
     }
     L.push('A) Erfasste Beobachtungen im Screening (die Antworten):');
     if(d.symptome&&d.symptome.length){d.symptome.forEach(function(id){L.push('  - '+(sm[id]||id));});}else{L.push('  - (keine globalen Symptome markiert)');}
-    if(r.topTopicKey&&a&&a.symptomDiagnoseFor){
-      var diag=a.symptomDiagnoseFor(r.topTopicKey)||{}; var ps=d.plans[r.topTopicKey]||{};
-      if(ps.kontext&&diag.kontextFragen){
-        var cl=[]; diag.kontextFragen.forEach(function(f){var v=ps.kontext[f.id]; if(v){var opt=(f.optionen||[]).filter(function(o){return o.val===v;})[0]; cl.push((f.titel||f.id)+': '+((opt&&opt.text)||v));}});
-        if(cl.length)L.push('  Kontext ('+(r.topAchseName||r.topTopicKey)+'): '+cl.join('; '));
-      }
-      if(ps.symptome&&ps.symptome.length&&diag.symptomKategorien){
-        var tm={}; diag.symptomKategorien.forEach(function(k){(k.symptome||[]).forEach(function(s){tm[s.id]=s.text;});});
-        L.push('  Vertiefte Merkmale ('+(r.topAchseName||r.topTopicKey)+'):');
-        ps.symptome.forEach(function(id){L.push('    - '+(tm[id]||id));});
-      }
+    var SHK=(a&&a.SAVOIR_TUNING&&a.SAVOIR_TUNING.sharedKontextKeys)?a.SAVOIR_TUNING.sharedKontextKeys:['alter','geschlecht','schule','familie'];
+    function axName(tk){var g=a&&a.SAVOIR_GLOBAL;if(g){for(var i=0;i<g.achsen.length;i++){if(g.achsen[i].topicKey===tk)return g.achsen[i].name;}}return tk;}
+    var deepKeys=[];
+    if(d.plans){for(var dk in d.plans){var dp=d.plans[dk];if(dp&&((dp.symptome&&dp.symptome.length)||(dp.kontext&&Object.keys(dp.kontext).length)))deepKeys.push(dk);}}
+    // Eckdaten (einmal): aus der geteilten Demografie, lesbar gemacht
+    var demo=d.demografie||{};
+    if(Object.keys(demo).length&&a&&a.symptomDiagnoseFor&&deepKeys.length){
+      var lab={}; (a.symptomDiagnoseFor(deepKeys[0]).kontextFragen||[]).forEach(function(f){(f.optionen||[]).forEach(function(o){lab[f.id+'='+o.val]=(f.titel||f.id)+': '+o.text;});});
+      var dd=Object.keys(demo).map(function(k){return lab[k+'='+demo[k]]||(k+': '+demo[k]);});
+      if(dd.length)L.push('  Eckdaten: '+dd.join('; '));
+    }
+    if(deepKeys.length&&a&&a.symptomDiagnoseFor){
+      deepKeys.forEach(function(tk){
+        var diag=a.symptomDiagnoseFor(tk)||{}; var ps=d.plans[tk]||{};
+        L.push('  Vertiefung — '+axName(tk)+':');
+        if(ps.kontext&&diag.kontextFragen){
+          var cl=[]; diag.kontextFragen.forEach(function(f){if(SHK.indexOf(f.id)>=0)return;var v=ps.kontext[f.id]; if(v){var opt=(f.optionen||[]).filter(function(o){return o.val===v;})[0]; cl.push((f.titel||f.id)+': '+((opt&&opt.text)||v));}});
+          if(cl.length)L.push('    Kontext: '+cl.join('; '));
+        }
+        if(ps.symptome&&ps.symptome.length&&diag.symptomKategorien){
+          var tm={}; diag.symptomKategorien.forEach(function(k){(k.symptome||[]).forEach(function(s){tm[s.id]=s.text;});});
+          ps.symptome.forEach(function(id){L.push('    - '+(tm[id]||id));});
+        }
+      });
     }
     L.push('');
     L.push('B) Ergebnis (vom Programm berechnet):');
@@ -1593,8 +1611,11 @@ window.KB_SCREENING=(function(){
     L.push('Verdachtsachsen (Ausprägung):');
     if(r.achsen.length){r.achsen.forEach(function(x){L.push('  - '+((x.achse&&x.achse.name)||(x.achse&&x.achse.id)||'?')+': '+x.staerke);});}else{L.push('  - keine über Schwelle');}
     if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+((x.risiko&&x.risiko.name)||'?')+': '+x.staerke);});}
-    if(r.topMuster){var b=r.topMuster.bloecke||{};
-      L.push('Erkanntes Submuster: '+(r.topMuster.name||'?')+(r.topAchseName?' ('+r.topAchseName+')':''));
+    deepKeys.forEach(function(tk){
+      var ms=[]; try{ms=a.computeSymptomScores(d.plans[tk],tk)||[];}catch(e){}
+      var top=ms[0]; if(!top||!top.muster)return; var b=top.muster.bloecke||{};
+      L.push('');
+      L.push('Submuster — '+axName(tk)+': '+(top.muster.name||'?'));
       if(b.profil)L.push('  Erklärung: '+plain(b.profil));
       if(b.ansatzHaupt)L.push('  Umgang/Ansatz: '+plain(b.ansatzHaupt));
       if(b.ansatzTust)L.push('  Konkret tun: '+plain(b.ansatzTust));
@@ -1603,7 +1624,7 @@ window.KB_SCREENING=(function(){
       if(b.schuleAnpassungen)L.push('  Schulanpassungen: '+plain(b.schuleAnpassungen));
       var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
       if(krise)L.push('  Krisen-/Risikohinweis: '+plain(krise));
-    }
+    });
     /* Ehrliche methodische Einordnung (Wrapper, ändert das Scoring nicht) */
     var rare=(r.achsen||[]).filter(function(x){return x.achse&&isRareAxis(x.achse.id);}).map(function(x){return x.achse.name;});
     L.push('');
@@ -1625,6 +1646,8 @@ window.KB_SCREENING=(function(){
       d=d||{}; var r=get(sid);
       r={ symptome:(d.symptome!=null?d.symptome.slice():(r.symptome||[])),
           plans:(d.plans!=null?d.plans:(r.plans||{})),
+          demografie:(d.demografie!=null?d.demografie:(r.demografie||{})),
+          gate:(d.gate!=null?d.gate:(r.gate||{})),
           updatedAt:new Date().toISOString() };
       set(sid,r); activeId=null;
       if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
@@ -1636,8 +1659,8 @@ window.KB_SCREENING=(function(){
     confidenceOf:confidenceOf,
     result:result,
     detail:detail,
-    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''});}return out;},
-    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},updatedAt:r.updatedAt||''};}});saveAll(data);}
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},updatedAt:r.updatedAt||''});}return out;},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},updatedAt:r.updatedAt||''};}});saveAll(data);}
   };
 })();
 `;
@@ -1674,30 +1697,31 @@ window.KB_GUIDE=(function(){
   function symById(id){var g=SG();if(!g)return null;var p=g.symptomPool.symptome;for(var i=0;i<p.length;i++){if(p[i].id===id)return p[i];}return null;}
   function axisByTopic(tk){var g=SG();if(!g)return null;for(var i=0;i<g.achsen.length;i++){if(g.achsen[i].topicKey===tk)return g.achsen[i];}return null;}
   function symsOfCat(catId){var g=SG();if(!g)return [];return g.symptomPool.symptome.filter(function(s){return s.kategorie===catId;});}
-  function buildTiefe(tk){var a=api();var diag=(a&&a.symptomDiagnoseFor)?a.symptomDiagnoseFor(tk):null;var steps=[];if(diag){(diag.kontextFragen||[]).forEach(function(f){steps.push({type:'kontext',frage:f});});(diag.symptomKategorien||[]).forEach(function(k){if(k&&k.symptome&&k.symptome.length){steps.push({type:'symptome',kat:k});}});}return steps;}
+  function buildTiefe(tk){var a=api();var diag=(a&&a.symptomDiagnoseFor)?a.symptomDiagnoseFor(tk):null;var steps=[];var keys=sharedKeys();if(diag){(diag.kontextFragen||[]).forEach(function(f){if(keys.indexOf(f.id)<0)steps.push({type:'kontext',frage:f});});(diag.symptomKategorien||[]).forEach(function(k){if(k&&k.symptome&&k.symptome.length){steps.push({type:'symptome',kat:k});}});}return steps;}
 
   function read(){return window.KB_SCREENING?window.KB_SCREENING.get(ST.sid):{symptome:[],plans:{}};}
   function write(d){if(window.KB_SCREENING&&window.KB_SCREENING.update){window.KB_SCREENING.update(ST.sid,d);}}
   function ensurePlan(tk,d){d.plans=d.plans||{};if(!d.plans[tk]){d.plans[tk]={symptome:[],kontext:{}};}var p=d.plans[tk];if(!p.symptome)p.symptome=[];if(!p.kontext)p.kontext={};return p;}
 
   function initState(sid){
-    var st={sid:sid,stage:'breit',breitSub:'triage',cats:[],catIdx:0,axisTopicKey:null,axisName:null,tiefeSteps:[],tiefeIdx:0};
+    var st={sid:sid,stage:'breit',breitSub:'triage',cats:[],catIdx:0,selAxes:[],curIdx:0,axisTopicKey:null,axisName:null,tiefeSteps:[],tiefeIdx:0,_selInit:false};
     if(!api()||!SG())return st;
     var d=window.KB_SCREENING?window.KB_SCREENING.get(sid):{symptome:[],plans:{}};
     var hasSym=d.symptome&&d.symptome.length;
     if(hasSym){var seen={};(d.symptome||[]).forEach(function(id){var s=symById(id);if(s)seen[s.kategorie]=1;});st.cats=Object.keys(seen);}
-    var planKey=null;
-    if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length))){planKey=k;break;}}}
-    if(planKey){var ax=axisByTopic(planKey);st.axisTopicKey=planKey;st.axisName=ax?ax.name:planKey;st.tiefeSteps=buildTiefe(planKey);st.stage='ergebnis';return st;}
+    var deepened=[];
+    if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))deepened.push(k);}}
+    if(deepened.length){st.selAxes=deepened;st._selInit=true;st.curIdx=0;st.axisTopicKey=deepened[0];var ax0=axisByTopic(deepened[0]);st.axisName=ax0?ax0.name:deepened[0];st.tiefeSteps=buildTiefe(deepened[0]);st.stage='ergebnis';return st;}
     if(hasSym){st.stage='verdacht';return st;}
     return st;
   }
 
-  /* ---------- Sicherheits-/Klarheits-Wrapper (lesen SAVOIR_TUNING, ändern das Scoring nicht) ---------- */
+  /* ---------- Wrapper + geteilte Helfer (lesen SAVOIR_TUNING, ändern das Scoring nicht) ---------- */
   function TUNE(){var a=api();return (a&&a.SAVOIR_TUNING)?a.SAVOIR_TUNING:null;}
   function rareAxis(id){var t=TUNE();if(t&&t.axisPrior&&t.axisPrior[id]!=null)return t.axisPrior[id]<=0.6;return id==='A13'||id==='A04'||id==='A12';}
   function weakGlobalBelow(){var t=TUNE();return (t&&typeof t.weakGlobalBelow==='number')?t.weakGlobalBelow:3;}
   function weakAxisMax(){var t=TUNE();return (t&&typeof t.weakAxisEvidenceMax==='number')?t.weakAxisEvidenceMax:2;}
+  function sharedKeys(){var t=TUNE();return (t&&t.sharedKontextKeys)?t.sharedKontextKeys:['alter','geschlecht','schule','familie'];}
   function gateQs(){var t=TUNE();return (t&&t.gateQuestions&&t.gateQuestions.length)?t.gateQuestions:[
     {key:'dauer',titel:'Seit wann bestehen die Auffälligkeiten?',optionen:[{val:'kurz',text:'unter ~2 Wochen'},{val:'mittel',text:'einige Wochen bis Monate'},{val:'lang',text:'über ~6 Monate / anhaltend'}]},
     {key:'beeintr',titel:'Wie stark ist der Alltag beeinträchtigt (Schule, Familie, Freunde)?',optionen:[{val:'kaum',text:'kaum oder nicht'},{val:'merklich',text:'merklich'},{val:'stark',text:'stark'}]},
@@ -1712,13 +1736,24 @@ window.KB_GUIDE=(function(){
       '<div class="gd-acute-do">Sofort Fachweg: <strong>KJP-Notdienst</strong> · <strong>SOS Détresse 454545</strong> · im Notfall <strong>112</strong>. Schüler/in nicht allein lassen.</div></div>';
   }
   function axisEvidence(symptome,axisId){var g=SG();if(!g)return 0;var map=g.symptomMapping||{};var n=0;(symptome||[]).forEach(function(id){if(map[id]&&map[id][axisId])n++;});return n;}
-  function rankedAxes(){var a=api();var d=read();var res=a.scoreVerdachtsachsen((d.symptome||[]).slice());return (res&&res.achsenSortiert)||[];}
+  function deepenedAxes(d){var out=[];d=d||read();if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))out.push(k);}}return out;}
+  function demoQuestions(){
+    var a=api();var keys=sharedKeys();var seen={};var out=[];
+    (ST.selAxes||[]).forEach(function(tk){var diag=a&&a.symptomDiagnoseFor?a.symptomDiagnoseFor(tk):null;if(!diag)return;(diag.kontextFragen||[]).forEach(function(f){if(keys.indexOf(f.id)>=0&&!seen[f.id]){seen[f.id]=1;out.push(f);}});});
+    return out;
+  }
+  function demoComplete(){var d=read();var demo=d.demografie||{};var qs=demoQuestions();if(!qs.length)return true;for(var i=0;i<qs.length;i++){if(!demo[qs[i].id])return false;}return true;}
+  function applyDemoToPlans(d){var demo=d.demografie||{};(ST.selAxes||[]).forEach(function(tk){var ps=ensurePlan(tk,d);Object.keys(demo).forEach(function(k){ps.kontext[k]=demo[k];});});}
+  function setCurrentAxis(i){ST.curIdx=i;ST.axisTopicKey=ST.selAxes[i];var ax=axisByTopic(ST.axisTopicKey);ST.axisName=ax?ax.name:ST.axisTopicKey;ST.tiefeSteps=buildTiefe(ST.axisTopicKey);ST.tiefeIdx=0;}
+  function startDeepening(){for(var i=0;i<ST.selAxes.length;i++){setCurrentAxis(i);if(ST.tiefeSteps.length){ST.stage='tiefe';return;}}ST.stage='kriterien';}
+  function nextAxisOrKriterien(){var i=ST.curIdx+1;while(i<ST.selAxes.length){setCurrentAxis(i);if(ST.tiefeSteps.length){ST.stage='tiefe';return;}i++;}ST.stage='kriterien';}
 
   /* ---------- Phasen-Stepper ---------- */
   function phaseBar(){
     var order=['breit','verdacht','tiefe','kriterien','ergebnis'];
     var labels={breit:'Beobachten',verdacht:'Verdacht',tiefe:'Vertiefen',kriterien:'Prüfen',ergebnis:'Ergebnis'};
-    var cur=order.indexOf(ST.stage);
+    var stage=(ST.stage==='demografie')?'tiefe':ST.stage;
+    var cur=order.indexOf(stage);
     var h='<div class="gd-steps">';
     order.forEach(function(s,i){
       var cls=i<cur?'is-done':(i===cur?'is-on':'');
@@ -1772,56 +1807,69 @@ window.KB_GUIDE=(function(){
       navBar('Zurück',(last?'Zur Auswertung ›':'Weiter ›'),'breit-next',(ST.catIdx+1)+' / '+cats.length)+'</div>';
   }
 
-  /* ---------- Phase 2: Verdacht ---------- */
+  /* ---------- Phase 2: Verdacht (Mehrfachauswahl) ---------- */
   function staerkeBadge(s){return '<span class="gd-sb gd-sb-'+esc(s)+'">'+esc(s)+'</span>';}
+  function axisToggle(x){
+    var ac=x.achse||{};var on=ST.selAxes.indexOf(ac.topicKey)>=0;
+    var meta=(ac.goldstandards&&ac.goldstandards.length)?('Absicherung: '+clamp(ac.goldstandards.join(', '),52)):'';
+    return '<button class="gd-axis'+(on?' is-sel':'')+'" data-g="axis-toggle" data-topic="'+esc(ac.topicKey||'')+'">'+
+      '<span class="gd-check">'+(on?'✓':'')+'</span>'+
+      '<span class="gd-axis-b"><span class="gd-axis-n">'+esc(ac.name||'?')+(x.staerke?staerkeBadge(x.staerke):'')+'</span>'+(meta?'<span class="gd-axis-meta">'+esc(meta)+'</span>':'')+'</span></button>';
+  }
   function renderVerdacht(){
     var a=api();if(!a||!a.scoreVerdachtsachsen)return loading();
     var d=read();var res=a.scoreVerdachtsachsen((d.symptome||[]).slice());
     var achsen=(res&&res.achsenSortiert)||[];
     var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
+    var strong=achsen.filter(function(x){return x.staerke!=='mild';});
+    var mild=achsen.filter(function(x){return x.staerke==='mild';});
+    if(!ST._selInit){ST.selAxes=strong.map(function(x){return x.achse.topicKey;}).filter(Boolean);ST._selInit=true;}
     var h=phaseBar();
-    if(risiken.length){
-      h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — bei akuter Gefährdung den Fachweg einschalten (Helfernetz / KJP-Notdienst, 112).</div>';
-    }
+    if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — bei akuter Gefährdung den Fachweg einschalten (Helfernetz / KJP-Notdienst, 112).</div>';}
     h+='<div class="gd-card"><p class="gd-kicker">Phase 2 · Beobachtungs-Schwerpunkte</p>';
     if(achsen.length){
-      h+='<h3 class="gd-q">Diese Schwerpunkte verdienen einen Fachblick</h3>'+
-         '<p class="gd-sub">Reihung nach rechnerischer Symptomdichte — <strong>kein Diagnose-Ranking</strong>. Wähle einen Schwerpunkt zum Vertiefen; die Stärke-Marke sagt nur, wie dicht Beobachtungen zusammenkamen.</p>';
-      var strong=achsen.filter(function(x){return x.staerke!=='mild';});
-      var mild=achsen.filter(function(x){return x.staerke==='mild';});
+      h+='<h3 class="gd-q">Was soll vertieft werden?</h3>'+
+         '<p class="gd-sub">Schwerpunkte, die einen <strong>Fachblick verdienen</strong>. <strong>Mehrfachauswahl</strong> — Komorbidität ist der Normalfall (z. B. ADHS <em>und</em> Depression); starke sind vorausgewählt, tippe zum An-/Abwählen. Reihung = rechnerische Symptomdichte, kein Diagnose-Ranking.</p>';
       var list=strong.length?strong:achsen;
-      h+=list.map(function(x,i){return axisRow(x,i+1);}).join('');
-      if(strong.length&&mild.length){
-        h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+')</summary><div class="sv-prose">'+mild.map(function(x,i){return axisRow(x,strong.length+i+1);}).join('')+'</div></details>';
-      }
+      h+=list.map(function(x){return axisToggle(x);}).join('');
+      if(strong.length&&mild.length){h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+') — auch wählbar</summary><div class="sv-prose">'+mild.map(function(x){return axisToggle(x);}).join('')+'</div></details>';}
       var rareShown=achsen.filter(function(x){return x.achse&&rareAxis(x.achse.id);}).map(function(x){return x.achse.name||'';});
-      h+='<div class="gd-caveat">Das Programm prüft <strong>keine</strong> Dauer, keinen Verlauf und keine Beeinträchtigung — das gehört in die fachliche Abklärung.';
-      if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten — wenige unspezifische Zeichen genügen hier rechnerisch.';
+      h+='<div class="gd-caveat">Dauer, Verlauf und Beeinträchtigung prüft das Programm nicht hier — das kommt gleich als kurzer Kriterien-Check und gehört in die fachliche Abklärung.';
+      if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten.';
       h+='</div>';
+      if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — ein einzelnes Zeichen ist kein Syndrom.</div>';}
+      var n=ST.selAxes.length;
+      h+='<div class="gd-nav"><button class="gd-back" data-g="back">‹ Beobachtungen</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="deepen-start"'+(n?'':' disabled')+'>'+(n?('Vertiefen ('+n+') ›'):'Mind. 1 wählen')+'</button></div>';
     } else {
       var scores=(res&&res.achsenScores)||{};var g=SG();
       var raw=g.achsen.map(function(ac){return {achse:ac,score:scores[ac.id]||0};}).filter(function(x){return x.score>0;}).sort(function(a2,b2){return b2.score-a2.score;}).slice(0,3);
       if(raw.length){
-        h+='<h3 class="gd-q">Noch kein belastbares Muster</h3><p class="gd-sub">Keine Achse erreicht die Konvergenz-Schwelle (mind. zwei zusammenpassende Beobachtungen). Mehr beobachten — oder einer dieser leichten Tendenzen nachgehen:</p>';
-        h+=raw.map(function(x,i){return axisRow({achse:x.achse,staerke:'mild',score:x.score},i+1);}).join('');
+        h+='<h3 class="gd-q">Noch kein belastbares Muster</h3><p class="gd-sub">Keine Achse erreicht die Konvergenz-Schwelle (mind. zwei zusammenpassende Beobachtungen). Mehr beobachten — oder einer leichten Tendenz nachgehen:</p>';
+        h+=raw.map(function(x){return axisToggle({achse:x.achse,staerke:'mild'});}).join('');
+        if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — ein einzelnes Zeichen ist kein Syndrom.</div>';}
+        var n2=ST.selAxes.length;
+        h+='<div class="gd-nav"><button class="gd-back" data-g="back">‹ Beobachtungen</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="deepen-start"'+(n2?'':' disabled')+'>'+(n2?('Vertiefen ('+n2+') ›'):'Mind. 1 wählen')+'</button></div>';
       } else {
-        h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>';
+        h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>'+navBar('Beobachtungen ergänzen','','','');
       }
     }
-    if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — für einen belastbaren Verdacht zu wenig. Ein einzelnes Zeichen ist kein Syndrom.</div>';}
-    h+=navBar('Beobachtungen ergänzen','','','');
     return h+'</div>';
   }
-  function axisRow(x,rank){
-    var ac=x.achse||{};
-    var meta=(ac.goldstandards&&ac.goldstandards.length)?('Absicherung: '+clamp(ac.goldstandards.join(', '),60)):'';
-    return '<button class="gd-axis" data-g="axis" data-topic="'+esc(ac.topicKey||'')+'" data-name="'+esc(ac.name||'')+'">'+
-      '<span class="gd-axis-rank">'+rank+'</span>'+
-      '<span class="gd-axis-b"><span class="gd-axis-n">'+esc(ac.name||'?')+(x.staerke?staerkeBadge(x.staerke):'')+'</span>'+(meta?'<span class="gd-axis-meta">'+esc(meta)+'</span>':'')+'</span>'+
-      '<span class="gd-axis-go">›</span></button>';
+
+  /* ---------- Phase 3: Eckdaten (einmal, geteilt) ---------- */
+  function renderDemografie(){
+    var d=read();var demo=d.demografie||{};var qs=demoQuestions();
+    var blocks=qs.map(function(f){
+      return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(f.titel)+'</div><div class="gd-opts">'+
+        (f.optionen||[]).map(function(o){var on=demo[f.id]===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="demo" data-key="'+esc(f.id)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+'</div></div>';
+    }).join('');
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 3 · Eckdaten (einmal)</p>'+
+      '<h3 class="gd-q">Kurz zur Person</h3><p class="gd-sub">Gilt für alle gewählten Achsen — du gibst es nur <strong>einmal</strong> ein, nicht pro Achse erneut.</p>'+
+      (blocks||'<p class="gd-sub">Keine Eckdaten nötig.</p>')+
+      '<div class="gd-nav"><button class="gd-back" data-g="demo-back">‹ Zurück</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="demo-done">Weiter ›</button></div></div>';
   }
 
-  /* ---------- Phase 3: Vertiefen ---------- */
+  /* ---------- Phase 4: Vertiefen (je Achse) ---------- */
   function convergence(ps){
     var a=api();if(!a||!a.computeSymptomScores)return '';
     var scores=[];try{scores=a.computeSymptomScores(ps,ST.axisTopicKey)||[];}catch(e){}
@@ -1831,10 +1879,11 @@ window.KB_GUIDE=(function(){
     return '<div class="gd-conv"><div class="gd-conv-h">🕸 Aktuell am wahrscheinlichsten</div>'+rows+'</div>';
   }
   function renderTiefe(){
-    var steps=ST.tiefeSteps||[];if(!steps.length)return renderErgebnis();
+    var steps=ST.tiefeSteps||[];if(!steps.length){nextAxisOrKriterien();return (ST.stage==='kriterien')?renderKriterien():renderTiefe();}
     if(ST.tiefeIdx>=steps.length)ST.tiefeIdx=steps.length-1;
     var step=steps[ST.tiefeIdx];var d=read();var ps=ensurePlan(ST.axisTopicKey,d);
     var pct=Math.round(((ST.tiefeIdx+1)/steps.length)*100);
+    var nAx=(ST.selAxes||[]).length;var axPos=(nAx>1)?(' · Achse '+(ST.curIdx+1)+'/'+nAx):'';
     var body='';
     if(step.type==='kontext'){
       var f=step.frage;var cur=ps.kontext[f.id];
@@ -1849,15 +1898,16 @@ window.KB_GUIDE=(function(){
         (k.symptome||[]).map(function(s){var on=ps.symptome.indexOf(s.id)>=0;return '<button class="gd-chip'+(on?' is-sel':'')+'" data-g="tsym" data-id="'+esc(s.id)+'">'+esc(s.text)+'</button>';}).join('')+
         '</div>';
     }
-    var last=ST.tiefeIdx>=steps.length-1;
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 3 · Vertiefen — '+esc(ST.axisName||'')+'</p>'+body+
+    var lastStep=ST.tiefeIdx>=steps.length-1;var lastAxis=ST.curIdx>=nAx-1;
+    var nextLabel=lastStep?(lastAxis?'Weiter zu Kriterien ›':'Nächste Achse ›'):'Weiter ›';
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 4 · Vertiefen — '+esc(ST.axisName||'')+esc(axPos)+'</p>'+body+
       convergence(ps)+
-      navBar('Zurück',(last?'Ergebnis ansehen ›':'Weiter ›'),'tiefe-next',(ST.tiefeIdx+1)+' / '+steps.length)+'</div>';
+      navBar('Zurück',nextLabel,'tiefe-next',(ST.tiefeIdx+1)+' / '+steps.length)+'</div>';
   }
 
-  /* ---------- Phase 3b: Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss) ---------- */
+  /* ---------- Phase 5: Kriterien-Check (einmal, geteilt) ---------- */
   function renderKriterien(){
-    var d=read();var ps=ensurePlan(ST.axisTopicKey,d);var g=ps.gate||{};
+    var d=read();var g=d.gate||{};
     var blocks=gateQs().map(function(q){
       return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(q.titel)+'</div><div class="gd-opts">'+
         (q.optionen||[]).map(function(o){var on=g[q.key]===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="gate" data-key="'+esc(q.key)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+
@@ -1865,55 +1915,60 @@ window.KB_GUIDE=(function(){
     }).join('');
     var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(g):null;
     var live=conf?('<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div></div>'):'';
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 4 · Klinische Kriterien</p>'+
+    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 5 · Klinische Kriterien</p>'+
       '<h3 class="gd-q">Kurz absichern, bevor wir einordnen</h3>'+
-      '<p class="gd-sub">Symptome allein sind keine Diagnose. Dauer, Beeinträchtigung und Ausschluss entscheiden über die klinische Bedeutung — diese drei Fragen schärfen die Einordnung.</p>'+
+      '<p class="gd-sub">Symptome allein sind keine Diagnose. Dauer, Beeinträchtigung und Ausschluss entscheiden über die klinische Bedeutung — gilt für alle gewählten Achsen.</p>'+
       blocks+live+
       '<div class="gd-nav"><button class="gd-back" data-g="kriterien-back">‹ Zurück</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="gate-skip">Überspringen</button> <button class="btn btn-primary btn-sm" data-g="gate-done">Ergebnis ansehen ›</button></div></div>';
   }
 
-  /* ---------- Phase 5: Ergebnis ---------- */
-  function sec(title,html){if(!html)return '';return '<details class="sv-acc"><summary>'+esc(title)+'</summary><div class="sv-prose">'+html+'</div></details>';}
+  /* ---------- Phase 6: Ergebnis (alle vertieften Achsen, vollständig lesbar) ---------- */
+  function musterSections(b,ax,openFirst){
+    b=b||{};var h='';
+    function blk(t,html,open){return html?('<details class="sv-acc"'+(open?' open':'')+'><summary>'+esc(t)+'</summary><div class="sv-prose">'+html+'</div></details>'):'';}
+    h+=blk('Worum es geht',b.profil,openFirst);
+    var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
+    h+=blk('Umgang mit diesem Profil',umgang,openFirst);
+    if(b.phasen&&b.phasen.length){var ph=b.phasen.map(function(p){return '<p><strong>'+esc(p.titel||'')+'</strong></p>'+(p.was||p.ziele||'');}).join('');h+=blk('Phasen / nächste Schritte',ph,false);}
+    h+=blk('Schulanpassungen',b.schuleAnpassungen,false);
+    var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
+    h+=blk('Krisen-/Risikohinweis',krise,false);
+    if(ax&&ax.goldstandards&&ax.goldstandards.length)h+=blk('Womit fachlich absichern (Goldstandards)','<ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>',false);
+    return h;
+  }
   function renderErgebnis(){
     var a=api();if(!a)return loading();
-    var d=read();var ps=(d.plans&&d.plans[ST.axisTopicKey])||{symptome:[],kontext:{}};
-    var scores=[];try{scores=a.computeSymptomScores(ps,ST.axisTopicKey)||[];}catch(e){}
-    var top=scores[0];var ax=axisByTopic(ST.axisTopicKey);
+    var d=read();
+    var axes=(ST.selAxes&&ST.selAxes.length)?ST.selAxes.slice():deepenedAxes(d);
+    axes=axes.filter(function(tk){return d.plans&&d.plans[tk];});
     var res=a.scoreVerdachtsachsen?a.scoreVerdachtsachsen((d.symptome||[]).slice()):null;
     var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
     var h=phaseBar();
     if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — Sicherheit hat Vorrang (Helfernetz / KJP-Notdienst, 112).</div>';}
-    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(ps.gate):null;
+    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(d.gate):null;
     if(conf){h+='<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div>'+(conf.text?'<div class="gd-conf-t">'+esc(conf.text)+'</div>':'')+'</div>';}
     else{h+='<div class="gd-caveat">Klinische Kriterien (Dauer/Beeinträchtigung) noch nicht geprüft — <button class="gd-linkbtn" data-g="goto-kriterien">jetzt prüfen</button>, das schärft die Einordnung erheblich.</div>';}
-    h+='<div class="gd-card">';
-    if(top&&top.muster){
-      var m=top.muster;var b=m.bloecke||{};
-      h+='<div class="gd-result-head"><span class="gd-result-badge">Erkanntes Submuster</span><div class="gd-result-name">'+esc(m.name||'?')+'</div><div class="gd-result-axis">'+esc((ax&&ax.name)||ST.axisName||'')+'</div></div>';
-      var teaser=plain(b.profil);if(teaser)h+='<p class="sv-teaser" style="margin-top:14px;">'+esc(clamp(teaser,260))+'</p>';
-      var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
-      var phase0=(b.phasen&&b.phasen[0])?('<p><strong>'+esc(b.phasen[0].titel||'Erste Phase')+'</strong></p>'+(b.phasen[0].was||b.phasen[0].ziele||'')):'';
-      h+=sec('Worum es geht (ausführlich)',b.profil)+sec('Umgang mit diesem Profil',umgang)+sec('Nächste Schritte',phase0)+sec('Schulanpassungen',b.schuleAnpassungen);
-      if(ax&&ax.goldstandards&&ax.goldstandards.length){h+=sec('Womit fachlich absichern (Goldstandards)','<ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>');}
-    } else {
-      h+='<div class="gd-result-head"><span class="gd-result-badge">'+esc((ax&&ax.name)||ST.axisName||'Achse')+'</span><div class="gd-result-name">Noch kein eindeutiges Submuster</div></div>'+
-         '<p class="gd-sub" style="margin-top:14px;">Ergänze noch ein paar vertiefende Merkmale, dann lässt sich das Submuster bestimmen.</p>';
+    if(!axes.length){
+      h+='<div class="gd-card"><div class="gd-result-head"><span class="gd-result-badge">Ergebnis</span><div class="gd-result-name">Noch nichts vertieft</div></div><p class="gd-sub" style="margin-top:12px;">Wähle in der Verdachts-Phase mindestens eine Achse zum Vertiefen.</p><div class="gd-nav"><button class="gd-back" data-g="goto-verdacht">‹ Achsen wählen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="restart">Neu starten</button></div></div>';
+      return h;
     }
-    /* Mindest-Evidenz- & Basisraten-Hinweis */
-    var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
-    if(evN<=weakAxisMax()||(d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> dieser Schwerpunkt stützt sich auf nur '+evN+' passende Beobachtung(en) — als vorläufige Hypothese behandeln.</div>';}
-    if(ax&&rareAxis(ax.id)){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — wenige unspezifische Zeichen genügen hier rechnerisch. Mit besonderer Zurückhaltung lesen, früh fachlich abklären.</div>';}
-    /* Anti-Tunnelblick: Gegenprobe mit der zweitstärksten Achse */
-    var ranked=rankedAxes(),second=null;
-    for(var si=0;si<ranked.length;si++){var rac=ranked[si].achse||{};if(rac.topicKey&&rac.topicKey!==ST.axisTopicKey){second=ranked[si];break;}}
-    if(second&&second.achse){
-      h+='<div class="gd-altbox"><div class="gd-altbox-h">🔀 Gegenprobe — nicht im Tunnel bleiben</div>'+
-         '<p>Zweitstärkste Spur: <strong>'+esc(second.achse.name||'?')+'</strong>'+(second.staerke?(' ('+esc(second.staerke)+')'):'')+'. Differential prüfen, bevor du dich festlegst.</p>'+
-         '<button class="btn btn-sm" data-g="deepen-second" data-topic="'+esc(second.achse.topicKey||'')+'" data-name="'+esc(second.achse.name||'')+'">'+esc(second.achse.name||'')+' vertiefen</button></div>';
-    }
-    h+='<p class="muted" style="font-size:12px;margin-top:16px;line-height:1.5;">Beobachtungs-Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Dauer, Verlauf und Beeinträchtigung sind nicht geprüft und gehören in die fachliche Abklärung. Erscheint so im Schüler-Hub und im KI-Export des Dossiers.</p>';
-    h+='<div class="gd-nav"><button class="gd-back" data-g="ergebnis-back">‹ Merkmale anpassen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="goto-verdacht">Andere Achse</button> <button class="btn btn-sm" data-g="restart">Neu starten</button></div>';
-    return h+'</div>';
+    if(axes.length>1){h+='<p class="gd-multi-h">'+axes.length+' Befunde (Komorbidität) — beide gehören in die fachliche Abklärung:</p>';}
+    axes.forEach(function(tk,i){
+      var ax=axisByTopic(tk);var ps=d.plans[tk]||{symptome:[],kontext:{}};
+      var scores=[];try{scores=a.computeSymptomScores(ps,tk)||[];}catch(e){}
+      var top=scores[0];
+      h+='<div class="gd-card gd-axiscard">';
+      h+='<div class="gd-result-head"><span class="gd-result-badge">'+(axes.length>1?('Befund '+(i+1)+' / '+axes.length):'Erkanntes Submuster')+'</span><div class="gd-result-name">'+esc(top&&top.muster?top.muster.name:'Kein eindeutiges Submuster')+'</div><div class="gd-result-axis">'+esc((ax&&ax.name)||tk)+'</div></div>';
+      var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
+      if(evN<=weakAxisMax()){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> nur '+evN+' passende Beobachtung(en) — vorläufig behandeln.</div>';}
+      if(ax&&rareAxis(ax.id)){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — mit Zurückhaltung lesen, früh fachlich abklären.</div>';}
+      if(top&&top.muster){h+=musterSections(top.muster.bloecke,ax,i===0);}
+      else{h+='<p class="gd-sub" style="margin-top:10px;">Kein eindeutiges Submuster — ergänze vertiefende Merkmale: <button class="gd-linkbtn" data-g="redeepen" data-topic="'+esc(tk)+'">jetzt vertiefen</button>.</p>';}
+      h+='</div>';
+    });
+    h+='<p class="muted" style="font-size:12px;margin:4px 2px 0;line-height:1.5;">Beobachtungs-Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Alles oben ist hier vollständig lesbar (keine separate App nötig). Erscheint auch im Schüler-Hub und im KI-Export des Dossiers.</p>';
+    h+='<div class="gd-nav" style="margin-top:14px;"><button class="gd-back" data-g="goto-verdacht">‹ Achsen ändern</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="goto-kriterien">Kriterien</button> <button class="btn btn-sm" data-g="restart">Neu starten</button></div>';
+    return h;
   }
 
   function loading(){return '<div class="gd-card"><p class="gd-sub" style="margin:0;">Screening-Modul lädt … einen Moment.</p></div>';}
@@ -1926,6 +1981,7 @@ window.KB_GUIDE=(function(){
       h=acuteBanner();
       if(ST.stage==='breit')h+=renderBreit();
       else if(ST.stage==='verdacht')h+=renderVerdacht();
+      else if(ST.stage==='demografie')h+=renderDemografie();
       else if(ST.stage==='tiefe')h+=renderTiefe();
       else if(ST.stage==='kriterien')h+=renderKriterien();
       else if(ST.stage==='ergebnis')h+=renderErgebnis();
@@ -1942,23 +1998,28 @@ window.KB_GUIDE=(function(){
     if(g==='cat'){var id=el.getAttribute('data-id');if(id==='K16')return;var i=ST.cats.indexOf(id);if(i>=0)ST.cats.splice(i,1);else ST.cats.push(id);paint();return;}
     if(g==='breit-drill'){ST.breitSub='drill';ST.catIdx=0;paint();return;}
     if(g==='sym'){var sid=el.getAttribute('data-id');d=read();d.symptome=d.symptome||[];var j=d.symptome.indexOf(sid);if(j>=0)d.symptome.splice(j,1);else d.symptome.push(sid);write(d);paint();return;}
-    if(g==='breit-next'){var cats=drillCats();if(ST.catIdx<cats.length-1){ST.catIdx++;}else{ST.stage='verdacht';}paint();return;}
+    if(g==='breit-next'){var cats=drillCats();if(ST.catIdx<cats.length-1){ST.catIdx++;}else{ST._selInit=false;ST.stage='verdacht';}paint();return;}
     if(g==='back'){
       if(ST.stage==='breit'){if(ST.breitSub==='drill'){if(ST.catIdx>0){ST.catIdx--;}else{ST.breitSub='triage';}}paint();return;}
       if(ST.stage==='verdacht'){ST.stage='breit';ST.breitSub='drill';var c2=drillCats();ST.catIdx=Math.max(0,c2.length-1);paint();return;}
+      if(ST.stage==='tiefe'){if(ST.tiefeIdx>0){ST.tiefeIdx--;}else if(ST.curIdx>0){setCurrentAxis(ST.curIdx-1);ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);}else if(demoQuestions().length){ST.stage='demografie';}else{ST.stage='verdacht';}paint();return;}
       return;
     }
-    if(g==='axis'||g==='deepen-second'){var tk=el.getAttribute('data-topic');if(!tk)return;ST.axisTopicKey=tk;ST.axisName=el.getAttribute('data-name')||tk;ST.tiefeSteps=buildTiefe(tk);ST.tiefeIdx=0;d=read();ensurePlan(tk,d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'ergebnis';paint();return;}
+    if(g==='axis-toggle'){var tk=el.getAttribute('data-topic');if(!tk)return;var ti=ST.selAxes.indexOf(tk);if(ti>=0)ST.selAxes.splice(ti,1);else ST.selAxes.push(tk);paint();return;}
+    if(g==='deepen-start'){if(!ST.selAxes.length)return;d=read();ST.selAxes.forEach(function(tk){ensurePlan(tk,d);});write(d);ST.curIdx=0;if(demoQuestions().length&&!demoComplete()){ST.stage='demografie';}else{applyDemoToPlans(d);write(d);startDeepening();}paint();return;}
+    if(g==='demo'){var dk=el.getAttribute('data-key'),dv=el.getAttribute('data-val');d=read();d.demografie=d.demografie||{};if(d.demografie[dk]===dv)delete d.demografie[dk];else d.demografie[dk]=dv;write(d);paint();return;}
+    if(g==='demo-back'){ST.stage='verdacht';paint();return;}
+    if(g==='demo-done'){d=read();applyDemoToPlans(d);write(d);startDeepening();paint();return;}
     if(g==='opt'){var fid=el.getAttribute('data-fid'),val=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);if(ps.kontext[fid]===val)delete ps.kontext[fid];else ps.kontext[fid]=val;write(d);paint();return;}
     if(g==='tsym'){var tid=el.getAttribute('data-id');d=read();ps=ensurePlan(ST.axisTopicKey,d);var k2=ps.symptome.indexOf(tid);if(k2>=0)ps.symptome.splice(k2,1);else ps.symptome.push(tid);write(d);paint();return;}
-    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{ST.stage='kriterien';}paint();return;}
-    if(g==='gate'){var gk=el.getAttribute('data-key'),gv=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);ps.gate=ps.gate||{};if(ps.gate[gk]===gv)delete ps.gate[gk];else ps.gate[gk]=gv;write(d);paint();return;}
+    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{nextAxisOrKriterien();}paint();return;}
+    if(g==='gate'){var gk=el.getAttribute('data-key'),gv=el.getAttribute('data-val');d=read();d.gate=d.gate||{};if(d.gate[gk]===gv)delete d.gate[gk];else d.gate[gk]=gv;write(d);paint();return;}
     if(g==='gate-done'||g==='gate-skip'){ST.stage='ergebnis';paint();return;}
-    if(g==='kriterien-back'){ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);paint();return;}
+    if(g==='kriterien-back'){if(ST.selAxes.length){setCurrentAxis(ST.selAxes.length-1);ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';}else{ST.stage='verdacht';}paint();return;}
     if(g==='goto-kriterien'){ST.stage='kriterien';paint();return;}
-    if(g==='ergebnis-back'){ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';ST.tiefeIdx=0;paint();return;}
-    if(g==='goto-verdacht'){ST.stage='verdacht';paint();return;}
-    if(g==='restart'){ST=initState(ST.sid);ST.stage='breit';ST.breitSub='triage';ST.catIdx=0;paint();return;}
+    if(g==='goto-verdacht'){ST._selInit=true;ST.stage='verdacht';paint();return;}
+    if(g==='redeepen'){var rtk=el.getAttribute('data-topic');if(rtk){if(ST.selAxes.indexOf(rtk)<0)ST.selAxes.push(rtk);var idx=ST.selAxes.indexOf(rtk);setCurrentAxis(idx);d=read();ensurePlan(rtk,d);applyDemoToPlans(d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'kriterien';}paint();return;}
+    if(g==='restart'){ST=initState(ST.sid);ST.stage='breit';ST.breitSub='triage';ST.catIdx=0;ST.selAxes=[];ST._selInit=false;paint();return;}
   }
 
   return {

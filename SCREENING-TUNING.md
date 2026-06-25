@@ -108,6 +108,20 @@ beobachtete Symptom-Evidenz nur **spiegeln**, nie **ersetzen** — ohne
 Symptom-Treffer kann ein rein demografisches Submuster nicht führen.
 `false` = altes Verhalten (Kontext addiert voll).
 
+## (6b) `exclusiveContextKeys` + `mismatchFactor` — Widerspruchs-Dämpfung
+
+Ausschließende Kontext-Schlüssel (Standard: `['geschlecht']`). Erwartet ein
+Submuster einen bestimmten Wert (z. B. `geschlecht: weiblich`) und der Fall hat
+einen anderen (`männlich`), wird dessen Score mit `mismatchFactor` (Standard
+`0.2`) multipliziert. Damit erscheint **kein „Mädchen"-Submuster für einen als
+Junge erfassten Fall**. Niedriger = härtere Dämpfung.
+
+## (6c) `sharedKontextKeys` — Demografie nur einmal
+
+Schlüssel (Standard: `['alter','geschlecht','schule','familie']`), die im
+geführten Trichter **einmal** als „Eckdaten" erfragt und dann in **jede**
+gewählte Achsen-Vertiefung übernommen werden — keine Wiederholung pro Achse.
+
 ## (7) Mindest-Evidenz-Hinweise
 
 | Schlüssel | Standard | Bedeutung |
