@@ -519,7 +519,32 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .gd-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--kb-border);flex:0 0 auto;display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px;line-height:1;}
 .gd-axis.is-sel .gd-check{background:var(--kb-accent);border-color:var(--kb-accent);}
 .gd-multi-h{font-size:13.5px;font-weight:800;color:var(--kb-text-soft);margin:2px 2px 12px;}
-.gd-axiscard{margin-bottom:14px;}
+/* ===== Stylisches Lese-Ergebnis (Submuster) ===== */
+.gd-axiscard{margin-bottom:16px;padding:0;overflow:hidden;}
+.rs-hero{padding:20px 22px 16px;background:linear-gradient(135deg,var(--kb-accent-50),var(--kb-surface) 70%);border-bottom:1px solid var(--kb-border);}
+.rs-hero-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 9px;}
+.rs-hero-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-accent2-dark);background:var(--kb-accent2-50);padding:4px 11px;border-radius:999px;}
+.rs-axis-chip{font-size:12px;font-weight:700;color:var(--kb-accent-dark);background:#fff;border:1px solid var(--kb-accent-100);padding:4px 11px;border-radius:999px;}
+.rs-hero-name{font-size:23px;font-weight:900;letter-spacing:-.02em;line-height:1.15;color:var(--kb-text);}
+.gd-axiscard .gd-caveat{margin:14px 18px 0;}
+.rs-list{padding:14px 16px 18px;display:flex;flex-direction:column;gap:10px;}
+.rs-sec{border:1px solid var(--kb-border);border-radius:14px;background:var(--kb-surface);overflow:hidden;transition:border-color .15s ease,box-shadow .15s ease;}
+.rs-sec[open]{border-color:var(--kb-accent-200);box-shadow:var(--kb-shadow-sm);}
+.rs-head{cursor:pointer;list-style:none;display:flex;align-items:center;gap:13px;padding:13px 15px;}
+.rs-head::-webkit-details-marker{display:none;}
+.rs-head:hover{background:var(--kb-accent-50);}
+.rs-ic{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;font-size:18px;border-radius:11px;background:var(--kb-accent-50);}
+.rs-ht{flex:1;min-width:0;}
+.rs-title{display:block;font-weight:800;font-size:14.5px;color:var(--kb-text);line-height:1.25;}
+.rs-blurb{display:block;font-size:12.5px;color:var(--kb-muted);line-height:1.45;margin-top:2px;}
+.rs-sec[open] .rs-blurb{display:none;}
+.rs-more{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--kb-accent);white-space:nowrap;}
+.rs-sec[open] .rs-more{display:none;}
+.rs-chev{flex:0 0 auto;color:var(--kb-muted);font-size:12px;transition:transform .18s ease;}
+.rs-sec[open] .rs-chev{transform:rotate(180deg);}
+.rs-body{padding:0 16px 16px;font-size:14px;line-height:1.6;color:var(--kb-text-soft);}
+.rs-body>:first-child{margin-top:6px;}
+.rs-gold-lead{font-weight:600;color:var(--kb-text);}
 .gd-sb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle;}
 .gd-sb-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
 .gd-sb-mittel{background:var(--kb-warn-50);color:#8a5a00;}
@@ -1923,18 +1948,26 @@ window.KB_GUIDE=(function(){
   }
 
   /* ---------- Phase 6: Ergebnis (alle vertieften Achsen, vollständig lesbar) ---------- */
+  function firstSentence(html,n){var t=plain(html);if(!t)return '';var m=t.match(/^[^.!?]*[.!?]/);var s=(m&&m[0].length>=40)?m[0]:t;return clamp(s,n||150);}
+  function secCard(ic,title,blurb,full,open){
+    if(!full)return '';
+    return '<details class="rs-sec"'+(open?' open':'')+'>'+
+      '<summary class="rs-head"><span class="rs-ic">'+ic+'</span>'+
+        '<span class="rs-ht"><span class="rs-title">'+esc(title)+'</span>'+(blurb?'<span class="rs-blurb">'+esc(blurb)+'</span>':'')+'</span>'+
+        '<span class="rs-more">ganz lesen</span><span class="rs-chev">▾</span></summary>'+
+      '<div class="rs-body sv-prose">'+full+'</div></details>';
+  }
   function musterSections(b,ax,openFirst){
-    b=b||{};var h='';
-    function blk(t,html,open){return html?('<details class="sv-acc"'+(open?' open':'')+'><summary>'+esc(t)+'</summary><div class="sv-prose">'+html+'</div></details>'):'';}
-    h+=blk('Worum es geht',b.profil,openFirst);
+    b=b||{};var h='<div class="rs-list">';
+    if(b.profil)h+=secCard('🧭','Worum es geht',firstSentence(b.profil,170),b.profil,openFirst);
     var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
-    h+=blk('Umgang mit diesem Profil',umgang,openFirst);
-    if(b.phasen&&b.phasen.length){var ph=b.phasen.map(function(p){return '<p><strong>'+esc(p.titel||'')+'</strong></p>'+(p.was||p.ziele||'');}).join('');h+=blk('Phasen / nächste Schritte',ph,false);}
-    h+=blk('Schulanpassungen',b.schuleAnpassungen,false);
+    if(umgang)h+=secCard('🤝','Umgang mit diesem Profil',firstSentence(b.ansatzHaupt||b.ansatzTust||umgang,170)||'Wie du dich verhältst — und was du vermeidest.',umgang,false);
+    if(b.phasen&&b.phasen.length){var ph=b.phasen.map(function(p){return '<p><strong>'+esc(p.titel||'')+'</strong></p>'+(p.was||p.ziele||'');}).join('');var pt=b.phasen.map(function(p){return p.titel;}).filter(Boolean).slice(0,3).join(' → ');h+=secCard('🪜','Nächste Schritte',pt||'Der Weg in sinnvollen Etappen.',ph,false);}
+    if(b.schuleAnpassungen)h+=secCard('🏫','Schulanpassungen',firstSentence(b.schuleAnpassungen,170)||'Konkrete Anpassungen im Schulalltag.',b.schuleAnpassungen,false);
     var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
-    h+=blk('Krisen-/Risikohinweis',krise,false);
-    if(ax&&ax.goldstandards&&ax.goldstandards.length)h+=blk('Womit fachlich absichern (Goldstandards)','<ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>',false);
-    return h;
+    if(krise){var kfull=(String(krise).indexOf('<')>=0)?krise:('<p>'+esc(krise)+'</p>');h+=secCard('🚨','Krisen-/Risikohinweis',firstSentence(krise,170)||'Worauf du bei Gefahr sofort achtest.',kfull,false);}
+    if(ax&&ax.goldstandards&&ax.goldstandards.length)h+=secCard('🔬','Womit fachlich absichern',ax.goldstandards.slice(0,2).join(' · ')+(ax.goldstandards.length>2?' …':''),'<p class="rs-gold-lead">Diese Verfahren sichern den Verdacht fachlich ab:</p><ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>',false);
+    return h+'</div>';
   }
   function renderErgebnis(){
     var a=api();if(!a)return loading();
@@ -1952,13 +1985,14 @@ window.KB_GUIDE=(function(){
       h+='<div class="gd-card"><div class="gd-result-head"><span class="gd-result-badge">Ergebnis</span><div class="gd-result-name">Noch nichts vertieft</div></div><p class="gd-sub" style="margin-top:12px;">Wähle in der Verdachts-Phase mindestens eine Achse zum Vertiefen.</p><div class="gd-nav"><button class="gd-back" data-g="goto-verdacht">‹ Achsen wählen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="restart">Neu starten</button></div></div>';
       return h;
     }
-    if(axes.length>1){h+='<p class="gd-multi-h">'+axes.length+' Befunde (Komorbidität) — beide gehören in die fachliche Abklärung:</p>';}
+    if(axes.length>1){h+='<p class="gd-multi-h">'+axes.length+' Befunde (Komorbidität) — alle gehören in die fachliche Abklärung:</p>';}
     axes.forEach(function(tk,i){
       var ax=axisByTopic(tk);var ps=d.plans[tk]||{symptome:[],kontext:{}};
       var scores=[];try{scores=a.computeSymptomScores(ps,tk)||[];}catch(e){}
       var top=scores[0];
       h+='<div class="gd-card gd-axiscard">';
-      h+='<div class="gd-result-head"><span class="gd-result-badge">'+(axes.length>1?('Befund '+(i+1)+' / '+axes.length):'Erkanntes Submuster')+'</span><div class="gd-result-name">'+esc(top&&top.muster?top.muster.name:'Kein eindeutiges Submuster')+'</div><div class="gd-result-axis">'+esc((ax&&ax.name)||tk)+'</div></div>';
+      h+='<div class="rs-hero"><div class="rs-hero-row"><span class="rs-hero-badge">'+(axes.length>1?('Befund '+(i+1)+'/'+axes.length):'Erkanntes Submuster')+'</span><span class="rs-axis-chip">'+esc((ax&&ax.name)||tk)+'</span></div>'+
+        '<div class="rs-hero-name">'+esc(top&&top.muster?top.muster.name:'Kein eindeutiges Submuster')+'</div></div>';
       var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
       if(evN<=weakAxisMax()){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> nur '+evN+' passende Beobachtung(en) — vorläufig behandeln.</div>';}
       if(ax&&rareAxis(ax.id)){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — mit Zurückhaltung lesen, früh fachlich abklären.</div>';}
