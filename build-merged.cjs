@@ -545,6 +545,31 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .rs-body{padding:0 16px 16px;font-size:14px;line-height:1.6;color:var(--kb-text-soft);}
 .rs-body>:first-child{margin-top:6px;}
 .rs-gold-lead{font-weight:600;color:var(--kb-text);}
+.gd-trend{font-size:12.5px;line-height:1.5;color:var(--kb-text-soft);background:var(--kb-surface-2);border:1px solid var(--kb-border);border-radius:10px;padding:9px 13px;margin:0 0 14px;}
+/* ===== Verlauf-Timeline ===== */
+.tl-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;}
+.tl-chip{font-size:13px;font-weight:700;text-decoration:none;color:var(--kb-text-soft);background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:999px;padding:6px 13px;transition:all .12s ease;}
+.tl-chip span{opacity:.6;font-weight:800;margin-left:3px;}
+.tl-chip:hover{border-color:var(--kb-accent-light);color:var(--kb-text);}
+.tl-chip.is-on{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
+.tl-chip.is-on span{opacity:.85;}
+.tl{position:relative;padding-left:8px;}
+.tl-item{position:relative;display:flex;gap:14px;padding:0 0 18px 0;}
+.tl-item::before{content:'';position:absolute;left:18px;top:38px;bottom:-4px;width:2px;background:var(--kb-border);}
+.tl-item:last-child::before{display:none;}
+.tl-ic{position:relative;z-index:1;width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;font-size:17px;border-radius:50%;background:var(--kb-surface);border:1.5px solid var(--kb-border);box-shadow:var(--kb-shadow-sm);}
+.tl-screening .tl-ic{background:var(--kb-accent-50);border-color:var(--kb-accent-200);}
+.tl-absence .tl-ic{background:var(--kb-warn-50);border-color:transparent;}
+.tl-goal .tl-ic{background:var(--kb-accent2-50);border-color:transparent;}
+.tl-c{flex:1;min-width:0;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:12px 15px;box-shadow:var(--kb-shadow-sm);}
+.tl-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 5px;}
+.tl-t{font-weight:800;font-size:14px;color:var(--kb-text);}
+.tl-d{font-size:12px;color:var(--kb-muted);font-weight:600;white-space:nowrap;flex:0 0 auto;}
+.tl-b{font-size:13.5px;line-height:1.55;color:var(--kb-text-soft);}
+.tl-b .entry-body{margin:0;}
+.tl-scr em{font-style:normal;font-weight:800;font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;opacity:.8;}
+.tl-goals{margin:4px 0 0;padding-left:18px;}
+.tl-goals li{margin:2px 0;}
 .gd-sb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle;}
 .gd-sb-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
 .gd-sb-mittel{background:var(--kb-warn-50);color:#8a5a00;}
@@ -794,7 +819,7 @@ var DOS_OVERRIDES = `
   function stat(n,l){return '<div class="kb-stat"><div class="kb-stat-n">'+n+'</div><div class="kb-stat-l">'+escapeHtml(l)+'</div></div>';}
   function hubHeader(student,tab){
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));} meta.push('Niveau '+escapeHtml(rosterLevel(sid)));
-    var tabs=[['uebersicht','Übersicht'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['reunion','Réunion'],['helfernetz','Helfernetz']];
+    var tabs=[['uebersicht','Übersicht'],['verlauf','Verlauf'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['reunion','Réunion'],['helfernetz','Helfernetz']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -873,6 +898,43 @@ var DOS_OVERRIDES = `
 
     return stripHtml+'<div class="hub2"><div class="hub2-main">'+scrPanel+foerderCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
   }
+  function hubVerlauf(student){
+    var sid=student.id;
+    var q=(typeof parseHash==='function')?(parseHash().query||{}):{};
+    var vf=q.vf||'all';
+    var items=[];
+    (Repo.entriesForStudent?Repo.entriesForStudent(sid):[]).forEach(function(e){
+      var isReu=(e.category==='Team-Réunion');
+      items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
+    });
+    (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
+    });
+    if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
+    if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
+      var ax=(s.axes||[]).map(function(a){return escapeHtml(a.name)+' <em>'+escapeHtml(a.staerke)+'</em>';}).join(', ');
+      var mu=(s.muster||[]).map(function(m){return escapeHtml(m.name);}).join(' · ');
+      var b='';
+      if(s.acute)b+='<span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Akute Krise</span> ';
+      else if(s.risk)b+='<span class="sv-risk">⚠ Risiko</span> ';
+      b+='<div class="tl-scr">'+(ax?('Achsen: '+ax):'keine über Schwelle')+(mu?('<br>Submuster: <strong>'+mu+'</strong>'):'')+(s.confidence?('<br>Einordnung: '+escapeHtml(s.confidence)):'')+'</div>';
+      items.push({date:s.date,type:'screening',icon:'🧠',title:'Screening',body:b});
+    });}
+    var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(rep&&rep.date){items.push({date:rep.date,type:'report',icon:'🩺',title:escapeHtml(rep.type||'Diagnostischer Bericht'),body:'Bericht im Dossier hinterlegt.'});}
+    items.sort(function(a,b){return (a.date<b.date)?1:(a.date>b.date?-1:0);});
+    var counts={}; items.forEach(function(it){counts[it.type]=(counts[it.type]||0)+1;});
+    var defs=[['all','Alles',items.length],['screening','Screening',counts.screening||0],['entry','Einträge',counts.entry||0],['reunion','Réunion',counts.reunion||0],['goal','Ziele',counts.goal||0],['absence','Absenzen',counts.absence||0]];
+    var chips=defs.filter(function(dd){return dd[0]==='all'||dd[2];}).map(function(dd){var r='#/student/'+encodeURIComponent(sid)+'?hub=verlauf&vf='+dd[0];return '<a class="tl-chip'+(vf===dd[0]?' is-on':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(dd[1])+' <span>'+dd[2]+'</span></a>';}).join('');
+    var filtered=(vf==='all')?items:items.filter(function(it){return it.type===vf;});
+    var body;
+    if(!filtered.length){body='<div class="empty-state">'+(items.length?'Nichts in diesem Filter.':'Noch keine Aktivitäten — Einträge, Screenings, Absenzen und Ziele sammeln sich hier automatisch.')+'</div>';}
+    else{
+      body='<div class="tl">'+filtered.map(function(it){
+        return '<div class="tl-item tl-'+it.type+'"><div class="tl-ic">'+it.icon+'</div><div class="tl-c"><div class="tl-h"><span class="tl-t">'+it.title+'</span><span class="tl-d">'+escapeHtml(formatDate(it.date))+'</span></div><div class="tl-b">'+it.body+'</div></div></div>';
+      }).join('')+'</div>';
+    }
+    return '<div class="kb-hub-pad"><div class="tl-filters">'+chips+'</div>'+body+'</div>';
+  }
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
     reu.forEach(function(r){
@@ -940,6 +1002,7 @@ var DOS_OVERRIDES = `
       var sectionHtml='', baseAfter=null;
       try{
         if(tab==='dossier'){var base=_origDetail(params);sectionHtml=base.html;baseAfter=base.afterRender;}
+        else if(tab==='verlauf'){sectionHtml=hubVerlauf(student);}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
         else if(tab==='schule'){sectionHtml='<h3 class="kb-subhead">📉 Absenzen</h3>'+hubAbsenzen(student)+'<h3 class="kb-subhead kb-subhead-mt">📒 Aufgaben &amp; Prüfungen</h3>'+hubAufgaben(student);}
         else if(tab==='reunion'){sectionHtml=hubReunion(student);}
@@ -1535,7 +1598,7 @@ window.KB_SCREENING=(function(){
   function loadAll(){try{var r=localStorage.getItem(LS);if(r){return JSON.parse(r)||{};}}catch(e){}return {};}
   function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
   var data=loadAll();
-  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},demografie:{},gate:{},updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}if(!r.demografie){r.demografie={};}if(!r.gate){r.gate={};}return r;}
+  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},demografie:{},gate:{},history:[],updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}if(!r.demografie){r.demografie={};}if(!r.gate){r.gate={};}if(!Array.isArray(r.history)){r.history=[];}return r;}
   function set(sid,r){data[sid]=r;saveAll(data);}
   function api(){return window.SAVOIR_API||null;}
   function capture(){
@@ -1658,9 +1721,34 @@ window.KB_SCREENING=(function(){
     if((d.symptome||[]).length<weakBelow())L.push('Schwache Datenbasis: beruht auf wenigen Beobachtungen ('+(d.symptome||[]).length+') — als vorläufig behandeln.');
     return {text:L.join('\\n'), updatedAt:r.updatedAt};
   }
+  /* Datierter Snapshot fürs Verlauf-/Trend-Bild: kompakte Zusammenfassung des
+     aktuellen Ergebnisses. snapshotDaily upsertet einen Eintrag pro Kalendertag. */
+  function snapshotOf(sid){
+    var a=api(); var d=get(sid); var r=result(sid); if(!r||!r.hasData)return null;
+    var axes=(r.achsen||[]).slice(0,4).map(function(x){return {id:(x.achse&&x.achse.id)||'',name:(x.achse&&x.achse.name)||'',staerke:x.staerke};});
+    var muster=[];
+    if(a&&a.computeSymptomScores&&d.plans){for(var k in d.plans){var p=d.plans[k];if(!p||!((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))continue;try{var ms=a.computeSymptomScores(p,k);if(ms&&ms[0]&&ms[0].muster){var ax=null,GG=a.SAVOIR_GLOBAL;if(GG){for(var i=0;i<GG.achsen.length;i++){if(GG.achsen[i].topicKey===k){ax=GG.achsen[i];break;}}}muster.push({axis:(ax&&ax.name)||k,name:ms[0].muster.name||''});}}catch(e){}}}
+    var conf=confidenceOf(d.gate);
+    return {risk:!!(r.risiken&&r.risiken.length),acute:!!(r.acute&&r.acute.length),symCount:(d.symptome||[]).length,axes:axes,muster:muster,confidence:conf?conf.label:null};
+  }
+  function snapshotDaily(sid){
+    var s=snapshotOf(sid); if(!s)return;
+    var today=new Date().toISOString().slice(0,10);
+    var d=get(sid); d.history=Array.isArray(d.history)?d.history:[];
+    var snap={date:today}; for(var k in s)snap[k]=s[k];
+    var idx=-1; for(var i=0;i<d.history.length;i++){if(d.history[i].date===today){idx=i;break;}}
+    var isNew=(idx<0);
+    if(!isNew){ if(JSON.stringify(d.history[idx])===JSON.stringify(snap))return; d.history[idx]=snap; }
+    else { d.history.push(snap); }
+    d.history.sort(function(a,b){return a.date<b.date?1:-1;});
+    set(sid,d);
+    if(isNew&&window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
+  }
   return {
     get:function(sid){return get(sid);},
     hasData:function(sid){var d=get(sid);return !!(d.symptome&&d.symptome.length);},
+    snapshotDaily:snapshotDaily,
+    history:function(sid){var d=get(sid);return (d.history||[]).slice();},
     get activeId(){return activeId;},
     setActive:function(sid){activeId=sid;},
     /* Direkter Schreibzugriff für den geführten Trichter (KB_GUIDE):
@@ -1673,6 +1761,7 @@ window.KB_SCREENING=(function(){
           plans:(d.plans!=null?d.plans:(r.plans||{})),
           demografie:(d.demografie!=null?d.demografie:(r.demografie||{})),
           gate:(d.gate!=null?d.gate:(r.gate||{})),
+          history:(d.history!=null?d.history:(r.history||[])),
           updatedAt:new Date().toISOString() };
       set(sid,r); activeId=null;
       if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
@@ -1684,8 +1773,8 @@ window.KB_SCREENING=(function(){
     confidenceOf:confidenceOf,
     result:result,
     detail:detail,
-    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},updatedAt:r.updatedAt||''});}return out;},
-    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},updatedAt:r.updatedAt||''};}});saveAll(data);}
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''});}return out;},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''};}});saveAll(data);}
   };
 })();
 `;
@@ -1984,6 +2073,13 @@ window.KB_GUIDE=(function(){
     if(!axes.length){
       h+='<div class="gd-card"><div class="gd-result-head"><span class="gd-result-badge">Ergebnis</span><div class="gd-result-name">Noch nichts vertieft</div></div><p class="gd-sub" style="margin-top:12px;">Wähle in der Verdachts-Phase mindestens eine Achse zum Vertiefen.</p><div class="gd-nav"><button class="gd-back" data-g="goto-verdacht">‹ Achsen wählen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="restart">Neu starten</button></div></div>';
       return h;
+    }
+    /* datierten Snapshot festhalten (Verlauf/Trend) + Trend-Zeile zeigen */
+    if(window.KB_SCREENING&&window.KB_SCREENING.snapshotDaily){try{window.KB_SCREENING.snapshotDaily(ST.sid);}catch(e){}}
+    var hist=(window.KB_SCREENING&&window.KB_SCREENING.history)?window.KB_SCREENING.history(ST.sid):[];
+    if(hist.length>1){
+      var prev=hist[1],pAx=(prev.axes&&prev.axes[0])?(prev.axes[0].name+' ('+prev.axes[0].staerke+')'):'—';
+      h+='<div class="gd-trend">📈 <strong>Verlauf:</strong> '+hist.length+' Screenings · zuvor '+esc((prev.date||'').slice(8,10)+'.'+(prev.date||'').slice(5,7)+'.')+': '+esc(pAx)+(prev.acute?' · Krise':(prev.risk?' · Risiko':''))+' — kompletter Verlauf im Tab <strong>Verlauf</strong>.</div>';
     }
     if(axes.length>1){h+='<p class="gd-multi-h">'+axes.length+' Befunde (Komorbidität) — alle gehören in die fachliche Abklärung:</p>';}
     axes.forEach(function(tk,i){
