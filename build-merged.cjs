@@ -1150,17 +1150,27 @@ var DOS_OVERRIDES = `
     var modeBtns='<div class="note-mode"><span class="note-mode-lbl">Einteilung:</span>'+['semester','trimester'].map(function(m){return '<button class="note-mode-btn'+(mode===m?' on':'')+'" data-noten-mode="'+m+'" data-sid="'+escapeAttr(sid)+'">'+(m==='semester'?'Semester':'Trimester')+'</button>';}).join('')+'</div>';
     var perTabs='<div class="note-pertabs">'+periods.map(function(p){var r='#/student/'+encodeURIComponent(sid)+'?hub=noten&np='+p;return '<a class="note-pertab'+(p===per?' on':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(PLABEL[p]||p)+'</a>';}).join('')+'</div>';
 
+    var openIdx=parseInt(q.nf,10); if(isNaN(openIdx))openIdx=-1;
     var cards='';
-    subjects.forEach(function(su){
+    subjects.forEach(function(su,si){
       var acad=isAcademic(su), gs=N.list(sid,su,per), avg=N.subjectAvg(sid,su,per);
-      var modHtml='';
-      if(acad){
-        var m=N.moduleOf(sid,su), top=Math.max(m.cap,m.done+2), chips='';
-        for(var k=1;k<=top;k++){var st=k<=m.done?'done':(k===m.done+1?'current':'future');chips+='<button class="mod-chip mod-'+st+'" data-mod-set="'+k+'" data-subj="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Modul '+k+(k<=m.done?' – erreicht (Klick = zurücksetzen)':' als erreicht markieren')+'">'+k+'</button>';}
-        modHtml='<div class="mod-track"><div class="mod-track-head"><span class="mod-status">'+(m.done>0?('📦 Modul '+m.done+' erreicht · arbeitet an <b>Modul '+(m.done+1)+'</b>'):'📦 arbeitet an <b>Modul 1</b>')+'</span></div><div class="mod-chips">'+chips+'<button class="mod-more" data-mod-more="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Mehr Module anzeigen">+</button></div></div>';
+      var open=(si===openIdx);
+      var m=acad?N.moduleOf(sid,su):null;
+      var headRoute='#/student/'+encodeURIComponent(sid)+'?hub=noten&np='+per+'&nf='+(open?'':si);
+      var badge=(acad&&m.done>0)?'<span class="note-modbadge">📦 Modul '+(m.done+1)+'</span>':'';
+      var head='<a class="note-card-head" href="'+headRoute+'" data-route="'+headRoute+'"><span class="note-caret">'+(open?'▾':'▸')+'</span><h4>'+escapeHtml(su)+(acad?'':' <span class="note-na-tag">kein Modulfach</span>')+'</h4>'+badge+(gs.length?'<span class="note-cnt">'+gs.length+'</span>':'')+(avg!=null?'<span class="note-avg">Ø '+chip60(avg)+'</span>':'<span class="note-avg muted">—</span>')+'</a>';
+      var body='';
+      if(open){
+        var modHtml='';
+        if(acad){
+          var top=Math.max(m.cap,m.done+2), chips='';
+          for(var k=1;k<=top;k++){var st=k<=m.done?'done':(k===m.done+1?'current':'future');chips+='<button class="mod-chip mod-'+st+'" data-mod-set="'+k+'" data-subj="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Modul '+k+(k<=m.done?' – erreicht (Klick = zurücksetzen)':' als erreicht markieren')+'">'+k+'</button>';}
+          modHtml='<div class="mod-track"><div class="mod-track-head"><span class="mod-status">'+(m.done>0?('📦 Modul '+m.done+' erreicht · arbeitet an <b>Modul '+(m.done+1)+'</b>'):'📦 arbeitet an <b>Modul 1</b>')+'</span></div><div class="mod-chips">'+chips+'<button class="mod-more" data-mod-more="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Mehr Module anzeigen">+</button></div></div>';
+        }
+        var rows=gs.map(function(g){return '<div class="note-row"><span class="note-row-lbl">'+(g.label?escapeHtml(g.label):'<span class="muted">Note</span>')+'</span><span class="note-raw">'+nfn(g.points)+' / '+nfn(g.max)+'</span><span class="note-arrow">→</span>'+chip60(N.norm(g))+'<button class="note-del" data-noten-del="'+g.id+'" data-sid="'+escapeAttr(sid)+'" title="Löschen">🗑</button></div>';}).join('');
+        body='<div class="note-card-body">'+modHtml+(rows?'<div class="note-rows">'+rows+'</div>':'')+'<div class="note-add"><input class="note-in note-in-lbl" type="text" placeholder="Bezeichnung (optional)" data-nf="label"><input class="note-in note-in-num" type="number" step="0.01" min="0" placeholder="erreicht" data-nf="points"><span class="note-of">von</span><input class="note-in note-in-num" type="number" step="0.01" min="1" value="60" data-nf="max"><button class="btn btn-sm btn-primary note-add-btn" data-noten-add="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" data-per="'+per+'">+ Note</button></div></div>';
       }
-      var rows=gs.map(function(g){return '<div class="note-row"><span class="note-row-lbl">'+(g.label?escapeHtml(g.label):'<span class="muted">Note</span>')+'</span><span class="note-raw">'+nfn(g.points)+' / '+nfn(g.max)+'</span><span class="note-arrow">→</span>'+chip60(N.norm(g))+'<button class="note-del" data-noten-del="'+g.id+'" data-sid="'+escapeAttr(sid)+'" title="Löschen">🗑</button></div>';}).join('');
-      cards+='<div class="note-card'+(acad?'':' note-card-na')+'"><div class="note-card-head"><h4>'+escapeHtml(su)+(acad?'':' <span class="note-na-tag">kein Modulfach</span>')+'</h4>'+(avg!=null?'<span class="note-avg">Ø '+chip60(avg)+'</span>':'<span class="note-avg muted">—</span>')+'</div>'+modHtml+(rows?'<div class="note-rows">'+rows+'</div>':'')+'<div class="note-add"><input class="note-in note-in-lbl" type="text" placeholder="Bezeichnung (optional)" data-nf="label"><input class="note-in note-in-num" type="number" step="0.01" min="0" placeholder="erreicht" data-nf="points"><span class="note-of">von</span><input class="note-in note-in-num" type="number" step="0.01" min="1" value="60" data-nf="max"><button class="btn btn-sm btn-primary note-add-btn" data-noten-add="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" data-per="'+per+'">+ Note</button></div></div>';
+      cards+='<div class="note-card'+(acad?'':' note-card-na')+(open?' is-open':'')+'">'+head+body+'</div>';
     });
     if(!subjects.length){cards='<div class="empty-state">Keine Fächer im Stundenplan für Niveau '+escapeHtml(lvl)+'. Lege den Stundenplan unter „Klasse &amp; Stundenplan" an.</div>';}
 
@@ -2604,10 +2614,17 @@ var MATERIAL_CSS = `
 #dos-root .note-pertab{ text-decoration:none; border:1px solid var(--kb-border,#e2e3ee); border-radius:10px; padding:7px 15px; font-size:14px; font-weight:700; color:var(--kb-ink,#23243a); background:var(--kb-surface,#fff); }
 #dos-root .note-pertab.on{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
 #dos-root .note-hint{ font-size:12.5px; margin:6px 0 14px; }
-#dos-root .note-card{ background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:14px; padding:14px 16px; margin-bottom:14px; }
+#dos-root .note-card{ background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:14px; padding:4px 16px; margin-bottom:10px; transition:box-shadow .12s ease,border-color .12s ease; }
+#dos-root .note-card.is-open{ padding:14px 16px; box-shadow:0 6px 22px rgba(0,0,0,.07); border-color:var(--kb-border,#e2e3ee); }
 #dos-root .note-card-na{ background:var(--kb-bg,#f7f7fb); }
-#dos-root .note-card-head{ display:flex; align-items:center; gap:10px; }
+#dos-root .note-card-head{ display:flex; align-items:center; gap:10px; cursor:pointer; text-decoration:none; color:inherit; padding:10px 0; }
+#dos-root .note-card.is-open .note-card-head{ padding-bottom:6px; }
+#dos-root .note-card-head:hover h4{ color:var(--kb-accent,#4f5bd5); }
 #dos-root .note-card-head h4{ margin:0; font-size:16px; flex:1; color:var(--kb-ink,#23243a); }
+#dos-root .note-caret{ font-size:11px; color:var(--kb-muted,#9a9ab0); width:12px; flex:0 0 auto; }
+#dos-root .note-modbadge{ font-size:12px; font-weight:700; color:var(--kb-accent,#4f5bd5); background:rgba(79,91,213,.09); border-radius:999px; padding:2px 9px; white-space:nowrap; }
+#dos-root .note-cnt{ font-size:11px; font-weight:800; color:var(--kb-muted,#888); background:var(--kb-bg,#eef0f6); border-radius:999px; padding:1px 8px; }
+#dos-root .note-card-body{ margin-top:4px; padding-bottom:6px; }
 #dos-root .note-na-tag{ font-size:10.5px; font-weight:700; color:var(--kb-muted,#999); background:var(--kb-border,#ececf3); border-radius:999px; padding:1px 8px; vertical-align:middle; }
 #dos-root .note-avg{ font-size:13px; font-weight:700; color:var(--kb-muted,#777); white-space:nowrap; }
 #dos-root .note-60{ display:inline-flex; align-items:baseline; gap:1px; font-weight:800; border-radius:7px; padding:2px 9px; font-size:15px; }
