@@ -758,6 +758,35 @@ var ACCENT_OVERRIDE = `
 #anw-root .tt-grid th,#anw-root .tt-grid td{ padding:9px 10px; }
 #anw-root .tt-grid input{ font-size:14px; min-width:104px; padding:9px 10px; border-radius:8px; }
 #anw-root .tt-grid .tcol{ font-size:13px; font-weight:800; }
+
+/* ---- Wochen-Horaire (Klassenbuch): größer & besser lesbar ---- */
+/* Höhere Zellen + größere Schrift = Hauptgewinn; Spaltenbreite moderat,
+   damit alle 5 Tage auch auf Laptops ohne Scrollen passen. */
+#anw-root .wk-grid table{ border-spacing:6px; }
+#anw-root .wk-grid-large table{ min-width:800px; }
+#anw-root .wk-grid thead th{ min-width:124px; padding:11px 8px; font-size:14px; }
+#anw-root .wk-grid thead th .dn{ font-size:16.5px; }
+#anw-root .wk-grid thead th .dt{ font-size:12.5px; }
+#anw-root .wk-grid .tc{ font-size:13px; padding:10px 10px; }
+#anw-root .wk-grid .tc .tw{ font-size:11.5px; }
+#anw-root .wk-grid .wcell{ min-height:82px; font-size:15.5px; padding:12px 10px; border-radius:13px; gap:5px; }
+#anw-root .wk-grid .wcell .subj-lbl{ font-size:15.5px; line-height:1.25; }
+#anw-root .wk-grid .wcell.empty{ min-height:82px; }
+#anw-root .wk-grid .wcell.pause{ font-size:13.5px; }
+#anw-root .wk-grid .wcell .mk{ font-size:12px; padding:2px 10px; }
+#anw-root .wk-grid .wcell.has-note{ padding-top:30px; }
+@media (max-width:900px){ #anw-root .wk-grid .wcell{ min-height:68px; font-size:14px; } #anw-root .wk-grid .wcell .subj-lbl{ font-size:14px; } }
+
+/* ---- Schülerliste schlanker -> mehr Platz fürs Horaire ---- */
+#anw-root .layout{ max-width:1680px; }
+#anw-root .sidebar{ flex:0 0 196px; padding:12px 8px; }
+#anw-root .side-stu{ padding:6px 8px; gap:8px; }
+#anw-root .side-stu .avatar{ width:30px; height:30px; font-size:12px; border-radius:9px; }
+#anw-root .side-stu .nm{ font-size:13px; }
+#anw-root .side-stu .nm small{ font-size:10px; }
+#anw-root .side-stu .hrs{ font-size:11px; padding:2px 7px; }
+/* Spalten dürfen den frei gewordenen Platz nutzen */
+#anw-root .wk-grid thead th{ min-width:138px; }
 `;
 
 var SHELL_BODY_TOP = `
