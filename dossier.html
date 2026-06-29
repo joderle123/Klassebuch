@@ -3675,14 +3675,28 @@ var KB_DS_HEADS = [
 var KB_PEI_HEADS = [
   { key: 'fortschritte', label: 'Fortschritte', res: [/Fortschritte des Sch[üu]lers[^\n]*/i] },
   { key: 'themen', label: 'Anzugehende Themen', res: [/Anzugehende Themen\b/i] },
-  { key: 'ziele', label: 'Zielerfassung und Umsetzung', res: [/Zielerfassung und Umsetzung/i] }
+  { key: 'ziele', label: 'Zielerfassung und Umsetzung', res: [/Zielerfassung und Umsetzung/i, /Zielerfassung/i, /Zielsetzung(?:en)?\b/i, /F[öo]rderziele?\b/i, /Entwicklungsziele?\b/i, /Resultate des ELDiB/i, /ELDiB[- ]?Ziele/i] }
 ];
 function kbParseGoals(zieleText) {
   if (!zieleText) return [];
-  var goals = [], re = /\b(V|K|SOZ|KOG)-(\d+)\b\s*([^:\n]*):?/g, m, marks = [];
-  while ((m = re.exec(zieleText))) marks.push({ code: m[1] + '-' + m[2], domain: m[1], idx: m.index, titleStart: m.index + m[0].length, title: (m[3] || '').trim() });
+  /* Robust gegen PDF-Eigenheiten: das Trennzeichen zwischen Domäne und Nummer
+     darf Bindestrich, Gedankenstrich (–/—), Unicode-Hyphen, Minus, Punkt,
+     Mittelpunkt, Doppelpunkt, Leerzeichen ODER GAR NICHTS sein. Domänen
+     längste-zuerst (SOZ/KOG vor V/K). Beispiele: „V-19", „SOZ 32", „KOG.7",
+     „K–15", „V19". */
+  /* Erst ALLE Code-Positionen sammeln (begrenzen die Blöcke korrekt, auch wenn
+     der Text einzeilig ist). Den Titel NICHT gierig mit-fangen, sondern aus dem
+     Text ZWISCHEN den Codes ableiten — sonst verschluckt ein Treffer die
+     nachfolgenden Codes (typisch bei PDF-Text ohne Zeilenumbrüche). */
+  var goals = [], seen = {}, re = /\b(SOZ|KOG|V|K)\s*[-‐‑‒–—−.·‧:]?\s*(\d{1,3})\b/g, m, marks = [];
+  while ((m = re.exec(zieleText))) {
+    marks.push({ code: m[1] + '-' + parseInt(m[2], 10), domain: m[1], idx: m.index, end: re.lastIndex });
+  }
   for (var i = 0; i < marks.length; i++) {
-    var s = marks[i].titleStart, e = (i + 1 < marks.length) ? marks[i + 1].idx : zieleText.length, block = zieleText.slice(s, e);
+    if (seen[marks[i].code]) continue; seen[marks[i].code] = 1;
+    var s = marks[i].end, e = (i + 1 < marks.length) ? marks[i + 1].idx : zieleText.length, block = zieleText.slice(s, e);
+    var tM = block.match(/^[\s.:–—\-]*([^\n:]{0,80})/);
+    var title = tM ? tM[1].replace(/\s+/g, ' ').trim() : '';
     var zf = block.match(/Zielformulierung\s*:?\s*[„“"']?\s*([\s\S]*?)[”"'„“]?\s*(?:M[öo]gliche Umsetzung|$)/i);
     var formul = zf ? zf[1].replace(/\s+/g, ' ').replace(/[”"'„“]+$/, '').trim() : '';
     /* „Mögliche Umsetzung" -> Liste der Methodiken (DBT-Skills, Rollenspiele …) */
@@ -3698,7 +3712,7 @@ function kbParseGoals(zieleText) {
         if (methods.length >= 8) break;
       }
     }
-    goals.push({ code: marks[i].code, domain: marks[i].domain, title: marks[i].title.replace(/\s+/g, ' ').trim(), formulation: formul, methods: methods });
+    goals.push({ code: marks[i].code, domain: marks[i].domain, title: title, formulation: formul, methods: methods });
   }
   return goals;
 }
@@ -3712,6 +3726,10 @@ function kbParseReport(raw) {
   var res = { type: type, identity: id, reportDate: kbReportDate(t), sections: {}, goals: [], recommendations: [] };
   if (type === 'PEI') { res.sections = kbSliceSections(t, KB_PEI_HEADS); res.goals = kbParseGoals(res.sections.ziele && res.sections.ziele.text); }
   else { res.sections = kbSliceSections(t, KB_DS_HEADS); res.recommendations = kbParseRecommendations(t); res.goals = []; }
+  /* Fallback: Wenn im Ziele-Abschnitt nichts erkannt wurde (Abschnitts-
+     Überschrift anders benannt, PDF-Layout, DS mit ELDiB-Resultaten …),
+     das GANZE Dokument nach ELDiB-Codes durchsuchen. */
+  if (!res.goals.length) res.goals = kbParseGoals(t);
   return res;
 }
 
@@ -3814,8 +3832,11 @@ function viewReportImport(params, query) {
     var secKeys = Object.keys(r.sections || {});
     if (secKeys.length) parts.push('<p style="margin:0 0 6px;"><strong>Erkannte Abschnitte:</strong> ' + secKeys.map(function (k) { return escapeHtml(r.sections[k].label); }).join(' · ') + '</p>');
     if (r.goals && r.goals.length) {
-      parts.push('<p style="margin:0 0 2px;"><strong>Förderziele (' + r.goals.length + '):</strong></p><ul style="margin:0 0 6px;padding-left:18px;">' +
+      parts.push('<p style="margin:0 0 2px;color:#2e7d52;"><strong>✓ Förderziele (ELDiB) erkannt (' + r.goals.length + '):</strong></p><ul style="margin:0 0 6px;padding-left:18px;">' +
         r.goals.map(function (g) { return '<li><strong>[' + escapeHtml(g.code) + ']</strong> ' + escapeHtml(g.title) + (g.formulation ? ' — „' + escapeHtml(g.formulation) + '"' : '') + '</li>'; }).join('') + '</ul>');
+    } else if (r.type === 'PEI') {
+      parts.push('<div class="warn-banner" style="margin:0 0 8px;">⚠ <strong>Keine ELDiB-Förderziele erkannt.</strong> Erwartet werden Codes wie <code>V-19</code>, <code>SOZ-32</code>, <code>K-15</code>, <code>KOG-7</code> (auch „V 19", „V19", „K–15" werden erkannt). Prüfe den Rohtext unten — sind die Ziele anders formatiert (z. B. nur als Text ohne Code, oder unter Überschriften „Verhalten/Kommunikation/…"), schicke mir bitte einen kurzen Ausschnitt, dann passe ich den Import an.</div>' +
+        '<details style="margin:0 0 8px;"><summary style="cursor:pointer;font-weight:600;">🔍 Rohtext des Berichts anzeigen (zur Fehlersuche)</summary><div class="preview-box" style="max-height:260px;overflow:auto;white-space:pre-wrap;font-size:12px;line-height:1.5;margin-top:6px;">' + escapeHtml((st.rawText || '').slice(0, 5000)) + ((st.rawText || '').length > 5000 ? '\n…' : '') + '</div></details>');
     }
     /* Vollständiger Text, der wirklich gespeichert wird — damit ersichtlich ist,
        dass der GANZE Bericht übernommen wird (nicht nur die Ziele). */
