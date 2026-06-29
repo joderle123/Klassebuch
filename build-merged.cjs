@@ -448,6 +448,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .hub-row .ra{flex:0 0 auto;}
 /* Leerer Schüler: Erste Schritte */
 .hub-empty{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:20px;padding:44px 28px;text-align:center;box-shadow:var(--kb-shadow);}
+.hub-acute{display:flex;align-items:center;gap:12px;background:var(--kb-danger-50);border:1px solid var(--kb-danger);border-radius:12px;padding:10px 14px;margin:0 0 18px;color:var(--kb-danger-dark);font-weight:700;font-size:13.5px;}
+.hub-acute a{margin-left:auto;flex:0 0 auto;}
 .hub-empty-ic{font-size:46px;margin-bottom:8px;}
 .hub-empty h3{margin:0 0 6px;font-size:21px;letter-spacing:-.01em;}
 .hub-empty p{color:var(--kb-muted);margin:0 0 20px;}
@@ -903,27 +905,24 @@ var DOS_OVERRIDES = `
     var scr=window.KB_SCREENING?window.KB_SCREENING.result(sid):null;
     var scrAcute=scr&&scr.acute&&scr.acute.length;
     var scrTile=scrAcute?tile('Krise','Screening','warn','🚨'):((scr&&scr.hasData)?((scr.risiken&&scr.risiken.length)?tile('Risiko','Screening','warn','🧠'):tile('erfasst','Screening','ok','🧠')):tile('—','Screening','','🧠'));
-    var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''),'📉')+scrTile+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele','','🎯')+tile(weekly.length,'Wochenziele','','📌')+'</div>';
+    var stripHtml='<div class="kb-statstrip">'+tile((sum.unentschuldigt||0),'Unentsch. Absenzen',(sum.unentschuldigt?'warn':''),'📉')+tile((cg&&cg.goals?cg.goals.length:0),'Förderziele','','🎯')+tile(weekly.length,'Wochenziele','','📌')+scrTile+'</div>';
 
     /* ---- Schüler ohne Daten: klare Erste-Schritte statt leerer Karten ---- */
     var hasAny=(scr&&scr.hasData)||(cg&&cg.goals&&cg.goals.length)||weekly.length||entries.length||(sum&&sum.total)||lastReu;
     if(!hasAny){
-      return stripHtml+'<div class="hub-empty"><div class="hub-empty-ic">🚀</div><h3>Noch nichts erfasst für '+escapeHtml(student.name)+'</h3><p>Leg los — alle Infos sammeln sich danach automatisch hier.</p><div class="hub-empty-actions"><button class="btn btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">🧠 Screening durchführen</button>'+impBtn+'<button class="btn" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">📉 Absenzen erfassen</button></div></div>';
+      return stripHtml+'<div class="hub-empty"><div class="hub-empty-ic">🚀</div><h3>Noch nichts erfasst für '+escapeHtml(student.name)+'</h3><p>Leg los — alle Infos sammeln sich danach automatisch hier.</p><div class="hub-empty-actions"><button class="btn btn-primary" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">📉 Absenzen erfassen</button>'+impBtn+'<button class="btn" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">🧠 Screening</button></div></div>';
     }
 
-    /* ---- Fokus-Panel: Screening ---- */
-    var scrPanel;
+    /* ---- Screening bewusst zurückhaltend: nur Akut-Krise als schlanke Sicherheits-
+           zeile sichtbar; das Ergebnis selbst lebt kompakt in der Seitenspalte. ---- */
+    var acuteLine = scrAcute ? '<div class="hub-acute"><span>🚨 Akute Krise laut Screening — Sicherheit hat Vorrang.</span><a class="btn btn-sm" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ansehen</a></div>' : '';
+    var scrVal, scrAct;
     if(scr&&scr.hasData){
-      var risk=scr.risiken&&scr.risiken.length;
-      var sTop=scr.achsen&&scr.achsen[0];
-      var body='';
-      if(scrAcute){body+='<div class="hub-line"><span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Akute Krise — Sicherheit zuerst</span></div>';}
-      if(risk){body+='<div class="hub-line"><span class="sv-risk">⚠ '+scr.risiken.map(function(x){return escapeHtml((x.risiko&&x.risiko.name)||'?');}).join('</span> <span class="sv-risk">')+'</span></div>';}
-      if(sTop){body+='<div class="hub-line"><strong>'+escapeHtml((sTop.achse&&sTop.achse.name)||'?')+'</strong> <span class="sv-staerke sv-'+escapeHtml(sTop.staerke)+'">'+escapeHtml(sTop.staerke)+'</span></div>';}
-      if(scr.topMuster){body+='<div class="hub-line muted">Submuster: <strong style="color:var(--kb-text)">'+escapeHtml(scr.topMuster.name||'?')+'</strong></div>';}
-      scrPanel='<div class="scr-panel'+((risk||scrAcute)?' is-risk':'')+'"><div class="scr-panel-h"><span class="mi mi-'+((risk||scrAcute)?'r':'a')+'">🧠</span><span class="scr-panel-t">Screening</span></div>'+body+'<div class="kb-btn-row" style="margin-top:12px;"><button class="btn btn-sm btn-primary" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Ergebnis ansehen</button></div></div>';
+      scrVal = scrAcute ? '🚨 Krise' : ((scr.risiken&&scr.risiken.length) ? 'Risiko-Hinweis' : 'erfasst');
+      scrAct = '<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Öffnen</button>';
     } else {
-      scrPanel='<div class="scr-panel"><div class="scr-panel-h"><span class="mi mi-a">🧠</span><span class="scr-panel-t">Screening</span></div><p class="muted">'+(scr&&scr.noApi?'Modul lädt …':'Noch kein Screening — erfasse Beobachtungen, um Verdachtsachsen & Submuster zu erhalten.')+'</p><div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-sm btn-primary" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Screening durchführen</button></div></div>';
+      scrVal = (scr&&scr.noApi) ? 'lädt …' : '—';
+      scrAct = '<button class="btn btn-sm ra" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Start</button>';
     }
 
     /* ---- Förderziele ---- */
@@ -951,11 +950,12 @@ var DOS_OVERRIDES = `
     var sideRows='';
     sideRows+=row('📉','Absenzen',(sum.total?(sum.entschuldigt+' E · '+sum.unentschuldigt+' NE · '+sum.verspaetet+' R'):'keine'),'<button class="btn btn-sm ra" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Öffnen</button>');
     sideRows+=row('🩺','Diagnostik',(rep?escapeHtml((rep.type||'Bericht')+' · '+formatDate(rep.date)):'kein DS/PEI'),(rep?'<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Dossier</button>':''));
+    sideRows+=row('🧠','Screening',scrVal,scrAct);
     sideRows+=row('🗒️','Letzter Eintrag',(last?escapeHtml(formatDate(last.date)+' · '+last.category):'keiner'),'');
     sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
     var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
 
-    return stripHtml+'<div class="hub2"><div class="hub2-main">'+scrPanel+foerderCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
+    return stripHtml+acuteLine+'<div class="hub2"><div class="hub2-main">'+foerderCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
   }
   function hubVerlauf(student){
     var sid=student.id;
