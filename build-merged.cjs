@@ -249,7 +249,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--kb-muted);background:var(--kb-accent-50);padding:9px 12px;}
 .kb-table td{padding:8px 12px;border-top:1px solid var(--kb-border);vertical-align:middle;}
 /* Schüler-Hub */
-.kb-hub-head{padding:18px 24px 0;}
+.kb-hub-head{padding:18px 24px 0;background:var(--kb-surface);}
 .kb-hub-back{display:inline-block;color:var(--kb-muted);text-decoration:none;font-size:13px;font-weight:600;margin-bottom:8px;}
 .kb-hub-back:hover{color:var(--kb-accent);}
 .kb-hub-id{display:flex;align-items:center;gap:12px;margin:4px 0 14px;}
@@ -259,8 +259,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hub-tabs{display:flex;gap:3px;flex-wrap:wrap;border-bottom:1px solid var(--kb-border);}
 .kb-hub-tab{padding:9px 15px;border-radius:9px 9px 0 0;text-decoration:none;color:var(--kb-muted);font-weight:700;font-size:13.5px;border-bottom:2px solid transparent;margin-bottom:-1px;}
 .kb-hub-tab:hover{background:var(--kb-accent-50);color:var(--kb-text);}
-.kb-hub-tab.active{color:var(--kb-accent);border-bottom-color:var(--kb-accent);background:var(--kb-accent-50);}
-.kb-hub-body{padding:18px 24px 56px;max-width:1080px;}
+.kb-hub-tab.active{color:var(--kb-accent);border-bottom-color:var(--kb-accent);background:transparent;}
+.kb-hub-body{padding:22px 24px 56px;}
 .kb-hub-pad{max-width:840px;}
 .kb-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;align-items:start;}
 .kb-mini-grid{margin-top:4px;}
@@ -652,9 +652,11 @@ var ACCENT_OVERRIDE = `
 #anw-root header::after{ background:rgba(255,255,255,.2); }
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
-#anw-root #btn-tt,#anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
+#anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
+/* Stundenplan (🗓️) im Klassenbuch-Kopf sichtbar lassen — gut auffindbar */
+#anw-root #btn-tt{ display:inline-flex; }
 #anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
-#dos-root .main{ max-width:none; }
+#dos-root .main{ max-width:1180px; margin:0 auto; }
 /* ---- Savoir (Screening) auf gemeinsame Tokens mappen ---- */
 #sav-root{
   --ink:var(--kb-text); --paper:var(--kb-bg); --cream:var(--kb-surface-2);
@@ -712,6 +714,43 @@ var ACCENT_OVERRIDE = `
 #dos-root .dossier-fold>:not(summary){ margin-left:18px; margin-right:18px; }
 #dos-root .dossier-fold .section-title{ margin-top:14px; }
 #dos-root .dossier-fold .charts-grid{ padding-bottom:16px; }
+
+/* =================================================================
+   Professioneller Feinschliff — einheitliches, ruhiges, „fertiges" Layout
+   ================================================================= */
+/* Datenschutz-Hinweis: schlanke, elegante Leiste, an den Inhalt zentriert */
+#dos-root #banner-root{ max-width:1180px; margin:0 auto; }
+#dos-root .privacy-banner{ display:flex; align-items:center; gap:14px; background:var(--kb-accent-50); border:1px solid var(--kb-accent-100); border-bottom:1px solid var(--kb-accent-100); border-radius:12px; padding:10px 16px; margin:14px 16px 2px; box-shadow:none; }
+#dos-root .privacy-banner>div{ font-size:12.5px; line-height:1.5; color:var(--kb-text-soft); }
+#dos-root .privacy-banner>div strong{ color:var(--kb-text); }
+#dos-root .privacy-banner button{ margin-left:auto; flex:0 0 auto; white-space:nowrap; border:1px solid var(--kb-border); background:#fff; color:var(--kb-text); font-weight:700; border-radius:9px; padding:8px 14px; cursor:pointer; }
+#dos-root .privacy-banner button:hover{ border-color:var(--kb-accent); color:var(--kb-accent); }
+/* Schüler-Hub-Kopf als saubere, klar abgegrenzte Leiste */
+#dos-root .kb-hub-head{ border-bottom:1px solid var(--kb-border); margin-bottom:0; }
+#dos-root .kb-hub-tabs{ border-bottom:none; }
+#dos-root .kb-hub-body{ background:var(--kb-bg); }
+/* Listen-/Karten-Raster etwas luftiger & konsistent */
+#dos-root .card-grid{ gap:16px; }
+
+/* ---- Anwesenheit (Klassenbuch) angleichen ---- */
+/* Avatare vereinheitlichen — Marke statt Regenbogen */
+#anw-root .avatar{ background:linear-gradient(135deg,var(--kb-accent),var(--kb-accent-dark))!important; color:#fff!important; box-shadow:0 2px 6px rgba(79,91,213,.22)!important; }
+/* Ruhiger, eleganter Leerzustand */
+#anw-root .main-empty{ padding:48px 24px; }
+#anw-root .main-empty .i{ font-size:34px; opacity:.45; }
+#anw-root .main-empty p{ color:var(--kb-text-soft); font-weight:700; }
+#anw-root .main-empty .hint{ font-weight:500; color:var(--kb-muted); }
+/* Kopfleiste etwas ruhiger */
+#anw-root header{ box-shadow:0 1px 0 rgba(255,255,255,.12) inset, 0 6px 18px rgba(79,91,213,.16); }
+
+/* ---- Stundenplan: groß & übersichtlich, einheitliches Design ---- */
+#anw-root #modal-tt .modal{ max-width:1040px; }
+#anw-root .tt-tabs{ gap:8px; margin-bottom:16px; }
+#anw-root .tt-tab{ padding:9px 22px; font-size:14.5px; }
+#anw-root .tt-grid table{ width:100%; font-size:14px; border-collapse:separate; border-spacing:0; }
+#anw-root .tt-grid th,#anw-root .tt-grid td{ padding:9px 10px; }
+#anw-root .tt-grid input{ font-size:14px; min-width:104px; padding:9px 10px; border-radius:8px; }
+#anw-root .tt-grid .tcol{ font-size:13px; font-weight:800; }
 `;
 
 var SHELL_BODY_TOP = `

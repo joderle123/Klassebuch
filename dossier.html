@@ -4023,10 +4023,7 @@ function maybeShowPrivacyBanner() {
   if (dismissed) return;
   root.innerHTML =
     '<div class="privacy-banner">' +
-      '<div><strong>Alle Daten bleiben auf diesem Gerät.</strong>' +
-      'Diese App läuft vollständig offline in Ihrem Browser. Es werden keinerlei Daten an externe Server gesendet, ' +
-      'es gibt keine Cloud-Anbindung und keine Telemetrie. Sicherungen erstellen Sie selbst über „Backup exportieren"; ' +
-      'der anonymisierte KI-Export (siehe Seitenleiste) landet ausschließlich in Ihrer Zwischenablage — niemals automatisch irgendwo sonst.</div>' +
+      '<div><strong>🔒 Alle Daten bleiben lokal auf diesem Gerät.</strong> Keine Cloud, keine Telemetrie — Sicherungen erstellst du selbst über „Daten &amp; Backup".</div>' +
       '<button type="button" id="banner-dismiss-btn">Verstanden</button>' +
     '</div>';
   qs('#banner-dismiss-btn', root).addEventListener('click', function () {
