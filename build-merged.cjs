@@ -153,7 +153,8 @@ var ANW_API = [
   "    setUser:function(u){setUser(u);},",
   "    users:function(){return USERS.slice();},",
   "    initials:function(n){return initials(n);},",
-  "    avatarBg:function(n){return avatarBg(n);}",
+  "    avatarBg:function(n){return avatarBg(n);},",
+  "    subjectsForLevel:function(level){var set={},out=[];var tt=state.timetable&&state.timetable[level];if(!tt)return [];for(var wd=1;wd<=5;wd++){var day=tt[wd]||[];for(var i=0;i<day.length;i++){var s=day[i];if(s&&!PAUSE_SUBJECTS[s]&&s!=='Morning Meeting'&&s!=='Hausaufgaben'&&!set[s]){set[s]=1;out.push(s);}}}return out.sort(function(a,b){return a.localeCompare(b);});}",
   "  };",
   "  window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};"
 ].join("\n");
@@ -932,7 +933,7 @@ var DOS_OVERRIDES = `
   function stat(n,l){return '<div class="kb-stat"><div class="kb-stat-n">'+n+'</div><div class="kb-stat-l">'+escapeHtml(l)+'</div></div>';}
   function hubHeader(student,tab){
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));} meta.push('Niveau '+escapeHtml(rosterLevel(sid)));
-    var tabs=[['uebersicht','Übersicht'],['verlauf','Verlauf'],['dossier','Dossier'],['screening','Screening'],['schule','Schule'],['reunion','Réunion'],['helfernetz','Helfernetz']];
+    var tabs=[['uebersicht','Übersicht'],['verlauf','Verlauf'],['dossier','Dossier'],['noten','Noten'],['screening','Screening'],['schule','Schule'],['reunion','Réunion'],['helfernetz','Helfernetz']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -1028,6 +1029,9 @@ var DOS_OVERRIDES = `
     sideRows+=row('🩺','Diagnostik',(rep?escapeHtml((rep.type||'Bericht')+' · '+formatDate(rep.date)):'kein DS/PEI'),(rep?'<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=dossier">Dossier</button>':''));
     sideRows+=row('🧠','Screening',scrVal,scrAct);
     sideRows+=row('🗒️','Letzter Eintrag',(last?escapeHtml(formatDate(last.date)+' · '+last.category):'keiner'),'');
+    var ngN=window.KB_NOTEN?window.KB_NOTEN.list(sid,null,null).length:0;
+    var ntMod=window.KB_NOTEN?window.KB_NOTEN.totalModules(sid):0;
+    sideRows+=row('📊','Noten & Module',(ngN||ntMod)?((ngN?ngN+' Noten':'')+(ngN&&ntMod?' · ':'')+(ntMod?ntMod+' Module':'')):'—','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=noten">Öffnen</button>');
     sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
     var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
 
@@ -1126,6 +1130,45 @@ var DOS_OVERRIDES = `
     var expert='<div class="kb-guide-footer"><button class="btn btn-sm kb-guide-expert" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Experten-Ansicht öffnen (vollständiges Savoir)</button></div>';
     return '<div class="kb-hub-pad kb-hub-screening">'+disc+host+expert+'</div>';
   }
+  /* ---- Noten & Module (pro Schüler/Fach) ---- */
+  function hubNoten(student){
+    var sid=student.id;
+    if(!window.KB_NOTEN){return '<div class="kb-hub-pad"><div class="empty-state">Noten-Modul nicht geladen.</div></div>';}
+    var N=window.KB_NOTEN;
+    var lvl=(typeof rosterLevel==='function')?rosterLevel(sid):'L1';
+    var subjects=(window.KB_ANW&&window.KB_ANW.subjectsForLevel)?window.KB_ANW.subjectsForLevel(lvl):[];
+    N.list(sid,null,null).forEach(function(g){if(g.subject&&subjects.indexOf(g.subject)<0)subjects.push(g.subject);});
+    var mode=N.getMode(sid), periods=N.periodsFor(mode);
+    var PLABEL={S1:'1. Semester',S2:'2. Semester',T1:'1. Trimester',T2:'2. Trimester',T3:'3. Trimester'};
+    var q=(typeof parseHash==='function')?(parseHash().query||{}):{};
+    var per=q.np||periods[0]; if(periods.indexOf(per)<0)per=periods[0];
+    function isAcademic(s){s=(s||'').toLowerCase();var bad=['fit for life','skills','atelier','sport','option','init','hausaufgaben','llis','morning','paus'];for(var i=0;i<bad.length;i++){if(s.indexOf(bad[i])>=0)return false;}return true;}
+    function nfn(x){return (Math.round(x*10)/10).toString().replace('.',',');}
+    function chip60(v){return '<span class="note-60 '+(v>=30?'note-ok':'note-low')+'">'+nfn(v)+'<small>/60</small></span>';}
+    var acadSubs=subjects.filter(isAcademic);
+
+    var modeBtns='<div class="note-mode"><span class="note-mode-lbl">Einteilung:</span>'+['semester','trimester'].map(function(m){return '<button class="note-mode-btn'+(mode===m?' on':'')+'" data-noten-mode="'+m+'" data-sid="'+escapeAttr(sid)+'">'+(m==='semester'?'Semester':'Trimester')+'</button>';}).join('')+'</div>';
+    var perTabs='<div class="note-pertabs">'+periods.map(function(p){var r='#/student/'+encodeURIComponent(sid)+'?hub=noten&np='+p;return '<a class="note-pertab'+(p===per?' on':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(PLABEL[p]||p)+'</a>';}).join('')+'</div>';
+
+    var cards='';
+    subjects.forEach(function(su){
+      var acad=isAcademic(su), gs=N.list(sid,su,per), avg=N.subjectAvg(sid,su,per);
+      var modHtml='';
+      if(acad){
+        var m=N.moduleOf(sid,su), top=Math.max(m.cap,m.done+2), chips='';
+        for(var k=1;k<=top;k++){var st=k<=m.done?'done':(k===m.done+1?'current':'future');chips+='<button class="mod-chip mod-'+st+'" data-mod-set="'+k+'" data-subj="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Modul '+k+(k<=m.done?' – erreicht (Klick = zurücksetzen)':' als erreicht markieren')+'">'+k+'</button>';}
+        modHtml='<div class="mod-track"><div class="mod-track-head"><span class="mod-status">'+(m.done>0?('📦 Modul '+m.done+' erreicht · arbeitet an <b>Modul '+(m.done+1)+'</b>'):'📦 arbeitet an <b>Modul 1</b>')+'</span></div><div class="mod-chips">'+chips+'<button class="mod-more" data-mod-more="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" title="Mehr Module anzeigen">+</button></div></div>';
+      }
+      var rows=gs.map(function(g){return '<div class="note-row"><span class="note-row-lbl">'+(g.label?escapeHtml(g.label):'<span class="muted">Note</span>')+'</span><span class="note-raw">'+nfn(g.points)+' / '+nfn(g.max)+'</span><span class="note-arrow">→</span>'+chip60(N.norm(g))+'<button class="note-del" data-noten-del="'+g.id+'" data-sid="'+escapeAttr(sid)+'" title="Löschen">🗑</button></div>';}).join('');
+      cards+='<div class="note-card'+(acad?'':' note-card-na')+'"><div class="note-card-head"><h4>'+escapeHtml(su)+(acad?'':' <span class="note-na-tag">kein Modulfach</span>')+'</h4>'+(avg!=null?'<span class="note-avg">Ø '+chip60(avg)+'</span>':'<span class="note-avg muted">—</span>')+'</div>'+modHtml+(rows?'<div class="note-rows">'+rows+'</div>':'')+'<div class="note-add"><input class="note-in note-in-lbl" type="text" placeholder="Bezeichnung (optional)" data-nf="label"><input class="note-in note-in-num" type="number" step="0.01" min="0" placeholder="erreicht" data-nf="points"><span class="note-of">von</span><input class="note-in note-in-num" type="number" step="0.01" min="1" value="60" data-nf="max"><button class="btn btn-sm btn-primary note-add-btn" data-noten-add="'+escapeAttr(su)+'" data-sid="'+escapeAttr(sid)+'" data-per="'+per+'">+ Note</button></div></div>';
+    });
+    if(!subjects.length){cards='<div class="empty-state">Keine Fächer im Stundenplan für Niveau '+escapeHtml(lvl)+'. Lege den Stundenplan unter „Klasse &amp; Stundenplan" an.</div>';}
+
+    var overall=N.periodAvg(sid,per,subjects), totMod=N.totalModules(sid,acadSubs);
+    var foot='<div class="note-foot"><div class="note-foot-item">📦 Module gesamt erreicht: <b>'+totMod+'</b></div>'+(overall!=null?'<div class="note-foot-item">📊 Gesamt-Ø '+escapeHtml(PLABEL[per]||per)+': '+chip60(overall)+'</div>':'')+'</div>';
+
+    return '<div class="kb-hub-pad note-wrap"><div class="note-top">'+modeBtns+'</div>'+perTabs+'<p class="muted note-hint">Noten auf <b>/60</b> (bestanden ab 30) — „erreicht von" eingeben, Umrechnung läuft automatisch. Module je Schulfach anklicken; Gesamt zählt sich von selbst.</p>'+cards+foot+'</div>';
+  }
 
   if(typeof viewStudentDetail!=='undefined'){
     var _origDetail=viewStudentDetail;
@@ -1139,6 +1182,7 @@ var DOS_OVERRIDES = `
         if(tab==='dossier'){var base=_origDetail(params);sectionHtml=base.html;baseAfter=base.afterRender;}
         else if(tab==='verlauf'){sectionHtml=hubVerlauf(student);}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
+        else if(tab==='noten'){sectionHtml=hubNoten(student);}
         else if(tab==='schule'){sectionHtml='<h3 class="kb-subhead">📉 Absenzen</h3>'+hubAbsenzen(student)+'<h3 class="kb-subhead kb-subhead-mt">📒 Aufgaben &amp; Prüfungen</h3>'+hubAufgaben(student);}
         else if(tab==='reunion'){sectionHtml=hubReunion(student);}
         else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
@@ -1151,6 +1195,14 @@ var DOS_OVERRIDES = `
         if(baseAfter){try{baseAfter(root);}catch(e){}}
         if(tab==='screening'&&window.KB_GUIDE){try{var gh=root.querySelector('#kb-guide-host');if(gh){window.KB_GUIDE.mount(gh,student);}}catch(e){}}
         if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
+        if(tab==='noten'&&window.KB_NOTEN){try{
+          var rrN=function(){if(window.render){try{window.render();}catch(e){}}};
+          root.querySelectorAll('[data-noten-mode]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.setMode(b.getAttribute('data-sid'),b.getAttribute('data-noten-mode'));rrN();});});
+          root.querySelectorAll('[data-noten-del]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.remove(b.getAttribute('data-sid'),b.getAttribute('data-noten-del'));rrN();});});
+          root.querySelectorAll('[data-noten-add]').forEach(function(b){b.addEventListener('click',function(){var card=b.closest('.note-card');if(!card)return;var lbl=card.querySelector('[data-nf=label]').value;var pts=card.querySelector('[data-nf=points]').value;var max=card.querySelector('[data-nf=max]').value;if(pts===''||!(+max>0)){var pi=card.querySelector('[data-nf=points]');if(pi)pi.focus();return;}window.KB_NOTEN.add(b.getAttribute('data-sid'),{subject:b.getAttribute('data-noten-add'),period:b.getAttribute('data-per'),label:lbl,points:pts,max:max});rrN();});});
+          root.querySelectorAll('[data-mod-set]').forEach(function(b){b.addEventListener('click',function(){var n=+b.getAttribute('data-mod-set');var sid3=b.getAttribute('data-sid');var su=b.getAttribute('data-subj');var cur=window.KB_NOTEN.moduleOf(sid3,su).done;window.KB_NOTEN.setModule(sid3,su,(n===cur?n-1:n));rrN();});});
+          root.querySelectorAll('[data-mod-more]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.addCap(b.getAttribute('data-sid'),b.getAttribute('data-mod-more'),4);rrN();});});
+        }catch(e){}}
         if(tab==='reunion'){try{
           var rbtn=root.querySelector('.reu-save'), rta=root.querySelector('.reu-input'), rgta=root.querySelector('.reu-goals'), rst=root.querySelector('.reu-status');
           if(rbtn){rbtn.addEventListener('click',function(){
@@ -1702,7 +1754,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -1714,6 +1766,7 @@ window.KB_SYNC=(function(){
     var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);
     s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
     s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
+    s(window.KB_NOTEN,'syncApply',liveOf(doc.colls.noten));
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -2540,6 +2593,85 @@ var MATERIAL_CSS = `
 .reunion-author,.hub-author{ font-size:12px; font-weight:700; color:var(--kb-accent,#4f5bd5); background:rgba(79,91,213,.09); border-radius:999px; padding:1px 9px; white-space:nowrap; }
 .tl-author{ font-size:11.5px; color:var(--kb-muted,#8a8fa6); font-weight:600; }
 @media(max-width:720px){ .kb-gate-card{ padding:24px 18px; } }
+
+/* === Noten & Module (Schüler-Hub) === */
+#dos-root .note-top{ display:flex; justify-content:flex-end; }
+#dos-root .note-mode{ display:inline-flex; align-items:center; gap:8px; }
+#dos-root .note-mode-lbl{ font-size:12.5px; color:var(--kb-muted,#777); font-weight:600; }
+#dos-root .note-mode-btn{ border:1px solid var(--kb-border,#e2e3ee); background:var(--kb-surface,#fff); border-radius:999px; padding:4px 13px; font-size:13px; font-weight:700; cursor:pointer; color:var(--kb-ink,#23243a); }
+#dos-root .note-mode-btn.on{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
+#dos-root .note-pertabs{ display:flex; gap:8px; flex-wrap:wrap; margin:14px 0 4px; }
+#dos-root .note-pertab{ text-decoration:none; border:1px solid var(--kb-border,#e2e3ee); border-radius:10px; padding:7px 15px; font-size:14px; font-weight:700; color:var(--kb-ink,#23243a); background:var(--kb-surface,#fff); }
+#dos-root .note-pertab.on{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
+#dos-root .note-hint{ font-size:12.5px; margin:6px 0 14px; }
+#dos-root .note-card{ background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:14px; padding:14px 16px; margin-bottom:14px; }
+#dos-root .note-card-na{ background:var(--kb-bg,#f7f7fb); }
+#dos-root .note-card-head{ display:flex; align-items:center; gap:10px; }
+#dos-root .note-card-head h4{ margin:0; font-size:16px; flex:1; color:var(--kb-ink,#23243a); }
+#dos-root .note-na-tag{ font-size:10.5px; font-weight:700; color:var(--kb-muted,#999); background:var(--kb-border,#ececf3); border-radius:999px; padding:1px 8px; vertical-align:middle; }
+#dos-root .note-avg{ font-size:13px; font-weight:700; color:var(--kb-muted,#777); white-space:nowrap; }
+#dos-root .note-60{ display:inline-flex; align-items:baseline; gap:1px; font-weight:800; border-radius:7px; padding:2px 9px; font-size:15px; }
+#dos-root .note-60 small{ font-size:10px; font-weight:700; opacity:.7; }
+#dos-root .note-60.note-ok{ background:#e3f3ea; color:#1d7a48; }
+#dos-root .note-60.note-low{ background:#fbe4e0; color:#b3432d; }
+/* Modul-Tracker */
+#dos-root .mod-track{ margin:10px 0 12px; padding:10px 12px; background:var(--kb-bg,#f4f5fb); border-radius:11px; }
+#dos-root .mod-status{ font-size:13px; color:var(--kb-ink,#33344c); }
+#dos-root .mod-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+#dos-root .mod-chip{ width:34px; height:34px; border-radius:9px; border:1.5px solid var(--kb-border,#dcdce6); background:var(--kb-surface,#fff); font-weight:800; font-size:13.5px; cursor:pointer; color:var(--kb-muted,#9a9ab0); transition:.1s; }
+#dos-root .mod-chip.mod-done{ background:#2e9e5b; border-color:#2e9e5b; color:#fff; }
+#dos-root .mod-chip.mod-current{ border-color:var(--kb-accent,#4f5bd5); color:var(--kb-accent,#4f5bd5); box-shadow:0 0 0 2px rgba(79,91,213,.18); }
+#dos-root .mod-chip:hover{ transform:translateY(-1px); }
+#dos-root .mod-more{ width:34px; height:34px; border-radius:9px; border:1.5px dashed var(--kb-border,#cfd0de); background:transparent; font-weight:800; cursor:pointer; color:var(--kb-muted,#9a9ab0); }
+/* Noten-Zeilen + Eingabe */
+#dos-root .note-rows{ margin:6px 0 4px; display:flex; flex-direction:column; gap:5px; }
+#dos-root .note-row{ display:flex; align-items:center; gap:10px; padding:6px 4px; border-bottom:1px solid var(--kb-border,#f0f0f6); }
+#dos-root .note-row-lbl{ flex:1; font-size:13.5px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+#dos-root .note-raw{ font-size:13px; color:var(--kb-muted,#666); font-variant-numeric:tabular-nums; }
+#dos-root .note-arrow{ color:var(--kb-muted,#bbb); }
+#dos-root .note-del{ border:0; background:transparent; cursor:pointer; opacity:.5; font-size:13px; }
+#dos-root .note-del:hover{ opacity:1; }
+#dos-root .note-add{ display:flex; align-items:center; gap:7px; flex-wrap:wrap; margin-top:10px; }
+#dos-root .note-in{ border:1px solid var(--kb-border,#dcdce6); border-radius:8px; padding:7px 10px; font:inherit; font-size:13.5px; }
+#dos-root .note-in-lbl{ flex:1; min-width:120px; }
+#dos-root .note-in-num{ width:78px; }
+#dos-root .note-of{ font-size:13px; color:var(--kb-muted,#777); }
+#dos-root .note-foot{ display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:8px; padding:14px 16px; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:13px; }
+#dos-root .note-foot-item{ font-size:14px; font-weight:700; color:var(--kb-ink,#23243a); display:flex; align-items:center; gap:8px; }
+`;
+
+/* Noten & Module pro Schüler/Fach. Noten auf /60 (LU), automatische
+   Umrechnung „erreicht von X" -> /60; Module-Fortschritt je Schulfach. */
+var NOTEN_MODULE = `
+window.KB_NOTEN=(function(){
+  var LS='klassebuch_noten_v1';
+  function loadAll(){try{var r=localStorage.getItem(LS);if(r)return JSON.parse(r)||{};}catch(e){}return {};}
+  function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+  var data=loadAll();var hooks=[];
+  function rec(sid){var r=data[sid];if(!r){r={mode:'semester',grades:[],modules:{}};data[sid]=r;}if(!r.grades)r.grades=[];if(!r.modules)r.modules={};if(!r.mode)r.mode='semester';return r;}
+  function notify(sid){saveAll(data);for(var i=0;i<hooks.length;i++){try{hooks[i](sid);}catch(e){}}}
+  function nid(){return 'gr_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+  function norm(g){var m=+g.max;return (m>0)?(+g.points/m*60):0;}
+  function periodsFor(mode){return mode==='trimester'?['T1','T2','T3']:['S1','S2'];}
+  function listOf(sid,subject,period){return rec(sid).grades.filter(function(g){return (!subject||g.subject===subject)&&(!period||g.period===period);});}
+  function subjAvg(sid,subject,period){var gs=listOf(sid,subject,period);if(!gs.length)return null;var s=0;for(var i=0;i<gs.length;i++)s+=norm(gs[i]);return s/gs.length;}
+  function modOf(sid,subject){var r=rec(sid);var m=r.modules[subject];if(!m){m={done:0,cap:8};r.modules[subject]=m;}if(typeof m.done!=='number')m.done=0;if(typeof m.cap!=='number')m.cap=8;return m;}
+  return {
+    periodsFor:periodsFor, norm:norm, list:listOf, subjectAvg:subjAvg,
+    getMode:function(sid){return rec(sid).mode;},
+    setMode:function(sid,m){var r=rec(sid);var nm=(m==='trimester'?'trimester':'semester');if(r.mode!==nm){r.mode=nm;r.updatedAt=new Date().toISOString();notify(sid);}},
+    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:new Date().toISOString().slice(0,10)});r.updatedAt=new Date().toISOString();notify(sid);},
+    remove:function(sid,id){var r=rec(sid);r.grades=r.grades.filter(function(g){return g.id!==id;});r.updatedAt=new Date().toISOString();notify(sid);},
+    periodAvg:function(sid,period,subjects){var avgs=[];(subjects||[]).forEach(function(su){var a=subjAvg(sid,su,period);if(a!=null)avgs.push(a);});if(!avgs.length)return null;var s=0;for(var i=0;i<avgs.length;i++)s+=avgs[i];return s/avgs.length;},
+    moduleOf:function(sid,subject){return modOf(sid,subject);},
+    setModule:function(sid,subject,n){var m=modOf(sid,subject);n=Math.max(0,n|0);if(m.done!==n){m.done=n;if(m.cap<n+2)m.cap=n+2;rec(sid).updatedAt=new Date().toISOString();notify(sid);}},
+    addCap:function(sid,subject,by){var m=modOf(sid,subject);m.cap=Math.min(99,m.cap+(by||4));notify(sid);},
+    totalModules:function(sid,subjects){var t=0,r=rec(sid);if(subjects){subjects.forEach(function(su){if(r.modules[su])t+=(r.modules[su].done||0);});}else{for(var k in r.modules)t+=(r.modules[k].done||0);}return t;},
+    onChange:function(fn){hooks.push(fn);},
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,mode:r.mode||'semester',grades:r.grades||[],modules:r.modules||{},updatedAt:r.updatedAt||''});}return out;},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){data[r.id]={mode:r.mode||'semester',grades:r.grades||[],modules:r.modules||{},updatedAt:r.updatedAt||''};});saveAll(data);for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  };
+})();
 `;
 
 /* Anwesenheit: Schülerliste per Klick ein-/ausklappen (Horaire wird größer). */
@@ -2604,6 +2736,7 @@ var parts = [
   '<script>' + anwScript + '</' + 'script>',
   '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SCREENING_MODULE + '</' + 'script>',
+  '<script>' + NOTEN_MODULE + '</' + 'script>',
   '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
