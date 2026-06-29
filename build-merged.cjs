@@ -938,7 +938,15 @@ var DOS_OVERRIDES = `
     /* ---- Förderziele ---- */
     var foerderCard;
     if(cg&&cg.goals&&cg.goals.length){
-      var gl=cg.goals.slice(0,5).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};var btn=(g.code&&window.KB_MATERIALS)?'<button class="hub-mat" data-mat-goal="'+escapeAttr(g.code)+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(g.title||g.formulation||g.code)+'" title="Passende Arbeitsblätter finden">📄 Arbeitsblätter</button>':'';return '<li>'+btn+'<span class="hub-dot" style="background:'+dm.c+'"></span><span class="hub-gtext">'+escapeHtml(g.formulation||g.title||g.code)+'</span></li>';}).join('');
+      var gl=cg.goals.slice(0,5).map(function(g){
+        var dm=DM[g.domain]||{l:g.domain,c:'#777'};
+        var code=g.code||'';
+        var elbl=''; try{ if(code&&window.KB_TAXONOMY&&window.KB_TAXONOMY.eldibGoalLabels){elbl=window.KB_TAXONOMY.eldibGoalLabels[code]||'';} }catch(_e){}
+        var badge=code?('<span class="hub-gcode" style="background:'+dm.c+'" title="ELDiB '+escapeAttr((dm.l||'')+(elbl?' · '+elbl:''))+'">'+escapeHtml(code)+'</span>'):('<span class="hub-dot" style="background:'+dm.c+'"></span>');
+        var head=elbl?'<span class="hub-gelbl">'+escapeHtml(elbl)+'</span> ':'';
+        var btn=window.KB_MATERIALS?'<button class="hub-mat" data-mat-goal="'+escapeAttr(code)+'" data-mat-goaltext="'+escapeAttr(g.formulation||g.title||'')+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(elbl||g.title||g.formulation||code)+'" title="Passende Arbeitsblätter finden">📄 Arbeitsblätter</button>':'';
+        return '<li>'+badge+'<span class="hub-gtext">'+head+escapeHtml(g.formulation||g.title||code||'Ziel')+'</span>'+btn+'</li>';
+      }).join('');
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele <span class="hub-count">'+cg.goals.length+'</span>','g')+'<ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>5?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-5)+' weitere</div>':'')+'</div>';
     } else {
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele','g')+'<p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
@@ -2401,6 +2409,8 @@ var MATERIAL_CSS = `
 .hub-list li .hub-mat{ order:3; margin-left:auto; align-self:center; white-space:nowrap; border:1px solid var(--kb-border,#e2e3ee); background:var(--kb-surface,#fff); border-radius:7px; padding:2px 9px; font-size:12.5px; font-weight:600; cursor:pointer; line-height:1.5; color:var(--kb-accent,#4f5bd5); }
 .hub-list li .hub-mat:hover{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
 .hub-list li .hub-gtext{ flex:1; min-width:0; }
+.hub-list li .hub-gcode{ order:0; flex:0 0 auto; align-self:flex-start; margin-top:1px; font-size:11px; font-weight:800; color:#fff; border-radius:5px; padding:2px 7px; white-space:nowrap; letter-spacing:.01em; }
+.hub-list li .hub-gelbl{ font-weight:800; color:var(--kb-ink,#23243a); }
 .hub-theme-wrap{ display:flex; flex-wrap:wrap; gap:7px; }
 .hub-theme-chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--kb-border,#e2e3ee); background:var(--kb-surface,#fff); border-radius:999px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; color:var(--kb-ink,#23243a); }
 .hub-theme-chip:hover{ border-color:var(--kb-accent,#4f5bd5); color:var(--kb-accent,#4f5bd5); }

@@ -78,6 +78,28 @@ window.KB_MATERIALS=(function(){
     return res;
   }
 
+  /* Fallback, wenn ein Förderziel KEINEN ELDiB-Code hat (nur eine
+     Zielformulierung als Text): Stichwörter der Formulierung gegen
+     Titel/Beschreibung/Themen/Tags der Materialien matchen. */
+  var STOP={und:1,oder:1,der:1,die:1,das:1,den:1,dem:1,ein:1,eine:1,einen:1,einem:1,einer:1,mich:1,mir:1,sich:1,ich:1,meine:1,meinen:1,meines:1,nicht:1,bevor:1,erst:1,zuerst:1,wenn:1,dass:1,auf:1,bei:1,mit:1,fuer:1,für:1,von:1,zum:1,zur:1,wie:1,auch:1,aber:1,noch:1,schon:1,kann:1,soll:1,will:1,wird:1,sind:1,habe:1,haben:1,bin:1,ist:1,war:1,sein:1,ihre:1,seine:1,andere:1,anderen:1,immer:1,mehr:1,sehr:1,ganz:1,dann:1,hier:1,dort:1,lasse:1,ziehe:1,wende:1,reagiere:1,akzeptiere:1};
+  /* Stamm-/Präfix-Match: deutsche Wortformen unterscheiden sich (aggressiv/
+     Aggression, Verhalten/Verhaltens) — daher auf die ersten ~6 Zeichen kürzen. */
+  function kw(text){var w=String(text||'').toLowerCase().replace(/[„“”"’'.,;:!?()\/]/g,' ').split(/\s+/);var out=[],seen={};for(var i=0;i<w.length;i++){var x=w[i];if(x.length>=5&&!STOP[x]){var st=x.slice(0,6);if(!seen[st]){seen[st]=1;out.push(st);}}}return out;}
+  function forGoalText(text,cyc){
+    var words=kw(text); if(!words.length)return [];
+    var res=[];
+    for(var i=0;i<DATA.length;i++){
+      var m=DATA[i];
+      var hay=((m.title||'')+' '+(m.shortDescription||'')+' '+(m.tags||[]).join(' ')+' '+(m.themes||[]).map(function(t){return THLAB[t]||t;}).join(' ')).toLowerCase();
+      var sc=0; for(var w=0;w<words.length;w++){ if(hay.indexOf(words[w])>=0)sc++; }
+      if(sc<2)continue;
+      var as=ageScore(m,cyc); if(cyc&&as===0)continue;
+      res.push({m:m,score:sc*10+as,age:as,warn:false});
+    }
+    res.sort(function(a,b){return b.score-a.score||(a.m.title<b.m.title?-1:1);});
+    return res;
+  }
+
   function forTheme(key,cyc){
     var map=THEME_MAP[key]||{themes:[],tags:[]};
     var ths=map.themes||[],tgs=(map.tags||[]).map(function(x){return x.toLowerCase();}),res=[];
@@ -152,12 +174,17 @@ window.KB_MATERIALS=(function(){
 
   function renderResults(){
     var cyc=state.cyc;
-    var list=state.mode==='goal'?forGoal(state.key,cyc):forTheme(state.key,cyc);
+    var isTextGoal=(state.mode==='goal'&&!state.key);
+    var list=state.mode==='goal'?(state.key?forGoal(state.key,cyc):forGoalText(state.goaltext,cyc)):forTheme(state.key,cyc);
     state.last=list;
     var title;
     if(state.mode==='goal'){
-      var d=domainOf(state.key),dm=DOM[d]||{label:d,color:'#777'};
-      title='📄 Arbeitsblätter zum Förderziel <span class="kbm-goalcode" style="background:'+dm.color+'">'+esc(state.key)+'</span> '+esc(state.label||GLAB[state.key]||'');
+      if(state.key){
+        var d=domainOf(state.key),dm=DOM[d]||{label:d,color:'#777'};
+        title='📄 Arbeitsblätter zum Förderziel <span class="kbm-goalcode" style="background:'+dm.color+'">'+esc(state.key)+'</span> '+esc(state.label||GLAB[state.key]||'');
+      }else{
+        title='📄 Arbeitsblätter zum Förderziel „'+esc(state.label||state.goaltext||'')+'“';
+      }
     }else{
       title='📄 Arbeitsblätter zur Thematik „'+esc(state.label||state.key)+'“';
     }
@@ -165,10 +192,10 @@ window.KB_MATERIALS=(function(){
     ov.querySelector('#kbm-cyc').innerHTML=cycBar();
     var body=ov.querySelector('#kbm-body');
     if(!list.length){
-      body.innerHTML='<div class="kbm-count">0 Treffer'+(cyc?(' für Zyklus '+esc(cyc)):'')+'</div><div class="kbm-empty">Keine passenden Materialien'+(cyc?(' für Zyklus '+esc(cyc)+' — versuche „alle“ Zyklen'):'')+'.</div>'+isaFooter();
+      body.innerHTML='<div class="kbm-count">0 Treffer'+(cyc?(' für Zyklus '+esc(cyc)):'')+'</div><div class="kbm-empty">Keine passenden Materialien'+(cyc?(' für Zyklus '+esc(cyc)+' — versuche „alle“ Zyklen'):'')+(isTextGoal?'. Dieses Ziel hat keinen ELDiB-Code — gesucht wurde nach Stichworten der Zielformulierung.':'.')+'</div>'+isaFooter();
       return;
     }
-    if(state.mode==='goal'){
+    if(state.mode==='goal'&&state.key){
       var exact=[],related=[];
       for(var i=0;i<list.length;i++){(list[i].exact?exact:related).push(list[i]);}
       var dlabel=esc((DOM[domainOf(state.key)]||{}).label||domainOf(state.key));
@@ -178,7 +205,8 @@ window.KB_MATERIALS=(function(){
       if(related.length){html+='<div class="kbm-divider">↓ Verwandt — selber Entwicklungsschritt im Bereich '+dlabel+'</div>'+listHtml(related,25);}
       body.innerHTML=html+isaFooter();
     }else{
-      var head='<div class="kbm-count">'+list.length+' passende'+(list.length===1?'s Material':' Materialien')+(cyc?(' für Zyklus '+esc(cyc)):'')+'</div>';
+      var note=isTextGoal?' <span style="font-weight:600;opacity:.65;">(nach Stichworten der Zielformulierung)</span>':'';
+      var head='<div class="kbm-count">'+list.length+' passende'+(list.length===1?'s Material':' Materialien')+(cyc?(' für Zyklus '+esc(cyc)):'')+note+'</div>';
       body.innerHTML=head+listHtml(list,60)+isaFooter();
     }
     body.scrollTop=0;
@@ -263,7 +291,7 @@ window.KB_MATERIALS=(function(){
   }
 
   function openMatch(opts){
-    state={mode:opts.mode,key:opts.key,sid:opts.sid,label:opts.label,cyc:cycleOf(opts.sid)};
+    state={mode:opts.mode,key:opts.key,goaltext:opts.goaltext||'',sid:opts.sid,label:opts.label,cyc:cycleOf(opts.sid)};
     openOverlay();renderResults();
   }
 
@@ -294,7 +322,7 @@ window.KB_MATERIALS=(function(){
   function goalLabelFromEl(el){return el.getAttribute('data-mat-label')||'';}
   document.addEventListener('click',function(e){
     var g=e.target.closest&&e.target.closest('[data-mat-goal]');
-    if(g){e.preventDefault();openMatch({mode:'goal',key:g.getAttribute('data-mat-goal'),sid:g.getAttribute('data-mat-sid'),label:goalLabelFromEl(g)});return;}
+    if(g){e.preventDefault();openMatch({mode:'goal',key:g.getAttribute('data-mat-goal'),goaltext:g.getAttribute('data-mat-goaltext')||'',sid:g.getAttribute('data-mat-sid'),label:goalLabelFromEl(g)});return;}
     var th=e.target.closest&&e.target.closest('[data-mat-theme]');
     if(th){e.preventDefault();openMatch({mode:'theme',key:th.getAttribute('data-mat-theme'),sid:th.getAttribute('data-mat-sid'),label:th.getAttribute('data-mat-label')||th.getAttribute('data-mat-theme')});return;}
   });
