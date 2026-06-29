@@ -872,6 +872,7 @@ var SHELL_PANELS_EXTRA = `
       </div>
       <div class="kb-card"><h3 style="margin:0 0 6px;">📋 Anwesenheit & Klassenbuch</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export, gemeinsame Datei.</p><button class="kb-btn kb-btn-primary" id="kb-data-anw">Anwesenheit-Daten öffnen</button></div>
       <div class="kb-card"><h3 style="margin:0 0 6px;">🗂️ Dossiers & Réunion</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Schüler-Dossiers, Réunionen und Organisation — Backup exportieren/importieren.</p><button class="kb-btn kb-btn-primary" id="kb-data-dos">Dossier-Backup öffnen</button></div>
+      <div class="kb-card"><h3 style="margin:0 0 6px;">📅 Wochen-Bericht (letzte 5 Wochen)</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Eine übersichtliche Datei mit <b>allem Neuen</b> der letzten 5 Wochen — Réunionen, Wochenziele, Dossier-Einträge, Noten, Screenings, Absenzen und Notizen. Zum Archivieren, damit nie etwas verloren geht. Öffnet im Browser und ist als PDF druckbar.</p><button class="kb-btn kb-btn-primary" id="kb-weekly-dl">📥 Wochen-Bericht herunterladen</button></div>
     </section>
   </main>
 </div>
@@ -1377,6 +1378,7 @@ var SHELL_CONTROLLER = `
   });}
   var dA=$('kb-data-anw'); if(dA){dA.addEventListener('click',function(){go('absenzen');var b=document.getElementById('btn-data');if(b){b.click();}});}
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
+  var wDl=$('kb-weekly-dl'); if(wDl){wDl.addEventListener('click',function(){if(window.KB_WEEKLY){KB_WEEKLY.download();}});}
 
   // Roster-Änderungen -> beide Engines + offene Listen aktualisieren
   if(window.KB_ROSTER){
@@ -2691,6 +2693,63 @@ window.KB_NOTEN=(function(){
 })();
 `;
 
+/* Wochen-Bericht: lädt eine übersichtliche Datei mit ALLEM Neuen der
+   letzten 5 Wochen herunter (Réunionen, Ziele, Dossier, Noten, Absenzen,
+   Screenings, Notizen) — damit nie etwas verloren geht. */
+var WEEKLY_MODULE = `
+window.KB_WEEKLY=(function(){
+  function pad(n){return n<10?'0'+n:''+n;}
+  function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+  function mondayOf(d){d=new Date(d);var g=(d.getDay()+6)%7;d.setDate(d.getDate()-g);d.setHours(0,0,0,0);return d;}
+  function addDays(d,n){var x=new Date(d);x.setDate(x.getDate()+n);return x;}
+  function fmtD(s){var p=String(s).split('-');return (p.length===3)?(p[2]+'.'+p[1]+'.'+p[0]):s;}
+  function esc(s){return String(s==null?'':s).replace(/[&<>]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c];});}
+  function nl2br(s){return esc(s).split(String.fromCharCode(10)).join('<br>');}
+  function nameMap(){var m={};try{(window.KB_ROSTER?KB_ROSTER.list():[]).forEach(function(s){m[s.id]=s.name;});}catch(e){}return m;}
+  function nameOf(m,id){return m[id]||id||'—';}
+
+  function build(){
+    var students=nameMap();
+    var today=new Date(), m0=mondayOf(today), wks=[];
+    for(var i=0;i<5;i++){var mo=addDays(m0,-7*i);wks.push({lo:iso(mo),hi:iso(addDays(mo,6))});}
+    function weekOf(ds){if(!ds)return -1;for(var i=0;i<wks.length;i++){if(ds>=wks[i].lo&&ds<=wks[i].hi)return i;}return -1;}
+    var buckets=wks.map(function(){return {};});
+    function push(wi,cat,line){if(wi<0)return;(buckets[wi][cat]=buckets[wi][cat]||[]).push(line);}
+
+    try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var cat=(e.category==='Team-Réunion')?'Réunion-Beiträge':'Dossier-Einträge';var by=e.author?(' <em>(von '+esc(e.author)+')</em>'):'';push(wi,cat,'<div class="it"><div class="ih"><b>'+esc(nameOf(students,e.studentId))+'</b>'+by+' · '+fmtD(e.date)+((e.category&&e.category!=='Team-Réunion')?(' · '+esc(e.category)):'')+'</div><div class="tx">'+nl2br(e.text||'')+'</div></div>');});}catch(e){}
+    try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportReunions():[]).forEach(function(r){var wi=weekOf(r.date);if(wi<0)return;var g=r.goals||{};Object.keys(g).forEach(function(sid){var arr=g[sid]||[];if(!arr.length)return;var who=(sid==='group')?'Gruppe':esc(nameOf(students,sid));push(wi,'Wochenziele','<div class="it"><div class="ih"><b>'+who+'</b> · '+fmtD(r.date)+'</div><div class="tx">'+arr.map(function(x){return '• '+esc(x);}).join('<br>')+'</div></div>');});});}catch(e){}
+    try{(window.KB_NOTEN?KB_NOTEN.syncExport():[]).forEach(function(r){(r.grades||[]).forEach(function(g){var wi=weekOf(g.date);if(wi<0)return;var n60=(+g.max>0?(+g.points/+g.max*60):0);push(wi,'Noten','<div class="it2">'+fmtD(g.date)+' · <b>'+esc(nameOf(students,r.id))+'</b> · '+esc(g.subject||'')+(g.label?(' ('+esc(g.label)+')'):'')+': '+(+g.points)+'/'+(+g.max)+' → '+(Math.round(n60*10)/10).toString().replace('.',',')+'/60</div>');});});}catch(e){}
+    try{if(window.KB_SCREENING&&KB_SCREENING.history){(window.KB_ROSTER?KB_ROSTER.list():[]).forEach(function(s){(KB_SCREENING.history(s.id)||[]).forEach(function(h){var wi=weekOf(h.date);if(wi<0)return;var mu=(h.muster||[]).map(function(x){return (x&&x.name)?x.name:x;}).join(' · ');var risk=h.acute?'akute Krise':(h.risk?'Risiko':'');push(wi,'Screenings','<div class="it2">'+fmtD(h.date)+' · <b>'+esc(s.name)+'</b>'+(risk?(' · '+risk):'')+(mu?(' · '+esc(mu)):'')+'</div>');});});}}catch(e){}
+    try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var lab=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status);push(wi,'Absenzen','<div class="it2">'+fmtD(e.date)+' · <b>'+esc(nameOf(students,e.studentId))+'</b> · '+esc(lab)+(e.subject?(' · '+esc(e.subject)):'')+(e.byUser?(' <em>('+esc(e.byUser)+')</em>'):'')+'</div>');});}catch(e){}
+    try{(window.KB_ANW?KB_ANW.exportNotes():[]).forEach(function(n){var wi=weekOf(n.date);if(wi<0)return;push(wi,'Klassenbuch-Notizen','<div class="it"><div class="ih"><b>'+esc(n.type||'Notiz')+'</b> · '+fmtD(n.date)+(n.subject?(' · '+esc(n.subject)):'')+(n.byUser?(' <em>(von '+esc(n.byUser)+')</em>'):'')+'</div><div class="tx">'+nl2br(n.text||'')+'</div></div>');});}catch(e){}
+
+    var CATS=['Réunion-Beiträge','Wochenziele','Noten','Screenings','Dossier-Einträge','Absenzen','Klassenbuch-Notizen'];
+    var body='';
+    wks.forEach(function(wk,wi){
+      body+='<section class="wk"><h2>Woche '+fmtD(wk.lo)+' – '+fmtD(wk.hi)+'</h2>';
+      var keys=CATS.filter(function(c){return buckets[wi][c]&&buckets[wi][c].length;});
+      if(!keys.length){body+='<p class="empty">Keine neuen Einträge in dieser Woche.</p>';}
+      else{keys.forEach(function(cat){var arr=buckets[wi][cat];body+='<h3>'+cat+' <span class="cnt">'+arr.length+'</span></h3>'+arr.join('');});}
+      body+='</section>';
+    });
+    var css='body{font-family:Inter,Segoe UI,Arial,sans-serif;color:#23243a;max-width:900px;margin:24px auto;padding:0 22px;line-height:1.5}h1{font-size:24px;margin:0 0 2px}.sub{color:#777;margin:0 0 22px;font-size:13.5px}.wk{margin:0 0 30px;border-top:3px solid #4f5bd5;padding-top:10px}.wk h2{font-size:18px;margin:0 0 10px;color:#3b3f8f}h3{font-size:14px;margin:16px 0 6px;color:#4f5bd5;border-bottom:1px solid #e6e6ef;padding-bottom:3px}.cnt{font-size:11px;background:#eef0fb;color:#4a4f86;border-radius:999px;padding:1px 8px;font-weight:700}.it{margin:6px 0;padding:8px 10px;background:#f7f8fc;border-radius:8px}.ih{font-size:13px;color:#444}.tx{margin-top:4px;font-size:13.5px;white-space:normal}.it2{font-size:13px;padding:3px 4px;border-bottom:1px solid #f0f0f6}.empty{color:#999;font-style:italic;font-size:13px}em{color:#4f5bd5;font-style:normal;font-weight:600}@media print{.wk{break-inside:avoid}}';
+    return '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>Klassebuch — Wochen-Bericht</title><style>'+css+'</style></head><body><h1>📘 Klassebuch — Wochen-Bericht</h1><p class="sub">Annexe Junglinster · erstellt am '+fmtD(iso(today))+' · letzte 5 Wochen · alle neuen Einträge</p>'+body+'</body></html>';
+  }
+  function download(){
+    try{
+      var html=build();
+      var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+      var url=URL.createObjectURL(blob);
+      var a=document.createElement('a');a.href=url;a.download='Klassebuch-Wochenbericht-'+iso(new Date())+'.html';
+      document.body.appendChild(a);a.click();
+      setTimeout(function(){try{URL.revokeObjectURL(url);}catch(e){}a.remove();},200);
+      return true;
+    }catch(e){try{alert('Download fehlgeschlagen: '+(e&&e.message||e));}catch(_){}return false;}
+  }
+  return {build:build, download:download};
+})();
+`;
+
 /* Anwesenheit: Schülerliste per Klick ein-/ausklappen (Horaire wird größer). */
 var ANW_SIDE_TOGGLE = `
 (function(){
@@ -2754,6 +2813,7 @@ var parts = [
   '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SCREENING_MODULE + '</' + 'script>',
   '<script>' + NOTEN_MODULE + '</' + 'script>',
+  '<script>' + WEEKLY_MODULE + '</' + 'script>',
   '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
