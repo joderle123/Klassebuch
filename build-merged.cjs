@@ -148,7 +148,12 @@ var ANW_API = [
   "    exportSettings:function(){return {id:'settings',timetable:state.timetable,periods:state.periods,ttVersion:state.ttVersion};},",
   "    applyEntries:function(list){state.entries=(list||[]).slice();save();renderAll();},",
   "    applyNotes:function(list){state.notes=(list||[]).slice();save();renderAll();},",
-  "    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();}",
+  "    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();},",
+  "    getUser:function(){return state.currentUser||'';},",
+  "    setUser:function(u){setUser(u);},",
+  "    users:function(){return USERS.slice();},",
+  "    initials:function(n){return initials(n);},",
+  "    avatarBg:function(n){return avatarBg(n);}",
   "  };",
   "  window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};"
 ].join("\n");
@@ -763,6 +768,7 @@ var SHELL_BODY_TOP = `
   </div>
   <aside class="kb-side" id="kb-side" aria-label="Hauptnavigation">
     <div class="kb-brand"><span class="kb-logo">📘</span><span class="kb-brandtext"><b>Klassebuch</b><small>Annexe Junglinster</small></span></div>
+    <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
       <div class="kb-navgroup">
@@ -832,14 +838,14 @@ var ROSTER_MODULE = `
 window.KB_ROSTER=(function(){
   var LS='klassebuch_roster_v1';
   var SEED=[
-    {id:'stud_ben',   name:'Ben',     anonLabel:'Schüler G', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', zyklus:'', active:true},
-    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', zyklus:'', active:true}
+    {id:'stud_ben',   name:'Ben',     anonLabel:'Schüler G', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', zyklus:'ES', active:true}
   ];
   function clone(o){var r={};for(var k in o){r[k]=o[k];}return r;}
   function loadList(){
@@ -857,7 +863,7 @@ window.KB_ROSTER=(function(){
     ids:function(){var m={};for(var i=0;i<list.length;i++){m[list[i].id]=true;}return m;},
     asAnwesenheit:function(){return list.map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
     asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
-    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'',active:true,createdAt:new Date().toISOString()});notify();return id;},
+    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
     remove:function(id){list=list.filter(function(s){return s.id!==id;});notify();},
@@ -963,7 +969,7 @@ var DOS_OVERRIDES = `
     }catch(_te){}
 
     /* ---- Réunion-Update (Hauptbereich) ---- */
-    var reuCard=lastReu?('<div class="card kb-mini">'+mh('🗣️','Réunion-Update <span class="muted" style="font-weight:600;font-size:.78em;">'+(lastReuDate?escapeHtml(formatDate(lastReuDate)):'')+'</span>','a')+'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div></div>'):'';
+    var reuCard=lastReu?('<div class="card kb-mini">'+mh('🗣️','Réunion-Update <span class="muted" style="font-weight:600;font-size:.78em;">'+(lastReuDate?escapeHtml(formatDate(lastReuDate)):'')+'</span>'+(lastReu.author?' <span class="reunion-author" title="Verfasst von '+escapeAttr(lastReu.author)+'">✍ '+escapeHtml(lastReu.author)+'</span>':''),'a')+'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div></div>'):'';
 
     /* ---- Seitenspalte: kompakte Info-Zeilen statt Einzelkärtchen ---- */
     function row(ic,l,v,act){return '<div class="hub-row"><span class="ri">'+ic+'</span><div class="rb"><div class="rl">'+l+'</div>'+(v?'<div class="rv">'+v+'</div>':'')+'</div>'+(act||'')+'</div>';}
@@ -984,7 +990,7 @@ var DOS_OVERRIDES = `
     var items=[];
     (Repo.entriesForStudent?Repo.entriesForStudent(sid):[]).forEach(function(e){
       var isReu=(e.category==='Team-Réunion');
-      items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
+      items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
       var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
@@ -1009,7 +1015,7 @@ var DOS_OVERRIDES = `
     if(!filtered.length){body='<div class="empty-state">'+(items.length?'Nichts in diesem Filter.':'Noch keine Aktivitäten — Einträge, Screenings, Absenzen und Ziele sammeln sich hier automatisch.')+'</div>';}
     else{
       body='<div class="tl">'+filtered.map(function(it){
-        return '<div class="tl-item tl-'+it.type+'"><div class="tl-ic">'+it.icon+'</div><div class="tl-c"><div class="tl-h"><span class="tl-t">'+it.title+'</span><span class="tl-d">'+escapeHtml(formatDate(it.date))+'</span></div><div class="tl-b">'+it.body+'</div></div></div>';
+        return '<div class="tl-item tl-'+it.type+'"><div class="tl-ic">'+it.icon+'</div><div class="tl-c"><div class="tl-h"><span class="tl-t">'+it.title+(it.author?' <span class="tl-author">✍ '+escapeHtml(it.author)+'</span>':'')+'</span><span class="tl-d">'+escapeHtml(formatDate(it.date))+'</span></div><div class="tl-b">'+it.body+'</div></div></div>';
       }).join('')+'</div>';
     }
     return '<div class="kb-hub-pad"><div class="tl-filters">'+chips+'</div>'+body+'</div>';
@@ -1019,7 +1025,7 @@ var DOS_OVERRIDES = `
     reu.forEach(function(r){
       var e=Repo.reunionEntryFor(r.date,sid); var g=(r.goals&&r.goals[sid])||[];
       if(!e&&!g.length){return;}
-      out.push('<div class="card"><div class="muted" style="font-size:.85em;">Réunion '+escapeHtml(formatDate(r.date))+'</div>'+
+      out.push('<div class="card"><div class="muted" style="font-size:.85em;display:flex;justify-content:space-between;gap:8px;align-items:center;"><span>Réunion '+escapeHtml(formatDate(r.date))+'</span>'+(e&&e.author?'<span class="reunion-author" title="Verfasst von '+escapeAttr(e.author)+'">✍ '+escapeHtml(e.author)+'</span>':'')+'</div>'+
         (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
         (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul></div>':'')+'</div>');
     });
@@ -1108,7 +1114,7 @@ var DOS_OVERRIDES = `
             base.goals=base.goals||{};
             if(goals2.length){base.goals[sid2]=goals2;}else if(base.goals[sid2]){delete base.goals[sid2];}
             Repo.saveReunion(base).then(function(){
-              if(text2){var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:text2};if(eid2){p2.id=eid2;}return Repo.saveEntry(p2);}
+              if(text2){var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:text2,author:((window.KB_USER&&window.KB_USER.get())||'')};if(eid2){p2.id=eid2;}return Repo.saveEntry(p2);}
             }).then(function(){
               if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
               if(window.render){try{window.render();}catch(e){}}
@@ -1230,8 +1236,8 @@ var SHELL_CONTROLLER = `
   // Gemeinsame Schülerliste (im Bereich "Klasse")
   function renderRoster(){
     var body=$('kb-roster-body'); if(!body||!window.KB_ROSTER)return;
-    var CYC=['','C1','C2','C3','C4','ES'];
-    function cycOpts(sel){return CYC.map(function(c){return '<option value="'+c+'"'+((sel||'')===c?' selected':'')+'>'+(c||'—')+'</option>';}).join('');}
+    var CYC=['C1','C2','C3','C4','ES'];
+    function cycOpts(sel){sel=sel||'ES';return CYC.map(function(c){return '<option value="'+c+'"'+(sel===c?' selected':'')+'>'+c+'</option>';}).join('');}
     var rows=window.KB_ROSTER.list().map(function(s){
       return '<tr data-id="'+esc(s.id)+'">'+
         '<td><input class="kb-in kb-rn" value="'+esc(s.name)+'"></td>'+
@@ -1317,6 +1323,47 @@ var SHELL_CONTROLLER = `
   // Sicherheitsnetz: Screening-Eingaben beim Verlassen/Tab-Wechsel sichern
   window.addEventListener('beforeunload',function(){if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
   document.addEventListener('visibilitychange',function(){if(document.hidden&&window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
+
+  /* ============================================================
+     Identität: „Wer arbeitet hier?" — erste Ansicht der App.
+     Quelle der Wahrheit = KB_ANW (state.currentUser, persistiert).
+     Der gewählte Name wird automatisch Autor von Einträgen/Réunionen.
+     ============================================================ */
+  var EXTRA_LS='klassebuch_extra_users';
+  function extraUsers(){try{return JSON.parse(localStorage.getItem(EXTRA_LS)||'[]')||[];}catch(e){return [];}}
+  function addExtraUser(u){var l=extraUsers();if(l.indexOf(u)<0){l.push(u);try{localStorage.setItem(EXTRA_LS,JSON.stringify(l));}catch(e){}}}
+  function allUsers(){var base=(window.KB_ANW&&KB_ANW.users)?KB_ANW.users():[];var seen={},out=[];base.concat(extraUsers()).forEach(function(u){if(u&&!seen[u]){seen[u]=1;out.push(u);}});return out;}
+  function curUser(){return (window.KB_ANW&&KB_ANW.getUser&&KB_ANW.getUser())||'';}
+  function uIni(n){return (window.KB_ANW&&KB_ANW.initials)?KB_ANW.initials(n):String(n||'?').charAt(0).toUpperCase();}
+  function uBg(n){return (window.KB_ANW&&KB_ANW.avatarBg)?KB_ANW.avatarBg(n):'#4f5bd5';}
+  var userHooks=[];
+  window.KB_USER={get:curUser,list:allUsers,set:function(u){pickUser(u);},onChange:function(fn){if(typeof fn==='function')userHooks.push(fn);}};
+
+  var gate=null;
+  function buildGate(){
+    gate=document.createElement('div');gate.className='kb-gate';gate.id='kb-gate';
+    gate.innerHTML='<div class="kb-gate-card"><div class="kb-gate-logo">📘</div><h2>Wer arbeitet hier?</h2><p>Wähle deinen Namen — er wird bei Einträgen, Réunionen und Notizen automatisch als Autor gespeichert.</p><div class="kb-gate-grid" id="kb-gate-grid"></div><button class="kb-gate-other" id="kb-gate-other">+ Andere Person</button></div>';
+    document.body.appendChild(gate);
+    gate.addEventListener('click',function(e){
+      var t=e.target.closest&&e.target.closest('[data-user]');
+      if(t){pickUser(t.getAttribute('data-user'));return;}
+      if(e.target.id==='kb-gate-other'){var n=window.prompt('Name der Person:');if(n&&n.trim()){var nm=n.trim();addExtraUser(nm);pickUser(nm);}return;}
+    });
+  }
+  function renderGateGrid(){
+    var g=$('kb-gate-grid');if(!g)return;var cur=curUser();
+    g.innerHTML=allUsers().map(function(u){return '<button class="kb-gate-user'+(cur===u?' on':'')+'" data-user="'+esc(u)+'"><span class="kb-gate-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span>'+esc(u)+'</span></button>';}).join('');
+  }
+  function openGate(){if(!gate)buildGate();renderGateGrid();gate.classList.add('open');}
+  function closeGate(){if(gate)gate.classList.remove('open');}
+  function pickUser(u){if(window.KB_ANW&&KB_ANW.setUser){try{KB_ANW.setUser(u);}catch(e){}}closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render();}catch(e){}}}
+  function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser();
+    if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">wechseln</span>';c.title='Angemeldet als '+u+' — klicken zum Wechseln';}
+    else{c.innerHTML='<span class="kb-uc-av">?</span><span class="kb-uc-n">Wer bist du?</span>';c.title='Person wählen';}
+  }
+  var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',openGate);}
+  updateUserChip();
+  if(!curUser()){openGate();}
 
   // Startseite: Klassenbuch (Anwesenheit)
   go('absenzen');
@@ -2417,6 +2464,30 @@ var MATERIAL_CSS = `
 .kbm-ws-scale .kbm-ws-sc{ display:inline-block; margin-right:16px; font-size:13px; }
 .kbm-ws-tab{ border-collapse:collapse; width:100%; margin:8px 0; } .kbm-ws-tab th,.kbm-ws-tab td{ border:1px solid #b9bacb; padding:7px 9px; text-align:left; font-size:13px; } .kbm-ws-tab td{ height:25px; }
 @media(max-width:560px){ .kbm-modal{ max-height:calc(100vh - 32px);} .kbm-ov{ padding:16px 8px; } }
+
+/* === Identität: „Wer arbeitet hier?"-Gate + Sidebar-Chip === */
+.kb-gate{ position:fixed; inset:0; z-index:11000; background:linear-gradient(135deg,#3b3f8f,#5a3f9e); display:none; align-items:center; justify-content:center; padding:24px; }
+.kb-gate.open{ display:flex; }
+.kb-gate-card{ background:var(--kb-surface,#fff); border-radius:22px; max-width:560px; width:100%; padding:32px 30px; box-shadow:0 30px 80px rgba(0,0,0,.4); text-align:center; }
+.kb-gate-logo{ font-size:40px; }
+.kb-gate-card h2{ margin:8px 0 4px; font-size:22px; color:var(--kb-ink,#23243a); }
+.kb-gate-card p{ margin:0 0 20px; color:var(--kb-muted,#666); font-size:14px; }
+.kb-gate-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px; }
+.kb-gate-user{ display:flex; flex-direction:column; align-items:center; gap:8px; padding:14px 8px; border:1px solid var(--kb-border,#e6e6ef); border-radius:14px; background:var(--kb-bg,#f6f7fb); cursor:pointer; font-weight:700; font-size:14px; color:var(--kb-ink,#23243a); transition:transform .08s ease,border-color .12s ease; }
+.kb-gate-user:hover{ border-color:var(--kb-accent,#4f5bd5); transform:translateY(-1px); }
+.kb-gate-user.on{ border-color:var(--kb-accent,#4f5bd5); box-shadow:0 0 0 2px var(--kb-accent,#4f5bd5) inset; }
+.kb-gate-av{ width:46px; height:46px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; font-weight:800; }
+.kb-gate-other{ margin-top:18px; border:1px dashed var(--kb-border,#cfd0de); background:transparent; border-radius:10px; padding:9px 16px; font-size:13.5px; font-weight:600; cursor:pointer; color:var(--kb-muted,#666); }
+.kb-gate-other:hover{ border-color:var(--kb-accent,#4f5bd5); color:var(--kb-accent,#4f5bd5); }
+.kb-userchip{ display:flex; align-items:center; gap:8px; width:100%; margin:2px 0 10px; padding:8px 10px; border:1px solid var(--kb-border,#e6e6ef); border-radius:12px; background:var(--kb-bg,#f3f4fa); cursor:pointer; font:inherit; text-align:left; }
+.kb-userchip:hover{ border-color:var(--kb-accent,#4f5bd5); }
+.kb-uc-av{ width:30px; height:30px; border-radius:50%; background:#4f5bd5; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12.5px; flex:0 0 auto; }
+.kb-uc-n{ font-weight:700; font-size:13.5px; color:var(--kb-ink,#23243a); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.kb-uc-x{ font-size:11px; color:var(--kb-muted,#8a8fa6); font-weight:600; }
+/* Autor-Kennzeichnung in Réunion/Verlauf */
+.reunion-author,.hub-author{ font-size:12px; font-weight:700; color:var(--kb-accent,#4f5bd5); background:rgba(79,91,213,.09); border-radius:999px; padding:1px 9px; white-space:nowrap; }
+.tl-author{ font-size:11.5px; color:var(--kb-muted,#8a8fa6); font-weight:600; }
+@media(max-width:720px){ .kb-gate-card{ padding:24px 18px; } }
 `;
 
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";

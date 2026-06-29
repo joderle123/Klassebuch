@@ -1950,7 +1950,7 @@ function viewEntryForm(params) {
         '</div>' +
         '<div class="field">' +
           '<label for="f-author">Autor (Kürzel)</label>' +
-          '<input type="text" id="f-author" placeholder="z. B. JP" value="' + escapeAttr(existing ? existing.author : '') + '">' +
+          '<input type="text" id="f-author" placeholder="z. B. JP" value="' + escapeAttr(existing ? existing.author : ((window.KB_USER && window.KB_USER.get && window.KB_USER.get()) || '')) + '">' +
         '</div>' +
       '</div>' +
       '<div class="row">' +
@@ -3153,6 +3153,7 @@ function viewReunion(params, query) {
         '<div class="reunion-student-head">' +
           '<span class="reunion-order">' + (i + 1) + '</span>' +
           '<a href="#/student/' + escapeAttr(sid) + '" class="reunion-student-name" data-route="#/student/' + escapeAttr(sid) + '">' + escapeHtml(s.name) + '</a>' +
+          (entry && entry.author ? '<span class="reunion-author" title="Verfasst von ' + escapeAttr(entry.author) + '">✍ ' + escapeHtml(entry.author) + '</span>' : '') +
           (entry
             ? '<button type="button" class="btn btn-sm" data-route="#/entry/' + escapeAttr(entry.id) + '/edit?return=' + encodeURIComponent(returnRoute()) + '">Bearbeiten</button>'
             : '<button type="button" class="btn btn-sm btn-primary" data-route="#/entry/new/' + escapeAttr(sid) + '?date=' + escapeAttr(r.date) + '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute()) + '">+ Update erfassen</button>') +

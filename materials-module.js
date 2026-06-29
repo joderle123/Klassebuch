@@ -38,7 +38,9 @@ window.KB_MATERIALS=(function(){
   function domainOf(code){return String(code||'').split('-')[0];}
   function byId(id){for(var i=0;i<DATA.length;i++){if(DATA[i].id===id)return DATA[i];}return null;}
   function themeMatchable(key){return !!THEME_MAP[key];}
-  function cycleOf(sid){var s=window.KB_ROSTER&&window.KB_ROSTER.byId(sid);return (s&&s.zyklus)||'';}
+  function rawCycle(sid){var s=window.KB_ROSTER&&window.KB_ROSTER.byId(sid);return (s&&s.zyklus)||'';}
+  /* Annexe = Sekundarschule: ohne gesetzten Zyklus gilt ES als Standard. */
+  function cycleOf(sid){return rawCycle(sid)||'ES';}
   function nameOf(sid){var s=window.KB_ROSTER&&window.KB_ROSTER.byId(sid);return (s&&s.name)||'Schüler';}
 
   function ageScore(m,cyc){
@@ -127,14 +129,14 @@ window.KB_MATERIALS=(function(){
   }
 
   function cycBar(){
-    var sid=state.sid,saved=cycleOf(sid),cur=state.cyc;
+    var sid=state.sid,saved=rawCycle(sid),cur=state.cyc;
     var chips=AGEORDER.map(function(a){
       return '<button class="kbm-chip'+(cur===a?' on':'')+'" data-cyc="'+a+'">'+esc(a)+'</button>';
     }).join('');
     chips+='<button class="kbm-chip'+(cur===''?' on':'')+'" data-cyc="">alle</button>';
     var note;
-    if(saved){note='Zyklus von '+esc(nameOf(sid))+': <b>'+esc(saved)+'</b> (gespeichert)';}
-    else{note='<b>Zyklus von '+esc(nameOf(sid))+' wählen</b> — für altersgerechte Treffer (wird gespeichert).';}
+    if(saved){note='Zyklus von '+esc(nameOf(sid))+': <b>'+esc(saved)+'</b> (gespeichert) — anderen Zyklus wählen passt die Treffer an.';}
+    else{note='Annexe-Standard <b>ES</b> für '+esc(nameOf(sid))+' — bei Bedarf anderen Zyklus wählen (wird gespeichert).';}
     return '<div class="kbm-cyc-note">'+note+'</div><div class="kbm-chips">'+chips+'</div>';
   }
 
@@ -250,7 +252,8 @@ window.KB_MATERIALS=(function(){
     var t=e.target;
     var c=t.closest&&t.closest('[data-cyc]');
     if(c){var v=c.getAttribute('data-cyc');state.cyc=v;
-      if(v&&!cycleOf(state.sid)&&window.KB_ROSTER){try{window.KB_ROSTER.update(state.sid,{zyklus:v});}catch(_){}}
+      /* Konkreten Zyklus dauerhaft am Schüler speichern; „alle" filtert nur temporär. */
+      if(v&&window.KB_ROSTER){try{window.KB_ROSTER.update(state.sid,{zyklus:v});}catch(_){}}
       renderResults();return;}
     var d=t.closest&&t.closest('[data-detail]');
     if(d){renderDetail(d.getAttribute('data-detail'));return;}
