@@ -771,6 +771,10 @@ var SHELL_BODY_TOP = `
         <button class="kb-link" data-kb-nav="reunion"><span class="kb-ic">🤝</span>Réunionen</button>
       </div>
       <div class="kb-navgroup">
+        <div class="kb-navlabel">Material</div>
+        <button class="kb-link" data-kb-nav="material"><span class="kb-ic">🧰</span>Material-Bibliothek</button>
+      </div>
+      <div class="kb-navgroup">
         <div class="kb-navlabel">Klinisch</div>
         <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
       </div>
@@ -828,14 +832,14 @@ var ROSTER_MODULE = `
 window.KB_ROSTER=(function(){
   var LS='klassebuch_roster_v1';
   var SEED=[
-    {id:'stud_ben',   name:'Ben',     anonLabel:'Schüler G', klasse:'', level:'L1', active:true},
-    {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', active:true},
-    {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', active:true},
-    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', active:true},
-    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L1', active:true},
-    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L1', active:true},
-    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', active:true},
-    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', active:true}
+    {id:'stud_ben',   name:'Ben',     anonLabel:'Schüler G', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', zyklus:'', active:true},
+    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', zyklus:'', active:true}
   ];
   function clone(o){var r={};for(var k in o){r[k]=o[k];}return r;}
   function loadList(){
@@ -851,9 +855,9 @@ window.KB_ROSTER=(function(){
     list:function(){return list.map(clone);},
     byId:function(id){var s=find(id);return s?clone(s):null;},
     ids:function(){var m={};for(var i=0;i<list.length;i++){m[list[i].id]=true;}return m;},
-    asAnwesenheit:function(){return list.map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1'};});},
+    asAnwesenheit:function(){return list.map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
     asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
-    add:function(name,klasse,level){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',active:true,createdAt:new Date().toISOString()});notify();return id;},
+    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
     remove:function(id){list=list.filter(function(s){return s.id!==id;});notify();},
@@ -928,7 +932,7 @@ var DOS_OVERRIDES = `
     /* ---- Förderziele ---- */
     var foerderCard;
     if(cg&&cg.goals&&cg.goals.length){
-      var gl=cg.goals.slice(0,5).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};return '<li><span class="hub-dot" style="background:'+dm.c+'"></span>'+escapeHtml(g.formulation||g.title||g.code)+'</li>';}).join('');
+      var gl=cg.goals.slice(0,5).map(function(g){var dm=DM[g.domain]||{l:g.domain,c:'#777'};var btn=(g.code&&window.KB_MATERIALS)?'<button class="hub-mat" data-mat-goal="'+escapeAttr(g.code)+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(g.title||g.formulation||g.code)+'" title="Passende Arbeitsblätter finden">📄 Arbeitsblätter</button>':'';return '<li>'+btn+'<span class="hub-dot" style="background:'+dm.c+'"></span><span class="hub-gtext">'+escapeHtml(g.formulation||g.title||g.code)+'</span></li>';}).join('');
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele <span class="hub-count">'+cg.goals.length+'</span>','g')+'<ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>5?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-5)+' weitere</div>':'')+'</div>';
     } else {
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele','g')+'<p class="muted">Noch keine hinterlegt.</p><div class="kb-btn-row">'+impBtn+'</div></div>';
@@ -941,6 +945,22 @@ var DOS_OVERRIDES = `
     } else {
       wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
     }
+
+    /* ---- Thematiken aus Réunionen/Verlauf -> Arbeitsblätter ---- */
+    var themeCard='';
+    try{
+      if(window.KB_MATERIALS){
+        var txtParts=[]; entries.forEach(function(e){if(e.text)txtParts.push(e.text);});
+        if(lastReu&&lastReu.text)txtParts.push(lastReu.text);
+        var det=(typeof analyzeText==='function')?analyzeText(txtParts.join('  ')):[];
+        var picks=[],seenK={};
+        for(var ti=0;ti<det.length;ti++){var tkk=det[ti];if(window.KB_MATERIALS.themeMatchable(tkk.key)&&!seenK[tkk.key]){seenK[tkk.key]=1;picks.push(tkk);}if(picks.length>=6)break;}
+        if(picks.length){
+          var chips=picks.map(function(t){return '<button class="hub-theme-chip sev-'+t.severity+'" data-mat-theme="'+escapeAttr(t.key)+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(t.key)+'" title="Arbeitsblätter zu „'+escapeAttr(t.key)+'“">'+escapeHtml(t.key)+' <span class="ht-n">'+t.count+'×</span></button>';}).join('');
+          themeCard='<div class="card kb-mini">'+mh('🏷️','Thematiken → Arbeitsblätter','a')+'<p class="muted" style="font-size:.82em;margin:-2px 0 9px;">Aus den Réunion-/Verlaufstexten erkannt — ein Klick öffnet passende Arbeitsblätter.</p><div class="hub-theme-wrap">'+chips+'</div></div>';
+        }
+      }
+    }catch(_te){}
 
     /* ---- Réunion-Update (Hauptbereich) ---- */
     var reuCard=lastReu?('<div class="card kb-mini">'+mh('🗣️','Réunion-Update <span class="muted" style="font-weight:600;font-size:.78em;">'+(lastReuDate?escapeHtml(formatDate(lastReuDate)):'')+'</span>','a')+'<div class="entry-body hub-clamp">'+highlightThemesHtml(lastReu.text)+'</div></div>'):'';
@@ -955,7 +975,7 @@ var DOS_OVERRIDES = `
     sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
     var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
 
-    return stripHtml+acuteLine+'<div class="hub2"><div class="hub2-main">'+foerderCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
+    return stripHtml+acuteLine+'<div class="hub2"><div class="hub2-main">'+foerderCard+themeCard+wochenCard+reuCard+'</div><aside class="hub2-side">'+sideCard+'</aside></div>';
   }
   function hubVerlauf(student){
     var sid=student.id;
@@ -1132,7 +1152,7 @@ var SHELL_CONTROLLER = `
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','sav-root','kb-klasse','kb-data'];
+  var PANELS=['anw-root','dos-root','sav-root','isa-root','kb-klasse','kb-data'];
   var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
@@ -1153,6 +1173,9 @@ var SHELL_CONTROLLER = `
       showPanel('kb-klasse'); setActive('klasse'); renderRoster();
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
+    } else if(nav==='material'){
+      showPanel('isa-root'); setActive('material');
+      if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
     } else if(nav==='patho'){
       showPanel('sav-root'); setActive('patho');
       var sb=$('sav-bar'); if(sb){sb.style.display='none';}
@@ -1160,6 +1183,7 @@ var SHELL_CONTROLLER = `
     }
     closeDrawer();
   }
+  window.__kbGo=go;
 
   // Seitenmenü
   var links=document.querySelectorAll('[data-kb-nav]');
@@ -1206,19 +1230,23 @@ var SHELL_CONTROLLER = `
   // Gemeinsame Schülerliste (im Bereich "Klasse")
   function renderRoster(){
     var body=$('kb-roster-body'); if(!body||!window.KB_ROSTER)return;
+    var CYC=['','C1','C2','C3','C4','ES'];
+    function cycOpts(sel){return CYC.map(function(c){return '<option value="'+c+'"'+((sel||'')===c?' selected':'')+'>'+(c||'—')+'</option>';}).join('');}
     var rows=window.KB_ROSTER.list().map(function(s){
       return '<tr data-id="'+esc(s.id)+'">'+
         '<td><input class="kb-in kb-rn" value="'+esc(s.name)+'"></td>'+
-        '<td><input class="kb-in kb-rk" style="max-width:130px" value="'+esc(s.klasse||'')+'" placeholder="—"></td>'+
-        '<td><select class="kb-in kb-rl" style="max-width:90px"><option'+(s.level!=='L2'?' selected':'')+'>L1</option><option'+(s.level==='L2'?' selected':'')+'>L2</option></select></td>'+
+        '<td><input class="kb-in kb-rk" style="max-width:120px" value="'+esc(s.klasse||'')+'" placeholder="—"></td>'+
+        '<td><select class="kb-in kb-rz" style="max-width:84px" title="Zyklus (Alter) — steuert passende Arbeitsblätter">'+cycOpts(s.zyklus)+'</select></td>'+
+        '<td><select class="kb-in kb-rl" style="max-width:84px"><option'+(s.level!=='L2'?' selected':'')+'>L1</option><option'+(s.level==='L2'?' selected':'')+'>L2</option></select></td>'+
         '<td style="text-align:right"><button class="kb-btn kb-btn-ghost kb-rd" title="Schüler löschen">🗑</button></td></tr>';
     }).join('');
-    body.innerHTML='<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
+    body.innerHTML='<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th title="Cycle 1–4 / Sekundar — bestimmt altersgerechte Arbeitsblätter">Zyklus</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table><p class="muted" style="font-size:12.5px;margin:8px 2px 0;">Der <b>Zyklus</b> (C1 ≈ 3–5 J. · C2 ≈ 6–7 · C3 ≈ 8–9 · C4 ≈ 10–11 · ES ≥ 12) steuert, welche Arbeitsblätter altersgerecht vorgeschlagen werden.</p>';
     var trs=body.querySelectorAll('tr[data-id]');
     for(var i=0;i<trs.length;i++){(function(tr){
       var id=tr.getAttribute('data-id');
       tr.querySelector('.kb-rn').addEventListener('change',function(e){window.KB_ROSTER.update(id,{name:e.target.value.trim()});});
       tr.querySelector('.kb-rk').addEventListener('change',function(e){window.KB_ROSTER.update(id,{klasse:e.target.value.trim()});});
+      tr.querySelector('.kb-rz').addEventListener('change',function(e){window.KB_ROSTER.update(id,{zyklus:e.target.value});});
       tr.querySelector('.kb-rl').addEventListener('change',function(e){window.KB_ROSTER.update(id,{level:e.target.value});});
       tr.querySelector('.kb-rd').addEventListener('click',function(){var s=window.KB_ROSTER.byId(id);if(confirm('„'+(s?s.name:'')+'“ aus der gemeinsamen Liste löschen? Absenzen und Dossier dieses Schülers werden ausgeblendet.')){window.KB_ROSTER.remove(id);renderRoster();}});
     })(trs[i]);}
@@ -2301,6 +2329,96 @@ window.KB_GUIDE=(function(){
 })();
 `;
 
+/* ============================================================
+   Isa-Toolbox-Integration: Materialdaten, Taxonomie, Modul, ISA-App
+   ============================================================ */
+var MATERIALS_JSON = '[]', TAXONOMY_JSON = '{}', ISA_B64 = '', MATERIALS_MODULE = '';
+try { MATERIALS_JSON = read('materials.json'); } catch (e) { console.warn('materials.json fehlt — Material-Matching leer.'); }
+try { TAXONOMY_JSON = read('taxonomy.json'); } catch (e) { console.warn('taxonomy.json fehlt.'); }
+try { MATERIALS_MODULE = read('materials-module.js'); } catch (e) { console.warn('materials-module.js fehlt — KB_MATERIALS deaktiviert.'); }
+try { ISA_B64 = fs.readFileSync(path.join(ROOT, 'ISA-App.html')).toString('base64'); }
+catch (e) { console.warn('ISA-App.html fehlt — Material-Tab ohne Bibliothek.'); }
+function jsonForScript(s) { return String(s).replace(/</g, '\\u003c').replace(new RegExp(String.fromCharCode(0x2028), 'g'), '\\u2028').replace(new RegExp(String.fromCharCode(0x2029), 'g'), '\\u2029'); }
+
+var MATERIAL_CSS = `
+/* === Material-Tab (ISA-App eingebettet) === */
+#isa-root.kb-panel{ padding:0; }
+/* Aktives Panel füllt die (position:relative, min-height:100vh) Stage komplett,
+   damit das absolut positionierte iframe eine echte Höhe bekommt. */
+#isa-root.kb-panel.active{ position:absolute; inset:0; display:block; }
+#isa-root .isa-host,#isa-root #isa-host{ position:absolute; inset:0; width:100%; height:100%; }
+#isa-root .isa-frame{ width:100%; height:100%; border:0; display:block; background:#fff; }
+#isa-root .isa-loading{ display:flex; align-items:center; justify-content:center; height:100%; color:var(--kb-muted); font-weight:600; }
+
+/* === Arbeitsblatt-Buttons im Hub === */
+.hub-list li .hub-mat{ order:3; margin-left:auto; align-self:center; white-space:nowrap; border:1px solid var(--kb-border,#e2e3ee); background:var(--kb-surface,#fff); border-radius:7px; padding:2px 9px; font-size:12.5px; font-weight:600; cursor:pointer; line-height:1.5; color:var(--kb-accent,#4f5bd5); }
+.hub-list li .hub-mat:hover{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
+.hub-list li .hub-gtext{ flex:1; min-width:0; }
+.hub-theme-wrap{ display:flex; flex-wrap:wrap; gap:7px; }
+.hub-theme-chip{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--kb-border,#e2e3ee); background:var(--kb-surface,#fff); border-radius:999px; padding:5px 11px; font-size:13px; cursor:pointer; font-weight:600; color:var(--kb-ink,#23243a); }
+.hub-theme-chip:hover{ border-color:var(--kb-accent,#4f5bd5); color:var(--kb-accent,#4f5bd5); }
+.hub-theme-chip .ht-n{ font-size:11px; opacity:.6; }
+.hub-theme-chip.sev-3{ border-color:#e3b7ac; } .hub-theme-chip.sev-2{ border-color:#e8d3a8; }
+
+/* === Material-Such-Modal (KB-nativ) === */
+.kbm-ov{ position:fixed; inset:0; background:rgba(20,22,40,.55); backdrop-filter:blur(3px); z-index:9000; display:none; align-items:flex-start; justify-content:center; padding:32px 16px; overflow:auto; }
+.kbm-ov.open{ display:flex; }
+.kbm-modal{ background:var(--kb-bg,#f6f7fb); width:100%; max-width:860px; border-radius:18px; box-shadow:0 24px 70px rgba(0,0,0,.3); overflow:hidden; display:flex; flex-direction:column; max-height:calc(100vh - 64px); }
+.kbm-head{ display:flex; align-items:flex-start; gap:12px; padding:18px 22px 14px; background:var(--kb-surface,#fff); border-bottom:1px solid var(--kb-border,#ececf3); }
+.kbm-head-t{ font-size:17px; font-weight:800; line-height:1.35; flex:1; color:var(--kb-ink,#23243a); }
+.kbm-goalcode{ color:#fff; border-radius:6px; padding:1px 8px; font-size:13px; font-weight:800; margin-right:4px; }
+.kbm-x{ border:0; background:transparent; font-size:26px; line-height:1; cursor:pointer; color:var(--kb-muted,#777); padding:0 2px; }
+.kbm-cyc{ padding:0 22px; background:var(--kb-surface,#fff); }
+.kbm-cyc:empty{ display:none; }
+.kbm-cyc-note{ font-size:13px; color:var(--kb-muted,#666); padding:10px 0 6px; }
+.kbm-chips{ display:flex; flex-wrap:wrap; gap:7px; padding-bottom:14px; }
+.kbm-chip{ border:1px solid var(--kb-border,#dcdce6); background:var(--kb-bg,#f3f4fa); border-radius:999px; padding:5px 13px; font-size:13px; font-weight:700; cursor:pointer; color:var(--kb-ink,#23243a); }
+.kbm-chip.on{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
+.kbm-body{ padding:16px 22px 22px; overflow:auto; }
+.kbm-count{ font-size:13px; color:var(--kb-muted,#666); font-weight:600; margin-bottom:12px; }
+.kbm-empty{ padding:26px; text-align:center; color:var(--kb-muted,#888); }
+.kbm-list{ display:flex; flex-direction:column; gap:12px; }
+.kbm-card{ background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:13px; padding:14px 16px; }
+.kbm-card-h{ display:flex; align-items:flex-start; gap:10px; }
+.kbm-card-h h4{ margin:0; font-size:15.5px; flex:1; color:var(--kb-ink,#23243a); }
+.kbm-ages{ display:flex; flex-wrap:wrap; gap:4px; }
+.kbm-age{ background:#eef0fb; color:#4a4f86; border-radius:5px; padding:1px 6px; font-size:11px; font-weight:800; }
+.kbm-age-warn{ background:#fbe7d8; color:#b3611f; }
+.kbm-meta{ font-size:12px; color:var(--kb-muted,#888); margin:7px 0; }
+.kbm-desc{ font-size:13.5px; color:var(--kb-ink,#33344c); margin:6px 0 9px; line-height:1.5; }
+.kbm-desc-full{ font-size:14px; color:var(--kb-ink,#33344c); margin:12px 0; line-height:1.6; }
+.kbm-tags{ display:flex; flex-wrap:wrap; gap:5px; }
+.kbm-tag{ background:var(--kb-bg,#f0f1f8); color:#5a5f7e; border-radius:999px; padding:2px 9px; font-size:11.5px; font-weight:600; }
+.kbm-acts{ margin-top:11px; display:flex; gap:8px; flex-wrap:wrap; }
+.kbm-btn{ border:1px solid var(--kb-border,#dcdce6); background:var(--kb-surface,#fff); border-radius:9px; padding:8px 14px; font-size:13.5px; font-weight:700; cursor:pointer; color:var(--kb-ink,#23243a); }
+.kbm-btn:hover{ border-color:var(--kb-accent,#4f5bd5); color:var(--kb-accent,#4f5bd5); }
+.kbm-btn-p{ background:var(--kb-accent,#4f5bd5); color:#fff; border-color:var(--kb-accent,#4f5bd5); }
+.kbm-btn-p:hover{ filter:brightness(1.06); color:#fff; }
+.kbm-more{ margin-top:12px; font-size:12.5px; color:var(--kb-muted,#888); text-align:center; }
+.kbm-divider{ margin:20px 0 12px; font-size:12px; font-weight:800; letter-spacing:.02em; text-transform:uppercase; color:var(--kb-muted,#8a8fa6); border-top:1px dashed var(--kb-border,#dcdce6); padding-top:14px; }
+.kbm-foot{ margin-top:18px; padding-top:14px; border-top:1px solid var(--kb-border,#ececf3); text-align:center; }
+.kbm-detail .kbm-d-back{ display:flex; justify-content:space-between; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.kbm-section{ margin-top:18px; }
+.kbm-section h4{ margin:0 0 8px; font-size:14.5px; color:var(--kb-ink,#23243a); border-bottom:1px solid var(--kb-border,#ececf3); padding-bottom:5px; }
+.kbm-phase{ margin-bottom:12px; } .kbm-phase h5{ margin:0 0 3px; font-size:13.5px; color:var(--kb-accent,#4f5bd5); }
+.kbm-phase p{ margin:0; font-size:13.5px; line-height:1.55; color:var(--kb-ink,#33344c); }
+.kbm-info{ font-size:12.5px; color:var(--kb-muted,#666); display:flex; flex-direction:column; gap:2px; margin:10px 0; }
+.kbm-goals{ display:flex; flex-wrap:wrap; gap:6px; }
+.kbm-goalmini{ border:1px solid; border-radius:6px; padding:2px 8px; font-size:11.5px; font-weight:700; background:#fff; }
+.kbm-ws{ background:var(--kb-surface,#fff); border:1px dashed var(--kb-border,#d6d7e3); border-radius:12px; padding:16px 18px; }
+.kbm-ws-title{ font-weight:800; margin-bottom:6px; } .kbm-ws-intro{ color:var(--kb-muted,#666); margin-bottom:12px; font-size:13px; }
+.kbm-ws-h{ font-size:14px; font-weight:800; margin:16px 0 6px; border-bottom:1px solid var(--kb-border,#e6e6ef); padding-bottom:3px; }
+.kbm-ws-ins{ font-style:italic; color:var(--kb-muted,#555); margin:6px 0; font-size:13px; }
+.kbm-ws-qp{ font-weight:700; margin:10px 0 5px; font-size:13.5px; }
+.kbm-ws-line{ border-bottom:1px solid #b9bacb; height:21px; margin:6px 0; }
+.kbm-ws-box{ border:1px solid #b9bacb; border-radius:7px; margin:8px 0; padding:6px; }
+.kbm-ws-check{ list-style:none; padding:0; margin:6px 0; } .kbm-ws-check li{ margin:7px 0; font-size:13.5px; }
+.kbm-ws-tick{ display:inline-block; width:13px; height:13px; border:1.6px solid #888; border-radius:3px; margin-right:9px; vertical-align:middle; }
+.kbm-ws-scale .kbm-ws-sc{ display:inline-block; margin-right:16px; font-size:13px; }
+.kbm-ws-tab{ border-collapse:collapse; width:100%; margin:8px 0; } .kbm-ws-tab th,.kbm-ws-tab td{ border:1px solid #b9bacb; padding:7px 9px; text-align:left; font-size:13px; } .kbm-ws-tab td{ height:25px; }
+@media(max-width:560px){ .kbm-modal{ max-height:calc(100vh - 32px);} .kbm-ov{ padding:16px 8px; } }
+`;
+
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
 var parts = [
@@ -2323,6 +2441,7 @@ var parts = [
   '/* === anwesenheit (gescoped) === */', anwStyleScoped,
   '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
+  '/* === Material / Isa-Toolbox === */', MATERIAL_CSS,
   '</style>',
   '</head>',
   '<body>',
@@ -2333,7 +2452,10 @@ var parts = [
   '<div class="sav-bar" id="sav-bar" style="display:none"><button class="sav-back" id="sav-back">← Zurück zum Schüler</button><span class="sav-who" id="sav-who"></span><span class="sav-hint">Screening-Befunde sind Beobachtungs-Hypothesen, keine Diagnosen.</span></div>',
   savBody,
   '</section>',
+  '<section class="kb-panel" id="isa-root"><div class="isa-host" id="isa-host"></div></section>',
   SHELL_PANELS_EXTRA,
+  '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
+  '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
@@ -2343,6 +2465,7 @@ var parts = [
   '<script>' + SCREENING_MODULE + '</' + 'script>',
   '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
+  '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '</body>',
   '</html>',
