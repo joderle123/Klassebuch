@@ -1251,8 +1251,8 @@ var SHELL_CONTROLLER = `
   window.addEventListener('beforeunload',function(){if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
   document.addEventListener('visibilitychange',function(){if(document.hidden&&window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
 
-  // Startseite: Schüler
-  go('students');
+  // Startseite: Klassenbuch (Anwesenheit)
+  go('absenzen');
 })();
 `;
 
