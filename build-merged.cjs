@@ -787,6 +787,19 @@ var ACCENT_OVERRIDE = `
 #anw-root .side-stu .hrs{ font-size:11px; padding:2px 7px; }
 /* Spalten dürfen den frei gewordenen Platz nutzen */
 #anw-root .wk-grid thead th{ min-width:138px; }
+
+/* ---- Schülerliste per Klick einklappen + Summe unter das Horaire ---- */
+#anw-root .wrap{ display:flex; flex-direction:column; }
+#anw-root .wrap > .side-toggle{ order:0; align-self:flex-start; margin:0 0 14px; }
+#anw-root .wrap > #main-area{ order:2; }
+#anw-root .wrap > #summary{ order:3; margin:22px 0 0; }
+#anw-root .side-toggle{ display:inline-flex; align-items:center; gap:7px; background:var(--kb-surface,#fff); border:1px solid var(--line,#e2e3ee); border-radius:10px; padding:8px 14px; font-size:13.5px; font-weight:700; cursor:pointer; color:var(--primary-dark,#4f5bd5); transition:.12s; }
+#anw-root .side-toggle:hover{ border-color:var(--primary,#6C5CE7); background:var(--primary-50,#eef0fb); }
+/* Eingeklappt: Schülerliste weg -> Horaire über volle Breite */
+#anw-root .layout.side-collapsed .sidebar{ display:none; }
+#anw-root .layout.side-collapsed .wk-grid-large table{ min-width:0; }
+#anw-root .layout.side-collapsed .wk-grid thead th{ min-width:150px; }
+#anw-root .layout.side-collapsed .wk-grid .wcell{ min-height:90px; }
 `;
 
 var SHELL_BODY_TOP = `
@@ -2529,6 +2542,24 @@ var MATERIAL_CSS = `
 @media(max-width:720px){ .kb-gate-card{ padding:24px 18px; } }
 `;
 
+/* Anwesenheit: Schülerliste per Klick ein-/ausklappen (Horaire wird größer). */
+var ANW_SIDE_TOGGLE = `
+(function(){
+  var KEY='anw_side_collapsed';
+  function lay(){return document.querySelector('#anw-root .layout');}
+  function setLabel(){var b=document.getElementById('anw-side-toggle');if(!b)return;var l=lay();var c=l&&l.classList.contains('side-collapsed');b.innerHTML=c?'☰ Schüler einblenden':'‹ Liste ausblenden';}
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('#anw-side-toggle');if(!b)return;
+    var l=lay();if(!l)return;
+    var c=!l.classList.contains('side-collapsed');l.classList.toggle('side-collapsed',c);
+    try{localStorage.setItem(KEY,c?'1':'');}catch(_){}
+    setLabel();
+  });
+  function init(){var l=lay();if(!l){return setTimeout(init,250);}try{if(localStorage.getItem(KEY)==='1')l.classList.add('side-collapsed');}catch(_){}setLabel();}
+  init();
+})();
+`;
+
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
 var parts = [
@@ -2577,6 +2608,7 @@ var parts = [
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
+  '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
   '</body>',
   '</html>',
   ''
