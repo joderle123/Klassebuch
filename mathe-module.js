@@ -190,6 +190,7 @@ window.KB_MATHE = (function () {
     function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
     function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
     function de(n) { return (Math.round(n * 100) / 100).toString().replace('.', ','); }
+    function grp(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
     function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = b; b = a % b; a = t; } return a || 1; }
     function fr(n, d) { return '[[' + n + '/' + d + ']]'; }
     function red(n, d) { var g = gcd(n, d); return [n / g, d / g]; }
@@ -227,6 +228,25 @@ window.KB_MATHE = (function () {
     T.termEinsetzen = function (sp, lvl) { var a = ri(2, 6), b = ri(-6, 8), v = ri(lvl === 'plus' ? -6 : 0, 8); return { a: 'A(x) = ' + a + 'x ' + (b >= 0 ? '+ ' + b : '− ' + (-b)) + '.  Berechne A(' + v + ').', l: 'A(' + v + ') = ' + (a * v + b) }; };
     T.termReduzieren = function (sp, lvl) { var a1 = ri(-6, 6) || 1, c1 = ri(-9, 9), a2 = ri(-6, 6) || 1, c2 = ri(-9, 9); return { a: 'Fasse zusammen:  ' + termStr([{ coef: a1, sym: 'x' }, { coef: c1, sym: '' }, { coef: a2, sym: 'x' }, { coef: c2, sym: '' }]), l: termStr([{ coef: a1 + a2, sym: 'x' }, { coef: c1 + c2, sym: '' }]) }; };
     T.klammern = function (sp, lvl) { var a = ri(1, 6), sign = pick(['+', '−']); var bx = (Math.random() < 0.5 ? -1 : 1) * ri(1, 6), cc = (Math.random() < 0.5 ? -1 : 1) * ri(1, 9); var inside = termStr([{ coef: bx, sym: 'x' }, { coef: cc, sym: '' }]); var rx = sign === '+' ? a + bx : a - bx, rc = sign === '+' ? cc : -cc; return { a: 'Löse die Klammer auf:  ' + a + 'x ' + sign + ' (' + inside + ')', l: termStr([{ coef: rx, sym: 'x' }, { coef: rc, sym: '' }]) }; };
+
+    /* ---- Modul 1: Zahlen, Rechnen, Größen, Figuren (CCP-Sockel) ---- */
+    var STELLEN = { 1: 'Einer', 10: 'Zehner', 100: 'Hunderter', 1000: 'Tausender', 10000: 'Zehntausender', 100000: 'Hunderttausender' };
+    T.stellenwert = function (sp, lvl) { var N = ri(1000, lvl === 'basis' ? 99999 : 999999); var s = String(N); var pos = ri(0, s.length - 1); while (s[pos] === '0') { pos = ri(0, s.length - 1); } var d = s[pos], st = Math.pow(10, s.length - 1 - pos); return { a: 'Welchen Wert hat die Ziffer ' + d + ' in der Zahl ' + grp(N) + '?', l: grp((+d) * st) + ' (' + STELLEN[st] + ')' }; };
+    T.zahlVergleich = function (sp, lvl) { var mx = lvl === 'basis' ? 9999 : 999999; var a = ri(100, mx), b = ri(100, mx); while (b === a) b = ri(100, mx); return { a: 'Setze < oder >:  ' + grp(a) + '  ▢  ' + grp(b), l: (a < b ? '<' : '>') }; };
+    T.zahlOrdnen = function (sp, lvl) { var mx = lvl === 'basis' ? 9999 : 999999, arr = []; while (arr.length < 4) { var x = ri(100, mx); if (arr.indexOf(x) < 0) arr.push(x); } var so = arr.slice().sort(function (p, q) { return p - q; }); return { a: 'Ordne von klein nach groß:  ' + arr.map(grp).join('  ·  '), l: so.map(grp).join(' < ') }; };
+    T.runden = function (sp, lvl) { var st = pick(lvl === 'basis' ? [10, 100] : [10, 100, 1000]); var N = ri(st * 2, lvl === 'plus' ? 99999 : 9999); return { a: 'Runde ' + grp(N) + ' auf ' + STELLEN[st] + '.', l: grp(Math.round(N / st) * st) }; };
+    T.vorNach = function (sp, lvl) { var mx = lvl === 'basis' ? 9999 : 999999, N = ri(101, mx); return { a: 'Vorgänger und Nachfolger von ' + grp(N) + '?', l: grp(N - 1) + ' und ' + grp(N + 1) }; };
+    T.kopfAdd = function (sp, lvl) { var R = lvl === 'basis' ? 100 : 1000; var a = ri(10, R), b = ri(10, R); return { a: a + ' + ' + b + ' =', l: '' + (a + b) }; };
+    T.kopfSub = function (sp, lvl) { var R = lvl === 'basis' ? 100 : 1000; var a = ri(20, R), b = ri(1, a); return { a: a + ' − ' + b + ' =', l: '' + (a - b) }; };
+    T.schriftAdd = function (sp, lvl) { var R = lvl === 'basis' ? 9999 : 999999; var a = ri(1000, R), b = ri(1000, R); return { a: grp(a) + ' + ' + grp(b) + ' =', l: grp(a + b) }; };
+    T.schriftSub = function (sp, lvl) { var R = lvl === 'basis' ? 9999 : 999999; var a = ri(2000, R), b = ri(100, a); return { a: grp(a) + ' − ' + grp(b) + ' =', l: grp(a - b) }; };
+    T.malZehn = function (sp, lvl) { var z = pick([10, 100, 1000]), op = pick(['·', '÷']); if (op === '·') { var a = ri(2, lvl === 'basis' ? 99 : 999); return { a: a + ' · ' + z + ' =', l: grp(a * z) }; } var base = ri(2, 999) * z; return { a: grp(base) + ' ÷ ' + z + ' =', l: grp(base / z) }; };
+    T.einmaleins = function (sp, lvl) { var a = ri(2, lvl === 'basis' ? 10 : 12), b = ri(2, lvl === 'basis' ? 10 : 12); return { a: a + ' · ' + b + ' =', l: '' + (a * b) }; };
+    T.laenge = function (sp, lvl) { var u = [['km', 1000000], ['m', 1000], ['dm', 100], ['cm', 10], ['mm', 1]]; var i = ri(0, 3), from = u[i], to = u[i + 1], n = ri(1, 9); return { a: n + ' ' + from[0] + ' = ___ ' + to[0], l: grp(n * (from[1] / to[1])) + ' ' + to[0] }; };
+    T.geld = function (sp, lvl) { var a = ri(2, 25), b = ri(2, 25), c = ri(1, 20), sum = a + b + c, pay = 100; return { a: 'Du kaufst für ' + a + ' €, ' + b + ' € und ' + c + ' €. Wie viel zusammen? Du zahlst mit ' + pay + ' €, wie viel bekommst du zurück?', l: 'Zusammen ' + sum + ' €, zurück ' + (pay - sum) + ' €' }; };
+    T.uhrzeit = function (sp, lvl) { var h = ri(6, 20), m = pick([0, 15, 30, 45]), add = pick([15, 30, 45, 60, 90]); var tot = h * 60 + m + add, h2 = Math.floor(tot / 60) % 24, m2 = tot % 60; function p(x) { return (x < 10 ? '0' : '') + x; } return { a: 'Es ist ' + p(h) + ':' + p(m) + ' Uhr. Wie spät ist es in ' + add + ' Minuten?', l: p(h2) + ':' + p(m2) + ' Uhr' }; };
+    T.figurBenennen = function (sp, lvl) { var f = pick([['4 gleich lange Seiten und 4 rechte Winkel', 'Quadrat'], ['2 lange und 2 kurze Seiten, 4 rechte Winkel', 'Rechteck'], ['genau 3 Seiten', 'Dreieck'], ['rund, alle Randpunkte gleich weit vom Mittelpunkt', 'Kreis'], ['4 Seiten, gegenüberliegende Seiten parallel und gleich lang', 'Parallelogramm']]); return { a: 'Welche Figur hat: ' + f[0] + '?', l: f[1] }; };
+    T.kreisTeile = function (sp, lvl) { var q = pick([['Wie heißt die Strecke vom Mittelpunkt zum Kreisrand?', 'Radius'], ['Wie heißt die Strecke quer durch den Kreis durch den Mittelpunkt?', 'Durchmesser'], ['Der Durchmesser ist wie lang im Vergleich zum Radius?', 'doppelt so lang (2 · Radius)'], ['Wie heißt die Fläche innerhalb des Kreises?', '(Kreis-)Scheibe'], ['Wie heißt der Punkt genau in der Mitte des Kreises?', 'Mittelpunkt']]); return { a: q[0], l: q[1] }; };
 
     function make(spec, n, lvl) {
       if (!spec) return [];
