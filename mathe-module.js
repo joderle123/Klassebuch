@@ -29,6 +29,7 @@ window.KB_MATHE = (function () {
   function flatLessons(m) { var out = []; (m.themen || []).forEach(function (t) { (t.lektionen || []).forEach(function (l) { out.push({ theme: t, lek: l }); }); }); return out; }
   function moduleProgress(m) { var fl = flatLessons(m), d = 0; fl.forEach(function (x) { if (isDone(m.id, x.lek.nr)) d++; }); return { done: d, total: fl.length }; }
   function lessonOf(m, nr) { var fl = flatLessons(m); for (var i = 0; i < fl.length; i++) { if (String(fl[i].lek.nr) === String(nr)) { return fl[i]; } } return null; }
+  function musterlList(lek) { if (!lek.musterl) return []; return Array.isArray(lek.musterl) ? lek.musterl : [lek.musterl]; }
 
   /* ============================================================
      VIS — Bild-Bibliothek (SVG). Alle geben HTML/SVG-Strings zurück.
@@ -363,6 +364,8 @@ window.KB_MATHE = (function () {
 
     if (lek.visual) { var vh = VIS.render(lek.visual, acc); if (vh) h += '<div class="mth-visual"><div class="mth-visual-in">' + vh + '</div>' + (lek.visual.caption ? '<div class="mth-visual-cap">' + rich(lek.visual.caption) + '</div>' : '') + '</div>'; }
 
+    if (lek.def) h += '<div class="mth-def"><span class="mth-def-b">' + rich(lek.def.begriff) + '</span>' + rich(lek.def.text) + '</div>';
+
     if (lek.erklaerung && lek.erklaerung.length) {
       h += '<div class="mth-sec"><div class="mth-sec-h">📖 Erklärung — Schritt für Schritt</div><div class="mth-steps">';
       lek.erklaerung.forEach(function (s, i) { h += '<div class="mth-step"><div class="mth-step-n">' + (i + 1) + '</div><div class="mth-step-x">' + (s.titel ? '<div class="mth-step-t">' + rich(s.titel) + '</div>' : '') + '<div class="mth-step-txt">' + rich(s.text) + '</div>' + (s.beispiel ? '<div class="mth-ex"><span>Beispiel</span> ' + rich(s.beispiel) + '</div>' : '') + '</div></div>'; });
@@ -371,8 +374,11 @@ window.KB_MATHE = (function () {
 
     if (lek.merksatz) h += '<div class="mth-merk"><div class="mth-merk-ic">📌</div><div><div class="mth-merk-t">Merksatz</div>' + rich(lek.merksatz) + '</div></div>';
 
-    if (lek.musterl) {
-      h += '<div class="mth-sec"><div class="mth-sec-h">✅ So rechnest du — Musteraufgabe</div><div class="mth-muster"><div class="mth-muster-q">' + rich(lek.musterl.a) + '</div><ol class="mth-muster-s">' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="mth-muster-e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div></div>';
+    if (lek.vorgehen && lek.vorgehen.length) h += '<div class="mth-sec"><div class="mth-sec-h">🧭 So gehst du vor</div><ol class="mth-vorgehen">' + lek.vorgehen.map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol></div>';
+
+    var mls = musterlList(lek);
+    if (mls.length) {
+      h += '<div class="mth-sec"><div class="mth-sec-h">✅ So rechnest du — ' + (mls.length > 1 ? 'Musteraufgaben' : 'Musteraufgabe') + '</div>' + mls.map(function (ml) { return '<div class="mth-muster">' + (ml.titel ? '<div class="mth-muster-tl">' + rich(ml.titel) + '</div>' : '') + '<div class="mth-muster-q">' + rich(ml.a) + '</div><ol class="mth-muster-s">' + (ml.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (ml.erg ? '<div class="mth-muster-e">➜ ' + rich(ml.erg) + '</div>' : '') + '</div>'; }).join('') + '</div>';
     }
 
     h += genSectionHtml(m, lek);
@@ -465,6 +471,10 @@ window.KB_MATHE = (function () {
       '.mus{border:1px solid ' + acc + '40;border-radius:12px;padding:12px 16px;background:' + acc + '08;break-inside:avoid}' +
       '.mus .q{font-weight:800;margin-bottom:6px}.mus ol{margin:0;padding-left:20px}.mus li{margin:4px 0;font-size:14.5px}.mus .e{margin-top:6px;font-weight:800;color:' + acc + '}' +
       '.voc{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.voc span{font-size:13px;border:1px solid #e3e3ef;border-radius:8px;padding:5px 10px}.voc i{color:#888;font-style:normal;margin-left:6px}' +
+      '.intro{background:#f6f6fb;border-radius:8px;padding:9px 13px;margin:0 0 12px;font-size:14px;line-height:1.55}' +
+      '.defbox{border:1.5px solid ' + acc + '55;background:' + acc + '0c;border-radius:10px;padding:10px 14px;margin:12px 0;font-size:14.5px;line-height:1.5}.defb{display:block;font-weight:800;color:' + acc + ';margin-bottom:2px}' +
+      '.vorgehen{margin:6px 0 0;padding-left:22px}.vorgehen li{margin:5px 0;font-size:14.5px;line-height:1.5}' +
+      '.mus-tl{font-weight:800;font-size:13px;color:' + acc + ';margin-bottom:3px}' +
       'ol.tasks{margin:0;padding-left:24px}ol.tasks>li{margin:0 0 16px;break-inside:avoid}.q{font-weight:600;font-size:15px}' +
       '.hint{font-style:italic;color:#555;font-size:13.5px;margin:0 0 10px}' +
       '.line{border-bottom:1.4px solid #b8b8c8;height:22px;margin:9px 0}' +
@@ -558,10 +568,14 @@ window.KB_MATHE = (function () {
   function infoInner(m, lek) {
     var acc = m.farbe || '#6C4CE0', b = '';
     b += '<div class="goal">🎯 <b>Das lernst du:</b> ' + rich(lek.lernziel || '') + '</div>';
+    if (lek.einstieg) b += '<div class="intro">' + (lek.einstieg.titel ? '<b>💡 ' + esc(lek.einstieg.titel) + '.</b> ' : '') + rich(lek.einstieg.text) + '</div>';
     if (lek.visual) { var vh = VIS.render(lek.visual, acc); if (vh) b += '<div class="fig">' + vh + (lek.visual.caption ? '<div class="cap">' + rich(lek.visual.caption) + '</div>' : '') + '</div>'; }
+    if (lek.def) b += '<div class="defbox"><span class="defb">' + rich(lek.def.begriff) + '</span>' + rich(lek.def.text) + '</div>';
     if (lek.erklaerung && lek.erklaerung.length) { b += '<div class="sec"><div class="sec-h">Das musst du wissen</div>'; lek.erklaerung.forEach(function (s, i) { b += '<div class="step"><div class="n">' + (i + 1) + '</div><div><div class="t">' + rich(s.titel || '') + '</div><div>' + rich(s.text) + '</div>' + (s.beispiel ? '<div class="ex"><b>Beispiel:</b> ' + rich(s.beispiel) + '</div>' : '') + '</div></div>'; }); b += '</div>'; }
     if (lek.merksatz) b += '<div class="merk"><div class="l">📌 Das merke ich mir</div><div class="x">' + rich(lek.merksatz) + '</div></div>';
-    if (lek.musterl) b += '<div class="sec"><div class="sec-h">So rechnest du — ein Beispiel</div><div class="mus"><div class="q">' + rich(lek.musterl.a) + '</div><ol>' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div></div>';
+    if (lek.vorgehen && lek.vorgehen.length) b += '<div class="sec"><div class="sec-h">🧭 So gehst du vor</div><ol class="vorgehen">' + lek.vorgehen.map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol></div>';
+    var mls = musterlList(lek);
+    if (mls.length) { b += '<div class="sec"><div class="sec-h">So rechnest du — ' + (mls.length > 1 ? 'Beispiele' : 'ein Beispiel') + '</div>' + mls.map(function (ml) { return '<div class="mus">' + (ml.titel ? '<div class="mus-tl">' + rich(ml.titel) + '</div>' : '') + '<div class="q">' + rich(ml.a) + '</div><ol>' + (ml.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (ml.erg ? '<div class="e">➜ ' + rich(ml.erg) + '</div>' : '') + '</div>'; }).join('') + '</div>'; }
     if (lek.wortschatz && lek.wortschatz.length) b += '<div class="voc">' + lek.wortschatz.map(function (wv) { return '<span><b>' + esc(wv.de) + '</b><i>' + esc(wv.fr) + '</i></span>'; }).join('') + '</div>';
     return b;
   }

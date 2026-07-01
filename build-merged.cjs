@@ -2843,6 +2843,12 @@ var MATHE_CSS = `
 #kb-mathe .mth-muster-s{ margin:0; padding-left:22px; }
 #kb-mathe .mth-muster-s li{ margin:5px 0; font-size:14.5px; line-height:1.5; }
 #kb-mathe .mth-muster-e{ margin-top:8px; font-weight:800; color:var(--mc); font-size:15px; }
+#kb-mathe .mth-muster{ margin-bottom:10px; }
+#kb-mathe .mth-muster-tl{ font-weight:800; font-size:12.5px; color:var(--mc); margin-bottom:3px; }
+#kb-mathe .mth-def{ background:color-mix(in srgb,var(--mc) 8%,#fff); border:1px solid color-mix(in srgb,var(--mc) 28%,#fff); border-radius:12px; padding:12px 16px; margin:14px 0; font-size:15px; line-height:1.55; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-def-b{ display:block; font-weight:900; color:var(--mc); margin-bottom:2px; }
+#kb-mathe .mth-vorgehen{ margin:0; padding-left:24px; }
+#kb-mathe .mth-vorgehen li{ margin:6px 0; font-size:14.5px; line-height:1.55; color:var(--kb-ink,#33344a); }
 
 /* Druck-Buttons */
 #kb-mathe .mth-ab{ font-size:13px; padding:9px 12px; }
