@@ -492,6 +492,7 @@ window.KB_MATHE = (function () {
       '.lhd-n{opacity:.85;font-weight:700;margin-right:8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em}' +
       '.lex{border-top:2px dashed ' + acc + '55;margin-top:16px;padding-top:12px}' +
       '.name2{font-size:13.5px;margin:0 0 12px;color:#333;border:1.4px solid #d5d5e2;border-radius:8px;padding:8px 12px}' +
+      '.exhead{font-size:18px;font-weight:800;color:#20203a;margin:0 0 6px}.exsub{display:block;font-weight:600;color:#999;font-size:12px;margin-bottom:2px}' +
       '.plevel{margin:12px 0;break-inside:avoid}.plh{font-weight:800;font-size:15px;margin:0 0 6px;padding-bottom:3px;border-bottom:1px solid #ddd}' +
       '@media print{.pg{max-width:none;padding:11mm 12mm}.step,.merk,.mus,ol.tasks>li,.fig,.gcard,.plevel>ol>li{break-inside:avoid}}';
   }
@@ -564,26 +565,39 @@ window.KB_MATHE = (function () {
     if (lek.wortschatz && lek.wortschatz.length) b += '<div class="voc">' + lek.wortschatz.map(function (wv) { return '<span><b>' + esc(wv.de) + '</b><i>' + esc(wv.fr) + '</i></span>'; }).join('') + '</div>';
     return b;
   }
-  function exercisesInner(m, lek, sol, count) {
-    var b = '<div class="sec-h">✏️ Übungen</div>';
-    if (lek.gen) {
-      var items = GEN.make(lek.gen, count || 24, 'kern');
-      b += '<div class="ggrid">' + items.map(function (it, i) { return '<div class="gcard"><span class="gnum">' + (i + 1) + '</span><div class="gq">' + rich(it.a) + (sol ? '<div class="gsol">' + rich(it.l) + '</div>' : '<div class="gans"></div>') + '</div></div>'; }).join('') + '</div>';
-    } else {
-      ['basis', 'kern', 'plus'].forEach(function (k) { var lvl = (lek.aufgaben || {})[k]; if (!lvl || !lvl.items || !lvl.items.length) return; var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; b += '<div class="plevel"><div class="plh">' + esc(L.icon) + ' ' + esc(L.label) + '</div><ol>'; lvl.items.forEach(function (it) { b += '<li><div class="pq">' + rich(it.a) + '</div>'; if (it.tbl) b += tblHtml(it.tbl); if (sol) b += '<div class="psol"><b>Lösung:</b> ' + rich(it.l) + '</div>'; else { var rows = it.raum || (it.tbl ? 0 : 2); for (var r = 0; r < rows; r++) b += '<div class="pline"></div>'; } b += '</li>'; }); b += '</ol></div>'; });
-    }
+  function exHeadHtml(lek, label) {
+    return '<div class="exhead"><span class="exsub">Lektion ' + esc(lek.nr) + ' · ' + rich(lek.titel) + '</span>✏️ Übungen — ' + label + '</div>' +
+      '<div class="name2"><b>Name:</b> ____________________     <b>Datum:</b> ____________</div>';
+  }
+  /* Eine volle Übungsseite je Niveau (Generator). */
+  function genPage(m, lek, level, sol, count) {
+    var L = (DATA.legende && DATA.legende[level]) || { icon: '', label: level };
+    var items = GEN.make(lek.gen, count, level);
+    return exHeadHtml(lek, esc(L.icon) + ' ' + esc(L.label)) +
+      (L.hint ? '<div class="hint">' + esc(L.hint) + '</div>' : '') +
+      '<div class="ggrid">' + items.map(function (it, i) { return '<div class="gcard"><span class="gnum">' + (i + 1) + '</span><div class="gq">' + rich(it.a) + (sol ? '<div class="gsol">' + rich(it.l) + '</div>' : '<div class="gans"></div>') + '</div></div>'; }).join('') + '</div>';
+  }
+  /* Eine Übungsseite mit den kuratierten Aufgaben aller Niveaus (für Lektionen ohne Generator). */
+  function curatedPage(m, lek, sol) {
+    var b = exHeadHtml(lek, 'Basis · Kern · Plus');
+    ['basis', 'kern', 'plus'].forEach(function (k) {
+      var lvl = (lek.aufgaben || {})[k]; if (!lvl || !lvl.items || !lvl.items.length) return;
+      var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k };
+      b += '<div class="plevel"><div class="plh">' + esc(L.icon) + ' ' + esc(L.label) + '</div>' + (lvl.hinweis ? '<div class="hint">' + rich(lvl.hinweis) + '</div>' : '') + '<ol>';
+      lvl.items.forEach(function (it) { b += '<li><div class="pq">' + rich(it.a) + '</div>'; if (it.tbl) b += tblHtml(it.tbl); if (sol) b += '<div class="psol"><b>Lösung:</b> ' + rich(it.l) + '</div>'; else { var rows = it.raum || (it.tbl ? 0 : 3); for (var r = 0; r < rows; r++) b += '<div class="pline"></div>'; } b += '</li>'; });
+      b += '</ol></div>';
+    });
     return b;
   }
   function printModule(mid) {
-    var m = findModule(mid); if (!m) return; var acc = m.farbe || '#6C4CE0', sol = state.printSol, count = state.gen.count || 24;
+    var m = findModule(mid); if (!m) return; var acc = m.farbe || '#6C4CE0', sol = state.printSol, count = Math.max(24, state.gen.count || 24);
     var b = '<div class="cover"><div class="cov-k">Mathematik · ' + esc((DATA.meta || {}).klasse || '') + '</div><div class="cov-nr">Modul ' + esc(m.nr) + '</div><h1>' + esc(m.titel) + '</h1><div class="cov-sub">' + esc(m.unter || '') + '</div><div class="cov-th">' + (m.themen || []).map(function (t) { return '<span>' + esc(t.icon || '') + ' ' + esc(t.titel) + '</span>'; }).join('') + '</div></div>';
     (m.themen || []).forEach(function (t) {
       b += '<div class="tdiv" style="border-color:' + (t.farbe || acc) + ';color:' + (t.farbe || acc) + '">' + esc(t.icon || '') + ' ' + esc(t.titel) + '</div>';
       (t.lektionen || []).forEach(function (lek) {
-        b += '<div class="lesson"><div class="lhd"><span class="lhd-n">Lektion ' + esc(lek.nr) + '</span>' + rich(lek.titel) + '</div>';
-        b += '<div class="linfo">' + infoInner(m, lek) + '</div>';
-        b += '<div class="lex"><div class="name2"><b>Name:</b> ____________________     <b>Datum:</b> ____________</div>' + exercisesInner(m, lek, sol, count) + '</div>';
-        b += '</div>';
+        b += '<div class="lesson"><div class="lhd"><span class="lhd-n">Lektion ' + esc(lek.nr) + '</span>' + rich(lek.titel) + '</div><div class="linfo">' + infoInner(m, lek) + '</div></div>';
+        if (lek.gen) { ['basis', 'kern', 'plus'].forEach(function (level) { b += '<div class="lesson lesson-ex">' + genPage(m, lek, level, sol, count) + '</div>'; }); }
+        else { b += '<div class="lesson lesson-ex">' + curatedPage(m, lek, sol) + '</div>'; }
       });
     });
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Modul ' + esc(m.nr) + ' · ' + esc(m.titel) + (sol ? ' · Lösungsheft' : '') + '</div>';
