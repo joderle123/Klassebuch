@@ -2868,6 +2868,11 @@ var MATHE_CSS = `
 #kb-mathe .mth-curated{ margin-top:14px; padding-top:12px; border-top:1px dashed var(--kb-border,#e2e2ec); }
 @media (max-width:560px){ #kb-mathe .mth-gprev{ grid-template-columns:1fr; } }
 
+/* Ganzes Modul als Heft drucken */
+#kb-mathe .mth-modprint{ margin:16px 0 6px; border:2px solid color-mix(in srgb,var(--mc) 32%,#fff); background:color-mix(in srgb,var(--mc) 6%,#fff); border-radius:16px; padding:16px 18px; }
+#kb-mathe .mth-modprint-t{ font-size:16px; font-weight:900; color:var(--mc); margin-bottom:11px; }
+#kb-mathe .mth-modprint-b{ display:flex; flex-wrap:wrap; align-items:center; gap:9px; }
+
 /* Vor/Zurück */
 #kb-mathe .mth-nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px; padding-top:18px; border-top:1px solid var(--kb-border,#ececf3); }
 
