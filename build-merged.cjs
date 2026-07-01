@@ -2713,6 +2713,12 @@ var MATHE_CSS = `
 #kb-mathe .mth-btn:hover{ border-color:var(--mc); color:var(--mc); transform:translateY(-1px); }
 #kb-mathe .mth-btn-p{ background:var(--mc); border-color:var(--mc); color:#fff; }
 #kb-mathe .mth-btn-p:hover{ color:#fff; filter:brightness(1.06); }
+#kb-mathe .mth-btn-dl{ background:color-mix(in srgb, var(--mc) 12%, #fff); border-color:var(--mc); color:var(--mc); }
+#kb-mathe .mth-btn-dl:hover{ background:var(--mc); color:#fff; transform:translateY(-1px); }
+#kb-mathe .mth-abpair{ display:inline-flex; align-items:stretch; }
+#kb-mathe .mth-abpair .mth-ab:first-child{ border-top-right-radius:0; border-bottom-right-radius:0; }
+#kb-mathe .mth-abpair .mth-abdl{ border-top-left-radius:0; border-bottom-left-radius:0; border-left:0; padding:9px 10px; color:var(--mc); }
+#kb-mathe .mth-abpair .mth-btn:hover{ transform:none; }
 #kb-mathe .mth-btn.on{ background:var(--mc); border-color:var(--mc); color:#fff; }
 #kb-mathe .mth-donebtn.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
 

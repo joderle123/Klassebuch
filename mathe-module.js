@@ -340,12 +340,13 @@ window.KB_MATHE = (function () {
     h += '<div class="mth-modhead"><div class="mth-modhead-ic">' + esc(m.icon || '📐') + '</div><div class="mth-modhead-x"><div class="mth-modhead-nr">Modul ' + esc(m.nr) + '</div><h1>' + esc(m.titel) + '</h1><p>' + esc(m.ziel || m.unter || '') + '</p><div class="mth-mprog mth-mprog-lg"><div class="mth-mbar"><i style="width:' + pct + '%"></i></div><span>' + pr.done + '/' + pr.total + ' erledigt</span></div></div></div>';
     h += '<div class="mth-modprint"><div class="mth-modprint-t">📄 Ganzes Modul als Heft drucken</div>' +
       '<div class="mth-modprint-b">' +
-      '<button class="mth-btn mth-btn-p" data-mth="print-module" data-id="' + esc(m.id) + '">📖 Heft für Schüler drucken</button>' +
+      '<button class="mth-btn mth-btn-p" data-mth="print-module" data-id="' + esc(m.id) + '">📖 Heft drucken</button>' +
+      '<button class="mth-btn mth-btn-dl" data-mth="download-module" data-id="' + esc(m.id) + '">⬇️ Heft speichern (Datei)</button>' +
       '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint">' + (state.printSol ? '✓ mit Lösungen (Lehrerheft)' : 'Lösungsheft') + '</button>' +
       '<span class="mth-gchip' + (state.gen.count === 24 ? ' on' : '') + '" data-mth="gen-count" data-n="24">Standard</span>' +
       '<span class="mth-gchip' + (state.gen.count === 40 ? ' on' : '') + '" data-mth="gen-count" data-n="40">viele Aufgaben</span>' +
       '</div>' +
-      '<div class="mth-ghint">Ein komplettes Heft mit allen Lektionen: Erklärung, Bild, Merksatz, Musteraufgabe und Übungsseiten. Im Druck-Fenster „Als PDF speichern" wählen.</div></div>';
+      '<div class="mth-ghint">Ein komplettes Heft mit allen Lektionen: Erklärung, Bild, Merksatz, Musteraufgabe und Übungsseiten. „Speichern" legt das Heft als Datei ab (offline nutzbar, mit Knopf „Als PDF speichern"); „Drucken" öffnet direkt den Druckdialog.</div></div>';
     (m.themen || []).forEach(function (t) {
       h += '<div class="mth-theme" style="--tc:' + esc(t.farbe || m.farbe || '#6C4CE0') + '"><div class="mth-theme-head"><span class="mth-theme-ic">' + esc(t.icon || '') + '</span><div><div class="mth-theme-t">' + esc(t.titel) + '</div>' + ((t.ziele && t.ziele.length) ? '<div class="mth-theme-z">' + t.ziele.map(esc).join(' · ') + '</div>' : '') + '</div></div><div class="mth-lrows">';
       (t.lektionen || []).forEach(function (l) {
@@ -370,6 +371,7 @@ window.KB_MATHE = (function () {
     if (lek.gen) { state.gen.items = GEN.make(lek.gen, state.gen.count, state.gen.lvl); } else { state.gen.items = []; }
     h += '<div class="mth-lbar"><button class="mth-back" data-mth="module" data-id="' + esc(m.id) + '">← Modul ' + esc(m.nr) + '</button><div class="mth-lbar-b">' +
       '<button class="mth-btn mth-btn-p" data-mth="print-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">📘 Infoblatt drucken</button>' +
+      '<button class="mth-btn mth-btn-dl" data-mth="download-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">⬇️ speichern</button>' +
       '<button class="mth-btn mth-donebtn' + (done ? ' on' : '') + '" data-mth="done" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">' + (done ? '✓ Erledigt' : 'Erledigt') + '</button>' +
       '</div></div>';
     h += '<div class="mth-crumb">' + esc(theme.icon || '') + ' ' + esc(theme.titel) + ' · Lektion ' + esc(lek.nr) + '</div>';
@@ -448,7 +450,7 @@ window.KB_MATHE = (function () {
     var h = '<div class="mth-sec"><div class="mth-sec-h">🖨️ Arbeitsblätter drucken — für die Schüler</div>';
     if (lek.gen) { h += '<div id="mth-genbox">' + genBoxInner(lek) + '</div>'; }
     h += '<div class="mth-curated"><span class="mth-glbl">' + (lek.gen ? 'Oder die Beispiel-Aufgaben von oben als Blatt:' : 'Aufgabenblatt (Beispiel-Aufgaben):') + '</span>' +
-      ['basis', 'kern', 'plus'].map(function (k) { var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; return '<button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">' + esc(L.icon) + ' ' + esc(L.label) + '</button>'; }).join('') +
+      ['basis', 'kern', 'plus'].map(function (k) { var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; return '<span class="mth-abpair"><button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">' + esc(L.icon) + ' ' + esc(L.label) + '</button><button class="mth-btn mth-ab mth-abdl" title="Blatt als Datei speichern" data-mth="download-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">⬇️</button></span>'; }).join('') +
       '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint">' + (state.printSol ? '✓ mit Lösungen' : 'Lösungen') + '</button></div></div>';
     return h;
   }
@@ -528,16 +530,31 @@ window.KB_MATHE = (function () {
       '.plevel{margin:12px 0;break-inside:avoid}.plh{font-weight:800;font-size:15px;margin:0 0 6px;padding-bottom:3px;border-bottom:1px solid #ddd}' +
       '@media print{.pg{max-width:none;padding:11mm 12mm}.step,.merk,.mus,ol.tasks>li,.fig,.gcard,.plevel>ol>li{break-inside:avoid}}';
   }
+  function safeFile(s) { return String(s == null ? 'Heft' : s).replace(/[·–—:/\\]+/g, '-').replace(/[^\wäöüÄÖÜß.\- ]+/g, '').replace(/\s+/g, '_').replace(/_+/g, '_').replace(/^[-_]+|[-_]+$/g, '').slice(0, 90) || 'Heft'; }
+  function buildDoc(title, acc, bodyHtml, forDownload) {
+    var bar = forDownload ? '<div class="dlbar"><button onclick="window.print()">🖨️ Drucken / als PDF speichern</button><span>Diese Datei ist offline nutzbar – öffnen, drucken oder als PDF speichern.</span></div>' : '';
+    var barCss = forDownload ? '.dlbar{position:sticky;top:0;z-index:9;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;background:#fff;padding:11px 14px;border-bottom:1px solid #e2e2ee;font:400 12.5px Inter,Arial,sans-serif;color:#666}.dlbar button{font:700 14px Inter,Arial,sans-serif;padding:9px 18px;border:0;border-radius:9px;background:' + acc + ';color:#fff;cursor:pointer}@media print{.dlbar{display:none}}' : '';
+    return '<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' + esc(title) + '</title><style>' + printCss(acc) + barCss + '</style></head><body>' + bar + '<div class="pg">' + bodyHtml + '</div></body></html>';
+  }
   function printDoc(title, acc, bodyHtml) {
     var w = window.open('', '_blank'); if (!w) { alert('Bitte Pop-ups für den Druck erlauben.'); return; }
-    w.document.write('<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><title>' + esc(title) + '</title><style>' + printCss(acc) + '</style></head><body><div class="pg">' + bodyHtml + '</div></body></html>');
+    w.document.write(buildDoc(title, acc, bodyHtml, false));
     w.document.close();
     setTimeout(function () { try { w.focus(); w.print(); } catch (e) {} }, 350);
   }
+  function downloadDoc(filename, title, acc, bodyHtml) {
+    try {
+      var blob = new Blob([buildDoc(title, acc, bodyHtml, true)], { type: 'text/html;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a'); a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    } catch (e) { alert('Download nicht möglich: ' + e.message); }
+  }
 
   /* Infoblatt (Lernblatt für den Schüler) */
-  function printInfo(mid, nr) {
-    var m = findModule(mid); if (!m) return; var f = lessonOf(m, nr); if (!f) return;
+  function infoBody(mid, nr) {
+    var m = findModule(mid); if (!m) return null; var f = lessonOf(m, nr); if (!f) return null;
     var lek = f.lek, theme = f.theme, acc = m.farbe || '#6C4CE0';
     var b = '<div class="hd"><div class="k">Modul ' + esc(m.nr) + ' · ' + esc(theme.titel) + ' · Infoblatt</div><h1>' + rich(lek.titel) + '</h1></div>';
     b += '<div class="goal">🎯 <b>Das lernst du:</b> ' + rich(lek.lernziel || '') + '</div>';
@@ -551,12 +568,14 @@ window.KB_MATHE = (function () {
     if (lek.musterl) b += '<div class="sec"><div class="sec-h">So rechnest du — ein Beispiel</div><div class="mus"><div class="q">' + rich(lek.musterl.a) + '</div><ol>' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div></div>';
     if (lek.wortschatz && lek.wortschatz.length) b += '<div class="sec"><div class="sec-h">Wichtige Wörter</div><div class="voc">' + lek.wortschatz.map(function (wv) { return '<span><b>' + esc(wv.de) + '</b><i>' + esc(wv.fr) + '</i></span>'; }).join('') + '</div></div>';
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Infoblatt · Lektion ' + esc(lek.nr) + '</div>';
-    printDoc('Infoblatt – ' + lek.titel, acc, b);
+    return { title: 'Infoblatt – ' + lek.titel, acc: acc, body: b, file: 'Infoblatt_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + '.html' };
   }
+  function printInfo(mid, nr) { var d = infoBody(mid, nr); if (d) printDoc(d.title, d.acc, d.body); }
+  function downloadInfo(mid, nr) { var d = infoBody(mid, nr); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
 
   /* Arbeitsblatt pro Niveau (für den Schüler) */
-  function printSheet(mid, nr, level, withSol) {
-    var m = findModule(mid); if (!m) return; var f = lessonOf(m, nr); if (!f) return;
+  function sheetBody(mid, nr, level, withSol) {
+    var m = findModule(mid); if (!m) return null; var f = lessonOf(m, nr); if (!f) return null;
     var lek = f.lek, theme = f.theme, acc = m.farbe || '#6C4CE0';
     var L = (DATA.legende && DATA.legende[level]) || { icon: '', label: level };
     var lvl = (lek.aufgaben || {})[level] || { items: [] };
@@ -577,8 +596,10 @@ window.KB_MATHE = (function () {
     });
     b += '</ol>';
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Arbeitsblatt ' + esc(L.label) + ' · Lektion ' + esc(lek.nr) + (withSol ? ' · Lösungsblatt' : '') + '</div>';
-    printDoc('Arbeitsblatt ' + L.label + ' – ' + lek.titel, acc, b);
+    return { title: 'Arbeitsblatt ' + L.label + ' – ' + lek.titel, acc: acc, body: b, file: 'Arbeitsblatt_' + safeFile(L.label) + '_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + (withSol ? '_Loesung' : '') + '.html' };
   }
+  function printSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) printDoc(d.title, d.acc, d.body); }
+  function downloadSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
   function tblHtml(t) {
     var cols = t.cols || [], rows = t.rows || 3, s = '<table class="tbl"><thead><tr>';
     cols.forEach(function (c) { s += '<th>' + rich(c) + '</th>'; }); s += '</tr></thead><tbody>';
@@ -625,8 +646,8 @@ window.KB_MATHE = (function () {
     });
     return b;
   }
-  function printModule(mid) {
-    var m = findModule(mid); if (!m) return; var acc = m.farbe || '#6C4CE0', sol = state.printSol, count = Math.max(24, state.gen.count || 24);
+  function moduleBody(mid) {
+    var m = findModule(mid); if (!m) return null; var acc = m.farbe || '#6C4CE0', sol = state.printSol, count = Math.max(24, state.gen.count || 24);
     var b = '<div class="cover"><div class="cov-k">Mathematik · ' + esc((DATA.meta || {}).klasse || '') + '</div><div class="cov-nr">Modul ' + esc(m.nr) + '</div><h1>' + esc(m.titel) + '</h1><div class="cov-sub">' + esc(m.unter || '') + '</div><div class="cov-th">' + (m.themen || []).map(function (t) { return '<span>' + esc(t.icon || '') + ' ' + esc(t.titel) + '</span>'; }).join('') + '</div></div>';
     (m.themen || []).forEach(function (t) {
       b += '<div class="tdiv" style="border-color:' + (t.farbe || acc) + ';color:' + (t.farbe || acc) + '">' + esc(t.icon || '') + ' ' + esc(t.titel) + '</div>';
@@ -637,8 +658,10 @@ window.KB_MATHE = (function () {
       });
     });
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Modul ' + esc(m.nr) + ' · ' + esc(m.titel) + (sol ? ' · Lösungsheft' : '') + '</div>';
-    printDoc('Modul ' + m.nr + ' – ' + m.titel, acc, b);
+    return { m: m, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' – ' + m.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_' + safeFile(m.titel) + (sol ? '_Loesungsheft' : '_Heft') + '.html' };
   }
+  function printModule(mid) { var d = moduleBody(mid); if (d) printDoc(d.title, d.acc, d.body); }
+  function downloadModule(mid) { var d = moduleBody(mid); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
 
   /* ---------- PDF ---------- */
   function pdfBlobUrl() {
@@ -660,8 +683,11 @@ window.KB_MATHE = (function () {
     else if (a === 'lesson') { state.view = 'lesson'; state.mid = t.getAttribute('data-mid'); state.nr = t.getAttribute('data-nr'); render(); }
     else if (a === 'done') { var k = lkey(t.getAttribute('data-mid'), t.getAttribute('data-nr')); if (DONE[k]) delete DONE[k]; else DONE[k] = true; saveDone(); render(); }
     else if (a === 'print-info') { printInfo(t.getAttribute('data-mid'), t.getAttribute('data-nr')); }
+    else if (a === 'download-info') { downloadInfo(t.getAttribute('data-mid'), t.getAttribute('data-nr')); }
     else if (a === 'print-ab') { printSheet(t.getAttribute('data-mid'), t.getAttribute('data-nr'), t.getAttribute('data-lvl'), state.printSol); }
+    else if (a === 'download-ab') { downloadSheet(t.getAttribute('data-mid'), t.getAttribute('data-nr'), t.getAttribute('data-lvl'), state.printSol); }
     else if (a === 'print-module') { printModule(t.getAttribute('data-id')); }
+    else if (a === 'download-module') { downloadModule(t.getAttribute('data-id')); }
     else if (a === 'gen-lvl') { state.gen.lvl = t.getAttribute('data-lvl'); regenGen(); updateGenBox(); }
     else if (a === 'gen-count') { state.gen.count = +t.getAttribute('data-n'); regenGen(); updateGenBox(); }
     else if (a === 'gen-new') { regenGen(); updateGenBox(); }
