@@ -2848,6 +2848,26 @@ var MATHE_CSS = `
 #kb-mathe .mth-ab{ font-size:13px; padding:9px 12px; }
 #kb-mathe .mth-solprint.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
 
+/* Aufgaben-Generator */
+#kb-mathe .mth-genwrap{ border:2px solid color-mix(in srgb,var(--mc) 30%,#fff); background:color-mix(in srgb,var(--mc) 5%,#fff); border-radius:16px; padding:16px 18px; }
+#kb-mathe .mth-gtitle{ font-size:16px; font-weight:900; color:var(--mc); margin-bottom:12px; }
+#kb-mathe .mth-gbar, #kb-mathe .mth-gbar2, #kb-mathe .mth-curated{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+#kb-mathe .mth-gbar2{ margin-top:10px; }
+#kb-mathe .mth-glbl{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--kb-muted,#999); margin-right:2px; }
+#kb-mathe .mth-gbar .mth-glbl:not(:first-child){ margin-left:10px; }
+#kb-mathe .mth-gchip{ appearance:none; border:1.5px solid var(--kb-border,#dcdce6); background:var(--kb-surface,#fff); color:var(--kb-ink,#33344a); font-weight:700; font-size:13px; padding:7px 13px; border-radius:999px; cursor:pointer; font-family:inherit; transition:.14s; }
+#kb-mathe .mth-gchip:hover{ border-color:var(--mc); }
+#kb-mathe .mth-gchip.on{ background:var(--mc); border-color:var(--mc); color:#fff; }
+#kb-mathe .mth-gsol.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
+#kb-mathe .mth-ghint{ font-size:12.5px; color:var(--kb-muted,#888); font-style:italic; margin:11px 0 6px; }
+#kb-mathe .mth-gprev{ display:grid; grid-template-columns:1fr 1fr; gap:8px 14px; margin-top:8px; }
+#kb-mathe .mth-gcard{ display:flex; gap:9px; align-items:flex-start; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:10px; padding:8px 11px; }
+#kb-mathe .mth-gnum{ flex:0 0 22px; height:22px; border-radius:50%; background:color-mix(in srgb,var(--mc) 16%,#fff); color:var(--mc); font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center; margin-top:1px; }
+#kb-mathe .mth-gq{ font-size:14px; font-weight:600; color:var(--kb-ink,#23243a); line-height:1.5; }
+#kb-mathe .mth-ga{ margin-top:3px; color:#1a7a48; font-size:13px; font-weight:700; }
+#kb-mathe .mth-curated{ margin-top:14px; padding-top:12px; border-top:1px dashed var(--kb-border,#e2e2ec); }
+@media (max-width:560px){ #kb-mathe .mth-gprev{ grid-template-columns:1fr; } }
+
 /* Vor/Zurück */
 #kb-mathe .mth-nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px; padding-top:18px; border-top:1px solid var(--kb-border,#ececf3); }
 

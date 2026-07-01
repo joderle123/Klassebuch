@@ -182,8 +182,64 @@ window.KB_MATHE = (function () {
     return { render: render };
   })();
 
+  /* ============================================================
+     GEN — Aufgaben-Generatoren. Erzeugen beliebig viele, frisch
+     gewürfelte Übungen mit Lösung. make(spec, anzahl, niveau).
+     ============================================================ */
+  var GEN = (function () {
+    function ri(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+    function pick(a) { return a[Math.floor(Math.random() * a.length)]; }
+    function de(n) { return (Math.round(n * 100) / 100).toString().replace('.', ','); }
+    function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) { var t = b; b = a % b; a = t; } return a || 1; }
+    function fr(n, d) { return '[[' + n + '/' + d + ']]'; }
+    function red(n, d) { var g = gcd(n, d); return [n / g, d / g]; }
+    function qs(N) { return String(N).split('').reduce(function (s, d) { return s + (+d); }, 0); }
+    function termStr(list) {
+      var s = '', first = true;
+      list.forEach(function (t) { var c = t.coef; if (c === 0) return; var sym = t.sym || ''; var ab = Math.abs(c); var disp = (sym === 'x' && ab === 1) ? 'x' : (ab + sym); if (first) { s += (c < 0 ? '−' : '') + disp; first = false; } else { s += (c < 0 ? ' − ' : ' + ') + disp; } });
+      return s === '' ? '0' : s;
+    }
+    var T = {};
+    T.teilbar = function (sp, lvl) { var t = pick(sp.teiler || [2, 5, 10]); var N = ri(12, lvl === 'plus' ? 9999 : 999); return { a: 'Ist ' + N + ' durch ' + t + ' teilbar?', l: (N % t === 0 ? 'Ja ✅' : 'Nein ❌') }; };
+    T.quersumme = function (sp, lvl) { var N = ri(100, lvl === 'basis' ? 999 : 9999); var by = pick(sp.by || [3, 9]); return { a: 'Quersumme von ' + N + ' = ? Ist ' + N + ' durch ' + by + ' teilbar?', l: 'QS ' + qs(N) + ' → ' + (qs(N) % by === 0 ? 'durch ' + by + ' ✅' : 'nicht durch ' + by + ' ❌') }; };
+    T.bruchteil = function (sp, lvl) { var d = pick([2, 3, 4, 5, 6, 8, 10]); var k = ri(1, d - 1); var q = ri(2, lvl === 'basis' ? 9 : 15); var N = d * q; return { a: fr(k, d) + ' von ' + N + ' = ?', l: N + ' ÷ ' + d + ' · ' + k + ' = ' + (N / d * k) }; };
+    T.bruchVergleich = function (sp, lvl) { var d = pick([5, 6, 7, 8, 9, 10, 12]); var a = ri(1, d - 1), b = ri(1, d - 1); while (b === a) b = ri(1, d - 1); return { a: 'Setze < oder >:  ' + fr(a, d) + '  ▢  ' + fr(b, d), l: (a < b ? '<' : '>') }; };
+    T.bruchKuerzen = function (sp, lvl) { var base = pick([[1, 2], [2, 3], [3, 4], [1, 5], [2, 5], [3, 5], [1, 3], [5, 6], [3, 8]]); var k = ri(2, lvl === 'basis' ? 5 : 9); return { a: 'Kürze ' + fr(base[0] * k, base[1] * k) + ' so weit wie möglich.', l: fr(base[0], base[1]) }; };
+    T.bruchAddSub = function (sp, lvl) { var d = pick([5, 6, 7, 8, 9, 10, 12]); var op = pick(['+', '−']); var x, y, res; if (op === '+') { x = ri(1, d - 2); y = ri(1, d - 1 - x); res = x + y; } else { x = ri(2, d - 1); y = ri(1, x - 1); res = x - y; } var r = red(res, d); return { a: fr(x, d) + ' ' + op + ' ' + fr(y, d) + ' = ?', l: fr(res, d) + (r[1] !== d ? ' = ' + fr(r[0], r[1]) : '') }; };
+    T.bruchDezimal = function (sp, lvl) { var m = pick([[1, 2, '0,5'], [1, 4, '0,25'], [3, 4, '0,75'], [1, 10, '0,1'], [3, 10, '0,3'], [7, 10, '0,7'], [1, 5, '0,2'], [2, 5, '0,4'], [9, 10, '0,9'], [1, 100, '0,01']]); return { a: 'Schreibe ' + fr(m[0], m[1]) + ' als Dezimalzahl.', l: m[2] }; };
+    T.prozentBruch = function (sp, lvl) { var p = pick([10, 20, 25, 50, 75, 5, 40, 60, 80, 30]); var r = red(p, 100); return { a: 'Schreibe ' + p + ' % als gekürzten Bruch.', l: fr(r[0], r[1]) }; };
+    T.prozentwert = function (sp, lvl) { var p = pick(lvl === 'basis' ? [10, 50, 25] : [5, 10, 15, 20, 25, 30, 40, 50, 75]); var M = ri(1, lvl === 'plus' ? 40 : 20) * 20; return { a: p + ' % von ' + M + ' € = ?', l: de(M * p / 100) + ' €' }; };
+    T.rabatt = function (sp, lvl) { var p = pick([10, 20, 25, 50, 30]); var M = ri(1, 20) * 20; var rab = M * p / 100; return { a: 'Ein Artikel kostet ' + M + ' €, jetzt −' + p + ' %. Neuer Preis?', l: 'Rabatt ' + de(rab) + ' € → ' + de(M - rab) + ' €' }; };
+    T.aufschlag = function (sp, lvl) { var p = pick([10, 20, 25, 50, 5]); var M = ri(1, 20) * 20; var auf = M * p / 100; return { a: 'Ein Preis von ' + M + ' € steigt um ' + p + ' %. Neuer Preis?', l: 'Aufschlag ' + de(auf) + ' € → ' + de(M + auf) + ' €' }; };
+    T.dreieckFlaeche = function (sp, lvl) { var g = ri(2, 20), h = ri(2, 16); if ((g * h) % 2 !== 0) h += (h < 16 ? 1 : -1); return { a: 'Dreieck: g = ' + g + ' cm, h = ' + h + ' cm. Fläche?', l: '(' + g + '·' + h + ')÷2 = ' + de(g * h / 2) + ' cm²' }; };
+    T.winkelArt = function (sp, lvl) { var d = ri(10, 170); return { a: 'Ein Winkel misst ' + d + '°. Spitz, recht oder stumpf?', l: (d < 90 ? 'spitzwinklig' : (d === 90 ? 'rechtwinklig' : 'stumpfwinklig')) }; };
+    T.winkelDritter = function (sp, lvl) { var a = ri(30, 90), b = ri(30, 150 - a); return { a: 'Zwei Winkel eines Dreiecks: ' + a + '° und ' + b + '°. Der dritte?', l: (180 - a - b) + '°' }; };
+    T.negVergleich = function (sp, lvl) { var R = lvl === 'plus' ? 30 : 15; var a = ri(-R, R), b = ri(-R, R); while (b === a) b = ri(-R, R); return { a: 'Setze < oder >:  ' + a + '  ▢  ' + b, l: (a < b ? '<' : '>') }; };
+    T.negAddSub = function (sp, lvl) { var R = lvl === 'plus' ? 20 : 12; var x = ri(-R, R), y = ri(1, R), op = pick(['+', '−']); return { a: 'Rechne  ' + x + ' ' + op + ' ' + y + '  =', l: '' + (op === '+' ? x + y : x - y) }; };
+    T.tempAenderung = function (sp, lvl) { var t1 = ri(-10, 5), t2 = ri(-8, 15); var d = t2 - t1; return { a: 'Morgens ' + t1 + ' °C, mittags ' + t2 + ' °C. Änderung?', l: (d >= 0 ? '+' : '') + d + ' °C (' + (d >= 0 ? 'wärmer' : 'kälter') + ')' }; };
+    T.dreisatz = function (sp, lvl) { var n = ri(2, 6), per = ri(2, 9), m = ri(2, 9); return { a: n + ' Stück kosten ' + (n * per) + ' €. Was kosten ' + m + ' Stück?', l: '1 Stück ' + per + ' € → ' + m + ' Stück ' + (per * m) + ' €' }; };
+    T.flaechePara = function (sp, lvl) { var g = ri(3, 20), h = ri(3, 15); return { a: 'Parallelogramm: g = ' + g + ' cm, h = ' + h + ' cm. Fläche?', l: (g * h) + ' cm²' }; };
+    T.flaecheTrapez = function (sp, lvl) { var a = ri(6, 20), c = ri(2, a - 2); if ((a + c) % 2 !== 0) c += 1; var h = ri(2, 10); return { a: 'Trapez: a = ' + a + ' cm, c = ' + c + ' cm, h = ' + h + ' cm. Fläche?', l: '(' + a + '+' + c + ')÷2·' + h + ' = ' + ((a + c) / 2 * h) + ' cm²' }; };
+    T.flaecheKreis = function (sp, lvl) { var r = pick([2, 3, 4, 5, 6, 10]); return { a: 'Kreis mit r = ' + r + ' cm. Fläche (π ≈ 3,14)?', l: '3,14·' + r + '·' + r + ' = ' + de(3.14 * r * r) + ' cm²' }; };
+    T.umfangKreis = function (sp, lvl) { var r = pick([2, 3, 4, 5, 10]); return { a: 'Kreis mit r = ' + r + ' cm. Umfang (π ≈ 3,14)?', l: '2·3,14·' + r + ' = ' + de(2 * 3.14 * r) + ' cm' }; };
+    T.relMult = function (sp, lvl) { var R = lvl === 'basis' ? 6 : 10; var x = ri(-R, R) || 2, y = ri(-R, R) || 2; return { a: '(' + x + ') · (' + y + ') =', l: '' + (x * y) }; };
+    T.prioritaet = function (sp, lvl) { var a = ri(2, 9), b = ri(2, 9), c = ri(2, 9), f = pick(['a+bc', 'a-bc', 'ab+c', '(a+b)c']); var q, res; if (f === 'a+bc') { q = a + ' + ' + b + ' · ' + c; res = a + b * c; } else if (f === 'a-bc') { a = b * c + ri(1, 6); q = a + ' − ' + b + ' · ' + c; res = a - b * c; } else if (f === 'ab+c') { q = a + ' · ' + b + ' + ' + c; res = a * b + c; } else { q = '(' + a + ' + ' + b + ') · ' + c; res = (a + b) * c; } return { a: 'Rechne: ' + q + ' =', l: '' + res }; };
+    T.termEinsetzen = function (sp, lvl) { var a = ri(2, 6), b = ri(-6, 8), v = ri(lvl === 'plus' ? -6 : 0, 8); return { a: 'A(x) = ' + a + 'x ' + (b >= 0 ? '+ ' + b : '− ' + (-b)) + '.  Berechne A(' + v + ').', l: 'A(' + v + ') = ' + (a * v + b) }; };
+    T.termReduzieren = function (sp, lvl) { var a1 = ri(-6, 6) || 1, c1 = ri(-9, 9), a2 = ri(-6, 6) || 1, c2 = ri(-9, 9); return { a: 'Fasse zusammen:  ' + termStr([{ coef: a1, sym: 'x' }, { coef: c1, sym: '' }, { coef: a2, sym: 'x' }, { coef: c2, sym: '' }]), l: termStr([{ coef: a1 + a2, sym: 'x' }, { coef: c1 + c2, sym: '' }]) }; };
+    T.klammern = function (sp, lvl) { var a = ri(1, 6), sign = pick(['+', '−']); var bx = (Math.random() < 0.5 ? -1 : 1) * ri(1, 6), cc = (Math.random() < 0.5 ? -1 : 1) * ri(1, 9); var inside = termStr([{ coef: bx, sym: 'x' }, { coef: cc, sym: '' }]); var rx = sign === '+' ? a + bx : a - bx, rc = sign === '+' ? cc : -cc; return { a: 'Löse die Klammer auf:  ' + a + 'x ' + sign + ' (' + inside + ')', l: termStr([{ coef: rx, sym: 'x' }, { coef: rc, sym: '' }]) }; };
+
+    function make(spec, n, lvl) {
+      if (!spec) return [];
+      var specs = Array.isArray(spec) ? spec : [spec];
+      var out = [], seen = {}, guard = 0;
+      while (out.length < n && guard < n * 30) { guard++; var sp = specs[out.length % specs.length]; var f = T[sp.type]; if (!f) break; var e = f(sp, lvl || 'kern'); if (!e || seen[e.a]) continue; seen[e.a] = 1; out.push(e); }
+      return out;
+    }
+    return { make: make, has: function (t) { return !!T[t]; } };
+  })();
+
   /* ---------- Zustand ---------- */
-  var state = { view: 'home', mid: null, nr: null, printSol: false };
+  var state = { view: 'home', mid: null, nr: null, printSol: false, gen: { lvl: 'kern', count: 20, sol: false, items: [] } };
   function host() { return document.getElementById('kb-mathe'); }
   function open() { state.view = 'home'; render(); }
 
@@ -248,12 +304,9 @@ window.KB_MATHE = (function () {
     var lek = fl[idx].lek, theme = fl[idx].theme, done = isDone(m.id, lek.nr), acc = m.farbe || '#6C4CE0';
 
     var h = '<div class="mth-wrap mth-lesson" style="--mc:' + esc(acc) + ';--mc2:' + esc(m.farbe2 || acc) + ';--tc:' + esc(theme.farbe || acc) + '">';
+    if (lek.gen) { state.gen.items = GEN.make(lek.gen, state.gen.count, state.gen.lvl); } else { state.gen.items = []; }
     h += '<div class="mth-lbar"><button class="mth-back" data-mth="module" data-id="' + esc(m.id) + '">← Modul ' + esc(m.nr) + '</button><div class="mth-lbar-b">' +
       '<button class="mth-btn mth-btn-p" data-mth="print-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">📘 Infoblatt drucken</button>' +
-      '<button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="basis">🟢 Arbeitsblatt</button>' +
-      '<button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="kern">🟡 Arbeitsblatt</button>' +
-      '<button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="plus">🔵 Arbeitsblatt</button>' +
-      '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint" title="Lösungen mit aufs Blatt drucken">' + (state.printSol ? '✓ mit Lösungen' : 'Lösungsblatt') + '</button>' +
       '<button class="mth-btn mth-donebtn' + (done ? ' on' : '') + '" data-mth="done" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">' + (done ? '✓ Erledigt' : 'Erledigt') + '</button>' +
       '</div></div>';
     h += '<div class="mth-crumb">' + esc(theme.icon || '') + ' ' + esc(theme.titel) + ' · Lektion ' + esc(lek.nr) + '</div>';
@@ -282,6 +335,8 @@ window.KB_MATHE = (function () {
       h += '<div class="mth-sec"><div class="mth-sec-h">✅ So rechnest du — Musteraufgabe</div><div class="mth-muster"><div class="mth-muster-q">' + rich(lek.musterl.a) + '</div><ol class="mth-muster-s">' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="mth-muster-e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div></div>';
     }
 
+    h += genSectionHtml(m, lek);
+
     if (lek.gemeinsam && lek.gemeinsam.length) { h += '<div class="mth-sec"><div class="mth-sec-h">🤝 Gemeinsam an der Tafel</div><ol class="mth-tasks">' + lek.gemeinsam.map(function (g) { return '<li><div class="mth-task-q">' + rich(g.a) + '</div>' + solBtn(g.l) + '</li>'; }).join('') + '</ol></div>'; }
 
     if (lek.aufgaben) { h += '<div class="mth-sec"><div class="mth-sec-h">✏️ Aufgaben — drei Niveaus</div><div class="mth-levels">' + levelHtml('basis', lek.aufgaben.basis) + levelHtml('kern', lek.aufgaben.kern) + levelHtml('plus', lek.aufgaben.plus) + '</div></div>'; }
@@ -306,6 +361,41 @@ window.KB_MATHE = (function () {
     return h;
   }
   function solBtn(l) { if (l == null || l === '') return ''; return '<button class="mth-solbtn" data-mth="sol">Lösung</button><div class="mth-sol">' + rich(l) + '</div>'; }
+
+  /* ---------- Arbeitsblatt-Generator (Lehreransicht) ---------- */
+  function curLek() { var m = findModule(state.mid), f = m && lessonOf(m, state.nr); return f ? f.lek : {}; }
+  function genBoxInner(lek) {
+    var g = state.gen;
+    var chips = [['basis', '🟢'], ['kern', '🟡'], ['plus', '🔵']].map(function (x) { var L = (DATA.legende && DATA.legende[x[0]]) || { label: x[0] }; return '<button class="mth-gchip' + (g.lvl === x[0] ? ' on' : '') + '" data-mth="gen-lvl" data-lvl="' + x[0] + '">' + x[1] + ' ' + esc(L.label) + '</button>'; }).join('');
+    var counts = [12, 20, 30].map(function (n) { return '<button class="mth-gchip' + (g.count === n ? ' on' : '') + '" data-mth="gen-count" data-n="' + n + '">' + n + ' Aufgaben</button>'; }).join('');
+    var prev = '<div class="mth-gprev">' + g.items.map(function (it, i) { return '<div class="mth-gcard"><span class="mth-gnum">' + (i + 1) + '</span><div class="mth-gq">' + rich(it.a) + (g.sol ? '<div class="mth-ga">' + rich(it.l) + '</div>' : '') + '</div></div>'; }).join('') + '</div>';
+    return '<div class="mth-genwrap"><div class="mth-gtitle">🎲 Aufgaben-Generator — endlos viele frische Blätter</div>' +
+      '<div class="mth-gbar"><span class="mth-glbl">Niveau</span>' + chips + '<span class="mth-glbl">Umfang</span>' + counts + '</div>' +
+      '<div class="mth-gbar2"><button class="mth-btn mth-gnew" data-mth="gen-new">🔁 Neu würfeln</button>' +
+      '<button class="mth-btn mth-gsol' + (g.sol ? ' on' : '') + '" data-mth="gen-sol">' + (g.sol ? '✓ Lösungen sichtbar' : '👁️ Lösungen') + '</button>' +
+      '<button class="mth-btn mth-btn-p" data-mth="gen-print">🖨️ Dieses Blatt drucken</button></div>' +
+      '<div class="mth-ghint">Jeder Klick auf „Neu würfeln" erzeugt ein komplett neues Blatt — so viele du brauchst, alle mit Lösungen.</div>' + prev + '</div>';
+  }
+  function genSectionHtml(m, lek) {
+    var h = '<div class="mth-sec"><div class="mth-sec-h">🖨️ Arbeitsblätter drucken — für die Schüler</div>';
+    if (lek.gen) { h += '<div id="mth-genbox">' + genBoxInner(lek) + '</div>'; }
+    h += '<div class="mth-curated"><span class="mth-glbl">' + (lek.gen ? 'Oder die Beispiel-Aufgaben von oben als Blatt:' : 'Aufgabenblatt (Beispiel-Aufgaben):') + '</span>' +
+      ['basis', 'kern', 'plus'].map(function (k) { var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; return '<button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">' + esc(L.icon) + ' ' + esc(L.label) + '</button>'; }).join('') +
+      '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint">' + (state.printSol ? '✓ mit Lösungen' : 'Lösungen') + '</button></div></div>';
+    return h;
+  }
+  function updateGenBox() { var el = document.getElementById('mth-genbox'); if (el) { var m = findModule(state.mid), f = m && lessonOf(m, state.nr); if (f) { el.innerHTML = genBoxInner(f.lek); } } }
+  function regenGen() { state.gen.items = GEN.make(curLek().gen, state.gen.count, state.gen.lvl); }
+  function printGenSheet(mid, nr) {
+    var m = findModule(mid), f = lessonOf(m, nr); if (!f) return; var lek = f.lek, theme = f.theme, acc = m.farbe || '#6C4CE0', g = state.gen;
+    var lvlL = (DATA.legende && DATA.legende[g.lvl] ? DATA.legende[g.lvl].label : g.lvl);
+    var b = '<div class="hd"><div class="k">Modul ' + esc(m.nr) + ' · ' + esc(theme.titel) + ' · Übungsblatt ' + esc(g.sol ? 'Lösungen · ' : '') + esc(lvlL) + '</div><h1>' + rich(lek.titel) + '</h1></div>';
+    b += '<div class="name"><span><b>Name:</b> ______________________</span><span><b>Datum:</b> ______________</span></div>';
+    if (lek.merksatz) b += '<div class="remind"><div class="l">Denk dran</div>' + rich(lek.merksatz) + '</div>';
+    b += '<div class="ggrid">' + g.items.map(function (it, i) { return '<div class="gcard"><span class="gnum">' + (i + 1) + '</span><div class="gq">' + rich(it.a) + (g.sol ? '<div class="gsol">' + rich(it.l) + '</div>' : '<div class="gans"></div>') + '</div></div>'; }).join('') + '</div>';
+    b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Übungsblatt ' + esc(lvlL) + ' · Lektion ' + esc(lek.nr) + (g.sol ? ' · Lösungsblatt' : '') + '</div>';
+    printDoc('Übungsblatt ' + lvlL + ' – ' + lek.titel, acc, b);
+  }
 
   /* ============================================================
      DRUCK — schülergerechte Infoblätter und Arbeitsblätter
@@ -343,7 +433,12 @@ window.KB_MATHE = (function () {
       '.remind .l{font-weight:900;color:' + acc + ';font-size:12px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}' +
       '.foot{margin-top:22px;text-align:center;font-size:11px;color:#aaa}' +
       '.tbl{border-collapse:collapse;margin:6px 0}.tbl td,.tbl th{border:1.4px solid #999;padding:8px 12px;min-width:52px;height:26px;text-align:center}' +
-      '@media print{.pg{max-width:none;padding:12mm 14mm}.step,.merk,.mus,ol.tasks>li,.fig{break-inside:avoid}}';
+      '.ggrid{display:grid;grid-template-columns:1fr 1fr;gap:9px 16px;margin-top:8px}' +
+      '.gcard{display:flex;gap:9px;border:1px solid #e4e4ef;border-radius:9px;padding:9px 11px;break-inside:avoid}' +
+      '.gnum{flex:0 0 22px;height:22px;border-radius:50%;background:' + acc + ';color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}' +
+      '.gq{font-size:14px;font-weight:600;flex:1}.gans{border-bottom:1.3px solid #bbb;height:17px;margin-top:9px}' +
+      '.gsol{color:#1a7a48;font-size:13px;font-weight:700;margin-top:4px}' +
+      '@media print{.pg{max-width:none;padding:12mm 13mm}.step,.merk,.mus,ol.tasks>li,.fig,.gcard{break-inside:avoid}}';
   }
   function printDoc(title, acc, bodyHtml) {
     var w = window.open('', '_blank'); if (!w) { alert('Bitte Pop-ups für den Druck erlauben.'); return; }
@@ -424,6 +519,11 @@ window.KB_MATHE = (function () {
     else if (a === 'done') { var k = lkey(t.getAttribute('data-mid'), t.getAttribute('data-nr')); if (DONE[k]) delete DONE[k]; else DONE[k] = true; saveDone(); render(); }
     else if (a === 'print-info') { printInfo(t.getAttribute('data-mid'), t.getAttribute('data-nr')); }
     else if (a === 'print-ab') { printSheet(t.getAttribute('data-mid'), t.getAttribute('data-nr'), t.getAttribute('data-lvl'), state.printSol); }
+    else if (a === 'gen-lvl') { state.gen.lvl = t.getAttribute('data-lvl'); regenGen(); updateGenBox(); }
+    else if (a === 'gen-count') { state.gen.count = +t.getAttribute('data-n'); regenGen(); updateGenBox(); }
+    else if (a === 'gen-new') { regenGen(); updateGenBox(); }
+    else if (a === 'gen-sol') { state.gen.sol = !state.gen.sol; updateGenBox(); }
+    else if (a === 'gen-print') { printGenSheet(state.mid, state.nr); }
     else if (a === 'pdf-view') { viewPdf(); }
     else if (a === 'pdf-dl') { dlPdf(); }
   }
