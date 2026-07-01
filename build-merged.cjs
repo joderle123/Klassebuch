@@ -2831,6 +2831,23 @@ var MATHE_CSS = `
 #kb-mathe .mth-spiel{ margin-top:12px; background:#fef4fb; border:1px dashed #eabbdd; border-radius:14px; padding:13px 18px; font-size:14px; line-height:1.55; color:#6a2a58; }
 #kb-mathe .mth-spiel-t{ font-weight:900; font-size:12.5px; color:#a53384; margin-bottom:3px; }
 
+/* Bild / Visualisierung */
+#kb-mathe .mth-visual{ margin:16px auto; text-align:center; }
+#kb-mathe .mth-visual-in{ display:inline-block; padding:14px 18px; background:#fbfbfe; border:1px solid var(--kb-border,#ececf3); border-radius:14px; max-width:100%; }
+#kb-mathe .mth-svg{ display:block; max-width:100%; height:auto; }
+#kb-mathe .mth-visual-cap{ font-size:13px; color:var(--kb-muted,#777); margin-top:7px; }
+
+/* Musteraufgabe */
+#kb-mathe .mth-muster{ border:1px solid color-mix(in srgb,var(--mc) 30%,#fff); background:color-mix(in srgb,var(--mc) 6%,#fff); border-radius:14px; padding:14px 18px; }
+#kb-mathe .mth-muster-q{ font-weight:800; font-size:15px; margin-bottom:8px; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-muster-s{ margin:0; padding-left:22px; }
+#kb-mathe .mth-muster-s li{ margin:5px 0; font-size:14.5px; line-height:1.5; }
+#kb-mathe .mth-muster-e{ margin-top:8px; font-weight:800; color:var(--mc); font-size:15px; }
+
+/* Druck-Buttons */
+#kb-mathe .mth-ab{ font-size:13px; padding:9px 12px; }
+#kb-mathe .mth-solprint.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
+
 /* Vor/Zurück */
 #kb-mathe .mth-nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px; padding-top:18px; border-top:1px solid var(--kb-border,#ececf3); }
 
