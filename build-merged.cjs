@@ -2512,6 +2512,10 @@ catch (e) { console.warn('ISA-App.html fehlt — Material-Tab ohne Bibliothek.')
 var MATHE_JSON = '{}', MATHE_MODULE = '', MATHE_PDF_B64 = '';
 try { MATHE_JSON = read('mathe-programm.json'); } catch (e) { console.warn('mathe-programm.json fehlt — Lehrplan leer.'); }
 try { MATHE_MODULE = read('mathe-module.js'); } catch (e) { console.warn('mathe-module.js fehlt — KB_MATHE deaktiviert.'); }
+var PDFLIB_JS = '', H2C_JS = '';
+try { PDFLIB_JS = read('vendor-jspdf.umd.min.js'); } catch (e) { console.warn('vendor-jspdf.umd.min.js fehlt — PDF-Export deaktiviert.'); }
+try { H2C_JS = read('vendor-html2canvas.min.js'); } catch (e) { console.warn('vendor-html2canvas.min.js fehlt — PDF-Export deaktiviert.'); }
+function scriptSafe(s) { return String(s).replace(/<\/(script)/gi, '<\\/$1'); }
 try { MATHE_PDF_B64 = fs.readFileSync(path.join(ROOT, 'PROG_5PF_MATHE.pdf')).toString('base64'); } catch (e) { console.warn('PROG_5PF_MATHE.pdf fehlt — Original-PDF nicht eingebettet.'); }
 
 function jsonForScript(s) { return String(s).replace(/</g, '\\u003c').replace(new RegExp(String.fromCharCode(0x2028), 'g'), '\\u2028').replace(new RegExp(String.fromCharCode(0x2029), 'g'), '\\u2029'); }
@@ -3062,6 +3066,8 @@ var parts = [
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>window.KB_MATHE_DATA=' + jsonForScript(MATHE_JSON) + ';</' + 'script>',
   '<script type="application/octet-stream" id="kb-mathe-pdf-b64">' + MATHE_PDF_B64 + '</' + 'script>',
+  (H2C_JS ? '<script>' + scriptSafe(H2C_JS) + '</' + 'script>' : ''),
+  (PDFLIB_JS ? '<script>' + scriptSafe(PDFLIB_JS) + '</' + 'script>' : ''),
   '<script>' + MATHE_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',

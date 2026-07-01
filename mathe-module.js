@@ -341,15 +341,15 @@ window.KB_MATHE = (function () {
     h += '<div class="mth-modprint"><div class="mth-modprint-t">📄 Ganzes Modul als Heft drucken</div>' +
       '<div class="mth-modprint-b">' +
       '<button class="mth-btn mth-btn-p" data-mth="print-module" data-id="' + esc(m.id) + '">📖 Heft drucken</button>' +
-      '<button class="mth-btn mth-btn-dl" data-mth="download-module" data-id="' + esc(m.id) + '">⬇️ Heft speichern (Datei)</button>' +
+      '<button class="mth-btn mth-btn-dl" data-mth="download-module" data-id="' + esc(m.id) + '">⬇️ Heft als PDF speichern</button>' +
       '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint">' + (state.printSol ? '✓ mit Lösungen (Lehrerheft)' : 'Lösungsheft') + '</button>' +
       '<span class="mth-gchip' + (state.gen.count === 24 ? ' on' : '') + '" data-mth="gen-count" data-n="24">Standard</span>' +
       '<span class="mth-gchip' + (state.gen.count === 40 ? ' on' : '') + '" data-mth="gen-count" data-n="40">viele Aufgaben</span>' +
       '</div>' +
-      '<div class="mth-ghint">Ein komplettes Heft mit allen Lektionen: Erklärung, Bild, Merksatz, Musteraufgabe und Übungsseiten. „Speichern" legt das Heft als Datei ab (offline nutzbar, mit Knopf „Als PDF speichern"); „Drucken" öffnet direkt den Druckdialog.</div></div>';
+      '<div class="mth-ghint">Ein komplettes Heft mit allen Lektionen: Erklärung, Bild, Merksatz, Musteraufgabe und Übungsseiten. „Als PDF speichern" erzeugt direkt eine fertige PDF-Datei zum Ablegen oder Verschicken; „Drucken" öffnet den Druckdialog.</div></div>';
     (m.themen || []).forEach(function (t, ti) {
       h += '<div class="mth-theme" style="--tc:' + esc(t.farbe || m.farbe || '#6C4CE0') + '"><div class="mth-theme-head"><span class="mth-theme-ic">' + esc(t.icon || '') + '</span><div class="mth-theme-hx"><div class="mth-theme-t">' + esc(t.titel) + '</div>' + ((t.ziele && t.ziele.length) ? '<div class="mth-theme-z">' + t.ziele.map(esc).join(' · ') + '</div>' : '') + '</div>' +
-        '<div class="mth-theme-dl"><button class="mth-btn mth-btn-p mth-btn-sm" data-mth="print-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">📖 Kapitel drucken</button><button class="mth-btn mth-btn-dl mth-btn-sm" data-mth="download-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">⬇️ Kapitel speichern</button></div></div><div class="mth-lrows">';
+        '<div class="mth-theme-dl"><button class="mth-btn mth-btn-p mth-btn-sm" data-mth="print-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">📖 Kapitel drucken</button><button class="mth-btn mth-btn-dl mth-btn-sm" data-mth="download-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">⬇️ Kapitel als PDF</button></div></div><div class="mth-lrows">';
       (t.lektionen || []).forEach(function (l) {
         var done = isDone(m.id, l.nr);
         h += '<button class="mth-lrow' + (done ? ' is-done' : '') + '" data-mth="lesson" data-mid="' + esc(m.id) + '" data-nr="' + esc(l.nr) + '"><span class="mth-lrow-nr">' + esc(l.nr) + '</span><span class="mth-lrow-x"><span class="mth-lrow-t">' + rich(l.titel) + '</span><span class="mth-lrow-goal">🎯 ' + rich(l.lernziel || '') + '</span></span>' + (l.dauer ? '<span class="mth-lrow-d">' + esc(l.dauer) + '</span>' : '') + '<span class="mth-lrow-chk">' + (done ? '✓' : '') + '</span></button>';
@@ -372,7 +372,7 @@ window.KB_MATHE = (function () {
     if (lek.gen) { state.gen.items = GEN.make(lek.gen, state.gen.count, state.gen.lvl); } else { state.gen.items = []; }
     h += '<div class="mth-lbar"><button class="mth-back" data-mth="module" data-id="' + esc(m.id) + '">← Modul ' + esc(m.nr) + '</button><div class="mth-lbar-b">' +
       '<button class="mth-btn mth-btn-p" data-mth="print-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">📘 Infoblatt drucken</button>' +
-      '<button class="mth-btn mth-btn-dl" data-mth="download-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">⬇️ speichern</button>' +
+      '<button class="mth-btn mth-btn-dl" data-mth="download-info" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">⬇️ als PDF</button>' +
       '<button class="mth-btn mth-donebtn' + (done ? ' on' : '') + '" data-mth="done" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '">' + (done ? '✓ Erledigt' : 'Erledigt') + '</button>' +
       '</div></div>';
     h += '<div class="mth-crumb">' + esc(theme.icon || '') + ' ' + esc(theme.titel) + ' · Lektion ' + esc(lek.nr) + '</div>';
@@ -451,7 +451,7 @@ window.KB_MATHE = (function () {
     var h = '<div class="mth-sec"><div class="mth-sec-h">🖨️ Arbeitsblätter drucken — für die Schüler</div>';
     if (lek.gen) { h += '<div id="mth-genbox">' + genBoxInner(lek) + '</div>'; }
     h += '<div class="mth-curated"><span class="mth-glbl">' + (lek.gen ? 'Oder die Beispiel-Aufgaben von oben als Blatt:' : 'Aufgabenblatt (Beispiel-Aufgaben):') + '</span>' +
-      ['basis', 'kern', 'plus'].map(function (k) { var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; return '<span class="mth-abpair"><button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">' + esc(L.icon) + ' ' + esc(L.label) + '</button><button class="mth-btn mth-ab mth-abdl" title="Blatt als Datei speichern" data-mth="download-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">⬇️</button></span>'; }).join('') +
+      ['basis', 'kern', 'plus'].map(function (k) { var L = (DATA.legende && DATA.legende[k]) || { icon: '', label: k }; return '<span class="mth-abpair"><button class="mth-btn mth-ab" data-mth="print-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">' + esc(L.icon) + ' ' + esc(L.label) + '</button><button class="mth-btn mth-ab mth-abdl" title="Blatt als PDF speichern" data-mth="download-ab" data-mid="' + esc(m.id) + '" data-nr="' + esc(lek.nr) + '" data-lvl="' + k + '">⬇️</button></span>'; }).join('') +
       '<button class="mth-btn mth-solprint' + (state.printSol ? ' on' : '') + '" data-mth="solprint">' + (state.printSol ? '✓ mit Lösungen' : 'Lösungen') + '</button></div></div>';
     return h;
   }
@@ -552,6 +552,78 @@ window.KB_MATHE = (function () {
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     } catch (e) { alert('Download nicht möglich: ' + e.message); }
   }
+  /* ---------- Echtes PDF erzeugen (jsPDF + html2canvas) ---------- */
+  function pdfReady() { return typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF && typeof window.html2canvas === 'function'; }
+  function pdfOverlay(acc) {
+    var o = document.getElementById('mth-pdfov');
+    if (!o) {
+      o = document.createElement('div'); o.id = 'mth-pdfov';
+      o.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(15,18,30,.55);display:flex;align-items:center;justify-content:center;font-family:Inter,Arial,sans-serif';
+      o.innerHTML = '<div style="background:#fff;border-radius:14px;padding:22px 26px;min-width:260px;text-align:center;box-shadow:0 12px 44px rgba(0,0,0,.32)"><div id="mth-pdfov-t" style="font-weight:800;font-size:15px;color:#20203a">PDF wird erstellt …</div><div style="margin-top:12px;height:9px;border-radius:6px;background:#ececf3;overflow:hidden"><i id="mth-pdfov-b" style="display:block;height:100%;width:4%;background:' + (acc || '#2E9E5B') + ';transition:width .2s"></i></div><div id="mth-pdfov-s" style="margin-top:8px;font-size:12px;color:#888"></div></div>';
+      document.body.appendChild(o);
+    }
+    o.style.display = 'flex'; return o;
+  }
+  function pdfProg(msg, pct, sub) { var t = document.getElementById('mth-pdfov-t'), b = document.getElementById('mth-pdfov-b'), s = document.getElementById('mth-pdfov-s'); if (t && msg) t.textContent = msg; if (b && pct != null) b.style.width = pct + '%'; if (s) s.textContent = sub || ''; }
+  function pdfHide() { var o = document.getElementById('mth-pdfov'); if (o) o.style.display = 'none'; }
+  function makePdf(filename, title, acc, bodyHtml) {
+    if (!pdfReady()) { alert('Der PDF-Baustein ist in dieser Version nicht geladen. Nutze „Speichern (HTML)" und dort „Als PDF speichern".'); downloadDoc(filename.replace(/\.pdf$/i, '.html'), title, acc, bodyHtml); return; }
+    var jsPDF = window.jspdf.jsPDF, h2c = window.html2canvas;
+    pdfOverlay(acc); pdfProg('PDF wird vorbereitet …', 4, '');
+    /* Externe Font-Links kurz abhängen: html2canvas würde sie sonst je Block neu laden (offline → 15s Timeout). */
+    var stash = [];
+    try { Array.prototype.forEach.call(document.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="dns-prefetch"]'), function (el) { var href = el.getAttribute('href') || ''; if (/fonts\.(googleapis|gstatic)|^https?:|^\/\//.test(href)) { stash.push([el, el.parentNode, el.nextSibling]); el.parentNode && el.parentNode.removeChild(el); } }); } catch (e) {}
+    function restoreLinks() { stash.forEach(function (x) { try { x[1].insertBefore(x[0], x[2] || null); } catch (e) {} }); stash = []; }
+    var host = document.createElement('div');
+    host.style.cssText = 'position:fixed;left:-10000px;top:0;background:#fff;z-index:-1';
+    host.innerHTML = '<style>' + printCss(acc) + '</style><div class="pg" style="width:760px;margin:0">' + bodyHtml + '</div>';
+    document.body.appendChild(host);
+    var pg = host.querySelector('.pg');
+    var M = 8, PW = 210, PH = 297, cw = PW - 2 * M, availH = PH - 2 * M;
+    var pgcs = window.getComputedStyle(pg);
+    var contentPx = pg.clientWidth - (parseFloat(pgcs.paddingLeft) || 0) - (parseFloat(pgcs.paddingRight) || 0);
+    if (!(contentPx > 40)) contentPx = 700;
+    var totalPx = pg.scrollHeight, fullPx = pg.offsetWidth || 760;
+    /* Skalierung an Gesamthöhe koppeln (Canvas-Fläche ~36 MP begrenzen → auch große Hefte). */
+    var SCALE = Math.max(1, Math.min(2, Math.sqrt(36e6 / Math.max(1, fullPx * totalPx))));
+    var mmPerPx = cw / contentPx, pageHpx = Math.round((availH / mmPerPx) * SCALE);
+    var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+    pdfProg('Seiten werden gezeichnet …', 10, '');
+    h2c(pg, {
+      scale: SCALE, backgroundColor: '#ffffff', useCORS: true, logging: false, imageTimeout: 0,
+      onclone: function (doc) { try { var ls = doc.querySelectorAll('link[href*="fonts."],link[rel="preconnect"],link[rel="dns-prefetch"]'); for (var k = 0; k < ls.length; k++) { ls[k].parentNode && ls[k].parentNode.removeChild(ls[k]); } } catch (e) {} }
+    }).then(function (canvas) {
+      var ctx = canvas.getContext('2d');
+      function rowClear(yy) {
+        try { var d = ctx.getImageData(0, yy, canvas.width, 1).data; for (var x = 0; x < d.length; x += 8) { if (d[x] < 248 || d[x + 1] < 248 || d[x + 2] < 248) return false; } return true; } catch (e) { return false; }
+      }
+      var wmm = (canvas.width / SCALE) * mmPerPx, x = M + Math.max(0, (cw - wmm) / 2);
+      var y = 0, first = true, guard = 0;
+      while (y < canvas.height - 2 && guard < 600) {
+        guard++;
+        var target = Math.min(y + pageHpx, canvas.height), cut = target;
+        if (target < canvas.height) {
+          var lim = Math.max(y + Math.round(pageHpx * 0.5), target - Math.round(pageHpx * 0.32));
+          for (var yy = target; yy > lim; yy -= 3) { if (rowClear(yy)) { cut = yy; break; } }
+        }
+        var sh = cut - y;
+        var sc = document.createElement('canvas'); sc.width = canvas.width; sc.height = sh;
+        sc.getContext('2d').drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
+        if (!first) pdf.addPage();
+        pdf.addImage(sc.toDataURL('image/jpeg', 0.85), 'JPEG', x, M, wmm, (sh / SCALE) * mmPerPx, '', 'FAST');
+        first = false; y = cut;
+        pdfProg('Seiten werden gezeichnet …', Math.min(96, Math.round(y / canvas.height * 90) + 8), '');
+      }
+      pdfProg('Speichern …', 100, '');
+      try { pdf.save(filename); } catch (e) { alert('PDF-Fehler: ' + e.message); }
+      try { document.body.removeChild(host); } catch (e) {}
+      restoreLinks(); setTimeout(pdfHide, 250);
+    }).catch(function (e) {
+      try { document.body.removeChild(host); } catch (e2) {}
+      restoreLinks(); pdfHide();
+      alert('PDF konnte nicht erstellt werden (' + (e && e.message || e) + '). Bitte „Drucken" nutzen.');
+    });
+  }
 
   /* Infoblatt (Lernblatt für den Schüler) */
   function infoBody(mid, nr) {
@@ -572,7 +644,7 @@ window.KB_MATHE = (function () {
     return { title: 'Infoblatt – ' + lek.titel, acc: acc, body: b, file: 'Infoblatt_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + '.html' };
   }
   function printInfo(mid, nr) { var d = infoBody(mid, nr); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadInfo(mid, nr) { var d = infoBody(mid, nr); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
+  function downloadInfo(mid, nr) { var d = infoBody(mid, nr); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
 
   /* Arbeitsblatt pro Niveau (für den Schüler) */
   function sheetBody(mid, nr, level, withSol) {
@@ -600,7 +672,7 @@ window.KB_MATHE = (function () {
     return { title: 'Arbeitsblatt ' + L.label + ' – ' + lek.titel, acc: acc, body: b, file: 'Arbeitsblatt_' + safeFile(L.label) + '_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + (withSol ? '_Loesung' : '') + '.html' };
   }
   function printSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
+  function downloadSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
   function tblHtml(t) {
     var cols = t.cols || [], rows = t.rows || 3, s = '<table class="tbl"><thead><tr>';
     cols.forEach(function (c) { s += '<th>' + rich(c) + '</th>'; }); s += '</tr></thead><tbody>';
@@ -667,7 +739,7 @@ window.KB_MATHE = (function () {
     return { m: m, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' – ' + m.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_' + safeFile(m.titel) + (sol ? '_Loesungsheft' : '_Heft') + '.html' };
   }
   function printModule(mid) { var d = moduleBody(mid); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadModule(mid) { var d = moduleBody(mid); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
+  function downloadModule(mid) { var d = moduleBody(mid); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
   /* ---------- Ein Kapitel (Thema) als Heft ---------- */
   function themeBody(mid, tix) {
     var m = findModule(mid); if (!m) return null; var t = (m.themen || [])[+tix]; if (!t) return null;
@@ -678,7 +750,7 @@ window.KB_MATHE = (function () {
     return { m: m, t: t, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' · ' + t.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_Kapitel_' + safeFile(t.titel) + (sol ? '_Loesungen' : '') + '.html' };
   }
   function printTheme(mid, tix) { var d = themeBody(mid, tix); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadTheme(mid, tix) { var d = themeBody(mid, tix); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
+  function downloadTheme(mid, tix) { var d = themeBody(mid, tix); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
 
   /* ---------- PDF ---------- */
   function pdfBlobUrl() {
