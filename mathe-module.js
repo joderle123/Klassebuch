@@ -567,79 +567,96 @@ window.KB_MATHE = (function () {
   function pdfProg(msg, pct, sub) { var t = document.getElementById('mth-pdfov-t'), b = document.getElementById('mth-pdfov-b'), s = document.getElementById('mth-pdfov-s'); if (t && msg) t.textContent = msg; if (b && pct != null) b.style.width = pct + '%'; if (s) s.textContent = sub || ''; }
   function pdfHide() { var o = document.getElementById('mth-pdfov'); if (o) o.style.display = 'none'; }
   function makePdf(filename, title, acc, bodyHtml) {
-    if (!pdfReady()) { alert('Der PDF-Baustein ist in dieser Version nicht geladen. Nutze „Speichern (HTML)" und dort „Als PDF speichern".'); downloadDoc(filename.replace(/\.pdf$/i, '.html'), title, acc, bodyHtml); return; }
+    if (!pdfReady()) { alert('Der PDF-Baustein ist in dieser Version nicht geladen — die Datei kommt als HTML mit eingebautem „Als PDF speichern"-Knopf.'); downloadDoc(filename.replace(/\.pdf$/i, '.html'), title, acc, bodyHtml); return; }
     var jsPDF = window.jspdf.jsPDF, h2c = window.html2canvas;
     pdfOverlay(acc); pdfProg('PDF wird vorbereitet …', 4, '');
-    /* Externe Font-Links kurz abhängen: html2canvas würde sie sonst je Block neu laden (offline → 15s Timeout). */
-    var stash = [];
-    try { Array.prototype.forEach.call(document.querySelectorAll('link[rel="stylesheet"],link[rel="preconnect"],link[rel="dns-prefetch"]'), function (el) { var href = el.getAttribute('href') || ''; if (/fonts\.(googleapis|gstatic)|^https?:|^\/\//.test(href)) { stash.push([el, el.parentNode, el.nextSibling]); el.parentNode && el.parentNode.removeChild(el); } }); } catch (e) {}
-    function restoreLinks() { stash.forEach(function (x) { try { x[1].insertBefore(x[0], x[2] || null); } catch (e) {} }); stash = []; }
-    var host = document.createElement('div');
-    host.style.cssText = 'position:fixed;left:-10000px;top:0;background:#fff;z-index:-1';
-    host.innerHTML = '<style>' + printCss(acc) + '</style><div class="pg" style="width:760px;margin:0">' + bodyHtml + '</div>';
-    document.body.appendChild(host);
-    var pg = host.querySelector('.pg');
-    var M = 8, PW = 210, PH = 297, cw = PW - 2 * M, availH = PH - 2 * M;
-    var pgcs = window.getComputedStyle(pg);
-    var contentPx = pg.clientWidth - (parseFloat(pgcs.paddingLeft) || 0) - (parseFloat(pgcs.paddingRight) || 0);
-    if (!(contentPx > 40)) contentPx = 700;
-    var totalPx = pg.scrollHeight, fullPx = pg.offsetWidth || 760;
-    /* Skalierung an Gesamthöhe koppeln (Canvas-Fläche ~36 MP begrenzen → auch große Hefte). */
-    var SCALE = Math.max(1, Math.min(2, Math.sqrt(36e6 / Math.max(1, fullPx * totalPx))));
-    var mmPerPx = cw / contentPx, pageHpx = Math.round((availH / mmPerPx) * SCALE);
-    var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
-    pdfProg('Seiten werden gezeichnet …', 10, '');
-    h2c(pg, {
-      scale: SCALE, backgroundColor: '#ffffff', useCORS: true, logging: false, imageTimeout: 0,
-      onclone: function (doc) { try { var ls = doc.querySelectorAll('link[href*="fonts."],link[rel="preconnect"],link[rel="dns-prefetch"]'); for (var k = 0; k < ls.length; k++) { ls[k].parentNode && ls[k].parentNode.removeChild(ls[k]); } } catch (e) {} }
-    }).then(function (canvas) {
-      var ctx = canvas.getContext('2d');
-      function rowClear(yy) {
-        try { var d = ctx.getImageData(0, yy, canvas.width, 1).data; for (var x = 0; x < d.length; x += 8) { if (d[x] < 248 || d[x + 1] < 248 || d[x + 2] < 248) return false; } return true; } catch (e) { return false; }
+    /* Eigener kleiner iframe: html2canvas klont je Aufruf das ganze Dokument.
+       Im Haupt-Dokument wären das je Block viele MB (eingebettete Daten);
+       außerdem blockweise rendern — eine einzige Riesen-Leinwand sprengt bei
+       großen Heften das Canvas-Limit des Browsers (65.535 px → leere Seiten). */
+    var frame = document.createElement('iframe');
+    frame.setAttribute('aria-hidden', 'true');
+    frame.style.cssText = 'position:fixed;left:-10020px;top:0;width:820px;height:640px;border:0;visibility:hidden';
+    document.body.appendChild(frame);
+    var fdoc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+    function cleanup() { try { document.body.removeChild(frame); } catch (e) {} }
+    function bail(msg) { cleanup(); pdfHide(); alert(msg); }
+    if (!fdoc) { bail('PDF-Erzeugung nicht möglich — bitte „Drucken" nutzen.'); return; }
+    fdoc.open();
+    fdoc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>' + printCss(acc) + '</style></head><body style="margin:0;background:#fff"><div class="pg" style="width:760px;margin:0">' + bodyHtml + '</div></body></html>');
+    fdoc.close();
+    setTimeout(function () { try { run(); } catch (e) { bail('PDF-Fehler: ' + (e && e.message || e)); } }, 120);
+    function run() {
+      var pg = fdoc.querySelector('.pg');
+      var blocks = Array.prototype.slice.call(pg.children).filter(function (b) { return b.offsetHeight > 2; });
+      if (!blocks.length) { bail('Nichts zu exportieren.'); return; }
+      var M = 8, PW = 210, PH = 297, cw = PW - 2 * M, availH = PH - 2 * M;
+      var cs = frame.contentWindow.getComputedStyle(pg);
+      var contentPx = pg.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+      if (!(contentPx > 40)) contentPx = 700;
+      /* Wie der Browser-Druck skalieren (1 px = 1/96 Zoll) — sonst rutschen Blöcke
+         knapp über die Seitenhöhe und erzeugen fast leere Folgeseiten. */
+      var mmPerPx = 25.4 / 96;
+      if (contentPx * mmPerPx > cw) mmPerPx = cw / contentPx;
+      var SCALE = pg.scrollHeight > 22000 ? 1.6 : 2; /* große Hefte etwas sparsamer (Zeit/Dateigröße) */
+      var pageHpx = Math.round((availH / mmPerPx) * SCALE);
+      var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
+      var cursorY = M, first = true, drawn = 0;
+      function rowClear(ctx, w, yy) { try { var d = ctx.getImageData(0, yy, w, 1).data; for (var x = 0; x < d.length; x += 8) { if (d[x] < 248 || d[x + 1] < 248 || d[x + 2] < 248) return false; } return true; } catch (e) { return false; }
       }
-      var wmm = (canvas.width / SCALE) * mmPerPx, x = M + Math.max(0, (cw - wmm) / 2);
-      var y = 0, first = true, guard = 0;
-      while (y < canvas.height - 2 && guard < 600) {
-        guard++;
-        var target = Math.min(y + pageHpx, canvas.height), cut = target;
-        if (target < canvas.height) {
-          var lim = Math.max(y + Math.round(pageHpx * 0.5), target - Math.round(pageHpx * 0.32));
-          for (var yy = target; yy > lim; yy -= 3) { if (rowClear(yy)) { cut = yy; break; } }
-        }
-        var sh = cut - y;
+      function addSlice(canvas, sy, sh, y) {
+        var wmm = (canvas.width / SCALE) * mmPerPx, x = M + Math.max(0, (cw - wmm) / 2), hmm = (sh / SCALE) * mmPerPx;
         var sc = document.createElement('canvas'); sc.width = canvas.width; sc.height = sh;
-        sc.getContext('2d').drawImage(canvas, 0, y, canvas.width, sh, 0, 0, canvas.width, sh);
-        if (!first) pdf.addPage();
-        pdf.addImage(sc.toDataURL('image/jpeg', 0.85), 'JPEG', x, M, wmm, (sh / SCALE) * mmPerPx, '', 'FAST');
-        first = false; y = cut;
-        pdfProg('Seiten werden gezeichnet …', Math.min(96, Math.round(y / canvas.height * 90) + 8), '');
+        sc.getContext('2d').drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
+        pdf.addImage(sc.toDataURL('image/jpeg', 0.85), 'JPEG', x, y, wmm, hmm, '', 'FAST');
+        return hmm;
       }
-      pdfProg('Speichern …', 100, '');
-      try { pdf.save(filename); } catch (e) { alert('PDF-Fehler: ' + e.message); }
-      try { document.body.removeChild(host); } catch (e) {}
-      restoreLinks(); setTimeout(pdfHide, 250);
-    }).catch(function (e) {
-      try { document.body.removeChild(host); } catch (e2) {}
-      restoreLinks(); pdfHide();
-      alert('PDF konnte nicht erstellt werden (' + (e && e.message || e) + '). Bitte „Drucken" nutzen.');
-    });
+      function place(canvas, breakBefore) {
+        var hmm = (canvas.height / SCALE) * mmPerPx, left = availH - (cursorY - M);
+        if (!first && (breakBefore || hmm > left + 0.5) && cursorY > M + 0.2) { pdf.addPage(); cursorY = M; }
+        if (hmm <= availH + 0.5) { cursorY += addSlice(canvas, 0, canvas.height, cursorY) + 3; first = false; drawn++; return; }
+        /* Block länger als eine Seite: an weißen Zwischenräumen schneiden.
+           Wichtig: Wenn oben schon eine frische Seite begonnen wurde, darf die
+           erste Scheibe KEINE weitere Seite anfangen (sonst Leerseiten). */
+        var ctx = canvas.getContext('2d'), y = 0, guard = 0, lastH = 0;
+        var needPage = !(first || cursorY <= M + 0.2);
+        while (y < canvas.height - 2 && guard++ < 400) {
+          var target = Math.min(y + pageHpx, canvas.height), cut = target;
+          if (target < canvas.height) {
+            var lim = Math.max(y + Math.round(pageHpx * 0.55), target - Math.round(pageHpx * 0.3));
+            for (var yy = target; yy > lim; yy -= 3) { if (rowClear(ctx, canvas.width, yy)) { cut = yy; break; } }
+          }
+          if (needPage) pdf.addPage();
+          needPage = true;
+          lastH = addSlice(canvas, y, cut - y, M); first = false; y = cut;
+        }
+        cursorY = M + lastH + 3; drawn++;
+      }
+      var i = 0;
+      function step() {
+        if (i >= blocks.length) {
+          if (!drawn) { bail('PDF konnte nicht erstellt werden — bitte „Drucken" nutzen.'); return; }
+          pdfProg('Speichern …', 100, '');
+          try { pdf.save(filename); } catch (e) { alert('PDF-Fehler: ' + e.message); }
+          cleanup(); setTimeout(pdfHide, 250); return;
+        }
+        var block = blocks[i];
+        var breakBefore = /\b(cover|lesson)\b/.test(block.className || '');
+        h2c(block, { scale: SCALE, backgroundColor: '#ffffff', useCORS: true, logging: false, imageTimeout: 0 })
+          .then(function (canvas) { try { place(canvas, breakBefore); } catch (e) {} next(); })
+          .catch(function () { next(); });
+        function next() { i++; pdfProg('Seiten werden gezeichnet …', Math.min(97, Math.round(i / blocks.length * 93) + 4), i + ' / ' + blocks.length); setTimeout(step, 0); }
+      }
+      step();
+    }
   }
 
-  /* Infoblatt (Lernblatt für den Schüler) */
+  /* Infoblatt (Lernblatt für den Schüler) — gleicher Inhalt wie die Info-Seite im Heft (infoInner). */
   function infoBody(mid, nr) {
     var m = findModule(mid); if (!m) return null; var f = lessonOf(m, nr); if (!f) return null;
     var lek = f.lek, theme = f.theme, acc = m.farbe || '#6C4CE0';
     var b = '<div class="hd"><div class="k">Modul ' + esc(m.nr) + ' · ' + esc(theme.titel) + ' · Infoblatt</div><h1>' + rich(lek.titel) + '</h1></div>';
-    b += '<div class="goal">🎯 <b>Das lernst du:</b> ' + rich(lek.lernziel || '') + '</div>';
-    if (lek.visual) { var vh = VIS.render(lek.visual, acc); if (vh) b += '<div class="fig">' + vh + (lek.visual.caption ? '<div class="cap">' + rich(lek.visual.caption) + '</div>' : '') + '</div>'; }
-    if (lek.erklaerung && lek.erklaerung.length) {
-      b += '<div class="sec"><div class="sec-h">Das musst du wissen</div>';
-      lek.erklaerung.forEach(function (s, i) { b += '<div class="step"><div class="n">' + (i + 1) + '</div><div><div class="t">' + rich(s.titel || '') + '</div><div>' + rich(s.text) + '</div>' + (s.beispiel ? '<div class="ex"><b>Beispiel:</b> ' + rich(s.beispiel) + '</div>' : '') + '</div></div>'; });
-      b += '</div>';
-    }
-    if (lek.merksatz) b += '<div class="merk"><div class="l">📌 Das merke ich mir</div><div class="x">' + rich(lek.merksatz) + '</div></div>';
-    if (lek.musterl) b += '<div class="sec"><div class="sec-h">So rechnest du — ein Beispiel</div><div class="mus"><div class="q">' + rich(lek.musterl.a) + '</div><ol>' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div></div>';
-    if (lek.wortschatz && lek.wortschatz.length) b += '<div class="sec"><div class="sec-h">Wichtige Wörter</div><div class="voc">' + lek.wortschatz.map(function (wv) { return '<span><b>' + esc(wv.de) + '</b><i>' + esc(wv.fr) + '</i></span>'; }).join('') + '</div></div>';
+    b += infoInner(m, lek);
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Infoblatt · Lektion ' + esc(lek.nr) + '</div>';
     return { title: 'Infoblatt – ' + lek.titel, acc: acc, body: b, file: 'Infoblatt_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + '.html' };
   }
@@ -656,7 +673,8 @@ window.KB_MATHE = (function () {
     b += '<div class="name"><span><b>Name:</b> ______________________</span><span><b>Datum:</b> ______________</span></div>';
     if (lek.merksatz) b += '<div class="remind"><div class="l">Denk dran</div>' + rich(lek.merksatz) + '</div>';
     if (lek.visual && lek.visual.tool !== false) { var vh = VIS.render(lek.visual, acc); if (vh) b += '<div class="fig">' + vh + (lek.visual.caption ? '<div class="cap">' + rich(lek.visual.caption) + '</div>' : '') + '</div>'; }
-    if (lek.musterl) b += '<div class="mus" style="margin-bottom:14px"><div class="q">✅ So geht\'s: ' + rich(lek.musterl.a) + '</div><ol>' + (lek.musterl.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (lek.musterl.erg ? '<div class="e">➜ ' + rich(lek.musterl.erg) + '</div>' : '') + '</div>';
+    var ml0 = musterlList(lek)[0];
+    if (ml0) b += '<div class="mus" style="margin-bottom:14px"><div class="q">✅ So geht\'s: ' + rich(ml0.a) + '</div><ol>' + (ml0.schritte || []).map(function (s) { return '<li>' + rich(s) + '</li>'; }).join('') + '</ol>' + (ml0.erg ? '<div class="e">➜ ' + rich(ml0.erg) + '</div>' : '') + '</div>';
     b += '<div class="sec-h">Deine Aufgaben</div>';
     if (lvl.hinweis) b += '<div class="hint">' + rich(lvl.hinweis) + '</div>';
     b += '<ol class="tasks">';
