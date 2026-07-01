@@ -824,6 +824,10 @@ var SHELL_BODY_TOP = `
         <button class="kb-link" data-kb-nav="material"><span class="kb-ic">🧰</span>Material-Bibliothek</button>
       </div>
       <div class="kb-navgroup">
+        <div class="kb-navlabel">Lehrplan</div>
+        <button class="kb-link" data-kb-nav="mathe"><span class="kb-ic">📐</span>Mathe 5ᵉ PF</button>
+      </div>
+      <div class="kb-navgroup">
         <div class="kb-navlabel">Klinisch</div>
         <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
       </div>
@@ -1271,7 +1275,7 @@ var SHELL_CONTROLLER = `
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','sav-root','isa-root','kb-klasse','kb-data'];
+  var PANELS=['anw-root','dos-root','sav-root','isa-root','kb-mathe','kb-klasse','kb-data'];
   var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
@@ -1295,6 +1299,9 @@ var SHELL_CONTROLLER = `
     } else if(nav==='material'){
       showPanel('isa-root'); setActive('material');
       if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
+    } else if(nav==='mathe'){
+      showPanel('kb-mathe'); setActive('mathe');
+      if(window.KB_MATHE){try{window.KB_MATHE.open();}catch(e){}}
     } else if(nav==='patho'){
       showPanel('sav-root'); setActive('patho');
       var sb=$('sav-bar'); if(sb){sb.style.display='none';}
@@ -2500,6 +2507,13 @@ try { TAXONOMY_JSON = read('taxonomy.json'); } catch (e) { console.warn('taxonom
 try { MATERIALS_MODULE = read('materials-module.js'); } catch (e) { console.warn('materials-module.js fehlt — KB_MATERIALS deaktiviert.'); }
 try { ISA_B64 = fs.readFileSync(path.join(ROOT, 'ISA-App.html')).toString('base64'); }
 catch (e) { console.warn('ISA-App.html fehlt — Material-Tab ohne Bibliothek.'); }
+
+/* Lehrplan-Rubrik: Mathe-Jahresprogramm 5ᵉ PF (getrennt von der Material-Bibliothek) */
+var MATHE_JSON = '{}', MATHE_MODULE = '', MATHE_PDF_B64 = '';
+try { MATHE_JSON = read('mathe-programm.json'); } catch (e) { console.warn('mathe-programm.json fehlt — Lehrplan leer.'); }
+try { MATHE_MODULE = read('mathe-module.js'); } catch (e) { console.warn('mathe-module.js fehlt — KB_MATHE deaktiviert.'); }
+try { MATHE_PDF_B64 = fs.readFileSync(path.join(ROOT, 'PROG_5PF_MATHE.pdf')).toString('base64'); } catch (e) { console.warn('PROG_5PF_MATHE.pdf fehlt — Original-PDF nicht eingebettet.'); }
+
 function jsonForScript(s) { return String(s).replace(/</g, '\\u003c').replace(new RegExp(String.fromCharCode(0x2028), 'g'), '\\u2028').replace(new RegExp(String.fromCharCode(0x2029), 'g'), '\\u2029'); }
 
 var MATERIAL_CSS = `
@@ -2659,6 +2673,174 @@ var MATERIAL_CSS = `
 #dos-root .note-foot-item{ font-size:14px; font-weight:700; color:var(--kb-ink,#23243a); display:flex; align-items:center; gap:8px; }
 `;
 
+/* === Lehrplan-Rubrik (KB_MATHE) — Mathe-Jahresprogramm 5ᵉ PF === */
+var MATHE_CSS = `
+#kb-mathe{ --mc:#6C4CE0; --mc2:#9B7BFF; --tc:#6C4CE0; }
+#kb-mathe .mth-wrap{ max-width:1010px; margin:0 auto; padding:20px 20px 70px; }
+#kb-mathe .mfrac{ display:inline-flex; flex-direction:column; text-align:center; vertical-align:middle; margin:0 3px; line-height:1.02; font-weight:700; }
+#kb-mathe .mfrac .mnum{ border-bottom:2px solid currentColor; padding:0 4px 1px; }
+#kb-mathe .mfrac .mden{ padding:1px 4px 0; }
+
+/* Hero */
+#kb-mathe .mth-hero{ position:relative; overflow:hidden; border-radius:22px; padding:30px 34px; color:#fff;
+  background:linear-gradient(135deg,#6C4CE0 0%,#8B3FC4 55%,#B4308A 100%); box-shadow:0 16px 40px rgba(96,48,160,.28); }
+#kb-mathe .mth-hero::after{ content:"➗ ✕ π √ ∡ %"; position:absolute; right:-6px; bottom:-14px; font-size:74px; opacity:.10; letter-spacing:10px; white-space:nowrap; }
+#kb-mathe .mth-hero-badge{ display:inline-block; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; background:rgba(255,255,255,.22); padding:5px 12px; border-radius:999px; }
+#kb-mathe .mth-hero h1{ margin:12px 0 2px; font-size:31px; font-weight:900; line-height:1.1; }
+#kb-mathe .mth-hero-sub{ font-size:16px; font-weight:700; opacity:.92; }
+#kb-mathe .mth-hero-facts{ display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:16px; }
+#kb-mathe .mth-hero-facts span{ font-size:12.5px; font-weight:600; background:rgba(255,255,255,.16); padding:6px 11px; border-radius:9px; backdrop-filter:blur(2px); }
+
+/* Hinweis / Anleitung */
+#kb-mathe .mth-note{ margin-top:20px; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-left:5px solid var(--mc); border-radius:14px; padding:16px 20px; }
+#kb-mathe .mth-note-t{ font-weight:800; font-size:15px; margin-bottom:6px; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-note ul{ margin:0; padding-left:20px; }
+#kb-mathe .mth-note li{ margin:7px 0; font-size:14px; line-height:1.55; color:var(--kb-ink,#33344a); }
+#kb-mathe .mth-legend{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+#kb-mathe .mth-lg{ font-size:12.5px; font-weight:600; padding:6px 11px; border-radius:9px; }
+#kb-mathe .mth-lg-basis{ background:#e7f7ee; color:#1a7a48; } #kb-mathe .mth-lg-kern{ background:#fdf3d9; color:#9a6b12; } #kb-mathe .mth-lg-plus{ background:#e6effd; color:#1d5fb0; }
+
+/* Original-PDF */
+#kb-mathe .mth-pdf{ display:flex; align-items:center; gap:16px; margin-top:16px; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:14px; padding:14px 18px; }
+#kb-mathe .mth-pdf-ic{ font-size:30px; }
+#kb-mathe .mth-pdf-x{ flex:1; min-width:0; }
+#kb-mathe .mth-pdf-t{ font-weight:800; font-size:15px; }
+#kb-mathe .mth-pdf-s{ font-size:12.5px; color:var(--kb-muted,#777); }
+#kb-mathe .mth-pdf-b{ display:flex; gap:8px; flex-wrap:wrap; }
+
+/* Buttons */
+#kb-mathe .mth-btn{ appearance:none; border:1px solid var(--kb-border,#dcdce6); background:var(--kb-surface,#fff); color:var(--kb-ink,#23243a); font-weight:700; font-size:13.5px; padding:9px 15px; border-radius:11px; cursor:pointer; transition:.15s; font-family:inherit; }
+#kb-mathe .mth-btn:hover{ border-color:var(--mc); color:var(--mc); transform:translateY(-1px); }
+#kb-mathe .mth-btn-p{ background:var(--mc); border-color:var(--mc); color:#fff; }
+#kb-mathe .mth-btn-p:hover{ color:#fff; filter:brightness(1.06); }
+#kb-mathe .mth-btn.on{ background:var(--mc); border-color:var(--mc); color:#fff; }
+#kb-mathe .mth-donebtn.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
+
+/* Jahresübersicht */
+#kb-mathe .mth-h2{ margin:28px 4px 12px; font-size:20px; font-weight:900; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-modules{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; }
+#kb-mathe .mth-mcard{ text-align:left; cursor:pointer; border:none; border-radius:18px; padding:2px; background:linear-gradient(135deg,var(--mc),var(--mc2)); box-shadow:0 8px 22px rgba(60,40,120,.14); transition:.18s; font-family:inherit; }
+#kb-mathe .mth-mcard:hover{ transform:translateY(-3px); box-shadow:0 14px 30px rgba(60,40,120,.22); }
+#kb-mathe .mth-mcard>*{ }
+#kb-mathe .mth-mcard{ color:#fff; }
+#kb-mathe .mth-mcard-inner{}
+#kb-mathe .mth-mcard-top{ display:flex; justify-content:space-between; align-items:center; padding:16px 18px 0; }
+#kb-mathe .mth-mnr{ font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; background:rgba(255,255,255,.22); padding:4px 10px; border-radius:999px; }
+#kb-mathe .mth-mico{ font-size:26px; }
+#kb-mathe .mth-mtitle{ padding:10px 18px 0; font-size:19px; font-weight:900; line-height:1.15; }
+#kb-mathe .mth-munter{ padding:5px 18px 0; font-size:13px; opacity:.92; line-height:1.4; }
+#kb-mathe .mth-chips{ display:flex; flex-wrap:wrap; gap:6px; padding:12px 18px 0; }
+#kb-mathe .mth-chip{ font-size:11.5px; font-weight:700; background:rgba(255,255,255,.18); padding:4px 9px; border-radius:8px; }
+#kb-mathe .mth-mprog{ display:flex; align-items:center; gap:9px; padding:14px 18px 16px; }
+#kb-mathe .mth-mbar{ flex:1; height:8px; border-radius:999px; background:rgba(255,255,255,.28); overflow:hidden; }
+#kb-mathe .mth-mbar i{ display:block; height:100%; background:#fff; border-radius:999px; }
+#kb-mathe .mth-mprog span{ font-size:12px; font-weight:800; white-space:nowrap; }
+#kb-mathe .mth-footnote{ margin:22px 4px 0; font-size:12.5px; color:var(--kb-muted,#888); font-style:italic; }
+
+/* Zurück / Modulkopf */
+#kb-mathe .mth-back{ appearance:none; border:none; background:none; color:var(--mc); font-weight:800; font-size:14px; cursor:pointer; padding:4px 0; margin-bottom:8px; font-family:inherit; }
+#kb-mathe .mth-back:hover{ text-decoration:underline; }
+#kb-mathe .mth-modhead{ display:flex; gap:18px; align-items:flex-start; border-radius:20px; padding:24px 26px; color:#fff; background:linear-gradient(135deg,var(--mc),var(--mc2)); box-shadow:0 12px 30px rgba(60,40,120,.2); }
+#kb-mathe .mth-modhead-ic{ font-size:42px; line-height:1; }
+#kb-mathe .mth-modhead-nr{ font-size:12px; font-weight:800; letter-spacing:.07em; text-transform:uppercase; opacity:.9; }
+#kb-mathe .mth-modhead h1{ margin:3px 0 6px; font-size:26px; font-weight:900; line-height:1.12; }
+#kb-mathe .mth-modhead p{ margin:0; font-size:14px; opacity:.94; line-height:1.5; }
+#kb-mathe .mth-mprog-lg{ padding:14px 0 0; }
+#kb-mathe .mth-mprog-lg .mth-mbar{ max-width:340px; }
+
+/* Themen + Lektionsliste */
+#kb-mathe .mth-theme{ margin-top:22px; }
+#kb-mathe .mth-theme-head{ display:flex; align-items:center; gap:12px; margin:0 2px 10px; }
+#kb-mathe .mth-theme-ic{ font-size:24px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:12px; background:color-mix(in srgb, var(--tc) 14%, #fff); }
+#kb-mathe .mth-theme-t{ font-size:18px; font-weight:900; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-theme-z{ font-size:12.5px; color:var(--kb-muted,#888); margin-top:1px; }
+#kb-mathe .mth-lrows{ display:flex; flex-direction:column; gap:9px; }
+#kb-mathe .mth-lrow{ display:flex; align-items:center; gap:14px; text-align:left; cursor:pointer; width:100%; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-left:4px solid var(--tc); border-radius:13px; padding:13px 16px; transition:.15s; font-family:inherit; }
+#kb-mathe .mth-lrow:hover{ transform:translateX(3px); box-shadow:0 6px 16px rgba(60,40,120,.1); border-color:var(--tc); }
+#kb-mathe .mth-lrow.is-done{ background:color-mix(in srgb, var(--tc) 5%, #fff); }
+#kb-mathe .mth-lrow-nr{ flex:0 0 34px; height:34px; border-radius:9px; background:color-mix(in srgb, var(--tc) 14%, #fff); color:var(--tc); font-weight:900; font-size:16px; display:flex; align-items:center; justify-content:center; }
+#kb-mathe .mth-lrow-x{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+#kb-mathe .mth-lrow-t{ font-weight:800; font-size:15px; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-lrow-goal{ font-size:12.5px; color:var(--kb-muted,#7a7a88); }
+#kb-mathe .mth-lrow-d{ font-size:11.5px; font-weight:700; color:var(--kb-muted,#999); white-space:nowrap; }
+#kb-mathe .mth-lrow-chk{ flex:0 0 24px; height:24px; border-radius:50%; border:2px solid var(--kb-border,#dcdce6); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:900; font-size:13px; }
+#kb-mathe .mth-lrow.is-done .mth-lrow-chk{ background:#1a7a48; border-color:#1a7a48; }
+
+/* Lektion */
+#kb-mathe .mth-lbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+#kb-mathe .mth-lbar-b{ display:flex; gap:8px; flex-wrap:wrap; }
+#kb-mathe .mth-crumb{ font-size:12.5px; font-weight:700; color:var(--tc); text-transform:uppercase; letter-spacing:.04em; }
+#kb-mathe .mth-ltitle{ margin:4px 0 14px; font-size:27px; font-weight:900; line-height:1.14; color:var(--kb-ink,#20213a); }
+#kb-mathe .mth-goal{ background:linear-gradient(135deg, color-mix(in srgb,var(--mc) 12%,#fff), color-mix(in srgb,var(--mc2) 10%,#fff)); border:1px solid color-mix(in srgb,var(--mc) 26%,#fff); border-radius:14px; padding:13px 18px; font-size:15.5px; line-height:1.5; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-meta{ display:flex; flex-wrap:wrap; gap:8px 16px; margin:14px 2px 0; }
+#kb-mathe .mth-meta-i{ font-size:13px; font-weight:600; color:var(--kb-muted,#666); }
+#kb-mathe .mth-voc-wrap{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:12px 0 0; }
+#kb-mathe .mth-voc-lbl{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--kb-muted,#999); }
+#kb-mathe .mth-voc{ font-size:12.5px; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:9px; padding:5px 10px; }
+#kb-mathe .mth-voc b{ color:var(--kb-ink,#23243a); } #kb-mathe .mth-voc i{ color:var(--kb-muted,#999); font-style:normal; margin-left:6px; }
+
+#kb-mathe .mth-sec{ margin-top:22px; }
+#kb-mathe .mth-sec-h{ font-size:16px; font-weight:900; color:var(--kb-ink,#23243a); margin-bottom:11px; padding-bottom:6px; border-bottom:2px solid color-mix(in srgb,var(--tc) 20%,#eee); }
+#kb-mathe .mth-sec-start{ background:#fff8ed; border:1px solid #f2dcb5; border-radius:14px; padding:14px 18px; }
+#kb-mathe .mth-sec-start .mth-sec-h{ border:none; padding:0; margin-bottom:6px; color:#9a6b12; }
+#kb-mathe .mth-sec-start p{ margin:0; font-size:14.5px; line-height:1.55; }
+
+/* Erklär-Schritte */
+#kb-mathe .mth-steps{ display:flex; flex-direction:column; gap:12px; }
+#kb-mathe .mth-step{ display:flex; gap:14px; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-radius:14px; padding:14px 16px; }
+#kb-mathe .mth-step-n{ flex:0 0 30px; height:30px; border-radius:50%; background:var(--mc); color:#fff; font-weight:900; font-size:15px; display:flex; align-items:center; justify-content:center; }
+#kb-mathe .mth-step-x{ flex:1; min-width:0; }
+#kb-mathe .mth-step-t{ font-weight:800; font-size:15px; margin-bottom:3px; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-step-txt{ font-size:14.5px; line-height:1.55; color:var(--kb-ink,#33344a); }
+#kb-mathe .mth-ex{ margin-top:9px; background:color-mix(in srgb,var(--mc) 7%,#fff); border-left:3px solid var(--mc); border-radius:8px; padding:9px 13px; font-size:14.5px; line-height:1.55; }
+#kb-mathe .mth-ex span{ display:inline-block; font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--mc); margin-right:6px; }
+
+/* Merksatz */
+#kb-mathe .mth-merk{ display:flex; gap:14px; margin-top:20px; background:linear-gradient(135deg,#fffdf5,#fff8e8); border:2px dashed #e6c65c; border-radius:16px; padding:16px 20px; }
+#kb-mathe .mth-merk-ic{ font-size:26px; }
+#kb-mathe .mth-merk-t{ font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.07em; color:#9a6b12; margin-bottom:3px; }
+#kb-mathe .mth-merk{ font-size:15.5px; line-height:1.55; font-weight:600; color:#4a3d13; }
+
+/* Aufgabenlisten */
+#kb-mathe .mth-tasks{ margin:0; padding-left:22px; }
+#kb-mathe .mth-tasks li{ margin:11px 0; }
+#kb-mathe .mth-task-q{ font-size:14.5px; line-height:1.5; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-solbtn{ appearance:none; margin-top:6px; border:1px solid var(--kb-border,#dcdce6); background:var(--kb-bg,#f6f6fb); color:var(--kb-muted,#777); font-weight:700; font-size:12px; padding:3px 11px; border-radius:8px; cursor:pointer; font-family:inherit; }
+#kb-mathe .mth-solbtn:hover{ border-color:#1a7a48; color:#1a7a48; }
+#kb-mathe .mth-solbtn.on{ background:#1a7a48; border-color:#1a7a48; color:#fff; }
+#kb-mathe .mth-sol{ display:none; margin-top:6px; background:#eef8f1; border-left:3px solid #1a7a48; border-radius:8px; padding:8px 13px; font-size:14px; line-height:1.5; color:#175f39; }
+#kb-mathe .mth-sol.open{ display:block; }
+#kb-mathe .mth-lesson.allsol .mth-sol{ display:block; }
+#kb-mathe .mth-lesson.allsol .mth-solbtn{ display:none; }
+
+/* Drei Niveaus */
+#kb-mathe .mth-levels{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+#kb-mathe .mth-level{ border:1px solid var(--kb-border,#ececf3); border-top:4px solid #ccc; border-radius:14px; padding:12px 15px 6px; background:var(--kb-surface,#fff); }
+#kb-mathe .mth-level-basis{ border-top-color:#2aa85f; } #kb-mathe .mth-level-kern{ border-top-color:#e0a821; } #kb-mathe .mth-level-plus{ border-top-color:#2d78d6; }
+#kb-mathe .mth-level-h{ font-size:15px; font-weight:900; color:var(--kb-ink,#23243a); }
+#kb-mathe .mth-level-h span{ display:block; font-size:11.5px; font-weight:600; color:var(--kb-muted,#999); margin-top:1px; }
+#kb-mathe .mth-level-hint{ font-size:12.5px; font-style:italic; color:var(--kb-muted,#888); margin:6px 0 0; }
+#kb-mathe .mth-level .mth-tasks{ padding-left:20px; }
+#kb-mathe .mth-level .mth-tasks li{ margin:9px 0; }
+
+/* Exit / Tipp / Spiel */
+#kb-mathe .mth-exit{ margin-top:22px; background:color-mix(in srgb,var(--mc) 9%,#fff); border:1px solid color-mix(in srgb,var(--mc) 22%,#fff); border-radius:14px; padding:14px 18px; font-size:14.5px; line-height:1.55; }
+#kb-mathe .mth-exit-t{ font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:var(--mc); margin-bottom:4px; }
+#kb-mathe .mth-tip{ margin-top:14px; background:#f3f7ff; border:1px dashed #b8c8e8; border-radius:14px; padding:13px 18px; font-size:14px; line-height:1.55; color:#33405c; }
+#kb-mathe .mth-tip-t{ font-weight:900; font-size:12.5px; color:#2d5296; margin-bottom:3px; }
+#kb-mathe .mth-spiel{ margin-top:12px; background:#fef4fb; border:1px dashed #eabbdd; border-radius:14px; padding:13px 18px; font-size:14px; line-height:1.55; color:#6a2a58; }
+#kb-mathe .mth-spiel-t{ font-weight:900; font-size:12.5px; color:#a53384; margin-bottom:3px; }
+
+/* Vor/Zurück */
+#kb-mathe .mth-nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:30px; padding-top:18px; border-top:1px solid var(--kb-border,#ececf3); }
+
+@media (max-width:640px){
+  #kb-mathe .mth-hero{ padding:22px 20px; } #kb-mathe .mth-hero h1{ font-size:25px; }
+  #kb-mathe .mth-ltitle{ font-size:22px; } #kb-mathe .mth-modhead{ flex-direction:column; gap:10px; }
+  #kb-mathe .mth-lbar-b{ width:100%; }
+}
+`;
+
 /* Noten & Module pro Schüler/Fach. Noten auf /60 (LU), automatische
    Umrechnung „erreicht von X" -> /60; Module-Fortschritt je Schulfach. */
 var NOTEN_MODULE = `
@@ -2791,6 +2973,7 @@ var parts = [
   '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
   '/* === Material / Isa-Toolbox === */', MATERIAL_CSS,
+  '/* === Lehrplan (Mathe) === */', MATHE_CSS,
   '</style>',
   '</head>',
   '<body>',
@@ -2802,6 +2985,7 @@ var parts = [
   savBody,
   '</section>',
   '<section class="kb-panel" id="isa-root"><div class="isa-host" id="isa-host"></div></section>',
+  '<section class="kb-panel" id="kb-mathe"></section>',
   SHELL_PANELS_EXTRA,
   '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
   '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
@@ -2817,6 +3001,9 @@ var parts = [
   '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
+  '<script>window.KB_MATHE_DATA=' + jsonForScript(MATHE_JSON) + ';</' + 'script>',
+  '<script type="application/octet-stream" id="kb-mathe-pdf-b64">' + MATHE_PDF_B64 + '</' + 'script>',
+  '<script>' + MATHE_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
   '</body>',
