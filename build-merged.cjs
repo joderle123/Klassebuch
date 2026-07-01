@@ -2756,10 +2756,15 @@ var MATHE_CSS = `
 
 /* Themen + Lektionsliste */
 #kb-mathe .mth-theme{ margin-top:22px; }
-#kb-mathe .mth-theme-head{ display:flex; align-items:center; gap:12px; margin:0 2px 10px; }
+#kb-mathe .mth-theme-head{ display:flex; align-items:center; gap:12px; margin:0 2px 10px; flex-wrap:wrap; }
 #kb-mathe .mth-theme-ic{ font-size:24px; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:12px; background:color-mix(in srgb, var(--tc) 14%, #fff); }
+#kb-mathe .mth-theme-hx{ flex:1; min-width:170px; }
 #kb-mathe .mth-theme-t{ font-size:18px; font-weight:900; color:var(--kb-ink,#23243a); }
 #kb-mathe .mth-theme-z{ font-size:12.5px; color:var(--kb-muted,#888); margin-top:1px; }
+#kb-mathe .mth-theme-dl{ display:flex; gap:8px; flex-wrap:wrap; margin-left:auto; }
+#kb-mathe .mth-btn-sm{ font-size:12.5px; padding:7px 11px; border-radius:9px; }
+#kb-mathe .mth-theme-dl .mth-btn-p{ --mc:var(--tc); }
+#kb-mathe .mth-theme-dl .mth-btn-dl{ --mc:var(--tc); }
 #kb-mathe .mth-lrows{ display:flex; flex-direction:column; gap:9px; }
 #kb-mathe .mth-lrow{ display:flex; align-items:center; gap:14px; text-align:left; cursor:pointer; width:100%; background:var(--kb-surface,#fff); border:1px solid var(--kb-border,#ececf3); border-left:4px solid var(--tc); border-radius:13px; padding:13px 16px; transition:.15s; font-family:inherit; }
 #kb-mathe .mth-lrow:hover{ transform:translateX(3px); box-shadow:0 6px 16px rgba(60,40,120,.1); border-color:var(--tc); }

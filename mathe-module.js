@@ -347,8 +347,9 @@ window.KB_MATHE = (function () {
       '<span class="mth-gchip' + (state.gen.count === 40 ? ' on' : '') + '" data-mth="gen-count" data-n="40">viele Aufgaben</span>' +
       '</div>' +
       '<div class="mth-ghint">Ein komplettes Heft mit allen Lektionen: Erklärung, Bild, Merksatz, Musteraufgabe und Übungsseiten. „Speichern" legt das Heft als Datei ab (offline nutzbar, mit Knopf „Als PDF speichern"); „Drucken" öffnet direkt den Druckdialog.</div></div>';
-    (m.themen || []).forEach(function (t) {
-      h += '<div class="mth-theme" style="--tc:' + esc(t.farbe || m.farbe || '#6C4CE0') + '"><div class="mth-theme-head"><span class="mth-theme-ic">' + esc(t.icon || '') + '</span><div><div class="mth-theme-t">' + esc(t.titel) + '</div>' + ((t.ziele && t.ziele.length) ? '<div class="mth-theme-z">' + t.ziele.map(esc).join(' · ') + '</div>' : '') + '</div></div><div class="mth-lrows">';
+    (m.themen || []).forEach(function (t, ti) {
+      h += '<div class="mth-theme" style="--tc:' + esc(t.farbe || m.farbe || '#6C4CE0') + '"><div class="mth-theme-head"><span class="mth-theme-ic">' + esc(t.icon || '') + '</span><div class="mth-theme-hx"><div class="mth-theme-t">' + esc(t.titel) + '</div>' + ((t.ziele && t.ziele.length) ? '<div class="mth-theme-z">' + t.ziele.map(esc).join(' · ') + '</div>' : '') + '</div>' +
+        '<div class="mth-theme-dl"><button class="mth-btn mth-btn-p mth-btn-sm" data-mth="print-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">📖 Kapitel drucken</button><button class="mth-btn mth-btn-dl mth-btn-sm" data-mth="download-theme" data-mid="' + esc(m.id) + '" data-tix="' + ti + '">⬇️ Kapitel speichern</button></div></div><div class="mth-lrows">';
       (t.lektionen || []).forEach(function (l) {
         var done = isDone(m.id, l.nr);
         h += '<button class="mth-lrow' + (done ? ' is-done' : '') + '" data-mth="lesson" data-mid="' + esc(m.id) + '" data-nr="' + esc(l.nr) + '"><span class="mth-lrow-nr">' + esc(l.nr) + '</span><span class="mth-lrow-x"><span class="mth-lrow-t">' + rich(l.titel) + '</span><span class="mth-lrow-goal">🎯 ' + rich(l.lernziel || '') + '</span></span>' + (l.dauer ? '<span class="mth-lrow-d">' + esc(l.dauer) + '</span>' : '') + '<span class="mth-lrow-chk">' + (done ? '✓' : '') + '</span></button>';
@@ -646,22 +647,38 @@ window.KB_MATHE = (function () {
     });
     return b;
   }
+  function lessonBlocks(m, lekList, sol, count) {
+    var b = '';
+    (lekList || []).forEach(function (lek) {
+      b += '<div class="lesson"><div class="lhd"><span class="lhd-n">Lektion ' + esc(lek.nr) + '</span>' + rich(lek.titel) + '</div><div class="linfo">' + infoInner(m, lek) + '</div></div>';
+      if (lek.gen) { ['basis', 'kern', 'plus'].forEach(function (level) { b += '<div class="lesson lesson-ex">' + genPage(m, lek, level, sol, count) + '</div>'; }); }
+      else { b += '<div class="lesson lesson-ex">' + curatedPage(m, lek, sol) + '</div>'; }
+    });
+    return b;
+  }
   function moduleBody(mid) {
     var m = findModule(mid); if (!m) return null; var acc = m.farbe || '#6C4CE0', sol = state.printSol, count = Math.max(24, state.gen.count || 24);
     var b = '<div class="cover"><div class="cov-k">Mathematik · ' + esc((DATA.meta || {}).klasse || '') + '</div><div class="cov-nr">Modul ' + esc(m.nr) + '</div><h1>' + esc(m.titel) + '</h1><div class="cov-sub">' + esc(m.unter || '') + '</div><div class="cov-th">' + (m.themen || []).map(function (t) { return '<span>' + esc(t.icon || '') + ' ' + esc(t.titel) + '</span>'; }).join('') + '</div></div>';
     (m.themen || []).forEach(function (t) {
       b += '<div class="tdiv" style="border-color:' + (t.farbe || acc) + ';color:' + (t.farbe || acc) + '">' + esc(t.icon || '') + ' ' + esc(t.titel) + '</div>';
-      (t.lektionen || []).forEach(function (lek) {
-        b += '<div class="lesson"><div class="lhd"><span class="lhd-n">Lektion ' + esc(lek.nr) + '</span>' + rich(lek.titel) + '</div><div class="linfo">' + infoInner(m, lek) + '</div></div>';
-        if (lek.gen) { ['basis', 'kern', 'plus'].forEach(function (level) { b += '<div class="lesson lesson-ex">' + genPage(m, lek, level, sol, count) + '</div>'; }); }
-        else { b += '<div class="lesson lesson-ex">' + curatedPage(m, lek, sol) + '</div>'; }
-      });
+      b += lessonBlocks(m, t.lektionen, sol, count);
     });
     b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Modul ' + esc(m.nr) + ' · ' + esc(m.titel) + (sol ? ' · Lösungsheft' : '') + '</div>';
     return { m: m, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' – ' + m.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_' + safeFile(m.titel) + (sol ? '_Loesungsheft' : '_Heft') + '.html' };
   }
   function printModule(mid) { var d = moduleBody(mid); if (d) printDoc(d.title, d.acc, d.body); }
   function downloadModule(mid) { var d = moduleBody(mid); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
+  /* ---------- Ein Kapitel (Thema) als Heft ---------- */
+  function themeBody(mid, tix) {
+    var m = findModule(mid); if (!m) return null; var t = (m.themen || [])[+tix]; if (!t) return null;
+    var acc = t.farbe || m.farbe || '#6C4CE0', sol = state.printSol, count = Math.max(24, state.gen.count || 24);
+    var b = '<div class="cover"><div class="cov-k">Mathematik · ' + esc((DATA.meta || {}).klasse || '') + ' · Modul ' + esc(m.nr) + '</div><div class="cov-nr">' + esc(t.icon || '') + ' Kapitel</div><h1>' + esc(t.titel) + '</h1>' + ((t.ziele && t.ziele.length) ? '<div class="cov-sub">' + esc(t.ziele.join(' · ')) + '</div>' : '') + '</div>';
+    b += lessonBlocks(m, t.lektionen, sol, count);
+    b += '<div class="foot">Mathe ' + esc((DATA.meta || {}).klasse || '') + ' · Modul ' + esc(m.nr) + ' · Kapitel „' + esc(t.titel) + '"' + (sol ? ' · Lösungsheft' : '') + '</div>';
+    return { m: m, t: t, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' · ' + t.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_Kapitel_' + safeFile(t.titel) + (sol ? '_Loesungen' : '') + '.html' };
+  }
+  function printTheme(mid, tix) { var d = themeBody(mid, tix); if (d) printDoc(d.title, d.acc, d.body); }
+  function downloadTheme(mid, tix) { var d = themeBody(mid, tix); if (d) downloadDoc(d.file, d.title, d.acc, d.body); }
 
   /* ---------- PDF ---------- */
   function pdfBlobUrl() {
@@ -688,6 +705,8 @@ window.KB_MATHE = (function () {
     else if (a === 'download-ab') { downloadSheet(t.getAttribute('data-mid'), t.getAttribute('data-nr'), t.getAttribute('data-lvl'), state.printSol); }
     else if (a === 'print-module') { printModule(t.getAttribute('data-id')); }
     else if (a === 'download-module') { downloadModule(t.getAttribute('data-id')); }
+    else if (a === 'print-theme') { printTheme(t.getAttribute('data-mid'), t.getAttribute('data-tix')); }
+    else if (a === 'download-theme') { downloadTheme(t.getAttribute('data-mid'), t.getAttribute('data-tix')); }
     else if (a === 'gen-lvl') { state.gen.lvl = t.getAttribute('data-lvl'); regenGen(); updateGenBox(); }
     else if (a === 'gen-count') { state.gen.count = +t.getAttribute('data-n'); regenGen(); updateGenBox(); }
     else if (a === 'gen-new') { regenGen(); updateGenBox(); }
