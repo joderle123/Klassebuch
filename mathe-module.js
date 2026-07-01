@@ -169,11 +169,25 @@ window.KB_MATHE = (function () {
       return frame(x + 50, 92, s);
     }
 
+    function rechteck(o) {
+      o = o || {}; var col = o.color || '#1668C4', W = 340, H = 210, x = 78, y = 34, rw = 208, rh = 128;
+      var bx = x - 20, by = y + rh / 2;
+      var s = '<rect x="' + x + '" y="' + y + '" width="' + rw + '" height="' + rh + '" fill="' + col + '18" stroke="#2b2b3a" stroke-width="2.2"/>';
+      s += '<text x="' + (x + rw / 2) + '" y="' + (y + rh + 27) + '" text-anchor="middle" font-size="15" font-weight="800">L' + (o.lLabel ? ' = ' + esc(o.lLabel) : '') + '</text>';
+      s += '<text x="' + bx + '" y="' + by + '" text-anchor="middle" font-size="15" font-weight="800" fill="' + col + '" transform="rotate(-90 ' + bx + ' ' + by + ')">B' + (o.bLabel ? ' = ' + esc(o.bLabel) : '') + '</text>';
+      return frame(W, H, s);
+    }
+    function balken(o) {
+      o = o || {}; var col = o.color || '#1668C4', data = o.data || [{ l: 'A', v: 3 }, { l: 'B', v: 5 }, { l: 'C', v: 2 }], W = 340, H = 210, bw = 42, gap = 26, x0 = 44, base = 165, maxv = 1;
+      data.forEach(function (d) { if (d.v > maxv) maxv = d.v; }); var scale = 120 / maxv, s = '<line x1="30" y1="' + base + '" x2="' + (W - 10) + '" y2="' + base + '" stroke="#2b2b3a" stroke-width="1.5"/>', x = x0;
+      data.forEach(function (d) { var bh = d.v * scale; s += '<rect x="' + x + '" y="' + (base - bh) + '" width="' + bw + '" height="' + bh + '" fill="' + col + '" stroke="#2b2b3a" stroke-width="1"/>'; s += '<text x="' + (x + bw / 2) + '" y="' + (base - bh - 6) + '" text-anchor="middle" font-size="13" font-weight="800">' + d.v + '</text>'; s += '<text x="' + (x + bw / 2) + '" y="' + (base + 17) + '" text-anchor="middle" font-size="12">' + esc(d.l) + '</text>'; x += bw + gap; });
+      return frame(W, H, s);
+    }
     var TYPES = {
       numberline: numberline, grid100: grid100, fractionbar: function (o) { return fractionbar(o.num, o.den, o); },
       fractionbars: function (o) { return fractionbars(o.list, o); }, fractioncircle: function (o) { return fractioncircle(o.num, o.den, o); },
       coordgrid: coordgrid, triangle: triangle, parallelogram: parallelogram, trapez: trapez, circle: circleShape, angle: angle,
-      digits: digits, quersumme: quersumme
+      rechteck: rechteck, balken: balken, digits: digits, quersumme: quersumme
     };
     function render(v, color) {
       if (!v || !v.type || !TYPES[v.type]) return '';
@@ -260,6 +274,14 @@ window.KB_MATHE = (function () {
     T.masse = function (sp, lvl) { var p = pick([['t', 1000, 'kg'], ['kg', 1000, 'g']]); var n = ri(1, 9); return { a: n + ' ' + p[0] + ' = ___ ' + p[2], l: grp(n * p[1]) + ' ' + p[2] }; };
     T.umfang = function (sp, lvl) { var f = pick(['quadrat', 'rechteck', 'dreieck']); if (f === 'quadrat') { var a = ri(2, 20); return { a: 'Umfang eines Quadrats mit Seite ' + a + ' cm?', l: '4 · ' + a + ' = ' + (4 * a) + ' cm' }; } if (f === 'rechteck') { var l1 = ri(3, 20), b = ri(2, l1 - 1); return { a: 'Umfang eines Rechtecks: Länge ' + l1 + ' cm, Breite ' + b + ' cm?', l: '2 · (' + l1 + ' + ' + b + ') = ' + (2 * (l1 + b)) + ' cm' }; } var x = ri(3, 12), y = ri(3, 12), zz = ri(3, 12); return { a: 'Umfang eines Dreiecks mit den Seiten ' + x + ' cm, ' + y + ' cm und ' + zz + ' cm?', l: x + ' + ' + y + ' + ' + zz + ' = ' + (x + y + zz) + ' cm' }; };
     T.geoNotation = function (sp, lvl) { var q = pick([['Wie schreibt man die Gerade durch die Punkte A und B?', '(AB)'], ['Wie schreibt man die Strecke von A bis B?', '[AB]'], ['Wie schreibt man die Halbgerade mit Anfangspunkt A durch B?', '[AB)'], ['Welche Klammern benutzt man für eine Strecke?', 'eckige Klammern [ ]'], ['Hat eine Gerade eine Länge?', 'Nein – sie ist zu beiden Seiten unendlich lang'], ['Hat eine Strecke einen Anfangs- und einen Endpunkt?', 'Ja']]); return { a: q[0], l: q[1] }; };
+
+    /* ---- Modul 3: Dezimalzahlen (mal/geteilt), Flächeninhalt, Temperatur, Statistik ---- */
+    T.rundenEinheit = function (sp, lvl) { var w = ri(1, lvl === 'basis' ? 20 : 99), z = ri(1, 9), h = lvl === 'basis' ? null : (Math.random() < 0.6 ? ri(0, 9) : null); var s = w + ',' + z + (h !== null ? '' + h : ''); var v = parseFloat(w + '.' + z + (h !== null ? '' + h : '')); return { a: 'Runde ' + s + ' auf die Einheit (ganze Zahl).', l: '≈ ' + Math.round(v) }; };
+    T.dezimalMalGanz = function (sp, lvl) { var dp = lvl === 'basis' ? 1 : pick([1, 2]), f = Math.pow(10, dp); var a = ri(11, lvl === 'basis' ? 99 : 999) / f; var m = ri(2, lvl === 'basis' ? 5 : 9); function d(x) { return (Math.round(x * 1000) / 1000).toString().replace('.', ','); } return { a: d(a) + ' · ' + m + ' =', l: d(a * m) }; };
+    T.dezimalDurchGanz = function (sp, lvl) { var dp = lvl === 'basis' ? 1 : pick([1, 2]), f = Math.pow(10, dp); var q = ri(11, lvl === 'basis' ? 99 : 499) / f; var m = ri(2, lvl === 'basis' ? 5 : 9); var dividend = q * m; function d(x) { return (Math.round(x * 1000) / 1000).toString().replace('.', ','); } return { a: d(dividend) + ' ÷ ' + m + ' =', l: d(q) }; };
+    T.flaecheRechteck = function (sp, lvl) { if (Math.random() < 0.3) { var a = ri(2, lvl === 'basis' ? 12 : 25); return { a: 'Quadrat mit Seite ' + a + ' cm. Flächeninhalt?', l: a + ' · ' + a + ' = ' + (a * a) + ' cm²' }; } var L = ri(3, lvl === 'basis' ? 15 : 30), B = ri(2, L - 1); return { a: 'Rechteck: Länge ' + L + ' cm, Breite ' + B + ' cm. Flächeninhalt?', l: L + ' · ' + B + ' = ' + (L * B) + ' cm²' }; };
+    T.flaecheEinheit = function (sp, lvl) { var p = pick([['m²', 'dm²'], ['dm²', 'cm²'], ['cm²', 'mm²'], ['a', 'm²'], ['ha', 'a'], ['km²', 'ha']]); var n = ri(1, 9); return { a: n + ' ' + p[0] + ' = ___ ' + p[1], l: grp(n * 100) + ' ' + p[1] + '  (× 100)' }; };
+    T.mittelwert = function (sp, lvl) { var k = lvl === 'basis' ? 3 : pick([3, 4]); var arr = [], sum = 0; for (var i = 0; i < k; i++) { var x = ri(2, lvl === 'plus' ? 40 : 20); arr.push(x); sum += x; } var rem = sum % k; if (rem !== 0) { arr[k - 1] += (k - rem); sum += (k - rem); } var mean = sum / k; return { a: 'Berechne den Mittelwert (Durchschnitt) von: ' + arr.join(', ') + '.', l: '(' + arr.join(' + ') + ') ÷ ' + k + ' = ' + sum + ' ÷ ' + k + ' = ' + mean }; };
 
     function make(spec, n, lvl) {
       if (!spec) return [];
@@ -652,7 +674,7 @@ window.KB_MATHE = (function () {
   if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
 
   return {
-    open: open, render: render, data: function () { return DATA; }, vis: VIS,
+    open: open, render: render, data: function () { return DATA; }, vis: VIS, gen: GEN,
     printInfo: printInfo, printSheet: printSheet,
     syncExport: function () { return { done: DONE }; },
     syncApply: function (obj) { if (obj && obj.done) { DONE = obj.done; try { localStorage.setItem(LS_DONE, JSON.stringify(DONE)); } catch (e) {} if (host()) render(); } }
