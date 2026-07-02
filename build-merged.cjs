@@ -2512,9 +2512,11 @@ catch (e) { console.warn('ISA-App.html fehlt — Material-Tab ohne Bibliothek.')
 var MATHE_JSON = '{}', MATHE_MODULE = '', MATHE_PDF_B64 = '';
 try { MATHE_JSON = read('mathe-programm.json'); } catch (e) { console.warn('mathe-programm.json fehlt — Lehrplan leer.'); }
 try { MATHE_MODULE = read('mathe-module.js'); } catch (e) { console.warn('mathe-module.js fehlt — KB_MATHE deaktiviert.'); }
-var PDFLIB_JS = '', H2C_JS = '';
+var PDFLIB_JS = '', MATHE_PDF_JS = '', PDF_FONT_REG = '', PDF_FONT_BOLD = '';
 try { PDFLIB_JS = read('vendor-jspdf.umd.min.js'); } catch (e) { console.warn('vendor-jspdf.umd.min.js fehlt — PDF-Export deaktiviert.'); }
-try { H2C_JS = read('vendor-html2canvas.min.js'); } catch (e) { console.warn('vendor-html2canvas.min.js fehlt — PDF-Export deaktiviert.'); }
+try { MATHE_PDF_JS = read('mathe-pdf.js'); } catch (e) { console.warn('mathe-pdf.js fehlt — PDF-Export deaktiviert.'); }
+try { PDF_FONT_REG = fs.readFileSync(path.join(ROOT, 'vendor-DejaVuSans-sub.ttf')).toString('base64'); } catch (e) { console.warn('vendor-DejaVuSans-sub.ttf fehlt.'); }
+try { PDF_FONT_BOLD = fs.readFileSync(path.join(ROOT, 'vendor-DejaVuSans-Bold-sub.ttf')).toString('base64'); } catch (e) { console.warn('vendor-DejaVuSans-Bold-sub.ttf fehlt.'); }
 function scriptSafe(s) { return String(s).replace(/<\/(script)/gi, '<\\/$1'); }
 try { MATHE_PDF_B64 = fs.readFileSync(path.join(ROOT, 'PROG_5PF_MATHE.pdf')).toString('base64'); } catch (e) { console.warn('PROG_5PF_MATHE.pdf fehlt — Original-PDF nicht eingebettet.'); }
 
@@ -3066,9 +3068,10 @@ var parts = [
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>window.KB_MATHE_DATA=' + jsonForScript(MATHE_JSON) + ';</' + 'script>',
   '<script type="application/octet-stream" id="kb-mathe-pdf-b64">' + MATHE_PDF_B64 + '</' + 'script>',
-  (H2C_JS ? '<script>' + scriptSafe(H2C_JS) + '</' + 'script>' : ''),
   (PDFLIB_JS ? '<script>' + scriptSafe(PDFLIB_JS) + '</' + 'script>' : ''),
+  ((PDF_FONT_REG && PDF_FONT_BOLD) ? '<script>window.KB_PDF_FONTS={regular:"' + PDF_FONT_REG + '",bold:"' + PDF_FONT_BOLD + '"};</' + 'script>' : ''),
   '<script>' + MATHE_MODULE + '</' + 'script>',
+  (MATHE_PDF_JS ? '<script>' + scriptSafe(MATHE_PDF_JS) + '</' + 'script>' : ''),
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
   '</body>',

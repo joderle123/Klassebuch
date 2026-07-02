@@ -552,8 +552,8 @@ window.KB_MATHE = (function () {
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
     } catch (e) { alert('Download nicht möglich: ' + e.message); }
   }
-  /* ---------- Echtes PDF erzeugen (jsPDF + html2canvas) ---------- */
-  function pdfReady() { return typeof window.jspdf !== 'undefined' && window.jspdf.jsPDF && typeof window.html2canvas === 'function'; }
+  /* ---------- Echtes PDF erzeugen (nativer Vektor-Satz via KB_PDF) ---------- */
+  function pdfReady() { return !!(window.KB_PDF && window.KB_PDF.available()); }
   function pdfOverlay(acc) {
     var o = document.getElementById('mth-pdfov');
     if (!o) {
@@ -566,91 +566,16 @@ window.KB_MATHE = (function () {
   }
   function pdfProg(msg, pct, sub) { var t = document.getElementById('mth-pdfov-t'), b = document.getElementById('mth-pdfov-b'), s = document.getElementById('mth-pdfov-s'); if (t && msg) t.textContent = msg; if (b && pct != null) b.style.width = pct + '%'; if (s) s.textContent = sub || ''; }
   function pdfHide() { var o = document.getElementById('mth-pdfov'); if (o) o.style.display = 'none'; }
-  function makePdf(filename, title, acc, bodyHtml) {
-    if (!pdfReady()) { alert('Der PDF-Baustein ist in dieser Version nicht geladen — die Datei kommt als HTML mit eingebautem „Als PDF speichern"-Knopf.'); downloadDoc(filename.replace(/\.pdf$/i, '.html'), title, acc, bodyHtml); return; }
-    var jsPDF = window.jspdf.jsPDF, h2c = window.html2canvas;
-    pdfOverlay(acc); pdfProg('PDF wird vorbereitet …', 4, '');
-    /* Eigener kleiner iframe: html2canvas klont je Aufruf das ganze Dokument.
-       Im Haupt-Dokument wären das je Block viele MB (eingebettete Daten);
-       außerdem blockweise rendern — eine einzige Riesen-Leinwand sprengt bei
-       großen Heften das Canvas-Limit des Browsers (65.535 px → leere Seiten). */
-    var frame = document.createElement('iframe');
-    frame.setAttribute('aria-hidden', 'true');
-    frame.style.cssText = 'position:fixed;left:-10020px;top:0;width:820px;height:640px;border:0;visibility:hidden';
-    document.body.appendChild(frame);
-    var fdoc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
-    function cleanup() { try { document.body.removeChild(frame); } catch (e) {} }
-    function bail(msg) { cleanup(); pdfHide(); alert(msg); }
-    if (!fdoc) { bail('PDF-Erzeugung nicht möglich — bitte „Drucken" nutzen.'); return; }
-    fdoc.open();
-    fdoc.write('<!DOCTYPE html><html><head><meta charset="utf-8"><style>' + printCss(acc) + '</style></head><body style="margin:0;background:#fff"><div class="pg" style="width:760px;margin:0">' + bodyHtml + '</div></body></html>');
-    fdoc.close();
-    setTimeout(function () { try { run(); } catch (e) { bail('PDF-Fehler: ' + (e && e.message || e)); } }, 120);
-    function run() {
-      var pg = fdoc.querySelector('.pg');
-      var blocks = Array.prototype.slice.call(pg.children).filter(function (b) { return b.offsetHeight > 2; });
-      if (!blocks.length) { bail('Nichts zu exportieren.'); return; }
-      var M = 8, PW = 210, PH = 297, cw = PW - 2 * M, availH = PH - 2 * M;
-      var cs = frame.contentWindow.getComputedStyle(pg);
-      var contentPx = pg.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
-      if (!(contentPx > 40)) contentPx = 700;
-      /* Wie der Browser-Druck skalieren (1 px = 1/96 Zoll) — sonst rutschen Blöcke
-         knapp über die Seitenhöhe und erzeugen fast leere Folgeseiten. */
-      var mmPerPx = 25.4 / 96;
-      if (contentPx * mmPerPx > cw) mmPerPx = cw / contentPx;
-      var SCALE = pg.scrollHeight > 22000 ? 1.6 : 2; /* große Hefte etwas sparsamer (Zeit/Dateigröße) */
-      var pageHpx = Math.round((availH / mmPerPx) * SCALE);
-      var pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4', compress: true });
-      var cursorY = M, first = true, drawn = 0;
-      function rowClear(ctx, w, yy) { try { var d = ctx.getImageData(0, yy, w, 1).data; for (var x = 0; x < d.length; x += 8) { if (d[x] < 248 || d[x + 1] < 248 || d[x + 2] < 248) return false; } return true; } catch (e) { return false; }
-      }
-      function addSlice(canvas, sy, sh, y) {
-        var wmm = (canvas.width / SCALE) * mmPerPx, x = M + Math.max(0, (cw - wmm) / 2), hmm = (sh / SCALE) * mmPerPx;
-        var sc = document.createElement('canvas'); sc.width = canvas.width; sc.height = sh;
-        sc.getContext('2d').drawImage(canvas, 0, sy, canvas.width, sh, 0, 0, canvas.width, sh);
-        pdf.addImage(sc.toDataURL('image/jpeg', 0.85), 'JPEG', x, y, wmm, hmm, '', 'FAST');
-        return hmm;
-      }
-      function place(canvas, breakBefore) {
-        var hmm = (canvas.height / SCALE) * mmPerPx, left = availH - (cursorY - M);
-        if (!first && (breakBefore || hmm > left + 0.5) && cursorY > M + 0.2) { pdf.addPage(); cursorY = M; }
-        if (hmm <= availH + 0.5) { cursorY += addSlice(canvas, 0, canvas.height, cursorY) + 3; first = false; drawn++; return; }
-        /* Block länger als eine Seite: an weißen Zwischenräumen schneiden.
-           Wichtig: Wenn oben schon eine frische Seite begonnen wurde, darf die
-           erste Scheibe KEINE weitere Seite anfangen (sonst Leerseiten). */
-        var ctx = canvas.getContext('2d'), y = 0, guard = 0, lastH = 0;
-        var needPage = !(first || cursorY <= M + 0.2);
-        while (y < canvas.height - 2 && guard++ < 400) {
-          var target = Math.min(y + pageHpx, canvas.height), cut = target;
-          if (target < canvas.height) {
-            var lim = Math.max(y + Math.round(pageHpx * 0.55), target - Math.round(pageHpx * 0.3));
-            for (var yy = target; yy > lim; yy -= 3) { if (rowClear(ctx, canvas.width, yy)) { cut = yy; break; } }
-          }
-          if (needPage) pdf.addPage();
-          needPage = true;
-          lastH = addSlice(canvas, y, cut - y, M); first = false; y = cut;
-        }
-        cursorY = M + lastH + 3; drawn++;
-      }
-      var i = 0;
-      function step() {
-        if (i >= blocks.length) {
-          if (!drawn) { bail('PDF konnte nicht erstellt werden — bitte „Drucken" nutzen.'); return; }
-          pdfProg('Speichern …', 100, '');
-          try { pdf.save(filename); } catch (e) { alert('PDF-Fehler: ' + e.message); }
-          cleanup(); setTimeout(pdfHide, 250); return;
-        }
-        var block = blocks[i];
-        var breakBefore = /\b(cover|lesson)\b/.test(block.className || '');
-        h2c(block, { scale: SCALE, backgroundColor: '#ffffff', useCORS: true, logging: false, imageTimeout: 0 })
-          .then(function (canvas) { try { place(canvas, breakBefore); } catch (e) {} next(); })
-          .catch(function () { next(); });
-        function next() { i++; pdfProg('Seiten werden gezeichnet …', Math.min(97, Math.round(i / blocks.length * 93) + 4), i + ' / ' + blocks.length); setTimeout(step, 0); }
-      }
-      step();
-    }
+  /* Startet den nativen PDF-Satz (KB_PDF); Fallback = HTML-Datei mit PDF-Knopf. */
+  function nativePdf(spec, fallback) {
+    if (!pdfReady()) { if (fallback) fallback(); return; }
+    pdfOverlay(spec.accent); pdfProg('PDF wird erstellt …', 4, '');
+    window.KB_PDF.save(spec, {
+      progress: function (p, sub) { pdfProg('PDF wird erstellt …', p, sub || ''); },
+      done: function () { pdfProg('Fertig', 100, ''); setTimeout(pdfHide, 280); },
+      fail: function (e) { pdfHide(); if (fallback) { alert('PDF-Satz fehlgeschlagen (' + (e && e.message || e) + ') — die Datei kommt als HTML mit PDF-Knopf.'); fallback(); } else { alert('PDF-Fehler: ' + (e && e.message || e)); } }
+    });
   }
-
   /* Infoblatt (Lernblatt für den Schüler) — gleicher Inhalt wie die Info-Seite im Heft (infoInner). */
   function infoBody(mid, nr) {
     var m = findModule(mid); if (!m) return null; var f = lessonOf(m, nr); if (!f) return null;
@@ -661,7 +586,11 @@ window.KB_MATHE = (function () {
     return { title: 'Infoblatt – ' + lek.titel, acc: acc, body: b, file: 'Infoblatt_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + '.html' };
   }
   function printInfo(mid, nr) { var d = infoBody(mid, nr); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadInfo(mid, nr) { var d = infoBody(mid, nr); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
+  function downloadInfo(mid, nr) {
+    var d = infoBody(mid, nr); if (!d) return;
+    nativePdf({ kind: 'info', mid: mid, nr: nr, accent: d.acc, filename: d.file.replace(/\.html$/i, '.pdf') },
+      function () { downloadDoc(d.file, d.title, d.acc, d.body); });
+  }
 
   /* Arbeitsblatt pro Niveau (für den Schüler) */
   function sheetBody(mid, nr, level, withSol) {
@@ -690,7 +619,11 @@ window.KB_MATHE = (function () {
     return { title: 'Arbeitsblatt ' + L.label + ' – ' + lek.titel, acc: acc, body: b, file: 'Arbeitsblatt_' + safeFile(L.label) + '_M' + m.nr + '-L' + lek.nr + '_' + safeFile(lek.titel) + (withSol ? '_Loesung' : '') + '.html' };
   }
   function printSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadSheet(mid, nr, level, withSol) { var d = sheetBody(mid, nr, level, withSol); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
+  function downloadSheet(mid, nr, level, withSol) {
+    var d = sheetBody(mid, nr, level, withSol); if (!d) return;
+    nativePdf({ kind: 'sheet', mid: mid, nr: nr, level: level, sol: !!withSol, accent: d.acc, filename: d.file.replace(/\.html$/i, '.pdf') },
+      function () { downloadDoc(d.file, d.title, d.acc, d.body); });
+  }
   function tblHtml(t) {
     var cols = t.cols || [], rows = t.rows || 3, s = '<table class="tbl"><thead><tr>';
     cols.forEach(function (c) { s += '<th>' + rich(c) + '</th>'; }); s += '</tr></thead><tbody>';
@@ -757,7 +690,11 @@ window.KB_MATHE = (function () {
     return { m: m, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' – ' + m.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_' + safeFile(m.titel) + (sol ? '_Loesungsheft' : '_Heft') + '.html' };
   }
   function printModule(mid) { var d = moduleBody(mid); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadModule(mid) { var d = moduleBody(mid); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
+  function downloadModule(mid) {
+    var m = findModule(mid); if (!m) return;
+    nativePdf({ kind: 'module', mid: mid, sol: state.printSol, count: Math.max(24, state.gen.count || 24), accent: m.farbe, filename: 'Mathe_Modul-' + m.nr + '_' + safeFile(m.titel) + (state.printSol ? '_Loesungsheft' : '_Heft') + '.pdf' },
+      function () { var d = moduleBody(mid); if (d) downloadDoc(d.file, d.title, d.acc, d.body); });
+  }
   /* ---------- Ein Kapitel (Thema) als Heft ---------- */
   function themeBody(mid, tix) {
     var m = findModule(mid); if (!m) return null; var t = (m.themen || [])[+tix]; if (!t) return null;
@@ -768,7 +705,11 @@ window.KB_MATHE = (function () {
     return { m: m, t: t, acc: acc, sol: sol, title: 'Modul ' + m.nr + ' · ' + t.titel, body: b, file: 'Mathe_Modul-' + m.nr + '_Kapitel_' + safeFile(t.titel) + (sol ? '_Loesungen' : '') + '.html' };
   }
   function printTheme(mid, tix) { var d = themeBody(mid, tix); if (d) printDoc(d.title, d.acc, d.body); }
-  function downloadTheme(mid, tix) { var d = themeBody(mid, tix); if (d) makePdf(d.file.replace(/\.html$/i, '.pdf'), d.title, d.acc, d.body); }
+  function downloadTheme(mid, tix) {
+    var m = findModule(mid); if (!m) return; var t = (m.themen || [])[+tix]; if (!t) return;
+    nativePdf({ kind: 'theme', mid: mid, tix: +tix, sol: state.printSol, count: Math.max(24, state.gen.count || 24), accent: t.farbe || m.farbe, filename: 'Mathe_Modul-' + m.nr + '_Kapitel_' + safeFile(t.titel) + (state.printSol ? '_Loesungen' : '') + '.pdf' },
+      function () { var d = themeBody(mid, tix); if (d) downloadDoc(d.file, d.title, d.acc, d.body); });
+  }
 
   /* ---------- PDF ---------- */
   function pdfBlobUrl() {
