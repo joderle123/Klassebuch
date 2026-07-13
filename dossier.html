@@ -282,6 +282,154 @@ mark{background:#ffe9a8; padding:0 2px; border-radius:2px;}
 .org-log-date{font-weight:600; color:inherit; text-decoration:none;}
 .org-log-date:hover{color:var(--accent); text-decoration:underline;}
 
+/* ====== Réunion v2 — Teamversammlung ====== */
+.reu2 :where(h1,h2,h3){line-height:1.2;}
+.reu-topbar{
+  position:sticky; top:8px; z-index:30; margin:0 0 16px; padding:13px 16px;
+  background:rgba(255,255,255,.94); backdrop-filter:saturate(1.4) blur(8px);
+  border:1px solid var(--border); border-radius:12px; box-shadow:0 2px 10px rgba(20,30,45,.06);
+}
+.reu-topbar-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+.reu-datewrap{display:flex; align-items:center; gap:6px;}
+.reu-navbtn{
+  width:32px; height:32px; border-radius:8px; border:1px solid var(--border); background:#fff;
+  display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-muted); font-size:1rem;
+}
+.reu-navbtn:hover:not([disabled]){border-color:var(--accent); color:var(--accent);}
+.reu-navbtn[disabled]{opacity:.4; cursor:not-allowed;}
+.reu-title{display:flex; flex-direction:column; gap:1px; margin-right:auto;}
+.reu-title .kick{font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); font-weight:600;}
+.reu-title .dt{font-size:1.24rem; font-weight:700;}
+.reu-title select{border:none; background:none; font:inherit; font-size:1.24rem; font-weight:700; color:var(--text); padding:0; width:auto; cursor:pointer;}
+.reu-title select:focus{outline:none;}
+.reu-actions{display:flex; gap:8px; flex-wrap:wrap;}
+
+.reu-stats{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+.reu-stat{
+  flex:1 1 150px; min-width:130px; background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:9px 13px;
+}
+.reu-stat .lab{font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-muted); font-weight:600;}
+.reu-stat .val{font-size:1.32rem; font-weight:700; line-height:1.15; margin-top:1px;}
+.reu-stat .val small{font-size:.8rem; font-weight:500; color:var(--text-muted);}
+.reu-stat.accent .val{color:var(--accent);}
+.reu-stat.warn .val{color:#b3742d;}
+.reu-stat.good .val{color:#2e7d52;}
+.reu-bar{height:6px; border-radius:999px; background:#e9edf1; overflow:hidden; margin-top:7px;}
+.reu-bar>span{display:block; height:100%; border-radius:999px; background:#2e7d52; transition:width .25s;}
+
+.reu-filter{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:0 0 16px;}
+.reu-seg{display:inline-flex; background:#eef1f4; border-radius:999px; padding:3px; gap:2px; flex-wrap:wrap;}
+.reu-seg button{
+  border:none; background:none; border-radius:999px; padding:6px 13px; font-size:.82rem; cursor:pointer;
+  color:var(--text-muted); font-weight:500; white-space:nowrap;
+}
+.reu-seg button .n{opacity:.7; font-weight:600; margin-left:3px;}
+.reu-seg button:hover{color:var(--text);}
+.reu-seg button.active{background:#fff; color:var(--accent); font-weight:600; box-shadow:0 1px 3px rgba(20,30,45,.12);}
+.reu-search{position:relative; margin-left:auto; min-width:200px; flex:0 1 260px;}
+.reu-search input{padding-left:32px;}
+.reu-search::before{content:"⌕"; position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:1.05rem;}
+.reu-collapse-all{font-size:.8rem; color:var(--accent); background:none; border:none; cursor:pointer; padding:6px 4px; white-space:nowrap;}
+
+/* Organisation-Karte */
+.reu-orgcard{padding:16px 18px; margin-bottom:16px;}
+.reu-orgcard-head{display:flex; align-items:center; gap:10px; margin-bottom:4px;}
+.reu-orgcard-head h3{margin:0; font-size:1.02rem;}
+.reu-orgcard-head .count{font-size:.78rem; color:var(--text-muted); background:#eef1f4; border-radius:999px; padding:1px 9px; font-weight:600;}
+.reu-orgcard-head .sp{flex:1;}
+.reu-group-goal{
+  display:flex; gap:9px; align-items:flex-start; margin:0 0 12px; padding:10px 13px;
+  background:linear-gradient(0deg,#eef4ee,#eef4ee); border:1px solid #cfe0cf; border-radius:10px; font-size:.9rem;
+}
+.reu-group-goal .ico{font-size:1rem; line-height:1.2;}
+.reu-group-goal b{color:#2e5d3f;}
+
+/* Schüler-Karten */
+.reu-list{display:flex; flex-direction:column; gap:9px;}
+.reu-card{
+  background:var(--surface); border:1px solid var(--border); border-radius:11px; overflow:hidden;
+  transition:border-color .12s, box-shadow .12s; position:relative;
+}
+.reu-card::before{content:""; position:absolute; left:0; top:0; bottom:0; width:3px; background:transparent;}
+.reu-card.is-done::before{background:#5aa576;}
+.reu-card.is-open{border-color:var(--accent); box-shadow:0 3px 12px rgba(40,70,100,.10);}
+.reu-card.dimmed{opacity:.62;}
+.reu-row{display:flex; align-items:center; gap:12px; padding:11px 15px 11px 16px; cursor:pointer;}
+.reu-check{
+  flex:none; width:26px; height:26px; border-radius:7px; border:1.5px solid #c7ced6; background:#fff;
+  display:inline-flex; align-items:center; justify-content:center; cursor:pointer; color:transparent; font-size:.95rem; transition:.12s;
+}
+.reu-check:hover{border-color:#5aa576;}
+.reu-check.on{background:#2e7d52; border-color:#2e7d52; color:#fff;}
+.reu-order{
+  flex:none; width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:var(--accent);
+  font-size:.74rem; font-weight:700; display:inline-flex; align-items:center; justify-content:center;
+}
+.reu-idblock{min-width:0; flex:1; display:flex; flex-direction:column; gap:3px;}
+.reu-nameline{display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+.reu-name{font-weight:600; font-size:1rem; color:inherit; text-decoration:none;}
+.reu-name:hover{color:var(--accent); text-decoration:underline;}
+.reu-card.is-done .reu-name{text-decoration:line-through; text-decoration-color:#9bbfa8; color:var(--text-muted);}
+.reu-flag{font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:1px 7px; border-radius:999px;}
+.reu-flag.upd{background:#e4f0e9; color:#2e7d52;}
+.reu-flag.noupd{background:#f0ede4; color:#8a7b52;}
+.reu-flag.risk{background:#f6dcd5; color:#9c2f1c;}
+.reu-metaline{display:flex; align-items:center; gap:7px; flex-wrap:wrap; font-size:.76rem; color:var(--text-muted);}
+.reu-minichips{display:flex; gap:4px; flex-wrap:wrap;}
+.reu-minichip{font-size:.68rem; padding:1px 7px; border-radius:999px; background:#eef1f4; color:#516070; white-space:nowrap;}
+.reu-minichip.sev-3{background:#f6dcd5; color:#7c2d1c;} .reu-minichip.sev-2{background:#f7ead2; color:#6b4a16;} .reu-minichip.sev-1{background:#e3ecf4; color:#2a4257;}
+.reu-goalcount{color:#8a6d2a; font-weight:600;}
+.reu-rowactions{display:flex; align-items:center; gap:6px; flex:none;}
+.reu-chev{color:var(--text-muted); font-size:.8rem; transition:transform .15s; flex:none;}
+.reu-card.is-open .reu-chev{transform:rotate(90deg);}
+.reu-ordbtns{display:flex; flex-direction:column; gap:1px;}
+.reu-ordbtns button{width:20px; height:15px; border:1px solid var(--border); background:#fff; cursor:pointer; font-size:.6rem; color:var(--text-muted); line-height:1; padding:0; display:flex; align-items:center; justify-content:center;}
+.reu-ordbtns button:first-child{border-radius:5px 5px 0 0;} .reu-ordbtns button:last-child{border-radius:0 0 5px 5px; margin-top:-1px;}
+.reu-ordbtns button:hover:not([disabled]){border-color:var(--accent); color:var(--accent); z-index:1;}
+.reu-ordbtns button[disabled]{opacity:.35; cursor:default;}
+
+.reu-body{padding:2px 16px 15px 16px; border-top:1px solid var(--border);}
+.reu-update{white-space:pre-wrap; font-size:.92rem; line-height:1.55; margin:12px 0 6px;}
+.reu-noupdate{margin:12px 0; padding:14px; text-align:center; border:1px dashed var(--border); border-radius:9px; color:var(--text-muted); font-size:.86rem;}
+.reu-chips{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 0;}
+.reu-goals{margin-top:12px; background:#faf8f2; border:1px solid #ece4cf; border-radius:9px; padding:10px 12px;}
+.reu-goals-head{display:flex; align-items:center; gap:8px; font-size:.78rem; font-weight:700; color:#7a6222; text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px;}
+.reu-goals-head .sp{flex:1;}
+.reu-goal{display:flex; align-items:flex-start; gap:9px; padding:5px 0; font-size:.9rem;}
+.reu-goal+.reu-goal{border-top:1px solid #efe8d6;}
+.reu-goal-check{
+  flex:none; margin-top:1px; width:20px; height:20px; border-radius:6px; border:1.5px solid #d3c69a; background:#fff;
+  cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:transparent; font-size:.8rem;
+}
+.reu-goal-check.on{background:#b08d2e; border-color:#b08d2e; color:#fff;}
+.reu-goal-txt{flex:1; line-height:1.45;}
+.reu-goal.done .reu-goal-txt{text-decoration:line-through; color:var(--text-muted);}
+.reu-goal-del{flex:none; background:none; border:none; color:#b9a97c; cursor:pointer; font-size:1rem; line-height:1; padding:2px 4px;}
+.reu-goal-del:hover{color:var(--danger);}
+.reu-goal-add{display:flex; gap:7px; margin-top:8px;}
+.reu-goal-add input{font-size:.86rem; padding:6px 9px;}
+.reu-detaillinks{display:flex; gap:14px; margin-top:12px; font-size:.8rem;}
+.reu-detaillinks a{color:var(--accent); text-decoration:none;}
+.reu-detaillinks a:hover{text-decoration:underline;}
+
+@media (max-width:880px){
+  .reu-topbar{top:0;}
+  .reu-search{margin-left:0; flex-basis:100%;}
+  .reu-stat{flex-basis:calc(50% - 5px); min-width:0;}
+}
+
+/* Protokoll-Druck */
+#print-sheet .rp-h1{font-size:19px; margin:0 0 2px;}
+#print-sheet .rp-sub{color:#555; font-size:13px; margin:0 0 14px;}
+#print-sheet .rp-sec{font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:#333; border-bottom:1.5px solid #333; padding-bottom:3px; margin:16px 0 8px;}
+#print-sheet .rp-stud{break-inside:avoid; padding:8px 0 8px; border-bottom:1px solid #ddd;}
+#print-sheet .rp-stud h4{font-size:14px; margin:0 0 3px;}
+#print-sheet .rp-stud .rp-upd{font-size:12px; white-space:pre-wrap; margin:3px 0; line-height:1.5;}
+#print-sheet .rp-stud .rp-goals{font-size:12px; margin:4px 0 0; padding-left:18px;}
+#print-sheet ul.rp-org{font-size:12.5px; margin:4px 0; padding-left:20px; line-height:1.5;}
+#print-sheet .rp-done{color:#2e7d52;} #print-sheet .rp-todo{color:#999;}
+
 </style>
 </head>
 <body>
@@ -897,7 +1045,8 @@ var Repo = {
       date: data.date,
       orgItems: Array.isArray(data.orgItems) ? data.orgItems.map(function (s) { return String(s); }).filter(function (s) { return s.trim(); }) : [],
       studentOrder: Array.isArray(data.studentOrder) ? data.studentOrder.slice() : [],
-      goals: data.goals && typeof data.goals === 'object' ? data.goals : {}
+      goals: data.goals && typeof data.goals === 'object' ? data.goals : {},
+      discussed: Array.isArray(data.discussed) ? data.discussed.slice() : []
     };
     var idx = self.reunions.findIndex(function (r) { return r.id === clean.id; });
     if (idx >= 0) self.reunions[idx] = clean; else self.reunions.push(clean);
@@ -3068,180 +3217,469 @@ function viewReunion(params, query) {
   var reunions = Repo.listReunions(); // neueste zuerst
   var state = {
     date: query.date || (reunions[0] ? reunions[0].date : ''),
+    q: '',
+    filter: 'all',      // all | todo | update | noupdate | goals
+    expanded: {},       // sid -> true
+    orderEdit: false,
     editOrg: false
   };
 
   function current() { return Repo.getReunionByDate(state.date); }
-
   function returnRoute() { return '#/reunion?date=' + encodeURIComponent(state.date); }
 
-  /* ---------- Kopf: Datumswahl + nächste Réunion ---------- */
-  function headerHtml() {
-    var nm = nextMondayIso();
-    var hasNext = !!Repo.getReunionByDate(nm);
-    var options = reunions.map(function (r) {
-      return { value: r.date, label: formatDate(r.date) + (r.date === nm ? ' (nächste Réunion)' : '') };
-    });
-    return '<div class="card export-config no-print" style="margin-bottom:18px;">' +
-      '<div class="row" style="align-items:flex-end;">' +
-        '<div class="field"><label for="reu-date">Réunion vom</label>' +
-          '<select id="reu-date">' + optionsHtml(options, state.date) + '</select></div>' +
-        '<div class="field"><span class="hint">Nächste Réunion: Montag, ' + escapeHtml(formatDate(nm)) + '</span><br>' +
-          (hasNext
-            ? '<button type="button" class="btn" data-route="#/reunion?date=' + escapeAttr(nm) + '">Zur nächsten Réunion</button>'
-            : '<button type="button" class="btn btn-primary" id="reu-create-next">+ Réunion für ' + escapeHtml(formatDate(nm)) + ' anlegen</button>') +
-        '</div>' +
-      '</div>' +
-    '</div>';
+  /* ---- Ziele: sowohl alte String-Form als auch {text,done} unterstützen ---- */
+  function normGoals(arr) {
+    return (arr || []).map(function (g) {
+      if (g && typeof g === 'object') return { text: String(g.text || ''), done: !!g.done };
+      return { text: String(g), done: false };
+    }).filter(function (g) { return g.text.trim(); });
+  }
+  function goalsFor(r, sid) { return normGoals(r.goals && r.goals[sid]); }
+  function writeGoals(r, sid, goals) {
+    if (!r.goals || typeof r.goals !== 'object') r.goals = {};
+    r.goals[sid] = goals.map(function (g) { return { text: g.text, done: !!g.done }; });
+  }
+  function persist(r) {
+    return Repo.saveReunion(r).catch(function (err) { showToast('Fehler beim Speichern: ' + err.message, { error: true }); });
   }
 
-  /* ---------- Orga-Block ---------- */
-  function orgHtml(r) {
-    var items = r.orgItems || [];
-    var body;
-    if (state.editOrg) {
-      // Bearbeitung: ein Punkt pro Absatz (Leerzeile trennt Punkte;
-      // Zeilenumbrüche innerhalb eines Punkts bleiben erhalten)
-      var text = items.join('\n\n');
-      body = '<p class="hint">Ein Orga-Punkt pro Absatz — Leerzeile trennt die Punkte.</p>' +
-        '<textarea id="org-edit" rows="' + Math.min(18, Math.max(6, items.length * 2)) + '">' + escapeHtml(text) + '</textarea>' +
-        '<div class="page-head" style="margin:10px 0 0;">' +
-          '<button type="button" class="btn" id="org-cancel">Abbrechen</button>' +
-          '<button type="button" class="btn btn-primary" id="org-save">Orga speichern</button>' +
-        '</div>';
-    } else if (!items.length) {
-      body = '<p class="muted">Keine Orga-Punkte erfasst.</p>';
-    } else {
-      body = '<ul class="org-list">' + items.map(function (it) {
-        var parts = it.split('\n');
-        return '<li>' + escapeHtml(parts[0]) +
-          (parts.length > 1 ? '<ul class="org-sublist">' + parts.slice(1).map(function (p) { return '<li>' + escapeHtml(p) + '</li>'; }).join('') + '</ul>' : '') +
-        '</li>';
-      }).join('') + '</ul>';
-    }
-    var groupGoal = r.goals && r.goals.group && r.goals.group.length
-      ? '<div class="group-goal"><strong>Gruppenziel:</strong> ' + escapeHtml(r.goals.group.join(' ')) + '</div>'
-      : '';
-    return '<section class="card reunion-org">' +
-      '<div class="page-head" style="margin:0 0 8px;">' +
-        '<h3 style="margin:0;">Organisation <span class="muted">(' + items.length + ' Punkte)</span></h3>' +
-        (state.editOrg ? '' : '<button type="button" class="btn btn-sm" id="org-edit-btn">Bearbeiten</button>') +
-      '</div>' +
-      body + groupGoal +
-    '</section>';
-  }
-
-  /* ---------- Schüler-Abschnitte ---------- */
-  function studentSectionHtml(r) {
-    // Reihenfolge der Versammlung + alle weiteren aktiven Schüler hinten dran
+  /* ---- Datenzeilen (Reihenfolge der Versammlung + weitere aktive Schüler) ---- */
+  function rowsFor(r) {
     var order = (r.studentOrder || []).slice();
     Repo.listStudents().forEach(function (s) {
       if (s.active !== false && order.indexOf(s.id) === -1) order.push(s.id);
     });
-
-    var blocks = order.map(function (sid, i) {
+    var discussed = r.discussed || [];
+    var rows = [];
+    order.forEach(function (sid) {
       var s = Repo.getStudent(sid);
-      if (!s) return '';
+      if (!s) return;
       var entry = Repo.reunionEntryFor(r.date, sid);
-      var goals = (r.goals && r.goals[sid]) || [];
       var themes = entry ? analyzeText(entry.text) : [];
-      var themeChips = themes.slice(0, 6).map(function (t) {
-        return '<span class="chip theme-chip sev-' + t.severity + '" title="Treffer: ' + escapeAttr(t.terms.join(', ')) + '">' + escapeHtml(t.key) + '</span>';
-      }).join(' ');
+      var goals = goalsFor(r, sid);
+      rows.push({
+        sid: sid, s: s, entry: entry, themes: themes, goals: goals,
+        hasUpdate: !!(entry && entry.text && entry.text.trim()),
+        discussed: discussed.indexOf(sid) !== -1,
+        openGoals: goals.filter(function (g) { return !g.done; }).length,
+        risk: themes.some(function (t) { return t.severity === 3; })
+      });
+    });
+    return rows;
+  }
+  function matchesFilter(row) {
+    if (state.filter === 'todo') return !row.discussed;
+    if (state.filter === 'update') return row.hasUpdate;
+    if (state.filter === 'noupdate') return !row.hasUpdate;
+    if (state.filter === 'goals') return row.openGoals > 0;
+    return true;
+  }
+  function matchesSearch(row) {
+    var q = state.q.trim().toLowerCase();
+    if (!q) return true;
+    if (row.s.name.toLowerCase().indexOf(q) !== -1) return true;
+    if (row.entry && row.entry.text && row.entry.text.toLowerCase().indexOf(q) !== -1) return true;
+    if (row.goals.some(function (g) { return g.text.toLowerCase().indexOf(q) !== -1; })) return true;
+    return row.themes.some(function (t) { return t.key.toLowerCase().indexOf(q) !== -1; });
+  }
 
-      return '<section class="card reunion-student">' +
-        '<div class="reunion-student-head">' +
-          '<span class="reunion-order">' + (i + 1) + '</span>' +
-          '<a href="#/student/' + escapeAttr(sid) + '" class="reunion-student-name" data-route="#/student/' + escapeAttr(sid) + '">' + escapeHtml(s.name) + '</a>' +
-          (entry && entry.author ? '<span class="reunion-author" title="Verfasst von ' + escapeAttr(entry.author) + '">✍ ' + escapeHtml(entry.author) + '</span>' : '') +
-          (entry
-            ? '<button type="button" class="btn btn-sm" data-route="#/entry/' + escapeAttr(entry.id) + '/edit?return=' + encodeURIComponent(returnRoute()) + '">Bearbeiten</button>'
-            : '<button type="button" class="btn btn-sm btn-primary" data-route="#/entry/new/' + escapeAttr(sid) + '?date=' + escapeAttr(r.date) + '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute()) + '">+ Update erfassen</button>') +
+  /* ---------- Kopfleiste (sticky) ---------- */
+  function topbarHtml(r, rows) {
+    var idx = reunions.map(function (x) { return x.date; }).indexOf(state.date);
+    var newer = idx > 0 ? reunions[idx - 1] : null;   // jünger
+    var older = idx >= 0 && idx < reunions.length - 1 ? reunions[idx + 1] : null;
+    var nm = nextMondayIso();
+    var hasNext = !!Repo.getReunionByDate(nm);
+    var opts = reunions.map(function (x) { return { value: x.date, label: formatDate(x.date) + (x.date === nm ? ' · nächste' : '') }; });
+    return '<div class="reu-topbar no-print">' +
+      '<div class="reu-topbar-row">' +
+        '<div class="reu-datewrap">' +
+          '<button class="reu-navbtn" data-act="goreu" data-date="' + (older ? escapeAttr(older.date) : '') + '"' + (older ? '' : ' disabled') + ' title="ältere Réunion">‹</button>' +
+          '<button class="reu-navbtn" data-act="goreu" data-date="' + (newer ? escapeAttr(newer.date) : '') + '"' + (newer ? '' : ' disabled') + ' title="jüngere Réunion">›</button>' +
         '</div>' +
-        (entry
-          ? '<div class="entry-body reunion-update">' + highlightThemesHtml(entry.text) + '</div>' +
-            (themeChips ? '<div class="reunion-themes">' + themeChips + '</div>' : '')
-          : '<p class="muted" style="margin:6px 0;">Kein Update für diese Réunion.</p>') +
-        (goals.length
-          ? '<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">' + goals.map(function (g) { return '<li>' + escapeHtml(g) + '</li>'; }).join('') + '</ul></div>'
-          : '') +
-      '</section>';
-    }).join('');
-
-    return blocks || '<div class="empty-state">Keine Schüler vorhanden.</div>';
+        '<div class="reu-title"><span class="kick">Team-Réunion · Montags</span>' +
+          '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select></div>' +
+        '<div class="reu-actions">' +
+          (hasNext
+            ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
+            : '<button type="button" class="btn btn-sm btn-primary" id="reu-create-next">+ Nächste Réunion</button>') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="orderedit">' + (state.orderEdit ? '✓ Reihenfolge' : '↕ Reihenfolge') + '</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="print">🖨 Protokoll</button>' : '') +
+        '</div>' +
+      '</div>' +
+      (r ? statsHtml(r, rows) : '') +
+    '</div>';
   }
-
-  function contentHtml() {
-    var r = current();
-    if (!r) {
-      return '<div class="empty-state">Keine Réunion für dieses Datum.' +
-        (reunions.length ? '' : ' Legen Sie oben die erste Réunion an.') + '</div>';
+  function statsHtml(r, rows) {
+    var total = rows.length;
+    var disc = rows.filter(function (x) { return x.discussed; }).length;
+    var upd = rows.filter(function (x) { return x.hasUpdate; }).length;
+    var openG = rows.reduce(function (n, x) { return n + x.openGoals; }, 0);
+    var pct = total ? Math.round(disc / total * 100) : 0;
+    function stat(cls, lab, val, sub, bar) {
+      return '<div class="reu-stat ' + cls + '"><div class="lab">' + lab + '</div>' +
+        '<div class="val">' + val + (sub ? ' <small>' + sub + '</small>' : '') + '</div>' +
+        (bar != null ? '<div class="reu-bar"><span style="width:' + bar + '%"></span></div>' : '') + '</div>';
     }
-    return orgHtml(r) + '<h3 class="reunion-section-title">Schüler.innen — Reihenfolge der Versammlung</h3>' + studentSectionHtml(r);
+    return '<div class="reu-stats" id="reu-stats">' +
+      stat('good', 'Besprochen', disc + ' / ' + total, pct + ' %', pct) +
+      stat('accent', 'Mit Update', upd + ' / ' + total, '', null) +
+      stat('warn', 'Offene Ziele', String(openG), '', null) +
+      stat('', 'Orga-Punkte', String((r.orgItems || []).length), '', null) +
+    '</div>';
   }
 
-  var html =
-    '<div class="page-head"><div><h2>Réunion</h2>' +
-    '<p class="muted">Die Montags-Teamversammlung auf einen Blick: Orga oben, danach alle Schüler in der Reihenfolge der Versammlung. Updates sind normale Dossier-Einträge (Kategorie „Team-Réunion") — Änderungen erscheinen überall.</p></div></div>' +
-    '<div id="reunion-wrap">' + headerHtml() + '<div id="reunion-content">' + contentHtml() + '</div></div>';
+  /* ---------- Filterleiste ---------- */
+  function filterHtml(rows) {
+    var counts = {
+      all: rows.length,
+      todo: rows.filter(function (x) { return !x.discussed; }).length,
+      update: rows.filter(function (x) { return x.hasUpdate; }).length,
+      noupdate: rows.filter(function (x) { return !x.hasUpdate; }).length,
+      goals: rows.filter(function (x) { return x.openGoals > 0; }).length
+    };
+    var segs = [['all', 'Alle'], ['todo', 'Offen'], ['update', 'Mit Update'], ['noupdate', 'Ohne'], ['goals', 'Offene Ziele']];
+    var anyExpanded = Object.keys(state.expanded).length > 0;
+    return '<div class="reu-filter no-print">' +
+      '<div class="reu-seg">' + segs.map(function (sg) {
+        return '<button data-filter="' + sg[0] + '"' + (state.filter === sg[0] ? ' class="active"' : '') + '>' +
+          sg[1] + '<span class="n">' + counts[sg[0]] + '</span></button>';
+      }).join('') + '</div>' +
+      '<button class="reu-collapse-all" data-act="collapseall">' + (anyExpanded ? 'Alle einklappen' : 'Alle ausklappen') + '</button>' +
+      '<label class="reu-search"><input type="search" id="reu-q" placeholder="Suche Name, Text, Thema…" value="' + escapeAttr(state.q) + '"></label>' +
+    '</div>';
+  }
+
+  /* ---------- Organisation ---------- */
+  function orgHtml(r) {
+    var items = r.orgItems || [];
+    var group = (r.goals && r.goals.group) || [];
+    var groupTxt = Array.isArray(group) ? group.join(' ') : String(group || '');
+    if (state.editOrg) {
+      var text = items.join('\n\n');
+      return '<section class="card reu-orgcard">' +
+        '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="sp"></span></div>' +
+        '<p class="hint">Ein Orga-Punkt pro Absatz — Leerzeile trennt die Punkte.</p>' +
+        '<textarea id="org-edit" rows="' + Math.min(18, Math.max(6, items.length * 2)) + '">' + escapeHtml(text) + '</textarea>' +
+        '<div class="field" style="margin-top:12px;"><label for="org-group">Gruppenziel der Woche</label>' +
+          '<input type="text" id="org-group" value="' + escapeAttr(groupTxt) + '" placeholder="z. B. Wir schaffen ruhige Pausen."></div>' +
+        '<div class="reu-actions" style="margin-top:6px;">' +
+          '<button type="button" class="btn btn-sm" data-act="orgcancel">Abbrechen</button>' +
+          '<button type="button" class="btn btn-sm btn-primary" data-act="orgsave">Orga speichern</button>' +
+        '</div>' +
+      '</section>';
+    }
+    var body;
+    if (!items.length) body = '<p class="muted" style="margin:6px 0 0;">Keine Orga-Punkte erfasst.</p>';
+    else body = '<ul class="org-list">' + items.map(function (it) {
+      var parts = it.split('\n');
+      return '<li>' + escapeHtml(parts[0]) +
+        (parts.length > 1 ? '<ul class="org-sublist">' + parts.slice(1).map(function (p) { return '<li>' + escapeHtml(p) + '</li>'; }).join('') + '</ul>' : '') +
+      '</li>';
+    }).join('') + '</ul>';
+    return '<section class="card reu-orgcard">' +
+      '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="count">' + items.length + '</span><span class="sp"></span>' +
+        '<button type="button" class="btn btn-sm" data-act="orgedit">Bearbeiten</button></div>' +
+      (groupTxt.trim() ? '<div class="reu-group-goal"><span class="ico">🎯</span><div><b>Gruppenziel:</b> ' + escapeHtml(groupTxt) + '</div></div>' : '') +
+      body +
+    '</section>';
+  }
+
+  /* ---------- Schüler-Karte ---------- */
+  function cardHtml(row, i, total) {
+    var expanded = !!state.expanded[row.sid], r = current();
+    var themeChips = row.themes.slice(0, 3).map(function (t) {
+      return '<span class="reu-minichip sev-' + t.severity + '">' + escapeHtml(t.key) + '</span>';
+    }).join('');
+    var goalNote = row.goals.length
+      ? '<span class="reu-goalcount">' + (row.openGoals ? row.openGoals + ' offen' : 'Ziele ✓') + '</span>'
+      : '';
+    var ord = state.orderEdit
+      ? '<div class="reu-ordbtns"><button data-act="up" data-sid="' + escapeAttr(row.sid) + '"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+        '<button data-act="down" data-sid="' + escapeAttr(row.sid) + '"' + (i === total - 1 ? ' disabled' : '') + '>▼</button></div>'
+      : '<span class="reu-order">' + (i + 1) + '</span>';
+    var head =
+      '<div class="reu-row" data-act="toggle" data-sid="' + escapeAttr(row.sid) + '">' +
+        '<button class="reu-check' + (row.discussed ? ' on' : '') + '" data-act="discuss" data-sid="' + escapeAttr(row.sid) + '" title="als besprochen markieren" aria-label="besprochen">✓</button>' +
+        ord +
+        '<div class="reu-idblock">' +
+          '<div class="reu-nameline">' +
+            '<a href="#/student/' + escapeAttr(row.sid) + '" class="reu-name" data-route="#/student/' + escapeAttr(row.sid) + '">' + escapeHtml(row.s.name) + '</a>' +
+            (row.risk ? '<span class="reu-flag risk">Sorge</span>' : '') +
+            '<span class="reu-flag ' + (row.hasUpdate ? 'upd' : 'noupd') + '">' + (row.hasUpdate ? 'Update' : 'kein Update') + '</span>' +
+          '</div>' +
+          '<div class="reu-metaline">' +
+            (themeChips ? '<span class="reu-minichips">' + themeChips + '</span>' : '') +
+            (goalNote || (!themeChips && !row.hasUpdate ? '<span>—</span>' : '')) +
+            (row.entry && row.entry.author ? '<span>✍ ' + escapeHtml(row.entry.author) + '</span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="reu-rowactions">' +
+          (row.hasUpdate
+            ? '<button type="button" class="btn btn-sm" data-route="#/entry/' + escapeAttr(row.entry.id) + '/edit?return=' + encodeURIComponent(returnRoute()) + '">Bearbeiten</button>'
+            : '<button type="button" class="btn btn-sm btn-primary" data-route="#/entry/new/' + escapeAttr(row.sid) + '?date=' + escapeAttr(r.date) + '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute()) + '">+ Update</button>') +
+          '<span class="reu-chev">▶</span>' +
+        '</div>' +
+      '</div>';
+    var body = expanded ? '<div class="reu-body">' + cardBodyHtml(row, r) + '</div>' : '';
+    return '<section class="reu-card' + (row.discussed ? ' is-done' : '') + (expanded ? ' is-open' : '') + (row.discussed && !expanded ? ' dimmed' : '') + '" data-card="' + escapeAttr(row.sid) + '">' + head + body + '</section>';
+  }
+  function cardBodyHtml(row, r) {
+    var out = '';
+    if (row.hasUpdate) {
+      out += '<div class="reu-update">' + highlightThemesHtml(row.entry.text) + '</div>';
+      if (row.themes.length) out += '<div class="reu-chips">' + row.themes.slice(0, 8).map(function (t) {
+        return '<span class="chip theme-chip sev-' + t.severity + '" title="Treffer: ' + escapeAttr(t.terms.join(', ')) + '">' + escapeHtml(t.key) + '</span>';
+      }).join('') + '</div>';
+    } else {
+      out += '<div class="reu-noupdate">Für diese Réunion wurde noch kein Update erfasst.</div>';
+    }
+    // Ziele
+    out += '<div class="reu-goals">' +
+      '<div class="reu-goals-head">🎯 Ziele<span class="sp"></span>' +
+        (row.goals.length ? '<span style="font-weight:500;text-transform:none;letter-spacing:0;color:#8a7b52;">' + (row.goals.length - row.openGoals) + ' / ' + row.goals.length + ' erreicht</span>' : '') +
+      '</div>';
+    if (row.goals.length) {
+      out += row.goals.map(function (g, gi) {
+        return '<div class="reu-goal' + (g.done ? ' done' : '') + '">' +
+          '<button class="reu-goal-check' + (g.done ? ' on' : '') + '" data-act="goal" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel erreicht">✓</button>' +
+          '<span class="reu-goal-txt">' + escapeHtml(g.text) + '</span>' +
+          '<button class="reu-goal-del" data-act="goaldel" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel löschen">×</button>' +
+        '</div>';
+      }).join('');
+    } else {
+      out += '<p class="muted" style="margin:2px 0 0;font-size:.85rem;">Noch keine Ziele.</p>';
+    }
+    out += '<div class="reu-goal-add"><input type="text" data-add-sid="' + escapeAttr(row.sid) + '" placeholder="Neues Ziel für diese Woche…">' +
+      '<button type="button" class="btn btn-sm" data-act="goaladd" data-sid="' + escapeAttr(row.sid) + '">+ Ziel</button></div>';
+    out += '</div>';
+    out += '<div class="reu-detaillinks"><a href="#/student/' + escapeAttr(row.sid) + '" data-route="#/student/' + escapeAttr(row.sid) + '">Dossier & Verlauf öffnen →</a></div>';
+    return out;
+  }
+
+  function listHtml(r) {
+    var rows = rowsFor(r);
+    var shown = rows.filter(function (x) { return matchesFilter(x) && matchesSearch(x); });
+    if (!shown.length) {
+      return '<div class="empty-state">Keine Schüler für diesen Filter' + (state.q ? ' / diese Suche' : '') + '.</div>';
+    }
+    // Indizes für Reihenfolge-Buttons beziehen sich auf die volle Liste
+    var idxOf = {}; rows.forEach(function (x, i) { idxOf[x.sid] = i; });
+    return shown.map(function (row) { return cardHtml(row, idxOf[row.sid], rows.length); }).join('');
+  }
+
+  /* ---------- Zusammenbau ---------- */
+  function bodyHtml() {
+    var r = current();
+    var rows = r ? rowsFor(r) : [];
+    var inner;
+    if (!r) {
+      inner = '<div class="empty-state">Keine Réunion für dieses Datum.' +
+        (reunions.length ? '' : ' Legen Sie oben die erste Réunion an.') + '</div>';
+    } else {
+      inner = filterHtml(rows) + '<div id="reu-org">' + orgHtml(r) + '</div>' +
+        '<h3 class="reunion-section-title">Schüler · Reihenfolge der Versammlung</h3>' +
+        '<div class="reu-list" id="reu-list">' + listHtml(r) + '</div>';
+    }
+    return topbarHtml(r, rows) + '<div id="reu-main">' + inner + '</div>';
+  }
 
   return {
     navKey: 'reunion',
-    html: html,
+    html: '<div class="reu2" id="reunion-wrap">' + bodyHtml() + '</div>',
     afterRender: function (root) {
       var wrap = qs('#reunion-wrap', root);
 
-      function rerender() {
-        wrap.innerHTML = headerHtml() + '<div id="reunion-content">' + contentHtml() + '</div>';
-        wire();
+      function full() { wrap.innerHTML = bodyHtml(); }
+      function rerenderList() {
+        var r = current(); if (!r) { full(); return; }
+        var el = qs('#reu-list', wrap); if (el) el.innerHTML = listHtml(r);
+        var fb = qs('.reu-filter', wrap); if (fb) fb.outerHTML = filterHtml(rowsFor(r));
       }
+      function rerenderStats() {
+        var r = current(); if (!r) return;
+        var rows = rowsFor(r);
+        var s = qs('#reu-stats', wrap); if (s) s.outerHTML = statsHtml(r, rows);
+      }
+      function rebuildCard(sid) {
+        var r = current(); var rows = rowsFor(r);
+        var idx = rows.map(function (x) { return x.sid; }).indexOf(sid);
+        if (idx < 0) return;
+        var el = qs('.reu-card[data-card="' + cssEsc(sid) + '"]', wrap);
+        if (el) el.outerHTML = cardHtml(rows[idx], idx, rows.length);
+      }
+      function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
 
-      function wire() {
-        var sel = qs('#reu-date', wrap);
-        if (sel) sel.addEventListener('change', function () {
-          navigate('#/reunion?date=' + encodeURIComponent(sel.value), true);
-        });
+      // Klick-Delegation
+      wrap.addEventListener('click', function (e) {
+        var t = e.target;
+        var act = t.closest('[data-act]');
+        var action = act ? act.getAttribute('data-act') : null;
 
-        var createBtn = qs('#reu-create-next', wrap);
-        if (createBtn) createBtn.addEventListener('click', function () {
-          var nm = nextMondayIso();
-          var last = Repo.listReunions()[0];
-          Repo.saveReunion({
-            date: nm,
-            orgItems: [],
-            studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
-            goals: last && last.goals ? JSON.parse(JSON.stringify(last.goals)) : {}
-          }).then(function () {
-            showToast('Réunion für ' + formatDate(nm) + ' angelegt (Ziele aus der letzten Woche übernommen).');
-            navigate('#/reunion?date=' + encodeURIComponent(nm), true);
-          }).catch(function (err) {
-            showToast('Fehler beim Anlegen: ' + err.message, { error: true });
-          });
-        });
+        // interaktive Elemente in der Zeile nicht als "toggle" behandeln
+        if (action === 'toggle') {
+          if (t.closest('a,button,input,select,.reu-ordbtns')) return;
+          var sid = act.getAttribute('data-sid');
+          if (state.expanded[sid]) delete state.expanded[sid]; else state.expanded[sid] = true;
+          rebuildCard(sid);
+          return;
+        }
+        if (!action) return;
 
-        var editBtn = qs('#org-edit-btn', wrap);
-        if (editBtn) editBtn.addEventListener('click', function () { state.editOrg = true; rerender(); });
-
-        var cancelBtn = qs('#org-cancel', wrap);
-        if (cancelBtn) cancelBtn.addEventListener('click', function () { state.editOrg = false; rerender(); });
-
-        var saveBtn = qs('#org-save', wrap);
-        if (saveBtn) saveBtn.addEventListener('click', function () {
-          var r = current();
+        if (action === 'goreu') { var d = act.getAttribute('data-date'); if (d) navigate('#/reunion?date=' + encodeURIComponent(d), true); return; }
+        if (action === 'discuss') {
+          e.preventDefault(); e.stopPropagation();
+          var r = current(); var sid = act.getAttribute('data-sid');
+          r.discussed = (r.discussed || []).slice();
+          var p = r.discussed.indexOf(sid);
+          if (p === -1) r.discussed.push(sid); else r.discussed.splice(p, 1);
+          persist(r).then(function () { rebuildCard(sid); rerenderStats(); });
+          return;
+        }
+        if (action === 'up' || action === 'down') {
+          e.preventDefault(); e.stopPropagation();
+          var r2 = current(); var sid2 = act.getAttribute('data-sid');
+          var rows = rowsFor(r2).map(function (x) { return x.sid; });
+          var i = rows.indexOf(sid2); if (i < 0) return;
+          var j = action === 'up' ? i - 1 : i + 1;
+          if (j < 0 || j >= rows.length) return;
+          var tmp = rows[i]; rows[i] = rows[j]; rows[j] = tmp;
+          r2.studentOrder = rows;
+          persist(r2).then(rerenderList);
+          return;
+        }
+        if (action === 'goal') {
+          e.preventDefault(); e.stopPropagation();
+          var r3 = current(); var sid3 = act.getAttribute('data-sid'), gi = +act.getAttribute('data-gi');
+          var goals = goalsFor(r3, sid3);
+          if (goals[gi]) { goals[gi].done = !goals[gi].done; writeGoals(r3, sid3, goals); persist(r3).then(function () { rebuildCard(sid3); rerenderStats(); }); }
+          return;
+        }
+        if (action === 'goaldel') {
+          e.preventDefault(); e.stopPropagation();
+          var r4 = current(); var sid4 = act.getAttribute('data-sid'), gi4 = +act.getAttribute('data-gi');
+          var g4 = goalsFor(r4, sid4); g4.splice(gi4, 1); writeGoals(r4, sid4, g4);
+          persist(r4).then(function () { rebuildCard(sid4); rerenderStats(); });
+          return;
+        }
+        if (action === 'goaladd') {
+          e.preventDefault();
+          var sid5 = act.getAttribute('data-sid');
+          var inp = qs('input[data-add-sid="' + cssEsc(sid5) + '"]', wrap);
+          addGoal(sid5, inp);
+          return;
+        }
+        if (action === 'collapseall') {
+          var r6 = current(); var anyExp = Object.keys(state.expanded).length > 0;
+          state.expanded = {};
+          if (!anyExp && r6) rowsFor(r6).forEach(function (x) { state.expanded[x.sid] = true; });
+          rerenderList();
+          return;
+        }
+        if (action === 'orderedit') { state.orderEdit = !state.orderEdit; full(); return; }
+        if (action === 'orgedit') { state.editOrg = true; qs('#reu-org', wrap).innerHTML = orgHtml(current()); return; }
+        if (action === 'orgcancel') { state.editOrg = false; qs('#reu-org', wrap).innerHTML = orgHtml(current()); return; }
+        if (action === 'orgsave') {
+          var r7 = current();
           var raw = qs('#org-edit', wrap).value;
-          var items = raw.split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean);
-          r.orgItems = items;
-          Repo.saveReunion(r).then(function () {
-            state.editOrg = false;
-            showToast('Orga-Punkte gespeichert.');
-            rerender();
-          }).catch(function (err) {
-            showToast('Fehler beim Speichern: ' + err.message, { error: true });
+          r7.orgItems = raw.split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean);
+          var gEl = qs('#org-group', wrap);
+          if (gEl) { if (!r7.goals || typeof r7.goals !== 'object') r7.goals = {}; var gv = gEl.value.trim(); r7.goals.group = gv ? [gv] : []; }
+          persist(r7).then(function () { state.editOrg = false; showToast('Orga gespeichert.'); qs('#reu-org', wrap).innerHTML = orgHtml(current()); rerenderStats(); });
+          return;
+        }
+        if (action === 'print') { printProtocol(); return; }
+      });
+
+      // Suche + Ziel-Eingabe (Enter)
+      wrap.addEventListener('input', function (e) {
+        if (e.target.id === 'reu-q') {
+          state.q = e.target.value;
+          clearTimeout(wrap._st); wrap._st = setTimeout(function () {
+            var r = current(); if (r) { var el = qs('#reu-list', wrap); if (el) el.innerHTML = listHtml(r); }
+          }, 160);
+        }
+      });
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.hasAttribute && e.target.hasAttribute('data-add-sid')) {
+          e.preventDefault(); addGoal(e.target.getAttribute('data-add-sid'), e.target);
+        }
+      });
+      wrap.addEventListener('change', function (e) {
+        if (e.target.id === 'reu-date') navigate('#/reunion?date=' + encodeURIComponent(e.target.value), true);
+      });
+
+      // Segment-Buttons
+      wrap.addEventListener('click', function (e) {
+        var seg = e.target.closest('.reu-seg button'); if (!seg) return;
+        state.filter = seg.getAttribute('data-filter');
+        rerenderList();
+      });
+
+      // "+ Nächste Réunion"
+      var createBtn = qs('#reu-create-next', wrap);
+      if (createBtn) createBtn.addEventListener('click', function () {
+        var nm = nextMondayIso();
+        var last = Repo.listReunions()[0];
+        var carryGoals = {};
+        if (last && last.goals) {
+          Object.keys(last.goals).forEach(function (k) {
+            if (k === 'group') { carryGoals.group = (last.goals.group || []).slice(); return; }
+            var open = normGoals(last.goals[k]).filter(function (g) { return !g.done; }).map(function (g) { return { text: g.text, done: false }; });
+            if (open.length) carryGoals[k] = open;
           });
-        });
+        }
+        Repo.saveReunion({
+          date: nm, orgItems: [],
+          studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
+          goals: carryGoals, discussed: []
+        }).then(function () {
+          showToast('Réunion für ' + formatDate(nm) + ' angelegt (offene Ziele übernommen).');
+          navigate('#/reunion?date=' + encodeURIComponent(nm), true);
+        }).catch(function (err) { showToast('Fehler beim Anlegen: ' + err.message, { error: true }); });
+      });
+
+      function addGoal(sid, inp) {
+        if (!inp) return;
+        var txt = inp.value.trim(); if (!txt) return;
+        var r = current(); var goals = goalsFor(r, sid);
+        goals.push({ text: txt, done: false }); writeGoals(r, sid, goals);
+        persist(r).then(function () { rebuildCard(sid); rerenderStats(); });
       }
 
-      wire();
+      function printProtocol() {
+        var r = current(); if (!r) return;
+        var rows = rowsFor(r);
+        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
+        var html = '<div class="print-sheet" id="print-sheet">' +
+          '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
+          '<p class="rp-sub">Team-Versammlung vom ' + escapeHtml(formatDate(r.date)) + ' · ' +
+            rows.filter(function (x) { return x.discussed; }).length + ' / ' + rows.length + ' Schüler besprochen</p>';
+        var group = (r.goals && r.goals.group) || [];
+        var groupTxt = Array.isArray(group) ? group.join(' ') : String(group || '');
+        if (groupTxt.trim()) html += '<p style="font-size:13px;"><strong>Gruppenziel:</strong> ' + escapeHtml(groupTxt) + '</p>';
+        if ((r.orgItems || []).length) {
+          html += '<div class="rp-sec">Organisation</div><ul class="rp-org">' +
+            r.orgItems.map(function (it) {
+              var parts = it.split('\n');
+              return '<li>' + escapeHtml(parts[0]) + (parts.length > 1 ? '<br><span style="color:#555">' + escapeHtml(parts.slice(1).join(' — ')) + '</span>' : '') + '</li>';
+            }).join('') + '</ul>';
+        }
+        html += '<div class="rp-sec">Schüler</div>';
+        rows.forEach(function (row, i) {
+          html += '<div class="rp-stud"><h4>' + (i + 1) + '. ' + escapeHtml(row.s.name) +
+            ' <span class="' + (row.discussed ? 'rp-done' : 'rp-todo') + '" style="font-size:11px;font-weight:400;">' + (row.discussed ? '✓ besprochen' : 'offen') + '</span></h4>';
+          html += '<div class="rp-upd">' + (row.hasUpdate ? escapeHtml(row.entry.text) : '<em style="color:#999">Kein Update.</em>') + '</div>';
+          if (row.goals.length) html += '<ul class="rp-goals">' + row.goals.map(function (g) {
+            return '<li>' + (g.done ? '☑ ' : '☐ ') + escapeHtml(g.text) + '</li>';
+          }).join('') + '</ul>';
+          html += '</div>';
+        });
+        html += '</div>';
+        var holder = document.createElement('div'); holder.innerHTML = html;
+        document.body.appendChild(holder.firstChild);
+        window.print();
+      }
     }
   };
 }
