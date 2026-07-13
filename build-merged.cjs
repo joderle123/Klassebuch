@@ -360,6 +360,17 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
   .kb-app.kb-open .kb-scrim{display:block;position:fixed;inset:0;background:rgba(15,20,35,.45);z-index:39;}
   .kb-pad,.kb-hub-head,.kb-hub-body{padding-left:16px;padding-right:16px;}
 }
+/* Desktop: einklappbare Seitenleiste (mehr Platz für den Hauptbereich) */
+.kb-collapse{margin-left:auto;flex:0 0 auto;width:28px;height:28px;border-radius:8px;border:1px solid var(--kb-border);background:none;color:var(--kb-muted);font-size:16px;line-height:1;cursor:pointer;transition:.13s;}
+.kb-collapse:hover{background:var(--kb-accent-50);color:var(--kb-accent);border-color:var(--kb-accent);}
+.kb-reopen{display:none;position:fixed;top:12px;left:10px;z-index:60;width:38px;height:38px;border-radius:10px;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);font-size:17px;line-height:1;cursor:pointer;box-shadow:var(--kb-shadow-sm);transition:.13s;}
+.kb-reopen:hover{background:var(--kb-accent-50);color:var(--kb-accent);border-color:var(--kb-accent);}
+@media(min-width:881px){
+  .kb-app.kb-collapsed .kb-side{display:none;}
+  .kb-app.kb-collapsed .kb-reopen{display:grid;place-items:center;}
+  .kb-app.kb-collapsed .kb-stage{padding-left:46px;}
+}
+@media(max-width:880px){ .kb-collapse{display:none;} }
 /* Screening-Ergebnis (kompakt, im Schüler-Hub) */
 .sv-riskbox{background:var(--kb-danger-50);border:1px solid var(--kb-danger);border-radius:12px;padding:12px 14px;margin-bottom:14px;color:var(--kb-text);}
 .sv-risk{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;margin:2px 4px 2px 0;background:#fff;border:1px solid var(--kb-danger);color:var(--kb-danger-dark);}
@@ -809,8 +820,9 @@ var SHELL_BODY_TOP = `
     <button class="kb-burger" id="kb-burger" aria-label="Menü öffnen">☰</button>
     <div class="kb-topbrand"><span class="kb-logo">📘</span><span>Klassebuch</span></div>
   </div>
+  <button class="kb-reopen" id="kb-reopen" aria-label="Seitenleiste einblenden" title="Seitenleiste einblenden">☰</button>
   <aside class="kb-side" id="kb-side" aria-label="Hauptnavigation">
-    <div class="kb-brand"><span class="kb-logo">📘</span><span class="kb-brandtext"><b>Klassebuch</b><small>Annexe Junglinster</small></span></div>
+    <div class="kb-brand"><span class="kb-logo">📘</span><span class="kb-brandtext"><b>Klassebuch</b><small>Annexe Junglinster</small></span><button class="kb-collapse" id="kb-collapse" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen">«</button></div>
     <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
@@ -1320,6 +1332,11 @@ var SHELL_CONTROLLER = `
   // Mobile-Schublade
   var burger=$('kb-burger'); if(burger){burger.addEventListener('click',function(){app.classList.toggle('kb-open');});}
   var scrim=$('kb-scrim'); if(scrim){scrim.addEventListener('click',closeDrawer);}
+  // Desktop-Seitenleiste ein-/ausklappen (Zustand merken)
+  function setCollapsed(on){app.classList.toggle('kb-collapsed',on);try{localStorage.setItem('kb_side_collapsed',on?'1':'0');}catch(e){}}
+  try{if(localStorage.getItem('kb_side_collapsed')==='1')app.classList.add('kb-collapsed');}catch(e){}
+  var collapseBtn=$('kb-collapse'); if(collapseBtn){collapseBtn.addEventListener('click',function(){setCollapsed(true);});}
+  var reopenBtn=$('kb-reopen'); if(reopenBtn){reopenBtn.addEventListener('click',function(){setCollapsed(false);});}
 
   // Aktive Markierung anhand der dossier-Route
   function dosNavForHash(){var h=location.hash||'';
