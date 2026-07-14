@@ -917,7 +917,7 @@ var DOS_OVERRIDES = `
     var sid=student.id; var meta=[]; var kl=rosterKlasse(sid); if(kl){meta.push(escapeHtml(kl));}
     var _rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(_rep&&_rep.type){meta.push(escapeHtml(_rep.type));}
     if(!meta.length){meta.push('betreut');}
-    var tabs=[['uebersicht','Übersicht'],['notizen','Notizen'],['dossier','Dossier'],['screening','Screening'],['helfernetz','Helfernetz']];
+    var tabs=[['uebersicht','Übersicht'],['notizen','Notizen'],['fortschritt','Fortschritt & Ziele'],['dossier','Dossier'],['screening','Screening'],['helfernetz','Helfernetz']];
     var tb=tabs.map(function(t){var r='#/student/'+encodeURIComponent(sid)+'?hub='+t[0];return '<a class="kb-hub-tab'+(t[0]===tab?' active':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(t[1])+'</a>';}).join('');
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
@@ -926,6 +926,13 @@ var DOS_OVERRIDES = `
       '<div class="kb-hub-tabs">'+tb+'</div></div>';
   }
   function isaNoteRoute(sid){var ret=encodeURIComponent('#/student/'+encodeURIComponent(sid)+'?hub=notizen');return '#/entry/new/'+encodeURIComponent(sid)+'?return='+ret;}
+  /* Strukturierte Notiz rendern: Leitfragen-Zeilen ("— Frage") fett hervorheben */
+  function isaNoteBody(text){
+    return String(text||'').split('\\n').map(function(ln){
+      if(ln.indexOf('— ')===0){return '<span class="isa-nq">'+highlightThemesHtml(ln.slice(2))+'</span>';}
+      return highlightThemesHtml(ln);
+    }).join('<br>');
+  }
   function hubOverview(student){
     var sid=student.id;
     var entries=Repo.entriesForStudent(sid).slice().sort(function(a,b){return a.date<b.date?1:-1;});
@@ -933,8 +940,7 @@ var DOS_OVERRIDES = `
     var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null;
     var cg=window.KB_REPORTS?window.KB_REPORTS.currentGoals(sid):null;
     var impBtn='<button class="btn btn-sm" data-route="#/report-import?student='+encodeURIComponent(sid)+'">📄 DS/PEI importieren</button>';
-    var newNoteRoute=isaNoteRoute(sid);
-    var newNoteBtn='<a class="btn btn-primary" href="'+newNoteRoute+'" data-route="'+newNoteRoute+'">✍️ Neue Notiz</a>';
+    var newNoteBtn='<button class="btn btn-primary" data-kb-act="new-note" data-kb-arg="'+escapeAttr(sid)+'">✍️ Neue Notiz</button>';
     var DM={V:{l:'Verhalten',c:'#c0562d'},K:{l:'Kommunikation',c:'#2f6fb0'},SOZ:{l:'Sozialisation',c:'#3a8a5f'},KOG:{l:'Kognition',c:'#7a52b3'}};
 
     function mh(ic,t,c){return '<h4><span class="mi mi-'+(c||'a')+'">'+ic+'</span><span class="mt">'+t+'</span></h4>';}
@@ -1058,8 +1064,7 @@ var DOS_OVERRIDES = `
     var entries=Repo.entriesForStudent(sid).slice().sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:((a.createdAt||'')<(b.createdAt||'')?1:-1));});
     var q=(typeof parseHash==='function')?(parseHash().query||{}):{};
     var cf=q.cf||'all';
-    var newRoute=isaNoteRoute(sid);
-    var head='<div class="isa-notes-head"><a class="btn btn-primary" href="'+newRoute+'" data-route="'+newRoute+'">✍️ Neue Notiz</a></div>';
+    var head='<div class="isa-notes-head"><button class="btn btn-primary" data-kb-act="new-note" data-kb-arg="'+escapeAttr(sid)+'">✍️ Neue Notiz</button></div>';
     if(!entries.length){
       return '<div class="kb-hub-pad">'+head+'<div class="empty-state">Noch keine Notizen zu '+escapeHtml(student.name)+'. Halte hier Beobachtungen, Gespräche und Vereinbarungen fest — jede Notiz wird mit Datum, Kategorie und deinem Namen gespeichert.</div></div>';
     }
@@ -1077,9 +1082,38 @@ var DOS_OVERRIDES = `
         '<div class="isa-note-top"><span class="isa-cat">'+escapeHtml(e.category||'Notiz')+'</span>'+
           '<span class="isa-note-meta">'+escapeHtml(formatDate(e.date))+(e.author?' · <span class="reunion-author">✍ '+escapeHtml(e.author)+'</span>':'')+'</span>'+
           '<a class="isa-note-edit" href="'+editRoute+'" data-route="'+editRoute+'" title="Notiz bearbeiten">✎</a></div>'+
-        '<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'+tags+'</div>';
+        '<div class="entry-body isa-note-text">'+isaNoteBody(e.text)+'</div>'+tags+'</div>';
     }).join('');
     return '<div class="kb-hub-pad">'+head+'<div class="tl-filters">'+chips+'</div>'+(cards||'<div class="empty-state">Keine Notiz in diesem Filter.</div>')+'</div>';
+  }
+  /* ---- Fortschritt & Ziele (PEI-Bausteine) + Vorschläge ---- */
+  function hubFortschritt(student){
+    var sid=student.id;
+    var pei=window.KB_PEI?window.KB_PEI.list(sid):{progress:[],topics:[]};
+    var suggestions=window.KB_SUGGEST?window.KB_SUGGEST.forStudent(sid):[];
+    function itemRow(kind,it){
+      return '<div class="pei-item'+(it.done?' is-done':'')+'"><label class="pei-check"><input type="checkbox" data-pei-toggle="'+escapeAttr(kind+'|'+it.id)+'"'+(it.done?' checked':'')+'></label>'+
+        '<div class="pei-txt"><div>'+escapeHtml(it.text)+'</div><div class="pei-meta">'+escapeHtml(formatDate(it.date)||'')+(it.by?' · '+escapeHtml(it.by):'')+'</div></div>'+
+        '<button class="pei-del" data-pei-del="'+escapeAttr(kind+'|'+it.id)+'" title="Löschen">✕</button></div>';
+    }
+    function col(kind,ic,title,items,ph){
+      var rows=items.length?items.map(function(it){return itemRow(kind,it);}).join(''):'<p class="muted" style="font-size:13px;margin:6px 2px;">Noch nichts erfasst.</p>';
+      return '<div class="card pei-col"><h3 class="home-h">'+ic+' '+title+'</h3>'+
+        '<div class="pei-add"><input class="kb-in" data-pei-add="'+kind+'" placeholder="'+ph+'"><button class="btn btn-sm btn-primary" data-pei-addbtn="'+kind+'">+</button></div>'+
+        '<div class="pei-list">'+rows+'</div></div>';
+    }
+    var sugHtml='';
+    if(suggestions.length){
+      sugHtml='<div class="card pei-sug"><h3 class="home-h">💡 Vorschläge <span class="muted" style="font-weight:600;font-size:.8em;">aus deinen Notizen</span></h3>'+
+        '<p class="muted" style="font-size:12.5px;margin:-4px 0 12px;">Automatisch aus deinen Notizen erkannt und professionell formuliert — übernimm, was passt.</p>'+
+        suggestions.map(function(s){
+          return '<div class="pei-sug-card"><div class="pei-sug-lbl">'+escapeHtml(s.label)+' <span class="pei-sug-n">'+s.count+'×</span> <button class="pei-sug-x" data-sug-dis="'+escapeAttr(s.key)+'">verwerfen</button></div>'+
+            '<div class="pei-sug-opt"><span class="pei-sug-txt">✅ '+escapeHtml(s.progress)+'</span><button class="btn btn-sm" data-sug-acc="'+escapeAttr('progress|'+s.key)+'">übernehmen</button></div>'+
+            '<div class="pei-sug-opt"><span class="pei-sug-txt">🎯 '+escapeHtml(s.topic)+'</span><button class="btn btn-sm" data-sug-acc="'+escapeAttr('topics|'+s.key)+'">übernehmen</button></div></div>';
+        }).join('')+'</div>';
+    }
+    return '<div class="kb-hub-pad"><p class="pei-intro">Kleine Fortschritte und anzugehende Themen festhalten — sie bilden nach und nach die Grundlage fürs PEI, damit nichts vergessen geht.</p>'+
+      '<div class="pei-grid">'+col('progress','✅','Fortschritte',pei.progress,'Kleinen Fortschritt notieren …')+col('topics','🎯','Anzugehende Themen',pei.topics,'Thema / Ziel notieren …')+'</div>'+sugHtml+'</div>';
   }
   function hubAbsenzen(student){
     var sid=student.id;
@@ -1170,6 +1204,7 @@ var DOS_OVERRIDES = `
       try{
         if(tab==='dossier'){var base=_origDetail(params);sectionHtml=base.html;baseAfter=base.afterRender;}
         else if(tab==='notizen'){sectionHtml=hubNotizen(student);}
+        else if(tab==='fortschritt'){sectionHtml=hubFortschritt(student);}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
         else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
         else {tab='uebersicht';sectionHtml=hubOverview(student);}
@@ -1181,6 +1216,19 @@ var DOS_OVERRIDES = `
         if(baseAfter){try{baseAfter(root);}catch(e){}}
         if(tab==='screening'&&window.KB_GUIDE){try{var gh=root.querySelector('#kb-guide-host');if(gh){window.KB_GUIDE.mount(gh,student);}}catch(e){}}
         if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
+        if(tab==='fortschritt'&&window.KB_PEI){try{
+          var sid2=student.id; var rr=function(){if(window.render){try{window.render();}catch(e){}}};
+          function pair(v){var p=String(v||'').split('|');return {kind:p[0],id:p[1]};}
+          root.querySelectorAll('[data-pei-addbtn]').forEach(function(b){b.addEventListener('click',function(){
+            var kind=b.getAttribute('data-pei-addbtn');var inp=root.querySelector('[data-pei-add="'+kind+'"]');var v=inp?inp.value.trim():'';if(!v){if(inp)inp.focus();return;}window.KB_PEI.add(sid2,kind,v);rr();});});
+          root.querySelectorAll('[data-pei-add]').forEach(function(inp){inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();var kind=inp.getAttribute('data-pei-add');var v=inp.value.trim();if(v){window.KB_PEI.add(sid2,kind,v);rr();}}});});
+          root.querySelectorAll('[data-pei-toggle]').forEach(function(c){c.addEventListener('change',function(){var pr=pair(c.getAttribute('data-pei-toggle'));window.KB_PEI.toggle(sid2,pr.kind,pr.id);rr();});});
+          root.querySelectorAll('[data-pei-del]').forEach(function(b){b.addEventListener('click',function(){var pr=pair(b.getAttribute('data-pei-del'));window.KB_PEI.remove(sid2,pr.kind,pr.id);rr();});});
+          root.querySelectorAll('[data-sug-acc]').forEach(function(b){b.addEventListener('click',function(){
+            var pr=pair(b.getAttribute('data-sug-acc'));var bank=(window.KB_SUGGEST&&window.KB_SUGGEST.bank)||[];var d=bank.filter(function(x){return x.key===pr.id;})[0];if(!d)return;
+            window.KB_PEI.add(sid2,pr.kind,(pr.kind==='progress'?d.progress:d.topic),d.key);rr();});});
+          root.querySelectorAll('[data-sug-dis]').forEach(function(b){b.addEventListener('click',function(){window.KB_PEI.dismiss(sid2,b.getAttribute('data-sug-dis'));rr();});});
+        }catch(e){}}
       }
       };
     };
@@ -1305,6 +1353,7 @@ var SHELL_CONTROLLER = `
     var el=ev.target.closest&&ev.target.closest('[data-kb-act]'); if(!el)return;
     var act=el.getAttribute('data-kb-act'), arg=el.getAttribute('data-kb-arg');
     if(act==='add-student'){ addStudentFlow(); }
+    else if(act==='new-note'){ if(window.KB_NOTECOMPOSER){window.KB_NOTECOMPOSER.open(arg);} }
     else if(act==='go-students'){ go('students'); }
     else if(act==='open-notes'){ showPanel('dos-root'); setActive('students'); if(window.navigate){window.navigate('#/student/'+encodeURIComponent(arg)+'?hub=notizen');} }
     else if(act==='open-screening'){
@@ -1709,7 +1758,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),pei:c(window.KB_PEI,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -1722,6 +1771,7 @@ window.KB_SYNC=(function(){
     s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
     s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
     s(window.KB_NOTEN,'syncApply',liveOf(doc.colls.noten));
+    s(window.KB_PEI,'syncApply',liveOf(doc.colls.pei));
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -2981,40 +3031,97 @@ dosScript      = isaNS(dosScript);
   }
 })();
 
-/* ISA-fokussierte Notiz-Kategorien statt der Klassebuch-Kategorien.
-   Blend aus Kontakt/Setting (wo?) und Förderdomäne (was?) — logisch für
-   die ambulante Arbeit. 'Bericht (DS/PEI)' bleibt (wird vom DS/PEI-Import
-   gesetzt). Zum Anpassen einfach diese Liste ändern und neu bauen. */
-var ISA_CATEGORIES = [
-  'Hausbesuch',
-  'Schul-/Ausbildungsbegleitung',
-  'Elterngespräch & Familie',
-  'Netzwerk & externe Stellen',
-  'Fördereinheit & Ziele',
-  'Verhalten & Emotion',
-  'Soziales & Beziehungen',
-  'Selbstständigkeit & Alltag',
-  'Beruf & Perspektive',
-  'Gesundheit & Medikation',
-  'Krise & Sicherheit',
-  'Organisation & Termine',
-  'Bericht (DS/PEI)'
+/* ============================================================
+   ISA-Notiz-Typen ("Fragestellungen"): jeder Typ blendet passende
+   Leitfragen ein, sodass eine Notiz strukturiert entsteht. Der Typ ist
+   zugleich die Kategorie (Farbe/Filter). 'Bericht (DS/PEI)' bleibt für
+   den DS/PEI-Import erhalten. Zum Anpassen: diese Liste ändern + neu bauen.
+   ============================================================ */
+var ISA_NOTE_TYPES = [
+  { key:'Krise / Vorfall', ic:'🚨', color:'hsl(4, 62%, 46%)', questions:[
+    'Was ist passiert? (Situation, Auslöser)',
+    'Wie wurde reagiert? (Intervention, Deeskalation)',
+    'Wie hat der/die Schüler·in reagiert?',
+    'Was hat geholfen — was nicht?',
+    'Vereinbarung / nächster Schritt'
+  ]},
+  { key:'Fördereinheit', ic:'🎯', color:'hsl(150, 40%, 38%)', questions:[
+    'Woran wurde gearbeitet? (Ziel / Thema)',
+    'Vorgehen / Methode',
+    'Mitarbeit & Reaktion',
+    'Ergebnis / beobachteter Fortschritt'
+  ]},
+  { key:'Gespräch', ic:'💬', color:'hsl(206, 55%, 45%)', questions:[
+    'Mit wem & aus welchem Anlass?',
+    'Wichtigste Punkte',
+    'Vereinbarungen / To-dos'
+  ]},
+  { key:'Netzwerk & Austausch', ic:'🔗', color:'hsl(195, 45%, 40%)', questions:[
+    'Mit welcher Stelle? (ONE, Therapie, Schule …)',
+    'Thema / Anliegen',
+    'Ergebnis / weiteres Vorgehen'
+  ]},
+  { key:'Beobachtung', ic:'👀', color:'hsl(255, 35%, 52%)', questions:[
+    'Situation / Kontext',
+    'Konkrete Beobachtung',
+    'Einordnung / Hypothese (optional)'
+  ]},
+  { key:'Allgemeine Notiz', ic:'📝', color:'hsl(210, 15%, 45%)', questions:[] }
 ];
-var ISA_CATEGORY_COLORS = {
-  'Hausbesuch':                    'hsl(174, 45%, 36%)',
-  'Schul-/Ausbildungsbegleitung':  'hsl(206, 55%, 45%)',
-  'Elterngespräch & Familie':      'hsl(28, 55%, 45%)',
-  'Netzwerk & externe Stellen':    'hsl(195, 45%, 40%)',
-  'Fördereinheit & Ziele':         'hsl(150, 40%, 38%)',
-  'Verhalten & Emotion':           'hsl(20, 60%, 48%)',
-  'Soziales & Beziehungen':        'hsl(280, 35%, 50%)',
-  'Selbstständigkeit & Alltag':    'hsl(255, 35%, 52%)',
-  'Beruf & Perspektive':           'hsl(188, 52%, 33%)',
-  'Gesundheit & Medikation':       'hsl(300, 30%, 46%)',
-  'Krise & Sicherheit':            'hsl(4, 62%, 46%)',
-  'Organisation & Termine':        'hsl(225, 30%, 50%)',
-  'Bericht (DS/PEI)':              'hsl(262, 45%, 50%)'
-};
+/* Vorschlags-Bank: erkennt Förderdomänen in den Notiztexten (Stichwörter,
+   LU/DE/FR) und schlägt professionell formulierte Fortschritte / Ziele vor.
+   Zum Erweitern: hier eine Domäne ergänzen. */
+var ISA_SUGGEST_BANK = [
+  { key:'emo', label:'Emotionsregulation', patterns:['reguléier','regulier','emotioun','emotion','wüttend','roueg bleiwen','beroui','ampel','frustratioun','frustration','iwwerwältegt'],
+    progress:'Zeigt zunehmend Strategien, um belastende Gefühle selbst zu regulieren.',
+    topic:'Emotionsregulation in belastenden Situationen weiter stärken.' },
+  { key:'impuls', label:'Impulskontrolle', patterns:['impuls','selbststeier','selbstkontroll','kontrolléier','innehalen','stopp-signal'],
+    progress:'Kann Impulse in strukturierten Situationen zunehmend zurückhalten.',
+    topic:'Impulskontrolle in unstrukturierten Momenten weiter aufbauen.' },
+  { key:'sozial', label:'Soziale Beziehungen', patterns:['sozial','kolleeg','frënn','peer','beziehung','gruppen','integréier','matschüler'],
+    progress:'Geht zunehmend angemessen auf andere Jugendliche zu.',
+    topic:'Tragfähige soziale Beziehungen zu Gleichaltrigen aufbauen.' },
+  { key:'konflikt', label:'Konfliktverhalten', patterns:['konflikt','sträit','streit','provozéier','aggressiv','geschloen','beleidegt','eskal'],
+    progress:'Löst Konflikte häufiger im Gespräch statt über Eskalation.',
+    topic:'Konstruktive Konfliktlösung ohne Eskalation einüben.' },
+  { key:'kommunik', label:'Kommunikation & Ausdruck', patterns:['kommunik','ausdréck','ausdruck','verbalis','erzielt','mëndlech','sproochlech','seng bedürfnisser'],
+    progress:'Drückt eigene Bedürfnisse zunehmend verbal aus.',
+    topic:'Eigene Anliegen sprachlich klar äußern lernen.' },
+  { key:'motiv', label:'Motivation & Mitarbeit', patterns:['motiv','matmaachen','engagéiert','interess','usträngen','méi lëscht','mitarbeit'],
+    progress:'Zeigt in Bereichen mit persönlichem Bezug gute Mitarbeit.',
+    topic:'Motivation und aktive Mitarbeit im Alltag stärken.' },
+  { key:'selbst', label:'Selbstständigkeit & Struktur', patterns:['selbststänn','selbständig','struktur','organiséier','ordnung','material','plangen','eegenstänn'],
+    progress:'Organisiert Aufgaben und Material zunehmend eigenständig.',
+    topic:'Selbstorganisation und Tagesstruktur weiter festigen.' },
+  { key:'konz', label:'Konzentration & Ausdauer', patterns:['konzentr','opmierksam','aufmerksam','fokus','oflenkbar','ausdauer'],
+    progress:'Bleibt in kurzen, klar strukturierten Einheiten aufmerksam.',
+    topic:'Konzentration und Ausdauer schrittweise ausbauen.' },
+  { key:'selbstwert', label:'Selbstwert & Zutrauen', patterns:['selbstwäert','selbstwert','selbstvertrauen','selbstbild','stolz','minnerwäerteg','traut sech'],
+    progress:'Traut sich zunehmend neue Aufgaben zu.',
+    topic:'Selbstwert und Zutrauen in eigene Fähigkeiten stärken.' },
+  { key:'schule', label:'Schulteilnahme', patterns:['schoul','absen','net komm','reintegrat','präsenz','fielt','net an d.schoul','verweigert schoul'],
+    progress:'Nimmt verlässlicher am Schulalltag teil.',
+    topic:'Regelmäßige Schulteilnahme stabilisieren.' },
+  { key:'beruf', label:'Berufliche Orientierung', patterns:['stage','praktikum','beruff','ausbildung','atva','adem','zukunft','orientéierung','patron'],
+    progress:'Entwickelt konkrete Vorstellungen zur beruflichen Zukunft.',
+    topic:'Berufliche Orientierung und Praktikumserfahrung ausbauen.' },
+  { key:'regeln', label:'Regeln & Grenzen', patterns:['reegel','regel','grenz','limit','vereinbar','ofmaachung','haalt sech un'],
+    progress:'Akzeptiert vereinbarte Regeln zunehmend.',
+    topic:'Akzeptanz von Regeln und Grenzen weiter aufbauen.' },
+  { key:'familie', label:'Familiäres Umfeld', patterns:['famill','elteren','doheem','heem','mamm','papp','geschwëster','haushalt'],
+    progress:'Zusammenarbeit mit dem familiären Umfeld verläuft konstruktiv.',
+    topic:'Zusammenarbeit mit dem familiären Umfeld weiter stärken.' },
+  { key:'medien', label:'Umgang mit Medien/Konsum', patterns:['handy','gaming','medien','vape','konsum','bildschierm','internet','sozial medien'],
+    progress:'Reflektiert den eigenen Medienkonsum zunehmend.',
+    topic:'Einen ausgewogenen Umgang mit Medien und Konsum entwickeln.' },
+  { key:'vertrauen', label:'Vertrauensbeziehung', patterns:['vertrauen','vertraut','bezéiung opgebaut','trauen','oppe ginn','oppen'],
+    progress:'Hat eine tragfähige Vertrauensbasis zur Begleitung aufgebaut.',
+    topic:'Vertrauensbeziehung als Basis der Förderung weiter festigen.' }
+];
+/* CATEGORIES/COLORS aus den Notiz-Typen ableiten (+ Bericht für den Import) */
+var ISA_CATEGORIES = ISA_NOTE_TYPES.map(function(t){return t.key;}).concat(['Bericht (DS/PEI)']);
+var ISA_CATEGORY_COLORS = {}; ISA_NOTE_TYPES.forEach(function(t){ISA_CATEGORY_COLORS[t.key]=t.color;});
+ISA_CATEGORY_COLORS['Bericht (DS/PEI)']='hsl(262, 45%, 50%)';
 (function(){
   var catsSrc='var CATEGORIES = '+JSON.stringify(ISA_CATEGORIES,null,2)+';';
   var colSrc='var CATEGORY_COLORS = '+JSON.stringify(ISA_CATEGORY_COLORS,null,2)+';';
@@ -3049,7 +3156,7 @@ var AGENDA_MODULE = `
 window.KB_AGENDA=(function(){
   var LS='isa_agenda_v1';
   var DOW=['','Montag','Dienstag','Mittwoch','Donnerstag','Freitag'];
-  var KINDS={hausbesuch:{l:'Hausbesuch',ic:'🏠',c:'#0f766e'},schule:{l:'Schule/Lycée',ic:'🏫',c:'#2563eb'},besprechung:{l:'Besprechung',ic:'👥',c:'#7c3aed'},buero:{l:'Büro/Bericht',ic:'💻',c:'#b45309'},fahrt:{l:'Fahrt',ic:'🚗',c:'#0e7490'},sonstiges:{l:'Sonstiges',ic:'📌',c:'#6b7280'}};
+  var KINDS={begleitung:{l:'Begleitung',ic:'🧑‍🏫',c:'#2563eb'},einheit:{l:'Fördereinheit',ic:'🎯',c:'#0f766e'},gespraech:{l:'Gespräch',ic:'💬',c:'#7c3aed'},netzwerk:{l:'Netzwerk/Besprechung',ic:'🔗',c:'#0e7490'},buero:{l:'Büro/Bericht',ic:'💻',c:'#b45309'},fahrt:{l:'Fahrt',ic:'🚗',c:'#0891b2'},sonstiges:{l:'Sonstiges',ic:'📌',c:'#6b7280'}};
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
   function user(){try{return (window.KB_USER&&window.KB_USER.get())||'_';}catch(e){return '_';}}
   function loadAll(){try{return JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){return {};}}
@@ -3109,11 +3216,11 @@ window.KB_AGENDA=(function(){
     return '<div class="ag-form-ov" id="ag-form-ov"><div class="ag-form">'+
       '<div class="ag-form-h"><b>'+esc(title)+'</b><button class="ag-x" id="ag-f-cancel" title="Schließen">✕</button></div>'+
       '<div class="ag-grid2">'+whenField+
-        '<label class="ag-l">Art<select class="ag-in" id="ag-f-kind">'+kindOpts(f.kind||'hausbesuch')+'</select></label>'+
+        '<label class="ag-l">Art<select class="ag-in" id="ag-f-kind">'+kindOpts(f.kind||'begleitung')+'</select></label>'+
         '<label class="ag-l">Von<input class="ag-in" id="ag-f-start" type="time" value="'+esc(f.start||'')+'"></label>'+
         '<label class="ag-l">Bis<input class="ag-in" id="ag-f-end" type="time" value="'+esc(f.end||'')+'"></label>'+
       '</div>'+
-      '<label class="ag-l">Titel<input class="ag-in" id="ag-f-title" type="text" placeholder="z. B. Hausbesuch Familie …" value="'+esc(f.title||'')+'"></label>'+
+      '<label class="ag-l">Titel<input class="ag-in" id="ag-f-title" type="text" placeholder="z. B. Begleitung Schule …" value="'+esc(f.title||'')+'"></label>'+
       '<label class="ag-l">Schüler (optional)<select class="ag-in" id="ag-f-stud">'+studentOpts(f.studentId||'')+'</select></label>'+
       '<label class="ag-l">Notiz (optional)<input class="ag-in" id="ag-f-note" type="text" placeholder="Ort, Details …" value="'+esc(f.note||'')+'"></label>'+
       '<div class="ag-form-foot">'+
@@ -3190,18 +3297,104 @@ window.KB_AGENDA=(function(){
     b('ag-prev',function(){state.weekStart.setDate(state.weekStart.getDate()-7);render();});
     b('ag-next',function(){state.weekStart.setDate(state.weekStart.getDate()+7);render();});
     b('ag-today-btn',function(){state.weekStart=mondayOf(new Date());render();});
-    b('ag-add',function(){openForm({mode:'appt',date:iso(new Date()),kind:'hausbesuch',start:'',end:''});});
+    b('ag-add',function(){openForm({mode:'appt',date:iso(new Date()),kind:'begleitung',start:'',end:''});});
     b('ag-add-base',function(){openForm({mode:'base',weekday:1,kind:'schule',start:'',end:''});});
     b('ag-f-save',saveForm); b('ag-f-del',delForm);
     b('ag-f-cancel',function(){state.form=null;render();}); b('ag-f-cancel2',function(){state.form=null;render();});
     var ov=document.getElementById('ag-form-ov'); if(ov){ov.addEventListener('click',function(e){if(e.target===ov){state.form=null;render();}});}
-    host.querySelectorAll('[data-ag-newday]').forEach(function(el){el.addEventListener('click',function(){openForm({mode:'appt',date:el.getAttribute('data-ag-newday'),kind:'hausbesuch',start:'',end:''});});});
+    host.querySelectorAll('[data-ag-newday]').forEach(function(el){el.addEventListener('click',function(){openForm({mode:'appt',date:el.getAttribute('data-ag-newday'),kind:'begleitung',start:'',end:''});});});
     host.querySelectorAll('[data-ag-edit]').forEach(function(el){el.addEventListener('click',function(){var f=editKey(el.getAttribute('data-ag-edit'));if(f)openForm(f);});});
   }
 
   return {render:render, forDate:forDate, upcoming:upcoming, kinds:KINDS, studentName:studentName};
 })();
 `;
+
+/* Notiz-Typen + PEI-Bausteine (Fortschritte/Themen) + Vorschlags-Engine */
+var ISA_NOTES_MODULE = `
+window.ISA_NOTE_TYPES=${JSON.stringify(ISA_NOTE_TYPES)};
+window.KB_PEI=(function(){
+  var LS="isa_pei_v1";
+  function load(){try{return JSON.parse(localStorage.getItem(LS)||"{}")||{};}catch(e){return {};}}
+  function save(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+  function rec(o,sid){if(!o[sid]){o[sid]={progress:[],topics:[],dismissed:[]};}var r=o[sid];if(!r.progress)r.progress=[];if(!r.topics)r.topics=[];if(!r.dismissed)r.dismissed=[];return r;}
+  function by(){try{return (window.KB_USER&&window.KB_USER.get())||"";}catch(e){return "";}}
+  function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+  function uid(){return "p_"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+  function sync(){if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}}
+  return {
+    list:function(sid){var o=load();var r=rec(o,sid);return {progress:r.progress.slice(),topics:r.topics.slice(),dismissed:r.dismissed.slice()};},
+    add:function(sid,kind,text,key){if(!text)return;var o=load();var r=rec(o,sid);(kind==="progress"?r.progress:r.topics).push({id:uid(),text:text,key:key||"",date:today(),by:by(),done:false});save(o);sync();},
+    toggle:function(sid,kind,id){var o=load();var r=rec(o,sid);(kind==="progress"?r.progress:r.topics).forEach(function(x){if(x.id===id)x.done=!x.done;});save(o);sync();},
+    remove:function(sid,kind,id){var o=load();var r=rec(o,sid);r[kind]=(kind==="progress"?r.progress:r.topics).filter(function(x){return x.id!==id;});save(o);sync();},
+    dismiss:function(sid,key){var o=load();var r=rec(o,sid);if(r.dismissed.indexOf(key)<0)r.dismissed.push(key);save(o);},
+    keysIn:function(sid){var o=load();var r=rec(o,sid);var s={};r.progress.concat(r.topics).forEach(function(x){if(x.key)s[x.key]=1;});r.dismissed.forEach(function(k){s[k]=1;});return s;},
+    syncExport:function(){var o=load();var out=[];for(var k in o){out.push({id:k,progress:o[k].progress||[],topics:o[k].topics||[],dismissed:o[k].dismissed||[]});}return out;},
+    syncApply:function(arr){var o={};(arr||[]).forEach(function(r){if(r&&r.id){o[r.id]={progress:r.progress||[],topics:r.topics||[],dismissed:r.dismissed||[]};}});save(o);}
+  };
+})();
+window.KB_SUGGEST=(function(){
+  var BANK=${JSON.stringify(ISA_SUGGEST_BANK)};
+  function forStudent(sid){
+    var ents=(window.Repo&&Repo.entriesForStudent)?Repo.entriesForStudent(sid):[];
+    var txt=ents.map(function(e){return (e.text||"");}).join("  ").toLowerCase();
+    if(!txt.trim())return [];
+    var have=(window.KB_PEI?window.KB_PEI.keysIn(sid):{});
+    var out=[];
+    BANK.forEach(function(d){
+      if(have[d.key])return;
+      var c=0;d.patterns.forEach(function(p){if(txt.indexOf(p)>=0)c++;});
+      if(c>0){out.push({key:d.key,label:d.label,progress:d.progress,topic:d.topic,count:c});}
+    });
+    out.sort(function(a,b){return b.count-a.count;});
+    return out.slice(0,6);
+  }
+  return {forStudent:forStudent,bank:BANK};
+})();
+window.KB_NOTECOMPOSER=(function(){
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+  function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+  function types(){return window.ISA_NOTE_TYPES||[];}
+  var ov=null, sel=null, sid=null;
+  function close(){if(ov&&ov.parentNode)ov.parentNode.removeChild(ov);ov=null;}
+  function typeBtns(){return types().map(function(t){return '<button type="button" class="nc-type'+(sel&&sel.key===t.key?' on':'')+'" data-nc-type="'+esc(t.key)+'" style="--nc:'+t.color+'">'+t.ic+' '+esc(t.key)+'</button>';}).join('');}
+  function questionsHtml(){
+    if(!sel)return '';
+    if(!sel.questions||!sel.questions.length){return '<label class="nc-l">Notiz<textarea class="nc-in" id="nc-free" rows="6" placeholder="Freie Notiz …"></textarea></label>';}
+    return '<p class="nc-hint">Beantworte, was zutrifft — leere Felder werden weggelassen.</p>'+sel.questions.map(function(q){return '<label class="nc-l">'+esc(q)+'<textarea class="nc-in nc-q" data-q="'+esc(q)+'" rows="2" placeholder="…"></textarea></label>';}).join('');
+  }
+  function render(){
+    ov.innerHTML='<div class="nc-modal"><div class="nc-h"><b>✍️ Neue Notiz</b><button class="nc-x" id="nc-cancel" title="Schließen">✕</button></div>'+
+      '<div class="nc-types">'+typeBtns()+'</div>'+
+      '<div class="nc-body"><label class="nc-l nc-date">Datum<input class="nc-in" id="nc-date" type="date" value="'+esc(today())+'"></label>'+
+        '<div id="nc-questions">'+questionsHtml()+'</div>'+
+        '<label class="nc-l">Themen-Tags (optional)<input class="nc-in" id="nc-tags" placeholder="mit Komma trennen …"></label></div>'+
+      '<div class="nc-foot"><button class="btn" id="nc-cancel2">Abbrechen</button><button class="btn btn-primary" id="nc-save"'+(sel?'':' disabled')+'>Speichern</button></div></div>';
+    wire();
+  }
+  function wire(){
+    ov.querySelectorAll('[data-nc-type]').forEach(function(b){b.addEventListener('click',function(){var k=b.getAttribute('data-nc-type');sel=types().filter(function(t){return t.key===k;})[0]||null;render();});});
+    var c1=ov.querySelector('#nc-cancel'),c2=ov.querySelector('#nc-cancel2');if(c1)c1.onclick=close;if(c2)c2.onclick=close;
+    ov.addEventListener('click',function(e){if(e.target===ov)close();});
+    var sv=ov.querySelector('#nc-save');if(sv)sv.onclick=save;
+  }
+  function save(){
+    if(!sel)return;
+    var date=(ov.querySelector('#nc-date')||{}).value||today();
+    var tags=(((ov.querySelector('#nc-tags')||{}).value)||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+    var text='';
+    if(!sel.questions||!sel.questions.length){text=(((ov.querySelector('#nc-free')||{}).value)||'').trim();}
+    else{var parts=[];ov.querySelectorAll('.nc-q').forEach(function(ta){var a=(ta.value||'').trim();if(a){parts.push('— '+ta.getAttribute('data-q')+'\\n'+a);}});text=parts.join('\\n\\n');}
+    if(!text){alert('Bitte etwas eintragen.');return;}
+    var p={studentId:sid,date:date,category:sel.key,tags:tags,text:text,author:((window.KB_USER&&window.KB_USER.get())||'')};
+    var r=Repo.saveEntry(p);
+    if(r&&r.then){r.then(function(){close();if(window.render){try{window.render();}catch(e){}}}).catch(function(){alert('Fehler beim Speichern.');});}
+    else{close();if(window.render){try{window.render();}catch(e){}}}
+  }
+  function open(studentId){sid=studentId;sel=(types()[0]||null);ov=document.createElement('div');ov.className='nc-ov';document.body.appendChild(ov);render();}
+  return {open:open};
+})();`;
+
 var ISA_HOME_MODULE = `
 window.KB_HOME=(function(){
   var TLS='isa_tasks_v1';
@@ -3318,6 +3511,47 @@ var ISA_CSS = `
 .isa-note-mini-h{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:12.5px;margin-bottom:3px;}
 .hub-quickbar{display:flex;justify-content:flex-end;margin:0 0 14px;}
 .isa-dash-add{display:flex;justify-content:flex-end;margin:0 0 12px;}
+.isa-note-text{white-space:pre-wrap;}
+.isa-nq{font-weight:700;color:var(--kb-accent-dark);}
+/* ---- Notiz-Composer (geführte Fragen) ---- */
+.nc-ov{position:fixed;inset:0;background:rgba(15,25,30,.45);z-index:210;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;overflow:auto;}
+.nc-modal{background:var(--kb-surface);border-radius:16px;width:100%;max-width:560px;box-shadow:0 24px 60px rgba(0,0,0,.35);overflow:hidden;}
+.nc-h{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--kb-border);font-size:16px;}
+.nc-x{border:none;background:none;font-size:18px;cursor:pointer;color:var(--kb-muted);}
+.nc-types{display:flex;flex-wrap:wrap;gap:7px;padding:14px 20px 4px;}
+.nc-type{border:1px solid var(--kb-border);background:var(--kb-bg);border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer;color:var(--kb-text);transition:.12s;}
+.nc-type:hover{border-color:var(--nc);}
+.nc-type.on{background:var(--nc);border-color:var(--nc);color:#fff;}
+.nc-body{padding:8px 20px 4px;}
+.nc-hint{color:var(--kb-muted);font-size:12.5px;margin:2px 0 10px;}
+.nc-l{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:700;color:var(--kb-muted);margin-bottom:12px;}
+.nc-date{max-width:200px;}
+.nc-in{font:inherit;font-weight:500;color:var(--kb-text);padding:9px 11px;border:1px solid var(--kb-border);border-radius:9px;background:var(--kb-bg);resize:vertical;}
+.nc-in:focus{outline:none;border-color:var(--kb-accent);box-shadow:0 0 0 3px var(--kb-accent-50);}
+.nc-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--kb-border);}
+/* ---- Fortschritt & Ziele ---- */
+.pei-intro{background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);color:var(--kb-accent-dark);border-radius:10px;padding:10px 14px;font-size:13.5px;margin:0 0 16px;}
+.pei-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start;margin-bottom:16px;}
+.pei-col{padding:16px 18px;}
+.pei-add{display:flex;gap:8px;margin-bottom:12px;}
+.pei-add .kb-in{flex:1;}
+.pei-list{display:flex;flex-direction:column;gap:6px;}
+.pei-item{display:flex;gap:10px;align-items:flex-start;background:var(--kb-bg);border:1px solid var(--kb-border);border-radius:9px;padding:8px 10px;}
+.pei-check input{width:17px;height:17px;accent-color:var(--kb-accent);cursor:pointer;margin-top:1px;}
+.pei-txt{flex:1;min-width:0;font-size:13.5px;}
+.pei-meta{color:var(--kb-muted);font-size:11.5px;margin-top:3px;}
+.pei-item.is-done .pei-txt>div:first-child{text-decoration:line-through;color:var(--kb-muted);}
+.pei-del{border:none;background:none;color:var(--kb-muted);cursor:pointer;font-size:13px;opacity:.5;}
+.pei-del:hover{opacity:1;color:var(--kb-danger);}
+.pei-sug{padding:16px 18px;}
+.pei-sug-card{border:1px solid var(--kb-border);border-radius:11px;padding:11px 13px;margin-bottom:10px;background:var(--kb-bg);}
+.pei-sug-lbl{font-weight:800;font-size:13.5px;display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pei-sug-n{background:var(--kb-accent-50);color:var(--kb-accent-dark);border-radius:999px;font-size:11px;padding:0 7px;font-weight:700;}
+.pei-sug-x{margin-left:auto;border:1px solid var(--kb-border);background:var(--kb-surface);border-radius:7px;font-size:11.5px;padding:2px 8px;cursor:pointer;color:var(--kb-muted);font-weight:600;}
+.pei-sug-x:hover{border-color:var(--kb-danger);color:var(--kb-danger);}
+.pei-sug-opt{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px dashed var(--kb-border);}
+.pei-sug-txt{flex:1;font-size:13px;color:var(--kb-text);}
+@media(max-width:820px){ .pei-grid{grid-template-columns:1fr;} }
 /* ---- Mein Tag ---- */
 .home-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
 .home-hi{font-size:24px;font-weight:800;letter-spacing:-.02em;color:var(--kb-text);}
@@ -3433,6 +3667,7 @@ var parts = [
   '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
+  '<script>' + ISA_NOTES_MODULE + '</' + 'script>',
   '<script>' + AGENDA_MODULE + '</' + 'script>',
   '<script>' + ISA_HOME_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
