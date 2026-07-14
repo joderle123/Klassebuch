@@ -978,7 +978,9 @@ var DOS_OVERRIDES = `
         var badge=code?('<span class="hub-gcode" style="background:'+dm.c+'" title="ELDiB '+escapeAttr((dm.l||'')+(elbl?' · '+elbl:''))+'">'+escapeHtml(code)+'</span>'):('<span class="hub-dot" style="background:'+dm.c+'"></span>');
         var head=elbl?'<span class="hub-gelbl">'+escapeHtml(elbl)+'</span> ':'';
         var btn=window.KB_MATERIALS?'<button class="hub-mat" data-mat-goal="'+escapeAttr(code)+'" data-mat-goaltext="'+escapeAttr(g.formulation||g.title||'')+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(elbl||g.title||g.formulation||code)+'" title="Passende Arbeitsblätter finden">📄 Arbeitsblätter</button>':'';
-        return '<li>'+badge+'<span class="hub-gtext">'+head+escapeHtml(g.formulation||g.title||code||'Ziel')+'</span>'+btn+'</li>';
+        var _fmt=g.formulation||g.title||'';
+        var _txt=(_fmt&&_fmt!==elbl)?escapeHtml(_fmt):(elbl?'':escapeHtml(code||'Ziel'));
+        return '<li>'+badge+'<span class="hub-gtext">'+head+_txt+'</span>'+btn+'</li>';
       }).join('');
       foerderCard='<div class="card kb-mini">'+mh('🎯','Förderziele <span class="hub-count">'+cg.goals.length+'</span>','g')+'<ul class="hub-list">'+gl+'</ul>'+(cg.goals.length>5?'<div class="muted" style="font-size:.8em;margin-top:4px;">+'+(cg.goals.length-5)+' weitere</div>':'')+'</div>';
     } else {
@@ -1087,6 +1089,26 @@ var DOS_OVERRIDES = `
     return '<div class="kb-hub-pad">'+head+'<div class="tl-filters">'+chips+'</div>'+(cards||'<div class="empty-state">Keine Notiz in diesem Filter.</div>')+'</div>';
   }
   /* ---- Fortschritt & Ziele (PEI-Bausteine) + Vorschläge ---- */
+  function eldibDomColor(code){
+    var dom=String(code||'').split('-')[0];
+    try{if(window.KB_TAXONOMY&&window.KB_TAXONOMY.eldibDomains&&window.KB_TAXONOMY.eldibDomains[dom])return window.KB_TAXONOMY.eldibDomains[dom].color;}catch(e){}
+    return ({V:'#2f5597',K:'#548235',SOZ:'#bf8f00',KOG:'#c55a11'})[dom]||'#64748b';
+  }
+  function eldibSection(sid){
+    var goals=window.KB_GOALS?window.KB_GOALS.list(sid):[];
+    var chips=goals.map(function(g){
+      var col=eldibDomColor(g.code);
+      var mat=window.KB_MATERIALS?'<button class="hub-mat" data-mat-goal="'+escapeAttr(g.code)+'" data-mat-goaltext="'+escapeAttr(g.label||'')+'" data-mat-sid="'+escapeAttr(sid)+'" data-mat-label="'+escapeAttr(g.label||g.code)+'" title="Passende Arbeitsblätter finden">📄 Arbeitsblätter</button>':'';
+      return '<div class="eldib-chip"><span class="eldib-code" style="background:'+col+'">'+escapeHtml(g.code)+'</span><span class="eldib-lbl">'+escapeHtml(g.label||'unbekannter Code')+'</span>'+mat+'<button class="eldib-del" data-eldib-del="'+escapeAttr(g.id)+'" title="Entfernen">✕</button></div>';
+    }).join('');
+    var opts=''; try{ var lbls=(window.KB_TAXONOMY&&window.KB_TAXONOMY.eldibGoalLabels)||{}; opts=Object.keys(lbls).map(function(c){return '<option value="'+escapeAttr(c)+'">'+escapeHtml(c+' — '+lbls[c])+'</option>';}).join(''); }catch(e){}
+    return '<div class="card eldib-card"><h3 class="home-h">🎯 PEI-Ziele (ELDiB)</h3>'+
+      '<p class="muted" style="font-size:12.5px;margin:-4px 0 10px;">Ziel-Code direkt eingeben (z. B. <b>SOZ-33</b>) — die Bezeichnung erscheint automatisch und passende Arbeitsblätter gibt es dazu. So sind die Ziele erfasst, ohne den PEI hochladen zu müssen.</p>'+
+      '<div class="eldib-add"><input class="kb-in" id="eldib-in" list="eldib-codes" autocomplete="off" placeholder="Code eingeben, z. B. SOZ-33 …"><button class="btn btn-sm btn-primary" id="eldib-addbtn">+ Ziel</button></div>'+
+      '<div class="eldib-warn muted" id="eldib-warn" style="font-size:12px;margin-top:4px;"></div>'+
+      (chips?'<div class="eldib-list">'+chips+'</div>':'<p class="muted" style="font-size:13px;margin-top:8px;">Noch keine Ziele erfasst.</p>')+
+      '<datalist id="eldib-codes">'+opts+'</datalist></div>';
+  }
   function hubFortschritt(student){
     var sid=student.id;
     var pei=window.KB_PEI?window.KB_PEI.list(sid):{progress:[],topics:[]};
@@ -1112,7 +1134,8 @@ var DOS_OVERRIDES = `
             '<div class="pei-sug-opt"><span class="pei-sug-txt">🎯 '+escapeHtml(s.topic)+'</span><button class="btn btn-sm" data-sug-acc="'+escapeAttr('topics|'+s.key)+'">übernehmen</button></div></div>';
         }).join('')+'</div>';
     }
-    return '<div class="kb-hub-pad"><p class="pei-intro">Kleine Fortschritte und anzugehende Themen festhalten — sie bilden nach und nach die Grundlage fürs PEI, damit nichts vergessen geht.</p>'+
+    return '<div class="kb-hub-pad"><p class="pei-intro">PEI-Ziele, kleine Fortschritte und anzugehende Themen an einem Ort — sie bilden nach und nach die Grundlage fürs PEI, damit nichts vergessen geht.</p>'+
+      eldibSection(sid)+
       '<div class="pei-grid">'+col('progress','✅','Fortschritte',pei.progress,'Kleinen Fortschritt notieren …')+col('topics','🎯','Anzugehende Themen',pei.topics,'Thema / Ziel notieren …')+'</div>'+sugHtml+'</div>';
   }
   function hubAbsenzen(student){
@@ -1228,6 +1251,17 @@ var DOS_OVERRIDES = `
             var pr=pair(b.getAttribute('data-sug-acc'));var bank=(window.KB_SUGGEST&&window.KB_SUGGEST.bank)||[];var d=bank.filter(function(x){return x.key===pr.id;})[0];if(!d)return;
             window.KB_PEI.add(sid2,pr.kind,(pr.kind==='progress'?d.progress:d.topic),d.key);rr();});});
           root.querySelectorAll('[data-sug-dis]').forEach(function(b){b.addEventListener('click',function(){window.KB_PEI.dismiss(sid2,b.getAttribute('data-sug-dis'));rr();});});
+          // ELDiB-Ziele manuell erfassen
+          if(window.KB_GOALS){
+            var gin=root.querySelector('#eldib-in'), gwarn=root.querySelector('#eldib-warn');
+            function addGoal(){var v=gin?gin.value.trim():'';if(!v)return;var res=window.KB_GOALS.add(sid2,v);
+              if(res&&res.err==='format'){if(gwarn)gwarn.textContent='Bitte einen Code wie „SOZ-33" eingeben.';return;}
+              if(res&&res.err==='dup'){if(gwarn)gwarn.textContent=res.code+' ist bereits erfasst.';return;}
+              rr();}
+            var gbtn=root.querySelector('#eldib-addbtn');if(gbtn)gbtn.addEventListener('click',addGoal);
+            if(gin)gin.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();addGoal();}});
+            root.querySelectorAll('[data-eldib-del]').forEach(function(b){b.addEventListener('click',function(){window.KB_GOALS.remove(sid2,b.getAttribute('data-eldib-del'));rr();});});
+          }
         }catch(e){}}
       }
       };
@@ -1758,7 +1792,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),pei:c(window.KB_PEI,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),pei:c(window.KB_PEI,'syncExport'),goals:c(window.KB_GOALS,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -1772,6 +1806,7 @@ window.KB_SYNC=(function(){
     s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
     s(window.KB_NOTEN,'syncApply',liveOf(doc.colls.noten));
     s(window.KB_PEI,'syncApply',liveOf(doc.colls.pei));
+    s(window.KB_GOALS,'syncApply',liveOf(doc.colls.goals));
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -3351,6 +3386,44 @@ window.KB_SUGGEST=(function(){
   }
   return {forStudent:forStudent,bank:BANK};
 })();
+window.KB_GOALS=(function(){
+  var LS="isa_goals_v1";
+  function load(){try{return JSON.parse(localStorage.getItem(LS)||"{}")||{};}catch(e){return {};}}
+  function save(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+  function by(){try{return (window.KB_USER&&window.KB_USER.get())||"";}catch(e){return "";}}
+  function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+  function uid(){return "g_"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+  function labels(){return (window.KB_TAXONOMY&&window.KB_TAXONOMY.eldibGoalLabels)||{};}
+  function norm(raw){var s=String(raw||"").toUpperCase().replace(/[^A-Z0-9]/g,"");var m=s.match(/^([A-Z]+)([0-9]+)$/);if(!m)return "";return m[1]+"-"+m[2];}
+  function sync(){if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}}
+  return {
+    norm:norm,
+    labelFor:function(code){return labels()[code]||"";},
+    list:function(sid){var o=load();return (o[sid]||[]).slice();},
+    add:function(sid,raw){var code=norm(raw);if(!code)return {err:"format"};var o=load();o[sid]=o[sid]||[];if(o[sid].some(function(g){return g.code===code;}))return {err:"dup",code:code};var lbl=labels()[code]||"";o[sid].push({id:uid(),code:code,label:lbl,date:today(),by:by()});save(o);sync();return {code:code,label:lbl,known:!!lbl};},
+    remove:function(sid,id){var o=load();o[sid]=(o[sid]||[]).filter(function(g){return g.id!==id;});save(o);sync();},
+    asGoals:function(sid){var o=load();return (o[sid]||[]).map(function(g){return {code:g.code,domain:g.code.split("-")[0],title:g.label||g.code,formulation:g.label||g.code,methods:[],manual:true};});},
+    codes:function(){return Object.keys(labels());},
+    syncExport:function(){var o=load();var out=[];for(var k in o){out.push({id:k,goals:o[k]||[]});}return out;},
+    syncApply:function(arr){var o={};(arr||[]).forEach(function(r){if(r&&r.id){o[r.id]=r.goals||[];}});save(o);}
+  };
+})();
+/* Manuelle ELDiB-Ziele in KB_REPORTS.currentGoals einmischen → erscheinen
+   auf der Übersicht, im KI-Export und speisen die Arbeitsblatt-Vorschläge
+   (kein PEI-Upload nötig). */
+(function(){
+  if(!window.KB_REPORTS)return;
+  var orig=window.KB_REPORTS.currentGoals;
+  window.KB_REPORTS.currentGoals=function(sid){
+    var base=orig?orig.call(window.KB_REPORTS,sid):null;
+    var manual=window.KB_GOALS?window.KB_GOALS.asGoals(sid):[];
+    if(!manual.length)return base;
+    var goals=(base&&base.goals)?base.goals.slice():[];
+    var have={};goals.forEach(function(g){if(g.code)have[g.code]=1;});
+    manual.forEach(function(g){if(!have[g.code])goals.push(g);});
+    return {date:(base&&base.date)||"",goals:goals,type:(base&&base.type)||"Manuell erfasst"};
+  };
+})();
 window.KB_NOTECOMPOSER=(function(){
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
   function today(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
@@ -3551,6 +3624,19 @@ var ISA_CSS = `
 .pei-sug-x:hover{border-color:var(--kb-danger);color:var(--kb-danger);}
 .pei-sug-opt{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px dashed var(--kb-border);}
 .pei-sug-txt{flex:1;font-size:13px;color:var(--kb-text);}
+/* ---- PEI-Ziele (ELDiB) ---- */
+.eldib-card{padding:16px 18px;margin-bottom:16px;}
+.eldib-add{display:flex;gap:8px;}
+.eldib-add .kb-in{flex:1;}
+.eldib-warn{color:var(--kb-danger);}
+.eldib-warn:empty{display:none;}
+.eldib-list{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
+.eldib-chip{display:flex;align-items:center;gap:10px;background:var(--kb-bg);border:1px solid var(--kb-border);border-radius:9px;padding:6px 10px;}
+.eldib-code{color:#fff;font-weight:800;font-size:11.5px;border-radius:6px;padding:2px 8px;letter-spacing:.02em;white-space:nowrap;flex:0 0 auto;}
+.eldib-lbl{flex:1;font-size:13.5px;font-weight:600;color:var(--kb-text);min-width:0;}
+.eldib-del{border:none;background:none;color:var(--kb-muted);cursor:pointer;font-size:13px;opacity:.5;flex:0 0 auto;}
+.eldib-del:hover{opacity:1;color:var(--kb-danger);}
+.eldib-chip .hub-mat{flex:0 0 auto;}
 @media(max-width:820px){ .pei-grid{grid-template-columns:1fr;} }
 /* ---- Mein Tag ---- */
 .home-hero{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px;}
