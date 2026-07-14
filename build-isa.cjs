@@ -2980,6 +2980,59 @@ dosScript      = isaNS(dosScript);
     dosScript = dosScript.slice(0, i) + 'window.SEED_DATA = {"students":[],"entries":[],"reunions":[],"reunionEntries":[]};' + dosScript.slice(nl);
   }
 })();
+
+/* ISA-fokussierte Notiz-Kategorien statt der Klassebuch-Kategorien.
+   Blend aus Kontakt/Setting (wo?) und Förderdomäne (was?) — logisch für
+   die ambulante Arbeit. 'Bericht (DS/PEI)' bleibt (wird vom DS/PEI-Import
+   gesetzt). Zum Anpassen einfach diese Liste ändern und neu bauen. */
+var ISA_CATEGORIES = [
+  'Hausbesuch',
+  'Schul-/Ausbildungsbegleitung',
+  'Elterngespräch & Familie',
+  'Netzwerk & externe Stellen',
+  'Fördereinheit & Ziele',
+  'Verhalten & Emotion',
+  'Soziales & Beziehungen',
+  'Selbstständigkeit & Alltag',
+  'Beruf & Perspektive',
+  'Gesundheit & Medikation',
+  'Krise & Sicherheit',
+  'Organisation & Termine',
+  'Bericht (DS/PEI)'
+];
+var ISA_CATEGORY_COLORS = {
+  'Hausbesuch':                    'hsl(174, 45%, 36%)',
+  'Schul-/Ausbildungsbegleitung':  'hsl(206, 55%, 45%)',
+  'Elterngespräch & Familie':      'hsl(28, 55%, 45%)',
+  'Netzwerk & externe Stellen':    'hsl(195, 45%, 40%)',
+  'Fördereinheit & Ziele':         'hsl(150, 40%, 38%)',
+  'Verhalten & Emotion':           'hsl(20, 60%, 48%)',
+  'Soziales & Beziehungen':        'hsl(280, 35%, 50%)',
+  'Selbstständigkeit & Alltag':    'hsl(255, 35%, 52%)',
+  'Beruf & Perspektive':           'hsl(188, 52%, 33%)',
+  'Gesundheit & Medikation':       'hsl(300, 30%, 46%)',
+  'Krise & Sicherheit':            'hsl(4, 62%, 46%)',
+  'Organisation & Termine':        'hsl(225, 30%, 50%)',
+  'Bericht (DS/PEI)':              'hsl(262, 45%, 50%)'
+};
+(function(){
+  var catsSrc='var CATEGORIES = '+JSON.stringify(ISA_CATEGORIES,null,2)+';';
+  var colSrc='var CATEGORY_COLORS = '+JSON.stringify(ISA_CATEGORY_COLORS,null,2)+';';
+  var i=dosScript.indexOf('var CATEGORIES = [');
+  if(i>=0){var j=dosScript.indexOf('];',i);if(j>=0){dosScript=dosScript.slice(0,i)+catsSrc+dosScript.slice(j+2);}}
+  var k=dosScript.indexOf('var CATEGORY_COLORS = {');
+  if(k>=0){var m=dosScript.indexOf('};',k);if(m>=0){dosScript=dosScript.slice(0,k)+colSrc+dosScript.slice(m+2);}}
+})();
+
+/* Verlaufs-Slider + Datumslabel auf den ISA-Kontext anpassen (interne Keys
+   bleiben gleich, damit Charts/Verlauf weiter funktionieren). */
+dosScript = dosScript
+  .split('Schulische Stabilität / Mitarbeit').join('Kooperation & Mitarbeit')
+  .split('1 = sehr instabil … 10 = sehr stabil').join('1 = wenig kooperativ … 10 = sehr kooperativ')
+  .split("label: 'Anwesenheit',").join("label: 'Selbstständigkeit',")
+  .split('1 = kaum da … 10 = vollständig present').join('1 = viel Unterstützung … 10 = sehr selbstständig')
+  .split('Datum (Wochendatum des Rapports)').join('Datum')
+  .split('Eintragstext (Luxemburgisch — Originaltext, nicht übersetzen)').join('Notiztext');
 ROSTER_MODULE  = isaNS(ROSTER_MODULE);
 BUBBLE_MODULE  = isaNS(BUBBLE_MODULE);
 SCREENING_MODULE = isaNS(SCREENING_MODULE);
