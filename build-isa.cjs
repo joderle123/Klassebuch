@@ -861,7 +861,18 @@ var SHELL_PANELS_EXTRA = `
         <div id="kb-sync-status" class="kb-sync-status">…</div>
         <div id="kb-sync-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
       </div>
-      <div class="kb-card"><h3 style="margin:0 0 6px;">🗂️ Journal-Backup</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Schüler, Notizen und Dossiers als Datei sichern oder wiederherstellen.</p><button class="kb-btn kb-btn-primary" id="kb-data-dos">Backup exportieren / importieren</button></div>
+      <div class="kb-card">
+        <h3 style="margin:0 0 6px;">🗂️ Komplett-Sicherung (empfohlen)</h3>
+        <p style="margin:0 0 10px;color:var(--kb-muted);"><b>Alles in einer Datei</b> — Schüler, Notizen, Fortschritte &amp; Themen, ELDiB-Ziele, Terminplan, Schuljahre, Aufgaben, Screening und Helfernetz. Das ist die Sicherung, die du bei einem PC-Wechsel brauchst.</p>
+        <div id="kb-bk-counts" class="kb-sync-status" style="margin-bottom:10px;">…</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+          <button class="kb-btn kb-btn-primary" id="kb-bk-export">⬇️ Komplett-Sicherung herunterladen</button>
+          <button class="kb-btn" id="kb-bk-pick">⬆️ Sicherung wiederherstellen …</button>
+          <input type="file" id="kb-bk-file" accept="application/json,.json" style="display:none;">
+        </div>
+        <div id="kb-bk-msg" style="margin-top:10px;"></div>
+      </div>
+      <div class="kb-card"><h3 style="margin:0 0 6px;">📄 Nur Dossier (Schüler &amp; Notizen)</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Der schlanke Dossier-Export — kompatibel mit dem Klassebuch, enthält aber <b>keine</b> Ziele, Terminpläne oder Schuljahre.</p><button class="kb-btn" id="kb-data-dos">Dossier exportieren / importieren</button></div>
     </section>
   </main>
 </div>
@@ -1332,6 +1343,7 @@ var SHELL_CONTROLLER = `
       if(window.KB_AGENDA){try{window.KB_AGENDA.render();}catch(e){}}
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
+      try{renderBkCounts();}catch(e){}
     } else if(nav==='material'){
       showPanel('isa-root'); setActive('material');
       if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
@@ -1405,6 +1417,47 @@ var SHELL_CONTROLLER = `
 
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
 
+  /* ---- Komplett-Sicherung (KB_BACKUP): alles in einer Datei ---- */
+  function bkMsg(html,kind){
+    var m=$('kb-bk-msg'); if(!m)return;
+    var col=kind==='err'?'#b3432d':(kind==='ok'?'#1d8a52':'var(--kb-muted)');
+    m.innerHTML=html?('<span style="color:'+col+';font-size:13px;">'+html+'</span>'):'';
+  }
+  function renderBkCounts(){
+    var el=$('kb-bk-counts'); if(!el||!window.KB_BACKUP)return;
+    var c=window.KB_BACKUP.counts();
+    el.innerHTML='Aktuell auf diesem Gerät: <b>'+c.students+'</b> Schüler · <b>'+c.entries+'</b> Notizen · <b>'+c.pei+
+      '</b> × Fortschritt/Themen · <b>'+c.goals+'</b> × ELDiB-Ziele · <b>'+c.agenda+'</b> Terminpläne · <b>'+c.years+
+      '</b> Schuljahre · <b>'+c.screening+'</b> Screenings · <b>'+c.bubble+'</b> Helfernetz';
+  }
+  var bkExp=$('kb-bk-export');
+  if(bkExp){bkExp.addEventListener('click',function(){
+    try{var n=window.KB_BACKUP.download();bkMsg('✓ Sicherung erstellt: '+esc(n),'ok');}
+    catch(e){bkMsg('Sicherung fehlgeschlagen: '+esc(String((e&&e.message)||e)),'err');}
+  });}
+  var bkPick=$('kb-bk-pick'), bkFile=$('kb-bk-file');
+  if(bkPick&&bkFile){
+    bkPick.addEventListener('click',function(){bkFile.click();});
+    bkFile.addEventListener('change',function(){
+      var f=bkFile.files&&bkFile.files[0]; if(!f)return;
+      var rd=new FileReader();
+      rd.onload=function(){
+        var d;try{d=JSON.parse(rd.result);}catch(e){bkMsg('Datei konnte nicht gelesen werden.','err');bkFile.value='';return;}
+        if(!window.KB_BACKUP.valid(d)){bkMsg('Das sieht nicht nach einer ISA-Journal-Komplett-Sicherung aus. (Ein reiner Dossier-Export gehört in die Karte darunter.)','err');bkFile.value='';return;}
+        var dc=(d.dossier&&d.dossier.students?d.dossier.students.length:0);
+        var when=d.exportedAt?(' vom '+String(d.exportedAt).slice(0,10)):'';
+        var rep=confirm('Sicherung'+when+' mit '+dc+' Schülern wiederherstellen.\\n\\nOK = ERSETZEN (alles Aktuelle auf diesem Gerät wird verworfen)\\nAbbrechen = ZUSAMMENFÜHREN (Vorhandenes bleibt, Gleiches wird überschrieben)');
+        bkMsg('Wird wiederhergestellt …');
+        window.KB_BACKUP.restore(d,rep?'replace':'merge').then(function(){
+          bkMsg('✓ Wiederhergestellt. Die App wird neu geladen …','ok');
+          setTimeout(function(){location.reload();},900);
+        }).catch(function(e){bkMsg('Fehlgeschlagen: '+esc(String((e&&e.message)||e)),'err');});
+        bkFile.value='';
+      };
+      rd.readAsText(f);
+    });
+  }
+
   // Roster-Änderungen -> Dossier + Mein-Tag/Terminplan aktualisieren
   if(window.KB_ROSTER){
     window.KB_ROSTER.onChange(function(){
@@ -1423,7 +1476,7 @@ var SHELL_CONTROLLER = `
     else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — bitte „Verbinden" klicken ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
-    if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Dossier-Einträge · <b>'+(k.anwEntries||0)+'</b> Absenzen · <b>'+(k.anwNotes||0)+'</b> Notizen · <b>'+(k.dosReunions||0)+'</b> Réunionen · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
+    if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Notizen · <b>'+(k.pei||0)+'</b> × Fortschritt/Themen · <b>'+(k.goals||0)+'</b> × ELDiB-Ziele · <b>'+(k.agenda||0)+'</b> Terminpläne · <b>'+(k.screening||0)+'</b> Screenings · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
     if(s.connected){
       var bk;
       if(s.backupName){bk='🗂️ Auto-Sicherung: Ordner <b>'+esc(s.backupName)+'</b> · letzte Kopie: '+(s.backupLast?esc(s.backupLast):'noch keine')+(s.backupErr==='reconnect'?' · <span style="color:#c9851f">bitte bestätigen</span>':'');}
@@ -1827,7 +1880,10 @@ window.KB_BUBBLE=(function(){
 var SYNC_MODULE = `
 window.KB_SYNC=(function(){
   var FMT='klassebuch-shared-v1';
-  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening'];
+  /* ACHTUNG: Jede Sammlung, die collGet() liefert, MUSS hier stehen. Fehlt sie,
+     landet sie nie in der gemeinsamen Datei — und collSet() würde sie beim
+     Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','pei','goals','years','agenda','tasks'];
   var BASE_LS='klassebuch_sync_base';
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
@@ -1854,26 +1910,32 @@ window.KB_SYNC=(function(){
   function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
-  function summarize(doc){var keys=['roster','dosEntries','dosReunions','anwEntries','anwNotes','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}return c;}
+  function summarize(doc){var keys=['roster','dosEntries','pei','goals','agenda','screening','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}return c;}
 
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),pei:c(window.KB_PEI,'syncExport'),goals:c(window.KB_GOALS,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),pei:c(window.KB_PEI,'syncExport'),goals:c(window.KB_GOALS,'syncExport'),years:c(window.KB_YEARS,'syncExport'),agenda:c(window.KB_AGENDA,'syncExport'),tasks:c(window.KB_HOME,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
-    s(window.KB_ROSTER,'syncApply',liveOf(doc.colls.roster));
-    s(window.KB_DOS_SYNC,'applyEntries',liveOf(doc.colls.dosEntries));
-    s(window.KB_DOS_SYNC,'applyReunions',liveOf(doc.colls.dosReunions));
-    s(window.KB_ANW,'applyEntries',liveOf(doc.colls.anwEntries));
-    s(window.KB_ANW,'applyNotes',liveOf(doc.colls.anwNotes));
-    var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);
-    s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
-    s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
-    s(window.KB_NOTEN,'syncApply',liveOf(doc.colls.noten));
-    s(window.KB_PEI,'syncApply',liveOf(doc.colls.pei));
-    s(window.KB_GOALS,'syncApply',liveOf(doc.colls.goals));
+    /* Sicherheitsnetz: Fehlt eine Sammlung im Dokument (ältere Team-Datei,
+       oder die Sammlung steht nicht in COLLS), wird sie NICHT angewendet.
+       Sonst käme syncApply([]) an und würde lokale Daten löschen. */
+    function sc(o,m,coll){if(!coll)return;s(o,m,liveOf(coll));}
+    sc(window.KB_ROSTER,'syncApply',doc.colls.roster);
+    sc(window.KB_DOS_SYNC,'applyEntries',doc.colls.dosEntries);
+    sc(window.KB_DOS_SYNC,'applyReunions',doc.colls.dosReunions);
+    sc(window.KB_ANW,'applyEntries',doc.colls.anwEntries);
+    sc(window.KB_ANW,'applyNotes',doc.colls.anwNotes);
+    if(doc.colls.anwSettings){var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);}
+    sc(window.KB_BUBBLE,'syncApply',doc.colls.bubble);
+    sc(window.KB_SCREENING,'syncApply',doc.colls.screening);
+    sc(window.KB_PEI,'syncApply',doc.colls.pei);
+    sc(window.KB_GOALS,'syncApply',doc.colls.goals);
+    sc(window.KB_YEARS,'syncApply',doc.colls.years);
+    sc(window.KB_AGENDA,'syncApply',doc.colls.agenda);
+    sc(window.KB_HOME,'syncApply',doc.colls.tasks);
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -3269,6 +3331,81 @@ var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20
 /* ISA-spezifische Bausteine (CSS + Module) */
 
 /* ============================================================
+   KB_BACKUP — Komplett-Sicherung des ganzen Journals in EINE Datei.
+   Das Dossier-Backup allein enthält nur Schüler/Notizen/Réunionen; alles
+   andere (Fortschritte, ELDiB-Ziele, Terminplan, Schuljahre, Aufgaben,
+   Screening, Helfernetz) liegt in localStorage. Hier wird beides
+   zusammengeführt, damit eine Sicherung wirklich alles umfasst.
+   Bewusst NICHT enthalten: angemeldete Person, UI-Zustand und der
+   Sync-Abgleichstand (isa_sync_base) — die sind gerätespezifisch.
+   ============================================================ */
+var ISA_BACKUP_MODULE = `
+window.KB_BACKUP=(function(){
+  var FMT='isa-journal-backup';
+  var SKIP={isa_user:1,isa_side_collapsed:1,isa_sync_base:1};
+  function isOurs(k){
+    if(!k||k.indexOf('isa_')!==0)return false;
+    if(SKIP[k])return false;
+    if(k.indexOf('isa_dossier')===0)return false;   /* steckt schon im Dossier-Teil */
+    return true;
+  }
+  function stores(){
+    var o={};
+    try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(isOurs(k)){o[k]=localStorage.getItem(k);}}}catch(e){}
+    return o;
+  }
+  function jlen(raw){try{var v=JSON.parse(raw||'{}');if(Array.isArray(v))return v.length;var n=0;for(var k in v)n++;return n;}catch(e){return 0;}}
+  function build(){
+    var dos=null;try{dos=window.Repo?window.Repo.exportAll():null;}catch(e){}
+    return {format:FMT,version:1,exportedAt:new Date().toISOString(),app:'ISA-Journal',dossier:dos,stores:stores()};
+  }
+  function counts(){
+    var d=build();var s=d.stores||{};
+    return {
+      /* Schüler leben im ISA-Journal im Roster (isa_roster_v1), nicht in
+         Repo.students — dort stünde sonst irreführend immer 0. */
+      students:(function(){try{return (window.KB_ROSTER?window.KB_ROSTER.list().length:0);}catch(e){return 0;}})(),
+      entries:(d.dossier&&d.dossier.entries?d.dossier.entries.length:0),
+      pei:jlen(s.isa_pei_v1), goals:jlen(s.isa_goals_v1),
+      agenda:jlen(s.isa_agenda_v1), tasks:jlen(s.isa_tasks_v1),
+      screening:jlen(s.isa_screening_v1), bubble:jlen(s.isa_bubble_v1),
+      years:(function(){try{return (JSON.parse(s.isa_years_v1||'{}').years||[]).length;}catch(e){return 0;}})()
+    };
+  }
+  function download(){
+    var d=build();
+    var name='isa-journal-backup_'+d.exportedAt.slice(0,10)+'.json';
+    var json=JSON.stringify(d,null,2);
+    if(window.downloadBlob){window.downloadBlob(name,json,'application/json');}
+    else{
+      var b=new Blob([json],{type:'application/json'});var u=URL.createObjectURL(b);
+      var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();
+      setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},0);
+    }
+    return name;
+  }
+  function valid(d){return !!(d&&d.format===FMT&&(d.dossier||d.stores));}
+  /* mode: 'merge' (Standard) oder 'replace' */
+  function restore(d,mode){
+    if(!valid(d))return Promise.reject(new Error('Keine gültige ISA-Journal-Sicherung.'));
+    var st=d.stores||{};
+    return Promise.resolve()
+      .then(function(){ if(d.dossier&&window.Repo&&window.Repo.importAll){return window.Repo.importAll(d.dossier,mode==='replace'?'replace':'merge');} })
+      .then(function(){
+        if(mode==='replace'){
+          /* nur unsere eigenen Schlüssel entfernen — fremde bleiben unberührt */
+          var kill=[];
+          try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(isOurs(k))kill.push(k);}}catch(e){}
+          for(var j=0;j<kill.length;j++){try{localStorage.removeItem(kill[j]);}catch(e){}}
+        }
+        for(var k2 in st){if(isOurs(k2)){try{localStorage.setItem(k2,st[k2]);}catch(e){}}}
+      });
+  }
+  return {build:build,counts:counts,download:download,restore:restore,valid:valid,FORMAT:FMT};
+})();
+`;
+
+/* ============================================================
    KB_YEARS — Schuljahre (2026/27 …). Ein Jahr ist „aktiv"; man kann
    ein Jahr abschließen (nur Ansicht) und ein neues anlegen. WICHTIG:
    Schüler, Notizen, Ziele und PEI sind NICHT nach Jahr getrennt — sie
@@ -3316,6 +3453,18 @@ window.KB_YEARS=(function(){
     setActive:setActive, add:add, close:close, reopen:reopen,
     nextStart:nextStart, nextLabel:function(){return labelOf(nextStart());}, labelOf:labelOf,
     startDate:startDate, containsToday:containsToday,
+    /* Team-Sync: die LISTE der Schuljahre wird geteilt, das aktive Jahr
+       bleibt bewusst pro Gerät (jede Person arbeitet ggf. in einem anderen). */
+    syncExport:function(){ensure();return data.years.map(function(y){return {id:y.id,start:y.start,label:y.label,closed:!!y.closed,createdAt:y.createdAt||0};});},
+    syncApply:function(arr){
+      if(!arr||!arr.length)return;                 /* nie mit leer überschreiben */
+      var keepActive=(data&&data.active)||'';
+      data={years:[],active:keepActive};
+      arr.forEach(function(r){if(r&&r.id&&r.start){data.years.push({id:r.id,start:r.start,label:r.label||labelOf(r.start),createdAt:r.createdAt||Date.now(),closed:!!r.closed});}});
+      sortY();
+      if(!byId(data.active)){data.active=data.years.length?data.years[data.years.length-1].id:'';}
+      save();fire();
+    },
     onChange:function(fn){if(typeof fn==='function')hooks.push(fn);}
   };
 })();
@@ -3512,7 +3661,18 @@ window.KB_AGENDA=(function(){
   /* Schuljahr gewechselt/geändert -> passende Woche zeigen + neu rendern */
   try{if(window.KB_YEARS&&window.KB_YEARS.onChange){window.KB_YEARS.onChange(function(){state.form=null;state.weekStart=weekStartForActive();if(document.getElementById('isa-agenda-body'))render();});}}catch(e){}
 
-  return {render:render, forDate:forDate, upcoming:upcoming, kinds:KINDS, studentName:studentName, copyBase:copyBase};
+  /* Team-Sync/Backup: ein Datensatz je (Mitarbeiter · Schuljahr). Weil jede
+     Person eine eigene ID hat, überschreibt niemand den Plan der anderen. */
+  function syncExport(){var all=loadAll();var out=[];for(var k in all){var d=all[k]||{};out.push({id:k,base:d.base||{},appts:d.appts||[]});}return out;}
+  function syncApply(arr){
+    if(!arr)return;                                /* fehlende Sammlung: nichts tun */
+    var all={};
+    for(var i=0;i<arr.length;i++){var r=arr[i];if(r&&r.id){all[r.id]={base:r.base||{},appts:r.appts||[]};}}
+    saveAll(all);
+    if(document.getElementById('isa-agenda-body')){try{render();}catch(e){}}
+  }
+
+  return {render:render, forDate:forDate, upcoming:upcoming, kinds:KINDS, studentName:studentName, copyBase:copyBase, syncExport:syncExport, syncApply:syncApply};
 })();
 `;
 
@@ -3730,7 +3890,17 @@ window.KB_HOME=(function(){
     host.querySelectorAll('[data-task-del]').forEach(function(el){el.addEventListener('click',function(e){e.preventDefault();delTask(el.getAttribute('data-task-del'));render();});});
   }
 
-  return {render:render};
+  /* Team-Sync/Backup der Aufgaben: ein Datensatz je Mitarbeiter. */
+  function syncExport(){try{var o=JSON.parse(localStorage.getItem(TLS)||'{}')||{};var out=[];for(var k in o){out.push({id:k,tasks:o[k]||[]});}return out;}catch(e){return [];}}
+  function syncApply(arr){
+    if(!arr)return;
+    var o={};for(var i=0;i<arr.length;i++){var r=arr[i];if(r&&r.id){o[r.id]=r.tasks||[];}}
+    try{localStorage.setItem(TLS,JSON.stringify(o));}catch(e){}
+    var h=document.getElementById('isa-home');
+    if(h&&h.classList.contains('active')){try{render();}catch(e){}}
+  }
+
+  return {render:render, syncExport:syncExport, syncApply:syncApply};
 })();
 `;
 var ISA_CSS = `
@@ -3956,6 +4126,7 @@ var parts = [
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>' + ISA_NOTES_MODULE + '</' + 'script>',
+  '<script>' + ISA_BACKUP_MODULE + '</' + 'script>',
   '<script>' + ISA_YEAR_MODULE + '</' + 'script>',
   '<script>' + AGENDA_MODULE + '</' + 'script>',
   '<script>' + ISA_HOME_MODULE + '</' + 'script>',
