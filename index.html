@@ -1009,14 +1009,18 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 </section>
 
     <section class="kb-panel kb-pad" id="kb-klasse">
-      <div class="kb-pagehead"><h2>🏫 Klasse</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Struktur der Klasse: Schülerliste, Stundenplan und Schulkalender.</p></div>
-      <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div class="kb-pagehead"><h2>🏫 Klasse</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Struktur der Klasse: Schuljahr, Schülerliste, Stundenplan und Schulkalender.</p></div>
+      <h3 style="margin:4px 0 8px;">📅 Schuljahr</h3>
+      <p style="margin:0 0 12px;color:var(--kb-muted);font-size:13.5px;">Alles — Schülerliste, Stundenplan, Absenzen — bezieht sich auf das aktive Schuljahr. Die Schülerdaten selbst bleiben über alle Jahre erhalten.</p>
+      <div class="kb-card" id="kb-year-card"></div>
+      <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <button class="kb-btn" data-kb-act="open-tt">🗓️ Stundenplan bearbeiten</button>
         <button class="kb-btn" data-kb-act="open-cal">📆 Schulkalender</button>
+        <span id="kb-tt-hint" style="font-size:12.5px;color:var(--kb-muted);font-weight:600;"></span>
       </div>
       <h3 style="margin:18px 0 8px;">Gemeinsame Schülerliste</h3>
-      <p style="margin:0 0 12px;color:var(--kb-muted);font-size:13.5px;">Eine Liste für Anwesenheit und Dossiers — Änderungen wirken sofort in beiden Bereichen.</p>
-      <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <p style="margin:0 0 12px;color:var(--kb-muted);font-size:13.5px;">Eine Liste für Anwesenheit und Dossiers — Änderungen wirken sofort in beiden Bereichen. Klasse und Niveau gelten pro Schuljahr.</p>
+      <div class="kb-card" id="kb-roster-addrow" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
         <input class="kb-in" id="kb-roster-name" style="flex:1;min-width:170px;" placeholder="Name des neuen Schülers">
         <input class="kb-in" id="kb-roster-klasse" style="max-width:130px;" placeholder="Klasse (optional)">
         <select class="kb-in" id="kb-roster-level" style="max-width:90px;"><option>L1</option><option>L2</option></select>
@@ -1039,6 +1043,57 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 </div>
 
 <script>
+window.KB_YEARS=(function(){
+  var LS='klassebuch_years_v1';
+  function seed(){
+    return {active:'',list:[
+      {key:'2025/26',start:'2025-09-15',end:'2026-07-15',closed:true},
+      {key:'2026/27',start:'2026-09-15',end:'2027-07-15',closed:false}
+    ]};
+  }
+  function todayIso(){var d=new Date();function p(n){return (n<10?'0':'')+n;}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
+  var st=null;
+  try{var raw=localStorage.getItem(LS);if(raw){st=JSON.parse(raw);}}catch(e){st=null;}
+  if(!st||!st.list||!st.list.length){st=seed();}
+  var hooks=[];
+  function persist(){try{localStorage.setItem(LS,JSON.stringify(st));}catch(e){}}
+  function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  function raw2(k){for(var i=0;i<st.list.length;i++){if(st.list[i].key===k){return st.list[i];}}return null;}
+  function sortList(){st.list.sort(function(a,b){return a.start<b.start?-1:(a.start>b.start?1:0);});}
+  function forDate(iso){for(var i=0;i<st.list.length;i++){var y=st.list[i];if(iso>=y.start&&iso<=y.end){return y.key;}}return '';}
+  function view(y){return y?{key:y.key,start:y.start,end:y.end,closed:!!y.closed}:null;}
+  sortList();
+  if(!st.active||!raw2(st.active)){st.active=forDate(todayIso())||st.list[st.list.length-1].key;persist();}
+  return {
+    list:function(){sortList();return st.list.map(view);},
+    byKey:function(k){return view(raw2(k));},
+    active:function(){return st.active;},
+    activeYear:function(){return view(raw2(st.active));},
+    setActive:function(k){if(raw2(k)&&st.active!==k){st.active=k;notify();}},
+    isClosed:function(k){var y=raw2(k||st.active);return !!(y&&y.closed);},
+    forDate:forDate,
+    inActive:function(iso){var y=raw2(st.active);return !!(y&&iso>=y.start&&iso<=y.end);},
+    add:function(key,start,end){
+      key=String(key||'').trim();
+      if(!key||raw2(key)||!start||!end){return null;}
+      st.list.push({key:key,start:start,end:end,closed:false});
+      sortList();st.active=key;notify();return key;
+    },
+    close:function(k){var y=raw2(k||st.active);if(y&&!y.closed){y.closed=true;notify();}},
+    reopen:function(k){var y=raw2(k||st.active);if(y&&y.closed){y.closed=false;notify();}},
+    remove:function(k){
+      var y=raw2(k); if(!y||st.list.length<2){return false;}
+      st.list=st.list.filter(function(x){return x.key!==k;});
+      if(st.active===k){st.active=st.list[st.list.length-1].key;}
+      notify();return true;
+    },
+    onChange:function(fn){hooks.push(fn);},
+    syncExport:function(){return JSON.parse(JSON.stringify(st));},
+    syncApply:function(o){if(o&&o.list&&o.list.length){st=o;sortList();persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}}
+  };
+})();
+</script>
+<script>
 window.KB_ROSTER=(function(){
   var LS='klassebuch_roster_v1';
   var SEED=[
@@ -1051,29 +1106,120 @@ window.KB_ROSTER=(function(){
     {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', active:true},
     {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', active:true}
   ];
-  function clone(o){var r={};for(var k in o){r[k]=o[k];}return r;}
+  function clone0(o){var r={};for(var k in o){r[k]=o[k];}return r;}
+  function clone(o){
+    var r=clone0(o);
+    if(o&&o.years){var y={};for(var q in o.years){y[q]=clone0(o.years[q]);}r.years=y;}
+    return r;
+  }
   function loadList(){
     try{var raw=localStorage.getItem(LS);if(raw){var a=JSON.parse(raw);if(a&&a.length){return a.map(clone);}}}catch(e){}
     return SEED.map(clone);
   }
+  function yk(){return (window.KB_YEARS&&window.KB_YEARS.active())||'';}
+  function todayIso(){return new Date().toISOString().slice(0,10);}
   var list=loadList(); var hooks=[];
   function persist(){try{localStorage.setItem(LS,JSON.stringify(list));}catch(e){}}
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  function enr(s,y){return (s&&s.years&&s.years[y])||null;}
+  function inYear(s,y){var e=enr(s,y);return !!(e&&e.status!=='ausgetreten');}
+  function ensureEnr(s,y){
+    if(!s.years||typeof s.years!=='object'){s.years={};}
+    if(!s.years[y]){s.years[y]={klasse:s.klasse||'',level:s.level||'L1',status:'aktiv'};}
+    return s.years[y];
+  }
+  /* Alt-Daten ohne Jahres-Einschreibung ins aktive Schuljahr uebernehmen */
+  function migrate(){
+    var y=yk(); if(!y){return;}
+    var changed=false;
+    for(var i=0;i<list.length;i++){
+      var s=list[i];
+      if(!s.years||typeof s.years!=='object'){s.years={};changed=true;}
+      var has=false; for(var q in s.years){has=true;break;}
+      if(!has&&s.active!==false){s.years[y]={klasse:s.klasse||'',level:s.level||'L1',status:'aktiv'};changed=true;}
+    }
+    if(changed){persist();}
+  }
+  migrate();
+  function viewFor(s){
+    var y=yk(), e=enr(s,y);
+    return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',
+      klasse:e?(e.klasse||''):(s.klasse||''),
+      level:e?(e.level||'L1'):(s.level||'L1'),
+      status:e?(e.status||'aktiv'):'',
+      enrolled:!!e,active:s.active!==false,createdAt:s.createdAt||'',
+      years:clone(s).years||{}};
+  }
+  function activeList(){
+    var y=yk();
+    if(!y){return list.filter(function(s){return s.active!==false;});}
+    return list.filter(function(s){return inYear(s,y);});
+  }
   return {
-    list:function(){return list.map(clone);},
-    byId:function(id){var s=find(id);return s?clone(s):null;},
+    list:function(){return activeList().map(viewFor);},
+    allPersons:function(){return list.map(viewFor);},
+    byId:function(id){var s=find(id);return s?viewFor(s):null;},
+    /* ids() = ALLE je erfassten Personen. Schuetzt die Historie: Filter und
+       Reconcile duerfen Eintraege ehemaliger Schueler NICHT wegwerfen. */
     ids:function(){var m={};for(var i=0;i<list.length;i++){m[list[i].id]=true;}return m;},
-    asAnwesenheit:function(){return list.map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1'};});},
-    asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
-    add:function(name,klasse,level){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',active:true,createdAt:new Date().toISOString()});notify();return id;},
-    update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
-    setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
+    idsForYear:function(y){var m={};y=y||yk();for(var i=0;i<list.length;i++){if(inYear(list[i],y)){m[list[i].id]=true;}}return m;},
+    asAnwesenheit:function(){return activeList().map(function(s){var v=viewFor(s);return {id:v.id,name:v.name,klasse:v.klasse,level:v.level};});},
+    asDossier:function(){return activeList().map(function(s){var v=viewFor(s);return {id:v.id,name:v.name,anonLabel:v.anonLabel,active:v.active,createdAt:v.createdAt};});},
+    add:function(name,klasse,level){
+      var id=newId(),y=yk();
+      var s={id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',active:true,createdAt:new Date().toISOString(),years:{}};
+      if(y){s.years[y]={klasse:klasse||'',level:level||'L1',status:'aktiv',from:todayIso()};}
+      list.push(s);notify();return id;
+    },
+    /* Klasse/Niveau gelten pro Schuljahr, der Name gehoert zur Person */
+    update:function(id,fields){
+      var s=find(id); if(!s){return;}
+      var y=yk(), e=y?ensureEnr(s,y):null;
+      for(var k in fields){
+        if((k==='klasse'||k==='level')&&e){e[k]=fields[k];}
+        else{s[k]=fields[k];}
+      }
+      notify();
+    },
+    setLevel:function(id,lv){
+      var s=find(id); if(!s){return;}
+      var y=yk();
+      if(y){var e=ensureEnr(s,y);if(e.level!==lv){e.level=lv;notify();}}
+      else if(s.level!==lv){s.level=lv;notify();}
+    },
+    /* Historie-sicher: Einschreibung beenden statt Daten loeschen */
+    leave:function(id,y){var s=find(id);if(!s){return;}y=y||yk();var e=enr(s,y);if(e){e.status='ausgetreten';e.to=todayIso();notify();}},
+    rejoin:function(id,y){var s=find(id);if(!s){return;}y=y||yk();var e=enr(s,y);if(e){e.status='aktiv';delete e.to;notify();}},
+    leavers:function(y){y=y||yk();return list.filter(function(s){var e=enr(s,y);return !!(e&&e.status==='ausgetreten');}).map(viewFor);},
+    /* Ein Schueler geht, ein neuer kommt: NEUE Person statt Umbenennen.
+       Verhindert, dass der Neue die Historie des Alten erbt. */
+    replaceWith:function(oldId,newName,klasse,level){
+      var y=yk(), s=find(oldId), e=s&&y?enr(s,y):null;
+      if(e){e.status='ausgetreten';e.to=todayIso();}
+      var id=newId();
+      var ns={id:id,name:String(newName||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',active:true,createdAt:new Date().toISOString(),years:{}};
+      if(y){ns.years[y]={klasse:klasse||'',level:level||'L1',status:'aktiv',from:todayIso()};}
+      list.push(ns);notify();return id;
+    },
+    /* Jahreswechsel: ausgewaehlte Schueler ins neue Jahr uebernehmen */
+    rollover:function(fromY,toY,ids){
+      var pick={}; (ids||[]).forEach(function(i){pick[i]=true;});
+      var n=0;
+      for(var i=0;i<list.length;i++){
+        var s=list[i], e=enr(s,fromY);
+        if(!e||!pick[s.id]||s.years[toY]){continue;}
+        s.years[toY]={klasse:e.klasse||'',level:e.level||'L1',status:'aktiv',from:todayIso()};n++;
+      }
+      if(n){notify();}
+      return n;
+    },
+    inYear:function(id,y){var s=find(id);return !!(s&&inYear(s,y||yk()));},
     remove:function(id){list=list.filter(function(s){return s.id!==id;});notify();},
     onChange:function(fn){hooks.push(fn);},
     syncExport:function(){return list.map(clone);},
-    syncApply:function(arr){list=(arr||[]).map(clone);persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+    syncApply:function(arr){list=(arr||[]).map(clone);migrate();persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   };
 })();
 </script>
@@ -4972,22 +5118,16 @@ Repo.init()
     };
   }
 
+  /* Fruehere Fassung hat Dossier-Eintraege und Réunion-Ziele von Schuelern,
+     die nicht mehr in der Liste standen, ENDGUELTIG geloescht (obwohl der
+     Hinweis "werden ausgeblendet" versprach). Dadurch ging Historie verloren.
+     Jetzt: nur noch aufraeumen, was gefahrlos ist - nie Eintraege loeschen. */
   window.KB_DOS_RECONCILE=function(){
     if(!window.KB_ROSTER){return;}
     var keep=window.KB_ROSTER.ids();
     Repo.students=(Repo.students||[]).filter(function(s){return keep[s.id];});
-    Repo.entries=(Repo.entries||[]).filter(function(e){return keep[e.studentId];});
-    (Repo.reunions||[]).forEach(function(r){
-      if(r&&Array.isArray(r.studentOrder)){r.studentOrder=r.studentOrder.filter(function(id){return keep[id];});}
-      if(r&&r.goals){Object.keys(r.goals).forEach(function(k){if(k!=='group'&&!keep[k]){delete r.goals[k];}});}
-    });
-    try{
-      if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){
-        Storage.clear('students').then(function(){return Storage.putAll('students',Repo.students);}).catch(function(){});
-        Storage.clear('entries').then(function(){return Storage.putAll('entries',Repo.entries);}).catch(function(){});
-        Storage.putAll('reunions',Repo.reunions).catch(function(){});
-      }
-    }catch(e){}
+    /* Repo.entries und Repo.reunions bleiben unangetastet: Eintraege
+       ehemaliger Schueler werden nur ausgeblendet, nicht geloescht. */
   };
   function kbDosPersist(store,arr){try{if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){Storage.clear(store).then(function(){return Storage.putAll(store,arr);}).catch(function(){});}}catch(e){}}
   window.KB_DOS_SYNC={
@@ -5261,7 +5401,7 @@ window.KB_BUBBLE=(function(){
     return null;
   }
 
-  var state={students:[],periods:[],entries:[],timetable:null,notes:[],currentUser:null,ttVersion:0};
+  var state={students:[],periods:[],entries:[],timetable:null,timetablesByYear:{},notes:[],currentUser:null,ttVersion:0};
   var ui={}; var pen='unentschuldigt'; var ttLevel='L1'; var classFilter='L1';
   var activeStudentId=null;
   var fileHandle=null,fileConnected=false,suppressWrite=false,writeTimer=null,pollTimer=null,lastContent='';
@@ -5279,6 +5419,7 @@ window.KB_BUBBLE=(function(){
       state.notes=Array.isArray(p.notes)?p.notes:[];
       state.currentUser=p.currentUser||null;
       state.ttVersion=p.ttVersion||0;
+      state.timetablesByYear=(p.timetablesByYear&&typeof p.timetablesByYear==='object')?p.timetablesByYear:{};
     }}catch(e){console.error(e);}
     // currentUser ist gerätegebunden, nicht aus Backup übernehmen
     try{var u=localStorage.getItem('anwesenheit_user');if(u)state.currentUser=u;}catch(e){}
@@ -5327,7 +5468,7 @@ window.KB_BUBBLE=(function(){
       return false;
     });
   }
-  function fileState(){return JSON.stringify({students:state.students,periods:state.periods,entries:state.entries,timetable:state.timetable,notes:state.notes,ttVersion:state.ttVersion,_savedAt:Date.now(),_savedBy:state.currentUser||''});}
+  function fileState(){return JSON.stringify({students:state.students,periods:state.periods,entries:state.entries,timetable:state.timetable,timetablesByYear:state.timetablesByYear,notes:state.notes,ttVersion:state.ttVersion,_savedAt:Date.now(),_savedBy:state.currentUser||''});}
   function scheduleWrite(){clearTimeout(writeTimer);writeTimer=setTimeout(function(){writeTimer=null;writeFile();},700);}
   function writeFile(){
     if(!fileHandle)return Promise.resolve();
@@ -5337,7 +5478,7 @@ window.KB_BUBBLE=(function(){
   function applyRemote(txt){
     try{var d=JSON.parse(txt);}catch(e){return;}
     suppressWrite=true;
-    state.students=d.students||[];state.periods=d.periods||[];state.entries=d.entries||[];state.timetable=d.timetable||null;state.notes=d.notes||[];state.ttVersion=d.ttVersion||0;
+    state.students=d.students||[];state.periods=d.periods||[];state.entries=d.entries||[];state.timetable=d.timetable||null;state.timetablesByYear=d.timetablesByYear||{};state.notes=d.notes||[];state.ttVersion=d.ttVersion||0;
     migrate();
     try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}
     lastContent=txt;
@@ -5878,6 +6019,9 @@ window.KB_BUBBLE=(function(){
     /* Bediener-Auswahl in der gemeinsamen App nicht erzwingen */
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+  var kbTtYear=(window.KB_YEARS&&window.KB_YEARS.active())||'';
+  function kbTtMap(){if(!state.timetablesByYear||typeof state.timetablesByYear!=='object'){state.timetablesByYear={};}return state.timetablesByYear;}
+  function kbTtClone(o){return JSON.parse(JSON.stringify(o));}
   window.KB_ANW={
     entriesForStudent:function(id){return state.entries.filter(function(e){return e.studentId===id;});},
     summaryForStudent:function(id){var e=0,u=0,v=0,he=0,hu=0;state.entries.forEach(function(x){if(x.studentId!==id)return;var h=countHours(x);if(x.status==='entschuldigt'){e++;he+=h;}else if(x.status==='unentschuldigt'){u++;hu+=h;}else if(x.status==='verspaetet'){v++;}});return {entschuldigt:e,unentschuldigt:u,verspaetet:v,hoursEnt:he,hoursUnent:hu,total:e+u+v};},
@@ -5894,9 +6038,35 @@ window.KB_BUBBLE=(function(){
     exportSettings:function(){return {id:'settings',timetable:state.timetable,periods:state.periods,ttVersion:state.ttVersion};},
     applyEntries:function(list){state.entries=(list||[]).slice();save();renderAll();},
     applyNotes:function(list){state.notes=(list||[]).slice();save();renderAll();},
-    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();}
+    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();},
+    /* ---- Stundenplan pro Schuljahr ---- */
+    useYear:function(yk){
+      if(!yk||yk===kbTtYear){return;}
+      var m=kbTtMap();
+      if(kbTtYear&&state.timetable){m[kbTtYear]=kbTtClone(state.timetable);}
+      if(!m[yk]){m[yk]=kbTtClone(state.timetable||defaultTimetable());}
+      state.timetable=kbTtClone(m[yk]);
+      kbTtYear=yk;
+      if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}
+      save();renderAll();
+    },
+    copyTimetable:function(from,to){var m=kbTtMap();var src=m[from]||state.timetable;if(src&&to){m[to]=kbTtClone(src);save();}},
+    resetTimetable:function(yk){if(!yk){return;}var m=kbTtMap();m[yk]=kbTtClone(defaultTimetable());if(yk===kbTtYear){state.timetable=kbTtClone(m[yk]);}save();renderAll();},
+    currentTtYear:function(){return kbTtYear;}
   };
   window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};
+  /* Plan des aktiven Schuljahres laden bzw. erstmalig ablegen.
+     WICHTIG: erst NACH init()/load() laufen lassen - sonst wuerde save()
+     den noch leeren Zustand schreiben und gespeicherte Daten ueberschreiben. */
+  function kbTtBoot(){
+    if(!kbTtYear){return;}
+    var m=kbTtMap();
+    if(m[kbTtYear]){state.timetable=kbTtClone(m[kbTtYear]);}
+    else{m[kbTtYear]=kbTtClone(state.timetable||defaultTimetable());}
+    save();
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(kbTtBoot,0);});}
+  else{kbTtBoot();}
 })();
 </script>
 <script>
@@ -6090,32 +6260,187 @@ window.KB_SYNC=(function(){
     else if(act==='open-cal'){go('absenzen');clickAnwBtn('btn-cal');}
   });
 
-  // Gemeinsame Schülerliste (im Bereich "Klasse")
+  // ---- Schuljahre + gemeinsame Schülerliste (im Bereich "Klasse") ----
+  function activeYearKey(){return window.KB_YEARS?window.KB_YEARS.active():'';}
+  function yearClosed(){return window.KB_YEARS?window.KB_YEARS.isClosed():false;}
+  function normName(s){return String(s||'').toLowerCase().replace(/[^a-zA-Z0-9äöüßàâéèêëîïôûùç]/g,'');}
+  function kbAfterYearChange(){
+    renderYears();renderRoster();
+    try{if(window.KB_ANW&&window.KB_ANW.useYear){window.KB_ANW.useYear(activeYearKey());}}catch(e){}
+    try{if(window.__anwRefresh){window.__anwRefresh();}}catch(e){}
+  }
+  function nextYearGuess(key){
+    var m=String(key||'').match(/^(\d{4})\/(\d{2})$/);
+    if(!m){return {key:'',start:'',end:''};}
+    var a=parseInt(m[1],10)+1;
+    return {key:a+'/'+String(a+1).slice(2),start:a+'-09-15',end:(a+1)+'-07-15'};
+  }
+  function renderYears(){
+    var card=$('kb-year-card'), Y=window.KB_YEARS; if(!card||!Y)return;
+    var years=Y.list(), cur=Y.active(), closed=Y.isClosed(cur);
+    var opts=years.map(function(y){
+      return '<option value="'+esc(y.key)+'"'+(y.key===cur?' selected':'')+'>'+esc(y.key)+(y.closed?' — abgeschlossen':'')+'</option>';
+    }).join('');
+    card.innerHTML=
+      '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">'+
+        '<label style="font-weight:700;font-size:13px;color:var(--kb-muted);">Aktives Schuljahr</label>'+
+        '<select class="kb-in" id="kb-year-sel" style="max-width:200px;">'+opts+'</select>'+
+        '<span style="font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:20px;'+
+          (closed?'background:#fdecea;color:#b3432d;':'background:var(--kb-accent-50);color:var(--kb-accent);')+'">'+
+          (closed?'🔒 abgeschlossen':'✓ offen')+'</span>'+
+        '<span style="flex:1"></span>'+
+        (closed?'<button class="kb-btn" id="kb-year-reopen">🔓 Wieder öffnen</button>'
+               :'<button class="kb-btn" id="kb-year-close">🔒 Jahr abschließen</button>')+
+        '<button class="kb-btn kb-btn-primary" id="kb-year-new">+ Neues Schuljahr</button>'+
+      '</div>'+
+      '<div id="kb-year-form" hidden style="margin-top:12px;border-top:1px solid var(--kb-border);padding-top:12px;">'+
+        '<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;">'+
+          '<label style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;font-weight:700;color:var(--kb-muted);">Bezeichnung<input class="kb-in" id="kb-ny-key" style="max-width:130px;" placeholder="2027/28"></label>'+
+          '<label style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;font-weight:700;color:var(--kb-muted);">Beginn<input class="kb-in" id="kb-ny-start" type="date" style="max-width:165px;"></label>'+
+          '<label style="display:flex;flex-direction:column;gap:3px;font-size:11.5px;font-weight:700;color:var(--kb-muted);">Ende<input class="kb-in" id="kb-ny-end" type="date" style="max-width:165px;"></label>'+
+          '<button class="kb-btn kb-btn-primary" id="kb-ny-create">Anlegen</button>'+
+          '<button class="kb-btn kb-btn-ghost" id="kb-ny-cancel">Abbrechen</button>'+
+        '</div>'+
+        '<label style="display:flex;gap:7px;align-items:center;margin-top:10px;font-size:13.5px;"><input type="checkbox" id="kb-ny-carry" checked> Schüler aus '+esc(cur)+' übernehmen — jeder behält sein eigenes Dossier</label>'+
+        '<label style="display:flex;gap:7px;align-items:center;margin-top:5px;font-size:13.5px;"><input type="checkbox" id="kb-ny-tt" checked> Stundenplan aus '+esc(cur)+' übernehmen (danach frei änderbar)</label>'+
+      '</div>';
+    var hint=$('kb-tt-hint');
+    if(hint){hint.textContent='Der Stundenplan gilt für das Schuljahr '+cur+' — jedes Jahr hat seinen eigenen.';}
+    var sel=$('kb-year-sel');
+    if(sel){sel.addEventListener('change',function(){Y.setActive(sel.value);kbAfterYearChange();});}
+    var cb=$('kb-year-close');
+    if(cb){cb.addEventListener('click',function(){
+      if(confirm('Schuljahr '+cur+' abschließen?\n\nEs wird schreibgeschützt — alle Daten bleiben erhalten und lesbar.\nDu kannst es jederzeit wieder öffnen.')){Y.close(cur);kbAfterYearChange();}
+    });}
+    var rb=$('kb-year-reopen');
+    if(rb){rb.addEventListener('click',function(){Y.reopen(cur);kbAfterYearChange();});}
+    var nb=$('kb-year-new'), form=$('kb-year-form');
+    if(nb&&form){nb.addEventListener('click',function(){
+      var g=nextYearGuess(cur);
+      if($('kb-ny-key')){$('kb-ny-key').value=g.key;}
+      if($('kb-ny-start')){$('kb-ny-start').value=g.start;}
+      if($('kb-ny-end')){$('kb-ny-end').value=g.end;}
+      form.hidden=false;
+    });}
+    var cnl=$('kb-ny-cancel');
+    if(cnl&&form){cnl.addEventListener('click',function(){form.hidden=true;});}
+    var crt=$('kb-ny-create');
+    if(crt){crt.addEventListener('click',function(){
+      var key=($('kb-ny-key').value||'').trim(), st=$('kb-ny-start').value, en=$('kb-ny-end').value;
+      if(!key||!st||!en){alert('Bitte Bezeichnung, Beginn und Ende angeben.');return;}
+      if(Y.byKey(key)){alert('Das Schuljahr „'+key+'“ gibt es schon.');return;}
+      var from=cur;
+      var carry=$('kb-ny-carry')&&$('kb-ny-carry').checked;
+      var withTt=$('kb-ny-tt')&&$('kb-ny-tt').checked;
+      var ids=carry?window.KB_ROSTER.list().map(function(s){return s.id;}):[];
+      Y.add(key,st,en);
+      var n=0;
+      if(carry&&window.KB_ROSTER.rollover){n=window.KB_ROSTER.rollover(from,key,ids);}
+      try{
+        if(window.KB_ANW){
+          if(withTt&&window.KB_ANW.copyTimetable){window.KB_ANW.copyTimetable(from,key);}
+          else if(!withTt&&window.KB_ANW.resetTimetable){window.KB_ANW.resetTimetable(key);}
+        }
+      }catch(e){}
+      kbAfterYearChange();
+      alert('Schuljahr '+key+' angelegt und aktiviert.'+(carry?'\n'+n+' Schüler übernommen.':''));
+    });}
+  }
+
   function renderRoster(){
     var body=$('kb-roster-body'); if(!body||!window.KB_ROSTER)return;
-    var rows=window.KB_ROSTER.list().map(function(s){
+    var yk=activeYearKey(), closed=yearClosed(), dis=closed?' disabled':'';
+    var students=window.KB_ROSTER.list();
+    var rows=students.map(function(s){
       return '<tr data-id="'+esc(s.id)+'">'+
-        '<td><input class="kb-in kb-rn" value="'+esc(s.name)+'"></td>'+
-        '<td><input class="kb-in kb-rk" style="max-width:130px" value="'+esc(s.klasse||'')+'" placeholder="—"></td>'+
-        '<td><select class="kb-in kb-rl" style="max-width:90px"><option'+(s.level!=='L2'?' selected':'')+'>L1</option><option'+(s.level==='L2'?' selected':'')+'>L2</option></select></td>'+
-        '<td style="text-align:right"><button class="kb-btn kb-btn-ghost kb-rd" title="Schüler löschen">🗑</button></td></tr>';
+        '<td><input class="kb-in kb-rn" value="'+esc(s.name)+'"'+dis+'></td>'+
+        '<td><input class="kb-in kb-rk" style="max-width:130px" value="'+esc(s.klasse||'')+'" placeholder="—"'+dis+'></td>'+
+        '<td><select class="kb-in kb-rl" style="max-width:90px"'+dis+'><option'+(s.level!=='L2'?' selected':'')+'>L1</option><option'+(s.level==='L2'?' selected':'')+'>L2</option></select></td>'+
+        '<td style="text-align:right"><button class="kb-btn kb-btn-ghost kb-rd" title="Verlässt die Schule — Historie bleibt erhalten"'+dis+'>🎓</button></td></tr>';
     }).join('');
-    body.innerHTML='<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>';
+    var banner=closed?'<div style="background:#fdecea;border:1px solid #f3c6bd;color:#8c3322;border-radius:10px;padding:10px 13px;margin:6px 0 10px;font-size:13.5px;font-weight:600;">🔒 Schuljahr '+esc(yk)+' ist abgeschlossen — schreibgeschützt. Oben „Wieder öffnen“, um etwas nachzutragen.</div>':'';
+    var head='<div style="margin:8px 0 2px;font-size:12.5px;color:var(--kb-muted);font-weight:700;">Schüler im Schuljahr '+esc(yk||'—')+' ('+students.length+')</div>';
+    var leavers=window.KB_ROSTER.leavers?window.KB_ROSTER.leavers():[];
+    var lh='';
+    if(leavers.length){
+      lh='<div style="margin-top:16px;"><div style="font-size:12.5px;color:var(--kb-muted);font-weight:700;margin-bottom:6px;">Ehemalige in '+esc(yk)+' — Dossier, Absenzen und Ziele bleiben vollständig erhalten</div>'+
+        leavers.map(function(s){
+          return '<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--kb-border);border-radius:10px;margin-bottom:5px;background:var(--kb-surface);">'+
+            '<span style="font-weight:600;">'+esc(s.name)+'</span><span style="flex:1"></span>'+
+            '<button class="kb-btn kb-btn-ghost kb-rback" data-id="'+esc(s.id)+'"'+dis+' style="font-size:12px;">zurückholen</button></div>';
+        }).join('')+'</div>';
+    }
+    /* Leeres Jahr ist kein Datenverlust - Uebernahme direkt anbieten,
+       statt den Eindruck zu erwecken, die Schueler waeren weg. */
+    var emptyHint='',srcYear='',srcCount=0;
+    if(!students.length){
+      var counts={};
+      (window.KB_ROSTER.allPersons?window.KB_ROSTER.allPersons():[]).forEach(function(p){
+        var ys=p.years||{};
+        for(var q in ys){if(ys[q]&&ys[q].status!=='ausgetreten'){counts[q]=(counts[q]||0)+1;}}
+      });
+      for(var q2 in counts){if(counts[q2]>srcCount){srcCount=counts[q2];srcYear=q2;}}
+      if(srcYear&&!closed){
+        emptyHint='<div style="background:var(--kb-accent-50);border:1px dashed var(--kb-border);border-radius:12px;padding:16px;margin:8px 0;font-size:14px;color:var(--kb-muted);">'+
+          'Für <strong>'+esc(yk)+'</strong> ist noch niemand eingeschrieben. Die Schüler sind nicht verloren — sie gehören zu <strong>'+esc(srcYear)+'</strong>.'+
+          '<div style="margin-top:10px;"><button class="kb-btn kb-btn-primary" id="kb-carry-btn">'+srcCount+' Schüler aus '+esc(srcYear)+' übernehmen</button></div></div>';
+      }
+    }
+    body.innerHTML=banner+head+emptyHint+'<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+lh;
+    var carry=$('kb-carry-btn');
+    if(carry){carry.addEventListener('click',function(){
+      var ids=[];
+      (window.KB_ROSTER.allPersons?window.KB_ROSTER.allPersons():[]).forEach(function(p){
+        var e=(p.years||{})[srcYear];
+        if(e&&e.status!=='ausgetreten'){ids.push(p.id);}
+      });
+      var n=window.KB_ROSTER.rollover(srcYear,yk,ids);
+      renderRoster();
+      alert(n+' Schüler in '+yk+' übernommen. Dossier und Absenzen bleiben bei jedem Schüler.');
+    });}
+    var ar=$('kb-roster-addrow'); if(ar){ar.style.opacity=closed?'.45':'';}
+    var ab=$('kb-roster-add'); if(ab){ab.disabled=closed;}
     var trs=body.querySelectorAll('tr[data-id]');
     for(var i=0;i<trs.length;i++){(function(tr){
       var id=tr.getAttribute('data-id');
-      tr.querySelector('.kb-rn').addEventListener('change',function(e){window.KB_ROSTER.update(id,{name:e.target.value.trim()});});
+      var cur=window.KB_ROSTER.byId(id)||{};
+      /* Schutz gegen den Historien-Mix: einen Eintrag umzubenennen darf NICHT
+         still einen anderen Menschen daraus machen. */
+      tr.querySelector('.kb-rn').addEventListener('change',function(e){
+        var nv=String(e.target.value||'').trim(), ov=String(cur.name||'');
+        if(!nv){e.target.value=ov;return;}
+        if(nv===ov){return;}
+        if(normName(nv)===normName(ov)){window.KB_ROSTER.update(id,{name:nv});renderRoster();return;}
+        var msg='Name ändern:  „'+ov+'“  →  „'+nv+'“\n\n'+
+          'Ist das DIESELBE Person (nur die Schreibweise korrigiert)?\n\n'+
+          'OK = Namenskorrektur — Dossier, Absenzen und Ziele bleiben bei dieser Person.\n\n'+
+          'ABBRECHEN = Es ist ein NEUER Schüler — „'+ov+'“ wird als ausgetreten geführt (gesamte Historie bleibt erhalten) und „'+nv+'“ wird neu angelegt, mit leerem Dossier.';
+        if(confirm(msg)){window.KB_ROSTER.update(id,{name:nv});}
+        else{window.KB_ROSTER.replaceWith(id,nv,cur.klasse||'',cur.level||'L1');}
+        renderRoster();
+      });
       tr.querySelector('.kb-rk').addEventListener('change',function(e){window.KB_ROSTER.update(id,{klasse:e.target.value.trim()});});
       tr.querySelector('.kb-rl').addEventListener('change',function(e){window.KB_ROSTER.update(id,{level:e.target.value});});
-      tr.querySelector('.kb-rd').addEventListener('click',function(){var s=window.KB_ROSTER.byId(id);if(confirm('„'+(s?s.name:'')+'“ aus der gemeinsamen Liste löschen? Absenzen und Dossier dieses Schülers werden ausgeblendet.')){window.KB_ROSTER.remove(id);renderRoster();}});
+      tr.querySelector('.kb-rd').addEventListener('click',function(){
+        var s=window.KB_ROSTER.byId(id);
+        if(confirm('„'+(s?s.name:'')+'“ verlässt die Schule?\n\nEr verschwindet aus der Liste des Schuljahres '+yk+'.\nDossier, Absenzen und Ziele BLEIBEN vollständig erhalten und sind weiter einsehbar.')){
+          window.KB_ROSTER.leave(id);renderRoster();
+        }
+      });
     })(trs[i]);}
+    var backs=body.querySelectorAll('.kb-rback');
+    for(var j=0;j<backs.length;j++){(function(b){
+      b.addEventListener('click',function(){window.KB_ROSTER.rejoin(b.getAttribute('data-id'));renderRoster();});
+    })(backs[j]);}
   }
   var addBtn=$('kb-roster-add');
   if(addBtn){addBtn.addEventListener('click',function(){
+    if(yearClosed()){alert('Das Schuljahr ist abgeschlossen. Bitte oben zuerst „Wieder öffnen“.');return;}
     var n=$('kb-roster-name'),k=$('kb-roster-klasse'),l=$('kb-roster-level');
     var name=(n.value||'').trim(); if(!name){n.focus();return;}
     window.KB_ROSTER.add(name,k.value.trim(),l.value); n.value='';k.value='';n.focus(); renderRoster();
   });}
+  renderYears();
   var dA=$('kb-data-anw'); if(dA){dA.addEventListener('click',function(){go('absenzen');var b=document.getElementById('btn-data');if(b){b.click();}});}
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
 
