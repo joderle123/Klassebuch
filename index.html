@@ -6380,10 +6380,15 @@ window.KB_SYNC=(function(){
         for(var q in ys){if(ys[q]&&ys[q].status!=='ausgetreten'){counts[q]=(counts[q]||0)+1;}}
       });
       for(var q2 in counts){if(counts[q2]>srcCount){srcCount=counts[q2];srcYear=q2;}}
-      if(srcYear&&!closed){
+      if(srcYear){
+        /* Auch im abgeschlossenen Jahr erklaeren, wo die Schueler sind -
+           sonst wirkt die leere Liste wie Datenverlust. */
         emptyHint='<div style="background:var(--kb-accent-50);border:1px dashed var(--kb-border);border-radius:12px;padding:16px;margin:8px 0;font-size:14px;color:var(--kb-muted);">'+
-          'Für <strong>'+esc(yk)+'</strong> ist noch niemand eingeschrieben. Die Schüler sind nicht verloren — sie gehören zu <strong>'+esc(srcYear)+'</strong>.'+
-          '<div style="margin-top:10px;"><button class="kb-btn kb-btn-primary" id="kb-carry-btn">'+srcCount+' Schüler aus '+esc(srcYear)+' übernehmen</button></div></div>';
+          'Für <strong>'+esc(yk)+'</strong> ist niemand eingeschrieben. Die Schüler sind nicht verloren — sie gehören zu <strong>'+esc(srcYear)+'</strong>.'+
+          (closed
+            ? '<div style="margin-top:8px;">Dieses Schuljahr ist abgeschlossen. Zum Übernehmen oben zuerst auf „🔓 Wieder öffnen“.</div>'
+            : '<div style="margin-top:10px;"><button class="kb-btn kb-btn-primary" id="kb-carry-btn">'+srcCount+' Schüler aus '+esc(srcYear)+' übernehmen</button></div>')+
+          '</div>';
       }
     }
     body.innerHTML=banner+head+emptyHint+'<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+lh;
@@ -6407,9 +6412,15 @@ window.KB_SYNC=(function(){
       /* Schutz gegen den Historien-Mix: einen Eintrag umzubenennen darf NICHT
          still einen anderen Menschen daraus machen. */
       tr.querySelector('.kb-rn').addEventListener('change',function(e){
-        var nv=String(e.target.value||'').trim(), ov=String(cur.name||'');
+        /* Immer den LEBENDEN Stand lesen: feuert das Ereignis doppelt oder
+           gehoert die Zeile zu einem schon ersetzten Schueler, darf nicht
+           versehentlich ein zweiter Schueler angelegt werden. */
+        var live=window.KB_ROSTER.byId(id);
+        if(!live||live.status==='ausgetreten'){return;}
+        var nv=String(e.target.value||'').trim(), ov=String(live.name||'');
         if(!nv){e.target.value=ov;return;}
         if(nv===ov){return;}
+        cur=live;
         if(normName(nv)===normName(ov)){window.KB_ROSTER.update(id,{name:nv});renderRoster();return;}
         var msg='Name ändern:  „'+ov+'“  →  „'+nv+'“\n\n'+
           'Ist das DIESELBE Person (nur die Schreibweise korrigiert)?\n\n'+
