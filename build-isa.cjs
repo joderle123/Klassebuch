@@ -824,6 +824,7 @@ var SHELL_BODY_TOP = `
   <aside class="kb-side" id="kb-side" aria-label="Hauptnavigation">
     <div class="kb-brand"><span class="kb-logo">📓</span><span class="kb-brandtext"><b>ISA-Journal</b><small>CDSE · Ambulant</small></span><button class="kb-collapse" id="kb-collapse" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen">«</button></div>
     <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
+    <div class="kb-yearbar" id="kb-yearbar"></div>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="meintag"><span class="kb-ic">🌤️</span>Mein Tag</button>
       <button class="kb-link" data-kb-nav="agenda"><span class="kb-ic">🗓️</span>Terminplan</button>
@@ -1504,6 +1505,72 @@ var SHELL_CONTROLLER = `
   var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',openGate);}
   updateUserChip();
   if(!curUser()){openGate();}
+
+  /* ============================================================
+     Schuljahre (KB_YEARS): Auswahl in der Seitenleiste + Verwaltung.
+     Schüler/Notizen/Ziele bleiben durchgehend; nur der Terminplan
+     wird pro Schuljahr geführt.
+     ============================================================ */
+  function refreshYearView(){
+    // aktuelle Ansicht neu zeichnen (Terminplan hört selbst auf KB_YEARS)
+    if($('isa-home')&&$('isa-home').classList.contains('active')&&window.KB_HOME){try{window.KB_HOME.render();}catch(e){}}
+  }
+  function renderYearBar(){
+    var bar=$('kb-yearbar'); if(!bar||!window.KB_YEARS)return;
+    var years=window.KB_YEARS.list(), act=window.KB_YEARS.active();
+    var opts=years.map(function(y){return '<option value="'+esc(y.id)+'"'+(y.id===act?' selected':'')+'>'+esc(y.label)+(y.closed?' (abgeschlossen)':'')+'</option>';}).join('');
+    bar.innerHTML='<span class="kb-yl">🎓 Schuljahr</span>'+
+      '<div class="kb-yrow"><select class="kb-ysel" id="kb-yearsel" aria-label="Schuljahr wählen">'+opts+'</select>'+
+      '<button class="kb-ymgr" id="kb-yearmgr" title="Schuljahre verwalten" aria-label="Schuljahre verwalten">⋯</button></div>';
+    var sel=$('kb-yearsel'); if(sel){sel.addEventListener('change',function(){window.KB_YEARS.setActive(sel.value);});}
+    var mgr=$('kb-yearmgr'); if(mgr){mgr.addEventListener('click',openYearMgr);}
+  }
+  var yearMgr=null;
+  function buildYearMgr(){
+    yearMgr=document.createElement('div');yearMgr.className='kb-ymodal';yearMgr.id='kb-ymodal';
+    yearMgr.innerHTML='<div class="kb-ymodal-card"><div class="kb-ymodal-h"><b>🎓 Schuljahre</b><button class="kb-ymodal-x" id="kb-ym-x" title="Schließen">✕</button></div>'+
+      '<p class="kb-ym-note">Wähle das aktive Schuljahr, schließe ein Jahr ab oder lege ein neues an. <b>Schüler, Notizen und Ziele bleiben in allen Jahren erhalten</b> — nur der Terminplan (Horaire) wird pro Schuljahr geführt.</p>'+
+      '<div class="kb-ym-list" id="kb-ym-list"></div>'+
+      '<div class="kb-ym-new"><div class="kb-ym-new-h">➕ Neues Schuljahr</div>'+
+        '<div class="kb-ym-new-row"><input class="kb-in" id="kb-ym-input" placeholder="z. B. 2027/28" autocomplete="off">'+
+        '<button class="btn btn-primary" id="kb-ym-add">Anlegen &amp; aktivieren</button></div>'+
+        '<label class="kb-ym-carry"><input type="checkbox" id="kb-ym-carry" checked> Grundwoche (Horaire) aus dem aktuellen Jahr übernehmen</label>'+
+      '</div></div>';
+    document.body.appendChild(yearMgr);
+    yearMgr.addEventListener('click',function(e){if(e.target===yearMgr)closeYearMgr();});
+    $('kb-ym-x').addEventListener('click',closeYearMgr);
+    $('kb-ym-add').addEventListener('click',function(){
+      var inp=$('kb-ym-input'); var raw=inp?inp.value:''; if(!raw||!raw.trim()){if(inp)inp.focus();return;}
+      var carry=$('kb-ym-carry')&&$('kb-ym-carry').checked;
+      var prev=window.KB_YEARS.activeYear();
+      var id=window.KB_YEARS.add(raw.trim());
+      if(!id){alert('Bitte ein gültiges Schuljahr eingeben, z. B. 2027/28.');return;}
+      var now=window.KB_YEARS.activeYear();
+      if(carry&&window.KB_AGENDA&&window.KB_AGENDA.copyBase&&prev&&now&&prev!==now){try{window.KB_AGENDA.copyBase(prev,now);}catch(e){}}
+      if(inp)inp.value='';
+      renderYearMgrList();
+    });
+    $('kb-ym-input').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('kb-ym-add').click();}});
+  }
+  function renderYearMgrList(){
+    var box=$('kb-ym-list'); if(!box||!window.KB_YEARS)return;
+    var years=window.KB_YEARS.list().slice().sort(function(a,b){return b.start-a.start;}), act=window.KB_YEARS.active();
+    box.innerHTML=years.map(function(y){
+      var isAct=y.id===act;
+      var badge=isAct?'<span class="kb-ym-badge">aktiv</span>':(y.closed?'<span class="kb-ym-badge closed">abgeschlossen</span>':'');
+      var acts='';
+      if(!isAct){acts+='<button class="btn btn-sm" data-ym-act="'+esc(y.id)+'">aktivieren</button>';}
+      if(y.closed){acts+='<button class="btn btn-sm" data-ym-reopen="'+esc(y.id)+'">wieder öffnen</button>';}
+      else{acts+='<button class="btn btn-sm" data-ym-close="'+esc(y.id)+'">abschließen</button>';}
+      return '<div class="kb-ym-item'+(isAct?' is-active':'')+'"><div class="kb-ym-label">'+esc(y.label)+' '+badge+'</div><div class="kb-ym-actions">'+acts+'</div></div>';
+    }).join('');
+    box.querySelectorAll('[data-ym-act]').forEach(function(el){el.addEventListener('click',function(){window.KB_YEARS.setActive(el.getAttribute('data-ym-act'));renderYearMgrList();});});
+    box.querySelectorAll('[data-ym-close]').forEach(function(el){el.addEventListener('click',function(){window.KB_YEARS.close(el.getAttribute('data-ym-close'));renderYearMgrList();});});
+    box.querySelectorAll('[data-ym-reopen]').forEach(function(el){el.addEventListener('click',function(){window.KB_YEARS.reopen(el.getAttribute('data-ym-reopen'));renderYearMgrList();});});
+  }
+  function openYearMgr(){if(!yearMgr)buildYearMgr();renderYearMgrList();yearMgr.classList.add('open');}
+  function closeYearMgr(){if(yearMgr)yearMgr.classList.remove('open');}
+  if(window.KB_YEARS){renderYearBar();window.KB_YEARS.onChange(function(){renderYearBar();refreshYearView();});}
 
   // Startseite: Mein Tag
   go('meintag');
@@ -3175,6 +3242,19 @@ dosScript = dosScript
   .split('1 = kaum da … 10 = vollständig present').join('1 = viel Unterstützung … 10 = sehr selbstständig')
   .split('Datum (Wochendatum des Rapports)').join('Datum')
   .split('Eintragstext (Luxemburgisch — Originaltext, nicht übersetzen)').join('Notiztext');
+/* Datenintegrität: Beim BEARBEITEN einer bestehenden Notiz darf der Schüler
+   NICHT mehr geändert werden — sonst wandert die Notiz zu einem anderen
+   Schüler und die Historie „verrutscht". Das Auswahlfeld wird deshalb im
+   Bearbeiten-Modus gesperrt (disabled). Ein disabled <select> liefert per
+   JS weiterhin .value, deshalb bleibt das Speichern korrekt. */
+dosScript = replaceOnce(dosScript,
+  '\'<label for="f-student">Schüler</label>\'',
+  '\'<label for="f-student">Schüler\'+(isEdit?\' <span class="hint">🔒 bei bestehender Notiz fest</span>\':\'\')+\'</label>\'',
+  'isa:f-student-label-lock');
+dosScript = replaceOnce(dosScript,
+  '\'<select id="f-student" required>\'',
+  '\'<select id="f-student" required\'+(isEdit?\' disabled title="Der Schüler eines bestehenden Eintrags kann nicht geändert werden — so bleibt die Zuordnung/Historie korrekt."\':\'\')+\'>\'',
+  'isa:f-student-select-lock');
 ROSTER_MODULE  = isaNS(ROSTER_MODULE);
 BUBBLE_MODULE  = isaNS(BUBBLE_MODULE);
 SCREENING_MODULE = isaNS(SCREENING_MODULE);
@@ -3187,6 +3267,60 @@ SHELL_CONTROLLER = isaNS(SHELL_CONTROLLER);
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%93%3C/text%3E%3C/svg%3E";
 
 /* ISA-spezifische Bausteine (CSS + Module) */
+
+/* ============================================================
+   KB_YEARS — Schuljahre (2026/27 …). Ein Jahr ist „aktiv"; man kann
+   ein Jahr abschließen (nur Ansicht) und ein neues anlegen. WICHTIG:
+   Schüler, Notizen, Ziele und PEI sind NICHT nach Jahr getrennt — sie
+   bleiben durchgehend erhalten. Nur der Terminplan (Horaire) wird pro
+   Schuljahr geführt (siehe KB_AGENDA). Speicher rein lokal.
+   ============================================================ */
+var ISA_YEAR_MODULE = `
+window.KB_YEARS=(function(){
+  var LS='isa_years_v1';
+  function labelOf(y){function pad(x){return (x<10?'0':'')+x;}return y+'/'+pad((y+1)%100);}
+  function normStart(raw){
+    var s=String(raw==null?'':raw);var m=s.match(/[0-9]{1,4}/);if(!m)return 0;
+    var n=parseInt(m[0],10);if(n<100)n=2000+n;if(n<1900||n>2200)return 0;return n;
+  }
+  function defaultStart(){var d=new Date();var y=d.getFullYear();return (d.getMonth()>=7)?y:(y-1);}
+  function startDate(y){return new Date(y,8,15);}            /* ~15. Sept */
+  function endDate(y){return new Date(y+1,6,31);}            /* ~31. Juli */
+  function containsToday(y){var t=new Date();t.setHours(0,0,0,0);return t>=startDate(y)&&t<=endDate(y);}
+  function load(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');return (o&&o.years&&o.years.length)?o:null;}catch(e){return null;}}
+  function save(){try{localStorage.setItem(LS,JSON.stringify(data));}catch(e){}}
+  var data=load();
+  var hooks=[];
+  function fire(){for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  function byId(id){if(!data)return null;for(var i=0;i<data.years.length;i++){if(data.years[i].id===id)return data.years[i];}return null;}
+  function sortY(){data.years.sort(function(a,b){return a.start-b.start;});}
+  function mk(st){return {id:'y'+st,start:st,label:labelOf(st),createdAt:Date.now(),closed:false};}
+  function ensure(){
+    if(!data||!data.years||!data.years.length){var st=defaultStart();data={years:[mk(st)],active:'y'+st};save();}
+    if(!data.active||!byId(data.active)){data.active=data.years[data.years.length-1].id;save();}
+    return data;
+  }
+  ensure();
+  function list(){ensure();return data.years.map(function(y){return {id:y.id,start:y.start,label:y.label,closed:!!y.closed,createdAt:y.createdAt};});}
+  function activeObj(){ensure();return byId(data.active);}
+  function add(raw){ensure();var st=normStart(raw);if(!st)return null;var id='y'+st;if(byId(id)){data.active=id;save();fire();return id;}data.years.push(mk(st));sortY();data.active=id;save();fire();return id;}
+  function setActive(id){ensure();if(byId(id)){data.active=id;save();fire();return true;}return false;}
+  function close(id){var o=byId(id||(data&&data.active));if(o){o.closed=true;save();fire();}}
+  function reopen(id){var o=byId(id||(data&&data.active));if(o){o.closed=false;save();fire();}}
+  function nextStart(){ensure();var mx=0;for(var i=0;i<data.years.length;i++){if(data.years[i].start>mx)mx=data.years[i].start;}return mx?(mx+1):defaultStart();}
+  return {
+    list:list, active:function(){return activeObj()?activeObj().id:'';},
+    activeYear:function(){return activeObj()?activeObj().start:0;},
+    activeLabel:function(){return activeObj()?activeObj().label:'';},
+    isClosed:function(id){var o=byId(id||(data&&data.active));return !!(o&&o.closed);},
+    setActive:setActive, add:add, close:close, reopen:reopen,
+    nextStart:nextStart, nextLabel:function(){return labelOf(nextStart());}, labelOf:labelOf,
+    startDate:startDate, containsToday:containsToday,
+    onChange:function(fn){if(typeof fn==='function')hooks.push(fn);}
+  };
+})();
+`;
+
 var AGENDA_MODULE = `
 window.KB_AGENDA=(function(){
   var LS='isa_agenda_v1';
@@ -3194,9 +3328,39 @@ window.KB_AGENDA=(function(){
   var KINDS={begleitung:{l:'Begleitung',ic:'🧑‍🏫',c:'#2563eb'},einheit:{l:'Fördereinheit',ic:'🎯',c:'#0f766e'},gespraech:{l:'Gespräch',ic:'💬',c:'#7c3aed'},netzwerk:{l:'Netzwerk/Besprechung',ic:'🔗',c:'#0e7490'},buero:{l:'Büro/Bericht',ic:'💻',c:'#b45309'},fahrt:{l:'Fahrt',ic:'🚗',c:'#0891b2'},sonstiges:{l:'Sonstiges',ic:'📌',c:'#6b7280'}};
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
   function user(){try{return (window.KB_USER&&window.KB_USER.get())||'_';}catch(e){return '_';}}
+  function yearOf(){try{return (window.KB_YEARS&&window.KB_YEARS.activeYear())||0;}catch(e){return 0;}}
+  function yearClosed(){try{return !!(window.KB_YEARS&&window.KB_YEARS.isClosed&&window.KB_YEARS.isClosed());}catch(e){return false;}}
+  function keyOf(u,y){return String(u)+'::'+String(y);}
   function loadAll(){try{return JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){return {};}}
   function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
-  function mine(){var all=loadAll();var u=user();if(!all[u]){all[u]={base:{},appts:[]};}if(!all[u].base){all[u].base={};}if(!all[u].appts){all[u].appts=[];}return {all:all,d:all[u]};}
+  /* Ablage pro (Mitarbeiter · Schuljahr). Migration: eine alte, nicht nach
+     Jahr getrennte Ablage wird einmalig ins aktuelle Schuljahr übernommen. */
+  function mine(){
+    var all=loadAll();var u=user();var y=yearOf();var key=keyOf(u,y);
+    if(!all[key]){
+      if(all[u]&&(all[u].base||all[u].appts)){all[key]=all[u];delete all[u];}
+      else{all[key]={base:{},appts:[]};}
+      saveAll(all);
+    }
+    if(!all[key].base){all[key].base={};}
+    if(!all[key].appts){all[key].appts=[];}
+    return {all:all,d:all[key],key:key};
+  }
+  /* Grundwoche eines Schuljahres in ein anderes übernehmen (neue IDs). */
+  function copyBase(fromY,toY){
+    var all=loadAll();var u=user();var fk=keyOf(u,fromY),tk=keyOf(u,toY);
+    var src=all[fk];if(!src||!src.base)return;
+    if(!all[tk])all[tk]={base:{},appts:[]};
+    var nb={};for(var w=1;w<=5;w++){nb[w]=(src.base[w]||[]).map(function(b){return {id:uid(),start:b.start,end:b.end,title:b.title,kind:b.kind,studentId:b.studentId,note:b.note};});}
+    all[tk].base=nb;if(!all[tk].appts)all[tk].appts=[];saveAll(all);
+  }
+  function weekStartForActive(){
+    try{var y=yearOf();
+      if(window.KB_YEARS&&window.KB_YEARS.containsToday&&window.KB_YEARS.containsToday(y))return mondayOf(new Date());
+      if(window.KB_YEARS&&window.KB_YEARS.startDate)return mondayOf(window.KB_YEARS.startDate(y));
+    }catch(e){}
+    return mondayOf(new Date());
+  }
   function persist(m){saveAll(m.all);}
   function uid(){return 'ag_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
   function iso(d){return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+('-')+('0'+d.getDate()).slice(-2);}
@@ -3266,7 +3430,8 @@ window.KB_AGENDA=(function(){
 
   function render(){
     host=document.getElementById('isa-agenda-body'); if(!host)return;
-    if(!state.weekStart){state.weekStart=mondayOf(new Date());}
+    if(!state.weekStart){state.weekStart=weekStartForActive();}
+    var closed=yearClosed();
     var ws=new Date(state.weekStart), we=new Date(ws); we.setDate(we.getDate()+4);
     var cols='';
     var todayIso=iso(new Date());
@@ -3275,16 +3440,18 @@ window.KB_AGENDA=(function(){
       var items=forDate(di);
       cols+='<div class="ag-col'+(di===todayIso?' ag-today':'')+'"><div class="ag-col-h">'+esc(fmtDay(d))+(di===todayIso?' <span class="ag-heute">heute</span>':'')+'</div>'+
         '<div class="ag-col-b">'+(items.length?items.map(itemHtml).join(''):'<div class="ag-empty">—</div>')+
-        '<button class="ag-add-day" data-ag-newday="'+di+'">+ Termin</button></div></div>';
+        (closed?'':'<button class="ag-add-day" data-ag-newday="'+di+'">+ Termin</button>')+'</div></div>';
     }
     var range=('0'+ws.getDate()).slice(-2)+'.'+('0'+(ws.getMonth()+1)).slice(-2)+'. – '+('0'+we.getDate()).slice(-2)+'.'+('0'+(we.getMonth()+1)).slice(-2)+'.'+we.getFullYear();
     var legend=Object.keys(KINDS).map(function(k){return '<span class="ag-leg"><span class="ag-dot" style="background:'+KINDS[k].c+'"></span>'+esc(KINDS[k].l)+'</span>';}).join('');
-    host.innerHTML='<div class="kb-pagehead"><h2>🗓️ Terminplan</h2><p style="margin:0 0 4px;color:var(--kb-muted);">Deine Woche: feste Grundwoche + einzelne Termine. Klick auf einen Eintrag zum Bearbeiten.</p></div>'+
+    var yl=''; try{yl=(window.KB_YEARS&&window.KB_YEARS.activeLabel())||'';}catch(e){}
+    host.innerHTML='<div class="kb-pagehead"><h2>🗓️ Terminplan'+(yl?' <span class="ag-year">'+esc(yl)+'</span>':'')+'</h2><p style="margin:0 0 4px;color:var(--kb-muted);">Deine Woche: feste Grundwoche + einzelne Termine. Klick auf einen Eintrag zum Bearbeiten.</p>'+
+      (closed?'<div class="ag-closed">🔒 Dieses Schuljahr ist abgeschlossen — nur Ansicht. Zum Ändern oben links ein anderes Schuljahr wählen oder es wieder öffnen.</div>':'')+'</div>'+
       '<div class="ag-bar"><div class="ag-nav"><button class="btn btn-sm" id="ag-prev">‹</button><button class="btn btn-sm" id="ag-today-btn">Heute</button><button class="btn btn-sm" id="ag-next">›</button><span class="ag-range">'+esc(range)+'</span></div>'+
-      '<div class="ag-actions"><button class="btn btn-sm" id="ag-add-base">+ Fester Block</button><button class="btn btn-sm btn-primary" id="ag-add">+ Termin</button></div></div>'+
+      (closed?'':'<div class="ag-actions"><button class="btn btn-sm" id="ag-add-base">+ Fester Block</button><button class="btn btn-sm btn-primary" id="ag-add">+ Termin</button></div>')+'</div>'+
       '<div class="ag-week">'+cols+'</div>'+
       '<div class="ag-legend">'+legend+'</div>'+
-      formHtml();
+      (closed?'':formHtml());
     wire();
   }
 
@@ -3332,8 +3499,9 @@ window.KB_AGENDA=(function(){
     b('ag-prev',function(){state.weekStart.setDate(state.weekStart.getDate()-7);render();});
     b('ag-next',function(){state.weekStart.setDate(state.weekStart.getDate()+7);render();});
     b('ag-today-btn',function(){state.weekStart=mondayOf(new Date());render();});
+    if(yearClosed())return; /* abgeschlossenes Schuljahr: nur Ansicht */
     b('ag-add',function(){openForm({mode:'appt',date:iso(new Date()),kind:'begleitung',start:'',end:''});});
-    b('ag-add-base',function(){openForm({mode:'base',weekday:1,kind:'schule',start:'',end:''});});
+    b('ag-add-base',function(){openForm({mode:'base',weekday:1,kind:'begleitung',start:'',end:''});});
     b('ag-f-save',saveForm); b('ag-f-del',delForm);
     b('ag-f-cancel',function(){state.form=null;render();}); b('ag-f-cancel2',function(){state.form=null;render();});
     var ov=document.getElementById('ag-form-ov'); if(ov){ov.addEventListener('click',function(e){if(e.target===ov){state.form=null;render();}});}
@@ -3341,7 +3509,10 @@ window.KB_AGENDA=(function(){
     host.querySelectorAll('[data-ag-edit]').forEach(function(el){el.addEventListener('click',function(){var f=editKey(el.getAttribute('data-ag-edit'));if(f)openForm(f);});});
   }
 
-  return {render:render, forDate:forDate, upcoming:upcoming, kinds:KINDS, studentName:studentName};
+  /* Schuljahr gewechselt/geändert -> passende Woche zeigen + neu rendern */
+  try{if(window.KB_YEARS&&window.KB_YEARS.onChange){window.KB_YEARS.onChange(function(){state.form=null;state.weekStart=weekStartForActive();if(document.getElementById('isa-agenda-body'))render();});}}catch(e){}
+
+  return {render:render, forDate:forDate, upcoming:upcoming, kinds:KINDS, studentName:studentName, copyBase:copyBase};
 })();
 `;
 
@@ -3672,6 +3843,37 @@ var ISA_CSS = `
 .home-chip{text-decoration:none;background:var(--kb-accent-50);color:var(--kb-accent-dark);border:1px solid var(--kb-accent-100);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;}
 .home-chip:hover{background:var(--kb-accent);color:#fff;border-color:var(--kb-accent);}
 /* ---- Terminplan ---- */
+/* Schuljahr-Auswahl (Seitenleiste) */
+.kb-yearbar{margin:0 0 12px;padding:8px 10px;border:1px solid var(--kb-border);border-radius:12px;background:var(--kb-bg);}
+.kb-yl{display:block;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--kb-muted);margin:0 0 6px;}
+.kb-yrow{display:flex;gap:6px;align-items:center;}
+.kb-ysel{flex:1;min-width:0;font:inherit;font-weight:700;color:var(--kb-text);background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:9px;padding:6px 8px;cursor:pointer;}
+.kb-ysel:hover{border-color:var(--kb-accent);}
+.kb-ymgr{flex:0 0 auto;width:32px;height:32px;border:1px solid var(--kb-border);border-radius:9px;background:var(--kb-surface);cursor:pointer;font-size:16px;line-height:1;color:var(--kb-muted);}
+.kb-ymgr:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+/* Schuljahr-Verwaltung (Modal) */
+.kb-ymodal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:flex-start;justify-content:center;padding:6vh 16px;z-index:120;}
+.kb-ymodal.open{display:flex;}
+.kb-ymodal-card{background:var(--kb-surface);border-radius:16px;max-width:520px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.35);padding:18px 18px 20px;max-height:88vh;overflow:auto;}
+.kb-ymodal-h{display:flex;justify-content:space-between;align-items:center;font-size:18px;margin-bottom:6px;}
+.kb-ymodal-x{border:none;background:transparent;font-size:18px;cursor:pointer;color:var(--kb-muted);padding:4px 8px;border-radius:8px;}
+.kb-ymodal-x:hover{background:var(--kb-bg);}
+.kb-ym-note{color:var(--kb-muted);font-size:13px;line-height:1.5;margin:0 0 14px;}
+.kb-ym-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.kb-ym-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--kb-border);border-radius:11px;background:var(--kb-bg);flex-wrap:wrap;}
+.kb-ym-item.is-active{border-color:var(--kb-accent);box-shadow:0 0 0 1px var(--kb-accent);}
+.kb-ym-label{font-weight:800;color:var(--kb-text);display:flex;align-items:center;gap:8px;}
+.kb-ym-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.kb-ym-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;background:var(--kb-accent);color:#fff;border-radius:999px;padding:2px 8px;}
+.kb-ym-badge.closed{background:#94a3b8;}
+.kb-ym-new{border-top:1px solid var(--kb-border);padding-top:14px;}
+.kb-ym-new-h{font-weight:800;margin-bottom:8px;}
+.kb-ym-new-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.kb-ym-new-row .kb-in{flex:1;min-width:150px;}
+.kb-ym-carry{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px;color:var(--kb-muted);cursor:pointer;}
+/* Terminplan: Jahr-Label + Abschluss-Banner */
+.ag-year{font-size:13px;font-weight:800;background:var(--kb-accent);color:#fff;border-radius:999px;padding:2px 12px;vertical-align:middle;margin-left:8px;}
+.ag-closed{margin:8px 0 0;padding:9px 12px;border-radius:10px;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;font-size:13px;font-weight:600;}
 .ag-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 14px;}
 .ag-nav{display:flex;align-items:center;gap:6px;}
 .ag-range{font-weight:700;margin-left:6px;color:var(--kb-text);}
@@ -3754,6 +3956,7 @@ var parts = [
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>' + ISA_NOTES_MODULE + '</' + 'script>',
+  '<script>' + ISA_YEAR_MODULE + '</' + 'script>',
   '<script>' + AGENDA_MODULE + '</' + 'script>',
   '<script>' + ISA_HOME_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
