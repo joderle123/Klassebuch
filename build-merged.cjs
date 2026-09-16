@@ -142,6 +142,18 @@ var ANW_API = [
   "    dayNames:function(){var o={};for(var w=1;w<=5;w++){o[w]=DAY_NAMES[w];}return o;},",
   "    isPause:function(s){return !!PAUSE_SUBJECTS[s];},",
   "    levels:function(){return ['L1','L2'];},",
+  "    /* Fach in Absenzen und Klassenbuch-Notizen mitbenennen, damit beim",
+  "       Umbenennen nichts verwaist. Leerer Zielname laesst den Eintrag stehen. */",
+  "    renameSubject:function(from,to){if(!from||!to)return 0;var n=0;",
+  "      for(var i=0;i<state.entries.length;i++){if(state.entries[i].subject===from){state.entries[i].subject=to;n++;}}",
+  "      for(var j=0;j<state.notes.length;j++){if(state.notes[j].subject===from){state.notes[j].subject=to;n++;}}",
+  "      save();renderAll();return n;},",
+  "    /* Nur die Uhrzeiten der bestehenden Stunden aendern. Die IDs bleiben,",
+  "       weil Absenzen daran haengen; Stunden hinzufuegen/entfernen geht hier bewusst nicht. */",
+  "    setBlockTimes:function(arr){if(!arr||!arr.length)return false;var n=0;",
+  "      for(var i=0;i<BLOCKS.length;i++){for(var j=0;j<arr.length;j++){if(arr[j]&&arr[j].id===BLOCKS[i].id){",
+  "        if(arr[j].start)BLOCKS[i].start=arr[j].start;if(arr[j].end)BLOCKS[i].end=arr[j].end;n++;}}}",
+  "      if(n)renderAll();return n>0;},",
   "    summaryForStudent:function(id){var e=0,u=0,v=0,he=0,hu=0;state.entries.forEach(function(x){if(x.studentId!==id)return;var h=countHours(x);if(x.status==='entschuldigt'){e++;he+=h;}else if(x.status==='unentschuldigt'){u++;hu+=h;}else if(x.status==='verspaetet'){v++;}});return {entschuldigt:e,unentschuldigt:u,verspaetet:v,hoursEnt:he,hoursUnent:hu,total:e+u+v};},",
   "    recentForStudent:function(id,n){return state.entries.filter(function(e){return e.studentId===id;}).sort(function(a,b){return a.date<b.date?1:-1;}).slice(0,n||8);},",
   "    notes:function(){return state.notes.slice().sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:0);});},",
@@ -287,6 +299,19 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-ttgrid input:focus{outline:none;border-color:var(--kb-accent,#4f5bd5);background:#fff;box-shadow:0 0 0 3px rgba(79,91,213,.14);}
 .kb-ttgrid tr.kb-ttpause td.kb-ttime,.kb-ttgrid tr.kb-ttpause input{opacity:.62;}
 .kb-ttgrid tr.kb-ttpause input{background:transparent;font-style:italic;}
+/* Fächer- und Stundenraster-Listen */
+.kb-btn-sm{padding:5px 11px;font-size:12.5px;border-radius:8px;}
+.kb-sublist,.kb-blklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:8px;}
+.kb-subrow,.kb-blkrow{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--kb-border);border-radius:10px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
+/* Bezeichnung auf eigene Zeile: lange Fachnamen und Uhrzeiten bleiben lesbar */
+.kb-subrow b,.kb-blkrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;word-break:break-word;}
+.kb-subrow .kb-submeta{flex:1;}
+.kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
+.kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
+.kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+.kb-rinactive{opacity:.5;}
+.kb-rinactive .kb-rn{text-decoration:line-through;}
+.kb-ract{display:inline-flex;align-items:center;justify-content:center;cursor:pointer;}
 /* Schuljahr-Chip in der Seitenleiste */
 .kb-termchip{display:flex;align-items:center;gap:9px;width:100%;margin:2px 0 10px;padding:8px 10px;border:1px solid var(--kb-border);border-radius:12px;background:var(--kb-bg,#f3f4fa);cursor:pointer;font:inherit;text-align:left;}
 .kb-termchip:hover{border-color:var(--kb-accent,#4f5bd5);}
@@ -954,6 +979,19 @@ var SHELL_PANELS_EXTRA = `
         <datalist id="kb-tt-subjects"></datalist>
       </div>
 
+      <div class="kb-card">
+        <div class="kb-card-h"><h3>📚 Fächer</h3><span class="kb-term-now" id="kb-sub-count"></span></div>
+        <p class="kb-hint">Fächer entstehen dadurch, dass du sie oben in den Stundenplan schreibst. Ein Fach hier umzubenennen ändert es <b>überall</b> mit: in allen Trimestern, in den Noten, in den Absenzen und in den Klassenbuch-Notizen — so verwaist nichts.</p>
+        <div id="kb-sub-list"></div>
+      </div>
+
+      <div class="kb-card">
+        <div class="kb-card-h"><h3>⏰ Stundenraster</h3><span class="kb-term-now" id="kb-blk-state"></span></div>
+        <p class="kb-hint">Die Uhrzeiten der Stunden. Die Anzahl der Stunden bleibt fest, weil bereits erfasste Absenzen an den einzelnen Stunden hängen — nur die Zeiten lassen sich anpassen.</p>
+        <div id="kb-blk-list"></div>
+        <div style="margin-top:12px;"><button class="kb-btn" id="kb-blk-reset">↺ Standardzeiten wiederherstellen</button></div>
+      </div>
+
       <h3 style="margin:18px 0 8px;">Gemeinsame Schülerliste</h3>
       <p style="margin:0 0 12px;color:var(--kb-muted);font-size:13.5px;">Eine Liste für Anwesenheit und Dossiers — Änderungen wirken sofort in beiden Bereichen.</p>
       <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -1217,6 +1255,34 @@ window.KB_TIMETABLE=(function(){
       try{if(window.KB_ANW&&window.KB_ANW.setTTCell)window.KB_ANW.setTTCell(level,wd,idx,val);}catch(e){}
       stash();
     },
+    /* Wo kommt ein Fach überall vor? (alle Trimester zusammen) */
+    usage:function(){
+      var o=load(); if(cur){var live=liveTT();if(live)o[cur]=live;}
+      var out={};
+      for(var k in o){var g=o[k]||{};
+        for(var lv in g){var d=g[lv]||{};
+          for(var w in d){var a=d[w]||[];
+            for(var i=0;i<a.length;i++){var s=a[i];
+              if(!s)continue;
+              try{if(window.KB_ANW&&window.KB_ANW.isPause(s))continue;}catch(e){}
+              if(!out[s])out[s]={total:0,terms:{}};
+              out[s].total++; out[s].terms[k]=(out[s].terms[k]||0)+1;
+            }}}}
+      return out;
+    },
+    /* Ein Fach in ALLEN Trimestern umbenennen (leerer Zielname = entfernen). */
+    renameSubject:function(from,to){
+      if(!from)return 0;
+      var o=load(), n=0;
+      for(var k in o){var g=o[k]||{};
+        for(var lv in g){var d=g[lv]||{};
+          for(var w in d){var a=d[w]||[];
+            for(var i=0;i<a.length;i++){if(a[i]===from){a[i]=to||'';n++;}}}}}
+      save(o);
+      if(cur&&o[cur]){pushTT(o[cur]);}
+      fire();
+      return n;
+    },
     onChange:function(fn){if(typeof fn==='function')hooks.push(fn);},
     syncExport:function(){var o=load();var out=[];for(var k in o){out.push({id:k,grid:o[k]});}return out;},
     syncApply:function(arr){
@@ -1227,6 +1293,39 @@ window.KB_TIMETABLE=(function(){
       if(k&&o[k]){cur=k;pushTT(o[k]);}
       fire();
     }
+  };
+})();
+
+/* KB_BLOCKS — Uhrzeiten des Stundenrasters. Nur die Zeiten sind änderbar:
+   die Block-IDs bleiben, weil erfasste Absenzen daran hängen. */
+window.KB_BLOCKS=(function(){
+  var LS='klassebuch_blocks_v1';
+  var ORIG=null, hooks=[];
+  function fire(){for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  function load(){try{var a=JSON.parse(localStorage.getItem(LS)||'null');return (a&&a.length)?a:null;}catch(e){return null;}}
+  function store(a){try{localStorage.setItem(LS,JSON.stringify(a));}catch(e){}}
+  function live(){try{return (window.KB_ANW&&window.KB_ANW.blocks)?window.KB_ANW.blocks():[];}catch(e){return [];}}
+  function bare(a){return (a||[]).map(function(b){return {id:b.id,start:b.start,end:b.end};});}
+  function apply(a){try{if(window.KB_ANW&&window.KB_ANW.setBlockTimes)return window.KB_ANW.setBlockTimes(a);}catch(e){}return false;}
+  function okTime(t){return /^[0-2][0-9]:[0-5][0-9]$/.test(String(t||''));}
+  function init(){ORIG=bare(live());var s=load();if(s)apply(s);fire();}
+  return {
+    init:init,
+    list:function(){return live();},
+    isCustom:function(){return !!load();},
+    set:function(id,start,end){
+      if((start&&!okTime(start))||(end&&!okTime(end)))return false;
+      var out=bare(live()).map(function(b){
+        if(b.id!==id)return b;
+        return {id:b.id,start:start||b.start,end:end||b.end};
+      });
+      for(var i=0;i<out.length;i++){if(out[i].end<=out[i].start)return false;}
+      apply(out);store(out);fire();return true;
+    },
+    reset:function(){if(ORIG)apply(ORIG);try{localStorage.removeItem(LS);}catch(e){}fire();},
+    onChange:function(fn){if(typeof fn==='function')hooks.push(fn);},
+    syncExport:function(){var s=load();return s?s.map(function(b){return {id:b.id,start:b.start,end:b.end};}):[];},
+    syncApply:function(arr){if(!arr||!arr.length)return;apply(arr);store(bare(arr));fire();}
   };
 })();
 `;
@@ -1258,7 +1357,9 @@ window.KB_ROSTER=(function(){
     list:function(){return list.map(clone);},
     byId:function(id){var s=find(id);return s?clone(s):null;},
     ids:function(){var m={};for(var i=0;i<list.length;i++){m[list[i].id]=true;}return m;},
-    asAnwesenheit:function(){return list.map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
+    /* Nur aktive Schüler stehen im täglichen Klassenbuch. Inaktive bleiben
+       im Roster und in ids(), damit Absenzen und Dossier erhalten bleiben. */
+    asAnwesenheit:function(){return list.filter(function(s){return s.active!==false;}).map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
     asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
     add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
@@ -1796,7 +1897,58 @@ var SHELL_CONTROLLER = `
     $('kb-tt-subjects').innerHTML=subs.map(function(s){return '<option value="'+esc(s)+'">';}).join('');
   }
   var ttLevel='L1';
-  function renderKlasse(){renderTermCard();renderTTGrid();renderRoster();}
+  /* ---- Fächer: umbenennen wirkt überall (Stundenplan, Noten, Absenzen, Notizen) ---- */
+  function renderSubjects(){
+    var host=$('kb-sub-list'); if(!host||!window.KB_TIMETABLE)return;
+    var use=window.KB_TIMETABLE.usage();
+    var names=Object.keys(use).sort(function(a,b){return a.localeCompare(b);});
+    $('kb-sub-count').textContent=names.length+(names.length===1?' Fach':' Fächer');
+    if(!names.length){host.innerHTML='<p class="kb-hint" style="margin:0;">Noch keine Fächer — trag sie oben im Stundenplan ein.</p>';return;}
+    host.innerHTML='<div class="kb-sublist">'+names.map(function(n){
+      var u=use[n], terms=Object.keys(u.terms).length;
+      return '<div class="kb-subrow" title="'+esc(n)+'"><b>'+esc(n)+'</b>'+
+        '<span class="kb-submeta">'+u.total+'× · '+terms+(terms===1?' Trimester':' Trimester')+'</span>'+
+        '<button class="kb-btn kb-btn-sm" data-subren="'+esc(n)+'">Umbenennen</button></div>';
+    }).join('')+'</div>';
+    host.querySelectorAll('[data-subren]').forEach(function(el){
+      el.addEventListener('click',function(){renameSubject(el.getAttribute('data-subren'));});
+    });
+  }
+  function renameSubject(from){
+    var to=window.prompt('Fach „'+from+'" umbenennen in:',from);
+    if(to==null)return;
+    to=String(to).trim();
+    if(!to||to===from)return;
+    var nTT=window.KB_TIMETABLE?window.KB_TIMETABLE.renameSubject(from,to):0;
+    var nNo=(window.KB_NOTEN&&window.KB_NOTEN.renameSubject)?window.KB_NOTEN.renameSubject(from,to):0;
+    var nAn=(window.KB_ANW&&window.KB_ANW.renameSubject)?window.KB_ANW.renameSubject(from,to):0;
+    renderTTGrid();renderSubjects();
+    alert('„'+from+'" heißt jetzt „'+to+'".\\n\\n'+
+      nTT+' Stundenplan-Felder (alle Trimester)\\n'+nNo+' Noten/Modul-Einträge\\n'+nAn+' Absenzen/Notizen\\n\\nwurden mitgeändert.');
+    if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
+  }
+  /* ---- Stundenraster: nur die Uhrzeiten ---- */
+  function renderBlocks(){
+    var host=$('kb-blk-list'); if(!host||!window.KB_BLOCKS)return;
+    var bl=window.KB_BLOCKS.list();
+    $('kb-blk-state').textContent=window.KB_BLOCKS.isCustom()?'angepasst':'Standardzeiten';
+    host.innerHTML='<div class="kb-blklist">'+bl.map(function(b,i){
+      return '<div class="kb-blkrow"><b>'+(i+1)+'. Stunde</b>'+
+        '<input type="time" data-blk="'+esc(b.id)+'|start" value="'+esc(b.start)+'">'+
+        '<span style="color:var(--kb-muted);">bis</span>'+
+        '<input type="time" data-blk="'+esc(b.id)+'|end" value="'+esc(b.end)+'">'+
+        '<span class="kb-submeta">'+String(b.hours).replace('.',',')+' h</span></div>';
+    }).join('')+'</div>';
+    host.querySelectorAll('[data-blk]').forEach(function(el){
+      el.addEventListener('change',function(){
+        var p=el.getAttribute('data-blk').split('|');
+        var okv=window.KB_BLOCKS.set(p[0],p[1]==='start'?el.value:null,p[1]==='end'?el.value:null);
+        if(!okv){alert('Diese Zeit passt nicht — das Ende muss nach dem Beginn liegen.');}
+        renderBlocks();renderTTGrid();
+      });
+    });
+  }
+  function renderKlasse(){renderTermCard();renderTTGrid();renderSubjects();renderBlocks();renderRoster();}
 
   /* --- Bedienung --- */
   (function wireKlasse(){
@@ -1849,7 +2001,12 @@ var SHELL_CONTROLLER = `
     var clr=$('kb-tt-clear');
     if(clr){clr.addEventListener('click',function(){
       if(!confirm('Alle Fächer in diesem Trimester leeren? Pausen bleiben stehen.'))return;
-      window.KB_TIMETABLE.clear(); renderTTGrid();
+      window.KB_TIMETABLE.clear(); renderTTGrid(); renderSubjects();
+    });}
+    var brst=$('kb-blk-reset');
+    if(brst){brst.addEventListener('click',function(){
+      if(!confirm('Die Uhrzeiten wieder auf die Standardzeiten setzen?'))return;
+      window.KB_BLOCKS.reset(); renderBlocks(); renderTTGrid();
     });}
     if(window.KB_TERMS){window.KB_TERMS.onChange(function(){
       termChip();
@@ -1862,19 +2019,29 @@ var SHELL_CONTROLLER = `
   })();
 
   // Gemeinsame Schülerliste (im Bereich "Klasse")
+  var rosterQuery='';
   function renderRoster(){
     var body=$('kb-roster-body'); if(!body||!window.KB_ROSTER)return;
     var CYC=['C1','C2','C3','C4','ES'];
     function cycOpts(sel){sel=sel||'ES';return CYC.map(function(c){return '<option value="'+c+'"'+(sel===c?' selected':'')+'>'+c+'</option>';}).join('');}
-    var rows=window.KB_ROSTER.list().map(function(s){
-      return '<tr data-id="'+esc(s.id)+'">'+
+    var all=window.KB_ROSTER.list();
+    var q=(rosterQuery||'').toLowerCase();
+    var shown=q?all.filter(function(s){return (s.name||'').toLowerCase().indexOf(q)>=0||(s.klasse||'').toLowerCase().indexOf(q)>=0;}):all;
+    var nAct=0;for(var a=0;a<all.length;a++){if(all[a].active!==false)nAct++;}
+    var rows=shown.map(function(s){
+      var on=s.active!==false;
+      return '<tr data-id="'+esc(s.id)+'"'+(on?'':' class="kb-rinactive"')+'>'+
         '<td><input class="kb-in kb-rn" value="'+esc(s.name)+'"></td>'+
         '<td><input class="kb-in kb-rk" style="max-width:120px" value="'+esc(s.klasse||'')+'" placeholder="—"></td>'+
         '<td><select class="kb-in kb-rz" style="max-width:84px" title="Zyklus (Alter) — steuert passende Arbeitsblätter">'+cycOpts(s.zyklus)+'</select></td>'+
         '<td><select class="kb-in kb-rl" style="max-width:84px"><option'+(s.level!=='L2'?' selected':'')+'>L1</option><option'+(s.level==='L2'?' selected':'')+'>L2</option></select></td>'+
-        '<td style="text-align:right"><button class="kb-btn kb-btn-ghost kb-rd" title="Schüler löschen">🗑</button></td></tr>';
+        '<td style="text-align:center"><label class="kb-ract" title="Aktiv — nur aktive Schüler stehen im täglichen Klassenbuch"><input type="checkbox" class="kb-ra"'+(on?' checked':'')+'></label></td>'+
+        '<td style="text-align:right"><button class="kb-btn kb-btn-ghost kb-rd" title="Schüler endgültig aus der Liste löschen">🗑</button></td></tr>';
     }).join('');
-    body.innerHTML='<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th title="Cycle 1–4 / Sekundar — bestimmt altersgerechte Arbeitsblätter">Zyklus</th><th>Niveau</th><th></th></tr></thead><tbody>'+rows+'</tbody></table><p class="muted" style="font-size:12.5px;margin:8px 2px 0;">Der <b>Zyklus</b> (C1 ≈ 3–5 J. · C2 ≈ 6–7 · C3 ≈ 8–9 · C4 ≈ 10–11 · ES ≥ 12) steuert, welche Arbeitsblätter altersgerecht vorgeschlagen werden.</p>';
+    var head='<div class="kb-rosterbar"><input class="kb-in" id="kb-roster-q" placeholder="Suchen …" value="'+esc(rosterQuery||'')+'" style="max-width:240px;"><span class="kb-submeta">'+nAct+' aktiv · '+all.length+' insgesamt'+(q?(' · '+shown.length+' gefunden'):'')+'</span></div>';
+    body.innerHTML=head+'<table class="kb-table" style="margin-top:6px"><thead><tr><th>Name</th><th>Klasse</th><th title="Cycle 1–4 / Sekundar — bestimmt altersgerechte Arbeitsblätter">Zyklus</th><th>Niveau</th><th style="text-align:center">Aktiv</th><th></th></tr></thead><tbody>'+rows+'</tbody></table><p class="muted" style="font-size:12.5px;margin:8px 2px 0;">Der <b>Zyklus</b> (C1 ≈ 3–5 J. · C2 ≈ 6–7 · C3 ≈ 8–9 · C4 ≈ 10–11 · ES ≥ 12) steuert, welche Arbeitsblätter altersgerecht vorgeschlagen werden. Wer die Klasse verlässt, wird <b>inaktiv</b> gesetzt statt gelöscht — Absenzen, Noten und Dossier bleiben dann vollständig erhalten.</p>';
+    var qi=$('kb-roster-q');
+    if(qi){qi.addEventListener('input',function(){rosterQuery=qi.value;renderRoster();var f=$('kb-roster-q');if(f){f.focus();f.setSelectionRange(f.value.length,f.value.length);}});}
     var trs=body.querySelectorAll('tr[data-id]');
     for(var i=0;i<trs.length;i++){(function(tr){
       var id=tr.getAttribute('data-id');
@@ -1882,7 +2049,8 @@ var SHELL_CONTROLLER = `
       tr.querySelector('.kb-rk').addEventListener('change',function(e){window.KB_ROSTER.update(id,{klasse:e.target.value.trim()});});
       tr.querySelector('.kb-rz').addEventListener('change',function(e){window.KB_ROSTER.update(id,{zyklus:e.target.value});});
       tr.querySelector('.kb-rl').addEventListener('change',function(e){window.KB_ROSTER.update(id,{level:e.target.value});});
-      tr.querySelector('.kb-rd').addEventListener('click',function(){var s=window.KB_ROSTER.byId(id);if(confirm('„'+(s?s.name:'')+'“ aus der gemeinsamen Liste löschen? Absenzen und Dossier dieses Schülers werden ausgeblendet.')){window.KB_ROSTER.remove(id);renderRoster();}});
+      tr.querySelector('.kb-ra').addEventListener('change',function(e){window.KB_ROSTER.update(id,{active:!!e.target.checked});renderRoster();});
+      tr.querySelector('.kb-rd').addEventListener('click',function(){var s=window.KB_ROSTER.byId(id);if(confirm('„'+(s?s.name:'')+'“ endgültig aus der Liste löschen?\\n\\nBesser: den Haken bei „Aktiv" entfernen — dann bleiben Absenzen, Noten und Dossier erhalten.')){window.KB_ROSTER.remove(id);renderRoster();}});
     })(trs[i]);}
   }
   var addBtn=$('kb-roster-add');
@@ -1890,6 +2058,11 @@ var SHELL_CONTROLLER = `
     var n=$('kb-roster-name'),k=$('kb-roster-klasse'),l=$('kb-roster-level');
     var name=(n.value||'').trim(); if(!name){n.focus();return;}
     window.KB_ROSTER.add(name,k.value.trim(),l.value); n.value='';k.value='';n.focus(); renderRoster();
+  });}
+  /* Enter im Namensfeld legt den Schüler direkt an */
+  var addName=$('kb-roster-name');
+  if(addName){addName.addEventListener('keydown',function(e){
+    if(e.key==='Enter'){e.preventDefault();if(addBtn)addBtn.click();}
   });}
   var dA=$('kb-data-anw'); if(dA){dA.addEventListener('click',function(){go('absenzen');var b=document.getElementById('btn-data');if(b){b.click();}});}
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
@@ -1996,6 +2169,7 @@ var SHELL_CONTROLLER = `
 
   /* Stundenpläne je Trimester scharfschalten (übernimmt beim ersten Start
      den bestehenden Plan ins laufende Trimester). */
+  if(window.KB_BLOCKS){try{window.KB_BLOCKS.init();}catch(e){}}
   if(window.KB_TIMETABLE){try{window.KB_TIMETABLE.init();}catch(e){}}
 
   // Startseite: Klassenbuch (Anwesenheit)
@@ -2256,7 +2430,7 @@ window.KB_SYNC=(function(){
   /* ACHTUNG: Jede Sammlung, die collGet() liefert, MUSS hier stehen. Fehlt sie,
      landet sie nie in der gemeinsamen Datei — und collSet() würde sie beim
      Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
-  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten','terms','timetables'];
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten','terms','timetables','blocks'];
   var BASE_LS='klassebuch_sync_base';
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
@@ -2288,7 +2462,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),terms:c(window.KB_TERMS,'syncExport'),timetables:c(window.KB_TIMETABLE,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),terms:c(window.KB_TERMS,'syncExport'),timetables:c(window.KB_TIMETABLE,'syncExport'),blocks:c(window.KB_BLOCKS,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -2307,6 +2481,7 @@ window.KB_SYNC=(function(){
     sc(window.KB_NOTEN,'syncApply',doc.colls.noten);
     sc(window.KB_TERMS,'syncApply',doc.colls.terms);
     sc(window.KB_TIMETABLE,'syncApply',doc.colls.timetables);
+    sc(window.KB_BLOCKS,'syncApply',doc.colls.blocks);
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -3451,6 +3626,25 @@ window.KB_NOTEN=(function(){
     remove:function(sid,id){var r=rec(sid);r.grades=r.grades.filter(function(g){return g.id!==id;});r.updatedAt=new Date().toISOString();notify(sid);},
     periodAvg:function(sid,period,subjects){var avgs=[];(subjects||[]).forEach(function(su){var a=subjAvg(sid,su,period);if(a!=null)avgs.push(a);});if(!avgs.length)return null;var s=0;for(var i=0;i<avgs.length;i++)s+=avgs[i];return s/avgs.length;},
     moduleOf:function(sid,subject){return modOf(sid,subject);},
+    /* Fach in ALLEN Noten und Modulstaenden mitbenennen (ueber alle Schueler),
+       sonst verwaisen sie beim Umbenennen im Stundenplan. */
+    renameSubject:function(from,to){
+      if(!from||!to||from===to)return 0;
+      var n=0;
+      for(var sid in data){var r=data[sid]||{};
+        var gs=r.grades||[];
+        for(var i=0;i<gs.length;i++){if(gs[i].subject===from){gs[i].subject=to;n++;}}
+        if(r.modules&&r.modules[from]){
+          if(r.modules[to]){r.modules[to].done=Math.max(r.modules[to].done||0,r.modules[from].done||0);
+                            r.modules[to].cap=Math.max(r.modules[to].cap||0,r.modules[from].cap||0);}
+          else{r.modules[to]=r.modules[from];}
+          delete r.modules[from];n++;
+        }
+        if(n)r.updatedAt=new Date().toISOString();
+      }
+      if(n){saveAll(data);for(var h=0;h<hooks.length;h++){try{hooks[h]();}catch(e){}}}
+      return n;
+    },
     setModule:function(sid,subject,n){var m=modOf(sid,subject);n=Math.max(0,n|0);if(m.done!==n){m.done=n;if(m.cap<n+2)m.cap=n+2;rec(sid).updatedAt=new Date().toISOString();notify(sid);}},
     addCap:function(sid,subject,by){var m=modOf(sid,subject);m.cap=Math.min(99,m.cap+(by||4));notify(sid);},
     totalModules:function(sid,subjects){var t=0,r=rec(sid);if(subjects){subjects.forEach(function(su){if(r.modules[su])t+=(r.modules[su].done||0);});}else{for(var k in r.modules)t+=(r.modules[k].done||0);}return t;},
