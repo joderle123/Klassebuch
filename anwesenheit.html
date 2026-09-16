@@ -549,41 +549,52 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   var WD_ORDER=[1,2,3,4,5]; // Mo–Fr (Schultage)
   var DAY_NAMES={1:'Méinden',2:'Dënschden',3:'Mëttwoch',4:'Donnëschden',5:'Freiden'};
 
-  // Feste Zeitblöcke (Stunden = echte Dauer). Schule 8:00–16:00, kein Welcome/Réckbléck.
+  // Feste Zeitblöcke (Stunden = echte Dauer) — Stundenraster 2026/27: 7:30–15:30
+  // inklusive Welcome und Réckbléck. Die IDs sind der Schlüssel erfasster Absenzen.
   var BLOCKS=[
-    {id:'b1',start:'08:00',end:'08:30'}, // Morning Meeting
-    {id:'b2',start:'08:30',end:'10:00'}, // Lektion 1 (1,5h)
-    {id:'b3',start:'10:00',end:'10:30'}, // Paus
-    {id:'b4',start:'10:30',end:'12:00'}, // Lektion 2 (1,5h)
-    {id:'b5',start:'12:00',end:'13:00'}, // Mëttespaus
-    {id:'b6',start:'13:00',end:'14:00'}, // Nachmittag 1 (1h)
-    {id:'b7',start:'14:00',end:'16:00'}  // Nachmittag 2 (2h)
+    {id:'b1',start:'07:30',end:'08:00'}, // Welcome
+    {id:'b2',start:'08:00',end:'08:15'}, // Morning Meeting
+    {id:'b3',start:'08:15',end:'09:45'}, // Lektioun 1 (1,5h)
+    {id:'b4',start:'09:45',end:'10:15'}, // Paus
+    {id:'b5',start:'10:15',end:'11:45'}, // Lektioun 2 (1,5h)
+    {id:'b6',start:'11:45',end:'12:30'}, // Mëttespaus
+    {id:'b7',start:'12:30',end:'13:30'}, // Lektioun 3 (1h)
+    {id:'b8',start:'13:30',end:'15:15'}, // Lektioun 4 (1,75h)
+    {id:'b9',start:'15:15',end:'15:30'}  // Réckbléck
   ];
   function blockHours(b){var p=function(s){var a=s.split(':');return (+a[0])*60+(+a[1]);};return (p(b.end)-p(b.start))/60;}
   var PAUSE_SUBJECTS={'Paus':1,'Mëttespaus':1};
-  // Tag = 6 Schulstunden. Morgenblock = 2, Nachmittagsblock = 1, Morning Meeting + Pausen = 0.
-  var BLOCK_WEIGHTS={b1:0,b2:2,b3:0,b4:2,b5:0,b6:1,b7:1};
-  function blockWeight(blockId,subject){if(!subject||PAUSE_SUBJECTS[subject]||subject==='Morning Meeting')return 0;return BLOCK_WEIGHTS[blockId]||0;}
+  // Tag = 7 Schulstunden. Die beiden 1,5h-Blöcke und der Nachmittag zählen 2,
+  // der Mittagsblock 1; Welcome, Morning Meeting, Réckbléck und Pausen zählen 0.
+  var BLOCK_WEIGHTS={b1:0,b2:0,b3:2,b4:0,b5:2,b6:0,b7:1,b8:2,b9:0};
+  var NO_HOUR_SUBJECTS={'Morning Meeting':1,'Welcome':1,'Réckbléck':1};
+  function blockWeight(blockId,subject){if(!subject||PAUSE_SUBJECTS[subject]||NO_HOUR_SUBJECTS[subject])return 0;return BLOCK_WEIGHTS[blockId]||0;}
   function countHours(e){return blockWeight(e.blockId,e.subject);}
 
-  // Standard-Stundenplan (Abschrift — im Tool editierbar)
-  // row(L1, L2, N1, N2): 8:30–10:00 | 10:30–12:00 | 13:00–14:00 | 14:00–16:00
+  // Standard-Stundenplan — Abschrift der offiziellen Pläne L1/L2 2026–2027.
+  // row(a,b,c,d) füllt die vier Unterrichtsblöcke:
+  //   8:15–9:45 | 10:15–11:45 | 12:30–13:30 | 13:30–15:15
+  // Welcome, Morning Meeting, Pausen und Réckbléck stehen fest.
+  // Montags endet der Unterricht um 13:45 (Réckbléck im Nachmittagsblock).
   function defaultTimetable(){
-    var row=function(a,b,c,d){return ['Morning Meeting',a,'Paus',b,'Mëttespaus',c,d];};
+    var row=function(a,b,c,d,last){
+      return ['Welcome','Morning Meeting',a,'Paus',b,'Mëttespaus',c,d,(last===undefined?'Réckbléck':last)];
+    };
+    var SKILLS='Skills / Atelier LLIS / Art 1:1';
     return {
       L1:{
-        1:row('Culge','Deutsch','',''),                              // Mo: nur 8–12
-        2:row('Projet','Culge','Hausaufgaben','Option'),             // Di: 14–16 Option
-        3:row('Mathe','Français','Option 2','Sport'),                // Mi: 14–16 Sport
-        4:row('Deutsch','Mathe','Inité','Skills /Atelier LLIS'),
-        5:row('Mathe','Français','Fit for Life','Fit for Life')      // Fr: 13–16 Fit for Life
+        1:row('Mathe','Français','Kunst','Réckbléck',''),            // Mo: Schluss 13:45
+        2:row('Mathe','Options','Kunst',SKILLS),
+        3:row('Projet','Culge','English','Sport'),
+        4:row('Deutsch','Français','Inité','Fit for Life'),
+        5:row('Deutsch','Culge','Option Skillstruck','')             // Fr: nachmittags frei
       },
       L2:{
-        1:row('English','Deutsch','',''),                            // Mo: nur 8–12
-        2:row('Projet','Sciences sociales','','Option'),             // Di: 14–16 Option
-        3:row('Français','Deutsch','Option 2','Sport'),              // Mi: 14–16 Sport
-        4:row('Mathe','Deutsch','Kunst',''),
-        5:row('Français','Mathe','Fit for Life','Fit for Life')      // Fr: 13–16 Fit for Life
+        1:row('English','Deutsch','Dossier Scnat','Réckbléck',''),   // Mo: Schluss 13:45
+        2:row('Français','Options','Inité',SKILLS),
+        3:row('Projet','Sciences sociales','Vieso','Sport'),
+        4:row('Français','Mathe','Kunst','Fit for Life'),
+        5:row('Deutsch','Mathe','Option Skillstruck','')             // Fr: nachmittags frei
       }
     };
   }
@@ -685,6 +696,13 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     if(!state.ttVersion||state.ttVersion<2){
       ['L1','L2'].forEach(function(lv){if(state.timetable[lv]){if(state.timetable[lv][2])state.timetable[lv][2][6]='Option';if(state.timetable[lv][3])state.timetable[lv][3][6]='Sport';}});
       state.ttVersion=2;
+    }
+    // Stundenraster 2026/27: 7:30–15:30 mit 9 Blöcken statt bisher 7.
+    // Die alten Pläne passen nicht mehr ins Raster, deshalb werden sie durch
+    // die offiziellen Pläne L1/L2 2026–2027 ersetzt.
+    if(state.ttVersion<3){
+      state.timetable=defaultTimetable();
+      state.ttVersion=3;
     }
   }
   function save(){

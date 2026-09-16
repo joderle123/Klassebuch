@@ -11009,41 +11009,52 @@ window.KB_BUBBLE=(function(){
   var WD_ORDER=[1,2,3,4,5]; // Mo–Fr (Schultage)
   var DAY_NAMES={1:'Méinden',2:'Dënschden',3:'Mëttwoch',4:'Donnëschden',5:'Freiden'};
 
-  // Feste Zeitblöcke (Stunden = echte Dauer). Schule 8:00–16:00, kein Welcome/Réckbléck.
+  // Feste Zeitblöcke (Stunden = echte Dauer) — Stundenraster 2026/27: 7:30–15:30
+  // inklusive Welcome und Réckbléck. Die IDs sind der Schlüssel erfasster Absenzen.
   var BLOCKS=[
-    {id:'b1',start:'08:00',end:'08:30'}, // Morning Meeting
-    {id:'b2',start:'08:30',end:'10:00'}, // Lektion 1 (1,5h)
-    {id:'b3',start:'10:00',end:'10:30'}, // Paus
-    {id:'b4',start:'10:30',end:'12:00'}, // Lektion 2 (1,5h)
-    {id:'b5',start:'12:00',end:'13:00'}, // Mëttespaus
-    {id:'b6',start:'13:00',end:'14:00'}, // Nachmittag 1 (1h)
-    {id:'b7',start:'14:00',end:'16:00'}  // Nachmittag 2 (2h)
+    {id:'b1',start:'07:30',end:'08:00'}, // Welcome
+    {id:'b2',start:'08:00',end:'08:15'}, // Morning Meeting
+    {id:'b3',start:'08:15',end:'09:45'}, // Lektioun 1 (1,5h)
+    {id:'b4',start:'09:45',end:'10:15'}, // Paus
+    {id:'b5',start:'10:15',end:'11:45'}, // Lektioun 2 (1,5h)
+    {id:'b6',start:'11:45',end:'12:30'}, // Mëttespaus
+    {id:'b7',start:'12:30',end:'13:30'}, // Lektioun 3 (1h)
+    {id:'b8',start:'13:30',end:'15:15'}, // Lektioun 4 (1,75h)
+    {id:'b9',start:'15:15',end:'15:30'}  // Réckbléck
   ];
   function blockHours(b){var p=function(s){var a=s.split(':');return (+a[0])*60+(+a[1]);};return (p(b.end)-p(b.start))/60;}
   var PAUSE_SUBJECTS={'Paus':1,'Mëttespaus':1};
-  // Tag = 6 Schulstunden. Morgenblock = 2, Nachmittagsblock = 1, Morning Meeting + Pausen = 0.
-  var BLOCK_WEIGHTS={b1:0,b2:2,b3:0,b4:2,b5:0,b6:1,b7:1};
-  function blockWeight(blockId,subject){if(!subject||PAUSE_SUBJECTS[subject]||subject==='Morning Meeting')return 0;return BLOCK_WEIGHTS[blockId]||0;}
+  // Tag = 7 Schulstunden. Die beiden 1,5h-Blöcke und der Nachmittag zählen 2,
+  // der Mittagsblock 1; Welcome, Morning Meeting, Réckbléck und Pausen zählen 0.
+  var BLOCK_WEIGHTS={b1:0,b2:0,b3:2,b4:0,b5:2,b6:0,b7:1,b8:2,b9:0};
+  var NO_HOUR_SUBJECTS={'Morning Meeting':1,'Welcome':1,'Réckbléck':1};
+  function blockWeight(blockId,subject){if(!subject||PAUSE_SUBJECTS[subject]||NO_HOUR_SUBJECTS[subject])return 0;return BLOCK_WEIGHTS[blockId]||0;}
   function countHours(e){return blockWeight(e.blockId,e.subject);}
 
-  // Standard-Stundenplan (Abschrift — im Tool editierbar)
-  // row(L1, L2, N1, N2): 8:30–10:00 | 10:30–12:00 | 13:00–14:00 | 14:00–16:00
+  // Standard-Stundenplan — Abschrift der offiziellen Pläne L1/L2 2026–2027.
+  // row(a,b,c,d) füllt die vier Unterrichtsblöcke:
+  //   8:15–9:45 | 10:15–11:45 | 12:30–13:30 | 13:30–15:15
+  // Welcome, Morning Meeting, Pausen und Réckbléck stehen fest.
+  // Montags endet der Unterricht um 13:45 (Réckbléck im Nachmittagsblock).
   function defaultTimetable(){
-    var row=function(a,b,c,d){return ['Morning Meeting',a,'Paus',b,'Mëttespaus',c,d];};
+    var row=function(a,b,c,d,last){
+      return ['Welcome','Morning Meeting',a,'Paus',b,'Mëttespaus',c,d,(last===undefined?'Réckbléck':last)];
+    };
+    var SKILLS='Skills / Atelier LLIS / Art 1:1';
     return {
       L1:{
-        1:row('Culge','Deutsch','',''),                              // Mo: nur 8–12
-        2:row('Projet','Culge','Hausaufgaben','Option'),             // Di: 14–16 Option
-        3:row('Mathe','Français','Option 2','Sport'),                // Mi: 14–16 Sport
-        4:row('Deutsch','Mathe','Inité','Skills /Atelier LLIS'),
-        5:row('Mathe','Français','Fit for Life','Fit for Life')      // Fr: 13–16 Fit for Life
+        1:row('Mathe','Français','Kunst','Réckbléck',''),            // Mo: Schluss 13:45
+        2:row('Mathe','Options','Kunst',SKILLS),
+        3:row('Projet','Culge','English','Sport'),
+        4:row('Deutsch','Français','Inité','Fit for Life'),
+        5:row('Deutsch','Culge','Option Skillstruck','')             // Fr: nachmittags frei
       },
       L2:{
-        1:row('English','Deutsch','',''),                            // Mo: nur 8–12
-        2:row('Projet','Sciences sociales','','Option'),             // Di: 14–16 Option
-        3:row('Français','Deutsch','Option 2','Sport'),              // Mi: 14–16 Sport
-        4:row('Mathe','Deutsch','Kunst',''),
-        5:row('Français','Mathe','Fit for Life','Fit for Life')      // Fr: 13–16 Fit for Life
+        1:row('English','Deutsch','Dossier Scnat','Réckbléck',''),   // Mo: Schluss 13:45
+        2:row('Français','Options','Inité',SKILLS),
+        3:row('Projet','Sciences sociales','Vieso','Sport'),
+        4:row('Français','Mathe','Kunst','Fit for Life'),
+        5:row('Deutsch','Mathe','Option Skillstruck','')             // Fr: nachmittags frei
       }
     };
   }
@@ -11145,6 +11156,13 @@ window.KB_BUBBLE=(function(){
     if(!state.ttVersion||state.ttVersion<2){
       ['L1','L2'].forEach(function(lv){if(state.timetable[lv]){if(state.timetable[lv][2])state.timetable[lv][2][6]='Option';if(state.timetable[lv][3])state.timetable[lv][3][6]='Sport';}});
       state.ttVersion=2;
+    }
+    // Stundenraster 2026/27: 7:30–15:30 mit 9 Blöcken statt bisher 7.
+    // Die alten Pläne passen nicht mehr ins Raster, deshalb werden sie durch
+    // die offiziellen Pläne L1/L2 2026–2027 ersetzt.
+    if(state.ttVersion<3){
+      state.timetable=defaultTimetable();
+      state.ttVersion=3;
     }
   }
   function save(){
@@ -11730,6 +11748,9 @@ window.KB_BUBBLE=(function(){
     blocks:function(){return BLOCKS.map(function(b){return {id:b.id,start:b.start,end:b.end,hours:blockHours(b)};});},
     dayNames:function(){var o={};for(var w=1;w<=5;w++){o[w]=DAY_NAMES[w];}return o;},
     isPause:function(s){return !!PAUSE_SUBJECTS[s];},
+    /* Welcome, Morning Meeting, Paus, Mëttespaus und Réckbléck sind Ablauf,
+       kein Unterrichtsfach: sie gehoeren nicht in Faecherliste und Noten. */
+    isNonSubject:function(s){return !s||!!PAUSE_SUBJECTS[s]||!!NO_HOUR_SUBJECTS[s];},
     levels:function(){return ['L1','L2'];},
     /* Fach in Absenzen und Klassenbuch-Notizen mitbenennen, damit beim
        Umbenennen nichts verwaist. Leerer Zielname laesst den Eintrag stehen. */
@@ -11766,7 +11787,7 @@ window.KB_BUBBLE=(function(){
     users:function(){return USERS.slice();},
     initials:function(n){return initials(n);},
     avatarBg:function(n){return avatarBg(n);},
-    subjectsForLevel:function(level){var set={},out=[];var tt=state.timetable&&state.timetable[level];if(!tt)return [];for(var wd=1;wd<=5;wd++){var day=tt[wd]||[];for(var i=0;i<day.length;i++){var s=day[i];if(s&&!PAUSE_SUBJECTS[s]&&s!=='Morning Meeting'&&s!=='Hausaufgaben'&&!set[s]){set[s]=1;out.push(s);}}}return out.sort(function(a,b){return a.localeCompare(b);});}
+    subjectsForLevel:function(level){var set={},out=[];var tt=state.timetable&&state.timetable[level];if(!tt)return [];for(var wd=1;wd<=5;wd++){var day=tt[wd]||[];for(var i=0;i<day.length;i++){var s=day[i];if(s&&!PAUSE_SUBJECTS[s]&&!NO_HOUR_SUBJECTS[s]&&s!=='Hausaufgaben'&&!set[s]){set[s]=1;out.push(s);}}}return out.sort(function(a,b){return a.localeCompare(b);});}
   };
   window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};
 })();
@@ -11786,6 +11807,20 @@ window.KB_TIMETABLE=(function(){
     if(!tt)return false;
     for(var lv in tt){var d=tt[lv]||{};for(var w in d){var a=d[w]||[];for(var i=0;i<a.length;i++){if(a[i])return true;}}}
     return false;
+  }
+  /* Passt ein gespeicherter Plan noch zum aktuellen Stundenraster? Nach einer
+     Rasteränderung (z. B. 7 -> 9 Stunden) sind alte Pläne unbrauchbar. */
+  function fitsRaster(tt){
+    var n=0;try{n=(window.KB_ANW&&window.KB_ANW.blocks)?window.KB_ANW.blocks().length:0;}catch(e){}
+    if(!n||!tt)return false;
+    for(var lv in tt){var d=tt[lv]||{};
+      for(var w=1;w<=5;w++){var a=d[w];if(!a||a.length!==n)return false;}}
+    return true;
+  }
+  function dropStale(o){
+    var n=0;
+    for(var k in o){if(!fitsRaster(o[k])){delete o[k];n++;}}
+    return n;
   }
   /* Woher bekommt ein noch leeres Trimester seinen Plan?
      Vorheriges Trimester desselben Jahres -> letzter vorhandener Plan -> aktuell geladener. */
@@ -11809,6 +11844,7 @@ window.KB_TIMETABLE=(function(){
     var k=termKey(); if(!k)return;
     if(k===cur&&!force)return;
     var o=load();
+    if(dropStale(o))save(o);          /* Pläne aus einem alten Raster verwerfen */
     if(cur&&cur!==k){var live=liveTT();if(live){o[cur]=live;}}
     if(!o[k]){
       var src=sourceFor(k,o);
@@ -11822,6 +11858,7 @@ window.KB_TIMETABLE=(function(){
   /* Einmalige Übernahme: bestehender Stundenplan wandert ins aktuelle Trimester. */
   function migrateOnce(){
     var o=load();
+    if(dropStale(o))save(o);
     if(Object.keys(o).length)return false;
     var k=termKey(); if(!k)return false;
     var live=liveTT();
@@ -11848,7 +11885,7 @@ window.KB_TIMETABLE=(function(){
     clear:function(){
       var k=termKey(); if(!k)return;
       var tt=liveTT()||{}; var out={};
-      for(var lv in tt){out[lv]={};for(var w in tt[lv]){out[lv][w]=(tt[lv][w]||[]).map(function(s){return (window.KB_ANW&&window.KB_ANW.isPause(s))?s:'';});}}
+      for(var lv in tt){out[lv]={};for(var w in tt[lv]){out[lv][w]=(tt[lv][w]||[]).map(function(s){return (window.KB_ANW&&window.KB_ANW.isNonSubject&&window.KB_ANW.isNonSubject(s))?s:'';});}}
       var o=load(); o[k]=out; save(o); cur=k; pushTT(out); fire();
     },
     /* Einzelne Zelle setzen — schreibt live und in den Trimester-Speicher. */
@@ -11865,7 +11902,7 @@ window.KB_TIMETABLE=(function(){
           for(var w in d){var a=d[w]||[];
             for(var i=0;i<a.length;i++){var s=a[i];
               if(!s)continue;
-              try{if(window.KB_ANW&&window.KB_ANW.isPause(s))continue;}catch(e){}
+              try{if(window.KB_ANW&&window.KB_ANW.isNonSubject&&window.KB_ANW.isNonSubject(s))continue;}catch(e){}
               if(!out[s])out[s]={total:0,terms:{}};
               out[s].total++; out[s].terms[k]=(out[s].terms[k]||0)+1;
             }}}}
@@ -11909,7 +11946,17 @@ window.KB_BLOCKS=(function(){
   function bare(a){return (a||[]).map(function(b){return {id:b.id,start:b.start,end:b.end};});}
   function apply(a){try{if(window.KB_ANW&&window.KB_ANW.setBlockTimes)return window.KB_ANW.setBlockTimes(a);}catch(e){}return false;}
   function okTime(t){return /^[0-2][0-9]:[0-5][0-9]$/.test(String(t||''));}
-  function init(){ORIG=bare(live());var s=load();if(s)apply(s);fire();}
+  /* Gespeicherte Zeiten nur übernehmen, wenn sie zum aktuellen Raster passen.
+     Nach einer Rasteränderung (z. B. 7 -> 9 Stunden) würden sonst alte Zeiten
+     über die neuen Blöcke gelegt. */
+  function fits(s){
+    var l=live(); if(!s||s.length!==l.length)return false;
+    for(var i=0;i<l.length;i++){var f=false;for(var j=0;j<s.length;j++){if(s[j]&&s[j].id===l[i].id)f=true;}if(!f)return false;}
+    return true;
+  }
+  function init(){ORIG=bare(live());var s=load();
+    if(s&&!fits(s)){try{localStorage.removeItem(LS);}catch(e){}s=null;}
+    if(s)apply(s);fire();}
   return {
     init:init,
     list:function(){return live();},

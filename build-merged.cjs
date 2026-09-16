@@ -141,6 +141,9 @@ var ANW_API = [
   "    blocks:function(){return BLOCKS.map(function(b){return {id:b.id,start:b.start,end:b.end,hours:blockHours(b)};});},",
   "    dayNames:function(){var o={};for(var w=1;w<=5;w++){o[w]=DAY_NAMES[w];}return o;},",
   "    isPause:function(s){return !!PAUSE_SUBJECTS[s];},",
+  "    /* Welcome, Morning Meeting, Paus, Mëttespaus und Réckbléck sind Ablauf,",
+  "       kein Unterrichtsfach: sie gehoeren nicht in Faecherliste und Noten. */",
+  "    isNonSubject:function(s){return !s||!!PAUSE_SUBJECTS[s]||!!NO_HOUR_SUBJECTS[s];},",
   "    levels:function(){return ['L1','L2'];},",
   "    /* Fach in Absenzen und Klassenbuch-Notizen mitbenennen, damit beim",
   "       Umbenennen nichts verwaist. Leerer Zielname laesst den Eintrag stehen. */",
@@ -177,7 +180,7 @@ var ANW_API = [
   "    users:function(){return USERS.slice();},",
   "    initials:function(n){return initials(n);},",
   "    avatarBg:function(n){return avatarBg(n);},",
-  "    subjectsForLevel:function(level){var set={},out=[];var tt=state.timetable&&state.timetable[level];if(!tt)return [];for(var wd=1;wd<=5;wd++){var day=tt[wd]||[];for(var i=0;i<day.length;i++){var s=day[i];if(s&&!PAUSE_SUBJECTS[s]&&s!=='Morning Meeting'&&s!=='Hausaufgaben'&&!set[s]){set[s]=1;out.push(s);}}}return out.sort(function(a,b){return a.localeCompare(b);});}",
+  "    subjectsForLevel:function(level){var set={},out=[];var tt=state.timetable&&state.timetable[level];if(!tt)return [];for(var wd=1;wd<=5;wd++){var day=tt[wd]||[];for(var i=0;i<day.length;i++){var s=day[i];if(s&&!PAUSE_SUBJECTS[s]&&!NO_HOUR_SUBJECTS[s]&&s!=='Hausaufgaben'&&!set[s]){set[s]=1;out.push(s);}}}return out.sort(function(a,b){return a.localeCompare(b);});}",
   "  };",
   "  window.__anwRefresh=function(){if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}renderAll();};"
 ].join("\n");
@@ -1186,6 +1189,20 @@ window.KB_TIMETABLE=(function(){
     for(var lv in tt){var d=tt[lv]||{};for(var w in d){var a=d[w]||[];for(var i=0;i<a.length;i++){if(a[i])return true;}}}
     return false;
   }
+  /* Passt ein gespeicherter Plan noch zum aktuellen Stundenraster? Nach einer
+     Rasteränderung (z. B. 7 -> 9 Stunden) sind alte Pläne unbrauchbar. */
+  function fitsRaster(tt){
+    var n=0;try{n=(window.KB_ANW&&window.KB_ANW.blocks)?window.KB_ANW.blocks().length:0;}catch(e){}
+    if(!n||!tt)return false;
+    for(var lv in tt){var d=tt[lv]||{};
+      for(var w=1;w<=5;w++){var a=d[w];if(!a||a.length!==n)return false;}}
+    return true;
+  }
+  function dropStale(o){
+    var n=0;
+    for(var k in o){if(!fitsRaster(o[k])){delete o[k];n++;}}
+    return n;
+  }
   /* Woher bekommt ein noch leeres Trimester seinen Plan?
      Vorheriges Trimester desselben Jahres -> letzter vorhandener Plan -> aktuell geladener. */
   function sourceFor(key,store){
@@ -1208,6 +1225,7 @@ window.KB_TIMETABLE=(function(){
     var k=termKey(); if(!k)return;
     if(k===cur&&!force)return;
     var o=load();
+    if(dropStale(o))save(o);          /* Pläne aus einem alten Raster verwerfen */
     if(cur&&cur!==k){var live=liveTT();if(live){o[cur]=live;}}
     if(!o[k]){
       var src=sourceFor(k,o);
@@ -1221,6 +1239,7 @@ window.KB_TIMETABLE=(function(){
   /* Einmalige Übernahme: bestehender Stundenplan wandert ins aktuelle Trimester. */
   function migrateOnce(){
     var o=load();
+    if(dropStale(o))save(o);
     if(Object.keys(o).length)return false;
     var k=termKey(); if(!k)return false;
     var live=liveTT();
@@ -1247,7 +1266,7 @@ window.KB_TIMETABLE=(function(){
     clear:function(){
       var k=termKey(); if(!k)return;
       var tt=liveTT()||{}; var out={};
-      for(var lv in tt){out[lv]={};for(var w in tt[lv]){out[lv][w]=(tt[lv][w]||[]).map(function(s){return (window.KB_ANW&&window.KB_ANW.isPause(s))?s:'';});}}
+      for(var lv in tt){out[lv]={};for(var w in tt[lv]){out[lv][w]=(tt[lv][w]||[]).map(function(s){return (window.KB_ANW&&window.KB_ANW.isNonSubject&&window.KB_ANW.isNonSubject(s))?s:'';});}}
       var o=load(); o[k]=out; save(o); cur=k; pushTT(out); fire();
     },
     /* Einzelne Zelle setzen — schreibt live und in den Trimester-Speicher. */
@@ -1264,7 +1283,7 @@ window.KB_TIMETABLE=(function(){
           for(var w in d){var a=d[w]||[];
             for(var i=0;i<a.length;i++){var s=a[i];
               if(!s)continue;
-              try{if(window.KB_ANW&&window.KB_ANW.isPause(s))continue;}catch(e){}
+              try{if(window.KB_ANW&&window.KB_ANW.isNonSubject&&window.KB_ANW.isNonSubject(s))continue;}catch(e){}
               if(!out[s])out[s]={total:0,terms:{}};
               out[s].total++; out[s].terms[k]=(out[s].terms[k]||0)+1;
             }}}}
@@ -1308,7 +1327,17 @@ window.KB_BLOCKS=(function(){
   function bare(a){return (a||[]).map(function(b){return {id:b.id,start:b.start,end:b.end};});}
   function apply(a){try{if(window.KB_ANW&&window.KB_ANW.setBlockTimes)return window.KB_ANW.setBlockTimes(a);}catch(e){}return false;}
   function okTime(t){return /^[0-2][0-9]:[0-5][0-9]$/.test(String(t||''));}
-  function init(){ORIG=bare(live());var s=load();if(s)apply(s);fire();}
+  /* Gespeicherte Zeiten nur übernehmen, wenn sie zum aktuellen Raster passen.
+     Nach einer Rasteränderung (z. B. 7 -> 9 Stunden) würden sonst alte Zeiten
+     über die neuen Blöcke gelegt. */
+  function fits(s){
+    var l=live(); if(!s||s.length!==l.length)return false;
+    for(var i=0;i<l.length;i++){var f=false;for(var j=0;j<s.length;j++){if(s[j]&&s[j].id===l[i].id)f=true;}if(!f)return false;}
+    return true;
+  }
+  function init(){ORIG=bare(live());var s=load();
+    if(s&&!fits(s)){try{localStorage.removeItem(LS);}catch(e){}s=null;}
+    if(s)apply(s);fire();}
   return {
     init:init,
     list:function(){return live();},
