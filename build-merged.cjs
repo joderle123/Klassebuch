@@ -134,6 +134,14 @@ anwScript = replaceOnce(anwScript,
 var ANW_API = [
   "  window.KB_ANW={",
   "    entriesForStudent:function(id){return state.entries.filter(function(e){return e.studentId===id;});},",
+  "    /* --- Stundenplan-Zugriff für die Shell (Trimester-Umschaltung, Editor) --- */",
+  "    getTimetable:function(){try{return JSON.parse(JSON.stringify(state.timetable||{}));}catch(e){return {};}},",
+  "    setTimetable:function(tt){if(!tt)return;state.timetable=tt;save();renderAll();},",
+  "    setTTCell:function(level,wd,idx,val){var lv=state.timetable&&state.timetable[level];if(!lv)return;var day=lv[wd];if(!day)return;day[idx]=String(val==null?'':val);save();},",
+  "    blocks:function(){return BLOCKS.map(function(b){return {id:b.id,start:b.start,end:b.end,hours:blockHours(b)};});},",
+  "    dayNames:function(){var o={};for(var w=1;w<=5;w++){o[w]=DAY_NAMES[w];}return o;},",
+  "    isPause:function(s){return !!PAUSE_SUBJECTS[s];},",
+  "    levels:function(){return ['L1','L2'];},",
   "    summaryForStudent:function(id){var e=0,u=0,v=0,he=0,hu=0;state.entries.forEach(function(x){if(x.studentId!==id)return;var h=countHours(x);if(x.status==='entschuldigt'){e++;he+=h;}else if(x.status==='unentschuldigt'){u++;hu+=h;}else if(x.status==='verspaetet'){v++;}});return {entschuldigt:e,unentschuldigt:u,verspaetet:v,hoursEnt:he,hoursUnent:hu,total:e+u+v};},",
   "    recentForStudent:function(id,n){return state.entries.filter(function(e){return e.studentId===id;}).sort(function(a,b){return a.date<b.date?1:-1;}).slice(0,n||8);},",
   "    notes:function(){return state.notes.slice().sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:0);});},",
@@ -148,7 +156,10 @@ var ANW_API = [
   "    exportSettings:function(){return {id:'settings',timetable:state.timetable,periods:state.periods,ttVersion:state.ttVersion};},",
   "    applyEntries:function(list){state.entries=(list||[]).slice();save();renderAll();},",
   "    applyNotes:function(list){state.notes=(list||[]).slice();save();renderAll();},",
-  "    applySettings:function(s){if(s){if(s.timetable){state.timetable=s.timetable;}if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();},",
+  "    /* timetable wird NICHT mehr von hier gesetzt: die Stundenplaene liegen",
+  "       jetzt je Trimester in KB_TIMETABLE und haben eine eigene Sync-Sammlung.",
+  "       Sonst gaebe es zwei Quellen und der aktive Plan wuerde ueberschrieben. */",
+  "    applySettings:function(s){if(s){if(s.periods){state.periods=s.periods;}if(s.ttVersion!=null){state.ttVersion=s.ttVersion;}}save();renderAll();},",
   "    getUser:function(){return state.currentUser||'';},",
   "    setUser:function(u){setUser(u);},",
   "    users:function(){return USERS.slice();},",
@@ -244,6 +255,45 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-pad{padding:24px 28px 64px;max-width:1120px;}
 .kb-pagehead h2{margin:0 0 4px;font-size:22px;letter-spacing:-.02em;}
 .kb-card{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,25,45,.04);}
+/* ---- Schuljahr/Trimester + Stundenplan im Klasse-Panel ---- */
+.kb-card-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+.kb-card-h h3{margin:0;font-size:17px;}
+.kb-term-now{font-size:12.5px;font-weight:800;background:var(--kb-accent,#4f5bd5);color:#fff;border-radius:999px;padding:3px 12px;}
+.kb-hint{margin:-2px 0 12px;color:var(--kb-muted);font-size:13px;line-height:1.5;}
+.kb-termpick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.kb-termyear{max-width:160px;font-weight:800;cursor:pointer;}
+.kb-termtabs,.kb-ttlevels{display:inline-flex;gap:4px;background:var(--kb-bg,#f3f4fa);border:1px solid var(--kb-border);border-radius:11px;padding:3px;}
+.kb-tt-tab{font:inherit;font-weight:700;border:none;background:transparent;color:var(--kb-muted);padding:7px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+.kb-tt-tab:hover{color:var(--kb-text);}
+.kb-tt-tab.on{background:var(--kb-surface);color:var(--kb-accent,#4f5bd5);box-shadow:0 1px 3px rgba(20,25,45,.12);}
+.kb-termdates{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px;margin-top:14px;}
+.kb-termrow{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--kb-border);border-radius:11px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
+.kb-termrow.on{border-color:var(--kb-accent,#4f5bd5);box-shadow:0 0 0 1px var(--kb-accent,#4f5bd5);background:var(--kb-surface);}
+.kb-termrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;}
+.kb-termrow input{flex:1;min-width:0;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
+.kb-termfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--kb-border);}
+.kb-termnew,.kb-termacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.kb-ttbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
+.kb-ttacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.kb-ttwrap{overflow-x:auto;}
+.kb-ttgrid{border-collapse:separate;border-spacing:0;width:100%;min-width:720px;}
+.kb-ttgrid th{font-size:12.5px;text-align:left;padding:8px 9px;color:var(--kb-muted);font-weight:800;border-bottom:1px solid var(--kb-border);white-space:nowrap;}
+.kb-ttgrid th.kb-ttime{width:104px;}
+.kb-ttgrid td{padding:3px;border-bottom:1px solid var(--kb-border);}
+.kb-ttgrid td.kb-ttime{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;padding:6px 9px;line-height:1.35;}
+.kb-ttgrid td.kb-ttime small{display:block;font-weight:600;opacity:.75;}
+.kb-ttgrid input{font:inherit;font-size:13.5px;width:100%;padding:8px 9px;border:1px solid transparent;border-radius:8px;background:var(--kb-bg,#f3f4fa);color:var(--kb-text);}
+.kb-ttgrid input:hover{border-color:var(--kb-border);}
+.kb-ttgrid input:focus{outline:none;border-color:var(--kb-accent,#4f5bd5);background:#fff;box-shadow:0 0 0 3px rgba(79,91,213,.14);}
+.kb-ttgrid tr.kb-ttpause td.kb-ttime,.kb-ttgrid tr.kb-ttpause input{opacity:.62;}
+.kb-ttgrid tr.kb-ttpause input{background:transparent;font-style:italic;}
+/* Schuljahr-Chip in der Seitenleiste */
+.kb-termchip{display:flex;align-items:center;gap:9px;width:100%;margin:2px 0 10px;padding:8px 10px;border:1px solid var(--kb-border);border-radius:12px;background:var(--kb-bg,#f3f4fa);cursor:pointer;font:inherit;text-align:left;}
+.kb-termchip:hover{border-color:var(--kb-accent,#4f5bd5);}
+.kb-termchip .kb-tc-ic{font-size:16px;line-height:1;}
+.kb-termchip .kb-tc-t{flex:1;min-width:0;}
+.kb-termchip .kb-tc-y{display:block;font-weight:800;font-size:13.5px;}
+.kb-termchip .kb-tc-s{display:block;font-size:11.5px;color:var(--kb-muted);}
 .kb-in{font:inherit;padding:8px 10px;border:1px solid var(--kb-border);border-radius:9px;background:#fff;color:var(--kb-text);width:100%;}
 .kb-in:focus{outline:none;border-color:var(--kb-accent);box-shadow:0 0 0 3px var(--kb-accent-50);}
 .kb-btn{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);padding:9px 15px;border-radius:9px;cursor:pointer;transition:.13s;}
@@ -672,8 +722,10 @@ var ACCENT_OVERRIDE = `
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
 #anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
-/* Stundenplan (🗓️) im Klassenbuch-Kopf sichtbar lassen — gut auffindbar */
-#anw-root #btn-tt{ display:inline-flex; }
+/* Der alte Stundenplan-Dialog ist ausgeblendet: der Stundenplan wird jetzt
+   je Trimester unter „Klasse & Stundenplan" bearbeitet. Zwei Editoren
+   nebeneinander würden am Trimester-Speicher vorbeischreiben. */
+#anw-root #btn-tt{ display:none; }
 #anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
 #dos-root .main{ max-width:1180px; margin:0 auto; }
 /* ---- Savoir (Screening) auf gemeinsame Tokens mappen ---- */
@@ -824,6 +876,7 @@ var SHELL_BODY_TOP = `
   <aside class="kb-side" id="kb-side" aria-label="Hauptnavigation">
     <div class="kb-brand"><span class="kb-logo">📘</span><span class="kb-brandtext"><b>Klassebuch</b><small>Annexe Junglinster</small></span><button class="kb-collapse" id="kb-collapse" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen">«</button></div>
     <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
+    <button class="kb-termchip" id="kb-termchip" aria-label="Schuljahr und Trimester — klicken zum Ändern"></button>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
       <div class="kb-navgroup">
@@ -863,11 +916,44 @@ var SHELL_BODY_TOP = `
 
 var SHELL_PANELS_EXTRA = `
     <section class="kb-panel kb-pad" id="kb-klasse">
-      <div class="kb-pagehead"><h2>🏫 Klasse</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Struktur der Klasse: Schülerliste, Stundenplan und Schulkalender.</p></div>
-      <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="kb-btn" data-kb-act="open-tt">🗓️ Stundenplan bearbeiten</button>
-        <button class="kb-btn" data-kb-act="open-cal">📆 Schulkalender</button>
+      <div class="kb-pagehead"><h2>🏫 Klasse, Stundenplan &amp; Schuljahr</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Alles, was die Klasse strukturiert — an einem Ort. Der Stundenplan wird <b>je Trimester</b> geführt.</p></div>
+
+      <div class="kb-card kb-termcard">
+        <div class="kb-card-h"><h3>🎓 Schuljahr &amp; Trimester</h3><span class="kb-term-now" id="kb-term-now"></span></div>
+        <div class="kb-termpick">
+          <select class="kb-in kb-termyear" id="kb-term-year" aria-label="Schuljahr"></select>
+          <div class="kb-termtabs" id="kb-term-tabs" role="group" aria-label="Trimester"></div>
+          <button class="kb-btn" id="kb-term-auto" title="Wieder automatisch nach dem heutigen Datum">⟳ Automatisch</button>
+        </div>
+        <div class="kb-termdates" id="kb-term-dates"></div>
+        <div class="kb-termfoot">
+          <div class="kb-termnew">
+            <input class="kb-in" id="kb-term-new" style="max-width:150px;" autocomplete="off">
+            <button class="kb-btn" id="kb-term-add">+ Schuljahr anlegen</button>
+          </div>
+          <div class="kb-termacts">
+            <button class="kb-btn" id="kb-term-reset" title="Termine wieder auf den luxemburgischen Schulkalender setzen">↺ Termine zurücksetzen</button>
+            <button class="kb-btn" id="kb-term-close"></button>
+            <button class="kb-btn" data-kb-act="open-cal">📆 Schulkalender</button>
+          </div>
+        </div>
       </div>
+
+      <div class="kb-card kb-ttcard">
+        <div class="kb-card-h"><h3>🗓️ Stundenplan</h3><span class="kb-term-now" id="kb-tt-for"></span></div>
+        <p class="kb-hint">Direkt in die Felder schreiben — wird sofort gespeichert. Bekannte Fächer erscheinen als Vorschlag. Dieser Plan gilt <b>nur für das oben gewählte Trimester</b>.</p>
+        <div class="kb-ttbar">
+          <div class="kb-ttlevels" id="kb-tt-levels" role="group" aria-label="Niveau"></div>
+          <div class="kb-ttacts">
+            <select class="kb-in" id="kb-tt-copy" style="max-width:250px;"></select>
+            <button class="kb-btn" id="kb-tt-copybtn">Übernehmen</button>
+            <button class="kb-btn" id="kb-tt-clear" title="Alle Fächer in diesem Trimester leeren (Pausen bleiben)">Leeren</button>
+          </div>
+        </div>
+        <div class="kb-ttwrap"><div id="kb-tt-grid"></div></div>
+        <datalist id="kb-tt-subjects"></datalist>
+      </div>
+
       <h3 style="margin:18px 0 8px;">Gemeinsame Schülerliste</h3>
       <p style="margin:0 0 12px;color:var(--kb-muted);font-size:13.5px;">Eine Liste für Anwesenheit und Dossiers — Änderungen wirken sofort in beiden Bereichen.</p>
       <div class="kb-card" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
@@ -892,6 +978,257 @@ var SHELL_PANELS_EXTRA = `
     </section>
   </main>
 </div>
+`;
+
+/* ============================================================
+   Schuljahr & Trimester — echte luxemburgische Termine.
+   Die Datumsgrenzen werden BEIM BAUEN aus dem Schulkalender
+   (LU_YEARS in anwesenheit.html) gezogen, damit es nur EINE Quelle
+   dafür gibt. Für Jahre, die dort (noch) nicht stehen, rechnet das
+   Modul eine Vorbelegung aus, die sich im Dialog anpassen lässt.
+   ============================================================ */
+var LU_TERM_SEED = (function () {
+  var i = anw.indexOf('var LU_YEARS=');
+  if (i < 0) { console.warn('LU_YEARS nicht gefunden — Trimester nutzen berechnete Vorgaben.'); return {}; }
+  var j = anw.indexOf('\n  ];', i);
+  if (j < 0) { console.warn('LU_YEARS-Ende nicht gefunden.'); return {}; }
+  var arr;
+  try { arr = eval(anw.slice(i, j + 5) + '; LU_YEARS'); }
+  catch (e) { console.warn('LU_YEARS nicht lesbar: ' + e.message); return {}; }
+  var out = {};
+  (arr || []).forEach(function (y) {
+    var start = parseInt(String(y.key).slice(0, 4), 10);
+    if (!start) return;
+    var terms = [];
+    (y.periods || []).forEach(function (p) {
+      var m = /^([123])\. Trimester/.exec(p.name || '');
+      if (m) terms.push({ key: 'T' + m[1], from: p.start, to: p.end });
+    });
+    if (terms.length === 3) out[start] = { from: y.start, to: y.end, terms: terms };
+  });
+  var n = Object.keys(out).length;
+  if (!n) console.warn('Keine Trimester aus LU_YEARS gelesen.');
+  else console.log('Trimester aus Schulkalender übernommen für: ' + Object.keys(out).join(', '));
+  return out;
+})();
+
+var TERMS_MODULE = `
+window.KB_TERMS=(function(){
+  var LS='klassebuch_terms_v1';
+  var SEED=${JSON.stringify(LU_TERM_SEED)};
+  var TKEYS=['T1','T2','T3'];
+  var TLABEL={T1:'1. Trimester',T2:'2. Trimester',T3:'3. Trimester'};
+
+  function pad(n){return (n<10?'0':'')+n;}
+  function iso(y,m,d){return y+'-'+pad(m)+'-'+pad(d);}
+  function todayIso(){var d=new Date();return iso(d.getFullYear(),d.getMonth()+1,d.getDate());}
+  function labelOf(y){return y+'/'+('0'+((y+1)%100)).slice(-2);}
+  function normStart(raw){
+    var s=String(raw==null?'':raw);var m=s.match(/[0-9]{1,4}/);if(!m)return 0;
+    var n=parseInt(m[0],10);if(n<100)n=2000+n;if(n<1900||n>2200)return 0;return n;
+  }
+  /* Das Schuljahr beginnt Mitte September: vor August zählt noch das Vorjahr. */
+  function defaultStart(){var d=new Date();var y=d.getFullYear();return (d.getMonth()>=7)?y:(y-1);}
+  /* Echte Termine aus dem Schulkalender, sonst eine grobe Vorbelegung. */
+  function seedFor(y){
+    if(SEED[y])return {from:SEED[y].from,to:SEED[y].to,terms:SEED[y].terms.map(function(t){return {key:t.key,from:t.from,to:t.to};})};
+    return {from:iso(y,9,15),to:iso(y+1,7,15),terms:[
+      {key:'T1',from:iso(y,9,15),  to:iso(y,12,18)},
+      {key:'T2',from:iso(y+1,1,4), to:iso(y+1,3,26)},
+      {key:'T3',from:iso(y+1,4,12),to:iso(y+1,7,15)}
+    ]};
+  }
+  function mkYear(y){var s=seedFor(y);return {id:'y'+y,start:y,label:labelOf(y),from:s.from,to:s.to,closed:false,createdAt:Date.now(),terms:s.terms};}
+
+  function load(){try{var o=JSON.parse(localStorage.getItem(LS)||'null');return (o&&o.years&&o.years.length)?o:null;}catch(e){return null;}}
+  function save(){try{localStorage.setItem(LS,JSON.stringify(data));}catch(e){}}
+  var data=load();
+  var hooks=[];
+  function fire(){for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  function byId(id){if(!data)return null;for(var i=0;i<data.years.length;i++){if(data.years[i].id===id)return data.years[i];}return null;}
+  function sortY(){data.years.sort(function(a,b){return a.start-b.start;});}
+  function fixTerms(y){
+    var def=seedFor(y.start).terms;
+    if(!y.terms||!y.terms.length){y.terms=def;return;}
+    var by={};for(var i=0;i<y.terms.length;i++){if(y.terms[i]&&y.terms[i].key)by[y.terms[i].key]=y.terms[i];}
+    var out=[];
+    for(var j=0;j<TKEYS.length;j++){var k=TKEYS[j];var t=by[k]||def[j];out.push({key:k,from:t.from||def[j].from,to:t.to||def[j].to});}
+    y.terms=out;
+  }
+  function ensure(){
+    if(!data||!data.years||!data.years.length){data={years:[mkYear(defaultStart())],pinned:null};save();}
+    if(!data.pinned)data.pinned=null;
+    for(var i=0;i<data.years.length;i++){fixTerms(data.years[i]);}
+    return data;
+  }
+  ensure();
+
+  function yearForDate(d){ensure();for(var i=0;i<data.years.length;i++){var y=data.years[i];if(d>=y.from&&d<=y.to)return y;}return null;}
+  function termForDate(y,d){if(!y)return null;for(var i=0;i<y.terms.length;i++){var t=y.terms[i];if(d>=t.from&&d<=t.to)return t;}return null;}
+  /* Aktiv = fest gewählt, sonst nach heutigem Datum, sonst jüngstes Jahr. */
+  function active(){
+    ensure();
+    var d=todayIso();
+    if(data.pinned){
+      var py=byId(data.pinned.year);
+      if(py){var pt=null;for(var i=0;i<py.terms.length;i++){if(py.terms[i].key===data.pinned.term)pt=py.terms[i];}
+        return {year:py,term:pt||py.terms[0],auto:false};}
+    }
+    var y=yearForDate(d);
+    if(y)return {year:y,term:termForDate(y,d)||y.terms[0],auto:true};
+    var last=data.years[data.years.length-1];
+    return {year:last,term:last.terms[0],auto:true};
+  }
+
+  return {
+    list:function(){ensure();return data.years.map(function(y){return {id:y.id,start:y.start,label:y.label,from:y.from,to:y.to,closed:!!y.closed,terms:y.terms.map(function(t){return {key:t.key,label:TLABEL[t.key],from:t.from,to:t.to};})};});},
+    active:active,
+    activeYearId:function(){return active().year.id;},
+    activeTermKey:function(){var a=active();return a.term?a.term.key:'T1';},
+    /* Schlüssel, mit dem der Stundenplan pro Trimester getrennt wird. */
+    key:function(){var a=active();return a.year.id+':'+(a.term?a.term.key:'T1');},
+    keyOf:function(yearId,termKey){return yearId+':'+(termKey||'T1');},
+    label:function(){var a=active();return a.year.label+(a.term?(' · '+TLABEL[a.term.key]):'');},
+    yearLabel:function(){return active().year.label;},
+    termLabel:function(k){return TLABEL[k]||k;},
+    termKeys:function(){return TKEYS.slice();},
+    isClosed:function(id){var y=byId(id||active().year.id);return !!(y&&y.closed);},
+    isAuto:function(){return active().auto;},
+    dateRange:function(){var a=active();return a.term?{from:a.term.from,to:a.term.to}:{from:a.year.from,to:a.year.to};},
+    pin:function(yearId,termKey){ensure();if(!byId(yearId))return false;data.pinned={year:yearId,term:termKey||'T1'};save();fire();return true;},
+    unpin:function(){ensure();data.pinned=null;save();fire();},
+    addYear:function(raw){ensure();var s=normStart(raw);if(!s)return null;var id='y'+s;
+      if(!byId(id)){data.years.push(mkYear(s));sortY();}
+      data.pinned={year:id,term:'T1'};save();fire();return id;},
+    setTermRange:function(id,key,from,to){var y=byId(id);if(!y)return;
+      for(var i=0;i<y.terms.length;i++){if(y.terms[i].key===key){if(from)y.terms[i].from=from;if(to)y.terms[i].to=to;}}
+      if(y.terms[0].from<y.from)y.from=y.terms[0].from;
+      if(y.terms[2].to>y.to)y.to=y.terms[2].to;
+      save();fire();},
+    resetTerms:function(id){var y=byId(id);if(!y)return;var s=seedFor(y.start);y.from=s.from;y.to=s.to;y.terms=s.terms;save();fire();},
+    closeYear:function(id){var y=byId(id||active().year.id);if(y){y.closed=true;save();fire();}},
+    reopenYear:function(id){var y=byId(id||active().year.id);if(y){y.closed=false;save();fire();}},
+    nextLabel:function(){ensure();var mx=0;for(var i=0;i<data.years.length;i++){if(data.years[i].start>mx)mx=data.years[i].start;}return labelOf(mx?mx+1:defaultStart());},
+    onChange:function(fn){if(typeof fn==='function')hooks.push(fn);},
+    /* Team-Sync: Jahre und Trimester werden geteilt, die feste Auswahl bleibt lokal. */
+    syncExport:function(){ensure();return data.years.map(function(y){return {id:y.id,start:y.start,label:y.label,from:y.from,to:y.to,closed:!!y.closed,terms:y.terms};});},
+    syncApply:function(arr){
+      if(!arr||!arr.length)return;
+      var keep=data?data.pinned:null;
+      data={years:[],pinned:keep};
+      for(var i=0;i<arr.length;i++){var r=arr[i];if(r&&r.id&&r.start){data.years.push({id:r.id,start:r.start,label:r.label||labelOf(r.start),from:r.from,to:r.to,closed:!!r.closed,createdAt:r.createdAt||Date.now(),terms:r.terms||seedFor(r.start).terms});}}
+      sortY();for(var j=0;j<data.years.length;j++){fixTerms(data.years[j]);}
+      if(data.pinned&&!byId(data.pinned.year))data.pinned=null;
+      save();fire();
+    }
+  };
+})();
+`;
+
+/* ============================================================
+   KB_TIMETABLE — ein Stundenplan JE (Schuljahr · Trimester).
+   Die Anwesenheits-Engine arbeitet unverändert mit genau EINEM
+   state.timetable weiter; dieses Modul legt darunter einen Speicher
+   je Trimester und tauscht beim Wechsel das aktive Raster aus.
+   Dadurch bleiben Wochenansicht, Absenzen und Fächerliste unberührt.
+   ============================================================ */
+var TIMETABLE_MODULE = `
+window.KB_TIMETABLE=(function(){
+  var LS='klassebuch_timetables_v1';
+  var cur=null, hooks=[];
+  function fire(){for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+  function load(){try{return JSON.parse(localStorage.getItem(LS)||'{}')||{};}catch(e){return {};}}
+  function save(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
+  function clone(o){try{return JSON.parse(JSON.stringify(o));}catch(e){return null;}}
+  function termKey(){try{return (window.KB_TERMS&&window.KB_TERMS.key())||'';}catch(e){return '';}}
+  function liveTT(){try{return (window.KB_ANW&&window.KB_ANW.getTimetable)?window.KB_ANW.getTimetable():null;}catch(e){return null;}}
+  function pushTT(tt){try{if(window.KB_ANW&&window.KB_ANW.setTimetable)window.KB_ANW.setTimetable(tt);}catch(e){}}
+  function nonEmpty(tt){
+    if(!tt)return false;
+    for(var lv in tt){var d=tt[lv]||{};for(var w in d){var a=d[w]||[];for(var i=0;i<a.length;i++){if(a[i])return true;}}}
+    return false;
+  }
+  /* Woher bekommt ein noch leeres Trimester seinen Plan?
+     Vorheriges Trimester desselben Jahres -> letzter vorhandener Plan -> aktuell geladener. */
+  function sourceFor(key,store){
+    var p=String(key).split(':'), yid=p[0], tk=p[1]||'T1';
+    var order=['T1','T2','T3'];
+    var idx=order.indexOf(tk);
+    for(var i=idx-1;i>=0;i--){var k=yid+':'+order[i];if(store[k]&&nonEmpty(store[k]))return store[k];}
+    var keys=Object.keys(store).sort();
+    for(var j=keys.length-1;j>=0;j--){if(nonEmpty(store[keys[j]]))return store[keys[j]];}
+    return liveTT();
+  }
+  /* Den gerade geladenen Plan in seinen Trimester-Slot zurückschreiben. */
+  function stash(){
+    if(!cur)return;
+    var tt=liveTT(); if(!tt)return;
+    var o=load(); o[cur]=tt; save(o);
+  }
+  /* Auf das aktive Trimester umschalten (und beim ersten Mal migrieren). */
+  function activate(force){
+    var k=termKey(); if(!k)return;
+    if(k===cur&&!force)return;
+    var o=load();
+    if(cur&&cur!==k){var live=liveTT();if(live){o[cur]=live;}}
+    if(!o[k]){
+      var src=sourceFor(k,o);
+      o[k]=src?clone(src):liveTT();
+    }
+    save(o);
+    cur=k;
+    pushTT(o[k]);
+    fire();
+  }
+  /* Einmalige Übernahme: bestehender Stundenplan wandert ins aktuelle Trimester. */
+  function migrateOnce(){
+    var o=load();
+    if(Object.keys(o).length)return false;
+    var k=termKey(); if(!k)return false;
+    var live=liveTT();
+    o[k]=live&&nonEmpty(live)?live:(live||{});
+    save(o); cur=k;
+    return true;
+  }
+  function init(){
+    migrateOnce();
+    activate(true);
+    try{if(window.KB_TERMS&&window.KB_TERMS.onChange)window.KB_TERMS.onChange(function(){activate(false);});}catch(e){}
+  }
+  return {
+    init:init, activate:activate, stash:stash, currentKey:function(){return cur;},
+    keys:function(){var o=load();return Object.keys(o).sort();},
+    has:function(k){var o=load();return !!o[k]&&nonEmpty(o[k]);},
+    get:function(k){var o=load();return o[k]?clone(o[k]):null;},
+    /* Plan eines anderen Trimesters übernehmen. */
+    copyFrom:function(srcKey){
+      var o=load(); var src=o[srcKey]; if(!src)return false;
+      var k=termKey(); if(!k)return false;
+      o[k]=clone(src); save(o); cur=k; pushTT(o[k]); fire(); return true;
+    },
+    clear:function(){
+      var k=termKey(); if(!k)return;
+      var tt=liveTT()||{}; var out={};
+      for(var lv in tt){out[lv]={};for(var w in tt[lv]){out[lv][w]=(tt[lv][w]||[]).map(function(s){return (window.KB_ANW&&window.KB_ANW.isPause(s))?s:'';});}}
+      var o=load(); o[k]=out; save(o); cur=k; pushTT(out); fire();
+    },
+    /* Einzelne Zelle setzen — schreibt live und in den Trimester-Speicher. */
+    setCell:function(level,wd,idx,val){
+      try{if(window.KB_ANW&&window.KB_ANW.setTTCell)window.KB_ANW.setTTCell(level,wd,idx,val);}catch(e){}
+      stash();
+    },
+    onChange:function(fn){if(typeof fn==='function')hooks.push(fn);},
+    syncExport:function(){var o=load();var out=[];for(var k in o){out.push({id:k,grid:o[k]});}return out;},
+    syncApply:function(arr){
+      if(!arr)return;
+      var o={};for(var i=0;i<arr.length;i++){var r=arr[i];if(r&&r.id){o[r.id]=r.grid||{};}}
+      save(o);
+      var k=termKey();
+      if(k&&o[k]){cur=k;pushTT(o[k]);}
+      fire();
+    }
+  };
+})();
 `;
 
 var ROSTER_MODULE = `
@@ -1305,7 +1642,7 @@ var SHELL_CONTROLLER = `
     } else if(nav==='absenzen-pdf'){
       showPanel('anw-root'); setActive('absenzen'); closeAnwModals(); clickAnwBtn('btn-pdf');
     } else if(nav==='klasse'){
-      showPanel('kb-klasse'); setActive('klasse'); renderRoster();
+      showPanel('kb-klasse'); setActive('klasse'); renderKlasse();
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
     } else if(nav==='material'){
@@ -1356,7 +1693,7 @@ var SHELL_CONTROLLER = `
     var el=ev.target.closest&&ev.target.closest('[data-kb-act]'); if(!el)return;
     var act=el.getAttribute('data-kb-act'), arg=el.getAttribute('data-kb-arg');
     if(act==='open-absenzen'){go('absenzen');if(window.KB_ANW){window.KB_ANW.openStudent(arg);}}
-    else if(act==='open-tt'){go('absenzen');clickAnwBtn('btn-tt');}
+    else if(act==='open-tt'){go('klasse');var _c=$('kb-klasse');var _k=_c&&_c.querySelector('.kb-ttcard');if(_k&&_k.scrollIntoView)_k.scrollIntoView({behavior:'smooth',block:'start'});}
     else if(act==='open-cal'){go('absenzen');clickAnwBtn('btn-cal');}
     else if(act==='open-screening'){
       showPanel('sav-root'); setActive('students');
@@ -1369,6 +1706,160 @@ var SHELL_CONTROLLER = `
       closeDrawer();
     }
   });
+
+  /* ============================================================
+     Schuljahr · Trimester · Stundenplan — alles im Bereich „Klasse".
+     Der Stundenplan gehört immer zum oben gewählten Trimester.
+     ============================================================ */
+  function termChip(){
+    var c=$('kb-termchip'); if(!c||!window.KB_TERMS)return;
+    var a=window.KB_TERMS.active();
+    c.innerHTML='<span class="kb-tc-ic">🎓</span><span class="kb-tc-t">'+
+      '<span class="kb-tc-y">'+esc(a.year.label)+'</span>'+
+      '<span class="kb-tc-s">'+esc(window.KB_TERMS.termLabel(a.term.key))+(a.auto?'':' · fest')+(a.year.closed?' · abgeschlossen':'')+'</span></span>';
+    c.title='Schuljahr '+a.year.label+' · '+window.KB_TERMS.termLabel(a.term.key)+' — klicken zum Ändern';
+  }
+  function renderTermCard(){
+    if(!window.KB_TERMS||!$('kb-term-year'))return;
+    var T=window.KB_TERMS, a=T.active(), years=T.list();
+    $('kb-term-now').textContent=T.label()+(a.auto?' · automatisch':'');
+    $('kb-term-year').innerHTML=years.map(function(y){
+      return '<option value="'+esc(y.id)+'"'+(y.id===a.year.id?' selected':'')+'>'+esc(y.label)+(y.closed?' (abgeschlossen)':'')+'</option>';
+    }).join('');
+    $('kb-term-tabs').innerHTML=T.termKeys().map(function(k){
+      return '<button class="kb-tt-tab'+(k===a.term.key?' on':'')+'" data-termkey="'+k+'">'+esc(T.termLabel(k))+'</button>';
+    }).join('');
+    var cur=null; for(var i=0;i<years.length;i++){if(years[i].id===a.year.id)cur=years[i];}
+    $('kb-term-dates').innerHTML=(cur?cur.terms:[]).map(function(t){
+      return '<div class="kb-termrow'+(t.key===a.term.key?' on':'')+'"><b>'+esc(t.label)+'</b>'+
+        '<input type="date" data-tr="'+esc(cur.id+'|'+t.key+'|from')+'" value="'+esc(t.from)+'">'+
+        '<span style="color:var(--kb-muted);">bis</span>'+
+        '<input type="date" data-tr="'+esc(cur.id+'|'+t.key+'|to')+'" value="'+esc(t.to)+'"></div>';
+    }).join('');
+    $('kb-term-new').placeholder='z. B. '+T.nextLabel();
+    $('kb-term-close').textContent=(cur&&cur.closed)?'🔓 Schuljahr wieder öffnen':'🔒 Schuljahr abschließen';
+    $('kb-term-auto').style.display=a.auto?'none':'';
+  }
+  function renderTTGrid(){
+    var host=$('kb-tt-grid'); if(!host||!window.KB_ANW||!window.KB_ANW.blocks)return;
+    var lvls=window.KB_ANW.levels(), blocks=window.KB_ANW.blocks(), days=window.KB_ANW.dayNames();
+    if(ttLevel&&lvls.indexOf(ttLevel)<0)ttLevel=lvls[0];
+    if(!ttLevel)ttLevel=lvls[0];
+    $('kb-tt-for').textContent=window.KB_TERMS?window.KB_TERMS.label():'';
+    $('kb-tt-levels').innerHTML=lvls.map(function(l){
+      return '<button class="kb-tt-tab'+(l===ttLevel?' on':'')+'" data-ttlevel="'+esc(l)+'">Niveau '+esc(l)+'</button>';
+    }).join('');
+    /* Fächer-Vorschläge aus beiden Niveaus des aktiven Plans */
+    var seen={},subs=[];
+    lvls.forEach(function(l){(window.KB_ANW.subjectsForLevel(l)||[]).forEach(function(s){if(!seen[s]){seen[s]=1;subs.push(s);}});});
+    $('kb-tt-subjects').innerHTML=subs.map(function(s){return '<option value="'+esc(s)+'">';}).join('');
+    /* „Aus anderem Trimester übernehmen" */
+    if(window.KB_TIMETABLE&&window.KB_TERMS){
+      var here=window.KB_TERMS.key();
+      var opts=window.KB_TIMETABLE.keys().filter(function(k){return k!==here&&window.KB_TIMETABLE.has(k);}).map(function(k){
+        var p=k.split(':'),y=null,ls=window.KB_TERMS.list();
+        for(var i=0;i<ls.length;i++){if(ls[i].id===p[0])y=ls[i];}
+        return '<option value="'+esc(k)+'">'+esc((y?y.label:p[0])+' · '+window.KB_TERMS.termLabel(p[1]))+'</option>';
+      });
+      $('kb-tt-copy').innerHTML=opts.length?('<option value="">— aus anderem Trimester übernehmen —</option>'+opts.join('')):'<option value="">— kein anderer Plan vorhanden —</option>';
+      $('kb-tt-copy').disabled=!opts.length; $('kb-tt-copybtn').disabled=!opts.length;
+    }
+    var tt=window.KB_ANW.getTimetable()||{}, grid=tt[ttLevel]||{};
+    var head='<tr><th class="kb-ttime">Zeit</th>';
+    for(var w=1;w<=5;w++){head+='<th>'+esc(days[w]||('Tag '+w))+'</th>';}
+    head+='</tr>';
+    var rows='';
+    for(var bi=0;bi<blocks.length;bi++){
+      var b=blocks[bi], pause=false;
+      for(var d=1;d<=5;d++){if(window.KB_ANW.isPause((grid[d]||[])[bi])){pause=true;break;}}
+      rows+='<tr'+(pause?' class="kb-ttpause"':'')+'><td class="kb-ttime">'+esc(b.start)+'–'+esc(b.end)+
+        '<small>'+String(b.hours).replace('.',',')+' h</small></td>';
+      for(var wd=1;wd<=5;wd++){
+        var v=(grid[wd]||[])[bi]||'';
+        rows+='<td><input list="kb-tt-subjects" value="'+esc(v)+'" data-ttc="'+esc(ttLevel+'|'+wd+'|'+bi)+'" placeholder="—"></td>';
+      }
+      rows+='</tr>';
+    }
+    host.innerHTML='<table class="kb-ttgrid"><thead>'+head+'</thead><tbody>'+rows+'</tbody></table>';
+    host.querySelectorAll('[data-ttc]').forEach(function(el){
+      el.addEventListener('input',function(){
+        var p=el.getAttribute('data-ttc').split('|');
+        if(window.KB_TIMETABLE)window.KB_TIMETABLE.setCell(p[0],+p[1],+p[2],el.value);
+      });
+      el.addEventListener('change',function(){renderTTSubjects();});
+    });
+  }
+  function renderTTSubjects(){
+    if(!window.KB_ANW||!$('kb-tt-subjects'))return;
+    var seen={},subs=[];
+    window.KB_ANW.levels().forEach(function(l){(window.KB_ANW.subjectsForLevel(l)||[]).forEach(function(s){if(!seen[s]){seen[s]=1;subs.push(s);}});});
+    $('kb-tt-subjects').innerHTML=subs.map(function(s){return '<option value="'+esc(s)+'">';}).join('');
+  }
+  var ttLevel='L1';
+  function renderKlasse(){renderTermCard();renderTTGrid();renderRoster();}
+
+  /* --- Bedienung --- */
+  (function wireKlasse(){
+    var chip=$('kb-termchip');
+    if(chip){chip.addEventListener('click',function(){go('klasse');var c=$('kb-klasse');if(c){var k=c.querySelector('.kb-termcard');if(k&&k.scrollIntoView)k.scrollIntoView({behavior:'smooth',block:'start'});}});}
+    var ysel=$('kb-term-year');
+    if(ysel){ysel.addEventListener('change',function(){window.KB_TERMS.pin(ysel.value,window.KB_TERMS.activeTermKey());});}
+    var tabs=$('kb-term-tabs');
+    if(tabs){tabs.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('[data-termkey]'); if(!b)return;
+      window.KB_TERMS.pin($('kb-term-year').value,b.getAttribute('data-termkey'));
+    });}
+    var auto=$('kb-term-auto'); if(auto){auto.addEventListener('click',function(){window.KB_TERMS.unpin();});}
+    var dates=$('kb-term-dates');
+    if(dates){dates.addEventListener('change',function(e){
+      var el=e.target; if(!el||!el.getAttribute||!el.getAttribute('data-tr'))return;
+      var p=el.getAttribute('data-tr').split('|');
+      window.KB_TERMS.setTermRange(p[0],p[1],p[2]==='from'?el.value:null,p[2]==='to'?el.value:null);
+    });}
+    var add=$('kb-term-add'), nin=$('kb-term-new');
+    if(add&&nin){
+      add.addEventListener('click',function(){
+        var v=(nin.value||'').trim()||window.KB_TERMS.nextLabel();
+        if(!window.KB_TERMS.addYear(v)){alert('Bitte ein gültiges Schuljahr eingeben, z. B. '+window.KB_TERMS.nextLabel()+'.');return;}
+        nin.value='';
+      });
+      nin.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();add.click();}});
+    }
+    var rst=$('kb-term-reset');
+    if(rst){rst.addEventListener('click',function(){
+      if(confirm('Die Trimester-Termine dieses Schuljahres wieder auf den luxemburgischen Schulkalender setzen?'))
+        window.KB_TERMS.resetTerms($('kb-term-year').value);
+    });}
+    var cls=$('kb-term-close');
+    if(cls){cls.addEventListener('click',function(){
+      var id=$('kb-term-year').value;
+      if(window.KB_TERMS.isClosed(id))window.KB_TERMS.reopenYear(id);else window.KB_TERMS.closeYear(id);
+    });}
+    var lv=$('kb-tt-levels');
+    if(lv){lv.addEventListener('click',function(e){
+      var b=e.target.closest&&e.target.closest('[data-ttlevel]'); if(!b)return;
+      ttLevel=b.getAttribute('data-ttlevel'); renderTTGrid();
+    });}
+    var cb=$('kb-tt-copybtn');
+    if(cb){cb.addEventListener('click',function(){
+      var k=$('kb-tt-copy').value; if(!k)return;
+      if(!confirm('Den Stundenplan dieses Trimesters durch den gewählten ersetzen?'))return;
+      window.KB_TIMETABLE.copyFrom(k); renderTTGrid();
+    });}
+    var clr=$('kb-tt-clear');
+    if(clr){clr.addEventListener('click',function(){
+      if(!confirm('Alle Fächer in diesem Trimester leeren? Pausen bleiben stehen.'))return;
+      window.KB_TIMETABLE.clear(); renderTTGrid();
+    });}
+    if(window.KB_TERMS){window.KB_TERMS.onChange(function(){
+      termChip();
+      if($('kb-klasse')&&$('kb-klasse').classList.contains('active')){renderTermCard();renderTTGrid();}
+    });}
+    if(window.KB_TIMETABLE){window.KB_TIMETABLE.onChange(function(){
+      if($('kb-klasse')&&$('kb-klasse').classList.contains('active')){renderTTGrid();}
+    });}
+    termChip();
+  })();
 
   // Gemeinsame Schülerliste (im Bereich "Klasse")
   function renderRoster(){
@@ -1502,6 +1993,10 @@ var SHELL_CONTROLLER = `
   var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',openGate);}
   updateUserChip();
   if(!curUser()){openGate();}
+
+  /* Stundenpläne je Trimester scharfschalten (übernimmt beim ersten Start
+     den bestehenden Plan ins laufende Trimester). */
+  if(window.KB_TIMETABLE){try{window.KB_TIMETABLE.init();}catch(e){}}
 
   // Startseite: Klassenbuch (Anwesenheit)
   go('absenzen');
@@ -1761,7 +2256,7 @@ window.KB_SYNC=(function(){
   /* ACHTUNG: Jede Sammlung, die collGet() liefert, MUSS hier stehen. Fehlt sie,
      landet sie nie in der gemeinsamen Datei — und collSet() würde sie beim
      Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
-  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten'];
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten','terms','timetables'];
   var BASE_LS='klassebuch_sync_base';
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
@@ -1793,7 +2288,7 @@ window.KB_SYNC=(function(){
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
     var st=(window.KB_ANW&&window.KB_ANW.exportSettings)?[window.KB_ANW.exportSettings()]:[];
-    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport')};
+    return {roster:c(window.KB_ROSTER,'syncExport'),bubble:c(window.KB_BUBBLE,'syncExport'),dosEntries:c(window.KB_DOS_SYNC,'exportEntries'),dosReunions:c(window.KB_DOS_SYNC,'exportReunions'),anwEntries:c(window.KB_ANW,'exportEntries'),anwNotes:c(window.KB_ANW,'exportNotes'),anwSettings:st,screening:c(window.KB_SCREENING,'syncExport'),noten:c(window.KB_NOTEN,'syncExport'),terms:c(window.KB_TERMS,'syncExport'),timetables:c(window.KB_TIMETABLE,'syncExport')};
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
@@ -1810,6 +2305,8 @@ window.KB_SYNC=(function(){
     sc(window.KB_BUBBLE,'syncApply',doc.colls.bubble);
     sc(window.KB_SCREENING,'syncApply',doc.colls.screening);
     sc(window.KB_NOTEN,'syncApply',doc.colls.noten);
+    sc(window.KB_TERMS,'syncApply',doc.colls.terms);
+    sc(window.KB_TIMETABLE,'syncApply',doc.colls.timetables);
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
@@ -3078,11 +3575,13 @@ var parts = [
   SHELL_PANELS_EXTRA,
   '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
   '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
+  '<script>' + TERMS_MODULE + '</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
   '<script>' + BUBBLE_MODULE + '</' + 'script>',
   '<script>' + anwScript + '</' + 'script>',
+  '<script>' + TIMETABLE_MODULE + '</' + 'script>',
   '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SCREENING_MODULE + '</' + 'script>',
   '<script>' + NOTEN_MODULE + '</' + 'script>',
