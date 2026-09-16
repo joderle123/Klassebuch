@@ -42139,7 +42139,10 @@ window.KB_GUIDE=(function(){
 <script>
 window.KB_SYNC=(function(){
   var FMT='klassebuch-shared-v1';
-  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening'];
+  /* ACHTUNG: Jede Sammlung, die collGet() liefert, MUSS hier stehen. Fehlt sie,
+     landet sie nie in der gemeinsamen Datei — und collSet() würde sie beim
+     Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
+  var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten'];
   var BASE_LS='klassebuch_sync_base';
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
@@ -42175,15 +42178,19 @@ window.KB_SYNC=(function(){
   }
   function collSet(doc){
     function s(o,m,v){if(o&&o[m]){try{o[m](v);}catch(e){}}}
-    s(window.KB_ROSTER,'syncApply',liveOf(doc.colls.roster));
-    s(window.KB_DOS_SYNC,'applyEntries',liveOf(doc.colls.dosEntries));
-    s(window.KB_DOS_SYNC,'applyReunions',liveOf(doc.colls.dosReunions));
-    s(window.KB_ANW,'applyEntries',liveOf(doc.colls.anwEntries));
-    s(window.KB_ANW,'applyNotes',liveOf(doc.colls.anwNotes));
-    var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);
-    s(window.KB_BUBBLE,'syncApply',liveOf(doc.colls.bubble));
-    s(window.KB_SCREENING,'syncApply',liveOf(doc.colls.screening));
-    s(window.KB_NOTEN,'syncApply',liveOf(doc.colls.noten));
+    /* Sicherheitsnetz: Fehlt eine Sammlung im Dokument (ältere Team-Datei,
+       oder die Sammlung steht nicht in COLLS), wird sie NICHT angewendet.
+       Sonst käme syncApply([]) an und würde lokale Daten löschen. */
+    function sc(o,m,coll){if(!coll)return;s(o,m,liveOf(coll));}
+    sc(window.KB_ROSTER,'syncApply',doc.colls.roster);
+    sc(window.KB_DOS_SYNC,'applyEntries',doc.colls.dosEntries);
+    sc(window.KB_DOS_SYNC,'applyReunions',doc.colls.dosReunions);
+    sc(window.KB_ANW,'applyEntries',doc.colls.anwEntries);
+    sc(window.KB_ANW,'applyNotes',doc.colls.anwNotes);
+    if(doc.colls.anwSettings){var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);}
+    sc(window.KB_BUBBLE,'syncApply',doc.colls.bubble);
+    sc(window.KB_SCREENING,'syncApply',doc.colls.screening);
+    sc(window.KB_NOTEN,'syncApply',doc.colls.noten);
   }
 
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
