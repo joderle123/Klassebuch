@@ -6215,8 +6215,18 @@ window.KB_TERMS=(function(){
     y.terms=out;
   }
   function ensure(){
-    if(!data||!data.years||!data.years.length){data={years:[mkYear(defaultStart())],pinned:null};save();}
+    if(!data||!data.years||!data.years.length){data={years:[],pinned:null,seeded:0};}
     if(!data.pinned)data.pinned=null;
+    /* Alle Schuljahre, die der Schulkalender kennt, stehen zur Auswahl — sonst
+       gäbe es nur das laufende Jahr und man käme nicht mehr an das vorige.
+       Einmalig ergänzt, damit später hinzugefügte Jahre erhalten bleiben. */
+    if(!data.seeded){
+      var add=Object.keys(SEED).map(Number);
+      var d0=defaultStart(); if(add.indexOf(d0)<0)add.push(d0);
+      add.sort(function(a,b){return a-b;});
+      for(var k=0;k<add.length;k++){if(!byId('y'+add[k]))data.years.push(mkYear(add[k]));}
+      data.seeded=1; sortY(); save();
+    }
     for(var i=0;i<data.years.length;i++){fixTerms(data.years[i]);}
     return data;
   }
@@ -6274,7 +6284,7 @@ window.KB_TERMS=(function(){
     syncApply:function(arr){
       if(!arr||!arr.length)return;
       var keep=data?data.pinned:null;
-      data={years:[],pinned:keep};
+      data={years:[],pinned:keep,seeded:1};
       for(var i=0;i<arr.length;i++){var r=arr[i];if(r&&r.id&&r.start){data.years.push({id:r.id,start:r.start,label:r.label||labelOf(r.start),from:r.from,to:r.to,closed:!!r.closed,createdAt:r.createdAt||Date.now(),terms:r.terms||seedFor(r.start).terms});}}
       sortY();for(var j=0;j<data.years.length;j++){fixTerms(data.years[j]);}
       if(data.pinned&&!byId(data.pinned.year))data.pinned=null;
