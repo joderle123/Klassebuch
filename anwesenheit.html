@@ -868,6 +868,25 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     box.innerHTML=tab('L1','L1',cL1)+tab('L2','L2',cL2);
   }
   function visibleStudents(){return state.students.filter(function(s){return s.level===classFilter;});}
+
+  /* Beim Öffnen soll sofort das Wochenbuch stehen, ohne erst einen Schüler
+     anklicken zu müssen. Beim ersten Rendern wird der zuletzt geöffnete
+     Schüler wiederhergestellt (samt seinem Niveau), danach wird nur noch
+     aufgefüllt, falls gar keiner ausgewählt ist. */
+  var LAST_STU='klassebuch_last_student';
+  var firstRenderDone=false;
+  function rememberStudent(id){try{localStorage.setItem(LAST_STU,id||'');}catch(e){}}
+  function findStudent(id){for(var i=0;i<state.students.length;i++){if(state.students[i].id===id)return state.students[i];}return null;}
+  function ensureStudentSelected(){
+    if(activeStudentId&&findStudent(activeStudentId))return;
+    var last='';try{last=localStorage.getItem(LAST_STU)||'';}catch(e){}
+    var lastStu=last?findStudent(last):null;
+    if(lastStu&&!firstRenderDone){classFilter=lastStu.level||classFilter;activeStudentId=lastStu.id;return;}
+    var vis=visibleStudents();
+    if(!vis.length&&state.students.length&&!firstRenderDone){classFilter=state.students[0].level||classFilter;vis=visibleStudents();}
+    activeStudentId=vis.length?vis[0].id:null;
+  }
+  function pickFirstInLevel(){var vis=visibleStudents();activeStudentId=vis.length?vis[0].id:null;rememberStudent(activeStudentId);}
   function renderStudents(){
     renderClassTabs();
     var box=document.getElementById('students');
@@ -1053,7 +1072,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     if(state.entries.length!==before){save();rerenderStudent(sid);renderSummary();renderWeekday();renderSubject();}
   }
 
-  function renderAll(){fillPeriods();renderSummary();renderStudents();renderMain();renderUserUI();}
+  function renderAll(){ensureStudentSelected();fillPeriods();renderSummary();renderStudents();renderMain();renderUserUI();if(state.students.length)firstRenderDone=true;}
 
   /* ---- Bediener-Auswahl ---- */
   function renderUserUI(){
@@ -1237,7 +1256,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var sst=document.getElementById('stats-status');if(sst)sst.addEventListener('change',renderStats);
     document.getElementById('note-add').addEventListener('click',addNote);
     document.getElementById('class-tabs').addEventListener('click',function(e){var t=e.target.closest('[data-class]');if(!t)return;classFilter=t.dataset.class;
-      var act=state.students.find(function(s){return s.id===activeStudentId;});if(!act||act.level!==classFilter)activeStudentId=null;
+      var act=state.students.find(function(s){return s.id===activeStudentId;});if(!act||act.level!==classFilter)pickFirstInLevel();
       renderStudents();renderMain();});
     document.getElementById('note-existing').addEventListener('click',function(e){var t=e.target.closest('[data-delnote]');if(t&&confirm('Notiz löschen?'))delNote(t.dataset.delnote);});
 
@@ -1257,7 +1276,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var layout=document.querySelector('.layout');
     layout.addEventListener('click',function(e){
       var t;
-      if((t=e.target.closest('[data-pick]'))){activeStudentId=t.dataset.pick;renderStudents();renderMain();return;}
+      if((t=e.target.closest('[data-pick]'))){activeStudentId=t.dataset.pick;rememberStudent(activeStudentId);renderStudents();renderMain();return;}
       if((t=e.target.closest('[data-week]'))){var uu=ui[t.dataset.sid];var act=t.dataset.week;uu.date=act==='today'?today():addDays(uu.date,act==='next'?7:-7);rerenderStudent(t.dataset.sid);return;}
       if((t=e.target.closest('[data-noteact]'))){var s2=state.students.find(function(x){return x.id===t.dataset.sid;});openNoteModal({date:t.dataset.date,blockId:t.dataset.blk||null,subject:t.dataset.subj||null,level:s2?s2.level:null});return;}
       if((t=e.target.closest('[data-noteopen]'))){var n=state.notes.find(function(x){return x.id===t.dataset.noteopen;});if(n)openNoteModal({date:n.date,blockId:n.blockId,subject:n.subject,level:n.level});return;}

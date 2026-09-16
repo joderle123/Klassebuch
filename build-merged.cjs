@@ -163,7 +163,7 @@ var ANW_API = [
   "    tasksForLevel:function(level){return state.notes.filter(function(n){return (n.type==='hausaufgabe'||n.type==='pruefung')&&(!n.level||!level||n.level===level);}).sort(function(a,b){return a.date<b.date?1:-1;});},",
   "    statusLabel:function(s){return (STATUS[s]&&STATUS[s].label)||s;},",
   "    fmt:function(iso){return fmtD(iso);},",
-  "    openStudent:function(id){activeStudentId=id;var s=state.students.find(function(x){return x.id===id;});if(s){classFilter=s.level||classFilter;}renderAll();},",
+  "    openStudent:function(id){activeStudentId=id;rememberStudent(id);var s=state.students.find(function(x){return x.id===id;});if(s){classFilter=s.level||classFilter;}renderAll();},",
   "    openNoteToday:function(){openNoteModal({date:today(),blockId:null,subject:null,level:null});},",
   "    delNote:function(id){delNote(id);},",
   "    exportEntries:function(){return state.entries.map(function(e){return e;});},",
@@ -2206,7 +2206,14 @@ var SHELL_CONTROLLER = `
   function extraUsers(){try{return JSON.parse(localStorage.getItem(EXTRA_LS)||'[]')||[];}catch(e){return [];}}
   function addExtraUser(u){var l=extraUsers();if(l.indexOf(u)<0){l.push(u);try{localStorage.setItem(EXTRA_LS,JSON.stringify(l));}catch(e){}}}
   function allUsers(){var base=(window.KB_ANW&&KB_ANW.users)?KB_ANW.users():[];var seen={},out=[];base.concat(extraUsers()).forEach(function(u){if(u&&!seen[u]){seen[u]=1;out.push(u);}});return out;}
-  function curUser(){return (window.KB_ANW&&KB_ANW.getUser&&KB_ANW.getUser())||'';}
+  /* Beim Start ist die Anwesenheits-Engine oft noch nicht geladen, dann liefert
+     getUser() leer und die Personenauswahl ginge unnötig erneut auf. Deshalb
+     ersatzweise direkt aus dem gespeicherten Zustand lesen. */
+  function curUser(){
+    var u=(window.KB_ANW&&KB_ANW.getUser&&KB_ANW.getUser())||'';
+    if(u)return u;
+    try{return (JSON.parse(localStorage.getItem('anwesenheit_v1')||'{}').currentUser)||'';}catch(e){return '';}
+  }
   function uIni(n){return (window.KB_ANW&&KB_ANW.initials)?KB_ANW.initials(n):String(n||'?').charAt(0).toUpperCase();}
   function uBg(n){return (window.KB_ANW&&KB_ANW.avatarBg)?KB_ANW.avatarBg(n):'#4f5bd5';}
   var userHooks=[];
