@@ -1362,16 +1362,31 @@ window.KB_BLOCKS=(function(){
 var ROSTER_MODULE = `
 window.KB_ROSTER=(function(){
   var LS='klassebuch_roster_v1';
+  /* Klassenzusammensetzung 2026/27 */
   var SEED=[
-    {id:'stud_ben',   name:'Ben',     anonLabel:'Schüler G', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'ES', active:true},
     {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', zyklus:'ES', active:true},
     {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', zyklus:'ES', active:true},
-    {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'ES', active:true},
-    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L1', zyklus:'ES', active:true},
-    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L1', zyklus:'ES', active:true},
-    {id:'stud_colin', name:'Colin',   anonLabel:'Schüler C', klasse:'', level:'L1', zyklus:'ES', active:true},
-    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L1', zyklus:'ES', active:true}
+    {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_suman', name:'Suman',   anonLabel:'Schüler H', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_matteo',name:'Matteo',  anonLabel:'Schüler J', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L2', zyklus:'ES', active:true}
   ];
+  /* Einmalige Übernahme der Zusammensetzung 2026/27 in bestehende
+     Installationen. Feste IDs, damit zwei Geräte beim Anlegen nicht zwei
+     verschiedene Datensätze fürs gleiche Kind erzeugen. Wer nicht auf der
+     Liste steht, wird INAKTIV gesetzt, nie gelöscht — Absenzen, Noten und
+     Dossier bleiben vollständig erhalten. */
+  var CLASS_FLAG='klassebuch_klasse_2627';
+  var CLASS_2627={
+    L1:[['stud_colin','Colin','Schüler C'],['stud_alexp','Alex P.','Schüler A'],
+        ['stud_lilly','Lilly','Schüler I'],['stud_jason','Jason','Schüler D']],
+    L2:[['stud_alexk','Alex K.','Schüler B'],['stud_suman','Suman','Schüler H'],
+        ['stud_matteo','Matteo','Schüler J'],['stud_chase','Chase','Schüler F'],
+        ['stud_miguel','Miguel','Schüler E']]
+  };
   function clone(o){var r={};for(var k in o){r[k]=o[k];}return r;}
   function loadList(){
     try{var raw=localStorage.getItem(LS);if(raw){var a=JSON.parse(raw);if(a&&a.length){return a.map(clone);}}}catch(e){}
@@ -1379,6 +1394,33 @@ window.KB_ROSTER=(function(){
   }
   var list=loadList(); var hooks=[];
   function persist(){try{localStorage.setItem(LS,JSON.stringify(list));}catch(e){}}
+  function nameKey(n){return String(n||'').toLowerCase().replace(/[^a-z]/g,'');}
+  function applyClass2627(){
+    try{if(localStorage.getItem(CLASS_FLAG))return 0;}catch(e){}
+    var changed=0, keep={};
+    ['L1','L2'].forEach(function(lv){
+      CLASS_2627[lv].forEach(function(r){
+        var id=r[0], nm=r[1], lab=r[2], s=null, i;
+        for(i=0;i<list.length;i++){if(list[i].id===id){s=list[i];break;}}
+        if(!s){for(i=0;i<list.length;i++){if(nameKey(list[i].name)===nameKey(nm)){s=list[i];break;}}}
+        if(!s){list.push({id:id,name:nm,anonLabel:lab,klasse:'',level:lv,zyklus:'ES',active:true});changed++;}
+        else{
+          if(s.level!==lv){s.level=lv;changed++;}
+          if(s.active===false){s.active=true;changed++;}
+          if(!s.anonLabel){s.anonLabel=lab;}
+          keep[s.id]=1;
+        }
+        keep[id]=1;
+      });
+    });
+    for(var j=0;j<list.length;j++){
+      if(!keep[list[j].id]&&list[j].active!==false){list[j].active=false;changed++;}
+    }
+    try{localStorage.setItem(CLASS_FLAG,'1');}catch(e){}
+    if(changed)persist();
+    return changed;
+  }
+  applyClass2627();
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
