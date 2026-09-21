@@ -188,6 +188,14 @@ header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px
 .wcell.marked.unentschuldigt{border-color:var(--danger);background:var(--danger-50);color:var(--danger-dark);}
 .wcell.marked.verspaetet{border-color:var(--warn);background:var(--warn-50);color:#9A6B00;}
 .wcell .mk{font-size:11px;font-weight:900;padding:1px 8px;border-radius:999px;}
+.late-pop{position:absolute;z-index:120;background:#fff;border:2px solid var(--warn);border-radius:12px;padding:10px;box-shadow:0 10px 28px rgba(0,0,0,.18);font-size:13px;}
+.late-pop .lp-h{font-weight:800;margin-bottom:7px;color:var(--text);}
+.late-pop .lp-row{display:flex;flex-wrap:wrap;gap:5px;align-items:center;}
+.late-pop .lp-row+.lp-row{margin-top:6px;}
+.late-pop button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:5px 9px;font:inherit;font-size:12px;font-weight:700;cursor:pointer;color:var(--text);}
+.late-pop button:hover{border-color:var(--warn);}
+.late-pop button.on{background:var(--warn);border-color:var(--warn);color:#fff;}
+.late-pop input{width:72px;border:1.5px solid var(--line);border-radius:8px;padding:5px 7px;font:inherit;font-size:12px;}
 .wcell.marked.entschuldigt .mk{background:var(--info);color:#fff;}
 .wcell.marked.unentschuldigt .mk{background:var(--danger);color:#fff;}
 .wcell.marked.verspaetet .mk{background:var(--warn);color:#fff;}
@@ -664,6 +672,11 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
 
   /* ---- Persistenz / Migration ---- */
   function storageOK(){try{var k='__t'+Date.now();localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(e){return false;}}
+  /* Erst laden, dann schreiben. Die Shell ruft KB_ANW schon an, bevor der
+     Browser DOMContentLoaded meldet - ohne das hier wuerde der erste
+     save() den leeren Anfangszustand ueber die gespeicherten Daten legen. */
+  var loaded=false;
+  function ensureLoaded(){if(!loaded)load();}
   function load(){
     try{var r=localStorage.getItem(KEY);if(r){var p=JSON.parse(r);
       state.students=Array.isArray(p.students)?p.students:[];
@@ -676,6 +689,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     }}catch(e){console.error(e);}
     // currentUser ist gerätegebunden, nicht aus Backup übernehmen
     try{var u=localStorage.getItem('anwesenheit_user');if(u)state.currentUser=u;}catch(e){}
+    loaded=true;
     migrate();
   }
   function migrate(){
@@ -706,6 +720,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     }
   }
   function save(){
+    ensureLoaded();
     try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){toast('⚠️ Speichern fehlgeschlagen — Backup machen!');}
     if(fileConnected&&!suppressWrite)scheduleWrite();
   }
@@ -846,13 +861,13 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
 
   /* ---- Summary ---- */
   function renderSummary(){
-    var list=periodEntries();var e=0,u=0,v=0;
-    list.forEach(function(x){if(x.status==='entschuldigt')e+=countHours(x);else if(x.status==='unentschuldigt')u+=countHours(x);else if(x.status==='verspaetet')v++;});
+    var list=periodEntries();var e=0,u=0,v=0,vm=0;
+    list.forEach(function(x){if(x.status==='entschuldigt')e+=countHours(x);else if(x.status==='unentschuldigt')u+=countHours(x);else if(x.status==='verspaetet'){v++;vm+=lateOf(x);}});
     document.getElementById('summary').innerHTML=
       sCard('total','📊',nf(e+u),'Absenz-Stunden total')+
       sCard('ent','✅',nf(e),'Excusé (Std.)')+
       sCard('unent','⛔',nf(u),'Non-excusé (Std.)')+
-      sCard('versp','⏰',String(v),'Retards');
+      sCard('versp','⏰',String(v),'Retards'+(vm?' ('+vm+' min)':''));
   }
   function sCard(c,ic,v,l){return '<div class="sum '+c+'"><div class="ic">'+ic+'</div><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
 
@@ -958,7 +973,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
         '<input type="date" class="date-in" data-date="'+s.id+'" value="'+u.date+'" title="Zu Woche springen">'+
       '</div>'+
     '</div>';
-    var help='<div class="rec-hint">💡 Einfach eine Zelle <b>anklicken</b> = abwesend (Non-excusé). Nochmal klicken wechselt zu Excusé → Retard → wieder weg. <b>„Tag"</b> macht das für die ganze Spalte. <b>📝</b> = Notiz/Prüfung.</div>';
+    var help='<div class="rec-hint">💡 Einfach eine Zelle <b>anklicken</b> = abwesend (Non-excusé). Nochmal klicken wechselt zu Excusé → Retard → wieder weg. Beim <b>Retard</b> fragt die App gleich nach den Minuten (z.B. 10 min) — wegklicken heisst „ohne Angabe". <b>„Tag"</b> macht das für die ganze Spalte. <b>📝</b> = Notiz/Prüfung.</div>';
     // Kopfzeile mit „Tag markieren"
     var head='<tr><th class="th-time"></th>';
     days.forEach(function(d,i){var hol=holidayInfo(d);var wd=wdOf(d);var dayHrs=dayCounted(s.id,d);
@@ -996,7 +1011,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
           noteBar='<button class="note-bar '+topNote.type+'" data-noteact="block" data-sid="'+s.id+'" data-date="'+d+'" data-blk="'+b.id+'" data-subj="'+esc(subj)+'" title="'+esc(topNote.text)+'"><span class="nb-ic">'+nt.icon+'</span><span class="nb-lbl">'+esc(nt.label)+'</span>'+(notes.length>1?'<span class="nb-cnt">+'+(notes.length-1)+'</span>':'')+'</button>';}
         body+='<td'+(d===todayISO?' class="todaycol"':'')+'><div class="wcell-wrap"><button class="'+cls+'" data-blk="'+b.id+'" data-sid="'+s.id+'" data-date="'+d+'">'+
           '<span class="subj-lbl">'+esc(subj)+'</span>'+
-          (ent?'<span class="mk">'+STATUS[ent.status].short+'</span>':'')+
+          (ent?'<span class="mk">'+STATUS[ent.status].short+(lateOf(ent)?' '+lateOf(ent)+'′':'')+'</span>':'')+
         '</button>'+noteBar+'<button class="note-btn" data-noteact="block" data-sid="'+s.id+'" data-date="'+d+'" data-blk="'+b.id+'" data-subj="'+esc(subj)+'" title="Klassenbuch-Notiz zu '+esc(subj)+'">📝</button></div></td>';
       });
       body+='</tr>';
@@ -1037,6 +1052,54 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   function addDays(iso,n){var d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+n);return toISO(d);}
   // Klick-Zyklus: (leer) → Non-excusé → Excusé → Retard → (leer)
   var CYCLE={'':'unentschuldigt',unentschuldigt:'entschuldigt',entschuldigt:'verspaetet',verspaetet:''};
+  /* ---- Retard genauer: wie viele Minuten zu spät ----
+     0 bzw. kein Wert heisst „ohne Minutenangabe" — so war es bisher.
+     Die Minuten haengen am Eintrag, damit sie zur richtigen Stunde gehoeren. */
+  var LATE_STEPS=[5,10,15,20,30,45];
+  function lateOf(e){return (e&&e.status==='verspaetet')?(+e.lateMin||0):0;}
+  function closeLatePop(){var p=document.getElementById('late-pop');if(p&&p.parentNode)p.parentNode.removeChild(p);}
+  function setLate(sid,blockId,date,mins){
+    var ent=entryFor(sid,date,blockId);if(!ent||ent.status!=='verspaetet')return;
+    if(mins>0)ent.lateMin=mins;else delete ent.lateMin;
+    ent.byUser=state.currentUser||'';ent.byUserAt=Date.now();
+    save();rerenderStudent(sid);renderSummary();
+  }
+  function openLatePop(sid,blockId,date){
+    closeLatePop();
+    var ent=entryFor(sid,date,blockId);if(!ent||ent.status!=='verspaetet')return;
+    var cell=document.querySelector('.wcell[data-blk="'+blockId+'"][data-sid="'+sid+'"][data-date="'+date+'"]');
+    if(!cell)return;
+    var cur=lateOf(ent),frei=(cur&&LATE_STEPS.indexOf(cur)<0)?cur:'';
+    var p=document.createElement('div');p.id='late-pop';p.className='late-pop';
+    p.innerHTML='<div class="lp-h">⏰ Wie viel zu spät?</div><div class="lp-row">'+
+      LATE_STEPS.map(function(m){return '<button type="button" data-lm="'+m+'"'+(cur===m?' class="on"':'')+'>'+m+' min</button>';}).join('')+
+      '</div><div class="lp-row"><input type="number" min="1" max="240" step="5" id="late-free" placeholder="andere" value="'+frei+'">'+
+      '<button type="button" data-lm="free">OK</button>'+
+      '<button type="button" data-lm="0"'+(cur?'':' class="on"')+' title="Retard ohne Minutenangabe">ohne Angabe</button></div>';
+    document.body.appendChild(p);
+    var r=cell.getBoundingClientRect();
+    var left=r.left+window.scrollX, top=r.bottom+window.scrollY+5;
+    left=Math.max(6,Math.min(left,window.scrollX+window.innerWidth-p.offsetWidth-6));
+    if(r.bottom+p.offsetHeight+12>window.innerHeight)top=r.top+window.scrollY-p.offsetHeight-5;
+    p.style.left=left+'px';p.style.top=top+'px';
+    p.addEventListener('click',function(ev){
+      var b=ev.target.closest('[data-lm]');if(!b)return;
+      ev.stopPropagation();
+      var v=b.getAttribute('data-lm');
+      var mins=(v==='free')?Math.max(0,Math.min(240,parseInt((document.getElementById('late-free')||{}).value,10)||0)):+v;
+      setLate(sid,blockId,date,mins);closeLatePop();
+    });
+    var frei2=document.getElementById('late-free');
+    if(frei2)frei2.addEventListener('keydown',function(ev){if(ev.key==='Enter'){ev.preventDefault();setLate(sid,blockId,date,Math.max(0,Math.min(240,parseInt(frei2.value,10)||0)));closeLatePop();}});
+    setTimeout(function(){
+      document.addEventListener('click',function weg(ev){
+        if(ev.target.closest&&ev.target.closest('#late-pop'))return;
+        closeLatePop();document.removeEventListener('click',weg,true);
+      },true);
+      document.addEventListener('keydown',function esc(ev){if(ev.key==='Escape'){closeLatePop();document.removeEventListener('keydown',esc,true);}},true);
+    },0);
+  }
+
   function toggleBlock(sid,blockId,date){
     var s=state.students.find(function(x){return x.id===sid;});if(!s)return;
     var wd=wdOf(date);if(wd<1||wd>5)return;if(holidayInfo(date))return;
@@ -1048,6 +1111,8 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     else if(existing){existing.status=next;existing.byUser=state.currentUser||'';existing.byUserAt=Date.now();}
     else{state.entries.push({id:uid(),studentId:sid,date:date,weekday:wd,blockId:blockId,subject:subj,status:next,hours:blockHours(b),note:'',byUser:state.currentUser||'',byUserAt:Date.now()});}
     save();rerenderStudent(sid);renderSummary();
+    // Beim Retard direkt fragen, wie viele Minuten — wegklicken geht immer.
+    if(next==='verspaetet')setTimeout(function(){openLatePop(sid,blockId,date);},0);
   }
   // Ganzer Tag: zyklisch wie eine Zelle, aber für alle Blöcke gemeinsam
   function markWholeDay(sid,date){
@@ -1197,17 +1262,17 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   /* ---- PDF ---- */
   function buildReport(){
     var p=curPeriod();var label=p?p.name:'Ganzes Schuljahr';var list=periodEntries();var d=new Date().toLocaleDateString('de-CH',{day:'2-digit',month:'2-digit',year:'numeric'});
-    var gE=0,gU=0,gV=0;list.forEach(function(e){if(e.status==='entschuldigt')gE+=countHours(e);else if(e.status==='unentschuldigt')gU+=countHours(e);else gV++;});
-    var sRows=state.students.map(function(s){var sl=list.filter(function(e){return e.studentId===s.id;});var e1=0,u1=0,v1=0;sl.forEach(function(e){if(e.status==='entschuldigt')e1+=countHours(e);else if(e.status==='unentschuldigt')u1+=countHours(e);else v1++;});
+    var gE=0,gU=0,gV=0,gVM=0;list.forEach(function(e){if(e.status==='entschuldigt')gE+=countHours(e);else if(e.status==='unentschuldigt')gU+=countHours(e);else{gV++;gVM+=lateOf(e);}});
+    var sRows=state.students.map(function(s){var sl=list.filter(function(e){return e.studentId===s.id;});var e1=0,u1=0,v1=0,vm1=0;sl.forEach(function(e){if(e.status==='entschuldigt')e1+=countHours(e);else if(e.status==='unentschuldigt')u1+=countHours(e);else{v1++;vm1+=lateOf(e);}});
       // Top-Fach
       var subj={};sl.forEach(function(e){if(STATUS[e.status].isAbsence)subj[e.subject]=(subj[e.subject]||0)+1;});var top=Object.keys(subj).sort(function(a,b){return subj[b]-subj[a];})[0];
-      return '<tr><td>'+esc(s.name)+' <span style="color:#999">'+(s.level||'')+'</span></td><td class="n">'+nf(e1)+'</td><td class="n">'+nf(u1)+'</td><td class="n b">'+nf(e1+u1)+'</td><td class="n">'+(v1||'–')+'</td><td>'+(top?esc(top)+' ('+subj[top]+'×)':'–')+'</td></tr>';}).join('')||'<tr><td colspan="6">Keine Schüler.</td></tr>';
+      return '<tr><td>'+esc(s.name)+' <span style="color:#999">'+(s.level||'')+'</span></td><td class="n">'+nf(e1)+'</td><td class="n">'+nf(u1)+'</td><td class="n b">'+nf(e1+u1)+'</td><td class="n">'+(v1?(v1+(vm1?' ('+vm1+' min)':'')):'–')+'</td><td>'+(top?esc(top)+' ('+subj[top]+'×)':'–')+'</td></tr>';}).join('')||'<tr><td colspan="6">Keine Schüler.</td></tr>';
     var datesByWd={},sumByWd={};list.forEach(function(e){var w=e.weekday!=null?e.weekday:wdOf(e.date);(datesByWd[w]=datesByWd[w]||new Set()).add(e.date);if(STATUS[e.status].isAbsence)sumByWd[w]=(sumByWd[w]||0)+countHours(e);});
     var wRows='';WD_ORDER.forEach(function(w){if(!datesByWd[w])return;var dd=datesByWd[w].size,ss=sumByWd[w]||0;wRows+='<tr><td>'+WD[w]+'</td><td class="n">'+dd+'</td><td class="n">'+nf(ss)+'</td><td class="n b">'+nf(dd?ss/dd:0)+'</td></tr>';});if(!wRows)wRows='<tr><td colspan="4">Keine Einträge.</td></tr>';
     return '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Absenzen-Bericht</title><style>@page{margin:18mm 15mm;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,"Segoe UI",Arial,sans-serif;color:#1A1A2E;font-size:12px;}.h{display:flex;justify-content:space-between;border-bottom:2px solid #4f5bd5;padding-bottom:12px;margin-bottom:16px;}.h h1{font-size:20px;}.h .s{color:#777;font-size:12px;margin-top:3px;}.h .m{text-align:right;font-size:11px;color:#777;}.cards{display:flex;gap:10px;margin-bottom:16px;}.c{flex:1;border:1px solid #E8E8F0;border-radius:8px;padding:10px;}.c .l{font-size:9px;text-transform:uppercase;color:#999;font-weight:700;}.c .v{font-size:22px;font-weight:800;}h2{font-size:13px;margin:16px 0 7px;color:#3b46b8;}table{width:100%;border-collapse:collapse;font-size:11.5px;}th{background:#eef0fc;text-align:left;padding:7px 9px;font-size:9px;text-transform:uppercase;color:#555;}td{padding:6px 9px;border-bottom:1px solid #F0F0F6;}td.n,th.n{text-align:right;}td.b{font-weight:700;}.foot{margin-top:22px;border-top:1px solid #E8E8F0;padding-top:8px;font-size:10px;color:#999;}</style></head><body>'+
       '<div class="h"><div><h1>Absenzen-Bericht</h1><div class="s">'+esc(label)+'</div></div><div class="m">Erstellt am '+d+'<br>'+state.students.length+' Schüler · '+list.length+' Einträge</div></div>'+
-      '<div class="cards"><div class="c"><div class="l">Stunden total</div><div class="v">'+nf(gE+gU)+'</div></div><div class="c"><div class="l">Excusé</div><div class="v" style="color:#00B894">'+nf(gE)+'</div></div><div class="c"><div class="l">Non-excusé</div><div class="v" style="color:#C0392B">'+nf(gU)+'</div></div><div class="c"><div class="l">Retards</div><div class="v" style="color:#E8A317">'+gV+'</div></div></div>'+
-      '<h2>Absenzen je Schüler (Stunden)</h2><table><thead><tr><th>Schüler</th><th class="n">Excusé</th><th class="n">Non-exc.</th><th class="n">Total</th><th class="n">Retard</th><th>Häufigstes Fach</th></tr></thead><tbody>'+sRows+'</tbody></table>'+
+      '<div class="cards"><div class="c"><div class="l">Stunden total</div><div class="v">'+nf(gE+gU)+'</div></div><div class="c"><div class="l">Excusé</div><div class="v" style="color:#00B894">'+nf(gE)+'</div></div><div class="c"><div class="l">Non-excusé</div><div class="v" style="color:#C0392B">'+nf(gU)+'</div></div><div class="c"><div class="l">Retards</div><div class="v" style="color:#E8A317">'+gV+(gVM?'<span style="font-size:13px"> ('+gVM+' min)</span>':'')+'</div></div></div>'+
+      '<h2>Absenzen je Schüler (Stunden)</h2><table><thead><tr><th>Schüler</th><th class="n">Excusé</th><th class="n">Non-exc.</th><th class="n">Total</th><th class="n">Retard (Min.)</th><th>Häufigstes Fach</th></tr></thead><tbody>'+sRows+'</tbody></table>'+
       '<h2>Ø Absenz-Stunden je Wochentag</h2><table><thead><tr><th>Wochentag</th><th class="n">Tage</th><th class="n">Summe</th><th class="n">Ø/Tag</th></tr></thead><tbody>'+wRows+'</tbody></table>'+
       '<div class="foot">Anwesenheits-Tool · automatisch erstellt</div></body></html>';
   }
@@ -1217,7 +1282,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   function dl(name,content,type){var b=new Blob([content],{type:type});var url=URL.createObjectURL(b);var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},800);}
   function exportJSON(){dl('anwesenheit-backup-'+today()+'.json',JSON.stringify(state,null,2),'application/json');toast('⬇️ Backup gespeichert');}
   function csvCell(v){var s=String(v==null?'':v);return /[";\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
-  function exportCSV(){var lines=['Datum;Wochentag;Schueler;Niveau;Block;Fach;Status;Stunden'];state.entries.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(e){var s=state.students.find(function(x){return x.id===e.studentId;});var b=BLOCKS.find(function(x){return x.id===e.blockId;});lines.push([e.date,WD[e.weekday!=null?e.weekday:wdOf(e.date)],s?s.name:'(gelöscht)',s?(s.level||''):'',b?(b.start+'-'+b.end):'',e.subject||'',STATUS[e.status]?STATUS[e.status].label:e.status,String(entryHours(e)).replace('.',',')].map(csvCell).join(';'));});dl('anwesenheit-'+today()+'.csv','﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('⬇️ CSV exportiert');}
+  function exportCSV(){var lines=['Datum;Wochentag;Schueler;Niveau;Block;Fach;Status;Stunden;Minuten zu spaet'];state.entries.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(e){var s=state.students.find(function(x){return x.id===e.studentId;});var b=BLOCKS.find(function(x){return x.id===e.blockId;});lines.push([e.date,WD[e.weekday!=null?e.weekday:wdOf(e.date)],s?s.name:'(gelöscht)',s?(s.level||''):'',b?(b.start+'-'+b.end):'',e.subject||'',STATUS[e.status]?STATUS[e.status].label:e.status,String(entryHours(e)).replace('.',','),lateOf(e)?String(lateOf(e)):''].map(csvCell).join(';'));});dl('anwesenheit-'+today()+'.csv','﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('⬇️ CSV exportiert');}
   function importJSON(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!Array.isArray(d.students))throw 0;if(!confirm('Backup laden? Aktuelle Daten werden ersetzt.'))return;state.students=d.students||[];state.periods=Array.isArray(d.periods)?d.periods:[];state.entries=Array.isArray(d.entries)?d.entries:[];state.timetable=d.timetable||defaultTimetable();state.notes=Array.isArray(d.notes)?d.notes:[];state.ttVersion=d.ttVersion||0;ui={};migrate();save();renderStudentMgmt();renderAll();closeModals();toast('✅ Backup geladen');}catch(e){toast('⚠️ Datei nicht lesbar');}};r.readAsText(file);}
   function resetAll(){if(!confirm('Wirklich ALLE Daten löschen?'))return;if(!confirm('Letzte Warnung: alles wird gelöscht.'))return;state={students:[],periods:[],entries:[],timetable:defaultTimetable(),notes:[],currentUser:state.currentUser,ttVersion:2};ui={};ensurePeriods();save();renderStudentMgmt();renderAll();closeModals();toast('🗑 Alles gelöscht');}
 
@@ -1295,6 +1360,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     // Bediener wählen erzwingen, falls noch keiner gewählt
     if(!state.currentUser){renderUserGrid();openModal('modal-user');}
   }
+  ensureLoaded();   // sofort, nicht erst beim Aufbau der Seite
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
