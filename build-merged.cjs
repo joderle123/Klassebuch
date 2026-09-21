@@ -1402,7 +1402,20 @@ window.KB_ROSTER=(function(){
     {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L2', zyklus:'ES', active:true},
     /* Nicht mehr in der Klasse, aber weiter dokumentiert: inaktiv statt
        geloescht, damit Absenzen, Noten und Dossier erhalten bleiben. */
-    {id:'stud_ben',   name:'Ben',      anonLabel:'Schüler G', klasse:'', level:'L2', zyklus:'ES', active:false}
+    {id:'stud_ben',   name:'Ben',      anonLabel:'Schüler G', klasse:'', level:'L2', zyklus:'ES', active:false},
+    {id:'stud_mia',   name:'Mia',      anonLabel:'Schüler H', klasse:'', level:'L1', zyklus:'ES', active:false},
+    {id:'stud_jayson',name:'Jayson',   anonLabel:'Schüler J', klasse:'', level:'L1', zyklus:'ES', active:false},
+    {id:'stud_levi',  name:'Levi',     anonLabel:'Schüler K', klasse:'', level:'L1', zyklus:'ES', active:false}
+  ];
+  /* Ehemalige: stehen nicht mehr in der Klasse, ihre Dossiers, Absenzen und
+     Noten sollen aber auffindbar bleiben. Fehlen sie im Roster, werden ihre
+     Eintraege beim Aufraeumen verworfen - deshalb werden sie als INAKTIV
+     ergaenzt. Inaktive tauchen im taeglichen Klassenbuch nicht auf. */
+  var FORMER=[
+    ['stud_ben','Ben','Schüler G','L2'],
+    ['stud_mia','Mia','Schüler H','L1'],
+    ['stud_jayson','Jayson','Schüler J','L1'],
+    ['stud_levi','Levi','Schüler K','L1']
   ];
   /* Einmalige Übernahme der Zusammensetzung 2026/27 in bestehende
      Installationen. Feste IDs, damit zwei Geräte beim Anlegen nicht zwei
@@ -1451,6 +1464,14 @@ window.KB_ROSTER=(function(){
         keep[id]=1;
       });
     });
+    /* Ehemalige ergaenzen, falls sie fehlen - immer, damit ihre Historie auch
+       in bestehenden Installationen wieder sichtbar wird. */
+    for(var f=0;f<FORMER.length;f++){
+      var fo=FORMER[f], found=null;
+      for(var g=0;g<list.length;g++){if(list[g].id===fo[0]){found=list[g];break;}}
+      if(!found){list.push({id:fo[0],name:fo[1],anonLabel:fo[2],klasse:'',level:fo[3],zyklus:'ES',active:false});changed++;}
+      keep[fo[0]]=1;
+    }
     if(first){
       for(var j=0;j<list.length;j++){
         if(!keep[list[j].id]&&list[j].active!==false){list[j].active=false;changed++;}

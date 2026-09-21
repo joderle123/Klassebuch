@@ -902,7 +902,7 @@ var Storage = {
 /* Version der offiziellen Réunion-Saat (Team-Rapporte). Bei jeder
    Erweiterung um neue Réunionen erhöhen — Bestandsinstallationen laden
    die neuen Réunionen dann beim nächsten Start idempotent nach. */
-var REUNION_SEED_VERSION = 2;
+var REUNION_SEED_VERSION = 3;
 
 var Repo = {
   students: [],
@@ -961,7 +961,8 @@ var Repo = {
     });
     var haveEntry = {};
     self.entries.forEach(function (e) { haveEntry[e.id] = true; });
-    var newEntries = (data.reunionEntries || []).filter(function (e) { return !haveEntry[e.id]; });
+    var seedEntries = (data.entries || []).concat(data.reunionEntries || []);
+    var newEntries = seedEntries.filter(function (e) { return !haveEntry[e.id]; });
     self.entries = self.entries.concat(newEntries);
     return Promise.all([
       Storage.putAll('reunions', self.reunions),
