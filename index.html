@@ -6120,6 +6120,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
             <select class="kb-in" id="kb-tt-copy" style="max-width:250px;"></select>
             <button class="kb-btn" id="kb-tt-copybtn">Übernehmen</button>
             <button class="kb-btn" id="kb-tt-clear" title="Alle Fächer in diesem Trimester leeren (Pausen bleiben)">Leeren</button>
+            <button class="kb-btn" id="kb-tt-reset" title="Den offiziellen Stundenplan 2026/27 wieder einsetzen">↺ Standard-Stundenplan</button>
           </div>
         </div>
         <div class="kb-ttwrap"><div id="kb-tt-grid"></div></div>
@@ -11974,6 +11975,7 @@ window.KB_BUBBLE=(function(){
        kein Unterrichtsfach: sie gehoeren nicht in Faecherliste und Noten. */
     isNonSubject:function(s){return !s||!!PAUSE_SUBJECTS[s]||!!NO_HOUR_SUBJECTS[s];},
     levels:function(){return ['L1','L2'];},
+    defaultTimetable:function(){try{return JSON.parse(JSON.stringify(defaultTimetable()));}catch(e){return null;}},
     /* Fach in Absenzen und Klassenbuch-Notizen mitbenennen, damit beim
        Umbenennen nichts verwaist. Leerer Zielname laesst den Eintrag stehen. */
     renameSubject:function(from,to){if(!from||!to)return 0;var n=0;
@@ -12025,6 +12027,15 @@ window.KB_TIMETABLE=(function(){
   function termKey(){try{return (window.KB_TERMS&&window.KB_TERMS.key())||'';}catch(e){return '';}}
   function liveTT(){try{return (window.KB_ANW&&window.KB_ANW.getTimetable)?window.KB_ANW.getTimetable():null;}catch(e){return null;}}
   function pushTT(tt){try{if(window.KB_ANW&&window.KB_ANW.setTimetable)window.KB_ANW.setTimetable(tt);}catch(e){}}
+  /* Ein Plan ist nur brauchbar, wenn er zum Raster passt UND Inhalt hat.
+     Sonst waere der Wochenplan leer - und dort laesst sich dann nichts
+     eintragen, weil Absenzen nur auf belegten Stunden moeglich sind. */
+  function usable(tt){return fitsRaster(tt)&&nonEmpty(tt);}
+  function fallback(){
+    var live=liveTT(); if(usable(live))return live;
+    try{if(window.KB_ANW&&window.KB_ANW.defaultTimetable){var d=window.KB_ANW.defaultTimetable();if(usable(d))return d;}}catch(e){}
+    return null;
+  }
   function nonEmpty(tt){
     if(!tt)return false;
     for(var lv in tt){var d=tt[lv]||{};for(var w in d){var a=d[w]||[];for(var i=0;i<a.length;i++){if(a[i])return true;}}}
@@ -12068,10 +12079,12 @@ window.KB_TIMETABLE=(function(){
     var o=load();
     if(dropStale(o))save(o);          /* Pläne aus einem alten Raster verwerfen */
     if(cur&&cur!==k){var live=liveTT();if(live){o[cur]=live;}}
-    if(!o[k]){
+    if(!usable(o[k])){
       var src=sourceFor(k,o);
-      o[k]=src?clone(src):liveTT();
+      if(!usable(src))src=fallback();
+      if(src)o[k]=clone(src);
     }
+    if(!usable(o[k])){delete o[k];save(o);cur=k;fire();return;}   /* nichts Kaputtes setzen */
     save(o);
     cur=k;
     pushTT(o[k]);
@@ -12095,6 +12108,13 @@ window.KB_TIMETABLE=(function(){
   }
   return {
     init:init, activate:activate, stash:stash, currentKey:function(){return cur;},
+    /* Notausstieg: offiziellen Plan fuer das aktive Trimester einsetzen. */
+    restoreDefault:function(){
+      var k=termKey(); if(!k)return false;
+      var d=null;try{d=window.KB_ANW&&window.KB_ANW.defaultTimetable?window.KB_ANW.defaultTimetable():null;}catch(e){}
+      if(!usable(d))return false;
+      var o=load(); o[k]=clone(d); save(o); cur=k; pushTT(o[k]); fire(); return true;
+    },
     keys:function(){var o=load();return Object.keys(o).sort();},
     has:function(k){var o=load();return !!o[k]&&nonEmpty(o[k]);},
     get:function(k){var o=load();return o[k]?clone(o[k]):null;},
@@ -45715,6 +45735,11 @@ window.KB_PDF = (function () {
     if(clr){clr.addEventListener('click',function(){
       if(!confirm('Alle Fächer in diesem Trimester leeren? Pausen bleiben stehen.'))return;
       window.KB_TIMETABLE.clear(); renderTTGrid(); renderSubjects();
+    });}
+    var ttr=$('kb-tt-reset');
+    if(ttr){ttr.addEventListener('click',function(){
+      if(!confirm('Den offiziellen Stundenplan 2026/27 für dieses Trimester wieder einsetzen? Eigene Änderungen in diesem Trimester gehen dabei verloren.'))return;
+      window.KB_TIMETABLE.restoreDefault(); renderTTGrid(); renderSubjects();
     });}
     var brst=$('kb-blk-reset');
     if(brst){brst.addEventListener('click',function(){
