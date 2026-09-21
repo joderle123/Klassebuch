@@ -1474,7 +1474,7 @@ var SHELL_CONTROLLER = `
     if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte die App in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>index.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
     var info;
     if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'');}
-    else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — bitte „Verbinden" klicken ('+esc(s.fileName)+').';}
+    else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — der Browser setzt die Freigabe beim Neustart zurück. Die App fragt beim ersten Klick von selbst danach, sonst hier „Verbinden" ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
     if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Notizen · <b>'+(k.pei||0)+'</b> × Fortschritt/Themen · <b>'+(k.goals||0)+'</b> × ELDiB-Ziele · <b>'+(k.agenda||0)+'</b> Terminpläne · <b>'+(k.screening||0)+'</b> Screenings · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
@@ -1485,7 +1485,17 @@ var SHELL_CONTROLLER = `
       if(s.backupErr&&s.backupErr!=='reconnect'){bk+=' <span style="color:#b3432d">'+esc(s.backupErr)+'</span>';}
       info+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);color:var(--kb-muted);font-size:12.5px;">'+bk+'</div>';
     }
+    if(s.fileName||s.connected){
+      var an=!window.KB_SYNC.autoOn||window.KB_SYNC.autoOn();
+      info+='<div style=\"margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);font-size:12.5px;\">'+
+        '<label style=\"display:flex;gap:7px;align-items:flex-start;cursor:pointer;\">'+
+        '<input type=\"checkbox\" id=\"kbs-auto\"'+(an?' checked':'')+' style=\"margin-top:2px;\">'+
+        '<span>Beim Öffnen von selbst verbinden — die App fragt einmal beim ersten Klick nach der Datei, statt dass man jedes Mal hierher muss.</span>'+
+        '</label></div>';
+    }
     st.innerHTML=info;
+    var au=$('kbs-auto');
+    if(au)au.addEventListener('change',function(){window.KB_SYNC.setAuto(au.checked);});
     var b;
     if(s.connected){var bkBtn=s.backupErr==='reconnect'?'<button class="kb-btn" id="kbs-bkok">🗂️ Auto-Backup bestätigen</button>':(s.backupName?'<button class="kb-btn" id="kbs-bkdir">🗂️ Backup-Ordner ändern</button>':'<button class="kb-btn kb-btn-primary" id="kbs-bkdir">🗂️ Auto-Backup einrichten</button>');b='<button class="kb-btn" id="kbs-now">🔄 Jetzt synchronisieren</button>'+bkBtn+'<button class="kb-btn" id="kbs-disc">Trennen</button>';}
     else if(s.error==='reconnect'){b='<button class="kb-btn kb-btn-primary" id="kbs-recon">Verbinden</button>';}
@@ -1942,7 +1952,7 @@ window.KB_SYNC=(function(){
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
   var status={connected:false,supported:fsSupported(),fileName:'',lastSync:0,lastBy:'',error:'',pending:false,backupName:'',backupLast:'',backupErr:''};
   var statusCb=null;
-  function setStatus(p){for(var k in p){status[k]=p[k];}if(statusCb){try{statusCb(status);}catch(e){}}}
+  function setStatus(p){for(var k in p){status[k]=p[k];}if(statusCb){try{statusCb(status);}catch(e){}}try{warnBar();}catch(e){}}
   function loadBase(){try{var r=localStorage.getItem(BASE_LS);if(r)return JSON.parse(r);}catch(e){}return null;}
   function saveBase(b){try{localStorage.setItem(BASE_LS,JSON.stringify(b));}catch(e){}}
   function operator(){try{return localStorage.getItem('anwesenheit_user')||'';}catch(e){return '';}}
@@ -2002,7 +2012,58 @@ window.KB_SYNC=(function(){
   }
   function start(){stop();timer=setInterval(cycle,5000);cycle();}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
-  function afterPick(h){return verifyPermission(h,true).then(function(ok){if(!ok){setStatus({error:'Kein Zugriff auf die Datei erteilt.'});return;}fileHandle=h;base=loadBase();return idbSet(h).then(function(){setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();});});}
+  function afterPick(h){return verifyPermission(h,true).then(function(ok){if(!ok){setStatus({error:'Kein Zugriff auf die Datei erteilt.'});return;}fileHandle=h;base=loadBase();setAuto(true);return idbSet(h).then(function(){setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();});});}
+
+  /* ---- Von selbst verbinden ----
+     Der Griff auf die Datei liegt dauerhaft in der Datenbank des Browsers.
+     Die ERLAUBNIS dazu setzt der Browser beim naechsten Oeffnen aber oft
+     wieder auf "fragen" zurueck, und fragen darf man nur als Antwort auf
+     einen Klick. Also: beim ersten Klick irgendwo einmal fragen - das ist
+     meist der Klick auf den eigenen Namen - statt jedes Mal von Hand in die
+     Einstellungen zu gehen. Wird abgelehnt, bleibt der Balken stehen und
+     nichts fragt ungefragt nach. */
+  var AUTO_KEY='kb_sync_auto';
+  var autoArmed=false,autoTried=false;
+  function autoOn(){try{return localStorage.getItem(AUTO_KEY)!=='0';}catch(e){return true;}}
+  function setAuto(v){try{localStorage.setItem(AUTO_KEY,v?'1':'0');}catch(e){}}
+  function armAuto(h){
+    if(autoArmed||!h||!autoOn())return;autoArmed=true;
+    var go=function(){
+      document.removeEventListener('pointerdown',go,true);
+      document.removeEventListener('keydown',go,true);
+      if(autoTried||fileHandle)return;autoTried=true;
+      verifyPermission(h,true).then(function(ok){
+        if(ok){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();}
+        else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});}
+      }).catch(function(){});
+    };
+    document.addEventListener('pointerdown',go,true);
+    document.addEventListener('keydown',go,true);
+  }
+
+  /* Solange eine bekannte Team-Datei NICHT verbunden ist, steht das oben -
+     sonst merkt es waehrend einer Réunion niemand. */
+  function warnBar(){
+    var zeig=!!(status&&status.error==='reconnect'&&!status.connected);
+    var el=document.getElementById('kb-syncwarn');
+    if(!zeig){if(el&&el.parentNode)el.parentNode.removeChild(el);return;}
+    if(!el){
+      el=document.createElement('div');el.id='kb-syncwarn';el.setAttribute('role','alert');
+      el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9998;background:#E8A317;color:#3a2a00;'+
+        'font:600 14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:9px 14px;'+
+        'display:flex;gap:12px;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.2);';
+      var t=document.createElement('span');
+      t.textContent='Team-Datei ist nicht verbunden — Eingaben bleiben vorerst nur auf diesem Gerät.';
+      el.appendChild(t);
+      var b=document.createElement('button');
+      b.textContent='Jetzt verbinden';
+      b.style.cssText='border:1px solid rgba(0,0,0,.4);background:#fff;color:#3a2a00;border-radius:8px;'+
+        'padding:3px 12px;font:inherit;font-size:13px;cursor:pointer;';
+      b.onclick=function(){idbGet().then(function(h){if(h){autoTried=false;afterPick(h);}});};
+      el.appendChild(b);
+      (document.body||document.documentElement).appendChild(el);
+    }
+  }
 
   return {
     supported:fsSupported,
@@ -2016,7 +2077,9 @@ window.KB_SYNC=(function(){
     disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
     syncNow:function(){return cycle();},
     reconnect:function(){idbGet().then(function(h){if(h)return afterPick(h);}).then(function(){return idbGet('backupdir');}).then(function(d){if(!d)return;return verifyPermission(d,true).then(function(ok){if(ok){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupErr:''});maybeBackup();}});});},
-    init:function(){if(!fsSupported())return;idbGet().then(function(h){if(!h)return;h.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei'});start();}else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});}});});idbGet('backupdir').then(function(d){if(!d)return;d.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay()});}else{setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay(),backupErr:'reconnect'});}});});},
+    autoOn:autoOn,
+    setAuto:function(v){setAuto(v);if(v&&!fileHandle)idbGet().then(function(h){if(h)armAuto(h);});},
+    init:function(){if(!fsSupported())return;idbGet().then(function(h){if(!h)return;h.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei'});start();}else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});armAuto(h);}});});idbGet('backupdir').then(function(d){if(!d)return;d.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay()});}else{setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay(),backupErr:'reconnect'});}});});},
     _test:{mergeColl:mergeColl,diffColl:diffColl,buildLocalDoc:buildLocalDoc,mergeDocs:mergeDocs,firstReconcile:firstReconcile,liveOf:liveOf,sameDoc:sameDoc,emptyDoc:emptyDoc,COLLS:COLLS,isBackupName:isBackupName,planPrune:planPrune,todayStr:todayStr,writeBackup:writeBackup,pruneBackups:pruneBackups,maybeBackup:maybeBackup,setBackupDir:function(d){backupDir=d;},setBase:function(b){base=b;},lastDay:bkLastDay,resetDay:function(){bkSetDay('');}}
   };
 })();

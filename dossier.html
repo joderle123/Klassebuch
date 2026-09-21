@@ -924,6 +924,61 @@ var Storage = {
    die neuen Réunionen dann beim nächsten Start idempotent nach. */
 var REUNION_SEED_VERSION = 3;
 
+/* ---------------------------------------------------------------
+   Papierkorb
+
+   Geloeschtes ist nicht sofort weg: es wandert in eine Liste im
+   Browser-Speicher und laesst sich von dort zurueckholen. Was nur leer
+   aufgeraeumt wurde (ein angefangener Eintrag ohne Inhalt), landet gar
+   nicht erst darin - sonst waere der Papierkorb voller Nichts.
+   Er liegt bewusst NUR auf diesem Geraet und geht nicht in die
+   Team-Datei: ein Papierkorb, der sich synchronisiert, wuerde
+   Geloeschtes auf den anderen Geraeten wieder auftauchen lassen.
+   --------------------------------------------------------------- */
+var Trash = {
+  KEY: LS_PREFIX + 'trash',
+  MAX: 300,
+  TAGE: 120,
+  list: function () {
+    var l;
+    try { l = JSON.parse(localStorage.getItem(this.KEY) || '[]') || []; } catch (e) { l = []; }
+    var grenze = Date.now() - this.TAGE * 864e5;
+    var frisch = l.filter(function (x) { return x && x.at > grenze; });
+    if (frisch.length !== l.length) this._save(frisch);
+    return frisch;
+  },
+  _save: function (l) {
+    try { localStorage.setItem(this.KEY, JSON.stringify(l.slice(0, this.MAX))); } catch (e) {}
+  },
+  /* Lohnt sich das Aufheben? Text, eigene Tags, ein Bericht oder Slider ja -
+     ein leeres Geruest nein. */
+  _wert: function (kind, d) {
+    if (kind !== 'entry') return true;
+    if (d.text && d.text.trim()) return true;
+    if (d.report) return true;
+    /* saveEntry legt die vier Verlaufs-Slider immer an, meist leer - erst ein
+       gesetzter Wert macht den Eintrag aufhebenswert. */
+    var sl = d.sliders || {};
+    for (var k in sl) { if (sl[k] !== null && sl[k] !== undefined && sl[k] !== '') return true; }
+    return (d.tags || []).filter(function (t) { return t !== 'Réunion'; }).length > 0;
+  },
+  push: function (kind, d) {
+    if (!d || !this._wert(kind, d)) return;
+    var l = this.list();
+    l.unshift({
+      id: 'tr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      kind: kind, at: Date.now(),
+      by: (window.KB_USER && KB_USER.get && KB_USER.get()) || '',
+      data: JSON.parse(JSON.stringify(d))
+    });
+    this._save(l);
+  },
+  drop: function (tid) {
+    this._save(this.list().filter(function (x) { return x.id !== tid; }));
+  },
+  clear: function () { this._save([]); }
+};
+
 var Repo = {
   students: [],
   entries: [],
@@ -1054,6 +1109,8 @@ var Repo = {
   },
   deleteEntry: function (id) {
     var self = this;
+    var weg = self.getEntry(id);
+    if (weg) Trash.push('entry', weg);
     self.entries = self.entries.filter(function (e) { return e.id !== id; });
     return Storage.remove('entries', id);
   },
@@ -1083,6 +1140,8 @@ var Repo = {
     return Storage.put('reunions', clean).then(function () { return clean; });
   },
   deleteReunion: function (id) {
+    var weg = this.getReunion(id);
+    if (weg) Trash.push('reunion', weg);
     this.reunions = this.reunions.filter(function (r) { return r.id !== id; });
     return Storage.remove('reunions', id);
   },

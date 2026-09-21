@@ -107,6 +107,13 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
 .kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
 .kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+.kb-trash{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow:auto;}
+.kb-trash-row{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;border:1px solid var(--kb-line);border-radius:10px;padding:9px 11px;background:#fff;}
+.kb-trash-main{min-width:0;flex:1;}
+.kb-trash-cat{font-size:11.5px;color:var(--kb-muted);border:1px solid var(--kb-line);border-radius:999px;padding:0 7px;}
+.kb-trash-txt{color:var(--kb-muted);font-size:13px;margin-top:3px;overflow-wrap:anywhere;}
+.kb-trash-meta{color:var(--kb-muted);font-size:11.5px;margin-top:4px;}
+.kb-trash-acts{display:flex;gap:6px;flex-shrink:0;}
 .kb-wkbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .kb-rinactive{opacity:.5;}
 .kb-rinactive .kb-rn{text-decoration:line-through;}
@@ -6194,6 +6201,14 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
           <button class="kb-btn" id="kb-weekly-dl">🌐 HTML — letzte 5 Wochen</button>
         </div>
       </div>
+      <div class="kb-card">
+        <div class="kb-card-h"><h3>🗑️ Papierkorb</h3><span class="kb-term-now" id="kb-trash-n"></span></div>
+        <p class="kb-hint">Gelöschte Dossier-Einträge und Réunionen liegen hier <b>120 Tage</b> lang und lassen sich zurückholen. Der Papierkorb bleibt auf diesem Gerät und wird nicht mit dem Team geteilt.</p>
+        <div id="kb-trash-list"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+          <button class="kb-btn" id="kb-trash-empty">Papierkorb leeren</button>
+        </div>
+      </div>
     </section>
   </main>
 </div>
@@ -6908,6 +6923,61 @@ var Storage = {
    die neuen Réunionen dann beim nächsten Start idempotent nach. */
 var REUNION_SEED_VERSION = 3;
 
+/* ---------------------------------------------------------------
+   Papierkorb
+
+   Geloeschtes ist nicht sofort weg: es wandert in eine Liste im
+   Browser-Speicher und laesst sich von dort zurueckholen. Was nur leer
+   aufgeraeumt wurde (ein angefangener Eintrag ohne Inhalt), landet gar
+   nicht erst darin - sonst waere der Papierkorb voller Nichts.
+   Er liegt bewusst NUR auf diesem Geraet und geht nicht in die
+   Team-Datei: ein Papierkorb, der sich synchronisiert, wuerde
+   Geloeschtes auf den anderen Geraeten wieder auftauchen lassen.
+   --------------------------------------------------------------- */
+var Trash = {
+  KEY: LS_PREFIX + 'trash',
+  MAX: 300,
+  TAGE: 120,
+  list: function () {
+    var l;
+    try { l = JSON.parse(localStorage.getItem(this.KEY) || '[]') || []; } catch (e) { l = []; }
+    var grenze = Date.now() - this.TAGE * 864e5;
+    var frisch = l.filter(function (x) { return x && x.at > grenze; });
+    if (frisch.length !== l.length) this._save(frisch);
+    return frisch;
+  },
+  _save: function (l) {
+    try { localStorage.setItem(this.KEY, JSON.stringify(l.slice(0, this.MAX))); } catch (e) {}
+  },
+  /* Lohnt sich das Aufheben? Text, eigene Tags, ein Bericht oder Slider ja -
+     ein leeres Geruest nein. */
+  _wert: function (kind, d) {
+    if (kind !== 'entry') return true;
+    if (d.text && d.text.trim()) return true;
+    if (d.report) return true;
+    /* saveEntry legt die vier Verlaufs-Slider immer an, meist leer - erst ein
+       gesetzter Wert macht den Eintrag aufhebenswert. */
+    var sl = d.sliders || {};
+    for (var k in sl) { if (sl[k] !== null && sl[k] !== undefined && sl[k] !== '') return true; }
+    return (d.tags || []).filter(function (t) { return t !== 'Réunion'; }).length > 0;
+  },
+  push: function (kind, d) {
+    if (!d || !this._wert(kind, d)) return;
+    var l = this.list();
+    l.unshift({
+      id: 'tr_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      kind: kind, at: Date.now(),
+      by: (window.KB_USER && KB_USER.get && KB_USER.get()) || '',
+      data: JSON.parse(JSON.stringify(d))
+    });
+    this._save(l);
+  },
+  drop: function (tid) {
+    this._save(this.list().filter(function (x) { return x.id !== tid; }));
+  },
+  clear: function () { this._save([]); }
+};
+
 var Repo = {
   students: [],
   entries: [],
@@ -7038,6 +7108,8 @@ var Repo = {
   },
   deleteEntry: function (id) {
     var self = this;
+    var weg = self.getEntry(id);
+    if (weg) Trash.push('entry', weg);
     self.entries = self.entries.filter(function (e) { return e.id !== id; });
     return Storage.remove('entries', id);
   },
@@ -7067,6 +7139,8 @@ var Repo = {
     return Storage.put('reunions', clean).then(function () { return clean; });
   },
   deleteReunion: function (id) {
+    var weg = this.getReunion(id);
+    if (weg) Trash.push('reunion', weg);
     this.reunions = this.reunions.filter(function (r) { return r.id !== id; });
     return Storage.remove('reunions', id);
   },
@@ -11150,6 +11224,26 @@ Repo.init()
     exportReunions:function(){return (Repo.reunions||[]).slice();},
     applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render();}catch(e){}}},
     applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render();}catch(e){}}}
+  };
+  /* Papierkorb nach aussen: die Shell zeigt ihn unter Daten & Backup. */
+  window.KB_TRASH={
+    list:function(){try{return Trash.list();}catch(e){return [];}},
+    count:function(){return this.list().length;},
+    nameOf:function(sid){var s=null;try{s=Repo.getStudent(sid);}catch(e){}return s?s.name:'';},
+    restore:function(tid){
+      var x=null;try{x=Trash.list().filter(function(y){return y.id===tid;})[0]||null;}catch(e){}
+      if(!x)return Promise.resolve(false);
+      var p;
+      if(x.kind==='reunion')p=Repo.saveReunion(x.data);
+      else p=Repo.saveEntry(x.data);
+      return Promise.resolve(p).then(function(){
+        Trash.drop(tid);
+        if(window.render){try{window.render();}catch(e){}}
+        return true;
+      });
+    },
+    drop:function(tid){Trash.drop(tid);},
+    clear:function(){Trash.clear();}
   };
 })();
 </script>
@@ -43366,7 +43460,7 @@ window.KB_SYNC=(function(){
   var base=null,busy=false,applying=false,timer=null,fileHandle=null;
   var status={connected:false,supported:fsSupported(),fileName:'',lastSync:0,lastBy:'',error:'',pending:false,backupName:'',backupLast:'',backupErr:''};
   var statusCb=null;
-  function setStatus(p){for(var k in p){status[k]=p[k];}if(statusCb){try{statusCb(status);}catch(e){}}}
+  function setStatus(p){for(var k in p){status[k]=p[k];}if(statusCb){try{statusCb(status);}catch(e){}}try{warnBar();}catch(e){}}
   function loadBase(){try{var r=localStorage.getItem(BASE_LS);if(r)return JSON.parse(r);}catch(e){}return null;}
   function saveBase(b){try{localStorage.setItem(BASE_LS,JSON.stringify(b));}catch(e){}}
   function operator(){try{return localStorage.getItem('anwesenheit_user')||'';}catch(e){return '';}}
@@ -43426,7 +43520,58 @@ window.KB_SYNC=(function(){
   }
   function start(){stop();timer=setInterval(cycle,5000);cycle();}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
-  function afterPick(h){return verifyPermission(h,true).then(function(ok){if(!ok){setStatus({error:'Kein Zugriff auf die Datei erteilt.'});return;}fileHandle=h;base=loadBase();return idbSet(h).then(function(){setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();});});}
+  function afterPick(h){return verifyPermission(h,true).then(function(ok){if(!ok){setStatus({error:'Kein Zugriff auf die Datei erteilt.'});return;}fileHandle=h;base=loadBase();setAuto(true);return idbSet(h).then(function(){setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();});});}
+
+  /* ---- Von selbst verbinden ----
+     Der Griff auf die Datei liegt dauerhaft in der Datenbank des Browsers.
+     Die ERLAUBNIS dazu setzt der Browser beim naechsten Oeffnen aber oft
+     wieder auf "fragen" zurueck, und fragen darf man nur als Antwort auf
+     einen Klick. Also: beim ersten Klick irgendwo einmal fragen - das ist
+     meist der Klick auf den eigenen Namen - statt jedes Mal von Hand in die
+     Einstellungen zu gehen. Wird abgelehnt, bleibt der Balken stehen und
+     nichts fragt ungefragt nach. */
+  var AUTO_KEY='kb_sync_auto';
+  var autoArmed=false,autoTried=false;
+  function autoOn(){try{return localStorage.getItem(AUTO_KEY)!=='0';}catch(e){return true;}}
+  function setAuto(v){try{localStorage.setItem(AUTO_KEY,v?'1':'0');}catch(e){}}
+  function armAuto(h){
+    if(autoArmed||!h||!autoOn())return;autoArmed=true;
+    var go=function(){
+      document.removeEventListener('pointerdown',go,true);
+      document.removeEventListener('keydown',go,true);
+      if(autoTried||fileHandle)return;autoTried=true;
+      verifyPermission(h,true).then(function(ok){
+        if(ok){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei',error:''});start();}
+        else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});}
+      }).catch(function(){});
+    };
+    document.addEventListener('pointerdown',go,true);
+    document.addEventListener('keydown',go,true);
+  }
+
+  /* Solange eine bekannte Team-Datei NICHT verbunden ist, steht das oben -
+     sonst merkt es waehrend einer Réunion niemand. */
+  function warnBar(){
+    var zeig=!!(status&&status.error==='reconnect'&&!status.connected);
+    var el=document.getElementById('kb-syncwarn');
+    if(!zeig){if(el&&el.parentNode)el.parentNode.removeChild(el);return;}
+    if(!el){
+      el=document.createElement('div');el.id='kb-syncwarn';el.setAttribute('role','alert');
+      el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:9998;background:#E8A317;color:#3a2a00;'+
+        'font:600 14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:9px 14px;'+
+        'display:flex;gap:12px;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.2);';
+      var t=document.createElement('span');
+      t.textContent='Team-Datei ist nicht verbunden — Eingaben bleiben vorerst nur auf diesem Gerät.';
+      el.appendChild(t);
+      var b=document.createElement('button');
+      b.textContent='Jetzt verbinden';
+      b.style.cssText='border:1px solid rgba(0,0,0,.4);background:#fff;color:#3a2a00;border-radius:8px;'+
+        'padding:3px 12px;font:inherit;font-size:13px;cursor:pointer;';
+      b.onclick=function(){idbGet().then(function(h){if(h){autoTried=false;afterPick(h);}});};
+      el.appendChild(b);
+      (document.body||document.documentElement).appendChild(el);
+    }
+  }
 
   return {
     supported:fsSupported,
@@ -43440,7 +43585,9 @@ window.KB_SYNC=(function(){
     disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
     syncNow:function(){return cycle();},
     reconnect:function(){idbGet().then(function(h){if(h)return afterPick(h);}).then(function(){return idbGet('backupdir');}).then(function(d){if(!d)return;return verifyPermission(d,true).then(function(ok){if(ok){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupErr:''});maybeBackup();}});});},
-    init:function(){if(!fsSupported())return;idbGet().then(function(h){if(!h)return;h.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei'});start();}else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});}});});idbGet('backupdir').then(function(d){if(!d)return;d.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay()});}else{setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay(),backupErr:'reconnect'});}});});},
+    autoOn:autoOn,
+    setAuto:function(v){setAuto(v);if(v&&!fileHandle)idbGet().then(function(h){if(h)armAuto(h);});},
+    init:function(){if(!fsSupported())return;idbGet().then(function(h){if(!h)return;h.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){fileHandle=h;base=loadBase();setStatus({connected:true,fileName:h.name||'gemeinsame Datei'});start();}else{setStatus({connected:false,fileName:h.name||'gemeinsame Datei',error:'reconnect'});armAuto(h);}});});idbGet('backupdir').then(function(d){if(!d)return;d.queryPermission({mode:'readwrite'}).then(function(p){if(p==='granted'){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay()});}else{setStatus({backupName:d.name||'Backup-Ordner',backupLast:bkLastDay(),backupErr:'reconnect'});}});});},
     _test:{mergeColl:mergeColl,diffColl:diffColl,buildLocalDoc:buildLocalDoc,mergeDocs:mergeDocs,firstReconcile:firstReconcile,liveOf:liveOf,sameDoc:sameDoc,emptyDoc:emptyDoc,COLLS:COLLS,isBackupName:isBackupName,planPrune:planPrune,todayStr:todayStr,writeBackup:writeBackup,pruneBackups:pruneBackups,maybeBackup:maybeBackup,setBackupDir:function(d){backupDir=d;},setBase:function(b){base=b;},lastDay:bkLastDay,resetDay:function(){bkSetDay('');}}
   };
 })();
@@ -45721,6 +45868,7 @@ window.KB_PDF = (function () {
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
       try{renderWeekBox();}catch(e){}
+      try{renderTrash();}catch(e){}
     } else if(nav==='material'){
       showPanel('isa-root'); setActive('material');
       if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
@@ -46048,6 +46196,53 @@ window.KB_PDF = (function () {
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
   var wDl=$('kb-weekly-dl'); if(wDl){wDl.addEventListener('click',function(){if(window.KB_WEEKLY){KB_WEEKLY.download();}});}
 
+  /* ---- Papierkorb: zeigen, zurueckholen, leeren ---- */
+  function trashWhen(ts){
+    var d=new Date(ts),h=new Date();
+    var t=d.getDate()+'.'+(d.getMonth()+1)+'.'+d.getFullYear();
+    var u=('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+    if(d.toDateString()===h.toDateString())return 'heute '+u;
+    return t+' '+u;
+  }
+  function renderTrash(){
+    var box=$('kb-trash-list');if(!box||!window.KB_TRASH)return;
+    var l=window.KB_TRASH.list();
+    var n=$('kb-trash-n');if(n)n.textContent=l.length?(l.length+(l.length===1?' Eintrag':' Einträge')):'leer';
+    var em=$('kb-trash-empty');if(em)em.style.display=l.length?'':'none';
+    if(!l.length){box.innerHTML='<div class="kb-sync-status">Nichts gelöscht — hier ist alles leer.</div>';return;}
+    box.innerHTML='<div class="kb-trash">'+l.slice(0,50).map(function(x){
+      var d=x.data||{};
+      var wer=x.kind==='reunion'?('Réunion vom '+esc(d.date||'')):(esc(window.KB_TRASH.nameOf(d.studentId)||'Eintrag')+' · '+esc(d.date||''));
+      var txt=x.kind==='reunion'
+        ? ((d.orgItems||[]).length+' Orga-Punkte')
+        : String(d.text||'').replace(/s+/g,' ').slice(0,120);
+      return '<div class="kb-trash-row">'+
+        '<div class="kb-trash-main"><b>'+wer+'</b>'+(d.category?' <span class="kb-trash-cat">'+esc(d.category)+'</span>':'')+
+          '<div class="kb-trash-txt">'+(txt?esc(txt)+(String(d.text||'').length>120?'…':''):'<i>ohne Text</i>')+'</div>'+
+          '<div class="kb-trash-meta">gelöscht '+esc(trashWhen(x.at))+(x.by?' von '+esc(x.by):'')+'</div>'+
+        '</div>'+
+        '<div class="kb-trash-acts">'+
+          '<button class="kb-btn kb-btn-primary" data-trrest="'+esc(x.id)+'">Wiederherstellen</button>'+
+          '<button class="kb-btn" data-trdrop="'+esc(x.id)+'" title="endgültig entfernen">✕</button>'+
+        '</div></div>';
+    }).join('')+'</div>'+(l.length>50?'<div class="kb-sync-status">… und '+(l.length-50)+' weitere.</div>':'');
+    box.querySelectorAll('[data-trrest]').forEach(function(b){
+      b.addEventListener('click',function(){
+        b.disabled=true;
+        window.KB_TRASH.restore(b.getAttribute('data-trrest')).then(function(ok){
+          renderTrash();
+          if(ok&&window.KB_TOAST)window.KB_TOAST('Wiederhergestellt');
+        });
+      });
+    });
+    box.querySelectorAll('[data-trdrop]').forEach(function(b){
+      b.addEventListener('click',function(){
+        if(!confirm('Diesen Eintrag endgültig entfernen? Danach ist er wirklich weg.'))return;
+        window.KB_TRASH.drop(b.getAttribute('data-trdrop'));renderTrash();
+      });
+    });
+  }
+
   /* ---- Wochen-Sicherung: Woche wählen, dann Excel oder Word ---- */
   function wkMonday(){
     var i=$('kb-wk-date');
@@ -46074,6 +46269,11 @@ window.KB_PDF = (function () {
     }
     di.value=window.KB_WEEKLY.monday('');
     di.addEventListener('change',renderWeekBox);
+    var te=$('kb-trash-empty');
+    if(te)te.addEventListener('click',function(){
+      if(!confirm('Papierkorb leeren? Danach lässt sich nichts mehr zurückholen.'))return;
+      window.KB_TRASH.clear();renderTrash();
+    });
     var b;
     if((b=$('kb-wk-prev')))b.addEventListener('click',function(){shift(-7);});
     if((b=$('kb-wk-next')))b.addEventListener('click',function(){shift(7);});
@@ -46098,7 +46298,7 @@ window.KB_PDF = (function () {
     if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte die App in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>index.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
     var info;
     if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'');}
-    else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — bitte „Verbinden" klicken ('+esc(s.fileName)+').';}
+    else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — der Browser setzt die Freigabe beim Neustart zurück. Die App fragt beim ersten Klick von selbst danach, sonst hier „Verbinden" ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
     if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Dossier-Einträge · <b>'+(k.anwEntries||0)+'</b> Absenzen · <b>'+(k.anwNotes||0)+'</b> Notizen · <b>'+(k.dosReunions||0)+'</b> Réunionen · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
@@ -46109,7 +46309,17 @@ window.KB_PDF = (function () {
       if(s.backupErr&&s.backupErr!=='reconnect'){bk+=' <span style="color:#b3432d">'+esc(s.backupErr)+'</span>';}
       info+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);color:var(--kb-muted);font-size:12.5px;">'+bk+'</div>';
     }
+    if(s.fileName||s.connected){
+      var an=!window.KB_SYNC.autoOn||window.KB_SYNC.autoOn();
+      info+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);font-size:12.5px;">'+
+        '<label style="display:flex;gap:7px;align-items:flex-start;cursor:pointer;">'+
+        '<input type="checkbox" id="kbs-auto"'+(an?' checked':'')+' style="margin-top:2px;">'+
+        '<span>Beim Öffnen von selbst verbinden — die App fragt einmal beim ersten Klick nach der Datei, statt dass man jedes Mal hierher muss.</span>'+
+        '</label></div>';
+    }
     st.innerHTML=info;
+    var au=$('kbs-auto');
+    if(au)au.addEventListener('change',function(){window.KB_SYNC.setAuto(au.checked);});
     var b;
     if(s.connected){var bkBtn=s.backupErr==='reconnect'?'<button class="kb-btn" id="kbs-bkok">🗂️ Auto-Backup bestätigen</button>':(s.backupName?'<button class="kb-btn" id="kbs-bkdir">🗂️ Backup-Ordner ändern</button>':'<button class="kb-btn kb-btn-primary" id="kbs-bkdir">🗂️ Auto-Backup einrichten</button>');b='<button class="kb-btn" id="kbs-now">🔄 Jetzt synchronisieren</button>'+bkBtn+'<button class="kb-btn" id="kbs-disc">Trennen</button>';}
     else if(s.error==='reconnect'){b='<button class="kb-btn kb-btn-primary" id="kbs-recon">Verbinden</button>';}
