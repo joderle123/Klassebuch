@@ -339,6 +339,12 @@ textarea.reu-auto{width:100%; box-sizing:border-box; font:inherit; font-size:.95
   color:inherit; resize:vertical; overflow:hidden; min-height:64px;}
 textarea.reu-auto:hover{border-color:#b9c0ca;}
 textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-shadow:0 0 0 3px rgba(79,91,213,.14);}
+.reu-inactive{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:14px 0 4px; padding:9px 11px; border:1px dashed var(--border); border-radius:10px; background:var(--bg-soft,#fafafa);}
+.reu-inactive .ria-lbl{font-size:.78rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; margin-right:2px;}
+.ria-chip{border:1px solid var(--border); background:#fff; border-radius:999px; padding:3px 11px; font:inherit; font-size:.82rem; font-weight:600; color:var(--text-muted); cursor:pointer;}
+.ria-chip:hover{border-color:var(--accent); color:var(--accent);}
+.ria-chip.on{background:var(--accent); border-color:var(--accent); color:#fff;}
+.ria-dot{font-size:.6rem; vertical-align:middle;}
 .reu-updhead{display:flex; justify-content:flex-end; margin-bottom:3px;}
 .reu-bul{border:1px solid var(--border); background:#fff; border-radius:999px; padding:2px 9px; font:inherit; font-size:.72rem; font-weight:600; color:var(--text-muted); cursor:pointer;}
 .reu-bul:hover{border-color:var(--accent); color:var(--accent);}
@@ -3245,7 +3251,8 @@ function viewReunion(params, query) {
     q: '',
     filter: 'all',      // all | todo | update | noupdate | goals
     expanded: {},       // sid -> true
-    orderEdit: false
+    orderEdit: false,
+    extra: {}           // inaktiver Schueler -> in dieser Sitzung dazugeholt
   };
 
   function current() { return Repo.getReunionByDate(state.date); }
@@ -3268,10 +3275,21 @@ function viewReunion(params, query) {
   }
 
   /* ---- Datenzeilen (Reihenfolge der Versammlung + weitere aktive Schüler) ---- */
+  /* Inaktive Schueler stehen nicht in der Wochen-Réunion. Sichtbar werden sie
+     nur, wenn an diesem Tag schon ein Update zu ihnen steht (sonst waere es
+     unauffindbar) oder wenn man sie unten in der Leiste dazuholt. */
+  function isExtra(sid) { return !!state.extra[sid]; }
+  function inactiveStudents() {
+    return Repo.listStudents().filter(function (s) { return s.active === false; });
+  }
   function rowsFor(r) {
     var order = (r.studentOrder || []).slice();
     Repo.listStudents().forEach(function (s) {
-      if (s.active !== false && order.indexOf(s.id) === -1) order.push(s.id);
+      if (order.indexOf(s.id) !== -1) return;
+      if (s.active !== false || isExtra(s.id)) { order.push(s.id); return; }
+      // Ehemaliger mit Update an diesem Tag: gehoert trotzdem in die Liste
+      var e = Repo.reunionEntryFor(r.date, s.id);
+      if (e && e.text && e.text.trim()) order.push(s.id);
     });
     var discussed = r.discussed || [];
     var rows = [];
@@ -3279,6 +3297,7 @@ function viewReunion(params, query) {
       var s = Repo.getStudent(sid);
       if (!s) return;
       var entry = Repo.reunionEntryFor(r.date, sid);
+      if (s.active === false && !isExtra(sid) && !(entry && entry.text && entry.text.trim())) return;
       var themes = entry ? analyzeText(entry.text) : [];
       var goals = goalsFor(r, sid);
       rows.push({
@@ -3516,6 +3535,24 @@ function viewReunion(params, query) {
     return shown.map(function (row) { return cardHtml(row, idxOf[row.sid], rows.length); }).join('');
   }
 
+  /* Leiste der Ehemaligen: anklicken holt den Schueler in die Liste, damit man
+     ein Update schreiben kann; nochmal anklicken raeumt ihn wieder weg. */
+  function inactiveBarHtml(r) {
+    var alt = inactiveStudents();
+    if (!alt.length) return '';
+    return '<div class="reu-inactive" id="reu-inactive">' +
+      '<span class="ria-lbl">Nicht mehr in der Klasse:</span>' +
+      alt.map(function (s) {
+        var e = r ? Repo.reunionEntryFor(r.date, s.id) : null;
+        var hat = !!(e && e.text && e.text.trim());
+        var an = hat || isExtra(s.id);
+        return '<button type="button" class="ria-chip' + (an ? ' on' : '') + '" data-act="inactive" data-sid="' + escapeAttr(s.id) + '" ' +
+          'title="' + (hat ? 'hat ein Update an diesem Tag' : (an ? 'wieder ausblenden' : 'Update zu ' + escapeAttr(s.name) + ' schreiben')) + '">' +
+          escapeHtml(s.name) + (hat ? ' <span class="ria-dot">●</span>' : '') + '</button>';
+      }).join('') +
+    '</div>';
+  }
+
   /* ---------- Zusammenbau ---------- */
   function bodyHtml() {
     var r = current();
@@ -3527,7 +3564,8 @@ function viewReunion(params, query) {
     } else {
       inner = filterHtml(rows) + '<div id="reu-org">' + orgHtml(r) + '</div>' +
         '<h3 class="reunion-section-title">Schüler · Reihenfolge der Versammlung</h3>' +
-        '<div class="reu-list" id="reu-list">' + listHtml(r) + '</div>';
+        '<div class="reu-list" id="reu-list">' + listHtml(r) + '</div>' +
+        inactiveBarHtml(r);
     }
     return topbarHtml(r, rows) + '<div id="reu-main">' + inner + '</div>';
   }
@@ -3543,6 +3581,7 @@ function viewReunion(params, query) {
         var r = current(); if (!r) { full(); return; }
         var el = qs('#reu-list', wrap); if (el) el.innerHTML = listHtml(r);
         var fb = qs('.reu-filter', wrap); if (fb) fb.outerHTML = filterHtml(rowsFor(r));
+        var ib = qs('#reu-inactive', wrap); if (ib) ib.outerHTML = inactiveBarHtml(r);
         growAll();
       }
       function rerenderStats() {
@@ -3649,6 +3688,32 @@ function viewReunion(params, query) {
             autoGrow(bta); bta.focus();
             try { bta.setSelectionRange(bta.value.length, bta.value.length); } catch (e) {}
             clearTimeout(saveT['u' + bsid]); saveUpd(bsid, bta);
+          }
+          return;
+        }
+        if (action === 'inactive') {
+          var isid = t.getAttribute('data-sid');
+          var rr = current();
+          var ie = rr ? Repo.reunionEntryFor(rr.date, isid) : null;
+          if (ie && ie.text && ie.text.trim()) {
+            /* Hat schon ein Update - steht ohnehin in der Liste, also nur hin.
+               Festhalten, damit die Karte nicht verschwindet, wenn das Feld
+               zwischendurch leer geraeumt wird. */
+            state.extra[isid] = true;
+            state.expanded[isid] = true;
+            rerenderList();
+            var k = qs('.reu-card[data-card="' + cssEsc(isid) + '"]', wrap);
+            if (k && k.scrollIntoView) k.scrollIntoView({ block: 'center' });
+            var ta = qs('textarea[data-upd="' + cssEsc(isid) + '"]', wrap);
+            if (ta) ta.focus();
+            return;
+          }
+          if (state.extra[isid]) { delete state.extra[isid]; delete state.expanded[isid]; }
+          else { state.extra[isid] = true; state.expanded[isid] = true; }
+          rerenderList(); rerenderStats();
+          if (state.extra[isid]) {
+            var ta2 = qs('textarea[data-upd="' + cssEsc(isid) + '"]', wrap);
+            if (ta2) { ta2.focus(); if (ta2.scrollIntoView) ta2.scrollIntoView({ block: 'center' }); }
           }
           return;
         }
