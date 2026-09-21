@@ -439,16 +439,10 @@ textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-sh
   .reu-stat{flex-basis:calc(50% - 5px); min-width:0;}
 }
 
-/* Protokoll-Druck */
-#print-sheet .rp-h1{font-size:19px; margin:0 0 2px;}
-#print-sheet .rp-sub{color:#555; font-size:13px; margin:0 0 14px;}
-#print-sheet .rp-sec{font-size:13px; text-transform:uppercase; letter-spacing:.05em; color:#333; border-bottom:1.5px solid #333; padding-bottom:3px; margin:16px 0 8px;}
-#print-sheet .rp-stud{break-inside:avoid; padding:8px 0 8px; border-bottom:1px solid #ddd;}
-#print-sheet .rp-stud h4{font-size:14px; margin:0 0 3px;}
-#print-sheet .rp-stud .rp-upd{font-size:12px; white-space:pre-wrap; margin:3px 0; line-height:1.5;}
-#print-sheet .rp-stud .rp-goals{font-size:12px; margin:4px 0 0; padding-left:18px;}
-#print-sheet ul.rp-org{font-size:12.5px; margin:4px 0; padding-left:20px; line-height:1.5;}
-#print-sheet .rp-done{color:#2e7d52;} #print-sheet .rp-todo{color:#999;}
+/* Das Layout des Protokolls steht bewusst NICHT hier, sondern wird beim
+   Drucken zusammen mit dem Bogen eingesetzt (protocolCss). Der Bogen haengt
+   direkt an <body>; dieses Stylesheet wird beim Zusammenbau der App aber auf
+   #dos-root eingeschraenkt, die Regeln wuerden also nie greifen. */
 
 </style>
 </head>
@@ -3962,66 +3956,160 @@ function viewReunion(params, query) {
       /* Das Protokoll einer Réunion — einmal gebaut, dreifach genutzt:
          Bildschirm-Druckansicht (daraus wird im Dialog das PDF), Word-Datei
          und spaeter evtl. mehr. */
+      /* ---------- Protokoll ----------
+         Ein Blatt, das man jemandem in die Hand geben kann: Briefkopf,
+         Kennzahlenzeile, klar abgesetzte Abschnitte, pro Schüler ein Block,
+         der nie über einen Seitenumbruch zerrissen wird.
+         Dasselbe Protokoll geht in die Druckansicht (daraus das PDF) und in
+         die Word-Datei. */
+      function protocolCss() {
+        return '#print-sheet{display:none;}' +
+          '@media print{' +
+            'body>*{display:none !important;}' +
+            '#print-sheet{display:block !important;}' +
+            '@page{size:A4;margin:18mm 16mm 16mm;}' +
+          '}' +
+          '#print-sheet{font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:#1a1a1a;line-height:1.45;}' +
+          '#print-sheet .rp-head{border-bottom:2.5px solid #1a1a1a;padding-bottom:9px;margin-bottom:4px;' +
+            'display:flex;align-items:flex-end;justify-content:space-between;gap:18px;}' +
+          '#print-sheet .rp-org-name{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#666;margin:0 0 3px;}' +
+          '#print-sheet .rp-h1{font-size:21px;font-weight:700;margin:0;letter-spacing:-.01em;}' +
+          '#print-sheet .rp-when{font-size:13px;color:#333;margin:3px 0 0;}' +
+          '#print-sheet .rp-stamp{font-size:10.5px;color:#777;text-align:right;white-space:nowrap;line-height:1.5;}' +
+          '#print-sheet .rp-kpi{display:flex;gap:26px;margin:10px 0 4px;padding:7px 0;border-bottom:1px solid #d8d8d8;}' +
+          '#print-sheet .rp-kpi div{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.06em;}' +
+          '#print-sheet .rp-kpi b{display:block;font-size:16px;color:#1a1a1a;letter-spacing:0;text-transform:none;}' +
+          '#print-sheet .rp-sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;' +
+            'color:#1a1a1a;border-bottom:1px solid #1a1a1a;padding-bottom:3px;margin:20px 0 9px;}' +
+          '#print-sheet .rp-lead{font-size:12.5px;margin:0 0 8px;padding:7px 10px;background:#f4f4f2;border-left:3px solid #8a8a8a;}' +
+          '#print-sheet ol.rp-org{font-size:12.5px;margin:0;padding-left:20px;}' +
+          '#print-sheet ol.rp-org li{margin-bottom:5px;}' +
+          '#print-sheet .rp-org-sub{color:#555;font-size:11.5px;}' +
+          '#print-sheet .rp-stud{break-inside:avoid;page-break-inside:avoid;padding:9px 0 10px;border-bottom:1px solid #e2e2e2;}' +
+          '#print-sheet .rp-stud h4{font-size:13.5px;margin:0 0 4px;display:flex;align-items:baseline;gap:8px;}' +
+          '#print-sheet .rp-nr{display:inline-block;min-width:19px;color:#8a8a8a;font-weight:600;}' +
+          '#print-sheet .rp-flag{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;' +
+            'border:1px solid currentColor;border-radius:9px;padding:0 6px;}' +
+          '#print-sheet .rp-done{color:#1d6b45;}#print-sheet .rp-todo{color:#9a6a12;}' +
+          '#print-sheet .rp-upd{font-size:12px;white-space:pre-wrap;margin:0 0 0 27px;line-height:1.5;}' +
+          '#print-sheet .rp-upd.rp-none{color:#999;font-style:italic;}' +
+          '#print-sheet .rp-goals{font-size:11.5px;margin:5px 0 0 27px;padding:0;list-style:none;}' +
+          '#print-sheet .rp-goals li{margin-bottom:2px;}' +
+          '#print-sheet .rp-foot{margin-top:16px;padding-top:7px;border-top:1px solid #d8d8d8;font-size:10px;color:#888;}';
+      }
+
       function protocolHtml(r, rows) {
-        var html = '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
-          '<p class="rp-sub">Team-Versammlung vom ' + escapeHtml(formatDate(r.date)) + ' · ' +
-            rows.filter(function (x) { return x.discussed; }).length + ' / ' + rows.length + ' Schüler besprochen</p>';
+        var besprochen = rows.filter(function (x) { return x.discussed; }).length;
+        var mitUpdate = rows.filter(function (x) { return x.hasUpdate; }).length;
+        var offeneZiele = rows.reduce(function (n, x) { return n + x.openGoals; }, 0);
+        var h = new Date();
+        var stempel = ('0' + h.getDate()).slice(-2) + '.' + ('0' + (h.getMonth() + 1)).slice(-2) + '.' + h.getFullYear();
+        var wer = (window.KB_USER && KB_USER.get && KB_USER.get()) || '';
+
+        var html = '<div class="rp-head"><div>' +
+            '<p class="rp-org-name">Annexe Junglinster · Team-Réunion</p>' +
+            '<h1 class="rp-h1">Protokoll</h1>' +
+            '<p class="rp-when">' + escapeHtml(formatDate(r.date)) + '</p>' +
+          '</div><div class="rp-stamp">erstellt ' + escapeHtml(stempel) +
+            (wer ? '<br>von ' + escapeHtml(wer) : '') + '</div></div>';
+
+        html += '<div class="rp-kpi">' +
+          '<div>Schüler<b>' + rows.length + '</b></div>' +
+          '<div>Besprochen<b>' + besprochen + ' / ' + rows.length + '</b></div>' +
+          '<div>Mit Update<b>' + mitUpdate + '</b></div>' +
+          '<div>Offene Ziele<b>' + offeneZiele + '</b></div>' +
+          '<div>Orga-Punkte<b>' + (r.orgItems || []).length + '</b></div>' +
+          '</div>';
+
         var group = (r.goals && r.goals.group) || [];
         var groupTxt = Array.isArray(group) ? group.join(' ') : String(group || '');
-        if (groupTxt.trim()) html += '<p style="font-size:13px;"><strong>Gruppenziel:</strong> ' + escapeHtml(groupTxt) + '</p>';
-        if ((r.orgItems || []).length) {
-          html += '<div class="rp-sec">Organisation</div><ul class="rp-org">' +
-            r.orgItems.map(function (it) {
-              var parts = it.split('\n');
-              return '<li>' + escapeHtml(parts[0]) + (parts.length > 1 ? '<br><span style="color:#555">' + escapeHtml(parts.slice(1).join(' — ')) + '</span>' : '') + '</li>';
-            }).join('') + '</ul>';
+        if (groupTxt.trim()) {
+          html += '<p class="rp-lead"><strong>Gruppenziel der Woche:</strong> ' + escapeHtml(groupTxt) + '</p>';
         }
+
+        if ((r.orgItems || []).length) {
+          html += '<div class="rp-sec">Organisation</div><ol class="rp-org">' +
+            r.orgItems.map(function (it) {
+              var teile = String(it).split('\n').filter(function (z) { return z.trim(); });
+              return '<li>' + escapeHtml(teile[0] || '') +
+                (teile.length > 1 ? '<br><span class="rp-org-sub">' + escapeHtml(teile.slice(1).join(' — ')) + '</span>' : '') +
+              '</li>';
+            }).join('') + '</ol>';
+        }
+
         html += '<div class="rp-sec">Schüler</div>';
         rows.forEach(function (row, i) {
-          html += '<div class="rp-stud"><h4>' + (i + 1) + '. ' + escapeHtml(row.s.name) +
-            ' <span class="' + (row.discussed ? 'rp-done' : 'rp-todo') + '" style="font-size:11px;font-weight:400;">' + (row.discussed ? '✓ besprochen' : 'offen') + '</span></h4>';
-          html += '<div class="rp-upd">' + (row.hasUpdate ? escapeHtml(row.entry.text) : '<em style="color:#999">Kein Update.</em>') + '</div>';
-          if (row.goals.length) html += '<ul class="rp-goals">' + row.goals.map(function (g) {
-            return '<li>' + (g.done ? '☑ ' : '☐ ') + escapeHtml(g.text) + '</li>';
-          }).join('') + '</ul>';
+          html += '<div class="rp-stud">' +
+            '<h4><span class="rp-nr">' + (i + 1) + '.</span>' + escapeHtml(row.s.name) +
+              '<span class="rp-flag ' + (row.discussed ? 'rp-done' : 'rp-todo') + '">' +
+              (row.discussed ? 'besprochen' : 'offen') + '</span></h4>' +
+            '<div class="rp-upd' + (row.hasUpdate ? '' : ' rp-none') + '">' +
+              (row.hasUpdate ? escapeHtml(row.entry.text) : 'Kein Update erfasst.') + '</div>';
+          if (row.goals.length) {
+            html += '<ul class="rp-goals">' + row.goals.map(function (g) {
+              return '<li>' + (g.done ? '☑' : '☐') + ' ' + escapeHtml(g.text) + '</li>';
+            }).join('') + '</ul>';
+          }
           html += '</div>';
         });
+
+        html += '<p class="rp-foot">Klassebuch · Annexe Junglinster — interne Unterlage, vertraulich zu behandeln.</p>';
         return html;
       }
 
       function printProtocol() {
         var r = current(); if (!r) return;
-        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
+        var old = document.getElementById('print-sheet');
+        if (old && old.parentNode) old.parentNode.removeChild(old);
+        var st = document.getElementById('print-sheet-css');
+        if (!st) { st = document.createElement('style'); st.id = 'print-sheet-css'; document.head.appendChild(st); }
+        st.textContent = protocolCss();
         var holder = document.createElement('div');
         holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r)) + '</div>';
         document.body.appendChild(holder.firstChild);
         window.print();
       }
 
-      /* Word oeffnet HTML mit diesem Kopf als Dokument — offline, ohne
-         Zusatzbibliothek. Die Formate stehen fest im Dokument, damit es
-         auch ohne die Stylesheets der App ordentlich aussieht. */
+      /* Word öffnet HTML mit diesem Kopf als Dokument — offline, ohne
+         Zusatzbibliothek. Die Formate stehen im Dokument selbst, damit es
+         auch außerhalb der App stimmt. Word kann kein Flexbox, darum werden
+         Kopf und Kennzahlenzeile hier auf normale Blöcke zurückgesetzt. */
       function wordProtocol() {
         var r = current(); if (!r) return;
-        var body = protocolHtml(r, rowsFor(r))
-          .replace(/class="rp-h1"/g, 'style="font-size:17pt;margin:0 0 2pt;"')
-          .replace(/class="rp-sub"/g, 'style="color:#555;font-size:10pt;margin:0 0 12pt;"')
-          .replace(/class="rp-sec"/g, 'style="font-size:11pt;font-weight:bold;text-transform:uppercase;border-bottom:1pt solid #333;padding-bottom:2pt;margin:14pt 0 6pt;"')
-          .replace(/class="rp-org"/g, 'style="margin:0 0 6pt 16pt;font-size:10pt;"')
-          .replace(/class="rp-stud"/g, 'style="border-bottom:1pt solid #ddd;padding:4pt 0;"')
-          .replace(/class="rp-upd"/g, 'style="font-size:10pt;white-space:pre-wrap;margin:2pt 0;"')
-          .replace(/class="rp-goals"/g, 'style="margin:2pt 0 2pt 16pt;font-size:10pt;"')
-          .replace(/class="rp-done"[^>]*/g, 'style="font-size:9pt;color:#0a7"')
-          .replace(/class="rp-todo"[^>]*/g, 'style="font-size:9pt;color:#999"');
+        var css =
+          'body{font-family:Calibri,"Segoe UI",sans-serif;font-size:11pt;color:#1a1a1a;line-height:1.45;}' +
+          '.rp-head{border-bottom:2.5pt solid #1a1a1a;padding-bottom:6pt;margin-bottom:3pt;}' +
+          '.rp-org-name{font-size:7.5pt;letter-spacing:1.4pt;text-transform:uppercase;color:#666;margin:0 0 2pt;}' +
+          '.rp-h1{font-size:19pt;font-weight:bold;margin:0;}' +
+          '.rp-when{font-size:11pt;color:#333;margin:2pt 0 0;}' +
+          '.rp-stamp{font-size:8pt;color:#777;margin:2pt 0 0;}' +
+          '.rp-kpi{margin:6pt 0 3pt;padding-bottom:5pt;border-bottom:0.75pt solid #d8d8d8;}' +
+          '.rp-kpi div{display:inline-block;margin-right:22pt;font-size:8pt;color:#666;text-transform:uppercase;}' +
+          '.rp-kpi b{display:block;font-size:13pt;color:#1a1a1a;text-transform:none;}' +
+          '.rp-sec{font-size:8.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:1pt;' +
+            'border-bottom:0.75pt solid #1a1a1a;padding-bottom:2pt;margin:14pt 0 6pt;}' +
+          '.rp-lead{font-size:10pt;margin:0 0 6pt;padding:5pt 7pt;background:#f4f4f2;border-left:2.25pt solid #8a8a8a;}' +
+          'ol.rp-org{font-size:10pt;margin:0 0 0 14pt;}' +
+          'ol.rp-org li{margin-bottom:3pt;}' +
+          '.rp-org-sub{color:#555;font-size:9pt;}' +
+          '.rp-stud{page-break-inside:avoid;padding:5pt 0 6pt;border-bottom:0.75pt solid #e2e2e2;}' +
+          '.rp-stud h4{font-size:11pt;margin:0 0 2pt;}' +
+          '.rp-nr{color:#8a8a8a;font-weight:bold;}' +
+          '.rp-flag{font-size:7.5pt;font-weight:bold;text-transform:uppercase;}' +
+          '.rp-done{color:#1d6b45;}.rp-todo{color:#9a6a12;}' +
+          '.rp-upd{font-size:10pt;white-space:pre-wrap;margin:0 0 0 16pt;}' +
+          '.rp-upd.rp-none{color:#999;font-style:italic;}' +
+          '.rp-goals{font-size:9.5pt;margin:3pt 0 0 16pt;list-style:none;}' +
+          '.rp-foot{margin-top:12pt;padding-top:5pt;border-top:0.75pt solid #d8d8d8;font-size:7.5pt;color:#888;}' +
+          '@page{size:A4;margin:2cm;}';
         var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
           'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
-          '<head><meta charset="utf-8"><title>Réunion ' + escapeHtml(r.date) + '</title>' +
-          '<style>@page{size:A4;margin:2cm;} body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#000;}</style>' +
-          '</head><body>' + body + '</body></html>';
-        var blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
+          '<head><meta charset="utf-8"><title>Réunion-Protokoll ' + escapeHtml(r.date) + '</title>' +
+          '<style>' + css + '</style></head><body>' + protocolHtml(r, rowsFor(r)) + '</body></html>';
+        var blob = new Blob(['﻿' + doc], { type: 'application/msword' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
-        a.href = url; a.download = 'Reunion-' + r.date + '.doc';
+        a.href = url; a.download = 'Reunion-Protokoll-' + r.date + '.doc';
         document.body.appendChild(a); a.click();
         setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
       }
