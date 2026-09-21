@@ -1394,11 +1394,15 @@ window.KB_ROSTER=(function(){
     {id:'stud_alexp', name:'Alex P.', anonLabel:'Schüler A', klasse:'', level:'L1', zyklus:'ES', active:true},
     {id:'stud_lilly', name:'Lilly',   anonLabel:'Schüler I', klasse:'', level:'L1', zyklus:'ES', active:true},
     {id:'stud_jason', name:'Jason',   anonLabel:'Schüler D', klasse:'', level:'L1', zyklus:'ES', active:true},
+    {id:'stud_logan', name:'Logan',   anonLabel:'Schüler N', klasse:'', level:'L1', zyklus:'ES', active:true},
     {id:'stud_alexk', name:'Alex K.', anonLabel:'Schüler B', klasse:'', level:'L2', zyklus:'ES', active:true},
-    {id:'stud_suman', name:'Suman',   anonLabel:'Schüler H', klasse:'', level:'L2', zyklus:'ES', active:true},
-    {id:'stud_matteo',name:'Matteo',  anonLabel:'Schüler J', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_suman', name:'Suman',   anonLabel:'Schüler L', klasse:'', level:'L2', zyklus:'ES', active:true},
+    {id:'stud_matteo',name:'Matteo',  anonLabel:'Schüler M', klasse:'', level:'L2', zyklus:'ES', active:true},
     {id:'stud_chase', name:'Chase',   anonLabel:'Schüler F', klasse:'', level:'L2', zyklus:'ES', active:true},
-    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L2', zyklus:'ES', active:true}
+    {id:'stud_miguel',name:'Miguel',  anonLabel:'Schüler E', klasse:'', level:'L2', zyklus:'ES', active:true},
+    /* Nicht mehr in der Klasse, aber weiter dokumentiert: inaktiv statt
+       geloescht, damit Absenzen, Noten und Dossier erhalten bleiben. */
+    {id:'stud_ben',   name:'Ben',      anonLabel:'Schüler G', klasse:'', level:'L2', zyklus:'ES', active:false}
   ];
   /* Einmalige Übernahme der Zusammensetzung 2026/27 in bestehende
      Installationen. Feste IDs, damit zwei Geräte beim Anlegen nicht zwei
@@ -1408,9 +1412,10 @@ window.KB_ROSTER=(function(){
   var CLASS_FLAG='klassebuch_klasse_2627';
   var CLASS_2627={
     L1:[['stud_colin','Colin','Schüler C'],['stud_alexp','Alex P.','Schüler A'],
-        ['stud_lilly','Lilly','Schüler I'],['stud_jason','Jason','Schüler D']],
-    L2:[['stud_alexk','Alex K.','Schüler B'],['stud_suman','Suman','Schüler H'],
-        ['stud_matteo','Matteo','Schüler J'],['stud_chase','Chase','Schüler F'],
+        ['stud_lilly','Lilly','Schüler I'],['stud_jason','Jason','Schüler D'],
+        ['stud_logan','Logan','Schüler N']],
+    L2:[['stud_alexk','Alex K.','Schüler B'],['stud_suman','Suman','Schüler L'],
+        ['stud_matteo','Matteo','Schüler M'],['stud_chase','Chase','Schüler F'],
         ['stud_miguel','Miguel','Schüler E']]
   };
   function clone(o){var r={};for(var k in o){r[k]=o[k];}return r;}
@@ -1421,8 +1426,13 @@ window.KB_ROSTER=(function(){
   var list=loadList(); var hooks=[];
   function persist(){try{localStorage.setItem(LS,JSON.stringify(list));}catch(e){}}
   function nameKey(n){return String(n||'').toLowerCase().replace(/[^a-z]/g,'');}
+  /* Fehlende Schüler der Liste werden IMMER ergänzt (so kommt ein später
+     dazugekommener wie Logan auch in bestehende Installationen). Niveau setzen
+     und Nicht-Gelistete inaktiv schalten passiert dagegen nur EINMAL, damit
+     spätere Korrekturen von Hand nicht wieder überschrieben werden. */
   function applyClass2627(){
-    try{if(localStorage.getItem(CLASS_FLAG))return 0;}catch(e){}
+    var first=true;
+    try{first=!localStorage.getItem(CLASS_FLAG);}catch(e){}
     var changed=0, keep={};
     ['L1','L2'].forEach(function(lv){
       CLASS_2627[lv].forEach(function(r){
@@ -1431,18 +1441,22 @@ window.KB_ROSTER=(function(){
         if(!s){for(i=0;i<list.length;i++){if(nameKey(list[i].name)===nameKey(nm)){s=list[i];break;}}}
         if(!s){list.push({id:id,name:nm,anonLabel:lab,klasse:'',level:lv,zyklus:'ES',active:true});changed++;}
         else{
-          if(s.level!==lv){s.level=lv;changed++;}
-          if(s.active===false){s.active=true;changed++;}
-          if(!s.anonLabel){s.anonLabel=lab;}
+          if(first){
+            if(s.level!==lv){s.level=lv;changed++;}
+            if(s.active===false){s.active=true;changed++;}
+          }
+          if(s.anonLabel!==lab){s.anonLabel=lab;changed++;}
           keep[s.id]=1;
         }
         keep[id]=1;
       });
     });
-    for(var j=0;j<list.length;j++){
-      if(!keep[list[j].id]&&list[j].active!==false){list[j].active=false;changed++;}
+    if(first){
+      for(var j=0;j<list.length;j++){
+        if(!keep[list[j].id]&&list[j].active!==false){list[j].active=false;changed++;}
+      }
+      try{localStorage.setItem(CLASS_FLAG,'1');}catch(e){}
     }
-    try{localStorage.setItem(CLASS_FLAG,'1');}catch(e){}
     if(changed)persist();
     return changed;
   }
@@ -3752,6 +3766,23 @@ window.KB_NOTEN=(function(){
   function rec(sid){var r=data[sid];if(!r){r={mode:'semester',grades:[],modules:{}};data[sid]=r;}if(!r.grades)r.grades=[];if(!r.modules)r.modules={};if(!r.mode)r.mode='semester';return r;}
   function notify(sid){saveAll(data);for(var i=0;i<hooks.length;i++){try{hooks[i](sid);}catch(e){}}}
   function nid(){return 'gr_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
+  /* Aus dem Team-Rapport vom 16.09.2026: „Matteo an Alex K hunn Semester,
+     dei aner Trimester". Einmalig gesetzt, danach jederzeit im Noten-Tab
+     umstellbar. */
+  var MODE_FLAG='klassebuch_noten_modus_2627';
+  (function applyModes2627(){
+    try{if(localStorage.getItem(MODE_FLAG))return;}catch(e){}
+    var SEM={stud_matteo:1,stud_alexk:1};
+    var ids={};try{ids=(window.KB_ROSTER?window.KB_ROSTER.ids():{});}catch(e){}
+    var changed=false;
+    for(var id in ids){
+      var want=SEM[id]?'semester':'trimester';
+      var r=rec(id);
+      if(r.mode!==want){r.mode=want;r.updatedAt=new Date().toISOString();changed=true;}
+    }
+    try{localStorage.setItem(MODE_FLAG,'1');}catch(e){}
+    if(changed)saveAll(data);
+  })();
   function norm(g){var m=+g.max;return (m>0)?(+g.points/m*60):0;}
   function periodsFor(mode){return mode==='trimester'?['T1','T2','T3']:['S1','S2'];}
   function listOf(sid,subject,period){return rec(sid).grades.filter(function(g){return (!subject||g.subject===subject)&&(!period||g.period===period);});}
