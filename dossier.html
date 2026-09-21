@@ -334,6 +334,16 @@ mark{background:#ffe9a8; padding:0 2px; border-radius:2px;}
 
 /* Organisation-Karte */
 .reu-orgcard{padding:16px 18px; margin-bottom:16px;}
+textarea.reu-auto{width:100%; box-sizing:border-box; font:inherit; font-size:.95rem; line-height:1.5;
+  padding:10px 12px; border:1px solid var(--border,#d9dde3); border-radius:9px; background:#fff;
+  color:inherit; resize:vertical; overflow:hidden; min-height:64px;}
+textarea.reu-auto:hover{border-color:#b9c0ca;}
+textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-shadow:0 0 0 3px rgba(79,91,213,.14);}
+.reu-updwrap{position:relative;}
+.reu-updedit{min-height:74px;}
+.reu-saved{font-size:.74rem; font-weight:700; color:#1d8a52; opacity:0; transition:opacity .18s; white-space:nowrap;}
+.reu-saved.on{opacity:1;}
+.reu-updwrap .reu-saved{position:absolute; right:10px; top:-17px;}
 .reu-orgcard-head{display:flex; align-items:center; gap:10px; margin-bottom:4px;}
 .reu-orgcard-head h3{margin:0; font-size:1.02rem;}
 .reu-orgcard-head .count{font-size:.78rem; color:var(--text-muted); background:#eef1f4; border-radius:999px; padding:1px 9px; font-weight:600;}
@@ -3231,8 +3241,7 @@ function viewReunion(params, query) {
     q: '',
     filter: 'all',      // all | todo | update | noupdate | goals
     expanded: {},       // sid -> true
-    orderEdit: false,
-    editOrg: false
+    orderEdit: false
   };
 
   function current() { return Repo.getReunionByDate(state.date); }
@@ -3366,33 +3375,14 @@ function viewReunion(params, query) {
     var items = r.orgItems || [];
     var group = (r.goals && r.goals.group) || [];
     var groupTxt = Array.isArray(group) ? group.join(' ') : String(group || '');
-    if (state.editOrg) {
-      var text = items.join('\n\n');
-      return '<section class="card reu-orgcard">' +
-        '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="sp"></span></div>' +
-        '<p class="hint">Ein Orga-Punkt pro Absatz — Leerzeile trennt die Punkte.</p>' +
-        '<textarea id="org-edit" rows="' + Math.min(18, Math.max(6, items.length * 2)) + '">' + escapeHtml(text) + '</textarea>' +
-        '<div class="field" style="margin-top:12px;"><label for="org-group">Gruppenziel der Woche</label>' +
-          '<input type="text" id="org-group" value="' + escapeAttr(groupTxt) + '" placeholder="z. B. Wir schaffen ruhige Pausen."></div>' +
-        '<div class="reu-actions" style="margin-top:6px;">' +
-          '<button type="button" class="btn btn-sm" data-act="orgcancel">Abbrechen</button>' +
-          '<button type="button" class="btn btn-sm btn-primary" data-act="orgsave">Orga speichern</button>' +
-        '</div>' +
-      '</section>';
-    }
-    var body;
-    if (!items.length) body = '<p class="muted" style="margin:6px 0 0;">Keine Orga-Punkte erfasst.</p>';
-    else body = '<ul class="org-list">' + items.map(function (it) {
-      var parts = it.split('\n');
-      return '<li>' + escapeHtml(parts[0]) +
-        (parts.length > 1 ? '<ul class="org-sublist">' + parts.slice(1).map(function (p) { return '<li>' + escapeHtml(p) + '</li>'; }).join('') + '</ul>' : '') +
-      '</li>';
-    }).join('') + '</ul>';
+    var text = items.join('\n\n');
     return '<section class="card reu-orgcard">' +
-      '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="count">' + items.length + '</span><span class="sp"></span>' +
-        '<button type="button" class="btn btn-sm" data-act="orgedit">Bearbeiten</button></div>' +
-      (groupTxt.trim() ? '<div class="reu-group-goal"><span class="ico">🎯</span><div><b>Gruppenziel:</b> ' + escapeHtml(groupTxt) + '</div></div>' : '') +
-      body +
+      '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
+        '<span class="reu-saved" id="org-saved"></span></div>' +
+      '<p class="hint">Direkt reinschreiben — wird automatisch gespeichert. Ein Orga-Punkt pro Absatz, eine Leerzeile trennt die Punkte.</p>' +
+      '<textarea id="org-edit" class="reu-auto" rows="6" placeholder="Orga-Punkte der Réunion …">' + escapeHtml(text) + '</textarea>' +
+      '<div class="field" style="margin-top:12px;"><label for="org-group">Gruppenziel der Woche</label>' +
+        '<input type="text" id="org-group" value="' + escapeAttr(groupTxt) + '" placeholder="z. B. Wir schaffen ruhige Pausen."></div>' +
     '</section>';
   }
 
@@ -3426,9 +3416,11 @@ function viewReunion(params, query) {
           '</div>' +
         '</div>' +
         '<div class="reu-rowactions">' +
-          (row.hasUpdate
-            ? '<button type="button" class="btn btn-sm" data-route="#/entry/' + escapeAttr(row.entry.id) + '/edit?return=' + encodeURIComponent(returnRoute()) + '">Bearbeiten</button>'
-            : '<button type="button" class="btn btn-sm btn-primary" data-route="#/entry/new/' + escapeAttr(row.sid) + '?date=' + escapeAttr(r.date) + '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute()) + '">+ Update</button>') +
+          /* Der Text wird direkt in der Karte geschrieben. Dieser Knopf oeffnet
+             nur noch die ausfuehrliche Maske (Tags, Verlaufs-Slider). Wohin er
+             fuehrt, wird erst beim Klick entschieden - sonst wuerde er nach
+             einer gerade inline angelegten Notiz eine zweite anlegen. */
+          '<button type="button" class="btn btn-sm" data-act="details" data-sid="' + escapeAttr(row.sid) + '" title="Tags und Verlaufs-Slider erfassen">⋯ Details</button>' +
           '<span class="reu-chev">▶</span>' +
         '</div>' +
       '</div>';
@@ -3437,13 +3429,18 @@ function viewReunion(params, query) {
   }
   function cardBodyHtml(row, r) {
     var out = '';
-    if (row.hasUpdate) {
-      out += '<div class="reu-update">' + highlightThemesHtml(row.entry.text) + '</div>';
-      if (row.themes.length) out += '<div class="reu-chips">' + row.themes.slice(0, 8).map(function (t) {
+    /* Direkt beschreibbar: kein „+ Update" davor noetig, wird automatisch
+       gespeichert. Die ausfuehrliche Maske (Tags, Verlaufs-Slider) bleibt
+       ueber den Knopf in der Kopfzeile erreichbar. */
+    out += '<div class="reu-updwrap">' +
+      '<textarea class="reu-auto reu-updedit" data-upd="' + escapeAttr(row.sid) + '" rows="3" ' +
+        'placeholder="Update zu ' + escapeAttr(row.s.name) + ' — einfach reinschreiben …">' +
+        escapeHtml(row.entry && row.entry.text ? row.entry.text : '') + '</textarea>' +
+      '<span class="reu-saved" data-saved="' + escapeAttr(row.sid) + '"></span></div>';
+    if (row.hasUpdate && row.themes.length) {
+      out += '<div class="reu-chips">' + row.themes.slice(0, 8).map(function (t) {
         return '<span class="chip theme-chip sev-' + t.severity + '" title="Treffer: ' + escapeAttr(t.terms.join(', ')) + '">' + escapeHtml(t.key) + '</span>';
       }).join('') + '</div>';
-    } else {
-      out += '<div class="reu-noupdate">Für diese Réunion wurde noch kein Update erfasst.</div>';
     }
     // Ziele
     out += '<div class="reu-goals">' +
@@ -3501,11 +3498,12 @@ function viewReunion(params, query) {
     afterRender: function (root) {
       var wrap = qs('#reunion-wrap', root);
 
-      function full() { wrap.innerHTML = bodyHtml(); }
+      function full() { wrap.innerHTML = bodyHtml(); growAll(); }
       function rerenderList() {
         var r = current(); if (!r) { full(); return; }
         var el = qs('#reu-list', wrap); if (el) el.innerHTML = listHtml(r);
         var fb = qs('.reu-filter', wrap); if (fb) fb.outerHTML = filterHtml(rowsFor(r));
+        growAll();
       }
       function rerenderStats() {
         var r = current(); if (!r) return;
@@ -3518,6 +3516,7 @@ function viewReunion(params, query) {
         if (idx < 0) return;
         var el = qs('.reu-card[data-card="' + cssEsc(sid) + '"]', wrap);
         if (el) el.outerHTML = cardHtml(rows[idx], idx, rows.length);
+        growAll();
       }
       function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
 
@@ -3529,7 +3528,7 @@ function viewReunion(params, query) {
 
         // interaktive Elemente in der Zeile nicht als "toggle" behandeln
         if (action === 'toggle') {
-          if (t.closest('a,button,input,select,.reu-ordbtns')) return;
+          if (t.closest('a,button,input,select,textarea,label,.reu-ordbtns')) return;
           var sid = act.getAttribute('data-sid');
           if (state.expanded[sid]) delete state.expanded[sid]; else state.expanded[sid] = true;
           rebuildCard(sid);
@@ -3588,19 +3587,119 @@ function viewReunion(params, query) {
           return;
         }
         if (action === 'orderedit') { state.orderEdit = !state.orderEdit; full(); return; }
-        if (action === 'orgedit') { state.editOrg = true; qs('#reu-org', wrap).innerHTML = orgHtml(current()); return; }
-        if (action === 'orgcancel') { state.editOrg = false; qs('#reu-org', wrap).innerHTML = orgHtml(current()); return; }
-        if (action === 'orgsave') {
-          var r7 = current();
-          var raw = qs('#org-edit', wrap).value;
-          r7.orgItems = raw.split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean);
-          var gEl = qs('#org-group', wrap);
-          if (gEl) { if (!r7.goals || typeof r7.goals !== 'object') r7.goals = {}; var gv = gEl.value.trim(); r7.goals.group = gv ? [gv] : []; }
-          persist(r7).then(function () { state.editOrg = false; showToast('Orga gespeichert.'); qs('#reu-org', wrap).innerHTML = orgHtml(current()); rerenderStats(); });
+        if (action === 'details') {
+          var rd = current(); var sd = act.getAttribute('data-sid');
+          if (!rd || !sd) return;
+          var ed = Repo.reunionEntryFor(rd.date, sd);
+          navigate(ed
+            ? ('#/entry/' + encodeURIComponent(ed.id) + '/edit?return=' + encodeURIComponent(returnRoute()))
+            : ('#/entry/new/' + encodeURIComponent(sd) + '?date=' + encodeURIComponent(rd.date) +
+               '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute())));
           return;
         }
         if (action === 'print') { printProtocol(); return; }
       });
+
+      /* ---------- Direkt schreiben, automatisch speichern ----------
+         Waehrend des Tippens wird NICHT neu gezeichnet, sonst springt der
+         Cursor. Es werden nur der Zaehler, die Marke und die Statistik
+         nachgefuehrt. */
+      function autoGrow(ta) {
+        if (!ta || ta.tagName !== 'TEXTAREA') return;
+        ta.style.height = 'auto';
+        ta.style.height = (ta.scrollHeight + 2) + 'px';
+      }
+      function markSaved(el) {
+        if (!el) return;
+        el.textContent = '✓ gespeichert';
+        el.classList.add('on');
+        clearTimeout(el._t);
+        el._t = setTimeout(function () { el.classList.remove('on'); }, 1600);
+      }
+      function saveOrg() {
+        var r = current(); if (!r) return;
+        var ta = qs('#org-edit', wrap); if (!ta) return;
+        r.orgItems = ta.value.split(/\n\s*\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+        var gEl = qs('#org-group', wrap);
+        if (gEl) {
+          if (!r.goals || typeof r.goals !== 'object') r.goals = {};
+          var gv = gEl.value.trim();
+          r.goals.group = gv ? [gv] : [];
+        }
+        persist(r).then(function () {
+          var c = qs('#org-count', wrap); if (c) c.textContent = r.orgItems.length;
+          markSaved(qs('#org-saved', wrap));
+          rerenderStats();
+        });
+      }
+      function isPlainAuto(entry) {
+        if (!entry || entry.report) return false;
+        var tg = entry.tags || [];
+        if (tg.length > 1) return false;
+        if (tg.length === 1 && tg[0] !== 'Réunion') return false;
+        var sl = entry.sliders || {};
+        for (var k in sl) { if (sl[k] != null) return false; }
+        return true;
+      }
+      function saveUpd(sid, ta) {
+        var r = current(); if (!r || !sid || !ta) return;
+        var txt = ta.value;
+        var entry = Repo.reunionEntryFor(r.date, sid);
+        var done = function () {
+          var card = qs('[data-card="' + cssEsc(sid) + '"]', wrap);
+          var flag = card && qs('.reu-flag.upd, .reu-flag.noupd', card);
+          if (flag) {
+            var has = !!txt.trim();
+            flag.className = 'reu-flag ' + (has ? 'upd' : 'noupd');
+            flag.textContent = has ? 'Update' : 'kein Update';
+          }
+          markSaved(card && qs('[data-saved="' + cssEsc(sid) + '"]', card));
+          rerenderStats();
+        };
+        if (!txt.trim()) {
+          /* Leer geraeumt: einen hier angelegten, sonst leeren Eintrag wieder
+             entfernen. Haengt daran mehr als der automatische Tag - eigene
+             Tags, ein Bericht oder gesetzte Verlaufs-Slider - bleibt er stehen. */
+          if (entry && isPlainAuto(entry)) {
+            Repo.deleteEntry(entry.id).then(done);
+          } else { done(); }
+          return;
+        }
+        var payload = {
+          id: entry ? entry.id : undefined,
+          studentId: sid, date: r.date,
+          author: entry && entry.author ? entry.author : ((window.KB_USER && KB_USER.get && KB_USER.get()) || 'Team (Réunion)'),
+          category: 'Team-Réunion',
+          tags: entry && entry.tags && entry.tags.length ? entry.tags : ['Réunion'],
+          text: txt,
+          sliders: entry ? entry.sliders : null,
+          createdAt: entry ? entry.createdAt : undefined
+        };
+        if (entry && entry.report) payload.report = entry.report;
+        Repo.saveEntry(payload).then(done);
+      }
+      var saveT = {};
+      function queueSave(key, fn) {
+        clearTimeout(saveT[key]);
+        saveT[key] = setTimeout(fn, 700);
+      }
+      wrap.addEventListener('input', function (e) {
+        var t = e.target;
+        if (t.id === 'org-edit' || t.id === 'org-group') { autoGrow(t); queueSave('org', saveOrg); return; }
+        var usid = t.getAttribute && t.getAttribute('data-upd');
+        if (usid) { autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return; }
+      });
+      /* Beim Verlassen sofort sichern, nicht erst nach der Wartezeit. */
+      wrap.addEventListener('focusout', function (e) {
+        var t = e.target;
+        if (t.id === 'org-edit' || t.id === 'org-group') { clearTimeout(saveT.org); saveOrg(); return; }
+        var usid = t.getAttribute && t.getAttribute('data-upd');
+        if (usid) { clearTimeout(saveT['u' + usid]); saveUpd(usid, t); return; }
+      });
+      /* Felder auf ihren Inhalt einstellen, sobald sie sichtbar werden. */
+      function growAll() { (wrap.querySelectorAll ? wrap.querySelectorAll('textarea.reu-auto') : []).forEach(autoGrow); }
+      wrap._growAll = growAll;
+      setTimeout(growAll, 0);
 
       // Suche + Ziel-Eingabe (Enter)
       wrap.addEventListener('input', function (e) {
