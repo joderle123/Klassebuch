@@ -799,6 +799,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
   color:inherit; resize:vertical; overflow:hidden; min-height:64px;}
 #dos-root textarea.reu-auto:hover{border-color:#b9c0ca;}
 #dos-root textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-shadow:0 0 0 3px rgba(79,91,213,.14);}
+#dos-root .reu-updhead{display:flex; justify-content:flex-end; margin-bottom:3px;}
+#dos-root .reu-bul{border:1px solid var(--border); background:#fff; border-radius:999px; padding:2px 9px; font:inherit; font-size:.72rem; font-weight:600; color:var(--text-muted); cursor:pointer;}
+#dos-root .reu-bul:hover{border-color:var(--accent); color:var(--accent);}
+#dos-root .reu-bul.on{background:var(--accent); border-color:var(--accent); color:#fff;}
 #dos-root .reu-updwrap{position:relative;}
 #dos-root .reu-updedit{min-height:74px;}
 #dos-root .reu-saved{font-size:.74rem; font-weight:700; color:#1d8a52; opacity:0; transition:opacity .18s; white-space:nowrap;}
@@ -8365,7 +8369,8 @@ function viewReunion(params, query) {
             ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
             : '<button type="button" class="btn btn-sm btn-primary" id="reu-create-next">+ Nächste Réunion</button>') +
           (r ? '<button type="button" class="btn btn-sm" data-act="orderedit">' + (state.orderEdit ? '✓ Reihenfolge' : '↕ Reihenfolge') + '</button>' : '') +
-          (r ? '<button type="button" class="btn btn-sm" data-act="print">🖨 Protokoll</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="print" title="Druckansicht — im Dialog „Als PDF speichern" wählen">🖨 PDF</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="word" title="Protokoll als Word-Datei speichern">⬇ Word</button>' : '') +
         '</div>' +
       '</div>' +
       (r ? statsHtml(r, rows) : '') +
@@ -8468,12 +8473,47 @@ function viewReunion(params, query) {
     var body = expanded ? '<div class="reu-body">' + cardBodyHtml(row, r) + '</div>' : '';
     return '<section class="reu-card' + (row.discussed ? ' is-done' : '') + (expanded ? ' is-open' : '') + (row.discussed && !expanded ? ' dimmed' : '') + '" data-card="' + escapeAttr(row.sid) + '">' + head + body + '</section>';
   }
+  /* Stichpunkte je Schueler. Die Punkte stehen im Text selbst, damit sie
+     ueberall gleich aussehen - im Feld, im Dossier, im Protokoll - und man
+     sie schon beim Tippen sieht. Die Vorliebe merkt sich das Geraet. */
+  var BUL = '\u2022 ';
+  var BUL_KEY = LS_PREFIX + 'reu_bullets';
+  function bulletMap() {
+    try { return JSON.parse(localStorage.getItem(BUL_KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function bulletsOn(sid) { return !!bulletMap()[sid]; }
+  function setBulletPref(sid, on) {
+    var m = bulletMap();
+    if (on) m[sid] = 1; else delete m[sid];
+    try { localStorage.setItem(BUL_KEY, JSON.stringify(m)); } catch (e) {}
+  }
+  function stripBullet(line) { return line.replace(/^\s*[\u2022\-\*]\s*/, ''); }
+  function toBullets(txt) {
+    return String(txt || '').split('\n').map(function (l) {
+      var t = stripBullet(l);
+      return t.trim() ? BUL + t : '';
+    }).join('\n');
+  }
+  function fromBullets(txt) {
+    return String(txt || '').split('\n').map(stripBullet).join('\n');
+  }
+  function hasBullet(txt) {
+    var l = String(txt || '').split('\n');
+    for (var i = 0; i < l.length; i++) { if (l[i].trim()) return l[i].indexOf(BUL) === 0; }
+    return false;
+  }
+
   function cardBodyHtml(row, r) {
     var out = '';
     /* Direkt beschreibbar: kein „+ Update" davor noetig, wird automatisch
        gespeichert. Die ausfuehrliche Maske (Tags, Verlaufs-Slider) bleibt
        ueber den Knopf in der Kopfzeile erreichbar. */
+    var bul = bulletsOn(row.sid);
     out += '<div class="reu-updwrap">' +
+      '<div class="reu-updhead">' +
+        '<button type="button" class="reu-bul' + (bul ? ' on' : '') + '" data-act="bullets" data-sid="' + escapeAttr(row.sid) + '" ' +
+          'title="' + (bul ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben') + '">\u2022 Stichpunkte</button>' +
+      '</div>' +
       '<textarea class="reu-auto reu-updedit" data-upd="' + escapeAttr(row.sid) + '" rows="3" ' +
         'placeholder="Update zu ' + escapeAttr(row.s.name) + ' — einfach reinschreiben …">' +
         escapeHtml(row.entry && row.entry.text ? row.entry.text : '') + '</textarea>' +
@@ -8638,7 +8678,23 @@ function viewReunion(params, query) {
                '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute())));
           return;
         }
+        if (action === 'bullets') {
+          var bsid = t.getAttribute('data-sid');
+          var bta = qs('textarea[data-upd="' + bsid + '"]', wrap);
+          var an = !bulletsOn(bsid);
+          setBulletPref(bsid, an);
+          t.classList.toggle('on', an);
+          t.title = an ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben';
+          if (bta) {
+            bta.value = an ? toBullets(bta.value) : fromBullets(bta.value);
+            autoGrow(bta); bta.focus();
+            try { bta.setSelectionRange(bta.value.length, bta.value.length); } catch (e) {}
+            clearTimeout(saveT['u' + bsid]); saveUpd(bsid, bta);
+          }
+          return;
+        }
         if (action === 'print') { printProtocol(); return; }
+        if (action === 'word') { wordProtocol(); return; }
       });
 
       /* ---------- Direkt schreiben, automatisch speichern ----------
@@ -8728,7 +8784,29 @@ function viewReunion(params, query) {
         var t = e.target;
         if (t.id === 'org-edit' || t.id === 'org-group') { autoGrow(t); queueSave('org', saveOrg); return; }
         var usid = t.getAttribute && t.getAttribute('data-upd');
-        if (usid) { autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return; }
+        if (usid) {
+          /* Erstes Zeichen in einem Stichpunkt-Feld bekommt gleich den Punkt. */
+          if (bulletsOn(usid) && t.value.trim() && !hasBullet(t.value)) {
+            var ende = t.selectionStart === t.value.length;
+            t.value = toBullets(t.value);
+            if (ende) { try { t.setSelectionRange(t.value.length, t.value.length); } catch (e2) {} }
+          }
+          autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return;
+        }
+      });
+      /* Enter beginnt im Stichpunkt-Modus den naechsten Punkt. */
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' || e.shiftKey) return;
+        var t = e.target;
+        var usid = t.getAttribute && t.getAttribute('data-upd');
+        if (!usid || !bulletsOn(usid)) return;
+        e.preventDefault();
+        var a = t.selectionStart, b = t.selectionEnd;
+        t.value = t.value.slice(0, a) + '\n' + BUL + t.value.slice(b);
+        var pos = a + 1 + BUL.length;
+        try { t.setSelectionRange(pos, pos); } catch (e3) {}
+        autoGrow(t);
+        queueSave('u' + usid, function () { saveUpd(usid, t); });
       });
       /* Beim Verlassen sofort sichern, nicht erst nach der Wartezeit. */
       wrap.addEventListener('focusout', function (e) {
@@ -8798,12 +8876,11 @@ function viewReunion(params, query) {
         persist(r).then(function () { rebuildCard(sid); rerenderStats(); });
       }
 
-      function printProtocol() {
-        var r = current(); if (!r) return;
-        var rows = rowsFor(r);
-        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
-        var html = '<div class="print-sheet" id="print-sheet">' +
-          '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
+      /* Das Protokoll einer Réunion — einmal gebaut, dreifach genutzt:
+         Bildschirm-Druckansicht (daraus wird im Dialog das PDF), Word-Datei
+         und spaeter evtl. mehr. */
+      function protocolHtml(r, rows) {
+        var html = '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
           '<p class="rp-sub">Team-Versammlung vom ' + escapeHtml(formatDate(r.date)) + ' · ' +
             rows.filter(function (x) { return x.discussed; }).length + ' / ' + rows.length + ' Schüler besprochen</p>';
         var group = (r.goals && r.goals.group) || [];
@@ -8826,10 +8903,44 @@ function viewReunion(params, query) {
           }).join('') + '</ul>';
           html += '</div>';
         });
-        html += '</div>';
-        var holder = document.createElement('div'); holder.innerHTML = html;
+        return html;
+      }
+
+      function printProtocol() {
+        var r = current(); if (!r) return;
+        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
+        var holder = document.createElement('div');
+        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r)) + '</div>';
         document.body.appendChild(holder.firstChild);
         window.print();
+      }
+
+      /* Word oeffnet HTML mit diesem Kopf als Dokument — offline, ohne
+         Zusatzbibliothek. Die Formate stehen fest im Dokument, damit es
+         auch ohne die Stylesheets der App ordentlich aussieht. */
+      function wordProtocol() {
+        var r = current(); if (!r) return;
+        var body = protocolHtml(r, rowsFor(r))
+          .replace(/class="rp-h1"/g, 'style="font-size:17pt;margin:0 0 2pt;"')
+          .replace(/class="rp-sub"/g, 'style="color:#555;font-size:10pt;margin:0 0 12pt;"')
+          .replace(/class="rp-sec"/g, 'style="font-size:11pt;font-weight:bold;text-transform:uppercase;border-bottom:1pt solid #333;padding-bottom:2pt;margin:14pt 0 6pt;"')
+          .replace(/class="rp-org"/g, 'style="margin:0 0 6pt 16pt;font-size:10pt;"')
+          .replace(/class="rp-stud"/g, 'style="border-bottom:1pt solid #ddd;padding:4pt 0;"')
+          .replace(/class="rp-upd"/g, 'style="font-size:10pt;white-space:pre-wrap;margin:2pt 0;"')
+          .replace(/class="rp-goals"/g, 'style="margin:2pt 0 2pt 16pt;font-size:10pt;"')
+          .replace(/class="rp-done"[^>]*/g, 'style="font-size:9pt;color:#0a7"')
+          .replace(/class="rp-todo"[^>]*/g, 'style="font-size:9pt;color:#999"');
+        var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+          'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+          '<head><meta charset="utf-8"><title>Réunion ' + escapeHtml(r.date) + '</title>' +
+          '<style>@page{size:A4;margin:2cm;} body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#000;}</style>' +
+          '</head><body>' + body + '</body></html>';
+        var blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'Reunion-' + r.date + '.doc';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
       }
     }
   };
@@ -42186,6 +42297,95 @@ window.KB_HOME=(function(){
 
   // Startseite: Mein Tag
   go('meintag');
+})();
+</script>
+<script>/* Zwei Fenster gleichzeitig auf derselben App.
+
+   Jedes Fenster haelt seinen Stand im Arbeitsspeicher und schreibt ihn beim
+   Speichern komplett zurueck. Sind zwei Fenster offen, gewinnt schlicht das
+   zuletzt gespeicherte - der andere Stand ist weg, ohne Warnung. Richtig
+   zusammenfuehren kann das nur der Team-Datei-Abgleich, und der ist fuer
+   verschiedene GERAETE gedacht, nicht fuer zwei Tabs auf demselben.
+
+   Darum hier keine Reparatur, sondern eine deutliche Ansage: solange ein
+   zweites Fenster lebt, steht oben ein Hinweis. Verschwindet es, geht der
+   Hinweis von selbst wieder weg. */
+(function () {
+  var KANAL = 'klassebuch_fenster';
+  var ICH = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  var PING = 2500;      // so oft meldet sich jedes Fenster
+  var TOT = 8000;       // so lange gilt ein stilles Fenster noch als offen
+  var andere = {};      // id -> zuletzt gehoert
+  var bc = null, balken = null;
+
+  try { if (window.BroadcastChannel) bc = new BroadcastChannel(KANAL); } catch (e) { bc = null; }
+  if (!bc) return;      // ohne Kanal keine Erkennung - dann lieber gar nichts
+
+  function zahl() {
+    var n = 0, jetzt = Date.now();
+    for (var k in andere) {
+      if (jetzt - andere[k] > TOT) delete andere[k]; else n++;
+    }
+    return n;
+  }
+
+  function zeigen() {
+    var n = zahl();
+    if (!n) {
+      if (balken && balken.parentNode) { balken.parentNode.removeChild(balken); balken = null; }
+      return;
+    }
+    if (!balken) {
+      balken = document.createElement('div');
+      balken.id = 'kb-tabwarn';
+      balken.setAttribute('role', 'alert');
+      balken.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:9999;background:#C0392B;color:#fff;' +
+        'font:600 14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:9px 14px;' +
+        'display:flex;gap:12px;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.25);';
+      var txt = document.createElement('span');
+      txt.id = 'kb-tabwarn-txt';
+      balken.appendChild(txt);
+      var zu = document.createElement('button');
+      zu.textContent = 'Verstanden';
+      zu.style.cssText = 'border:1px solid rgba(255,255,255,.7);background:transparent;color:#fff;' +
+        'border-radius:8px;padding:3px 10px;font:inherit;font-size:13px;cursor:pointer;';
+      zu.onclick = function () { if (balken && balken.parentNode) balken.parentNode.removeChild(balken); balken = null; stumm = true; };
+      balken.appendChild(zu);
+      (document.body || document.documentElement).appendChild(balken);
+    }
+    var t = document.getElementById('kb-tabwarn-txt');
+    if (t) {
+      t.textContent = '⚠️ Die App ist in ' + (n + 1) + ' Fenstern offen. Bitte nur eines benutzen — ' +
+        'sonst überschreibt das zuletzt gespeicherte Fenster die Eingaben der anderen.';
+    }
+  }
+
+  var stumm = false;
+  function pruefen() { if (!stumm) zeigen(); else if (!zahl() && balken) zeigen(); }
+
+  bc.onmessage = function (ev) {
+    var d = ev && ev.data;
+    if (!d || d.id === ICH) return;
+    if (d.t === 'hallo' || d.t === 'da') {
+      var neu = !andere[d.id];
+      andere[d.id] = Date.now();
+      if (d.t === 'hallo') { try { bc.postMessage({ t: 'da', id: ICH }); } catch (e) {} }
+      /* Nur ein wirklich neues Fenster holt den weggeklickten Hinweis zurueck -
+         die regelmaessigen Lebenszeichen duerfen das nicht tun. */
+      if (neu) stumm = false;
+      pruefen();
+    } else if (d.t === 'tschuess') {
+      delete andere[d.id];
+      pruefen();
+    }
+  };
+
+  function melden() { try { bc.postMessage({ t: 'hallo', id: ICH }); } catch (e) {} pruefen(); }
+  melden();
+  setInterval(melden, PING);
+  window.addEventListener('pagehide', function () { try { bc.postMessage({ t: 'tschuess', id: ICH }); } catch (e) {} });
+
+  window.KB_TABS = { count: function () { return zahl() + 1; }, id: ICH };
 })();
 </script>
 </body>

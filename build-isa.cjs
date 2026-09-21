@@ -30,6 +30,7 @@ function replaceOnce(s, find, repl, label) {
 }
 
 var anw = read('anwesenheit.html');
+var TABS_GUARD = read('tabs-guard.js');
 var dos = read('dossier.html');
 var sav = read('SAVOIR.html');
 
@@ -4131,6 +4132,7 @@ var parts = [
   '<script>' + AGENDA_MODULE + '</' + 'script>',
   '<script>' + ISA_HOME_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
+  '<script>' + TABS_GUARD + '</' + 'script>',
   '</body>',
   '</html>',
   ''

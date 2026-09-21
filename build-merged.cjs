@@ -29,6 +29,7 @@ function replaceOnce(s, find, repl, label) {
   return s.slice(0, i) + repl + s.slice(i + find.length);
 }
 
+var TABS_GUARD = read('tabs-guard.js');
 var anw = read('anwesenheit.html');
 var dos = read('dossier.html');
 var sav = read('SAVOIR.html');
@@ -4210,6 +4211,7 @@ var parts = [
   (MATHE_PDF_JS ? '<script>' + scriptSafe(MATHE_PDF_JS) + '</' + 'script>' : ''),
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
+  '<script>' + TABS_GUARD + '</' + 'script>',
   '</body>',
   '</html>',
   ''

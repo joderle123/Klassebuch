@@ -339,6 +339,10 @@ textarea.reu-auto{width:100%; box-sizing:border-box; font:inherit; font-size:.95
   color:inherit; resize:vertical; overflow:hidden; min-height:64px;}
 textarea.reu-auto:hover{border-color:#b9c0ca;}
 textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-shadow:0 0 0 3px rgba(79,91,213,.14);}
+.reu-updhead{display:flex; justify-content:flex-end; margin-bottom:3px;}
+.reu-bul{border:1px solid var(--border); background:#fff; border-radius:999px; padding:2px 9px; font:inherit; font-size:.72rem; font-weight:600; color:var(--text-muted); cursor:pointer;}
+.reu-bul:hover{border-color:var(--accent); color:var(--accent);}
+.reu-bul.on{background:var(--accent); border-color:var(--accent); color:#fff;}
 .reu-updwrap{position:relative;}
 .reu-updedit{min-height:74px;}
 .reu-saved{font-size:.74rem; font-weight:700; color:#1d8a52; opacity:0; transition:opacity .18s; white-space:nowrap;}
@@ -3324,7 +3328,8 @@ function viewReunion(params, query) {
             ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
             : '<button type="button" class="btn btn-sm btn-primary" id="reu-create-next">+ Nächste Réunion</button>') +
           (r ? '<button type="button" class="btn btn-sm" data-act="orderedit">' + (state.orderEdit ? '✓ Reihenfolge' : '↕ Reihenfolge') + '</button>' : '') +
-          (r ? '<button type="button" class="btn btn-sm" data-act="print">🖨 Protokoll</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="print" title="Druckansicht — im Dialog „Als PDF speichern" wählen">🖨 PDF</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="word" title="Protokoll als Word-Datei speichern">⬇ Word</button>' : '') +
         '</div>' +
       '</div>' +
       (r ? statsHtml(r, rows) : '') +
@@ -3427,12 +3432,47 @@ function viewReunion(params, query) {
     var body = expanded ? '<div class="reu-body">' + cardBodyHtml(row, r) + '</div>' : '';
     return '<section class="reu-card' + (row.discussed ? ' is-done' : '') + (expanded ? ' is-open' : '') + (row.discussed && !expanded ? ' dimmed' : '') + '" data-card="' + escapeAttr(row.sid) + '">' + head + body + '</section>';
   }
+  /* Stichpunkte je Schueler. Die Punkte stehen im Text selbst, damit sie
+     ueberall gleich aussehen - im Feld, im Dossier, im Protokoll - und man
+     sie schon beim Tippen sieht. Die Vorliebe merkt sich das Geraet. */
+  var BUL = '\u2022 ';
+  var BUL_KEY = LS_PREFIX + 'reu_bullets';
+  function bulletMap() {
+    try { return JSON.parse(localStorage.getItem(BUL_KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function bulletsOn(sid) { return !!bulletMap()[sid]; }
+  function setBulletPref(sid, on) {
+    var m = bulletMap();
+    if (on) m[sid] = 1; else delete m[sid];
+    try { localStorage.setItem(BUL_KEY, JSON.stringify(m)); } catch (e) {}
+  }
+  function stripBullet(line) { return line.replace(/^\s*[\u2022\-\*]\s*/, ''); }
+  function toBullets(txt) {
+    return String(txt || '').split('\n').map(function (l) {
+      var t = stripBullet(l);
+      return t.trim() ? BUL + t : '';
+    }).join('\n');
+  }
+  function fromBullets(txt) {
+    return String(txt || '').split('\n').map(stripBullet).join('\n');
+  }
+  function hasBullet(txt) {
+    var l = String(txt || '').split('\n');
+    for (var i = 0; i < l.length; i++) { if (l[i].trim()) return l[i].indexOf(BUL) === 0; }
+    return false;
+  }
+
   function cardBodyHtml(row, r) {
     var out = '';
     /* Direkt beschreibbar: kein „+ Update" davor noetig, wird automatisch
        gespeichert. Die ausfuehrliche Maske (Tags, Verlaufs-Slider) bleibt
        ueber den Knopf in der Kopfzeile erreichbar. */
+    var bul = bulletsOn(row.sid);
     out += '<div class="reu-updwrap">' +
+      '<div class="reu-updhead">' +
+        '<button type="button" class="reu-bul' + (bul ? ' on' : '') + '" data-act="bullets" data-sid="' + escapeAttr(row.sid) + '" ' +
+          'title="' + (bul ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben') + '">\u2022 Stichpunkte</button>' +
+      '</div>' +
       '<textarea class="reu-auto reu-updedit" data-upd="' + escapeAttr(row.sid) + '" rows="3" ' +
         'placeholder="Update zu ' + escapeAttr(row.s.name) + ' — einfach reinschreiben …">' +
         escapeHtml(row.entry && row.entry.text ? row.entry.text : '') + '</textarea>' +
@@ -3597,7 +3637,23 @@ function viewReunion(params, query) {
                '&category=' + encodeURIComponent('Team-Réunion') + '&return=' + encodeURIComponent(returnRoute())));
           return;
         }
+        if (action === 'bullets') {
+          var bsid = t.getAttribute('data-sid');
+          var bta = qs('textarea[data-upd="' + bsid + '"]', wrap);
+          var an = !bulletsOn(bsid);
+          setBulletPref(bsid, an);
+          t.classList.toggle('on', an);
+          t.title = an ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben';
+          if (bta) {
+            bta.value = an ? toBullets(bta.value) : fromBullets(bta.value);
+            autoGrow(bta); bta.focus();
+            try { bta.setSelectionRange(bta.value.length, bta.value.length); } catch (e) {}
+            clearTimeout(saveT['u' + bsid]); saveUpd(bsid, bta);
+          }
+          return;
+        }
         if (action === 'print') { printProtocol(); return; }
+        if (action === 'word') { wordProtocol(); return; }
       });
 
       /* ---------- Direkt schreiben, automatisch speichern ----------
@@ -3687,7 +3743,29 @@ function viewReunion(params, query) {
         var t = e.target;
         if (t.id === 'org-edit' || t.id === 'org-group') { autoGrow(t); queueSave('org', saveOrg); return; }
         var usid = t.getAttribute && t.getAttribute('data-upd');
-        if (usid) { autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return; }
+        if (usid) {
+          /* Erstes Zeichen in einem Stichpunkt-Feld bekommt gleich den Punkt. */
+          if (bulletsOn(usid) && t.value.trim() && !hasBullet(t.value)) {
+            var ende = t.selectionStart === t.value.length;
+            t.value = toBullets(t.value);
+            if (ende) { try { t.setSelectionRange(t.value.length, t.value.length); } catch (e2) {} }
+          }
+          autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return;
+        }
+      });
+      /* Enter beginnt im Stichpunkt-Modus den naechsten Punkt. */
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' || e.shiftKey) return;
+        var t = e.target;
+        var usid = t.getAttribute && t.getAttribute('data-upd');
+        if (!usid || !bulletsOn(usid)) return;
+        e.preventDefault();
+        var a = t.selectionStart, b = t.selectionEnd;
+        t.value = t.value.slice(0, a) + '\n' + BUL + t.value.slice(b);
+        var pos = a + 1 + BUL.length;
+        try { t.setSelectionRange(pos, pos); } catch (e3) {}
+        autoGrow(t);
+        queueSave('u' + usid, function () { saveUpd(usid, t); });
       });
       /* Beim Verlassen sofort sichern, nicht erst nach der Wartezeit. */
       wrap.addEventListener('focusout', function (e) {
@@ -3757,12 +3835,11 @@ function viewReunion(params, query) {
         persist(r).then(function () { rebuildCard(sid); rerenderStats(); });
       }
 
-      function printProtocol() {
-        var r = current(); if (!r) return;
-        var rows = rowsFor(r);
-        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
-        var html = '<div class="print-sheet" id="print-sheet">' +
-          '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
+      /* Das Protokoll einer Réunion — einmal gebaut, dreifach genutzt:
+         Bildschirm-Druckansicht (daraus wird im Dialog das PDF), Word-Datei
+         und spaeter evtl. mehr. */
+      function protocolHtml(r, rows) {
+        var html = '<h1 class="rp-h1">Réunion-Protokoll</h1>' +
           '<p class="rp-sub">Team-Versammlung vom ' + escapeHtml(formatDate(r.date)) + ' · ' +
             rows.filter(function (x) { return x.discussed; }).length + ' / ' + rows.length + ' Schüler besprochen</p>';
         var group = (r.goals && r.goals.group) || [];
@@ -3785,10 +3862,44 @@ function viewReunion(params, query) {
           }).join('') + '</ul>';
           html += '</div>';
         });
-        html += '</div>';
-        var holder = document.createElement('div'); holder.innerHTML = html;
+        return html;
+      }
+
+      function printProtocol() {
+        var r = current(); if (!r) return;
+        var old = qs('#print-sheet', document); if (old) old.parentNode.removeChild(old);
+        var holder = document.createElement('div');
+        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r)) + '</div>';
         document.body.appendChild(holder.firstChild);
         window.print();
+      }
+
+      /* Word oeffnet HTML mit diesem Kopf als Dokument — offline, ohne
+         Zusatzbibliothek. Die Formate stehen fest im Dokument, damit es
+         auch ohne die Stylesheets der App ordentlich aussieht. */
+      function wordProtocol() {
+        var r = current(); if (!r) return;
+        var body = protocolHtml(r, rowsFor(r))
+          .replace(/class="rp-h1"/g, 'style="font-size:17pt;margin:0 0 2pt;"')
+          .replace(/class="rp-sub"/g, 'style="color:#555;font-size:10pt;margin:0 0 12pt;"')
+          .replace(/class="rp-sec"/g, 'style="font-size:11pt;font-weight:bold;text-transform:uppercase;border-bottom:1pt solid #333;padding-bottom:2pt;margin:14pt 0 6pt;"')
+          .replace(/class="rp-org"/g, 'style="margin:0 0 6pt 16pt;font-size:10pt;"')
+          .replace(/class="rp-stud"/g, 'style="border-bottom:1pt solid #ddd;padding:4pt 0;"')
+          .replace(/class="rp-upd"/g, 'style="font-size:10pt;white-space:pre-wrap;margin:2pt 0;"')
+          .replace(/class="rp-goals"/g, 'style="margin:2pt 0 2pt 16pt;font-size:10pt;"')
+          .replace(/class="rp-done"[^>]*/g, 'style="font-size:9pt;color:#0a7"')
+          .replace(/class="rp-todo"[^>]*/g, 'style="font-size:9pt;color:#999"');
+        var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
+          'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+          '<head><meta charset="utf-8"><title>Réunion ' + escapeHtml(r.date) + '</title>' +
+          '<style>@page{size:A4;margin:2cm;} body{font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#000;}</style>' +
+          '</head><body>' + body + '</body></html>';
+        var blob = new Blob(['\ufeff' + doc], { type: 'application/msword' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = 'Reunion-' + r.date + '.doc';
+        document.body.appendChild(a); a.click();
+        setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
       }
     }
   };
