@@ -595,14 +595,14 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
         2:row('Mathe','Options','Kunst',SKILLS),
         3:row('Projet','Culge','English','Sport'),
         4:row('Deutsch','Français','Inité','Fit for Life'),
-        5:row('Deutsch','Culge','Option Skillstruck','')             // Fr: nachmittags frei
+        5:row('Deutsch','Culge','Option Skillstruck','Option Skillstruck')
       },
       L2:{
         1:row('English','Deutsch','Dossier Scnat','Réckbléck',''),   // Mo: Schluss 13:45
         2:row('Français','Options','Inité',SKILLS),
         3:row('Projet','Sciences sociales','Vieso','Sport'),
         4:row('Français','Mathe','Kunst','Fit for Life'),
-        5:row('Deutsch','Mathe','Option Skillstruck','')             // Fr: nachmittags frei
+        5:row('Deutsch','Mathe','Option Skillstruck','Option Skillstruck')
       }
     };
   }
@@ -717,6 +717,16 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     if(state.ttVersion<3){
       state.timetable=defaultTimetable();
       state.ttVersion=3;
+    }
+    // Freitags ist 13:30-15:15 ebenfalls Skillstruck. Gezielt nur diese eine
+    // Stunde nachtragen, wenn sie leer ist - ein kompletter Austausch wuerde
+    // eigene Aenderungen am Plan wegwerfen.
+    if(state.ttVersion<4){
+      ['L1','L2'].forEach(function(lv){
+        var fr=state.timetable&&state.timetable[lv]&&state.timetable[lv][5];
+        if(fr&&!fr[7])fr[7]='Option Skillstruck';
+      });
+      state.ttVersion=4;
     }
   }
   function save(){

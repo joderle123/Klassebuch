@@ -1322,8 +1322,24 @@ window.KB_TIMETABLE=(function(){
     save(o); cur=k;
     return true;
   }
+  /* Freitags 13:30-15:15 ist ebenfalls Skillstruck. In den bereits
+     gespeicherten Trimester-Plaenen wird nur diese eine Stunde nachgetragen,
+     und nur wenn sie leer ist - alles andere bleibt, wie es eingetragen
+     wurde. Laeuft genau einmal. */
+  function frSkillsOnce(){
+    var F='klassebuch_tt_fr_skills';
+    try{if(localStorage.getItem(F))return;}catch(e){return;}
+    var o=load(), n=0;
+    for(var k in o){var g=o[k]||{};
+      for(var lv in g){var fr=(g[lv]||{})[5];
+        if(fr&&fr.length>7&&!fr[7]){fr[7]='Option Skillstruck';n++;}}}
+    if(n)save(o);
+    try{localStorage.setItem(F,'1');}catch(e){}
+  }
+
   function init(){
     migrateOnce();
+    frSkillsOnce();
     activate(true);
     try{if(window.KB_TERMS&&window.KB_TERMS.onChange)window.KB_TERMS.onChange(function(){activate(false);});}catch(e){}
   }

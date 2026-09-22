@@ -827,8 +827,10 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
   color:inherit; resize:vertical; overflow:hidden; min-height:64px;}
 #dos-root textarea.reu-auto:hover{border-color:#b9c0ca;}
 #dos-root textarea.reu-auto:focus{outline:none; border-color:var(--accent,#4f5bd5); box-shadow:0 0 0 3px rgba(79,91,213,.14);}
-#dos-root .reu-inactive{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:14px 0 4px; padding:9px 11px; border:1px dashed var(--border); border-radius:10px; background:var(--bg-soft,#fafafa);}
+#dos-root .reu-inactive{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin:0 0 10px; padding:8px 11px; border:1px dashed var(--border); border-radius:10px; background:var(--bg-soft,#fafafa);}
 #dos-root .reu-inactive .ria-lbl{font-size:.78rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.03em; margin-right:2px;}
+#dos-root .reu-inactive .ria-hint{font-size:.76rem; color:var(--text-muted); margin-left:auto;}
+#dos-root .ria-chip.has{border-color:var(--accent);}
 #dos-root .ria-chip{border:1px solid var(--border); background:#fff; border-radius:999px; padding:3px 11px; font:inherit; font-size:.82rem; font-weight:600; color:var(--text-muted); cursor:pointer;}
 #dos-root .ria-chip:hover{border-color:var(--accent); color:var(--accent);}
 #dos-root .ria-chip.on{background:var(--accent); border-color:var(--accent); color:#fff;}
@@ -8405,9 +8407,11 @@ function viewReunion(params, query) {
   }
 
   /* ---- Datenzeilen (Reihenfolge der Versammlung + weitere aktive Schüler) ---- */
-  /* Inaktive Schueler stehen nicht in der Wochen-Réunion. Sichtbar werden sie
-     nur, wenn an diesem Tag schon ein Update zu ihnen steht (sonst waere es
-     unauffindbar) oder wenn man sie unten in der Leiste dazuholt. */
+  /* Inaktive Schueler stehen NIE von allein in der Wochen-Réunion - auch dann
+     nicht, wenn schon ein Update zu ihnen erfasst wurde. Sichtbar werden sie
+     ausschliesslich, wenn man sie in der Leiste ueber der Liste anklickt;
+     wer ein Update hat, traegt dort einen Punkt, damit nichts uebersehen
+     wird. */
   function isExtra(sid) { return !!state.extra[sid]; }
   function inactiveStudents() {
     return Repo.listStudents().filter(function (s) { return s.active === false; });
@@ -8416,10 +8420,7 @@ function viewReunion(params, query) {
     var order = (r.studentOrder || []).slice();
     Repo.listStudents().forEach(function (s) {
       if (order.indexOf(s.id) !== -1) return;
-      if (s.active !== false || isExtra(s.id)) { order.push(s.id); return; }
-      // Ehemaliger mit Update an diesem Tag: gehoert trotzdem in die Liste
-      var e = Repo.reunionEntryFor(r.date, s.id);
-      if (e && e.text && e.text.trim()) order.push(s.id);
+      if (s.active !== false || isExtra(s.id)) order.push(s.id);
     });
     var discussed = r.discussed || [];
     var rows = [];
@@ -8427,7 +8428,7 @@ function viewReunion(params, query) {
       var s = Repo.getStudent(sid);
       if (!s) return;
       var entry = Repo.reunionEntryFor(r.date, sid);
-      if (s.active === false && !isExtra(sid) && !(entry && entry.text && entry.text.trim())) return;
+      if (s.active === false && !isExtra(sid)) return;
       var themes = entry ? analyzeText(entry.text) : [];
       var goals = goalsFor(r, sid);
       rows.push({
@@ -8666,20 +8667,22 @@ function viewReunion(params, query) {
   }
 
   /* Leiste der Ehemaligen: anklicken holt den Schueler in die Liste, damit man
-     ein Update schreiben kann; nochmal anklicken raeumt ihn wieder weg. */
+     ueber ihn schreiben kann; nochmal anklicken raeumt ihn wieder weg. */
   function inactiveBarHtml(r) {
     var alt = inactiveStudents();
     if (!alt.length) return '';
     return '<div class="reu-inactive" id="reu-inactive">' +
-      '<span class="ria-lbl">Nicht mehr in der Klasse:</span>' +
+      '<span class="ria-lbl">Ehemalige dazuholen</span>' +
       alt.map(function (s) {
         var e = r ? Repo.reunionEntryFor(r.date, s.id) : null;
         var hat = !!(e && e.text && e.text.trim());
-        var an = hat || isExtra(s.id);
-        return '<button type="button" class="ria-chip' + (an ? ' on' : '') + '" data-act="inactive" data-sid="' + escapeAttr(s.id) + '" ' +
-          'title="' + (hat ? 'hat ein Update an diesem Tag' : (an ? 'wieder ausblenden' : 'Update zu ' + escapeAttr(s.name) + ' schreiben')) + '">' +
-          escapeHtml(s.name) + (hat ? ' <span class="ria-dot">●</span>' : '') + '</button>';
+        var an = isExtra(s.id);
+        return '<button type="button" class="ria-chip' + (an ? ' on' : '') + (hat ? ' has' : '') + '" ' +
+          'data-act="inactive" data-sid="' + escapeAttr(s.id) + '" ' +
+          'title="' + (hat ? 'hat schon ein Update an diesem Tag' : (an ? 'wieder ausblenden' : 'über ' + escapeAttr(s.name) + ' sprechen')) + '">' +
+          escapeHtml(s.name) + (hat ? ' <span class="ria-dot" aria-label="hat ein Update">●</span>' : '') + '</button>';
       }).join('') +
+      '<span class="ria-hint">stehen nicht in der Liste</span>' +
     '</div>';
   }
 
@@ -8694,8 +8697,8 @@ function viewReunion(params, query) {
     } else {
       inner = filterHtml(rows) + '<div id="reu-org">' + orgHtml(r) + '</div>' +
         '<h3 class="reunion-section-title">Schüler · Reihenfolge der Versammlung</h3>' +
-        '<div class="reu-list" id="reu-list">' + listHtml(r) + '</div>' +
-        inactiveBarHtml(r);
+        inactiveBarHtml(r) +
+        '<div class="reu-list" id="reu-list">' + listHtml(r) + '</div>';
     }
     return topbarHtml(r, rows) + '<div id="reu-main">' + inner + '</div>';
   }
@@ -8825,25 +8828,14 @@ function viewReunion(params, query) {
           var isid = t.getAttribute('data-sid');
           var rr = current();
           var ie = rr ? Repo.reunionEntryFor(rr.date, isid) : null;
-          if (ie && ie.text && ie.text.trim()) {
-            /* Hat schon ein Update - steht ohnehin in der Liste, also nur hin.
-               Festhalten, damit die Karte nicht verschwindet, wenn das Feld
-               zwischendurch leer geraeumt wird. */
-            state.extra[isid] = true;
-            state.expanded[isid] = true;
-            rerenderList();
-            var k = qs('.reu-card[data-card="' + cssEsc(isid) + '"]', wrap);
-            if (k && k.scrollIntoView) k.scrollIntoView({ block: 'center' });
-            var ta = qs('textarea[data-upd="' + cssEsc(isid) + '"]', wrap);
-            if (ta) ta.focus();
-            return;
-          }
           if (state.extra[isid]) { delete state.extra[isid]; delete state.expanded[isid]; }
           else { state.extra[isid] = true; state.expanded[isid] = true; }
           rerenderList(); rerenderStats();
           if (state.extra[isid]) {
-            var ta2 = qs('textarea[data-upd="' + cssEsc(isid) + '"]', wrap);
-            if (ta2) { ta2.focus(); if (ta2.scrollIntoView) ta2.scrollIntoView({ block: 'center' }); }
+            var k = qs('.reu-card[data-card="' + cssEsc(isid) + '"]', wrap);
+            if (k && k.scrollIntoView) k.scrollIntoView({ block: 'center' });
+            var ta = qs('textarea[data-upd="' + cssEsc(isid) + '"]', wrap);
+            if (ta) ta.focus();
           }
           return;
         }
@@ -9051,27 +9043,25 @@ function viewReunion(params, query) {
             '@page{size:A4;margin:18mm 16mm 16mm;}' +
           '}' +
           '#print-sheet{font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:#1a1a1a;line-height:1.45;}' +
-          '#print-sheet .rp-head{border-bottom:2.5px solid #1a1a1a;padding-bottom:9px;margin-bottom:4px;' +
-            'display:flex;align-items:flex-end;justify-content:space-between;gap:18px;}' +
+          '#print-sheet .rp-head{border-bottom:2.5px solid #1a1a1a;padding-bottom:9px;margin-bottom:2px;}' +
           '#print-sheet .rp-org-name{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#666;margin:0 0 3px;}' +
           '#print-sheet .rp-h1{font-size:21px;font-weight:700;margin:0;letter-spacing:-.01em;}' +
           '#print-sheet .rp-when{font-size:13px;color:#333;margin:3px 0 0;}' +
-          '#print-sheet .rp-stamp{font-size:10.5px;color:#777;text-align:right;white-space:nowrap;line-height:1.5;}' +
-          '#print-sheet .rp-kpi{display:flex;gap:26px;margin:10px 0 4px;padding:7px 0;border-bottom:1px solid #d8d8d8;}' +
-          '#print-sheet .rp-kpi div{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.06em;}' +
-          '#print-sheet .rp-kpi b{display:block;font-size:16px;color:#1a1a1a;letter-spacing:0;text-transform:none;}' +
+
           '#print-sheet .rp-sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;' +
-            'color:#1a1a1a;border-bottom:1px solid #1a1a1a;padding-bottom:3px;margin:20px 0 9px;}' +
+            'color:#1a1a1a;border-bottom:1px solid #1a1a1a;padding-bottom:3px;margin:22px 0 10px;}' +
+          '#print-sheet .rp-foot{page-break-inside:avoid;}' +
           '#print-sheet .rp-lead{font-size:12.5px;margin:0 0 8px;padding:7px 10px;background:#f4f4f2;border-left:3px solid #8a8a8a;}' +
           '#print-sheet ol.rp-org{font-size:12.5px;margin:0;padding-left:20px;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}' +
           '#print-sheet ol.rp-org li{margin-bottom:5px;}' +
           '#print-sheet .rp-org-sub{color:#555;font-size:11.5px;}' +
           '#print-sheet .rp-stud{break-inside:avoid;page-break-inside:avoid;padding:9px 0 10px;border-bottom:1px solid #e2e2e2;}' +
-          '#print-sheet .rp-stud h4{font-size:13.5px;margin:0 0 4px;display:flex;align-items:baseline;gap:8px;}' +
+          '#print-sheet .rp-stud h4{font-size:13.5px;margin:0 0 4px;display:flex;align-items:baseline;}' +
           '#print-sheet .rp-nr{display:inline-block;min-width:19px;color:#8a8a8a;font-weight:600;}' +
-          '#print-sheet .rp-by{font-size:10px;font-weight:400;color:#777;margin-left:auto;white-space:nowrap;}' +
+          '#print-sheet .rp-by{font-size:10px;font-weight:400;color:#777;margin-left:auto;' +
+            'padding-left:10px;white-space:nowrap;}' +
           '#print-sheet .rp-flag{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;' +
-            'border:1px solid currentColor;border-radius:9px;padding:0 6px;}' +
+            'border:1px solid currentColor;border-radius:9px;padding:0 6px;margin-left:8px;}' +
           '#print-sheet .rp-done{color:#1d6b45;}' +
           '#print-sheet .rp-upd{font-size:12px;white-space:pre-wrap;margin:0 0 0 27px;line-height:1.55;' +
             'text-align:justify;hyphens:auto;-webkit-hyphens:auto;}' +
@@ -9081,27 +9071,29 @@ function viewReunion(params, query) {
           '#print-sheet .rp-foot{margin-top:16px;padding-top:7px;border-top:1px solid #d8d8d8;font-size:10px;color:#888;}';
       }
 
+      var WOCHENTAG = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+      var MONAT = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+      function langesDatum(iso) {
+        var t = String(iso || '').split('-');
+        if (t.length !== 3) return formatDate(iso);
+        var d = new Date(+t[0], +t[1] - 1, +t[2]);
+        if (isNaN(d.getTime())) return formatDate(iso);
+        return WOCHENTAG[d.getDay()] + ', ' + d.getDate() + '. ' + MONAT[d.getMonth()] + ' ' + d.getFullYear();
+      }
+
       function protocolHtml(r, rows) {
-        var besprochen = rows.filter(function (x) { return x.discussed; }).length;
-        var mitUpdate = rows.filter(function (x) { return x.hasUpdate; }).length;
-        var offeneZiele = rows.reduce(function (n, x) { return n + x.openGoals; }, 0);
         var h = new Date();
         var stempel = ('0' + h.getDate()).slice(-2) + '.' + ('0' + (h.getMonth() + 1)).slice(-2) + '.' + h.getFullYear();
         var wer = (window.KB_USER && KB_USER.get && KB_USER.get()) || '';
 
-        var html = '<div class="rp-head"><div>' +
+        /* Kopf: Haus, Anlass, Datum. Mehr nicht - Zahlen wie "0 / 11
+           besprochen" standen frueher hier, sagen auf einem Protokoll aber
+           nichts und haben den Anfang zugestellt. */
+        var html = '<div class="rp-head">' +
             '<p class="rp-org-name">Annexe Junglinster · Team-Réunion</p>' +
             '<h1 class="rp-h1">Protokoll</h1>' +
-            '<p class="rp-when">' + escapeHtml(formatDate(r.date)) + '</p>' +
-          '</div><div class="rp-stamp">erstellt ' + escapeHtml(stempel) +
-            (wer ? '<br>von ' + escapeHtml(wer) : '') + '</div></div>';
-
-        html += '<div class="rp-kpi">' +
-          '<div>Schüler<b>' + rows.length + '</b></div>' +
-          '<div>Besprochen<b>' + besprochen + ' / ' + rows.length + '</b></div>' +
-          '<div>Mit Update<b>' + mitUpdate + '</b></div>' +
-          '<div>Offene Ziele<b>' + offeneZiele + '</b></div>' +
-          '<div>Orga-Punkte<b>' + (r.orgItems || []).length + '</b></div>' +
+            '<p class="rp-when">' + escapeHtml(langesDatum(r.date)) + '</p>' +
           '</div>';
 
         var group = (r.goals && r.goals.group) || [];
@@ -9127,24 +9119,25 @@ function viewReunion(params, query) {
              Die Marke "offen" faellt weg; nur "besprochen" sagt etwas aus. */
           var verfasser = row.hasUpdate ? String(row.entry.author || '').trim() : '';
           var zuletzt = row.hasUpdate ? String(row.entry.updatedBy || '').trim() : '';
-          var wer = verfasser;
-          if (zuletzt && zuletzt !== verfasser) wer = verfasser ? (verfasser + ', zuletzt ' + zuletzt) : zuletzt;
+          var von = verfasser;
+          if (zuletzt && zuletzt !== verfasser) von = verfasser ? (verfasser + ', zuletzt ' + zuletzt) : zuletzt;
           html += '<div class="rp-stud">' +
-            '<h4><span class="rp-nr">' + (i + 1) + '.</span>' + escapeHtml(row.s.name) +
-              (row.discussed ? '<span class="rp-flag rp-done">besprochen</span>' : '') +
-              (wer ? '<span class="rp-by">notiert von ' + escapeHtml(wer) + '</span>' : '') +
+            '<h4><span class="rp-nr">' + (i + 1) + '.\u00a0</span>' + escapeHtml(row.s.name) +
+              (row.discussed ? '\u00a0<span class="rp-flag rp-done">besprochen</span>' : '') +
+              (von ? '\u00a0<span class="rp-by">notiert von ' + escapeHtml(von) + '</span>' : '') +
             '</h4>' +
             '<div class="rp-upd' + (row.hasUpdate ? '' : ' rp-none') + '">' +
               (row.hasUpdate ? escapeHtml(row.entry.text) : 'Kein Update erfasst.') + '</div>';
           if (row.goals.length) {
             html += '<ul class="rp-goals">' + row.goals.map(function (g) {
-              return '<li>' + (g.done ? '☑' : '☐') + ' ' + escapeHtml(g.text) + '</li>';
+              return '<li>' + (g.done ? '\u2611' : '\u2610') + ' ' + escapeHtml(g.text) + '</li>';
             }).join('') + '</ul>';
           }
           html += '</div>';
         });
 
-        html += '<p class="rp-foot">Klassebuch · Annexe Junglinster — interne Unterlage, vertraulich zu behandeln.</p>';
+        html += '<p class="rp-foot">Klassebuch · Annexe Junglinster — interne Unterlage, vertraulich zu behandeln.' +
+          '<br>Erstellt am ' + escapeHtml(stempel) + (wer ? ' von ' + escapeHtml(wer) : '') + '.</p>';
         return html;
       }
 
@@ -9169,14 +9162,10 @@ function viewReunion(params, query) {
         var r = current(); if (!r) return;
         var css =
           'body{font-family:Calibri,"Segoe UI",sans-serif;font-size:11pt;color:#1a1a1a;line-height:1.45;}' +
-          '.rp-head{border-bottom:2.5pt solid #1a1a1a;padding-bottom:6pt;margin-bottom:3pt;}' +
+          '.rp-head{border-bottom:2.5pt solid #1a1a1a;padding-bottom:6pt;margin-bottom:2pt;}' +
           '.rp-org-name{font-size:7.5pt;letter-spacing:1.4pt;text-transform:uppercase;color:#666;margin:0 0 2pt;}' +
           '.rp-h1{font-size:19pt;font-weight:bold;margin:0;}' +
           '.rp-when{font-size:11pt;color:#333;margin:2pt 0 0;}' +
-          '.rp-stamp{font-size:8pt;color:#777;margin:2pt 0 0;}' +
-          '.rp-kpi{margin:6pt 0 3pt;padding-bottom:5pt;border-bottom:0.75pt solid #d8d8d8;}' +
-          '.rp-kpi div{display:inline-block;margin-right:22pt;font-size:8pt;color:#666;text-transform:uppercase;}' +
-          '.rp-kpi b{display:block;font-size:13pt;color:#1a1a1a;text-transform:none;}' +
           '.rp-sec{font-size:8.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:1pt;' +
             'border-bottom:0.75pt solid #1a1a1a;padding-bottom:2pt;margin:14pt 0 6pt;}' +
           '.rp-lead{font-size:10pt;margin:0 0 6pt;padding:5pt 7pt;background:#f4f4f2;border-left:2.25pt solid #8a8a8a;}' +
@@ -9185,9 +9174,9 @@ function viewReunion(params, query) {
           '.rp-org-sub{color:#555;font-size:9pt;}' +
           '.rp-stud{page-break-inside:avoid;padding:5pt 0 6pt;border-bottom:0.75pt solid #e2e2e2;}' +
           '.rp-stud h4{font-size:11pt;margin:0 0 2pt;}' +
-          '.rp-nr{color:#8a8a8a;font-weight:bold;}' +
+          '.rp-nr{color:#8a8a8a;font-weight:bold;mso-spacerun:yes;}' +
           '.rp-by{font-size:8pt;font-weight:normal;color:#777;}' +
-          '.rp-flag{font-size:7.5pt;font-weight:bold;text-transform:uppercase;}' +
+          '.rp-flag{font-size:7.5pt;font-weight:bold;text-transform:uppercase;color:#1d6b45;}' +
           '.rp-done{color:#1d6b45;}' +
           '.rp-upd{font-size:10pt;white-space:pre-wrap;margin:0 0 0 16pt;text-align:justify;}' +
           '.rp-upd.rp-none{color:#999;font-style:italic;}' +
