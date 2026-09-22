@@ -30,6 +30,13 @@ function replaceOnce(s, find, repl, label) {
 }
 
 var TABS_GUARD = read('tabs-guard.js');
+var SPELL_JS  = read('spell.js');
+var SPELL_CSS = read('spell.css');
+var NSPELL_JS = read('vendor/nspell.bundle.js');
+/* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
+   erst dann, wenn wirklich jemand schreibt. */
+var SPELL_DATA = 'window.KB_SPELL_DATA={aff:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.aff.gz')).toString('base64') +
+  '",dic:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.dic.gz')).toString('base64') + '"};';
 var anw = read('anwesenheit.html');
 var dos = read('dossier.html');
 var sav = read('SAVOIR.html');
@@ -314,6 +321,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
 .kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
 .kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+.kb-spwords{display:flex;flex-wrap:wrap;gap:6px;}
+.kb-spword{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--kb-line);border-radius:999px;padding:2px 4px 2px 10px;font-size:12.5px;background:#fff;}
+.kb-spword button{border:0;background:transparent;cursor:pointer;color:var(--kb-muted);font-size:14px;line-height:1;padding:0 4px;border-radius:999px;}
+.kb-spword button:hover{color:#b3432d;}
 .kb-trash{display:flex;flex-direction:column;gap:7px;max-height:340px;overflow:auto;}
 .kb-trash-row{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;border:1px solid var(--kb-line);border-radius:10px;padding:9px 11px;background:#fff;}
 .kb-trash-main{min-width:0;flex:1;}
@@ -1041,6 +1052,15 @@ var SHELL_PANELS_EXTRA = `
           <button class="kb-btn" id="kb-wk-doc">📝 Word (.doc)</button>
           <button class="kb-btn" id="kb-weekly-dl">🌐 HTML — letzte 5 Wochen</button>
         </div>
+      </div>
+      <div class="kb-card">
+        <div class="kb-card-h"><h3>✍️ Rechtschreibprüfung (Lëtzebuergesch)</h3><span class="kb-term-now" id="kb-sp-n"></span></div>
+        <p class="kb-hint">Unterstreicht in allen Schreibfeldern, was nicht im luxemburgischen Wörterbuch steht, und schlägt beim Anklicken das richtige Wort vor. Das Wörterbuch (spellchecker.lu) steckt in der App — nichts geht ins Internet.</p>
+        <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;">
+          <input type="checkbox" id="kb-sp-an" style="margin-top:3px;">
+          <span>Fehler unterstreichen</span>
+        </label>
+        <div id="kb-sp-eigen" style="margin-top:10px;"></div>
       </div>
       <div class="kb-card">
         <div class="kb-card-h"><h3>🗑️ Papierkorb</h3><span class="kb-term-now" id="kb-trash-n"></span></div>
@@ -1936,6 +1956,7 @@ var SHELL_CONTROLLER = `
       showPanel('kb-data'); setActive('data');
       try{renderWeekBox();}catch(e){}
       try{renderTrash();}catch(e){}
+      try{renderSpell();}catch(e){}
     } else if(nav==='material'){
       showPanel('isa-root'); setActive('material');
       if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
@@ -2262,6 +2283,28 @@ var SHELL_CONTROLLER = `
   var dA=$('kb-data-anw'); if(dA){dA.addEventListener('click',function(){go('absenzen');var b=document.getElementById('btn-data');if(b){b.click();}});}
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
   var wDl=$('kb-weekly-dl'); if(wDl){wDl.addEventListener('click',function(){if(window.KB_WEEKLY){KB_WEEKLY.download();}});}
+
+  /* ---- Rechtschreibpruefung: ein/aus und eigene Woerter ---- */
+  function renderSpell(){
+    if(!window.KB_SPELL)return;
+    var an=$('kb-sp-an');if(an){an.checked=window.KB_SPELL.an();
+      if(!an._kbW){an._kbW=1;an.addEventListener('change',function(){window.KB_SPELL.setAn(an.checked);renderSpell();});}}
+    var n=$('kb-sp-n');
+    if(n)n.textContent=window.KB_SPELL.an()?(window.KB_SPELL.bereit()?'bereit':'wird beim Schreiben geladen'):'aus';
+    var box=$('kb-sp-eigen');if(!box)return;
+    var l=window.KB_SPELL.eigene();
+    if(!l.length){box.innerHTML='<div class="kb-sync-status">Eigene Wörter: noch keine. Über „Ins Wörterbuch" beim Vorschlagsfenster kommen Namen und Fachbegriffe dazu.</div>';return;}
+    box.innerHTML='<div class="kb-sync-status" style="margin-bottom:6px;">Eigene Wörter ('+l.length+') — gelten nur auf diesem Gerät:</div>'+
+      '<div class="kb-spwords">'+l.slice().sort().map(function(w){
+        return '<span class="kb-spword">'+esc(w)+'<button data-spdel="'+esc(w)+'" title="wieder als Fehler behandeln">×</button></span>';
+      }).join('')+'</div>';
+    box.querySelectorAll('[data-spdel]').forEach(function(b){
+      b.addEventListener('click',function(){
+        window.KB_SPELL.vergessen(b.getAttribute('data-spdel'));
+        window.KB_SPELL.neuzeichnen();renderSpell();
+      });
+    });
+  }
 
   /* ---- Papierkorb: zeigen, zurueckholen, leeren ---- */
   function trashWhen(ts){
@@ -4319,6 +4362,7 @@ var parts = [
   '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">',
   '<style>',
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
+  '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
   '/* === anwesenheit (gescoped) === */', anwStyleScoped,
   '/* === savoir / screening (gescoped) === */', savStyleScoped,
@@ -4363,6 +4407,9 @@ var parts = [
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
   '<script>' + TABS_GUARD + '</' + 'script>',
+  '<script>' + SPELL_DATA + '</' + 'script>',
+  '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',
   '</html>',
   ''

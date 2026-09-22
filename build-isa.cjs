@@ -31,6 +31,13 @@ function replaceOnce(s, find, repl, label) {
 
 var anw = read('anwesenheit.html');
 var TABS_GUARD = read('tabs-guard.js');
+var SPELL_JS  = read('spell.js');
+var SPELL_CSS = read('spell.css');
+var NSPELL_JS = read('vendor/nspell.bundle.js');
+/* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
+   erst dann, wenn wirklich jemand schreibt. */
+var SPELL_DATA = 'window.KB_SPELL_DATA={aff:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.aff.gz')).toString('base64') +
+  '",dic:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.dic.gz')).toString('base64') + '"};';
 var dos = read('dossier.html');
 var sav = read('SAVOIR.html');
 
@@ -4160,6 +4167,7 @@ var parts = [
   '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">',
   '<style>',
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
+  '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
   '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
@@ -4196,6 +4204,9 @@ var parts = [
   '<script>' + ISA_HOME_MODULE + '</' + 'script>',
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + TABS_GUARD + '</' + 'script>',
+  '<script>' + SPELL_DATA + '</' + 'script>',
+  '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',
   '</html>',
   ''
