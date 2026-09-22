@@ -721,17 +721,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 #dos-root .checkbox-row{display:flex; align-items:flex-start; gap:8px; font-size:.86rem; margin-bottom:8px;}
 #dos-root .checkbox-row input{margin-top:3px;}
 
-/* ---------- Print ---------- */
-#dos-root .print-sheet{display:none;}
-@media print{
-  #dos-root *{visibility:hidden;}
-  #dos-root #print-sheet, #dos-root #print-sheet *{visibility:visible;}
-  #dos-root #print-sheet{display:block !important; position:absolute; top:0; left:0; width:100%; padding:0; margin:0;}
-  #dos-root .no-print{display:none !important;}
-  #dos-root .print-entry{break-inside:avoid; padding:10px 0; border-bottom:1px solid #ccc;}
-  #dos-root .print-sheet h1{font-size:18px;}
-  #dos-root .print-sheet h2{font-size:14px; color:#444; font-weight:400;}
-}
+/* ---------- Print ----------
+   Hier steht bewusst nichts mehr. Das alte Blatt blendete die Seite mit
+   visibility:hidden aus - der Platz blieb dabei stehen und wanderte als
+   leere Seiten vor das Protokoll. Das Druck-Layout kommt jetzt komplett aus
+   protocolCss(), zusammen mit dem Bogen. */
 
 /* ---------- Themen-Analyse ---------- */
 #dos-root .theme-mark{padding:0 2px; border-radius:3px; font-weight:600;}
@@ -7101,6 +7095,9 @@ var Repo = {
        Entry-Objekt serialisiert wird. */
     if (data.report && typeof data.report === 'object') clean.report = data.report;
     if (data.source && typeof data.source === 'object') clean.source = data.source;
+    /* Wer zuletzt daran geschrieben hat. In einer Réunion tippen mehrere in
+       dieselbe Karte; im Protokoll soll man sehen, von wem was stammt. */
+    if (data.updatedBy) clean.updatedBy = String(data.updatedBy).trim();
     var idx = self.entries.findIndex(function (e) { return e.id === clean.id; });
     if (idx >= 0) self.entries[idx] = clean; else self.entries.push(clean);
     return Storage.put('entries', clean).then(function () { return clean; });
@@ -9843,10 +9840,12 @@ function viewReunion(params, query) {
           } else { done(); }
           return;
         }
+        var ich = (window.KB_USER && KB_USER.get && KB_USER.get()) || '';
         var payload = {
           id: entry ? entry.id : undefined,
           studentId: sid, date: r.date,
-          author: entry && entry.author ? entry.author : ((window.KB_USER && KB_USER.get && KB_USER.get()) || 'Team (Réunion)'),
+          author: entry && entry.author ? entry.author : (ich || 'Team (Réunion)'),
+          updatedBy: ich || (entry && entry.updatedBy) || '',
           category: 'Team-Réunion',
           tags: entry && entry.tags && entry.tags.length ? entry.tags : ['Réunion'],
           text: txt,
@@ -9969,8 +9968,10 @@ function viewReunion(params, query) {
       function protocolCss() {
         return '#print-sheet{display:none;}' +
           '@media print{' +
+            'html,body{height:auto !important;min-height:0 !important;overflow:visible !important;' +
+              'margin:0 !important;padding:0 !important;background:#fff !important;}' +
             'body>*{display:none !important;}' +
-            '#print-sheet{display:block !important;}' +
+            '#print-sheet{display:block !important;position:static !important;}' +
             '@page{size:A4;margin:18mm 16mm 16mm;}' +
           '}' +
           '#print-sheet{font-family:"Segoe UI",Calibri,system-ui,sans-serif;color:#1a1a1a;line-height:1.45;}' +
@@ -9986,16 +9987,18 @@ function viewReunion(params, query) {
           '#print-sheet .rp-sec{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;' +
             'color:#1a1a1a;border-bottom:1px solid #1a1a1a;padding-bottom:3px;margin:20px 0 9px;}' +
           '#print-sheet .rp-lead{font-size:12.5px;margin:0 0 8px;padding:7px 10px;background:#f4f4f2;border-left:3px solid #8a8a8a;}' +
-          '#print-sheet ol.rp-org{font-size:12.5px;margin:0;padding-left:20px;}' +
+          '#print-sheet ol.rp-org{font-size:12.5px;margin:0;padding-left:20px;text-align:justify;hyphens:auto;-webkit-hyphens:auto;}' +
           '#print-sheet ol.rp-org li{margin-bottom:5px;}' +
           '#print-sheet .rp-org-sub{color:#555;font-size:11.5px;}' +
           '#print-sheet .rp-stud{break-inside:avoid;page-break-inside:avoid;padding:9px 0 10px;border-bottom:1px solid #e2e2e2;}' +
           '#print-sheet .rp-stud h4{font-size:13.5px;margin:0 0 4px;display:flex;align-items:baseline;gap:8px;}' +
           '#print-sheet .rp-nr{display:inline-block;min-width:19px;color:#8a8a8a;font-weight:600;}' +
+          '#print-sheet .rp-by{font-size:10px;font-weight:400;color:#777;margin-left:auto;white-space:nowrap;}' +
           '#print-sheet .rp-flag{font-size:9.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;' +
             'border:1px solid currentColor;border-radius:9px;padding:0 6px;}' +
-          '#print-sheet .rp-done{color:#1d6b45;}#print-sheet .rp-todo{color:#9a6a12;}' +
-          '#print-sheet .rp-upd{font-size:12px;white-space:pre-wrap;margin:0 0 0 27px;line-height:1.5;}' +
+          '#print-sheet .rp-done{color:#1d6b45;}' +
+          '#print-sheet .rp-upd{font-size:12px;white-space:pre-wrap;margin:0 0 0 27px;line-height:1.55;' +
+            'text-align:justify;hyphens:auto;-webkit-hyphens:auto;}' +
           '#print-sheet .rp-upd.rp-none{color:#999;font-style:italic;}' +
           '#print-sheet .rp-goals{font-size:11.5px;margin:5px 0 0 27px;padding:0;list-style:none;}' +
           '#print-sheet .rp-goals li{margin-bottom:2px;}' +
@@ -10043,10 +10046,18 @@ function viewReunion(params, query) {
 
         html += '<div class="rp-sec">Schüler</div>';
         rows.forEach(function (row, i) {
+          /* Wer es geschrieben hat, steht am Kopf der Zeile - in einer Réunion
+             schreiben mehrere, und im Nachhinein will man das wissen.
+             Die Marke "offen" faellt weg; nur "besprochen" sagt etwas aus. */
+          var verfasser = row.hasUpdate ? String(row.entry.author || '').trim() : '';
+          var zuletzt = row.hasUpdate ? String(row.entry.updatedBy || '').trim() : '';
+          var wer = verfasser;
+          if (zuletzt && zuletzt !== verfasser) wer = verfasser ? (verfasser + ', zuletzt ' + zuletzt) : zuletzt;
           html += '<div class="rp-stud">' +
             '<h4><span class="rp-nr">' + (i + 1) + '.</span>' + escapeHtml(row.s.name) +
-              '<span class="rp-flag ' + (row.discussed ? 'rp-done' : 'rp-todo') + '">' +
-              (row.discussed ? 'besprochen' : 'offen') + '</span></h4>' +
+              (row.discussed ? '<span class="rp-flag rp-done">besprochen</span>' : '') +
+              (wer ? '<span class="rp-by">notiert von ' + escapeHtml(wer) + '</span>' : '') +
+            '</h4>' +
             '<div class="rp-upd' + (row.hasUpdate ? '' : ' rp-none') + '">' +
               (row.hasUpdate ? escapeHtml(row.entry.text) : 'Kein Update erfasst.') + '</div>';
           if (row.goals.length) {
@@ -10093,15 +10104,16 @@ function viewReunion(params, query) {
           '.rp-sec{font-size:8.5pt;font-weight:bold;text-transform:uppercase;letter-spacing:1pt;' +
             'border-bottom:0.75pt solid #1a1a1a;padding-bottom:2pt;margin:14pt 0 6pt;}' +
           '.rp-lead{font-size:10pt;margin:0 0 6pt;padding:5pt 7pt;background:#f4f4f2;border-left:2.25pt solid #8a8a8a;}' +
-          'ol.rp-org{font-size:10pt;margin:0 0 0 14pt;}' +
+          'ol.rp-org{font-size:10pt;margin:0 0 0 14pt;text-align:justify;}' +
           'ol.rp-org li{margin-bottom:3pt;}' +
           '.rp-org-sub{color:#555;font-size:9pt;}' +
           '.rp-stud{page-break-inside:avoid;padding:5pt 0 6pt;border-bottom:0.75pt solid #e2e2e2;}' +
           '.rp-stud h4{font-size:11pt;margin:0 0 2pt;}' +
           '.rp-nr{color:#8a8a8a;font-weight:bold;}' +
+          '.rp-by{font-size:8pt;font-weight:normal;color:#777;}' +
           '.rp-flag{font-size:7.5pt;font-weight:bold;text-transform:uppercase;}' +
-          '.rp-done{color:#1d6b45;}.rp-todo{color:#9a6a12;}' +
-          '.rp-upd{font-size:10pt;white-space:pre-wrap;margin:0 0 0 16pt;}' +
+          '.rp-done{color:#1d6b45;}' +
+          '.rp-upd{font-size:10pt;white-space:pre-wrap;margin:0 0 0 16pt;text-align:justify;}' +
           '.rp-upd.rp-none{color:#999;font-style:italic;}' +
           '.rp-goals{font-size:9.5pt;margin:3pt 0 0 16pt;list-style:none;}' +
           '.rp-foot{margin-top:12pt;padding-top:5pt;border-top:0.75pt solid #d8d8d8;font-size:7.5pt;color:#888;}' +
@@ -10881,14 +10893,61 @@ function navigate(hash, replace) {
   }
 }
 
+/* Neu zeichnen, ohne den Leser zu verlieren.
+
+   render() baut die ganze Ansicht neu auf. Beim Wechsel auf eine andere Seite
+   gehoert der Blick nach oben - aber render() laeuft auch, wenn nur gespeichert
+   oder vom Team-Abgleich etwas nachgetragen wurde. Dann sprang die Seite
+   jedes Mal an den Anfang, mitten im Arbeiten.
+
+   Darum: gleiche Adresse heisst gleiche Seite, also Scrollstand halten. Und
+   wer gerade in einem Feld schreibt, bekommt gar keinen Neuaufbau - sonst
+   verschwindet das Feld unter den Fingern und Getipptes waere weg. Der
+   Neuaufbau wird nachgeholt, sobald das Feld verlassen wird. */
+var lastRenderHash = null;
+var renderPending = false;
+
+function scrollHolder() {
+  var el = document.getElementById('app-root'), l = [];
+  while (el && el !== document.documentElement) {
+    if (el.scrollHeight > el.clientHeight + 4) l.push([el, el.scrollTop]);
+    el = el.parentElement;
+  }
+  var se = document.scrollingElement || document.documentElement;
+  l.push([se, se.scrollTop]);
+  return l;
+}
+
 function render() {
+  var hashNow = location.hash;
+  var gleicheSeite = (hashNow === lastRenderHash);
+
+  var ae = document.activeElement;
+  var tippt = ae && (ae.tagName === 'TEXTAREA' || ae.tagName === 'INPUT' || ae.isContentEditable);
+  if (gleicheSeite && tippt) {
+    if (!renderPending) {
+      renderPending = true;
+      ae.addEventListener('blur', function () {
+        renderPending = false;
+        setTimeout(render, 0);
+      }, { once: true });
+    }
+    return;
+  }
+
+  var halten = gleicheSeite ? scrollHolder() : null;
   var parsed = parseHash();
   var view = resolveView(parsed.parts, parsed.query);
   var root = document.getElementById('app-root');
   root.innerHTML = shellHtml(view.navKey, view.html);
   var main = qs('#main-content', root);
   if (view.afterRender) view.afterRender(main);
-  window.scrollTo(0, 0);
+  lastRenderHash = hashNow;
+  if (halten) {
+    halten.forEach(function (x) { try { x[0].scrollTop = x[1]; } catch (e) {} });
+  } else {
+    window.scrollTo(0, 0);
+  }
 }
 
 window.addEventListener('hashchange', render);
