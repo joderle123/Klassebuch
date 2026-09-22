@@ -107,6 +107,12 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
 .kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
 .kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+.kb-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:12px;align-items:stretch;}
+.kb-tools .kb-tool{display:flex;flex-direction:column;margin:0;}
+.kb-tools .kb-tool h3{margin:0 0 6px;font-size:15.5px;}
+.kb-tools .kb-tool .kb-hint{flex:1;margin:0 0 12px;}
+.kb-tools .kb-tool .kb-btn{align-self:flex-start;}
+.kb-toolsec{margin:24px 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--kb-muted);}
 .kb-spwords{display:flex;flex-wrap:wrap;gap:6px;}
 .kb-spword{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--kb-line);border-radius:999px;padding:2px 4px 2px 10px;font-size:12.5px;background:#fff;}
 .kb-spword button{border:0;background:transparent;cursor:pointer;color:var(--kb-muted);font-size:14px;line-height:1;padding:0 4px;border-radius:999px;}
@@ -995,8 +1001,10 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 
 /* Das Layout des Protokolls steht bewusst NICHT hier, sondern wird beim
    Drucken zusammen mit dem Bogen eingesetzt (protocolCss). Der Bogen haengt
-   direkt an <body>; dieses Stylesheet wird beim Zusammenbau der App aber auf
-   #dos-root eingeschraenkt, die Regeln wuerden also nie greifen. */
+   direkt an den Seitenkoerper; dieses Stylesheet wird beim Zusammenbau der App
+   aber auf #dos-root eingeschraenkt, die Regeln wuerden also nie greifen.
+   (Und das Wort in spitzen Klammern darf hier nicht stehen: der Bau schneidet
+   den Dossier-Koerper genau an dieser Zeichenfolge aus.) */
 
 
 /* === anwesenheit (gescoped) === */
@@ -5764,6 +5772,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
     <button class="kb-termchip" id="kb-termchip" aria-label="Schuljahr und Trimester — klicken zum Ändern"></button>
     <nav class="kb-nav">
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
+      <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
       <div class="kb-navgroup">
         <div class="kb-navlabel">Unterricht</div>
         <button class="kb-link" data-kb-nav="absenzen"><span class="kb-ic">📋</span>Klassenbuch</button>
@@ -5783,14 +5792,10 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
       </div>
       <div class="kb-navgroup">
         <div class="kb-navlabel">Werkzeuge</div>
-        <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
-        <button class="kb-link" data-kb-nav="themes"><span class="kb-ic">🏷️</span>Themen-Analyse</button>
-        <button class="kb-link" data-kb-nav="orga"><span class="kb-ic">🗒️</span>Organisation</button>
-        <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse &amp; Stundenplan</button>
-        <button class="kb-link" data-kb-nav="absenzen-pdf"><span class="kb-ic">📄</span>Absenzen-PDF</button>
-        <button class="kb-link" data-kb-nav="export"><span class="kb-ic">📑</span>Dossier-PDF</button>
-        <button class="kb-link" data-kb-nav="ai"><span class="kb-ic">🤖</span>KI-Export</button>
-        <button class="kb-link" data-kb-nav="data"><span class="kb-ic">💾</span>Daten &amp; Backup</button>
+        <button class="kb-link" data-kb-nav="klasse"><span class="kb-ic">🏫</span>Klasse &amp; Lehrplan</button>
+        <button class="kb-link" data-kb-nav="werkzeuge"><span class="kb-ic">🗒️</span>Organisation &amp; Berichte</button>
+        <button class="kb-link" data-kb-nav="ai"><span class="kb-ic">🕶️</span>KI-Anonymisierung</button>
+        <button class="kb-link" data-kb-nav="data"><span class="kb-ic">🔌</span>Verbindung &amp; Backup</button>
       </div>
     </nav>
     <div class="kb-foot">Alle Daten bleiben lokal auf diesem Gerät. Kein Server, keine Cloud.</div>
@@ -5969,12 +5974,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 
 </section>
 <section class="kb-panel" id="dos-root">
-; dieses Stylesheet wird beim Zusammenbau der App aber auf
-   #dos-root eingeschraenkt, die Regeln wuerden also nie greifen. */
 
-</style>
-</head>
-<body>
 <div id="banner-root"></div>
 <div id="app-root"></div>
 <div id="toast-root" class="toast-root" aria-live="polite"></div>
@@ -6146,7 +6146,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 <section class="kb-panel" id="kb-mathe"></section>
 
     <section class="kb-panel kb-pad" id="kb-klasse">
-      <div class="kb-pagehead"><h2>🏫 Klasse, Stundenplan &amp; Schuljahr</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Alles, was die Klasse strukturiert — an einem Ort. Der Stundenplan wird <b>je Trimester</b> geführt.</p></div>
+      <div class="kb-pagehead"><h2>🏫 Klasse, Stundenplan &amp; Lehrplan</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Alles, was die Klasse strukturiert — an einem Ort. Der Stundenplan wird <b>je Trimester</b> geführt.</p></div>
 
       <div class="kb-card kb-termcard">
         <div class="kb-card-h"><h3>🎓 Schuljahr &amp; Trimester</h3><span class="kb-term-now" id="kb-term-now"></span></div>
@@ -6207,9 +6207,64 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
         <button class="kb-btn kb-btn-primary" id="kb-roster-add">+ Hinzufügen</button>
       </div>
       <div id="kb-roster-body"></div>
+
+      <h3 class="kb-toolsec">Lehrplan &amp; Material</h3>
+      <div class="kb-tools">
+        <div class="kb-card kb-tool">
+          <h3>📐 Mathe 5ᵉ PF</h3>
+          <p class="kb-hint">Der Lehrplan mit allen Kapiteln, Aufgaben und Arbeitsblättern — ansehen, bearbeiten und als PDF ausgeben.</p>
+          <button class="kb-btn kb-btn-primary" data-kb-nav="mathe">Lehrplan öffnen</button>
+        </div>
+        <div class="kb-card kb-tool">
+          <h3>🧰 Material-Bibliothek</h3>
+          <p class="kb-hint">Arbeitsblätter, Spiele und Fördermaterial, nach Fach und Thema sortiert.</p>
+          <button class="kb-btn" data-kb-nav="material">Bibliothek öffnen</button>
+        </div>
+      </div>
     </section>
+    <section class="kb-panel kb-pad" id="kb-werkzeuge">
+      <div class="kb-pagehead"><h2>🗒️ Organisation &amp; Berichte</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Was während des Jahres anfällt und was daraus nach außen geht — Orga-Logbuch, Auswertungen und alle Berichte zum Ausdrucken.</p></div>
+
+      <div class="kb-tools">
+        <div class="kb-card kb-tool">
+          <h3>🗒️ Organisation</h3>
+          <p class="kb-hint">Alle Orga-Punkte aus allen Réunionen, neueste zuerst, mit Volltextsuche. <b id="kb-wz-orga">—</b></p>
+          <button class="kb-btn kb-btn-primary" data-kb-nav="orga">Logbuch öffnen</button>
+        </div>
+        <div class="kb-card kb-tool">
+          <h3>🏷️ Themen-Analyse</h3>
+          <p class="kb-hint">Welche Themen in den Dossier-Einträgen wiederkehren und bei wem — für die Vorbereitung von Gesprächen.</p>
+          <button class="kb-btn" data-kb-nav="themes">Themen ansehen</button>
+        </div>
+      </div>
+
+      <h3 class="kb-toolsec">Berichte &amp; PDF</h3>
+      <div class="kb-tools">
+        <div class="kb-card kb-tool">
+          <h3>📄 Absenzen-Bericht</h3>
+          <p class="kb-hint">Excusé, Non-excusé und Retards je Schüler für die gewählte Periode, mit häufigstem Fach. Druckansicht — im Dialog „Als PDF speichern".</p>
+          <button class="kb-btn kb-btn-primary" data-kb-nav="absenzen-pdf">Bericht erstellen</button>
+        </div>
+        <div class="kb-card kb-tool">
+          <h3>📑 Dossier-Bericht</h3>
+          <p class="kb-hint">Verlauf eines Schülers als Bericht: Einträge, Ziele und Verlaufskurven, wahlweise anonymisiert.</p>
+          <button class="kb-btn kb-btn-primary" data-kb-nav="export">Bericht erstellen</button>
+        </div>
+        <div class="kb-card kb-tool">
+          <h3>🤝 Réunion-Protokoll</h3>
+          <p class="kb-hint">Das Protokoll einer Team-Réunion als PDF oder Word — die Knöpfe sitzen oben in der Réunion selbst. <b id="kb-wz-reu">—</b></p>
+          <button class="kb-btn" data-kb-nav="reunion">Zur Réunion</button>
+        </div>
+        <div class="kb-card kb-tool">
+          <h3>📅 Wochen-Sicherung</h3>
+          <p class="kb-hint">Alles, was in einer Woche neu dazugekommen ist, als Excel oder Word — zum Archivieren.</p>
+          <button class="kb-btn" data-kb-nav="data">Zu Verbindung &amp; Backup</button>
+        </div>
+      </div>
+    </section>
+
     <section class="kb-panel kb-pad" id="kb-data">
-      <div class="kb-pagehead"><h2>💾 Daten & Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Gemeinsame Speicherung für das Team, plus lokale Sicherung/Export.</p></div>
+      <div class="kb-pagehead"><h2>🔌 Verbindung &amp; Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Die gemeinsame Team-Datei, tägliche und wöchentliche Sicherungen, Papierkorb und Rechtschreibprüfung.</p></div>
       <div class="kb-card" id="kb-sync-card">
         <h3 style="margin:0 0 6px;">🗄️ Gemeinsamer Speicher (Team-Datei auf O:\)</h3>
         <p style="margin:0 0 10px;color:var(--kb-muted);">Eine gemeinsame Datei auf eurem Netzlaufwerk — alle Geräte schreiben hinein, Änderungen werden <b>pro Eintrag zusammengeführt</b> (nichts wird überschrieben). Nur in Chrome/Edge; jede Person verbindet die Datei einmal. Eine Person legt sie an, alle anderen wählen „Bestehende Datei öffnen".</p>
@@ -46060,7 +46115,7 @@ window.KB_PDF = (function () {
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','sav-root','isa-root','kb-mathe','kb-klasse','kb-data'];
+  var PANELS=['anw-root','dos-root','sav-root','isa-root','kb-mathe','kb-klasse','kb-werkzeuge','kb-data'];
   var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
@@ -46076,9 +46131,12 @@ window.KB_PDF = (function () {
     } else if(nav==='absenzen'){
       showPanel('anw-root'); setActive('absenzen'); closeAnwModals();
     } else if(nav==='absenzen-pdf'){
-      showPanel('anw-root'); setActive('absenzen'); closeAnwModals(); clickAnwBtn('btn-pdf');
+      showPanel('anw-root'); setActive('werkzeuge'); closeAnwModals(); clickAnwBtn('btn-pdf');
     } else if(nav==='klasse'){
       showPanel('kb-klasse'); setActive('klasse'); renderKlasse();
+    } else if(nav==='werkzeuge'){
+      showPanel('kb-werkzeuge'); setActive('werkzeuge');
+      try{renderWerkzeuge();}catch(e){}
     } else if(nav==='data'){
       showPanel('kb-data'); setActive('data');
       try{renderWeekBox();}catch(e){}
@@ -46115,12 +46173,14 @@ window.KB_PDF = (function () {
   var reopenBtn=$('kb-reopen'); if(reopenBtn){reopenBtn.addEventListener('click',function(){setCollapsed(false);});}
 
   // Aktive Markierung anhand der dossier-Route
+  /* Orga, Themen und der Dossier-Bericht haben keinen eigenen Menuepunkt mehr -
+     sie haengen unter "Organisation & Berichte", also bleibt der markiert. */
   function dosNavForHash(){var h=location.hash||'';
     if(h.indexOf('#/reunion')===0)return 'reunion';
-    if(h.indexOf('#/orga')===0)return 'orga';
+    if(h.indexOf('#/orga')===0)return 'werkzeuge';
     if(h.indexOf('#/search')===0)return 'search';
-    if(h.indexOf('#/themes')===0)return 'themes';
-    if(h.indexOf('#/export')===0)return 'export';
+    if(h.indexOf('#/themes')===0)return 'werkzeuge';
+    if(h.indexOf('#/export')===0)return 'werkzeuge';
     if(h.indexOf('#/ai-export')===0)return 'ai';
     if(h.indexOf('#/backup')===0)return null;
     return 'students';
@@ -46410,6 +46470,29 @@ window.KB_PDF = (function () {
   var dA=$('kb-data-anw'); if(dA){dA.addEventListener('click',function(){go('absenzen');var b=document.getElementById('btn-data');if(b){b.click();}});}
   var dD=$('kb-data-dos'); if(dD){dD.addEventListener('click',function(){showPanel('dos-root');setActive('');if(window.navigate){window.navigate('#/backup');}closeDrawer();});}
   var wDl=$('kb-weekly-dl'); if(wDl){wDl.addEventListener('click',function(){if(window.KB_WEEKLY){KB_WEEKLY.download();}});}
+
+  /* ---- Drehkreuz "Organisation & Berichte": ein paar lebende Zahlen ---- */
+  function renderWerkzeuge(){
+    var o=$('kb-wz-orga');
+    if(o){
+      var n=0,r=0;
+      try{
+        var l=window.KB_DOS_SYNC.exportReunions();
+        r=l.length;
+        for(var i=0;i<l.length;i++)n+=((l[i]||{}).orgItems||[]).length;
+      }catch(e){}
+      o.textContent=n?(n+' Punkte aus '+r+' Réunionen.'):'Noch keine Orga-Punkte erfasst.';
+    }
+    var u=$('kb-wz-reu');
+    if(u){
+      var d='';
+      try{
+        var ll=window.KB_DOS_SYNC.exportReunions().slice().sort(function(a,b){return b.date.localeCompare(a.date);});
+        d=ll.length?ll[0].date:'';
+      }catch(e){}
+      u.textContent=d?('Zuletzt: '+d.split('-').reverse().join('.')):'';
+    }
+  }
 
   /* ---- Rechtschreibpruefung: ein/aus und eigene Woerter ---- */
   function renderSpell(){

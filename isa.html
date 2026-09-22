@@ -931,8 +931,10 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 
 /* Das Layout des Protokolls steht bewusst NICHT hier, sondern wird beim
    Drucken zusammen mit dem Bogen eingesetzt (protocolCss). Der Bogen haengt
-   direkt an <body>; dieses Stylesheet wird beim Zusammenbau der App aber auf
-   #dos-root eingeschraenkt, die Regeln wuerden also nie greifen. */
+   direkt an den Seitenkoerper; dieses Stylesheet wird beim Zusammenbau der App
+   aber auf #dos-root eingeschraenkt, die Regeln wuerden also nie greifen.
+   (Und das Wort in spitzen Klammern darf hier nicht stehen: der Bau schneidet
+   den Dossier-Koerper genau an dieser Zeichenfolge aus.) */
 
 
 /* === savoir / screening (gescoped) === */
@@ -5305,12 +5307,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
   <main class="kb-stage" id="kb-stage">
 
 <section class="kb-panel" id="dos-root">
-; dieses Stylesheet wird beim Zusammenbau der App aber auf
-   #dos-root eingeschraenkt, die Regeln wuerden also nie greifen. */
 
-</style>
-</head>
-<body>
 <div id="banner-root"></div>
 <div id="app-root"></div>
 <div id="toast-root" class="toast-root" aria-live="polite"></div>
