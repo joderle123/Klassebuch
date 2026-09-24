@@ -906,21 +906,25 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   }
 
   var PERIOD_KEY='anw_period';
+  /* "" heisst "alle Zeitraeume" und ist eine bewusste Wahl. Damit sie nicht
+     jedes Mal wieder ueberschrieben wird, merkt sich die App getrennt, OB
+     schon gewaehlt wurde. */
+  var PERIOD_SET='anw_period_gewaehlt';
   function fillPeriods(){
     var sel=document.getElementById('period-sel');
-    var cur=sel.value;
-    if(!cur){try{cur=localStorage.getItem(PERIOD_KEY)||'';}catch(e){}}
+    var cur=sel.value, schonGewaehlt=false;
+    try{schonGewaehlt=localStorage.getItem(PERIOD_SET)==='1';}catch(e){}
+    if(!cur&&schonGewaehlt){try{cur=localStorage.getItem(PERIOD_KEY)||'';}catch(e){}}
     /* Ohne Zeitraum werden ALLE Jahre gezaehlt - frueher stand hier
        "Ganzes Schuljahr", was etwas anderes verspricht als es tut. */
     sel.innerHTML='<option value="">Alle Zeiträume (seit Beginn)</option>';
     state.periods.forEach(function(p){var o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);});
-    if(cur&&state.periods.some(function(p){return p.id===cur;})){sel.value=cur;return;}
+    if(schonGewaehlt){sel.value=(cur&&state.periods.some(function(p){return p.id===cur;}))?cur:'';return;}
     // Beim ersten Mal das Trimester vorbelegen, in dem wir heute stehen
     var t=today();
     var jetzt=state.periods.filter(function(p){return t>=p.start&&t<=p.end&&/Trimester/.test(p.name);})[0]
            || state.periods.filter(function(p){return t>=p.start&&t<=p.end;})[0];
     sel.value=jetzt?jetzt.id:'';
-    try{localStorage.setItem(PERIOD_KEY,sel.value);}catch(e){}
   }
 
   /* ---- Summary ---- */
@@ -1478,7 +1482,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     load();ensurePeriods();
 
     document.getElementById('period-sel').addEventListener('change',function(e){
-      try{localStorage.setItem(PERIOD_KEY,e.target.value||'');}catch(x){}
+      try{localStorage.setItem(PERIOD_KEY,e.target.value||'');localStorage.setItem(PERIOD_SET,'1');}catch(x){}
       renderAll();
     });
     document.getElementById('btn-students').addEventListener('click',function(){renderStudentMgmt();openModal('modal-students');});

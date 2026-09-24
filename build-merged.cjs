@@ -141,6 +141,8 @@ anwScript = replaceOnce(anwScript,
 /* Lese-Schnittstelle KB_ANW + Refresh-Hook am Ende der IIFE einsetzen */
 var ANW_API = [
   "  window.KB_ANW={",
+  "    /* Wie beim Dossier: erst nach dem Laden darf \"nichts da\" geglaubt werden. */",
+  "    ready:function(){return !!loaded;},",
   "    entriesForStudent:function(id){return state.entries.filter(function(e){return e.studentId===id;});},",
   "    /* --- Stundenplan-Zugriff für die Shell (Trimester-Umschaltung, Editor) --- */",
   "    getTimetable:function(){try{return JSON.parse(JSON.stringify(state.timetable||{}));}catch(e){return {};}},",
@@ -1974,6 +1976,9 @@ var DOS_OVERRIDES = `
   };
   function kbDosPersist(store,arr){try{if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){Storage.clear(store).then(function(){return Storage.putAll(store,arr);}).catch(function(){});}}catch(e){}}
   window.KB_DOS_SYNC={
+    /* Erst wenn das Dossier wirklich geladen ist, darf sein Schweigen als
+       "nichts da" gelten - sonst loescht der Abgleich alles. */
+    ready:function(){return !!Repo.ready;},
     exportEntries:function(){return (Repo.entries||[]).slice();},
     exportReunions:function(){return (Repo.reunions||[]).slice();},
     applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render();}catch(e){}}},
@@ -2509,7 +2514,7 @@ var SHELL_CONTROLLER = `
     var s=window.KB_SYNC.getStatus();
     if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte die App in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>index.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
     var info;
-    if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'');}
+    if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'')+(s.warten?' · <b style="color:#c9851f">wartet auf '+esc(s.warten)+'</b>':'');}
     else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — der Browser setzt die Freigabe beim Neustart zurück. Die App fragt beim ersten Klick von selbst danach, sonst hier „Verbinden" ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
@@ -2961,31 +2966,128 @@ window.KB_SYNC=(function(){
   function listDirFiles(dir){var it=dir.values();var names=[];function step(){return it.next().then(function(r){if(r.done)return names;var v=r.value;if(v&&v.kind==='file'&&v.name)names.push(v.name);return step();});}return step();}
   function planPrune(names,keep){var mine=(names||[]).filter(isBackupName).sort();return mine.slice(0,Math.max(0,mine.length-keep));}
   function pruneBackups(){if(!backupDir)return Promise.resolve();return listDirFiles(backupDir).then(function(names){var del=planPrune(names,30);var p=Promise.resolve();for(var i=0;i<del.length;i++){(function(n){p=p.then(function(){return backupDir.removeEntry(n).catch(function(){});});})(del[i]);}return p;}).catch(function(){});}
-  function writeBackup(){if(!backupDir||!base)return Promise.resolve();var name='klassebuch-'+todayStr()+'.json';var snap={};for(var k in base){snap[k]=base[k];}snap._backupAt=Date.now();snap._backupBy=operator();var json=JSON.stringify(snap);return backupDir.getFileHandle(name,{create:true}).then(function(fh){return fh.createWritable();}).then(function(w){return w.write(json).then(function(){return w.close();});}).then(function(){return pruneBackups();});}
-  function maybeBackup(){
-    if(!backupDir||backupBusy||!base)return;
-    var today=todayStr();if(bkLastDay()===today)return;
+  /* Die Tageskopie sichert den Stand, der GERADE NOCH in der gemeinsamen Datei
+     steht - nicht das Ergebnis des Abgleichs. Sonst waere die Kopie im
+     Schadensfall genauso leer wie das Original. */
+  function writeBackup(doc){
+    var q=doc||base;
+    if(!backupDir||!q)return Promise.resolve();
+    var name='klassebuch-'+todayStr()+'.json';var snap={};for(var k in q){snap[k]=q[k];}
+    snap._backupAt=Date.now();snap._backupBy=operator();
+    var json=JSON.stringify(snap);
+    return backupDir.getFileHandle(name,{create:true}).then(function(fh){return fh.createWritable();}).then(function(w){return w.write(json).then(function(){return w.close();});}).then(function(){return pruneBackups();});
+  }
+  function maybeBackup(doc){
+    var q=doc||base;
+    if(!backupDir||backupBusy||!q)return Promise.resolve();
+    var today=todayStr();if(bkLastDay()===today)return Promise.resolve();
     backupBusy=true;
-    verifyPermission(backupDir,false).then(function(ok){
+    return verifyPermission(backupDir,false).then(function(ok){
       if(!ok){backupBusy=false;return;}
-      return writeBackup().then(function(){bkSetDay(today);setStatus({backupLast:today,backupErr:''});});
+      return writeBackup(q).then(function(){bkSetDay(today);setStatus({backupLast:today,backupErr:''});});
     }).then(function(){backupBusy=false;}).catch(function(e){backupBusy=false;setStatus({backupErr:'Backup-Fehler: '+((e&&e.message)||e)});});
+  }
+
+  /* ---- Schicht 1: nicht abgleichen, bevor alles geladen ist ----
+     Das Dossier liegt in der Browser-Datenbank und antwortet die ersten
+     Millisekunden mit "nichts". Ohne diese Sperre haelt der Abgleich das fuer
+     "alles geloescht" und traegt Loeschmarken in die gemeinsame Datei ein -
+     auf allen Geraeten. */
+  function quellenBereit(){
+    var f=[];
+    try{if(window.KB_DOS_SYNC&&window.KB_DOS_SYNC.ready&&!window.KB_DOS_SYNC.ready())f.push('Dossier');}catch(e){}
+    try{if(window.KB_ANW&&window.KB_ANW.ready&&!window.KB_ANW.ready())f.push('Klassenbuch');}catch(e){}
+    return f;
+  }
+
+  /* ---- Schicht 2: Bremse gegen Massenloeschung ----
+     Ein Abgleich, der auf einen Schlag viel loescht, ist fast nie Absicht.
+     Dann wird NICHTS geschrieben, sondern gefragt. */
+  var WIPE_ABS=8;        // ab so vielen Loeschungen wird hingeschaut
+  var WIPE_ANTEIL=0.34;  // ... und ab diesem Anteil einer Sammlung gebremst
+  var wipeOk=false;      // hat jemand "Trotzdem" gesagt?
+  function neueLoeschungen(ld,now){
+    var out=[],ges=0;
+    for(var i=0;i<COLLS.length;i++){
+      var n=COLLS[i],c=ld.colls[n]||[],del=0;
+      for(var j=0;j<c.length;j++){if(c[j]._del&&(c[j]._ts||0)>=now)del++;}
+      if(!del)continue;
+      var vorher=0,bc=(base&&base.colls&&base.colls[n])||[];
+      for(j=0;j<bc.length;j++){if(!bc[j]._del)vorher++;}
+      ges+=del;
+      out.push({coll:n,del:del,vorher:vorher,anteil:vorher?del/vorher:1});
+    }
+    return {ges:ges,teile:out};
+  }
+  function verdaechtig(w){
+    if(wipeOk)return false;
+    if(w.ges<WIPE_ABS)return false;
+    for(var i=0;i<w.teile.length;i++){var t=w.teile[i];if(t.anteil>=WIPE_ANTEIL)return true;}
+    return false;
+  }
+  var NAMEN={roster:'Schüler',dosEntries:'Dossier-Einträge',dosReunions:'Réunionen',
+    anwEntries:'Absenzen',anwNotes:'Klassenbuch-Notizen',noten:'Noten',screening:'Screenings',
+    bubble:'Helfernetz',terms:'Schuljahre',timetables:'Stundenpläne',blocks:'Stundenraster',anwSettings:'Einstellungen'};
+  function wipeBar(w){
+    var el=document.getElementById('kb-wipewarn');
+    if(el&&el.parentNode)el.parentNode.removeChild(el);
+    el=document.createElement('div');el.id='kb-wipewarn';el.setAttribute('role','alert');
+    el.style.cssText='position:fixed;left:0;right:0;top:0;z-index:10000;background:#8E1B12;color:#fff;'+
+      'font:600 14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:11px 16px;'+
+      'display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;box-shadow:0 2px 14px rgba(0,0,0,.35);';
+    var was=w.teile.filter(function(t){return t.del;}).map(function(t){
+      return t.del+' '+(NAMEN[t.coll]||t.coll);
+    }).join(', ');
+    var t=document.createElement('span');
+    t.textContent='⛔ Der Abgleich würde ' + was + ' löschen. Das sieht nach einem Fehler aus — es wurde nichts in die Team-Datei geschrieben.';
+    el.appendChild(t);
+    function knopf(txt,fn,stark){
+      var b=document.createElement('button');b.textContent=txt;
+      b.style.cssText='border:1px solid rgba(255,255,255,.75);background:'+(stark?'#fff':'transparent')+';color:'+(stark?'#8E1B12':'#fff')+';'+
+        'border-radius:8px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;';
+      b.onclick=fn;el.appendChild(b);
+    }
+    knopf('Nicht löschen — Seite neu laden',function(){location.reload();},true);
+    knopf('Trotzdem löschen',function(){
+      if(!confirm('Wirklich? ' + was + ' werden dann auf ALLEN Geräten gelöscht.'))return;
+      wipeOk=true;el.parentNode&&el.parentNode.removeChild(el);cycle();
+    });
+    (document.body||document.documentElement).appendChild(el);
   }
 
   function cycle(){
     if(!fileHandle||busy||applying)return Promise.resolve();
+    var fehlt=quellenBereit();
+    if(fehlt.length){setStatus({pending:false,error:'',warten:fehlt.join(', ')});return Promise.resolve();}
+    if(status.warten)setStatus({warten:''});
     busy=true;setStatus({pending:true});
     var now=Date.now();var live=collGet();
     return readFile().then(function(remote){
       if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unveraendert).',pending:false});busy=false;return;}
       var nb,apply;
       if(!base){nb=firstReconcile(live,remote||null,now);apply=true;}
-      else{var ld=buildLocalDoc(base,live,now);nb=mergeDocs(remote||null,ld);apply=!sameDoc(nb,ld);}
+      else{
+        var ld=buildLocalDoc(base,live,now);
+        var w=neueLoeschungen(ld,now);
+        if(verdaechtig(w)){
+          setStatus({pending:false,error:'Abgleich angehalten: würde ungewöhnlich viel löschen.'});
+          busy=false;try{wipeBar(w);}catch(e){}
+          return;
+        }
+        nb=mergeDocs(remote||null,ld);apply=!sameDoc(nb,ld);
+      }
       if(apply){applying=true;try{collSet(nb);}catch(e){}applying=false;}
-      base=nb;saveBase(nb);
+      /* Schicht 3: die Tageskopie entsteht VOR dem ersten Schreiben, also vom
+         Stand, der noch in der Datei steht - nicht hinterher vom Ergebnis. */
       var changed=!remote||!sameDoc(nb,remote);
-      var p=changed?writeFile(nb):Promise.resolve();
-      return p.then(function(){setStatus({error:'',lastSync:Date.now(),lastBy:(remote&&remote._savedBy)||status.lastBy,pending:false,counts:summarize(base)});busy=false;maybeBackup();});
+      var vorher=changed?maybeBackup(remote||base):Promise.resolve();
+      base=nb;saveBase(nb);
+      return vorher.then(function(){
+        return changed?writeFile(nb):Promise.resolve();
+      }).then(function(){
+        setStatus({error:'',lastSync:Date.now(),lastBy:(remote&&remote._savedBy)||status.lastBy,pending:false,counts:summarize(base)});
+        busy=false;
+      });
     }).catch(function(e){setStatus({error:'Sync-Fehler: '+((e&&e.message)||e),pending:false});busy=false;});
   }
   function start(){stop();timer=setInterval(cycle,5000);cycle();}

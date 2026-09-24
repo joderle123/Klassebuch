@@ -976,6 +976,13 @@ var Repo = {
   entries: [],
   reunions: [],
 
+  /* Solange das hier false ist, sind students/entries/reunions LEER, weil die
+     Browser-Datenbank noch antwortet - und nicht etwa, weil nichts da waere.
+     Der Team-Abgleich muss diesen Unterschied kennen: sonst haelt er das
+     Schweigen fuer "alles geloescht" und traegt Loeschmarken in die
+     gemeinsame Datei ein. */
+  ready: false,
+
   init: function () {
     var self = this;
     return Storage.init()
@@ -997,7 +1004,8 @@ var Repo = {
         return Storage.getMeta('seeded_reunions_v').then(function (v) {
           if ((v || 0) < REUNION_SEED_VERSION) return self._loadReunionSeed();
         });
-      });
+      })
+      .then(function (r) { self.ready = true; return r; });
   },
 
   _loadSeed: function () {
