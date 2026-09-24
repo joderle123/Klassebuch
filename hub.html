@@ -112,6 +112,9 @@ code{background:var(--kb-accent-50);border-radius:5px;padding:1px 5px;}
 .chip{font-size:11px;font-weight:800;border-radius:20px;padding:3px 9px;letter-spacing:.02em;white-space:nowrap;}
 .chip.plan{background:#fff6e3;color:#9a6700;}
 .chip.web{background:var(--kb-accent-50);color:var(--kb-accent);}
+.chip.tab{background:#e7f5ee;color:#0f6e4b;cursor:help;}
+.tile-actions{align-items:center;}
+.tile-stand{margin-left:auto;font-size:11.5px;font-weight:600;color:var(--kb-muted);white-space:nowrap;}
 .t-geplant .tile-ic{filter:grayscale(.4);opacity:.8;}
 .t-geplant::before{background:repeating-linear-gradient(90deg,var(--ac) 0 10px,transparent 10px 16px);}
 .tile.add{border:2px dashed #cfd5e4;background:transparent;box-shadow:none;align-items:center;justify-content:center;text-align:center;min-height:196px;color:var(--kb-muted);text-decoration:none;}
@@ -213,6 +216,8 @@ window.addEventListener('error',function(e){
 },true);
 </script>
 <script src="hub-apps.js" onerror="window.__hubAppsMissing=true"></script>
+<!-- Stand jeder App (erzeugt von update-apps.cjs). Fehlt die Datei, zeigt der Hub einfach keinen Stand. -->
+<script src="apps/versionen.js"></script>
 </head>
 <body>
 <div class="hub" id="hub">
@@ -298,7 +303,7 @@ window.addEventListener('error',function(e){
         <p class="lead">Jede App bleibt eine eigene Datei — der Hub zeigt sie nur an. An der App selbst musst du <b>nichts</b> ändern, und ihre Daten bleiben dieselben, ob du sie im Hub oder direkt öffnest.</p>
 
         <div class="steps">
-          <div class="step"><div class="step-n">1</div><span class="step-t">Datei ablegen</span><span>Die App-Datei in denselben Ordner wie <code>hub.html</code> legen — übersichtlicher in einen Unterordner <code>apps/</code>.</span></div>
+          <div class="step"><div class="step-n">1</div><span class="step-t">Datei ablegen</span><span>Die App-Datei in den Ordner <code>apps/</code> neben <code>hub.html</code> legen.</span></div>
           <div class="step"><div class="step-n">2</div><span class="step-t">Eintragen</span><span><code>hub-apps.js</code> öffnen, den Vorlage-Block kopieren und Name, Icon, Farbe, Bereich und Pfad anpassen.</span></div>
           <div class="step"><div class="step-n">3</div><span class="step-t">Neu laden</span><span><code>hub.html</code> mit <b>Strg + F5</b> neu laden. Die App erscheint als Kachel und im Menü.</span></div>
         </div>
@@ -320,7 +325,8 @@ window.addEventListener('error',function(e){
 
         <div class="way" style="--ac:#4f5bd5">
           <h3>A · Eine einzelne HTML-Datei <span class="way-tag">funktioniert sofort</span></h3>
-          <p>Wie das Klassenbuch oder SAVOIR: eine <code>.html</code>-Datei, die man per Doppelklick öffnet. Einfach ablegen und mit <code>datei: 'apps/name.html'</code> eintragen — fertig.</p>
+          <p>Wie der ELDiB-Generator oder das Screening: eine <code>.html</code>-Datei, die man per Doppelklick öffnet. Einfach ablegen und mit <code>datei: 'apps/name.html'</code> eintragen — fertig.</p>
+          <p>Arbeitet die App mit Dateien oder Ordnern — etwa einer Team-Datei auf O:\ oder Sicherungen, wie Klassenbuch und Toolbox —, ergänze <code>dateizugriff: true</code>. Dann öffnet sie in einem eigenen Tab (Erklärung unten bei „Wenn etwas nicht klappt").</p>
         </div>
 
         <div class="way" style="--ac:#0f9d8a">
@@ -362,6 +368,8 @@ window.addEventListener('error',function(e){
             <tr><td><code>bereich</code></td><td>Gruppe im Menü. Apps mit gleichem Bereich stehen zusammen.</td><td><code>'Wissen &amp; Materialien'</code></td></tr>
             <tr><td><code>datei</code></td><td>Pfad zur App-Datei, von <code>hub.html</code> aus gesehen.</td><td><code>'apps/savoir.html'</code></td></tr>
             <tr><td><code>link</code></td><td>Statt <code>datei</code>: Adresse einer Webseite.</td><td><code>'https://…'</code></td></tr>
+            <tr><td><code>dateizugriff</code></td><td>Optional. <code>true</code>, wenn die App Dateien oder Ordner auswählt (Team-Datei auf O:\, Sicherungen). Sie öffnet dann in einem eigenen Tab.</td><td><code>true</code></td></tr>
+            <tr><td><code>quelle</code></td><td>Optional. Woher die neueste Version kommt: Repository, Branch und Pfad. Damit kann <code>update-apps.cjs</code> die App aktuell halten.</td><td><code>{ repo: 'ISA-APP', … }</code></td></tr>
             <tr><td><code>hinweis</code></td><td>Optional. Kurzer Hinweis auf der Kachel.</td><td><code>'Wird noch gebaut'</code></td></tr>
             <tr><td><code>stichworte</code></td><td>Optional. Weitere Suchbegriffe für das Suchfeld.</td><td><code>'diagnose methode'</code></td></tr>
           </tbody>
@@ -375,19 +383,22 @@ window.addEventListener('error',function(e){
           <details><summary>Die App bleibt weiß</summary><p>Fast immer eine React/Vite-App mit normalem Build. Baue sie als Einzeldatei (Weg B).</p></details>
           <details><summary>Edge zeigt „Datei nicht gefunden"</summary><p>Der Pfad in <code>datei</code> stimmt nicht. Prüfe Ordnername, Dateiname und Groß-/Kleinschreibung. Der Pfad gilt von <code>hub.html</code> aus: liegt die App in <code>apps/</code>, lautet er <code>'apps/name.html'</code>.</p></details>
           <details><summary>Sind meine Daten im Hub andere als sonst?</summary><p>Nein. Getestet: Eine App sieht im Hub genau dieselben Daten wie direkt geöffnet — solange du im selben Browser auf demselben Gerät arbeitest. Die Daten liegen im Browser, nicht in der Datei. Deshalb siehst du sie auf einem anderen PC nicht automatisch.</p></details>
+          <details><summary>Warum öffnen Klassenbuch und Toolbox in einem eigenen Tab?</summary><p>Beide arbeiten mit Dateien und Ordnern: das Klassenbuch mit der Team-Datei und den Sicherungen auf O:\, die Toolbox mit der Team-Ablage. Edge erlaubt diese Datei- und Ordnerauswahl bei lokalen Dateien nur in einem eigenen Tab, nicht in einer eingebetteten Seite. Eingebettet würden Team-Abgleich und Sicherungen stillschweigend nicht funktionieren. Deshalb öffnet der Hub solche Apps in ihrem eigenen Tab. Ist der Tab schon offen, holt der Hub ihn nur nach vorne — ohne Neuladen, eine angefangene Notiz geht also nicht verloren.</p></details>
+          <details><summary>Wie kommt die neueste Version einer App in den Hub?</summary><p>Jede App hat in <code>hub-apps.js</code> eine <code>quelle</code>: Repository und Branch, in dem sie weiterentwickelt wird. Das Skript <code>update-apps.cjs</code> holt von dort die neueste Fassung und aktualisiert den „Stand" auf der Kachel. Liegt irgendwo eine noch neuere Fassung derselben App, meldet es das, statt sie ungeprüft zu übernehmen. Am einfachsten bittest du Claude: „Aktualisiere die Apps im Hub."</p></details>
           <details><summary>Eine Webseite lässt sich nicht einbetten</summary><p>Viele Webseiten verbieten das aus Sicherheitsgründen. Trag sie mit <code>link</code> statt <code>datei</code> ein — dann öffnet sie sich in einem neuen Tab.</p></details>
         </div>
 
         <h2>So legst du alles ab</h2>
 <pre class="code"><span class="c">Ein gemeinsamer Ordner, z. B. auf dem Team-Laufwerk:</span>
 
-  hub.html          <span class="c">← diese Seite: öffnen und als Favorit speichern</span>
-  hub-apps.js       <span class="c">← das App-Verzeichnis</span>
-  index.html        <span class="c">← Klassenbuch</span>
-  SAVOIR.html
+  hub.html              <span class="c">← diese Seite: öffnen und als Favorit speichern</span>
+  hub-apps.js           <span class="c">← das App-Verzeichnis</span>
   apps/
-    paedpath.html
-    …</pre>
+    klassenbuch.html
+    screening.html
+    eldib-generator.html
+    toolbox.html
+    versionen.js        <span class="c">← Stand jeder App (wird automatisch erzeugt)</span></pre>
       </div>
     </section>
 
@@ -442,6 +453,7 @@ var problems=[], apps=[];
       icon:String(a.icon||'🧩'),farbe:HEX.test(String(a.farbe||''))?String(a.farbe):'#4f5bd5',
       bereich:String(a.bereich||'Weitere Apps'),
       datei:a.datei?String(a.datei):null,link:a.link?String(a.link):null,
+      dateizugriff:!!a.dateizugriff,
       hinweis:String(a.hinweis||''),stichworte:String(a.stichworte||'')
     });
   });
@@ -454,24 +466,60 @@ var HUB_TITLE=S.titel||'CDSE Hub';
 function kind(a){return a.datei?'datei':(a.link?'link':'geplant');}
 function byId(id){for(var i=0;i<apps.length;i++){if(apps[i].id===id){return apps[i];}}return null;}
 function groups(list){var order=[],map={};list.forEach(function(a){if(!map[a.bereich]){map[a.bereich]=[];order.push(a.bereich);}map[a.bereich].push(a);});return order.map(function(k){return {name:k,apps:map[k]};});}
-function appHref(a){return kind(a)==='link'?a.link:'#/app/'+encodeURIComponent(a.id);}
-function extAttrs(a){return kind(a)==='link'?' target="_blank" rel="noopener"':'';}
+/* Apps mit Datei-/Ordnerauswahl (Team-Datei auf O:\, Sicherungen …) im
+   EIGENEN Tab öffnen: Bei lokalen Dateien verbietet Edge die Auswahl in
+   eingebetteten Seiten ("Cross origin sub frames aren't allowed to show a
+   file picker" - getestet). Über einen Webserver ginge das Einbetten. */
+function inTab(a){return kind(a)==='datei'&&a.dateizugriff&&IS_FILE;}
+function appHref(a){if(kind(a)==='link'){return a.link;}if(inTab(a)){return a.datei;}return '#/app/'+encodeURIComponent(a.id);}
+function extAttrs(a){
+  if(kind(a)==='link'){return ' target="_blank" rel="noopener"';}
+  if(inTab(a)){return ' target="cdse-'+esc(a.id)+'" data-tab="'+esc(a.id)+'"';}
+  return '';
+}
+var VERS=window.CDSE_APP_VERSIONEN||{};
+function standOf(a){var v=VERS[a.id];return (v&&/^\d{4}-\d{2}-\d{2}$/.test(v.stand||''))?v.stand.split('-').reverse().join('.'):'';}
+
+/* App in ihrem eigenen Tab öffnen. Ist der Tab schon offen, nur nach vorne
+   holen - NICHT neu laden, sonst ginge eine halb geschriebene Notiz verloren. */
+function openInTab(a){
+  pushRecent(a.id);
+  var w=null;
+  try{w=window.open('','cdse-'+a.id);}catch(e){}
+  if(!w){location.href=a.datei;return;}   /* Popup blockiert: im selben Tab öffnen */
+  var frisch=false;
+  try{frisch=(w.location.href==='about:blank');}catch(e){frisch=false;}
+  if(frisch){w.location.href=new URL(a.datei,location.href).href;}
+  try{w.focus();}catch(e){}
+}
 
 /* Kleine Live-Info auf der Kachel. Die Apps teilen sich den Browser-
    Speicher mit dem Hub, deshalb kann er z. B. das Schuljahr lesen. */
+/* Gleiche Regel wie das Klassenbuch (KB_TERMS): ein angeheftetes Jahr und
+   Trimester gilt, sonst das Jahr bzw. Trimester, in dem heute liegt. */
+var TRIM={T1:'1. Trimester',T2:'2. Trimester',T3:'3. Trimester'};
+function isoHeute(){var d=new Date();function p(n){return (n<10?'0':'')+n;}return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());}
 function liveInfo(a){
   if(a.id!=='klassenbuch'){return '';}
   try{
-    var y=JSON.parse(localStorage.getItem('klassebuch_years_v1')||'null');
+    var t=JSON.parse(localStorage.getItem('klassebuch_terms_v1')||'null');
     var r=JSON.parse(localStorage.getItem('klassebuch_roster_v1')||'null');
-    var yk=(y&&y.active)||'', n=0;
-    if(Array.isArray(r)){r.forEach(function(s){
-      if(!s){return;}
-      var e=(yk&&s.years)?s.years[yk]:null;
-      if(yk&&s.years?(e&&e.status!=='ausgetreten'):(s.active!==false)){n++;}
-    });}
-    if(!yk&&!n){return '';}
-    return (yk?'📅 Schuljahr '+yk:'')+(yk&&n?' · ':'')+(n?n+' Schüler':'');
+    var heute=isoHeute(), y=null, tr=null;
+    if(t&&Array.isArray(t.years)){
+      if(t.pinned&&t.pinned.year){
+        y=t.years.filter(function(x){return x&&x.id===t.pinned.year;})[0]||null;
+        if(y&&y.terms){tr=y.terms.filter(function(x){return x&&x.key===t.pinned.term;})[0]||null;}
+      }
+      if(!y){
+        y=t.years.filter(function(x){return x&&heute>=x.from&&heute<=x.to;})[0]||null;
+        if(y&&y.terms){tr=y.terms.filter(function(x){return x&&heute>=x.from&&heute<=x.to;})[0]||null;}
+      }
+    }
+    var n=Array.isArray(r)?r.filter(function(s){return s&&s.active!==false;}).length:0;
+    var teile=[];
+    if(y&&y.label){teile.push('📅 '+y.label+(tr?' · '+(TRIM[tr.key]||tr.key):''));}
+    if(n){teile.push(n+' Schüler');}
+    return teile.join(' · ');
   }catch(e){return '';}
 }
 
@@ -485,9 +533,9 @@ function renderSide(){
     h+='<div class="navlabel">'+esc(g.name)+'</div><div class="navlabel-sep"></div>';
     g.apps.forEach(function(a){
       var k=kind(a);
-      h+='<a class="lnk'+(k==='geplant'?' planned':'')+'" href="'+esc(appHref(a))+'"'+extAttrs(a)+' data-app="'+esc(a.id)+'" title="'+esc(a.name)+(k==='geplant'?' (geplant)':'')+'" style="--ac:'+a.farbe+'">'+
+      h+='<a class="lnk'+(k==='geplant'?' planned':'')+'" href="'+esc(appHref(a))+'"'+extAttrs(a)+' data-app="'+esc(a.id)+'" title="'+esc(a.name)+(k==='geplant'?' (geplant)':(inTab(a)?' (öffnet im eigenen Tab)':''))+'" style="--ac:'+a.farbe+'">'+
         '<span class="ic app-ic">'+esc(a.icon)+'</span>'+
-        '<span class="lnk-t">'+esc(a.name)+(k==='link'?'<span class="ext"> ↗</span>':'')+(k==='geplant'?'<span class="soon">geplant</span>':'')+'</span>'+
+        '<span class="lnk-t">'+esc(a.name)+(k==='link'||inTab(a)?'<span class="ext"> ↗</span>':'')+(k==='geplant'?'<span class="soon">geplant</span>':'')+'</span>'+
         (frames[a.id]?'<span class="live" title="Im Hintergrund geöffnet"></span>':'')+'</a>';
     });
   });
@@ -503,13 +551,17 @@ function renderSide(){
 
 /* ---------- Übersicht ---------- */
 function tile(a){
-  var k=kind(a), info=liveInfo(a);
-  var chip=k==='link'?'<span class="chip web">Web ↗</span>':(k==='geplant'?'<span class="chip plan">geplant</span>':'');
-  var primary=k==='datei'?'<a class="btn primary" href="'+esc(appHref(a))+'">Öffnen</a>':
-             (k==='link'?'<a class="btn primary" href="'+esc(a.link)+'" target="_blank" rel="noopener">Öffnen ↗</a>':
-             '<a class="btn" href="'+esc(appHref(a))+'">So fügst du sie hinzu</a>');
-  var second=k==='datei'?'<a class="btn icon" href="'+esc(a.datei)+'" target="_blank" rel="noopener" title="In neuem Tab öffnen" aria-label="'+esc(a.name)+' in neuem Tab öffnen">↗</a>':'';
-  return '<article class="tile t-'+k+'" style="--ac:'+a.farbe+'" data-href="'+esc(appHref(a))+'" data-ext="'+(k==='link'?'1':'')+'">'+
+  var k=kind(a), info=liveInfo(a), tab=inTab(a), stand=standOf(a);
+  var chip=k==='link'?'<span class="chip web">Web ↗</span>':
+          (k==='geplant'?'<span class="chip plan">geplant</span>':
+          (tab?'<span class="chip tab" title="Diese App braucht Zugriff auf Dateien und Ordner (z. B. die Team-Datei auf O:\\). Edge erlaubt das nur in einem eigenen Tab.">eigener Tab</span>':''));
+  var primary;
+  if(k==='datei'){primary='<a class="btn primary" href="'+esc(appHref(a))+'"'+extAttrs(a)+'>'+(tab?'Öffnen ↗':'Öffnen')+'</a>';}
+  else if(k==='link'){primary='<a class="btn primary" href="'+esc(a.link)+'" target="_blank" rel="noopener">Öffnen ↗</a>';}
+  else{primary='<a class="btn" href="'+esc(appHref(a))+'">So fügst du sie hinzu</a>';}
+  var second=(k==='datei'&&!tab)?'<a class="btn icon" href="'+esc(a.datei)+'" target="_blank" rel="noopener" title="In neuem Tab öffnen" aria-label="'+esc(a.name)+' in neuem Tab öffnen">↗</a>':'';
+  if(stand){second+='<span class="tile-stand" title="Stand der eingebundenen Version">Stand '+stand+'</span>';}
+  return '<article class="tile t-'+k+'" style="--ac:'+a.farbe+'" data-href="'+esc(appHref(a))+'" data-ext="'+(k==='link'?'1':'')+'"'+(tab?' data-tabtile="'+esc(a.id)+'"':'')+'>'+
     '<div class="tile-top"><div class="tile-ic" aria-hidden="true">'+esc(a.icon)+'</div>'+chip+'</div>'+
     '<div class="tile-eyebrow">'+esc(a.bereich)+'</div>'+
     '<h3>'+esc(a.name)+'</h3>'+
@@ -537,7 +589,7 @@ function renderHome(){
     var rec=lsGet(LS_RECENT,[]).map(byId).filter(function(a){return a&&kind(a)==='datei';});
     if(rec.length){
       h+='<div class="recent"><span class="recent-l">Zuletzt geöffnet</span>'+rec.map(function(a){
-        return '<a class="pill" href="'+esc(appHref(a))+'" style="--ac:'+a.farbe+'"><span class="pi">'+esc(a.icon)+'</span>'+esc(a.name)+'</a>';
+        return '<a class="pill" href="'+esc(appHref(a))+'"'+extAttrs(a)+' style="--ac:'+a.farbe+'"><span class="pi">'+esc(a.icon)+'</span>'+esc(a.name)+'</a>';
       }).join('')+'</div>';
     }
   }
@@ -571,6 +623,7 @@ function openApp(id){
   var k=kind(a);
   if(k==='link'){window.open(a.link,'_blank','noopener');location.hash='#/';return;}
   if(k==='geplant'){current=id;showGuide(a);return;}
+  if(inTab(a)){openInTab(a);location.hash='#/';return;}
   current=id;
   var fr=frames[id];
   if(!fr){
@@ -584,7 +637,7 @@ function openApp(id){
   for(var f in frames){frames[f].classList.toggle('on',f===id);}
   renderMissing();
   $('bar-ic').textContent=a.icon;$('bar-ic').style.setProperty('--ac',a.farbe);
-  $('bar-name').textContent=a.name;$('bar-file').textContent=a.datei;
+  $('bar-name').textContent=a.name;$('bar-file').textContent=a.datei+(standOf(a)?' · Stand '+standOf(a):'');
   $('bar-tab').setAttribute('href',a.datei);
   $('bar-hint').style.display=IS_FILE?'':'none';
   pushRecent(id);
@@ -664,8 +717,12 @@ document.addEventListener('click',function(e){
   if(chipEl){activeCat=chipEl.getAttribute('data-cat')||'';renderHome();return;}
   var an=e.target.closest&&e.target.closest('[data-anchor]');
   if(an){pendingAnchor=an.getAttribute('data-anchor');if(location.hash.indexOf('#/hinzufuegen')===0){e.preventDefault();showGuide(null);}}
+  var tabLink=e.target.closest&&e.target.closest('a[data-tab]');
+  if(tabLink){var ta=byId(tabLink.getAttribute('data-tab'));if(ta){e.preventDefault();openInTab(ta);if(view==='home'){renderHome();}}return;}
   var t=e.target.closest&&e.target.closest('.tile[data-href]');
   if(t&&!e.target.closest('a,button')){
+    var tid=t.getAttribute('data-tabtile');
+    if(tid){var tb=byId(tid);if(tb){openInTab(tb);renderHome();}return;}
     var href=t.getAttribute('data-href');
     if(t.getAttribute('data-ext')){window.open(href,'_blank','noopener');}else{location.hash=href;}
   }
