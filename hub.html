@@ -189,6 +189,7 @@ code{background:var(--bg-2);border-radius:5px;padding:1px 6px;color:var(--ink-2)
 .guide h1{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);font-size:36px;line-height:1.12;margin:0 0 10px;}
 .guide .lead{color:var(--muted);font-size:16px;line-height:1.65;margin:0 0 30px;max-width:720px;}
 .guide h2{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);font-size:22px;margin:44px 0 14px;}
+.guide h3.guide-h3{font-size:16px;font-weight:650;margin:26px 0 8px;color:var(--ink);}
 .guide p,.guide li{line-height:1.7;font-size:14.5px;color:var(--ink-2);}
 .banner{display:flex;gap:14px;align-items:center;padding:16px 18px;border-radius:var(--radius);margin:0 0 26px;background:color-mix(in srgb,var(--ac) 8%,var(--surface));border:1px solid color-mix(in srgb,var(--ac) 24%,var(--surface));}
 .banner .b-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--surface);color:var(--ac);font-size:22px;}
@@ -271,6 +272,17 @@ html.tor-offen .hub{visibility:hidden;}
 @keyframes dreh{to{transform:rotate(360deg);}}
 @media (max-width:480px){.teams{grid-template-columns:1fr;}.gate-card{padding:22px 18px;}}
 
+.gate .hilfe{font-size:12.5px;color:var(--muted);line-height:1.5;}
+.warten{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;margin:6px 0 2px;}
+.laden.dunkel{border-color:var(--line-2);border-top-color:var(--accent);}
+.staende{display:flex;flex-direction:column;gap:6px;margin:0 0 16px;max-height:330px;overflow:auto;}
+.staende label{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;cursor:pointer;transition:border-color .15s,background .15s;}
+.staende label:hover{border-color:var(--accent-line);}
+.staende label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);}
+.staende input{margin-top:3px;accent-color:var(--accent);}
+.staende b{display:block;font-size:14px;font-weight:620;color:var(--ink);}
+.staende small{display:block;font-size:12.5px;color:var(--muted);}
+
 /* ===== Angemeldete Person in der Seitenleiste ===== */
 .me{display:flex;align-items:center;gap:10px;padding:8px;margin:0 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);position:relative;}
 .me[hidden]{display:none;}
@@ -288,6 +300,21 @@ html.tor-offen .hub{visibility:hidden;}
 .menu .ic{width:16px;height:16px;color:var(--muted);}
 .hub.rail .me{padding:4px;justify-content:center;border-color:transparent;background:none;}
 .hub.rail .me-t,.hub.rail .me-btn{display:none;}
+.me.warn .ava{box-shadow:0 0 0 2px var(--surface),0 0 0 4px #C2553B;}
+/* Sicherungs-Stand unten in der Seitenleiste */
+.foot.warn{color:#7A2A18;}
+.foot.warn .ic{color:#C2553B;}
+.foot-btn{display:inline-block;margin-top:7px;border:1px solid var(--accent-line);background:var(--accent-soft);color:var(--accent-strong);border-radius:8px;padding:5px 11px;font:inherit;font-weight:620;cursor:pointer;}
+.foot-btn:hover{background:#E1E5F8;}
+.foot-btn:disabled{opacity:.6;cursor:default;}
+/* Hinweise nach dem Anmelden */
+.problem.info{background:var(--accent-soft);border:1px solid var(--accent-line);color:var(--accent-strong);}
+.problem-x{margin-left:auto;flex:0 0 auto;width:28px;height:28px;display:grid;place-items:center;border:0;background:none;color:inherit;border-radius:7px;cursor:pointer;opacity:.75;}
+.problem-x:hover{opacity:1;background:rgba(46,58,156,.08);}
+.problem-x .ic{width:15px;height:15px;}
+.tile-datei{display:flex;gap:7px;align-items:flex-start;margin-top:12px;font-size:12px;line-height:1.45;color:var(--muted);word-break:break-word;}
+.tile-datei .ic{width:14px;height:14px;flex:0 0 auto;margin-top:1px;}
+.tile-datei code{font-family:inherit;color:var(--ink-2);font-weight:560;}
 
 /* ===== Mobil ===== */
 .topbar{display:none;}
@@ -354,6 +381,7 @@ window.addEventListener('error',function(e){
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5v-3a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8.5v-5h10v5"/><rect x="3.5" y="8.5" width="17" height="8.5" rx="2"/><path d="M7 14h10v6.5H7z"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.8 12a8.2 8.2 0 1 0 2.4-5.8"/><path d="M3.5 4v4.2h4.2"/><path d="M12 7.8V12l3 1.9"/></symbol>
 </svg>
 
 <!-- Anmeldung: liegt ueber dem Hub, bis man angemeldet ist -->
@@ -382,7 +410,7 @@ window.addEventListener('error',function(e){
       <button class="collapse" id="collapse" type="button" aria-label="Menü einklappen">
         <svg class="ic"><use href="#i-collapse"/></svg><span class="collapse-t" id="collapse-t">Einklappen</span>
       </button>
-      <div class="foot"><svg class="ic"><use href="#i-lock"/></svg><span id="foot-t">Konten liegen verschlüsselt im Hub-Ordner. App-Daten bleiben auf diesem Gerät. Keine Cloud.</span></div>
+      <div class="foot"><svg class="ic"><use href="#i-lock"/></svg><span id="foot-t">Konten und Daten liegen verschlüsselt im Hub-Ordner. Keine Cloud.</span></div>
     </div>
   </aside>
 
@@ -513,6 +541,11 @@ window.addEventListener('error',function(e){
         <div class="table-wrap" id="guide-teams"></div>
         <p>Welche Teams eine App sehen, steht in <code>hub-apps.js</code> im Feld <code>teams</code>. Ein neues Team trägst du dort oben bei <code>CDSE_TEAMS</code> ein. Das eigene Team ändert man im Hub unten links über das Menü <b>⋮</b> → <b>Team ändern</b>.</p>
         <div class="callout"><svg class="ic"><use href="#i-warn"/></svg><div><b>Ehrlich gesagt:</b> Die Team-Wahl steuert, was man im Hub <i>sieht</i>. Eine echte Sperre ist das nicht — wer den Dateipfad kennt, kann eine App auch direkt öffnen. Soll das Screening wirklich nur für das Diagnostique-Team zugänglich sein, setzt die IT die Ordnerrechte: Nur diese Gruppe darf <code>apps/screening.html</code> lesen.</div></div>
+        <h3 class="guide-h3">Deine Daten</h3>
+        <p>Während du angemeldet bist, liegen die Daten der Apps wie gewohnt im Browser dieses PCs — die Apps merken keinen Unterschied. Der Hub sichert sie <b>jede Minute verschlüsselt</b> im Hub-Ordner (<code>daten/</code>) und <b>entfernt sie beim Abmelden</b> vom PC. Meldest du dich an einem anderen PC an, lädt er sie dort. Die Stände der letzten 14 Tage bleiben erhalten: Konto-Menü → <b>Frühere Stände</b>.</p>
+        <p>Öffne die Apps deshalb <b>immer über den Hub</b>. Direkt geöffnet, sieht eine App nach dem Abmelden leer aus — die Daten sind dann sicher im Hub-Ordner, nur eben nicht auf dem PC.</p>
+        <h3 class="guide-h3">Das Klassenbuch im Team</h3>
+        <p>Das Klassenbuch teilt ein Team über eine gemeinsame <b>Team-Datei</b>. Der Hub legt dafür pro Team einen Ordner an: <code>teams/&lt;Team&gt;/</code>. Eine Person erstellt dort im Klassenbuch die Datei <code>klassebuch-team.json</code>, alle anderen öffnen dieselbe Datei. Welche Datei du gewählt hast, merkt sich der Hub für dein Konto.</p>
         <div class="callout info"><svg class="ic"><use href="#i-key"/></svg><div><b>Passwort vergessen?</b> Beim Erstellen bekommt jede Person einen <b>Wiederherstellungs-Code</b>. Nur damit lässt sich ein neues Passwort setzen. Ohne Code kann niemand helfen — auch die IT nicht. Genau das schützt die Daten.</div></div>
 
         <h2 id="probleme">Wenn etwas nicht klappt</h2>
@@ -520,12 +553,14 @@ window.addEventListener('error',function(e){
           <details><summary>Die Übersicht zeigt „App-Verzeichnis fehlerhaft"</summary><p>In <code>hub-apps.js</code> ist ein Tippfehler — fast immer ein fehlendes Komma nach <code>}</code> oder ein fehlendes Anführungszeichen <code>'</code>. Die genaue Stelle zeigt dir Edge: <b>F12</b> drücken, Reiter <b>Konsole</b>. Dort steht rot etwa <code>hub-apps.js:63</code> — der Fehler steckt in dieser Zeile oder direkt davor.</p></details>
           <details><summary>Die App bleibt weiß</summary><p>Fast immer eine React/Vite-App mit normalem Build. Baue sie als Einzeldatei (Weg B).</p></details>
           <details><summary>Edge zeigt „Datei nicht gefunden"</summary><p>Der Pfad in <code>datei</code> stimmt nicht. Prüfe Ordnername, Dateiname und Groß-/Kleinschreibung. Der Pfad gilt von <code>hub.html</code> aus.</p></details>
-          <details><summary>Sind meine Daten im Hub andere als sonst?</summary><p>Nein. Getestet: Eine App sieht im Hub genau dieselben Daten wie direkt geöffnet — solange du im selben Browser auf demselben Gerät arbeitest. Die Daten liegen im Browser, nicht in der Datei.</p></details>
+          <details><summary>Wo liegen meine Daten?</summary><p>Während du angemeldet bist, im Browser dieses PCs — genau wie früher. Zusätzlich sichert der Hub sie jede Minute verschlüsselt in <code>daten/&lt;dein Konto&gt;/</code> im Hub-Ordner. Beim Abmelden entfernt er sie vom PC. Lesen kann sie nur, wer dein Passwort oder deinen Wiederherstellungs-Code kennt.</p></details>
+          <details><summary>Beim ersten Anmelden fragt der Hub „Gehören sie dir?“</summary><p>Auf dem PC lagen schon App-Daten aus der Zeit vor den Konten. Sind es deine, übernimmt der Hub sie in dein Konto. Sonst legt er sie auf diesem PC beiseite; wem sie gehören, holt sie sich später an diesem PC über Konto-Menü → Frühere Stände.</p></details>
+          <details><summary>Ich habe an zwei PCs gleichzeitig gearbeitet</summary><p>Dann gewinnt nichts still: Der Hub lädt den neueren Stand und legt die Änderungen des anderen PCs als Kopie ab (Konto-Menü → Frühere Stände). Am einfachsten: am alten PC abmelden, bevor du woanders weitermachst.</p></details>
           <details><summary>Warum öffnen Klassenbuch und Toolbox in einem eigenen Tab?</summary><p>Beide arbeiten mit Dateien und Ordnern: das Klassenbuch mit der Team-Datei und den Sicherungen auf O:\, die Toolbox mit der Team-Ablage. Edge erlaubt diese Auswahl bei lokalen Dateien nur in einem eigenen Tab, nicht in einer eingebetteten Seite. Deshalb öffnet der Hub solche Apps in ihrem eigenen Tab. Ist der Tab schon offen, holt der Hub ihn nur nach vorne — ohne Neuladen.</p></details>
           <details><summary>Wie kommt die neueste Version einer App in den Hub?</summary><p>Jede App hat in <code>hub-apps.js</code> eine <code>quelle</code>. Das Skript <code>update-apps.cjs</code> holt von dort die neueste Fassung und aktualisiert den „Stand" auf der Karte. Liegt irgendwo eine noch neuere Fassung derselben App, meldet es das, statt sie ungeprüft zu übernehmen. Am einfachsten bittest du Claude: „Aktualisiere die Apps im Hub."</p></details>
           <details><summary>Der Hub fragt nach dem Hub-Ordner</summary><p>Beim ersten Mal wählst du den Ordner, in dem <code>hub.html</code> liegt (z. B. <code>O:\CDSE-Hub</code>). Danach fragt Edge meist nur noch einmal pro Sitzung: <b>Zugriff erlauben</b>. Ohne diesen Zugriff kann der Hub die Konten nicht lesen.</p></details>
           <details><summary>Der Hub ist gesperrt</summary><p>Nach 60 Minuten ohne Aktivität sperrt sich der Hub; dein Passwort entsperrt ihn wieder. Die Zeit steht in <code>hub-apps.js</code> bei <code>sperreNachMinuten</code>. Gehst du vom Platz weg: <b>Windows-Taste + L</b> sperrt den ganzen PC.</p></details>
-          <details><summary>Ein Konto löschen</summary><p>Im Ordner <code>konten/</code> liegt pro Person eine Datei, z. B. <code>anna-muster-k3f.json</code>. Wer diese Datei löscht, löscht das Konto.</p></details>
+          <details><summary>Ein Konto löschen</summary><p>Im Ordner <code>konten/</code> liegt pro Person eine Datei, z. B. <code>anna-muster-k3f.json</code>, und in <code>daten/</code> ein gleichnamiger Ordner mit den verschlüsselten Daten. Wer beides löscht, löscht das Konto samt Daten.</p></details>
           <details><summary>Eine Webseite lässt sich nicht einbetten</summary><p>Viele Webseiten verbieten das. Trag sie mit <code>link</code> statt <code>datei</code> ein — dann öffnet sie sich in einem neuen Tab.</p></details>
         </div>
 
@@ -534,7 +569,9 @@ window.addEventListener('error',function(e){
 
   hub.html              <span class="c">← diese Seite: öffnen und als Favorit speichern</span>
   hub-apps.js           <span class="c">← das App-Verzeichnis (mit den Teams)</span>
-  konten/               <span class="c">← ein verschlüsseltes Konto pro Person (legt der Hub selbst an)</span>
+  konten/               <span class="c">← ein Konto pro Person (legt der Hub selbst an)</span>
+  daten/                <span class="c">← die verschlüsselten Daten jeder Person, mit Ständen der letzten 14 Tage</span>
+  teams/                <span class="c">← pro Team ein Ordner für die gemeinsame Klassenbuch-Datei</span>
   apps/
     klassenbuch.html
     journal.html
@@ -550,43 +587,67 @@ window.addEventListener('error',function(e){
 
 <script>
 /* =====================================================================
-   CDSE Hub — Konten & Anmeldung
+   CDSE Hub — Konten, Anmeldung und Daten-Tresor
    ---------------------------------------------------------------------
-   Konten liegen als Dateien im Hub-Ordner auf dem Server (Unterordner
-   konten/). Das Passwort schützt einen zufälligen Datenschlüssel:
-   AES-GCM 256, Schlüsselableitung PBKDF2-SHA256 mit 600 000 Durchläufen
-   und zufälligem Salz (Empfehlung OWASP 2023). Ein zweiter "Umschlag"
-   mit dem Wiederherstellungs-Code erlaubt ein neues Passwort, ohne dass
-   irgendjemand sonst den Schlüssel kennt. Klartext im Konto: nur Name,
-   Team und Zeitstempel - für die Auswahl "Wer bist du?".
-   Ehrliche Grenze: Ohne Anmeldeserver ist die Team-Zuordnung eine
-   Anzeige-Regel, keine Sperre. Echte Sperren setzt die IT über die
-   Ordnerrechte auf dem Server.
+   Konten liegen als Dateien im Hub-Ordner auf dem Server (konten/).
+   Das Passwort schützt einen zufälligen Datenschlüssel: AES-GCM 256,
+   Schlüsselableitung PBKDF2-SHA256 mit 600 000 Durchläufen und zufälligem
+   Salz (Empfehlung OWASP 2023). Ein zweiter "Umschlag" mit dem
+   Wiederherstellungs-Code erlaubt ein neues Passwort, ohne dass irgendwer
+   sonst den Schlüssel kennt. Klartext im Konto: nur Name, Team und
+   Zeitstempel - für die Auswahl "Wer bist du?".
+
+   Daten-Tresor: Die Daten der Apps (localStorage und IndexedDB dieses
+   Browsers) werden pro Person verschlüsselt im Hub-Ordner gesichert
+   (daten/<konto>/aktuell.cdse), beim Anmelden geladen und beim Abmelden
+   vom PC entfernt. Gesichert wird mit dem öffentlichen Schlüssel des
+   Kontos (RSA-OAEP 3072) - das geht ohne Passwort, z. B. wenn sich jemand
+   anderes am selben PC anmeldet. Öffnen kann den Tresor nur, wer das
+   Passwort oder den Code kennt. Datei- und Ordnerzugänge der Apps (etwa
+   die Team-Datei des Klassenbuchs) bleiben auf dem PC, getrennt pro Konto.
+
+   Ehrliche Grenzen: Ohne Anmeldeserver ist die Team-Zuordnung eine
+   Anzeige-Regel, keine Sperre - echte Sperren setzt die IT über die
+   Ordnerrechte. Wer Schreibrechte im Hub-Ordner hat, kann Dateien löschen
+   oder ersetzen; fremde Daten lesen kann er nicht.
    ===================================================================== */
 window.CDSE_KONTO=(function(){
 'use strict';
-var ITER=600000, SITZUNG='cdse_hub_sitzung', ZULETZT='cdse_hub_zuletzt', IDB_NAME='cdse-hub', IDB_STORE='kv', ORDNER_KEY='hub-ordner';
+var ITER=600000, AUTO_MS=60000;
+var SITZUNG='cdse_hub_sitzung';                                                          /* sessionStorage */
+var ZULETZT='cdse_hub_zuletzt', MARKE='cdse_hub_daten', GEPRUEFT='cdse_hub_geprueft';    /* localStorage des Hubs */
+var IDB_NAME='cdse-hub', IDB_STORE='kv', ORDNER_KEY='hub-ordner', FORMAT_DATEN='cdse-daten';
 var S=window.CDSE_HUB||{};
 var SPERRE_MS=(S.sperreNachMinuten>0?S.sperreNachMinuten:60)*60000;
 var TEAMS=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id&&t.name;});
 var ordner=null, konten=[], sitzung=null, cb={}, fehlversuche={}, letzteAktivitaet=Date.now(), gesperrt=false;
+var tresor={id:null,pub:null,priv:null};      /* Schlüssel der angemeldeten Person - nur im Arbeitsspeicher */
+var aktStatus={art:'aus'}, letzteSicherung=0;
 var $=function(id){return document.getElementById(id);};
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function ic(n){return '<svg class="ic" aria-hidden="true"><use href="#i-'+n+'"/></svg>';}
 function team(id){for(var i=0;i<TEAMS.length;i++){if(TEAMS[i].id===id){return TEAMS[i];}}return {id:id,name:id||'—',farbe:'#586277'};}
 function initialen(n){var p=String(n||'').trim().split(/\s+/).filter(Boolean);if(!p.length){return '?';}return (p[0].charAt(0)+(p.length>1?p[p.length-1].charAt(0):'')).toUpperCase();}
 function ava(k){return '<span class="ava" style="--tc:'+esc(team(k.team).farbe)+'">'+esc(initialen(k.name))+'</span>';}
+function warte(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function fehler(text){return new Error(text);}
+function text(e){return esc((e&&e.message)||e);}
+function pad(n){return (n<10?'0':'')+n;}
+function datumIso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function zeitName(){var d=new Date();return datumIso(d)+'-'+pad(d.getHours())+pad(d.getMinutes())+pad(d.getSeconds());}
 
-/* ---------- Kleiner Speicher im Browser: nur der Ordner-Zugang ---------- */
+/* ---------- Kleiner Speicher des Hubs im Browser ---------- */
 function idb(){return new Promise(function(res,rej){var r=indexedDB.open(IDB_NAME,1);r.onupgradeneeded=function(){r.result.createObjectStore(IDB_STORE);};r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};});}
 function idbGet(k){return idb().then(function(db){return new Promise(function(res){var q=db.transaction(IDB_STORE,'readonly').objectStore(IDB_STORE).get(k);q.onsuccess=function(){res(q.result);};q.onerror=function(){res(undefined);};});}).catch(function(){return undefined;});}
 function idbSet(k,v){return idb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(v,k);tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});});}
 
 /* ---------- Verschlüsselung (Web Crypto, im Browser eingebaut) ---------- */
 var te=new TextEncoder(), td=new TextDecoder();
-function b64(buf){var b=new Uint8Array(buf),s='';for(var i=0;i<b.length;i++){s+=String.fromCharCode(b[i]);}return btoa(s);}
+var RSA={name:'RSA-OAEP',hash:'SHA-256'};
+function b64(buf){var b=buf instanceof Uint8Array?buf:new Uint8Array(buf),s='';for(var i=0;i<b.length;i+=32768){s+=String.fromCharCode.apply(null,b.subarray(i,i+32768));}return btoa(s);}
 function unb64(s){var t=atob(s),b=new Uint8Array(t.length);for(var i=0;i<t.length;i++){b[i]=t.charCodeAt(i);}return b;}
 function rnd(n){var b=new Uint8Array(n);crypto.getRandomValues(b);return b;}
+function sha256(bytes){return crypto.subtle.digest('SHA-256',bytes).then(b64);}
 function ableiten(geheim,salz,iter){
   return crypto.subtle.importKey('raw',te.encode(geheim),'PBKDF2',false,['deriveKey']).then(function(basis){
     return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt:salz,iterations:iter},basis,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
@@ -608,11 +669,13 @@ function aufmachen(u,geheim){
   return ableiten(geheim,unb64(u.salz),u.iter||ITER).then(function(k){return oeffnen(k,u);})
     .then(function(roh){return new Uint8Array(roh);},function(){var e=new Error('falsch');e.falsch=true;throw e;});
 }
+function neuesPaar(){return crypto.subtle.generateKey({name:'RSA-OAEP',modulusLength:3072,publicExponent:new Uint8Array([1,0,1]),hash:'SHA-256'},true,['encrypt','decrypt']);}
+function pubVon(spki){return crypto.subtle.importKey('spki',unb64(spki),RSA,false,['encrypt']);}
 
 /* ---------- Der gemeinsame Ordner auf dem Server ---------- */
 function testOrdner(){return typeof window.__CDSE_TEST_ORDNER==='function';}
 function kryptoDa(){return !!(window.isSecureContext&&window.crypto&&crypto.subtle);}
-function unterstuetzt(){return kryptoDa()&&(testOrdner()||!!window.showDirectoryPicker);}
+function unterstuetzt(){return kryptoDa()&&!!window.indexedDB&&(testOrdner()||!!window.showDirectoryPicker);}
 function istHubOrdner(h){if(testOrdner()){return Promise.resolve(true);}return h.getFileHandle('hub.html').then(function(){return true;},function(){return false;});}
 function recht(h,fragen){
   if(!h||!h.queryPermission){return Promise.resolve('granted');}
@@ -630,30 +693,35 @@ function ordnerWaehlen(){
 function ordnerBereit(){
   var p=ordner?Promise.resolve(ordner):idbGet(ORDNER_KEY);
   return p.then(function(h){
-    if(h){ordner=h;return recht(h,true).then(function(r){if(r!=='granted'){throw new Error('kein Zugriff');}return h;});}
+    if(h){ordner=h;return recht(h,true).then(function(r){if(r!=='granted'){throw fehler('Kein Zugriff auf den Hub-Ordner');}return h;});}
     return ordnerWaehlen();
   }).then(function(){return konten.length?konten:ladeKonten();});
 }
-function kontenOrdner(){return ordner.getDirectoryHandle('konten',{create:true});}
+function unterordner(pfad){return pfad.reduce(function(p,n){return p.then(function(d){return d.getDirectoryHandle(n,{create:true});});},Promise.resolve(ordner));}
+function eintraege(dir){
+  var l=[], it=dir.values();
+  function w(){return it.next().then(function(r){if(r.done){return l;}if(r.value&&r.value.kind==='file'){l.push(r.value);}return w();});}
+  return w();
+}
+function dateiLesen(dir,name){
+  return dir.getFileHandle(name).then(function(h){return h.getFile();}).then(function(f){return f.text();})
+    .then(function(t){return t||null;},function(e){if(e&&e.name==='NotFoundError'){return null;}throw e;});
+}
+function dateiSchreiben(dir,name,inhalt){
+  return dir.getFileHandle(name,{create:true}).then(function(h){return h.createWritable();})
+    .then(function(w){return w.write(inhalt).then(function(){return w.close();});});
+}
 function ladeKonten(){
-  return kontenOrdner().then(function(dir){
-    var liste=[], it=dir.values();
-    function weiter(){return it.next().then(function(r){
-      if(r.done){return liste;}
-      var h=r.value;
-      if(h.kind!=='file'||!/\.json$/i.test(h.name)){return weiter();}
-      return h.getFile().then(function(f){return f.text();}).then(function(t){
+  return unterordner(['konten']).then(eintraege).then(function(dateien){
+    var liste=[];
+    return dateien.filter(function(h){return /\.json$/i.test(h.name);}).reduce(function(p,h){
+      return p.then(function(){return h.getFile().then(function(f){return f.text();}).then(function(t){
         try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
-      },function(){}).then(weiter);
-    });}
-    return weiter();
+      },function(){});});
+    },Promise.resolve()).then(function(){return liste;});
   }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return l;});
 }
-function schreibeKonto(k){
-  return kontenOrdner().then(function(dir){return dir.getFileHandle(k.id+'.json',{create:true});})
-    .then(function(fh){return fh.createWritable();})
-    .then(function(w){return w.write(JSON.stringify(k,null,1)).then(function(){return w.close();});});
-}
+function schreibeKonto(k){return unterordner(['konten']).then(function(dir){return dateiSchreiben(dir,k.id+'.json',JSON.stringify(k,null,1));});}
 function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){return konten[i];}}return null;}
 
 /* ---------- Konten ---------- */
@@ -661,12 +729,21 @@ function slug(n){return String(n).toLowerCase().normalize('NFD').replace(/[\u030
 function kontoErstellen(name,teamId,pw){
   var roh=rnd(32), code=neuerCode(), id;
   do{id=slug(name)+'-'+Array.prototype.map.call(rnd(3),function(x){return ALPHA.charAt(x&31).toLowerCase();}).join('');}while(kontoVon(id));
-  return Promise.all([umschlag(pw,roh),umschlag(codeNorm(code),roh),datenschluessel(roh)]).then(function(r){
-    return versiegeln(r[2],te.encode(JSON.stringify({name:name,team:teamId}))).then(function(profil){
-      var jetzt=new Date().toISOString();
-      var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,erstellt:jetzt,geaendert:jetzt,
-             schluessel:{passwort:r[0],code:r[1]},profil:profil};
-      return schreibeKonto(k).then(function(){konten.push(k);roh.fill(0);return {konto:k,code:code,dek:r[2]};});
+  return Promise.all([umschlag(pw,roh),umschlag(codeNorm(code),roh),datenschluessel(roh),neuesPaar()]).then(function(r){
+    var dek=r[2], kp=r[3];
+    return Promise.all([crypto.subtle.exportKey('spki',kp.publicKey),crypto.subtle.exportKey('pkcs8',kp.privateKey)]).then(function(ex){
+      return Promise.all([sha256(ex[0]),versiegeln(dek,new Uint8Array(ex[1]))]).then(function(q){
+        var prof={name:name,team:teamId,schluessel:q[0]};
+        return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(profil){
+          var jetzt=new Date().toISOString();
+          var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,erstellt:jetzt,geaendert:jetzt,
+                 schluessel:{passwort:r[0],code:r[1]},oeffentlich:b64(ex[0]),privat:q[1],profil:profil};
+          return schreibeKonto(k).then(function(){
+            konten.push(k);roh.fill(0);
+            return {konto:k,code:code,s:{id:id,name:name,team:teamId,konto:k,dek:dek,prof:prof,pub:kp.publicKey,priv:kp.privateKey,hash:q[0]}};
+          });
+        });
+      });
     });
   });
 }
@@ -675,7 +752,32 @@ function anmeldenMit(k,geheim,art){
     return datenschluessel(roh).then(function(dek){
       return oeffnen(dek,k.profil).then(function(p){
         var prof=JSON.parse(td.decode(p));
-        return {id:k.id,name:prof.name||k.name,team:prof.team||k.team,dek:dek,roh:roh};
+        return {id:k.id,name:prof.name||k.name,team:prof.team||k.team,konto:k,dek:dek,roh:roh,prof:prof};
+      });
+    });
+  });
+}
+/* Schlüsselpaar des Kontos öffnen. Der Fingerabdruck des öffentlichen
+   Schlüssels steckt im verschlüsselten Profil - ein untergeschobener
+   Schlüssel fällt so auf. Konten von vor dem Tresor bekommen ihr Paar hier. */
+function schluesselBereit(s){
+  var k=s.konto, dek=s.dek, prof=s.prof;
+  function profilSchreiben(){return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(pr){k.profil=pr;k.geaendert=new Date().toISOString();return schreibeKonto(k);});}
+  if(k.oeffentlich&&k.privat){
+    return sha256(unb64(k.oeffentlich)).then(function(h){
+      if(prof.schluessel&&prof.schluessel!==h){throw fehler('Deine Konto-Datei wurde verändert (der Schlüssel passt nicht). Bitte informiere die IT');}
+      return oeffnen(dek,k.privat).then(function(p8){return Promise.all([crypto.subtle.importKey('pkcs8',p8,RSA,false,['decrypt']),pubVon(k.oeffentlich)]);}).then(function(ks){
+        s.priv=ks[0];s.pub=ks[1];s.hash=h;
+        if(prof.schluessel){return s;}
+        prof.schluessel=h;return profilSchreiben().then(function(){return s;});
+      });
+    });
+  }
+  return neuesPaar().then(function(kp){
+    return Promise.all([crypto.subtle.exportKey('spki',kp.publicKey),crypto.subtle.exportKey('pkcs8',kp.privateKey)]).then(function(ex){
+      return Promise.all([sha256(ex[0]),versiegeln(dek,new Uint8Array(ex[1]))]).then(function(q){
+        k.oeffentlich=b64(ex[0]);k.privat=q[1];prof.schluessel=q[0];
+        return profilSchreiben().then(function(){s.pub=kp.publicKey;s.priv=kp.privateKey;s.hash=q[0];return s;});
       });
     });
   });
@@ -683,8 +785,9 @@ function anmeldenMit(k,geheim,art){
 function passwortSetzen(k,roh,pw){
   return umschlag(pw,roh).then(function(u){k.schluessel.passwort=u;k.geaendert=new Date().toISOString();return schreibeKonto(k);});
 }
-function teamSetzen(k,dek,teamId){
-  return versiegeln(dek,te.encode(JSON.stringify({name:k.name,team:teamId}))).then(function(profil){
+function teamSetzen(k,dek,prof,teamId){
+  prof.team=teamId;
+  return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(profil){
     k.team=teamId;k.profil=profil;k.geaendert=new Date().toISOString();return schreibeKonto(k);
   });
 }
@@ -697,29 +800,454 @@ function pwProblem(pw,name){
 /* Nach 5 falschen Versuchen 30 Sekunden Pause - bremst Raten am Bildschirm */
 function gebremst(id){var f=fehlversuche[id];return (f&&f.bis>Date.now())?Math.ceil((f.bis-Date.now())/1000):0;}
 function fehlversuch(id){var f=fehlversuche[id]||(fehlversuche[id]={n:0,bis:0});f.n++;if(f.n>=5){f.n=0;f.bis=Date.now()+30000;}}
+/* Öffentliche Schlüssel, die auf diesem PC schon einmal mit dem Passwort
+   bestätigt wurden. Nur an solche wird ohne Passwort gesichert. */
+function geprueft(){try{return JSON.parse(localStorage.getItem(GEPRUEFT)||'{}')||{};}catch(e){return {};}}
+function geprueftMerken(id,h){var g=geprueft();g[id]=h;try{localStorage.setItem(GEPRUEFT,JSON.stringify(g));}catch(e){}}
+function pubGeprueft(k){
+  var h=k&&geprueft()[k.id];
+  if(!k||!k.oeffentlich||!h){return Promise.reject(fehler('Der Schlüssel dieses Kontos ist auf diesem PC noch nicht bestätigt'));}
+  return sha256(unb64(k.oeffentlich)).then(function(x){if(x!==h){throw fehler('Der Schlüssel dieses Kontos hat sich verändert');}return pubVon(k.oeffentlich);});
+}
+
+/* =====================================================================
+   Daten-Tresor
+   ===================================================================== */
+/* Was dem Hub selbst gehört, wird weder gesichert noch gelöscht */
+function hubSchluessel(k){return k===ZULETZT||k===MARKE||k===GEPRUEFT||k.indexOf('__')===0;}
+/* Die Marke sagt, wem die App-Daten auf diesem PC gehören und welchem Stand
+   auf dem Server sie entsprechen: {konto, stand, hash, ...} */
+function marke(){try{var m=JSON.parse(localStorage.getItem(MARKE)||'null');return (m&&m.konto)?m:null;}catch(e){return null;}}
+function markeSetzen(m){try{if(m){localStorage.setItem(MARKE,JSON.stringify(m));}else{localStorage.removeItem(MARKE);}}catch(e){}}
+/* Vom Hub geleert: später gefundene App-Daten sind ohne Anmeldung entstanden */
+function geleertMerken(){markeSetzen({konto:null,geleert:Date.now()});}
+function geleertSeit(){try{var m=JSON.parse(localStorage.getItem(MARKE)||'null');return (m&&!m.konto&&m.geleert)||0;}catch(e){return 0;}}
+function lsSchluessel(){var a=[];for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k!=null&&!hubSchluessel(k)){a.push(k);}}return a.sort();}
+function datenbanken(){
+  if(!indexedDB.databases){return Promise.resolve([]);}
+  return indexedDB.databases().then(function(l){return l.map(function(d){return d&&d.name;}).filter(function(n){return n&&n!==IDB_NAME;}).sort();});
+}
+function dbVersion(name){
+  if(!indexedDB.databases){return Promise.resolve(0);}
+  return indexedDB.databases().then(function(l){for(var i=0;i<l.length;i++){if(l[i].name===name){return l[i].version||0;}}return 0;});
+}
+function dbAuf(name,version,schema){
+  return new Promise(function(res,rej){
+    var r=version?indexedDB.open(name,version):indexedDB.open(name);
+    r.onupgradeneeded=function(){if(schema){schema(r.result);}};
+    r.onsuccess=function(){var db=r.result;db.onversionchange=function(){db.close();};res(db);};   /* nie eine App blockieren */
+    r.onerror=function(){rej(r.error);};
+  });
+}
+
+/* Werte aus IndexedDB in JSON verwandeln und zurück (Datum, Dateien, Binärdaten …) */
+function istGriff(v){return typeof FileSystemHandle!=='undefined'&&v instanceof FileSystemHandle;}
+function hatGriff(v,t){
+  if(v==null||typeof v!=='object'||(t|0)>40){return false;}
+  if(istGriff(v)){return true;}
+  if(v instanceof Blob||v instanceof Date||v instanceof ArrayBuffer||ArrayBuffer.isView(v)){return false;}
+  var f=false;
+  if(v instanceof Map){v.forEach(function(x,k){f=f||hatGriff(x,(t|0)+1)||hatGriff(k,(t|0)+1);});return f;}
+  if(v instanceof Set){v.forEach(function(x){f=f||hatGriff(x,(t|0)+1);});return f;}
+  for(var k in v){if(Object.prototype.hasOwnProperty.call(v,k)&&hatGriff(v[k],(t|0)+1)){return true;}}
+  return false;
+}
+function packen(v,blobs){
+  if(v===null||typeof v==='string'||typeof v==='boolean'){return v;}
+  if(typeof v==='number'){return isFinite(v)?v:{__t:'zahl',v:String(v)};}
+  if(v===undefined){return {__t:'undef'};}
+  if(typeof v==='bigint'){return {__t:'bigint',v:String(v)};}
+  if(typeof v!=='object'){return null;}
+  if(v instanceof Date){return {__t:'datum',v:isNaN(v)?null:v.toISOString()};}
+  if(v instanceof Blob){var o={__t:'blob',typ:v.type,b:''};if(typeof File!=='undefined'&&v instanceof File){o.name=v.name;o.lm=v.lastModified;}blobs.push([o,v]);return o;}
+  if(v instanceof ArrayBuffer){return {__t:'ab',b:b64(v)};}
+  if(ArrayBuffer.isView(v)){return {__t:'ta',k:v.constructor.name,b:b64(new Uint8Array(v.buffer,v.byteOffset,v.byteLength))};}
+  if(v instanceof RegExp){return {__t:'re',s:v.source,f:v.flags};}
+  if(Array.isArray(v)){var a=new Array(v.length);for(var i=0;i<v.length;i++){a[i]=packen(v[i],blobs);}return a;}
+  if(v instanceof Map){var e=[];v.forEach(function(x,k){e.push([packen(k,blobs),packen(x,blobs)]);});return {__t:'map',v:e};}
+  if(v instanceof Set){var s=[];v.forEach(function(x){s.push(packen(x,blobs));});return {__t:'set',v:s};}
+  var r={};for(var n in v){if(Object.prototype.hasOwnProperty.call(v,n)){r[n]=packen(v[n],blobs);}}
+  return Object.prototype.hasOwnProperty.call(v,'__t')?{__t:'obj',v:r}:r;
+}
+var TA={Int8Array:Int8Array,Uint8Array:Uint8Array,Uint8ClampedArray:Uint8ClampedArray,Int16Array:Int16Array,Uint16Array:Uint16Array,
+        Int32Array:Int32Array,Uint32Array:Uint32Array,Float32Array:Float32Array,Float64Array:Float64Array,DataView:DataView};
+function auspacken(x){
+  if(x===null||typeof x!=='object'){return x;}
+  if(Array.isArray(x)){return x.map(auspacken);}
+  switch(x.__t){
+    case 'zahl':return Number(x.v);
+    case 'undef':return undefined;
+    case 'bigint':return typeof BigInt==='function'?BigInt(x.v):Number(x.v);
+    case 'datum':return new Date(x.v===null?NaN:x.v);
+    case 'blob':var b=unb64(x.b);return (x.name!=null&&typeof File!=='undefined')?new File([b],x.name,{type:x.typ,lastModified:x.lm}):new Blob([b],{type:x.typ});
+    case 'ab':return unb64(x.b).buffer;
+    case 'ta':var u=unb64(x.b),C=TA[x.k]||Uint8Array;return new C(u.buffer);
+    case 're':return new RegExp(x.s,x.f);
+    case 'map':var m=new Map();x.v.forEach(function(e){m.set(auspacken(e[0]),auspacken(e[1]));});return m;
+    case 'set':return new Set(x.v.map(auspacken));
+    case 'obj':return objAuspacken(x.v);
+  }
+  return objAuspacken(x);
+}
+function objAuspacken(o){var r={};for(var k in o){if(Object.prototype.hasOwnProperty.call(o,k)){r[k]=auspacken(o[k]);}}return r;}
+
+/* Momentaufnahme aller App-Daten dieses Browsers.
+   daten:  JSON-fähig - kommt verschlüsselt auf den Server
+   griffe: Datei-/Ordnerzugänge der Apps - bleiben auf diesem PC */
+function momentaufnahme(){
+  var daten={v:1,ls:{},idb:{}}, griffe={}, blobs=[], zeilen=0;
+  lsSchluessel().forEach(function(k){daten.ls[k]=localStorage.getItem(k);});
+  return datenbanken().then(function(namen){
+    return namen.reduce(function(p,n){return p.then(function(){return dbLesen(n,daten,griffe,blobs).then(function(z){zeilen+=z;});});},Promise.resolve());
+  }).then(function(){
+    return Promise.all(blobs.map(function(p){return p[1].arrayBuffer().then(function(ab){p[0].b=b64(ab);});}));
+  }).then(function(){
+    var json=JSON.stringify(daten);
+    return sha256(te.encode(json)).then(function(h){
+      return {daten:daten,json:json,griffe:griffe,hash:h,leer:!Object.keys(daten.ls).length&&!zeilen};
+    });
+  });
+}
+function dbLesen(name,daten,griffe,blobs){
+  return dbAuf(name).then(function(db){
+    var namen=Array.prototype.slice.call(db.objectStoreNames), eintrag={version:db.version,stores:[]};
+    daten.idb[name]=eintrag;
+    if(!namen.length){db.close();return 0;}
+    return new Promise(function(res,rej){
+      var tx=db.transaction(namen,'readonly'), roh={};
+      namen.forEach(function(sn){
+        var st=tx.objectStore(sn), info={name:sn,keyPath:st.keyPath,autoIncrement:st.autoIncrement,indexes:[]};
+        Array.prototype.forEach.call(st.indexNames,function(n){var ix=st.index(n);info.indexes.push({name:ix.name,keyPath:ix.keyPath,unique:ix.unique,multiEntry:ix.multiEntry});});
+        var r=roh[sn]={info:info,keys:[],vals:[]}, rk=st.getAllKeys(), rv=st.getAll();
+        rk.onsuccess=function(){r.keys=rk.result;};rv.onsuccess=function(){r.vals=rv.result;};
+      });
+      tx.oncomplete=function(){
+        db.close();var z=0;
+        namen.forEach(function(sn){
+          var r=roh[sn], s={name:sn,keyPath:r.info.keyPath,autoIncrement:r.info.autoIncrement,indexes:r.info.indexes,rows:[]};
+          for(var i=0;i<r.vals.length;i++){
+            if(hatGriff(r.vals[i])){
+              var g=griffe[name]||(griffe[name]={version:eintrag.version,stores:{}});
+              (g.stores[sn]||(g.stores[sn]={info:s,rows:[]})).rows.push({k:r.keys[i],v:r.vals[i]});
+            }else{s.rows.push({k:packen(r.keys[i],blobs),v:packen(r.vals[i],blobs)});z++;}
+          }
+          eintrag.stores.push(s);
+        });
+        res(z);
+      };
+      tx.onerror=tx.onabort=function(){db.close();rej(tx.error||fehler('Lesen abgebrochen'));};
+    });
+  });
+}
+/* Alle App-Daten auf diesem PC löschen (Aufbau der Datenbanken bleibt) */
+function leeren(){
+  lsSchluessel().forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+  return datenbanken().then(function(namen){
+    return Promise.all(namen.map(function(n){
+      return dbAuf(n).then(function(db){
+        var st=Array.prototype.slice.call(db.objectStoreNames);
+        if(!st.length){db.close();return;}
+        return new Promise(function(res,rej){
+          var tx=db.transaction(st,'readwrite');
+          st.forEach(function(sn){tx.objectStore(sn).clear();});
+          tx.oncomplete=function(){db.close();res();};
+          tx.onerror=tx.onabort=function(){db.close();rej(tx.error||fehler('Löschen abgebrochen'));};
+        });
+      });
+    }));
+  });
+}
+/* Gesicherte Daten einspielen. Fehlt eine Datenbank, wird sie so angelegt,
+   wie sie auf dem anderen PC war - die App findet dann alles wie gewohnt. */
+function einspielen(daten,griffe){
+  Object.keys(daten.ls||{}).forEach(function(k){localStorage.setItem(k,daten.ls[k]);});
+  var dbs={};
+  Object.keys(daten.idb||{}).forEach(function(n){
+    var d=dbs[n]={version:daten.idb[n].version,stores:{}};
+    daten.idb[n].stores.forEach(function(s){d.stores[s.name]={info:s,rows:s.rows.map(function(r){return {k:auspacken(r.k),v:auspacken(r.v)};})};});
+  });
+  Object.keys(griffe||{}).forEach(function(n){
+    var g=griffe[n], d=dbs[n]||(dbs[n]={version:g.version,stores:{}});
+    if(g.version>d.version){d.version=g.version;}
+    Object.keys(g.stores).forEach(function(sn){var x=d.stores[sn]||(d.stores[sn]={info:g.stores[sn].info,rows:[]});x.rows=x.rows.concat(g.stores[sn].rows);});
+  });
+  return Object.keys(dbs).reduce(function(p,n){return p.then(function(){return dbSchreiben(n,dbs[n]);});},Promise.resolve());
+}
+function dbSchreiben(name,d){
+  return dbVersion(name).then(function(da){
+    /* nie über die Version hinaus, die die App selbst kennt */
+    var ziel=(!da||da<d.version)?d.version:0;
+    return dbAuf(name,ziel||undefined,function(db){
+      Object.keys(d.stores).forEach(function(sn){
+        if(db.objectStoreNames.contains(sn)){return;}
+        var i=d.stores[sn].info, o={autoIncrement:!!i.autoIncrement};
+        if(i.keyPath!=null){o.keyPath=i.keyPath;}
+        var st=db.createObjectStore(sn,o);
+        (i.indexes||[]).forEach(function(x){try{st.createIndex(x.name,x.keyPath,{unique:!!x.unique,multiEntry:!!x.multiEntry});}catch(e){}});
+      });
+    });
+  }).then(function(db){
+    var st=Object.keys(d.stores).filter(function(sn){return db.objectStoreNames.contains(sn)&&d.stores[sn].rows.length;});
+    if(!st.length){db.close();return;}
+    return new Promise(function(res,rej){
+      var tx=db.transaction(st,'readwrite');
+      st.forEach(function(sn){
+        var o=tx.objectStore(sn);
+        d.stores[sn].rows.forEach(function(r){
+          try{var q=o.keyPath!=null?o.put(r.v):o.put(r.v,r.k);q.onerror=function(ev){ev.preventDefault();};}catch(e){}   /* eine kaputte Zeile hält den Rest nicht auf */
+        });
+      });
+      tx.oncomplete=function(){db.close();res();};
+      tx.onerror=tx.onabort=function(){db.close();rej(tx.error||fehler('Schreiben abgebrochen'));};
+    });
+  });
+}
+function lokaleGriffe(id){return idbGet('griffe:'+id).then(function(g){return g||{};});}
+function griffeMerken(id,g){return idbSet('griffe:'+id,g||{}).catch(function(){});}
+
+/* Verschlüsselte Datei: zufälliger AES-Schlüssel für die (gepackten) Daten,
+   der selbst mit dem öffentlichen Schlüssel des Kontos verschlossen ist */
+function gzip(bytes){
+  if(typeof CompressionStream==='undefined'){return Promise.resolve(null);}
+  return new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer().then(function(ab){return new Uint8Array(ab);});
+}
+function gunzip(bytes){return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer().then(function(ab){return new Uint8Array(ab);});}
+function tresorPacken(k,pub,snap,art,stand){
+  var roh=te.encode(snap.json);
+  return gzip(roh).then(function(z){
+    var schl=rnd(32), iv=rnd(12);
+    return crypto.subtle.importKey('raw',schl,'AES-GCM',false,['encrypt']).then(function(aes){
+      return Promise.all([crypto.subtle.encrypt(RSA,pub,schl),crypto.subtle.encrypt({name:'AES-GCM',iv:iv},aes,z||roh)]);
+    }).then(function(r){
+      schl.fill(0);
+      return JSON.stringify({format:FORMAT_DATEN,version:1,konto:k.id,art:art,stand:stand,gespeichert:new Date().toISOString(),
+                             gzip:!!z,schluessel:b64(r[0]),iv:b64(iv),ct:b64(r[1])});
+    });
+  });
+}
+function tresorOeffnen(priv,box){
+  if(!box||box.format!==FORMAT_DATEN){return Promise.reject(fehler('Die Daten-Datei hat ein unbekanntes Format'));}
+  return crypto.subtle.decrypt(RSA,priv,unb64(box.schluessel)).then(function(schl){return crypto.subtle.importKey('raw',schl,'AES-GCM',false,['decrypt']);})
+    .then(function(aes){return crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},aes,unb64(box.ct));})
+    .then(function(ab){var b=new Uint8Array(ab);return box.gzip?gunzip(b):b;})
+    .then(function(b){return JSON.parse(td.decode(b));},function(e){throw fehler('Die Daten-Datei ließ sich nicht öffnen ('+((e&&e.name)||e)+')');});
+}
+function datenOrdner(id){return unterordner(['daten',id]);}
+/* Immer nur eine Sicherung gleichzeitig - auch über mehrere Hub-Tabs */
+var kette=Promise.resolve();
+function exklusiv(fn){
+  if(navigator.locks&&navigator.locks.request){return navigator.locks.request('cdse-hub-tresor',fn);}
+  var p=kette.then(fn,fn);kette=p.catch(function(){});return p;
+}
+function kopieAblegen(k,pub,snap,art){
+  var m=marke();
+  return datenOrdner(k.id).then(function(dir){
+    return tresorPacken(k,pub,snap,art,m&&m.konto===k.id?(m.stand|0):0).then(function(txt){return dateiSchreiben(dir,art+'-'+zeitName()+'.cdse',txt);}).then(function(){return altesAufraeumen(dir);});
+  });
+}
+/* Aufbewahrt werden die Tagesstände der letzten 14 Tage und 20 Kopien */
+function altesAufraeumen(dir){
+  return eintraege(dir).then(function(l){
+    var tage=l.map(function(h){return h.name;}).filter(function(n){return /^\d{4}-\d{2}-\d{2}\.cdse$/.test(n);}).sort().reverse();
+    var kopien=l.map(function(h){return h.name;}).filter(function(n){return /^[a-z]+-\d{4}-.*\.cdse$/.test(n);})
+      .sort(function(a,b){a=a.replace(/^[a-z]+-/,'');b=b.replace(/^[a-z]+-/,'');return a<b?1:(a>b?-1:0);});
+    return Promise.all(tage.slice(14).concat(kopien.slice(20)).map(function(n){return dir.removeEntry(n).catch(function(){});}));
+  }).catch(function(){});
+}
+/* Lokale Daten der Person k auf den Server bringen - ohne Passwort.
+   Ergebnis: 'gesichert' | 'unveraendert' | 'konflikt' | 'fremd' | 'unvollstaendig' */
+function sichern(k,pub,snap){
+  return exklusiv(function(){
+    var m=marke();
+    if(!m||m.konto!==k.id){return 'fremd';}   /* die Daten auf dem PC gehören nicht (mehr) dieser Person */
+    if(m.unvollstaendig){return 'unvollstaendig';}   /* halb eingespielte Daten nie als neuen Stand sichern */
+    return (snap?Promise.resolve(snap):momentaufnahme()).then(function(sn){
+      if(m&&m.hash===sn.hash){return 'unveraendert';}
+      return datenOrdner(k.id).then(function(dir){
+        return dateiLesen(dir,'aktuell.cdse').then(function(alt){
+          var box=null;try{box=alt?JSON.parse(alt):null;}catch(e){box=null;}
+          var stand=box?(box.stand|0):0;
+          if(m.konflikt||stand>(m.stand|0)){
+            /* Inzwischen wurde anderswo weitergearbeitet: nichts überschreiben,
+               die Daten dieses PCs als Kopie ablegen */
+            var name=m.kopie||('konflikt-'+zeitName()+'.cdse');
+            return tresorPacken(k,pub,sn,'konflikt',m.stand|0).then(function(txt){return dateiSchreiben(dir,name,txt);}).then(function(){
+              markeSetzen({konto:k.id,stand:m.stand|0,hash:sn.hash,zeit:Date.now(),konflikt:true,kopie:name});
+              return 'konflikt';
+            });
+          }
+          var tag=box&&box.gespeichert?datumIso(new Date(box.gespeichert)):'';
+          var tagesstand=(tag&&tag!==datumIso(new Date()))?dateiSchreiben(dir,tag+'.cdse',alt).then(function(){return altesAufraeumen(dir);}):Promise.resolve();
+          return tagesstand.then(function(){return tresorPacken(k,pub,sn,'aktuell',stand+1);}).then(function(txt){return dateiSchreiben(dir,'aktuell.cdse',txt);}).then(function(){
+            markeSetzen({konto:k.id,stand:stand+1,hash:sn.hash,zeit:Date.now()});
+            return 'gesichert';
+          });
+        });
+      });
+    });
+  });
+}
+function ladenVomServer(k,priv,box){
+  return tresorOeffnen(priv,box).then(function(daten){
+    return lokaleGriffe(k.id).then(function(gr){
+      markeSetzen({konto:k.id,stand:box.stand|0,hash:'',zeit:Date.now(),unvollstaendig:true});
+      return leeren().then(function(){return einspielen(daten,gr);});
+    });
+  }).then(momentaufnahme).then(function(sn){markeSetzen({konto:k.id,stand:box.stand|0,hash:sn.hash,zeit:Date.now()});});
+}
+/* Daten, die (noch) keinem Konto zugeordnet werden können, bleiben auf
+   diesem PC - unsichtbar, bis ihre Besitzerin oder ihr Besitzer sie holt */
+function beiseiteLegen(snap,von){
+  return idbGet('beiseite').then(function(l){
+    l=Array.isArray(l)?l:[];
+    l.push({id:zeitName()+'-'+b64(rnd(3)).replace(/[^a-z0-9]/gi,''),zeit:Date.now(),von:von||null,json:snap.json,griffe:snap.griffe});
+    return idbSet('beiseite',l.slice(-10));   /* höchstens 10 Pakete pro PC */
+  });
+}
+/* Die Daten der letzten Person auf diesem PC für sie sichern */
+function fremdeSichern(m,snap){
+  var k=kontoVon(m.konto);
+  if(!k){return Promise.resolve('geloescht');}   /* Konto wurde gelöscht - seine Daten gehen mit */
+  return pubGeprueft(k).then(function(pub){
+    return griffeMerken(k.id,snap.griffe).then(function(){return sichern(k,pub,snap);});
+  },function(){return beiseiteLegen(snap,k.id).then(function(){return 'beiseite';});});
+}
+var APP_SPUREN=[['klassenbuch',/^(klassebuch_|anwesenheit|anw_|cdse_dossier)/,'cdse_dossier_db'],['journal',/^isa_(?!team_user$|uploader_ok$)/,'isa_dossier_db'],
+                ['screening',/^cdse-autosave/,null],['eldib',/^eldib-/,null],['toolbox',/^isa_(team_user|uploader_ok)$/,null]];
+function altbestandApps(snap){
+  var namen={}, d=snap.daten, out=[];
+  (window.CDSE_APPS||[]).forEach(function(a){if(a&&a.id){namen[a.id]=a.name;}});
+  APP_SPUREN.forEach(function(sp){
+    var ls=Object.keys(d.ls).some(function(k){return sp[1].test(k);});
+    var db=sp[2]&&d.idb[sp[2]]&&d.idb[sp[2]].stores.some(function(s){return s.rows.length>0;});
+    if(ls||db){out.push(namen[sp[0]]||sp[0]);}
+  });
+  return out;
+}
+/* Beim Anmelden: die Daten auf diesem PC in Ordnung bringen und die eigenen
+   laden. Liefert Hinweise für die Oberfläche. */
+function appsZu(){if(cb.appsSchliessen){cb.appsSchliessen();}return warte(300);}   /* offene Apps würden alte Daten zurückschreiben */
+function datenAnmelden(s,fortschritt){
+  var hinweise=[], k=s.konto, m0=marke(), p;
+  if(m0&&m0.konto!==s.id){
+    fortschritt('Sichere die Daten der letzten Person …');
+    p=appsZu().then(momentaufnahme).then(function(snap){return fremdeSichern(m0,snap);}).then(leeren).then(function(){geleertMerken();return momentaufnahme();});
+  }else{p=momentaufnahme();}
+  return p.then(function(snap){
+    if(marke()||snap.leer){return snap;}
+    return frageAltbestand(altbestandApps(snap),geleertSeit()).then(function(a){
+      fortschritt('Einen Moment …');
+      if(a==='meins'){markeSetzen({konto:s.id,stand:0,hash:'',zeit:Date.now(),altbestand:true});return snap;}
+      return appsZu().then(function(){return beiseiteLegen(snap,null);}).then(leeren).then(function(){hinweise.push('beiseite');return momentaufnahme();});
+    });
+  }).then(function(snap){
+    fortschritt('Lade deine Daten …');
+    return datenOrdner(s.id).then(function(dir){return dateiLesen(dir,'aktuell.cdse');}).then(function(t){
+      var box=null;
+      if(t){try{box=JSON.parse(t);}catch(e){throw fehler('Deine Daten-Datei ist beschädigt');}}
+      var m=marke();
+      if(!m){
+        if(box){return appsZu().then(function(){return ladenVomServer(k,s.priv,box);});}
+        markeSetzen({konto:s.id,stand:0,hash:snap.hash,zeit:Date.now()});return;
+      }
+      if(m.unvollstaendig){if(box){return appsZu().then(function(){return ladenVomServer(k,s.priv,box);});}markeSetzen({konto:s.id,stand:0,hash:'',zeit:Date.now()});return sichern(k,s.pub);}
+      var geaendert=m.hash!==snap.hash&&!snap.leer, neuer=!!box&&((box.stand|0)>(m.stand|0)||!!m.konflikt);
+      if(neuer){
+        var art=m.altbestand?'altbestand':'konflikt';
+        return (geaendert?kopieAblegen(k,s.pub,snap,art).then(function(){hinweise.push(art);}):Promise.resolve())
+          .then(appsZu).then(function(){return ladenVomServer(k,s.priv,box);});
+      }
+      if(m.konflikt||m.altbestand||m.kopie){markeSetzen({konto:s.id,stand:m.stand|0,hash:m.hash,zeit:Date.now()});}
+      if(m.hash!==snap.hash){return sichern(k,s.pub,snap);}
+    });
+  }).then(function(){return idbGet('beiseite');}).then(function(l){
+    if((Array.isArray(l)?l:[]).some(function(x){return x.von===s.id;})){hinweise.push('fuer-dich');}
+    return hinweise;
+  });
+}
+
+/* ---------- Automatisch sichern ---------- */
+function status(st){aktStatus=st;if(cb.status){try{cb.status(st);}catch(e){}}}
+function autoSichern(){
+  if(!sitzung||!tresor.pub||tresor.id!==sitzung.id||!ordner){return Promise.resolve();}
+  var k=kontoVon(sitzung.id);if(!k){return Promise.resolve();}
+  return sichern(k,tresor.pub).then(function(r){
+    if(r==='gesichert'){letzteSicherung=Date.now();status({art:'gesichert',zeit:letzteSicherung});}
+    else if(r==='konflikt'){status({art:'konflikt'});}
+    else if(r==='fremd'||r==='unvollstaendig'){status({art:'fehler',text:'Die Daten auf diesem PC passen nicht zu deinem Konto. Bitte ab- und wieder anmelden.'});}
+    else if(aktStatus.art==='fehler'){status(letzteSicherung?{art:'gesichert',zeit:letzteSicherung}:{art:'bereit'});}
+    return r;
+  },function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});
+}
+setInterval(autoSichern,AUTO_MS);
+var baldTimer=null;
+function baldSichern(){clearTimeout(baldTimer);baldTimer=setTimeout(autoSichern,8000);}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){autoSichern();}});
+function tresorWiederaufnehmen(){
+  if(!sitzung){return Promise.resolve();}
+  var k=kontoVon(sitzung.id);
+  if(!k){status({art:'fehler',text:'Dein Konto wurde im Hub-Ordner nicht gefunden.'});return Promise.resolve();}
+  return pubGeprueft(k).then(function(pub){tresor={id:k.id,pub:pub,priv:null};status({art:'bereit'});return autoSichern();},
+    function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});
+}
 
 /* ---------- Sitzung ---------- */
 function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,bis:Date.now()+SPERRE_MS}));}catch(e){}}
 function sitzungLesen(){try{var s=JSON.parse(sessionStorage.getItem(SITZUNG)||'null');return (s&&s.id&&s.bis>Date.now())?s:null;}catch(e){return null;}}
 function sitzungLoeschen(){try{sessionStorage.removeItem(SITZUNG);}catch(e){}}
 function oeffentlich(s){var t=team(s.team);return {id:s.id,name:s.name,team:s.team,teamName:t.name,teamFarbe:t.farbe};}
-function angemeldet(s){
+function angemeldet(s,hinweise){
   sitzung={id:s.id,name:s.name,team:s.team};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
+  if(s.pub){tresor={id:s.id,pub:s.pub,priv:s.priv||null};geprueftMerken(s.id,s.hash);}
   try{localStorage.setItem(ZULETZT,s.id);}catch(e){}
   if(s.roh&&s.roh.fill){s.roh.fill(0);}
   tor(false);
-  if(cb.bereit){cb.bereit(oeffentlich(sitzung));}
+  if(cb.bereit){cb.bereit(oeffentlich(sitzung),hinweise||[]);}
+  if(s.pub){letzteSicherung=0;status({art:'bereit'});}
 }
-function abmelden(){
-  sitzung=null;gesperrt=false;sitzungLoeschen();
+function ende(){
+  sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();
   if(cb.abgemeldet){cb.abgemeldet();}
+  status({art:'aus'});
   if(konten.length){zeigeKonten();}else{zeigeVerbinden(null,!!ordner);}
+}
+/* Abmelden: sichern, dann die App-Daten von diesem PC entfernen */
+function abmelden(){
+  if(!sitzung){ende();return;}
+  var s=sitzung, k;
+  tor(true);
+  karte('<h2>Abmelden …</h2><p class="sub">Deine Daten werden verschlüsselt im Hub-Ordner gesichert und danach von diesem PC entfernt.</p><div class="warten"><span class="laden dunkel" aria-hidden="true"></span>Einen Moment …</div>');
+  if(cb.appsSchliessen){cb.appsSchliessen();}
+  ordnerBereit().then(function(){
+    k=kontoVon(s.id);if(!k){throw fehler('Dein Konto wurde im Hub-Ordner nicht gefunden');}
+    return (tresor.pub&&tresor.id===s.id)?tresor.pub:pubGeprueft(k);
+  }).then(function(pub){
+    return warte(300).then(momentaufnahme).then(function(snap){
+      return griffeMerken(s.id,snap.griffe).then(function(){return sichern(k,pub,snap);});
+    });
+  }).then(function(r){
+    if(r==='fremd'){return;}   /* gehört nicht (mehr) dieser Person: nicht anfassen */
+    return leeren().then(geleertMerken);
+  }).then(ende).catch(function(e){zeigeAbmeldeFehler(e);});
+}
+function zeigeAbmeldeFehler(e){
+  karte('<h2>Nicht gesichert</h2>'+meldung('Deine Daten konnten nicht im Hub-Ordner gesichert werden: '+text(e)+'.')+
+    '<p class="sub">Bis das klappt, bleiben sie auf diesem PC. Sie werden beim nächsten Anmelden an diesem PC gesichert — egal von wem.</p>'+
+    '<button class="btn primary voll" type="button" id="g-nochmal">Nochmal versuchen</button>'+
+    '<div class="knopfreihe" style="margin-top:8px"><button class="btn" type="button" id="g-zurueck">Zurück zum Hub</button><button class="btn" type="button" id="g-trotzdem">Trotzdem abmelden</button></div>');
+  $('g-nochmal').onclick=abmelden;
+  $('g-zurueck').onclick=function(){tor(false);};
+  $('g-trotzdem').onclick=ende;
 }
 
 /* ---------- Sperre nach Inaktivität ---------- */
 function aktiv(){letzteAktivitaet=Date.now();if(sitzung&&!gesperrt){sitzungMerken(sitzung);}}
 ['pointerdown','keydown','wheel','touchstart'].forEach(function(t){document.addEventListener(t,aktiv,{passive:true,capture:true});});
-window.addEventListener('storage',aktiv);   /* eine App in einem anderen Tab speichert: es wird gearbeitet */
+/* eine App in einem anderen Tab speichert: es wird gearbeitet - und bald gesichert */
+window.addEventListener('storage',function(e){
+  if(e.key===MARKE&&sitzung){var m=marke();if(!m||m.konto!==sitzung.id){ende();return;}}   /* in einem anderen Hub-Tab ab- oder umgemeldet */
+  aktiv();if(e.key!==MARKE&&e.key!==GEPRUEFT&&e.key!==ZULETZT){baldSichern();}
+});
 setInterval(function(){
   if(!sitzung||gesperrt){return;}
   if(document.hasFocus()&&document.activeElement&&document.activeElement.tagName==='IFRAME'){aktiv();return;}
@@ -738,15 +1266,22 @@ function karte(html,breit){
   c.innerHTML='<div class="gate-brand"><span class="mark">'+ic('hub')+'</span><b>'+esc(S.titel||'CDSE Hub')+'</b></div>'+html;
   var f=c.querySelector('[autofocus]');if(f){setTimeout(function(){f.focus();},40);}
 }
-function meldung(text,art){return '<div class="meldung '+(art||'fehler')+'" role="'+(art==='info'?'status':'alert')+'">'+ic(art==='info'?'info':'warn')+'<div>'+text+'</div></div>';}
-function beschaeftigt(btn,an,text){if(!btn){return;}btn.disabled=an;if(an){btn.setAttribute('data-t',btn.innerHTML);btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(text||'Einen Moment …');}else if(btn.getAttribute('data-t')){btn.innerHTML=btn.getAttribute('data-t');}}
+function meldung(t,art){return '<div class="meldung '+(art||'fehler')+'" role="'+(art==='info'?'status':'alert')+'">'+ic(art==='info'?'info':'warn')+'<div>'+t+'</div></div>';}
+function beschaeftigt(btn,an,t){if(!btn){return;}btn.disabled=an;if(an){btn.setAttribute('data-t',btn.innerHTML);btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(t||'Einen Moment …');}else if(btn.getAttribute('data-t')){btn.innerHTML=btn.getAttribute('data-t');}}
+function knopfText(btn){return function(t){if(btn&&btn.disabled){btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(t);}};}
 function kontoKopf(k){return '<div class="konto konto-fix">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+'</small></span></div>';}
-function teamWahl(aktiv){return '<div class="teams" role="radiogroup" aria-label="Team">'+TEAMS.map(function(t){return '<label><input type="radio" name="g-team" value="'+esc(t.id)+'"'+(aktiv===t.id?' checked':'')+'>'+esc(t.name)+'</label>';}).join('')+'</div>';}
+function teamWahl(akt){return '<div class="teams" role="radiogroup" aria-label="Team">'+TEAMS.map(function(t){return '<label><input type="radio" name="g-team" value="'+esc(t.id)+'"'+(akt===t.id?' checked':'')+'>'+esc(t.name)+'</label>';}).join('')+'</div>';}
 function gewaehltesTeam(){var r=document.querySelector('input[name="g-team"]:checked');return r?r.value:'';}
 function pfadHinweis(){try{var p=decodeURIComponent(location.pathname).replace(/^\/([A-Za-z]:)/,'$1').replace(/\//g,'\\');return p.replace(/\\[^\\]*$/,'');}catch(e){return '';}}
 function formular(id,fn){var f=$(id);if(f){f.onsubmit=function(e){e.preventDefault();fn(f);};}}
+/* Anmelden abschließen: Schlüssel, Daten, fertig */
+function weiterMitDaten(s,fortschritt){
+  return schluesselBereit(s).then(function(s2){
+    return datenAnmelden(s2,fortschritt).then(function(h){angemeldet(s2,h);});
+  });
+}
 
-function zeigeVerbinden(fehler,wiederkehr){
+function zeigeVerbinden(fehlerText,wiederkehr){
   tor(true);
   if(!window.isSecureContext){karte('<h2>Bitte direkt vom Laufwerk öffnen</h2><p class="sub">Über diese Adresse erlaubt der Browser keine Verschlüsselung. Öffne den Hub per Doppelklick auf <b>hub.html</b> im Hub-Ordner (z. B. O:\\CDSE-Hub).</p>');return;}
   if(!unterstuetzt()){karte('<h2>Bitte Microsoft Edge verwenden</h2><p class="sub">Dieser Browser kann nicht auf den gemeinsamen Ordner zugreifen. Öffne den Hub in <b>Microsoft Edge</b> oder Google Chrome.</p>');return;}
@@ -754,11 +1289,11 @@ function zeigeVerbinden(fehler,wiederkehr){
   karte((wiederkehr
     ?'<h2>Willkommen zurück</h2><p class="sub">Edge fragt einmal pro Sitzung, ob der Hub auf den gemeinsamen Ordner zugreifen darf.</p>'
     :'<h2>Mit dem Hub-Ordner verbinden</h2><p class="sub">Konten und Daten liegen im gemeinsamen Ordner auf dem Server. Wähle beim ersten Mal den Ordner, in dem diese Seite liegt'+(pfad?':<br><b>'+esc(pfad)+'</b>':'.')+'</p>')+
-    (fehler?meldung(fehler):'')+
+    (fehlerText?meldung(fehlerText):'')+
     '<button class="btn primary voll" id="g-ordner" type="button">'+ic('folder')+(wiederkehr?'Zugriff erlauben':'Ordner auswählen')+'</button>');
   $('g-ordner').onclick=function(){
     var b=this;beschaeftigt(b,true,'Verbinde …');
-    var p=(wiederkehr&&ordner)?recht(ordner,true).then(function(r){if(r!=='granted'){throw new Error('abgelehnt');}return ordner;}):ordnerWaehlen();
+    var p=(wiederkehr&&ordner)?recht(ordner,true).then(function(r){if(r!=='granted'){throw fehler('abgelehnt');}return ordner;}):ordnerWaehlen();
     p.then(function(){return ladeKonten();}).then(function(){zeigeStart();}).catch(function(e){
       beschaeftigt(b,false);
       if(e&&e.name==='AbortError'){return;}
@@ -791,9 +1326,9 @@ function zeigeStart(){
   if(k){zeigeAnmelden(k);}else{zeigeKonten();}
 }
 
-function zeigeAnmelden(k,hinweis,fehler){
+function zeigeAnmelden(k,hinweis,fehlerText){
   tor(true);
-  karte(kontoKopf(k)+(hinweis?meldung(hinweis,'info'):'')+(fehler?meldung(fehler):'')+
+  karte(kontoKopf(k)+(hinweis?meldung(hinweis,'info'):'')+(fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate><div class="feld"><label for="g-pw">Passwort</label><input id="g-pw" type="password" autocomplete="off" autofocus></div>'+
     '<button class="btn primary voll" id="g-los" type="submit">Anmelden</button></form>'+
     '<div class="gate-links">'+(gesperrt?'<button type="button" id="g-ab">Abmelden</button>':'<button type="button" id="g-zurueck">← Anderes Konto</button>')+'<button type="button" id="g-vergessen">Passwort vergessen?</button></div>');
@@ -802,11 +1337,11 @@ function zeigeAnmelden(k,hinweis,fehler){
     if(warten){zeigeAnmelden(k,hinweis,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
     if(!pw){zeigeAnmelden(k,hinweis,'Bitte gib dein Passwort ein.');return;}
     beschaeftigt(b,true,'Prüfe …');
-    ordnerBereit().then(function(){var echt=kontoVon(k.id);if(!echt){throw new Error('Konto nicht gefunden');}k=echt;return anmeldenMit(k,pw,'passwort');})
-      .then(angemeldet)
+    ordnerBereit().then(function(){var echt=kontoVon(k.id);if(!echt){throw fehler('Konto nicht gefunden');}k=echt;return anmeldenMit(k,pw,'passwort');})
+      .then(function(s){return weiterMitDaten(s,knopfText(b));})
       .catch(function(e){
         if(e&&e.falsch){fehlversuch(k.id);zeigeAnmelden(k,hinweis,'Das Passwort stimmt nicht.');return;}
-        zeigeAnmelden(k,hinweis,'Anmelden ging nicht: '+esc((e&&e.message)||e)+'. Ist der Server erreichbar?');
+        zeigeAnmelden(k,hinweis,'Anmelden ging nicht: '+text(e)+'. Ist der Server erreichbar?');
       });
   });
   if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
@@ -814,11 +1349,11 @@ function zeigeAnmelden(k,hinweis,fehler){
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
 
-function zeigeErstellen(erstes,fehler,werte){
+function zeigeErstellen(erstes,fehlerText,werte){
   werte=werte||{};tor(true);
   karte('<h2>'+(erstes?'Das erste Konto anlegen':'Neues Konto erstellen')+'</h2>'+
     '<p class="sub">Das Konto wird einmal erstellt. Dein Passwort verschlüsselt deine Daten — niemand sonst kann sie lesen.</p>'+
-    (fehler?meldung(fehler):'')+
+    (fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+
     '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus></div>'+
     (TEAMS.length?'<div class="feld"><span class="label">In welchem Team arbeitest du?</span>'+teamWahl(werte.team)+'</div>':'')+
@@ -835,7 +1370,7 @@ function zeigeErstellen(erstes,fehler,werte){
     if(pw1!==pw2){zeigeErstellen(erstes,'Die beiden Passwörter sind nicht gleich.',w);return;}
     beschaeftigt($('g-los'),true,'Konto wird verschlüsselt …');
     ordnerBereit().then(function(){return kontoErstellen(name,t,pw1);}).then(zeigeCode).catch(function(e){
-      zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+esc((e&&e.message)||e)+'. Ist der Server erreichbar?',w);
+      zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+text(e)+'. Ist der Server erreichbar?',w);
     });
   });
   if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
@@ -861,13 +1396,19 @@ function zeigeCode(res){
   $('g-kopie').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(res.code):Promise.reject()).then(function(){b.innerHTML=ic('check')+'Kopiert';},function(){b.innerHTML='Bitte abschreiben';});};
   $('g-druck').onclick=function(){druckeCode(k,res.code);};
   $('g-ok').onchange=function(){$('g-weiter').disabled=!this.checked;};
-  $('g-weiter').onclick=function(){angemeldet({id:k.id,name:k.name,team:k.team,dek:res.dek});};
+  $('g-weiter').onclick=function(){
+    var b=this;beschaeftigt(b,true,'Einen Moment …');
+    datenAnmelden(res.s,knopfText(b)).then(function(h){angemeldet(res.s,h);}).catch(function(e){
+      karte('<h2>Fast fertig</h2>'+meldung('Dein Konto ist erstellt, aber die Daten ließen sich nicht einrichten: '+text(e)+'.')+'<button class="btn primary voll" type="button" id="g-weiter2">Zur Anmeldung</button>');
+      $('g-weiter2').onclick=function(){zeigeAnmelden(k);};
+    });
+  };
 }
 
-function zeigeVergessen(k,fehler){
+function zeigeVergessen(k,fehlerText){
   tor(true);
   karte(kontoKopf(k)+'<h2>Neues Passwort setzen</h2><p class="sub">Gib deinen Wiederherstellungs-Code ein. Groß-/Kleinschreibung und Bindestriche sind egal.</p>'+
-    (fehler?meldung(fehler):'')+
+    (fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+
     '<div class="feld"><label for="g-code-in">Wiederherstellungs-Code</label><input id="g-code-in" autocomplete="off" spellcheck="false" autofocus placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"></div>'+
     '<div class="feld"><label for="g-pw1">Neues Passwort</label><input id="g-pw1" type="password" autocomplete="off"><span class="hilfe">Mindestens 10 Zeichen.</span></div>'+
@@ -875,28 +1416,44 @@ function zeigeVergessen(k,fehler){
     '<button class="btn primary voll" type="submit" id="g-los">Passwort setzen und anmelden</button></form>'+
     '<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>');
   formular('g-form',function(){
-    var code=$('g-code-in').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, warten=gebremst(k.id);
+    var code=$('g-code-in').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, warten=gebremst(k.id), b=$('g-los');
     if(warten){zeigeVergessen(k,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
     if(codeNorm(code).length!==20){zeigeVergessen(k,'Der Code hat 20 Zeichen (ohne Bindestriche).');return;}
     var pr=pwProblem(pw1,k.name);if(pr){zeigeVergessen(k,pr);return;}
     if(pw1!==pw2){zeigeVergessen(k,'Die beiden Passwörter sind nicht gleich.');return;}
-    beschaeftigt($('g-los'),true,'Prüfe den Code …');
+    beschaeftigt(b,true,'Prüfe den Code …');
     ordnerBereit().then(function(){k=kontoVon(k.id)||k;return anmeldenMit(k,code,'code');}).then(function(s){
-      return passwortSetzen(k,s.roh,pw1).then(function(){return s;});
-    }).then(angemeldet).catch(function(e){
+      return passwortSetzen(k,s.roh,pw1).then(function(){return weiterMitDaten(s,knopfText(b));});
+    }).catch(function(e){
       if(e&&e.falsch){fehlversuch(k.id);zeigeVergessen(k,'Dieser Code passt nicht zu diesem Konto.');return;}
-      zeigeVergessen(k,'Das ging nicht: '+esc((e&&e.message)||e)+'.');
+      zeigeVergessen(k,'Das ging nicht: '+text(e)+'.');
     });
   });
   $('g-zurueck').onclick=function(){zeigeAnmelden(k);};
 }
 
+/* Die Frage beim ersten Anmelden an einem PC, auf dem schon App-Daten liegen */
+function frageAltbestand(apps,seit){
+  var welche=apps.length?' (<b>'+apps.map(esc).join(', ')+'</b>)':'';
+  return new Promise(function(res){
+    karte('<h2>Daten auf diesem PC</h2>'+
+      (seit
+        ?'<p class="sub">Seit der letzten Abmeldung am '+esc(new Date(seit).toLocaleDateString('de-DE'))+' wurden an diesem PC Apps <b>ohne Anmeldung</b> benutzt'+welche+'. Hast du darin gearbeitet?</p>'
+        :'<p class="sub">Auf diesem PC sind schon Daten aus den Apps gespeichert'+welche+' — aus der Zeit vor den Konten. Gehören sie dir?</p>')+
+      '<button class="btn primary voll" type="button" id="g-meins">Ja, in mein Konto übernehmen</button>'+
+      '<button class="btn voll" type="button" id="g-nicht" style="margin-top:8px">Nein, auf diesem PC beiseitelegen</button>'+
+      '<p class="hilfe" style="margin:14px 0 0">Beiseitegelegte Daten gehen nicht verloren: Wem sie gehören, holt sie sich an diesem PC über das Konto-Menü → <b>Frühere Stände</b>.</p>',true);
+    $('g-meins').onclick=function(){beschaeftigt(this,true,'Übernehme …');res('meins');};
+    $('g-nicht').onclick=function(){beschaeftigt(this,true,'Lege beiseite …');res('beiseite');};
+  });
+}
+
 /* ---------- Konto-Menü (angemeldet) ---------- */
 function dialogZu(){tor(false);}
-function zeigePasswortAendern(fehler){
+function zeigePasswortAendern(fehlerText){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
   tor(true,true);
-  karte('<h2>Passwort ändern</h2>'+(fehler?meldung(fehler):'')+
+  karte('<h2>Passwort ändern</h2>'+(fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+
     '<div class="feld"><label for="g-alt">Bisheriges Passwort</label><input id="g-alt" type="password" autocomplete="off" autofocus></div>'+
     '<div class="feld"><label for="g-pw1">Neues Passwort</label><input id="g-pw1" type="password" autocomplete="off"><span class="hilfe">Mindestens 10 Zeichen. Dein Wiederherstellungs-Code bleibt gültig.</span></div>'+
@@ -907,16 +1464,16 @@ function zeigePasswortAendern(fehler){
     var pr=pwProblem(pw1,k.name);if(pr){zeigePasswortAendern(pr);return;}
     if(pw1!==pw2){zeigePasswortAendern('Die beiden neuen Passwörter sind nicht gleich.');return;}
     beschaeftigt($('g-los'),true,'Speichere …');
-    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1);})
+    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1).then(function(){s.roh.fill(0);});})
       .then(function(){karte('<h2>Passwort geändert</h2><p class="sub">Ab jetzt meldest du dich mit dem neuen Passwort an.</p><button class="btn primary voll" type="button" id="g-fertig">Fertig</button>');$('g-fertig').onclick=dialogZu;})
-      .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+esc((e&&e.message)||e)+'.');});
+      .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.');});
   });
   $('g-abbruch').onclick=dialogZu;
 }
-function zeigeTeamAendern(fehler){
+function zeigeTeamAendern(fehlerText){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
   tor(true,true);
-  karte('<h2>Team ändern</h2><p class="sub">Das Team bestimmt, welche Apps du im Hub siehst.</p>'+(fehler?meldung(fehler):'')+
+  karte('<h2>Team ändern</h2><p class="sub">Das Team bestimmt, welche Apps du im Hub siehst. Deine Daten bleiben erhalten.</p>'+(fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate><div class="feld">'+teamWahl(sitzung.team)+'</div>'+
     '<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>'+
     '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>',true);
@@ -924,39 +1481,141 @@ function zeigeTeamAendern(fehler){
     var t=gewaehltesTeam(), alt=$('g-alt').value;
     if(!t){zeigeTeamAendern('Bitte wähle ein Team.');return;}
     beschaeftigt($('g-los'),true,'Speichere …');
-    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return teamSetzen(k,s.dek,t);})
+    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return teamSetzen(k,s.dek,s.prof,t);})
       .then(function(){sitzung.team=t;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
-      .catch(function(e){zeigeTeamAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+esc((e&&e.message)||e)+'.');});
+      .catch(function(e){zeigeTeamAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.');});
   });
   $('g-abbruch').onclick=dialogZu;
 }
 
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')){dialogZu();}}});
+/* Frühere Stände: Tagesstände und Kopien auf dem Server, beiseitegelegte Daten auf diesem PC */
+function staende(id){
+  return datenOrdner(id).then(eintraege).then(function(l){
+    return Promise.all(l.filter(function(h){return /\.cdse$/.test(h.name)&&h.name!=='aktuell.cdse';}).map(function(h){
+      return h.getFile().then(function(f){return {quelle:'server',datei:h.name,zeit:f.lastModified};});
+    }));
+  }).then(function(server){
+    return idbGet('beiseite').then(function(b){
+      var pc=(Array.isArray(b)?b:[]).filter(function(x){return !x.von||x.von===id;}).map(function(x){return {quelle:'pc',id:x.id,zeit:x.zeit,von:x.von};});
+      return pc.concat(server.sort(function(a,b){
+        var ta=/^\d{4}-/.test(a.datei)?a.datei.slice(0,10)+'T23:59':new Date(a.zeit).toISOString(), tb=/^\d{4}-/.test(b.datei)?b.datei.slice(0,10)+'T23:59':new Date(b.zeit).toISOString();
+        return ta<tb?1:(ta>tb?-1:0);
+      }));
+    });
+  });
+}
+function standText(e){
+  var d=new Date(e.zeit), wann=d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})+', '+pad(d.getHours())+':'+pad(d.getMinutes())+' Uhr';
+  if(e.quelle==='pc'){return e.von?{t:'Deine Daten, an diesem PC beiseitegelegt',w:wann}:{t:'Daten ohne Konto, an diesem PC beiseitegelegt',w:wann};}
+  var m=/^(\d{4})-(\d{2})-(\d{2})\.cdse$/.exec(e.datei);
+  if(m){var tag=new Date(+m[1],+m[2]-1,+m[3]);return {t:'Stand vom '+tag.toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),w:'am Ende des Tages'};}
+  if(/^konflikt-/.test(e.datei)){return {t:'Kopie: Änderungen von einem anderen PC',w:wann};}
+  if(/^altbestand-/.test(e.datei)){return {t:'Kopie: alte Daten eines PCs',w:wann};}
+  if(/^vorher-/.test(e.datei)){return {t:'Kopie: dein Stand vor dem Zurückholen',w:wann};}
+  return {t:e.datei,w:wann};
+}
+function zurueckholen(k,e,priv){
+  if(cb.appsSchliessen){cb.appsSchliessen();}
+  return warte(300).then(momentaufnahme).then(function(snap){
+    return sichern(k,tresor.pub,snap).then(function(){return kopieAblegen(k,tresor.pub,snap,'vorher');});
+  }).then(function(){
+    if(e.quelle==='server'){
+      return datenOrdner(k.id).then(function(dir){return dateiLesen(dir,e.datei);}).then(function(t){
+        if(!t){throw fehler('Diese Datei gibt es nicht mehr');}return tresorOeffnen(priv,JSON.parse(t));
+      }).then(function(d){return {daten:d,griffe:null};});
+    }
+    return idbGet('beiseite').then(function(l){
+      var x=(Array.isArray(l)?l:[]).filter(function(y){return y.id===e.id;})[0];
+      if(!x){throw fehler('Diese Daten gibt es nicht mehr');}
+      return {daten:JSON.parse(x.json),griffe:x.griffe};
+    });
+  }).then(function(q){
+    return lokaleGriffe(k.id).then(function(gr){
+      var m=marke();
+      markeSetzen({konto:k.id,stand:m&&m.konto===k.id?(m.stand|0):0,hash:'',zeit:Date.now(),unvollstaendig:true});
+      return leeren().then(function(){return einspielen(q.daten,(q.griffe&&Object.keys(q.griffe).length)?q.griffe:gr);});
+    });
+  }).then(function(){
+    var m=marke();delete m.unvollstaendig;markeSetzen(m);
+    return sichern(k,tresor.pub);
+  }).then(function(){
+    if(e.quelle==='pc'){return idbGet('beiseite').then(function(l){return idbSet('beiseite',(Array.isArray(l)?l:[]).filter(function(y){return y.id!==e.id;}));});}
+  });
+}
+function zeigeStaende(fehlerText){
+  tor(true,true);
+  karte('<h2>Frühere Stände</h2><div class="warten"><span class="laden dunkel" aria-hidden="true"></span>Suche …</div>',true);
+  var k;
+  ordnerBereit().then(function(){k=kontoVon(sitzung.id);if(!tresor.pub&&k){return pubGeprueft(k).then(function(p){tresor={id:k.id,pub:p,priv:null};});}})
+  .then(function(){return staende(sitzung.id);}).then(function(liste){
+    var pw=!tresor.priv&&liste.some(function(e){return e.quelle==='server';});
+    karte('<h2>Frühere Stände</h2><p class="sub">Der Hub bewahrt die Stände der letzten 14 Tage auf. Holst du einen zurück, wird dein jetziger Stand vorher als Kopie gesichert.</p>'+
+      (fehlerText?meldung(fehlerText):'')+
+      (liste.length
+        ?'<form id="g-form" novalidate><div class="staende" role="radiogroup" aria-label="Stand">'+liste.map(function(e,i){var x=standText(e);return '<label><input type="radio" name="g-stand" value="'+i+'"'+(i===0?' checked':'')+'><span><b>'+esc(x.t)+'</b><small>'+esc(x.w)+'</small></span></label>';}).join('')+'</div>'+
+          (pw?'<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>':'')+
+          '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Zurückholen</button></div></form>'
+        :'<p class="sub">Noch keine früheren Stände. Der erste entsteht, sobald du an einem neuen Tag weiterarbeitest.</p><button class="btn voll" type="button" id="g-abbruch">Schließen</button>'),true);
+    $('g-abbruch').onclick=dialogZu;
+    formular('g-form',function(){
+      var r=document.querySelector('input[name="g-stand"]:checked');if(!r){return;}
+      var e=liste[+r.value], b=$('g-los');
+      beschaeftigt(b,true,'Hole zurück …');
+      var privP=(tresor.priv||e.quelle!=='server')?Promise.resolve(tresor.priv)
+        :anmeldenMit(k,$('g-alt').value,'passwort').then(schluesselBereit).then(function(s){s.roh.fill(0);tresor.priv=s.priv;return s.priv;});
+      privP.then(function(priv){return zurueckholen(k,e,priv);}).then(function(){
+        karte('<h2>Stand zurückgeholt</h2><p class="sub">Die Apps zeigen jetzt den gewählten Stand. Dein vorheriger Stand liegt als Kopie unter „Frühere Stände“.</p><button class="btn primary voll" type="button" id="g-fertig">Fertig</button>');
+        $('g-fertig').onclick=function(){dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}};
+        status({art:'gesichert',zeit:Date.now()});
+      }).catch(function(x){zeigeStaende(x&&x.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(x)+'.');});
+    });
+  }).catch(function(x){
+    karte('<h2>Frühere Stände</h2>'+meldung('Die Stände ließen sich nicht lesen: '+text(x)+'.')+'<button class="btn voll" type="button" id="g-abbruch">Schließen</button>',true);
+    $('g-abbruch').onclick=dialogZu;
+  });
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')&&!g.querySelector('button:disabled')){dialogZu();}}});
 
 /* ---------- Start ---------- */
 function start(callbacks){
   cb=callbacks||{};
   var gemerkt=sitzungLesen();
   tor(true);karte('<p class="sub" style="margin:0">Einen Moment …</p>');
+  if(!unterstuetzt()){zeigeVerbinden(null,false);return;}
   idbGet(ORDNER_KEY).then(function(h){
     if(h){ordner=h;}
-    if(gemerkt){  /* Tab neu geladen: angemeldet bleiben */
-      angemeldet(gemerkt);
-      if(ordner){recht(ordner,false).then(function(r){if(r==='granted'){ladeKonten().catch(function(){});}});}
-      return;
+    if(gemerkt){  /* Tab neu geladen: angemeldet bleiben; Sichern braucht den Ordner */
+      angemeldet(gemerkt,[]);
+      if(!ordner){status({art:'zugriff'});return;}
+      return recht(ordner,false).then(function(r){
+        if(r!=='granted'){status({art:'zugriff'});return;}
+        return ladeKonten().then(tresorWiederaufnehmen);
+      });
     }
     if(!ordner){zeigeVerbinden(null,false);return;}
     return recht(ordner,false).then(function(r){
       if(r==='granted'){return ladeKonten().then(zeigeStart);}
       zeigeVerbinden(null,true);
     });
-  }).catch(function(){zeigeVerbinden(null,false);});
+  }).catch(function(){if(sitzung){status({art:'zugriff'});}else{zeigeVerbinden(null,false);}});
 }
 
 return {
   start:start,
   abmelden:abmelden,
-  menue:function(aktion){if(!sitzung){return;}if(aktion==='passwort'){zeigePasswortAendern();}else if(aktion==='team'){zeigeTeamAendern();}else if(aktion==='abmelden'){abmelden();}},
+  menue:function(aktion){
+    if(!sitzung){return;}
+    if(aktion==='passwort'){zeigePasswortAendern();}
+    else if(aktion==='team'){zeigeTeamAendern();}
+    else if(aktion==='staende'){zeigeStaende();}
+    else if(aktion==='abmelden'){abmelden();}
+  },
+  /* Knopf "Zugriff erlauben" in der Seitenleiste (braucht einen Klick) */
+  zugriff:function(){return ordnerBereit().then(tresorWiederaufnehmen).catch(function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});},
+  sichernJetzt:autoSichern,
+  /* Ordner für gemeinsame Team-Dateien (z. B. das Klassenbuch) anlegen */
+  teamOrdner:function(name){if(!ordner||!name){return Promise.resolve(false);}return unterordner(['teams',name]).then(function(){return true;},function(){return false;});},
+  pfad:pfadHinweis,
   team:team,
   initialen:initialen
 };
@@ -1058,7 +1717,7 @@ function openInTab(a){
   var frisch=false;
   try{frisch=(w.location.href==='about:blank');}catch(e){frisch=false;}
   if(frisch){w.location.href=new URL(a.datei,location.href).href;}
-  tabs[a.id]=w;
+  tabs[a.id]=w;tabMerken(a.id,true);
   try{w.focus();}catch(e){}
 }
 
@@ -1133,6 +1792,7 @@ function tile(a){
     '<h3>'+esc(a.name)+'</h3>'+
     '<p>'+esc(a.beschreibung)+'</p>'+
     (info?'<div class="tile-info">'+svg('cal')+esc(info)+'</div>':'')+
+    (a.id==='klassenbuch'&&ICH&&TEAMS_AKTIV?'<div class="tile-datei" title="Gemeinsame Team-Datei: Eine Person erstellt sie im Klassenbuch einmal in diesem Ordner, alle anderen öffnen sie dort.">'+svg('folder')+'<span>Team-Datei im Hub-Ordner: <code>teams\\'+esc(ICH.teamName)+'\\klassebuch-team.json</code></span></div>':'')+
     (a.hinweis?'<div class="tile-note">'+esc(a.hinweis)+'</div>':'')+
     '<div class="tile-foot">'+(stand?'<span class="tile-stand" title="Stand der eingebundenen Version">Stand '+stand+'</span>':'')+'<span class="grow"></span>'+alt+open+'</div></article>';
 }
@@ -1148,6 +1808,7 @@ function renderHome(){
   });
   var h='';
   problems.forEach(function(p){h+='<div class="problem '+p.level+'">'+svg(p.level==='error'?'warn':'info')+'<div>'+p.text+'</div></div>';});
+  if(!q&&!activeCat){HINWEISE.forEach(function(t,i){h+='<div class="problem info" role="status">'+svg('info')+'<div>'+t+'</div><button type="button" class="problem-x" data-hinweis="'+i+'" aria-label="Hinweis schließen">'+svg('x')+'</button></div>';});}
   var tb='';
   if(cats.length>1){
     tb+='<div class="catbar" role="group" aria-label="Nach Bereich filtern">'+
@@ -1289,6 +1950,8 @@ window.addEventListener('hashchange',route);
 
 /* ---------- Bedienung ---------- */
 document.addEventListener('click',function(e){
+  var hx=e.target.closest&&e.target.closest('[data-hinweis]');
+  if(hx){HINWEISE.splice(+hx.getAttribute('data-hinweis'),1);renderHome();return;}
   var chipEl=e.target.closest&&e.target.closest('.catchip');
   if(chipEl){activeCat=chipEl.getAttribute('data-cat')||'';renderHome();return;}
   var an=e.target.closest&&e.target.closest('[data-anchor]');
@@ -1319,14 +1982,15 @@ window.addEventListener('storage',function(){if(ICH&&view==='home'){renderHome()
 /* ---------- Konto: Anzeige, Menue, Abmelden ---------- */
 function renderMe(){
   var el=$('me');
-  if(!ICH){el.hidden=true;el.innerHTML='';return;}
-  el.hidden=false;
+  if(!ICH){el.hidden=true;el.innerHTML='';el.classList.remove('warn');return;}
+  el.hidden=false;el.classList.toggle('warn',statusWarn);
   el.innerHTML='<span class="ava" id="me-ava" role="button" tabindex="0" aria-label="Konto-Menü" title="'+esc(ICH.name)+(TEAMS_AKTIV?' · '+esc(ICH.teamName):'')+'" style="--tc:'+esc(ICH.teamFarbe)+'">'+esc(window.CDSE_KONTO.initialen(ICH.name))+'</span>'+
     '<span class="me-t"><b>'+esc(ICH.name)+'</b><small>'+(TEAMS_AKTIV?esc(ICH.teamName):'Angemeldet')+'</small></span>'+
     '<button class="me-btn" id="me-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="me-menu" aria-label="Konto-Menü">'+svg('more')+'</button>'+
     '<div class="menu" id="me-menu" role="menu" hidden>'+
       '<button type="button" role="menuitem" data-konto="passwort">'+svg('key')+'Passwort ändern</button>'+
       (TEAMS_AKTIV?'<button type="button" role="menuitem" data-konto="team">'+svg('users')+'Team ändern</button>':'')+
+      '<button type="button" role="menuitem" data-konto="staende">'+svg('history')+'Frühere Stände</button>'+
       '<button type="button" role="menuitem" data-konto="abmelden">'+svg('logout')+'Abmelden</button>'+
     '</div>';
 }
@@ -1347,22 +2011,62 @@ $('me').addEventListener('keydown',function(e){
   if(e.target.id==='me-ava'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();var m=$('me-menu');menuAuf(!!(m&&m.hidden));}
 });
 /* Apps schliessen, die man (nicht mehr) sehen darf - beim Abmelden alle */
+var TABS_KEY='cdse_hub_tabs';
+function tabsGemerkt(){try{return JSON.parse(sessionStorage.getItem(TABS_KEY)||'[]')||[];}catch(e){return [];}}
+function tabMerken(id,an){var l=tabsGemerkt().filter(function(x){return x!==id;});if(an){l.push(id);}try{sessionStorage.setItem(TABS_KEY,JSON.stringify(l));}catch(e){}}
 function aufraeumen(alle){
   for(var f in frames){if(alle||!byId(f)){var fr=frames[f];if(fr&&fr.parentNode){fr.parentNode.removeChild(fr);}delete frames[f];delete missing[f];}}
-  for(var t in tabs){if(alle||!byId(t)){try{if(tabs[t]&&!tabs[t].closed){tabs[t].close();}}catch(e){}delete tabs[t];}}
+  for(var t in tabs){if(alle||!byId(t)){try{if(tabs[t]&&!tabs[t].closed){tabs[t].close();}}catch(e){}delete tabs[t];tabMerken(t,false);}}
+  /* Tabs, die vor einem Neuladen des Hubs geöffnet wurden: über ihren Namen finden */
+  tabsGemerkt().forEach(function(id){
+    if(!alle&&byId(id)){return;}
+    var w=null;try{w=window.open('','cdse-'+id);}catch(e){}
+    try{if(w){w.close();}}catch(e){}
+    tabMerken(id,false);
+  });
   if(current&&(alle||!byId(current))){current=null;}
 }
+/* Hinweise nach dem Anmelden (z. B. beiseitegelegte Daten) */
+var HINWEISE=[];
+var HINWEIS_TEXT={
+  'beiseite':'Die älteren App-Daten auf diesem PC wurden <b>beiseitegelegt</b>. Wem sie gehören, holt sie sich an diesem PC über das Konto-Menü → <b>Frühere Stände</b>.',
+  'altbestand':'Die alten App-Daten dieses PCs wurden <b>nicht geladen</b>, weil du schon Daten im Hub-Ordner hast. Sie liegen als Kopie unter Konto-Menü → <b>Frühere Stände</b>.',
+  'konflikt':'Auf diesem PC gab es noch ungesicherte Änderungen, während du an einem anderen PC weitergearbeitet hast. Geladen wurde der neuere Stand. Die Änderungen von diesem PC liegen als Kopie unter Konto-Menü → <b>Frühere Stände</b>.',
+  'fuer-dich':'An diesem PC liegen noch <b>beiseitegelegte Daten von dir</b>. Du findest sie unter Konto-Menü → <b>Frühere Stände</b>.'
+};
+/* Sicherungs-Stand unten in der Seitenleiste */
+var statusWarn=false;
+function datenStatus(st){
+  var f=document.querySelector('.foot'), t=$('foot-t'), h, warn=false;
+  switch(st&&st.art){
+    case 'bereit':h='Deine Daten werden verschlüsselt im Hub-Ordner gesichert.';break;
+    case 'gesichert':h='Gesichert um '+new Date(st.zeit||Date.now()).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr — verschlüsselt im Hub-Ordner.';break;
+    case 'fehler':warn=true;h='<b>Nicht gesichert:</b> '+esc(st.text||'Hub-Ordner nicht erreichbar')+'. Nächster Versuch in einer Minute.';break;
+    case 'konflikt':warn=true;h='<b>Achtung:</b> Dein Konto wurde inzwischen an einem anderen PC gesichert. Deine Änderungen hier liegen als Kopie bereit. Bitte ab- und wieder anmelden.';break;
+    case 'zugriff':warn=true;h='Zum Sichern braucht der Hub wieder Zugriff auf den Hub-Ordner.<br><button type="button" class="foot-btn" id="foot-zugriff">Zugriff erlauben</button>';break;
+    default:h='Konten und Daten liegen verschlüsselt im Hub-Ordner. Keine Cloud.';
+  }
+  t.innerHTML=h;f.classList.toggle('warn',warn);statusWarn=warn;
+  var me=$('me');if(me){me.classList.toggle('warn',warn);var av=$('me-ava');if(av){av.title=ICH?ICH.name+(warn?' — '+t.textContent:''):'';}}
+  var b=$('foot-zugriff');if(b){b.onclick=function(){b.disabled=true;window.CDSE_KONTO.zugriff();};}
+}
+function teamOrdnerAnlegen(){if(ICH&&TEAMS_AKTIV&&byId('klassenbuch')){window.CDSE_KONTO.teamOrdner(ICH.teamName);}}
 
 window.CDSE_KONTO.start({
-  bereit:function(ich){ICH=ich;renderMe();route();},
+  bereit:function(ich,hinweise){
+    ICH=ich;HINWEISE=(hinweise||[]).map(function(h){return HINWEIS_TEXT[h];}).filter(Boolean);
+    renderMe();route();teamOrdnerAnlegen();
+  },
+  status:datenStatus,
+  appsSchliessen:function(){aufraeumen(true);if(view==='app'){show('home');}},
   abgemeldet:function(){
-    menuAuf(false);aufraeumen(true);ICH=null;renderMe();activeCat='';$('q').value='';
+    menuAuf(false);aufraeumen(true);ICH=null;HINWEISE=[];renderMe();activeCat='';$('q').value='';
     try{history.replaceState(null,'','#/');}catch(e){}
     show('home');$('home-body').innerHTML='';$('hello').textContent='';$('lead').textContent='';
     document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;
   },
   geaendert:function(ich){
-    ICH=ich;renderMe();aufraeumen(false);
+    ICH=ich;renderMe();aufraeumen(false);teamOrdnerAnlegen();
     if(view==='app'&&!current){location.hash='#/';}
     route();
   }
