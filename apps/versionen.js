@@ -16,10 +16,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "eldib": {
     "stand": "2026-09-24",
-    "commit": "8846bc0",
+    "commit": "3195623",
     "quelle": "Eldib-Pleni-re · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Itembank und DS-Text-Motor als eigene Datei für den CDSE Hub",
-    "groesse": 4528799
+    "aenderung": "App neu gebaut (Design, CDSE-Förderideen, Hinweise in der Itembank)",
+    "groesse": 4650723
   },
   "toolbox": {
     "stand": "2026-07-13",
