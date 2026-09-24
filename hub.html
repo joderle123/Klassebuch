@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CDSE Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Design-Tokens: identisch mit dem Klassenbuch (kb-*) ===== */
+:root{
+  --kb-accent:#4f5bd5; --kb-accent-dark:#3e49b0; --kb-accent-light:#7c86e6;
+  --kb-accent-50:#eef0fc; --kb-accent-100:#dde1f8;
+  --kb-bg:#eef1f7; --kb-surface:#ffffff; --kb-border:#e3e7f1;
+  --kb-text:#1d2433; --kb-muted:#5c6478;
+  --side-w:248px; --rail-w:70px; --bar-h:50px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--kb-text);background:var(--kb-bg);-webkit-font-smoothing:antialiased;}
+svg{flex:0 0 auto;}
+a{color:inherit;}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-size:.92em;}
+code{background:var(--kb-accent-50);border-radius:5px;padding:1px 5px;}
+
+.hub{display:flex;height:100vh;height:100dvh;}
+
+/* ===== Seitenleiste (wie kb-side) ===== */
+.side{flex:0 0 var(--side-w);width:var(--side-w);background:var(--kb-surface);border-right:1px solid var(--kb-border);display:flex;flex-direction:column;padding:16px 12px;overflow-y:auto;overflow-x:hidden;z-index:40;transition:width .18s ease,flex-basis .18s ease,padding .18s ease;}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 6px 14px;text-decoration:none;}
+.logo{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,var(--kb-accent),var(--kb-accent-dark));color:#fff;box-shadow:0 4px 12px rgba(79,91,213,.28);}
+.brandtext{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+.brandtext b{font-weight:800;font-size:16px;letter-spacing:-.02em;white-space:nowrap;}
+.brandtext small{font-size:11px;color:var(--kb-muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nav{display:flex;flex-direction:column;gap:2px;}
+.navlabel{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--kb-muted);padding:14px 11px 5px;white-space:nowrap;}
+.lnk{position:relative;display:flex;align-items:center;gap:10px;padding:7px 10px;border:none;background:none;border-radius:10px;cursor:pointer;font:inherit;font-size:14px;font-weight:600;color:var(--kb-text);text-align:left;width:100%;text-decoration:none;transition:background .13s,color .13s,box-shadow .13s;}
+.lnk:hover{background:var(--kb-accent-50);}
+.lnk.active{background:var(--kb-accent);color:#fff;box-shadow:0 4px 12px rgba(79,91,213,.3);}
+.lnk .ic{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-size:16px;}
+.lnk .app-ic{background:color-mix(in srgb,var(--ac,#4f5bd5) 13%,#fff);}
+.lnk.active .ic{background:rgba(255,255,255,.2);}
+.lnk-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.lnk.planned{color:var(--kb-muted);}
+.lnk.planned .app-ic{filter:grayscale(.5);opacity:.75;}
+.lnk.planned.active{color:#fff;}
+.lnk.planned.active .app-ic{filter:none;opacity:1;}
+.soon{font-size:10px;font-weight:800;color:#9a6700;background:#fff6e3;border-radius:20px;padding:1px 6px;margin-left:4px;vertical-align:1px;}
+.ext{color:var(--kb-muted);font-size:12px;margin-left:2px;}
+.live{position:absolute;right:10px;top:50%;margin-top:-4px;width:8px;height:8px;border-radius:50%;background:#12b886;box-shadow:0 0 0 2px var(--kb-surface);}
+.lnk.active .live{box-shadow:0 0 0 2px var(--kb-accent);}
+.side-bottom{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;gap:2px;}
+.lnk.add .ic{border:1.5px dashed var(--kb-border);color:var(--kb-muted);}
+.collapse{display:flex;align-items:center;justify-content:center;gap:8px;height:34px;margin-top:4px;border:1px solid var(--kb-border);background:var(--kb-surface);border-radius:9px;color:var(--kb-muted);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;}
+.collapse:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.foot{font-size:11px;color:var(--kb-muted);padding:12px 8px 2px;line-height:1.45;}
+
+/* Rail: eingeklappt, nur Symbole (automatisch, wenn eine App offen ist) */
+.hub.rail .side{flex-basis:var(--rail-w);width:var(--rail-w);padding:16px 10px;}
+.hub.rail .brandtext,.hub.rail .navlabel,.hub.rail .lnk-t,.hub.rail .foot,.hub.rail .collapse-t{display:none;}
+.hub.rail .brand{justify-content:center;padding:4px 0 14px;}
+.hub.rail .lnk{justify-content:center;padding:7px 0;}
+.hub.rail .navlabel-sep{display:block;}
+.navlabel-sep{display:none;height:1px;background:var(--kb-border);margin:10px 8px;}
+.hub.rail .live{right:5px;top:6px;margin-top:0;}
+
+/* ===== Bühne ===== */
+.stage{flex:1;min-width:0;display:flex;flex-direction:column;position:relative;}
+.view{display:none;flex:1;min-height:0;}
+.view.on{display:flex;flex-direction:column;}
+.scroll{overflow-y:auto;}
+.pad{padding:30px 34px 72px;max-width:1180px;width:100%;}
+
+/* ----- Übersicht ----- */
+.hero{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:0 0 24px;padding:26px 28px;border-radius:20px;background:linear-gradient(120deg,var(--kb-accent) 0%,var(--kb-accent-dark) 100%);color:#fff;overflow:hidden;box-shadow:0 10px 30px rgba(79,91,213,.22);}
+.hero::after{content:'';position:absolute;right:-60px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),rgba(255,255,255,0) 70%);pointer-events:none;}
+.hero-mark{position:absolute;right:26px;top:18px;opacity:.13;pointer-events:none;}
+.hero h1{margin:0;font-size:28px;letter-spacing:-.025em;font-weight:800;}
+.hero p{margin:6px 0 0;color:rgba(255,255,255,.85);font-size:14.5px;font-weight:500;}
+.search{position:relative;z-index:1;display:flex;align-items:center;gap:9px;background:#fff;border-radius:12px;padding:0 12px;height:46px;width:min(360px,100%);box-shadow:0 6px 18px rgba(20,25,60,.18);color:var(--kb-muted);}
+.search:focus-within{box-shadow:0 0 0 4px rgba(255,255,255,.35),0 6px 18px rgba(20,25,60,.18);}
+.search input{border:0;outline:0;font:inherit;font-size:14.5px;flex:1;background:transparent;color:var(--kb-text);min-width:0;}
+.kbd{font-size:11px;font-weight:700;color:var(--kb-muted);border:1px solid var(--kb-border);border-radius:6px;padding:1px 7px;background:var(--kb-bg);}
+
+.recent{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 26px;}
+.recent-l{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--kb-muted);margin-right:4px;}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 7px;border-radius:30px;background:var(--kb-surface);border:1px solid var(--kb-border);text-decoration:none;font-size:13.5px;font-weight:700;transition:.13s;}
+.pill:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.pill .pi{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;background:color-mix(in srgb,var(--ac) 14%,#fff);}
+
+/* Bereichs-Filter über dem Raster */
+.catbar{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px;}
+.catchip{font:inherit;font-size:13px;font-weight:700;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);border-radius:30px;padding:7px 14px;cursor:pointer;transition:.13s;}
+.catchip .n{font-size:11px;font-weight:800;color:var(--kb-muted);margin-left:4px;}
+.catchip:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.catchip.on{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;box-shadow:0 4px 12px rgba(79,91,213,.22);}
+.catchip.on .n{color:rgba(255,255,255,.75);}
+.tile-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:color-mix(in srgb,var(--ac) 65%,var(--kb-muted));margin-top:6px;}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.tile{position:relative;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:16px;padding:20px 18px 16px;display:flex;flex-direction:column;gap:8px;cursor:pointer;box-shadow:0 1px 2px rgba(20,25,45,.04);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;overflow:hidden;}
+.tile::before{content:'';position:absolute;left:0;right:0;top:0;height:4px;background:var(--ac);}
+.tile:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(20,25,45,.10);border-color:color-mix(in srgb,var(--ac) 35%,var(--kb-border));}
+.tile:focus-within{border-color:color-mix(in srgb,var(--ac) 55%,var(--kb-border));}
+.tile-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.tile-ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:color-mix(in srgb,var(--ac) 13%,#fff);}
+.tile h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.015em;}
+.tile p{margin:0;color:var(--kb-muted);font-size:13.5px;line-height:1.5;flex:1;}
+.tile-info{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:12.5px;font-weight:700;color:color-mix(in srgb,var(--ac) 78%,#000);background:color-mix(in srgb,var(--ac) 9%,#fff);border-radius:8px;padding:5px 9px;}
+.tile-note{font-size:12.5px;line-height:1.45;color:#7a5410;background:#fff6e3;border:1px solid #f3dcaa;border-radius:9px;padding:7px 10px;}
+.tile-actions{display:flex;gap:8px;margin-top:6px;}
+.chip{font-size:11px;font-weight:800;border-radius:20px;padding:3px 9px;letter-spacing:.02em;white-space:nowrap;}
+.chip.plan{background:#fff6e3;color:#9a6700;}
+.chip.web{background:var(--kb-accent-50);color:var(--kb-accent);}
+.t-geplant .tile-ic{filter:grayscale(.4);opacity:.8;}
+.t-geplant::before{background:repeating-linear-gradient(90deg,var(--ac) 0 10px,transparent 10px 16px);}
+.tile.add{border:2px dashed #cfd5e4;background:transparent;box-shadow:none;align-items:center;justify-content:center;text-align:center;min-height:196px;color:var(--kb-muted);text-decoration:none;}
+.tile.add::before{display:none;}
+.tile.add:hover{border-color:var(--kb-accent);color:var(--kb-accent);background:var(--kb-accent-50);transform:none;box-shadow:none;}
+.add-plus{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--kb-surface);border:1px solid var(--kb-border);margin-bottom:6px;}
+.tile.add b{font-size:15.5px;color:var(--kb-text);}
+.tile.add:hover b{color:var(--kb-accent);}
+.tile.add span{font-size:13px;}
+.empty{padding:36px;text-align:center;color:var(--kb-muted);border:2px dashed var(--kb-border);border-radius:16px;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-size:13.5px;font-weight:700;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);padding:8px 15px;border-radius:9px;cursor:pointer;text-decoration:none;transition:.13s;}
+.btn:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.btn.primary{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;box-shadow:0 4px 12px rgba(79,91,213,.22);}
+.btn.primary:hover{background:var(--kb-accent-dark);color:#fff;}
+.btn.icon{padding:8px 11px;color:var(--kb-muted);}
+
+.problem{display:flex;gap:12px;align-items:flex-start;padding:13px 16px;border-radius:12px;margin:0 0 12px;font-size:14px;line-height:1.5;}
+.problem.error{background:#fdecea;border:1px solid #f3c6bd;color:#7d2a1a;}
+.problem.warn{background:#fff6e3;border:1px solid #f3dcaa;color:#6b4a0c;}
+.problem .mono{display:inline-block;margin-top:4px;font-size:12px;opacity:.8;}
+
+/* ----- App-Ansicht ----- */
+.bar{height:var(--bar-h);flex:0 0 var(--bar-h);display:flex;align-items:center;gap:10px;padding:0 10px 0 12px;background:var(--kb-surface);border-bottom:1px solid var(--kb-border);}
+.bar-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-size:17px;background:color-mix(in srgb,var(--ac,#4f5bd5) 14%,#fff);}
+.bar-name{font-weight:800;font-size:15px;letter-spacing:-.01em;white-space:nowrap;}
+.bar-file{font-size:12px;color:var(--kb-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;}
+.grow{flex:1;}
+.bar-hint{font-size:12px;color:var(--kb-muted);white-space:nowrap;}
+.bar-hint a{color:var(--kb-accent);font-weight:700;text-decoration:none;}
+.tb{width:36px;height:36px;display:grid;place-items:center;border-radius:9px;border:1px solid transparent;background:none;color:var(--kb-muted);cursor:pointer;text-decoration:none;}
+.tb:hover{background:var(--kb-accent-50);color:var(--kb-accent);}
+.frames{position:relative;flex:1;min-height:0;background:var(--kb-bg);}
+.appframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:#fff;}
+.appframe.on{display:block;}
+.missing{position:absolute;inset:0;display:grid;place-items:center;padding:24px;background:var(--kb-bg);}
+.missing-card{max-width:520px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:16px;padding:24px;box-shadow:0 10px 30px rgba(20,25,45,.08);}
+.missing-card h3{margin:0 0 8px;}
+.missing-card p{margin:0 0 14px;color:var(--kb-muted);line-height:1.55;}
+
+/* ----- Anleitung ----- */
+.guide{max-width:900px;}
+.guide h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;}
+.guide .lead{color:var(--kb-muted);font-size:15px;line-height:1.6;margin:0 0 22px;}
+.guide h2{font-size:18px;letter-spacing:-.01em;margin:34px 0 12px;}
+.guide p,.guide li{line-height:1.65;font-size:14.5px;}
+.banner{display:flex;gap:14px;align-items:center;padding:14px 18px;border-radius:14px;margin:0 0 22px;background:color-mix(in srgb,var(--ac) 10%,#fff);border:1px solid color-mix(in srgb,var(--ac) 30%,#fff);}
+.banner .b-ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:23px;background:#fff;}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:0 0 8px;}
+.step{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:16px 16px 14px;}
+.step-n{width:30px;height:30px;border-radius:50%;background:var(--kb-accent);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;margin-bottom:10px;}
+.step-t{display:block;margin-bottom:4px;font-size:15px;font-weight:800;}
+.step span{color:var(--kb-muted);font-size:13.5px;line-height:1.55;}
+.way{background:var(--kb-surface);border:1px solid var(--kb-border);border-left:5px solid var(--ac);border-radius:14px;padding:16px 20px;margin:0 0 12px;}
+.way h3{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:16px;}
+.way-tag{font-size:11px;font-weight:800;border-radius:20px;padding:2px 9px;background:color-mix(in srgb,var(--ac) 12%,#fff);color:color-mix(in srgb,var(--ac) 75%,#000);}
+.way p{margin:6px 0;}
+.way ol{margin:8px 0;padding-left:20px;}
+pre.code{background:#121831;color:#e3e7f7;border-radius:12px;padding:14px 16px;overflow:auto;font-size:12.5px;line-height:1.6;margin:10px 0;}
+pre.code .c{color:#8b93b8;}
+pre.code .k{color:#ffcf7a;}
+pre.code .s{color:#9be3b4;}
+.callout{display:flex;gap:11px;padding:12px 15px;border-radius:12px;background:#fff6e3;border:1px solid #f3dcaa;color:#6b4a0c;font-size:14px;line-height:1.55;margin:12px 0;}
+.callout.info{background:var(--kb-accent-50);border-color:var(--kb-accent-100);color:#2c347a;}
+.fields{width:100%;border-collapse:collapse;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:12px;overflow:hidden;font-size:14px;}
+.fields th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-muted);background:var(--kb-accent-50);padding:9px 12px;}
+.fields td{padding:9px 12px;border-top:1px solid var(--kb-border);vertical-align:top;line-height:1.5;}
+.fields td:first-child{white-space:nowrap;}
+.table-wrap{overflow-x:auto;}
+.faq details{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:12px;padding:12px 16px;margin:0 0 8px;}
+.faq summary{cursor:pointer;font-weight:700;font-size:14.5px;}
+.faq details p{margin:8px 0 2px;color:var(--kb-muted);}
+
+/* ===== Mobil ===== */
+.topbar{display:none;}
+.scrim{display:none;}
+@media (max-width:700px){
+  .topbar{display:flex;align-items:center;gap:10px;height:56px;padding:0 12px;background:var(--kb-surface);border-bottom:1px solid var(--kb-border);position:fixed;top:0;left:0;right:0;z-index:30;}
+  .topbar b{font-weight:800;font-size:16px;letter-spacing:-.02em;}
+  .burger{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--kb-border);border-radius:10px;background:var(--kb-surface);color:var(--kb-text);cursor:pointer;}
+  .hub{padding-top:56px;}
+  .side{position:fixed;left:0;top:0;bottom:0;width:280px;flex-basis:auto;transform:translateX(-104%);transition:transform .2s ease;box-shadow:0 10px 40px rgba(0,0,0,.18);}
+  .hub.drawer .side{transform:none;}
+  .hub.drawer .scrim{display:block;position:fixed;inset:0;background:rgba(15,20,40,.35);z-index:35;}
+  .collapse{display:none;}
+  .pad{padding:18px 16px 56px;}
+  .hero{padding:20px;}
+  .hero h1{font-size:23px;}
+  .bar-file,.bar-hint{display:none;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+
+<!-- App-Verzeichnis laden. Tippfehler darin abfangen, damit der Hub
+     eine verständliche Meldung zeigen kann statt leer zu bleiben. -->
+<script>
+window.addEventListener('error',function(e){
+  if(e&&e.filename&&/hub-apps\.js(\?|#|$)/.test(e.filename)){window.__hubAppsError={message:e.message,line:e.lineno};}
+},true);
+</script>
+<script src="hub-apps.js" onerror="window.__hubAppsMissing=true"></script>
+</head>
+<body>
+<div class="hub" id="hub">
+
+  <header class="topbar">
+    <button class="burger" id="burger" aria-label="Menü öffnen">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <b id="top-title">CDSE Hub</b>
+  </header>
+  <div class="scrim" id="scrim"></div>
+
+  <aside class="side" id="side" aria-label="Navigation">
+    <a class="brand" href="#/" title="Zur Übersicht">
+      <span class="logo" aria-hidden="true">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="3.6" r="1.7"/><circle cx="12" cy="20.4" r="1.7"/><circle cx="3.6" cy="12" r="1.7"/><circle cx="20.4" cy="12" r="1.7"/><path d="M12 5.3v3.5M12 15.2v3.5M5.3 12h3.5M15.2 12h3.5"/></svg>
+      </span>
+      <span class="brandtext"><b id="brand-title">CDSE Hub</b><small id="brand-sub">Gemeinsame Anlaufstelle</small></span>
+    </a>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-bottom">
+      <a class="lnk add" href="#/hinzufuegen" data-route="guide" title="App hinzufügen">
+        <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        <span class="lnk-t">App hinzufügen</span>
+      </a>
+      <button class="collapse" id="collapse" type="button" aria-label="Menü einklappen">
+        <span id="collapse-i">«</span><span class="collapse-t" id="collapse-t">Einklappen</span>
+      </button>
+      <div class="foot">Alle Daten bleiben lokal auf diesem Gerät.<br>Kein Server, keine Cloud.</div>
+    </div>
+  </aside>
+
+  <main class="stage" id="stage">
+
+    <!-- Übersicht -->
+    <section class="view scroll" id="v-home" aria-label="Übersicht">
+      <div class="pad">
+        <div class="hero">
+          <svg class="hero-mark" width="150" height="150" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><circle cx="12" cy="3.6" r="1.7"/><circle cx="12" cy="20.4" r="1.7"/><circle cx="3.6" cy="12" r="1.7"/><circle cx="20.4" cy="12" r="1.7"/><path d="M12 5.3v3.5M12 15.2v3.5M5.3 12h3.5M15.2 12h3.5"/></svg>
+          <div style="position:relative;z-index:1;">
+            <h1 id="hello">Guten Tag</h1>
+            <p id="today"></p>
+          </div>
+          <label class="search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="q" type="search" placeholder="App suchen …" autocomplete="off" aria-label="App suchen">
+            <span class="kbd">/</span>
+          </label>
+        </div>
+        <div id="home-body"></div>
+      </div>
+    </section>
+
+    <!-- Geöffnete App -->
+    <section class="view" id="v-app" aria-label="App">
+      <div class="bar" id="bar">
+        <a class="tb" href="#/" title="Zur Übersicht" aria-label="Zur Übersicht">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        </a>
+        <span class="bar-ic" id="bar-ic"></span>
+        <span class="bar-name" id="bar-name"></span>
+        <span class="bar-file mono" id="bar-file"></span>
+        <span class="grow"></span>
+        <span class="bar-hint" id="bar-hint">Bleibt leer oder zeigt einen Fehler? <a href="#/hinzufuegen" data-anchor="probleme">Hilfe</a></span>
+        <button class="tb" id="bar-reload" type="button" title="Neu laden" aria-label="Neu laden">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+        </button>
+        <a class="tb" id="bar-tab" href="#" target="_blank" rel="noopener" title="In neuem Tab öffnen" aria-label="In neuem Tab öffnen">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 13v6a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h6"/></svg>
+        </a>
+        <button class="tb" id="bar-close" type="button" title="App schließen" aria-label="App schließen">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="frames" id="frames"></div>
+    </section>
+
+    <!-- Anleitung -->
+    <section class="view scroll" id="v-guide" aria-label="App hinzufügen">
+      <div class="pad guide">
+        <div id="guide-banner"></div>
+        <h1>App hinzufügen</h1>
+        <p class="lead">Jede App bleibt eine eigene Datei — der Hub zeigt sie nur an. An der App selbst musst du <b>nichts</b> ändern, und ihre Daten bleiben dieselben, ob du sie im Hub oder direkt öffnest.</p>
+
+        <div class="steps">
+          <div class="step"><div class="step-n">1</div><span class="step-t">Datei ablegen</span><span>Die App-Datei in denselben Ordner wie <code>hub.html</code> legen — übersichtlicher in einen Unterordner <code>apps/</code>.</span></div>
+          <div class="step"><div class="step-n">2</div><span class="step-t">Eintragen</span><span><code>hub-apps.js</code> öffnen, den Vorlage-Block kopieren und Name, Icon, Farbe, Bereich und Pfad anpassen.</span></div>
+          <div class="step"><div class="step-n">3</div><span class="step-t">Neu laden</span><span><code>hub.html</code> mit <b>Strg + F5</b> neu laden. Die App erscheint als Kachel und im Menü.</span></div>
+        </div>
+
+        <h2>Die Vorlage</h2>
+        <p>So sieht ein Eintrag in <code>hub-apps.js</code> aus. Kopiere ihn innerhalb der eckigen Klammern <code>[ … ]</code> unter die bestehenden Apps:</p>
+<pre class="code"><span class="k">{</span>
+  id: <span class="s">'meine-app'</span>,
+  name: <span class="s">'Meine App'</span>,
+  beschreibung: <span class="s">'Wofür die App gut ist — ein Satz.'</span>,
+  icon: <span class="s">'🧩'</span>,
+  farbe: <span class="s">'#c0562d'</span>,
+  bereich: <span class="s">'Team &amp; Organisation'</span>,
+  datei: <span class="s">'apps/meine-app.html'</span>
+<span class="k">}</span>,   <span class="c">← dieses Komma nicht vergessen</span></pre>
+        <div class="callout"><span>⚠️</span><div><b>Häufigster Fehler:</b> das Komma nach <code>}</code> oder ein fehlendes Anführungszeichen. Der Hub merkt das und zeigt dir oben in der Übersicht eine Warnung, statt einfach leer zu bleiben.</div></div>
+
+        <h2>Welche Art von App hast du?</h2>
+
+        <div class="way" style="--ac:#4f5bd5">
+          <h3>A · Eine einzelne HTML-Datei <span class="way-tag">funktioniert sofort</span></h3>
+          <p>Wie das Klassenbuch oder SAVOIR: eine <code>.html</code>-Datei, die man per Doppelklick öffnet. Einfach ablegen und mit <code>datei: 'apps/name.html'</code> eintragen — fertig.</p>
+        </div>
+
+        <div class="way" style="--ac:#0f9d8a">
+          <h3>B · Eine React- oder Vite-App <span class="way-tag">einmal umbauen</span></h3>
+          <p>Wie PaedPath: ein Projekt mit <code>package.json</code>, das mit <code>npm run build</code> gebaut wird. Ein normaler Build erzeugt einen Ordner mit ausgelagerten Programmteilen — und <b>die blockiert Edge bei lokalen Dateien</b>, die App bleibt dann weiß. Die Lösung ist, sie als <b>eine einzige Datei</b> zu bauen:</p>
+          <ol>
+            <li>Im App-Ordner einmal ausführen: <code>npm install -D vite-plugin-singlefile</code></li>
+            <li>In <code>vite.config.ts</code> das Plugin ergänzen (siehe unten).</li>
+            <li><code>npm run build</code> ausführen.</li>
+            <li>Die Datei <code>dist/index.html</code> umbenennen (z. B. in <code>paedpath.html</code>), in den Ordner <code>apps/</code> legen und wie bei Weg A eintragen.</li>
+          </ol>
+<pre class="code"><span class="k">import</span> { defineConfig } <span class="k">from</span> <span class="s">'vite'</span>
+<span class="k">import</span> react <span class="k">from</span> <span class="s">'@vitejs/plugin-react'</span>
+<span class="k">import</span> tailwindcss <span class="k">from</span> <span class="s">'@tailwindcss/vite'</span>
+<span class="k">import</span> { viteSingleFile } <span class="k">from</span> <span class="s">'vite-plugin-singlefile'</span>   <span class="c">// neu</span>
+
+<span class="k">export default</span> defineConfig({
+  plugins: [react(), tailwindcss(), viteSingleFile()],   <span class="c">// viteSingleFile() neu</span>
+  base: <span class="s">'./'</span>,
+})</pre>
+          <div class="callout info"><span>ℹ️</span><div>PaedPath nutzt bereits einen <code>HashRouter</code> — das passt, die Seitenwechsel funktionieren auch im Hub. Achtung: Im Repository liegt nur ein Teil des PaedPath-Quellcodes. Bauen musst du dort, wo das vollständige Projekt liegt.</div></div>
+        </div>
+
+        <div class="way" style="--ac:#2f6fb0">
+          <h3>C · Eine Webseite oder ein Online-Dienst <span class="way-tag">öffnet im neuen Tab</span></h3>
+          <p>Zum Beispiel ein Schulportal, Teams oder SharePoint. Statt <code>datei</code> trägst du <code>link: 'https://…'</code> ein. Solche Seiten öffnen sich in einem neuen Tab, weil die meisten Webseiten das Einbetten in andere Seiten verbieten.</p>
+        </div>
+
+        <h2>Alle Felder im Überblick</h2>
+        <div class="table-wrap">
+        <table class="fields">
+          <thead><tr><th>Feld</th><th>Bedeutung</th><th>Beispiel</th></tr></thead>
+          <tbody>
+            <tr><td><code>id</code></td><td>Kurzer Name ohne Leerzeichen, einmalig. Wird für Links genutzt.</td><td><code>'savoir'</code></td></tr>
+            <tr><td><code>name</code></td><td>Anzeigename auf Kachel und im Menü.</td><td><code>'SAVOIR'</code></td></tr>
+            <tr><td><code>beschreibung</code></td><td>Ein Satz: wofür ist die App gut?</td><td><code>'Klinisches Wissen …'</code></td></tr>
+            <tr><td><code>icon</code></td><td>Ein Emoji. Unter Windows: <b>Windows-Taste + Punkt</b>.</td><td><code>'📚'</code></td></tr>
+            <tr><td><code>farbe</code></td><td>Akzentfarbe der Kachel, als <code>#rrggbb</code>.</td><td><code>'#b8892d'</code></td></tr>
+            <tr><td><code>bereich</code></td><td>Gruppe im Menü. Apps mit gleichem Bereich stehen zusammen.</td><td><code>'Wissen &amp; Materialien'</code></td></tr>
+            <tr><td><code>datei</code></td><td>Pfad zur App-Datei, von <code>hub.html</code> aus gesehen.</td><td><code>'apps/savoir.html'</code></td></tr>
+            <tr><td><code>link</code></td><td>Statt <code>datei</code>: Adresse einer Webseite.</td><td><code>'https://…'</code></td></tr>
+            <tr><td><code>hinweis</code></td><td>Optional. Kurzer Hinweis auf der Kachel.</td><td><code>'Wird noch gebaut'</code></td></tr>
+            <tr><td><code>stichworte</code></td><td>Optional. Weitere Suchbegriffe für das Suchfeld.</td><td><code>'diagnose methode'</code></td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>Eine App ohne <code>datei</code> und ohne <code>link</code> erscheint als <b>geplant</b> — praktisch, um schon einen Platz für eine App zu reservieren, die noch nicht fertig ist.</p>
+
+        <h2 id="probleme">Wenn etwas nicht klappt</h2>
+        <div class="faq">
+          <details><summary>Die Übersicht zeigt „App-Verzeichnis fehlerhaft"</summary><p>In <code>hub-apps.js</code> ist ein Tippfehler — fast immer ein fehlendes Komma nach <code>}</code> oder ein fehlendes Anführungszeichen <code>'</code>. Die genaue Stelle zeigt dir Edge: <b>F12</b> drücken, Reiter <b>Konsole</b>. Dort steht rot etwa <code>hub-apps.js:63</code> — der Fehler steckt in dieser Zeile oder direkt davor. Vergleich deinen Eintrag dann Zeichen für Zeichen mit der Vorlage.</p></details>
+          <details><summary>Die App bleibt weiß</summary><p>Fast immer eine React/Vite-App mit normalem Build. Baue sie als Einzeldatei (Weg B).</p></details>
+          <details><summary>Edge zeigt „Datei nicht gefunden"</summary><p>Der Pfad in <code>datei</code> stimmt nicht. Prüfe Ordnername, Dateiname und Groß-/Kleinschreibung. Der Pfad gilt von <code>hub.html</code> aus: liegt die App in <code>apps/</code>, lautet er <code>'apps/name.html'</code>.</p></details>
+          <details><summary>Sind meine Daten im Hub andere als sonst?</summary><p>Nein. Getestet: Eine App sieht im Hub genau dieselben Daten wie direkt geöffnet — solange du im selben Browser auf demselben Gerät arbeitest. Die Daten liegen im Browser, nicht in der Datei. Deshalb siehst du sie auf einem anderen PC nicht automatisch.</p></details>
+          <details><summary>Eine Webseite lässt sich nicht einbetten</summary><p>Viele Webseiten verbieten das aus Sicherheitsgründen. Trag sie mit <code>link</code> statt <code>datei</code> ein — dann öffnet sie sich in einem neuen Tab.</p></details>
+        </div>
+
+        <h2>So legst du alles ab</h2>
+<pre class="code"><span class="c">Ein gemeinsamer Ordner, z. B. auf dem Team-Laufwerk:</span>
+
+  hub.html          <span class="c">← diese Seite: öffnen und als Favorit speichern</span>
+  hub-apps.js       <span class="c">← das App-Verzeichnis</span>
+  index.html        <span class="c">← Klassenbuch</span>
+  SAVOIR.html
+  apps/
+    paedpath.html
+    …</pre>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<noscript><div style="padding:30px;font-family:sans-serif;">Der CDSE Hub braucht JavaScript. Bitte in Edge oder Chrome öffnen.</div></noscript>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id);};
+var hub=$('hub');
+var LS_RECENT='cdse_hub_recent';
+var IS_FILE=location.protocol==='file:';
+var HEX=/^#[0-9a-f]{3}([0-9a-f]{3})?$/i;
+var ICON_HOME='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5.5 9v11h13V9"/></svg>';
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function lsGet(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+/* ---------- App-Verzeichnis einlesen und prüfen ---------- */
+var problems=[], apps=[];
+(function(){
+  var err=window.__hubAppsError;
+  if(window.__hubAppsMissing){
+    problems.push({level:'error',text:'Die Datei <b>hub-apps.js</b> wurde nicht gefunden. Sie muss im selben Ordner liegen wie <b>hub.html</b>.'});
+    return;
+  }
+  var raw=window.CDSE_APPS;
+  if(!Array.isArray(raw)){
+    /* Bei lokalen Dateien verschleiert der Browser Zeile und Meldung
+       (getestet) - dann auf F12 verweisen, dort steht die Zeile. */
+    var hasLine=!!(err&&err.line);
+    problems.push({level:'error',text:'<b>App-Verzeichnis fehlerhaft:</b> In <b>hub-apps.js</b> steckt ein Tippfehler'+
+      (hasLine?' — in <b>Zeile '+err.line+'</b> oder direkt davor':'')+
+      '. Fast immer fehlt ein Komma nach <code>}</code> oder ein Anführungszeichen <code>\'</code>.'+
+      (hasLine?'':'<br>Die genaue Zeile zeigt dir Edge: <b>F12</b> drücken, Reiter <b>Konsole</b> — dort steht rot z. B. <code>hub-apps.js:63</code>. Der Fehler steckt in dieser Zeile oder direkt davor.')+
+      (err&&err.message&&err.message!=='Script error.'?'<br><span class="mono">'+esc(err.message)+'</span>':'')});
+    return;
+  }
+  var seen={};
+  raw.forEach(function(a,i){
+    if(!a||typeof a!=='object'){return;}
+    var id=String(a.id||'').trim();
+    if(!id||!a.name){problems.push({level:'warn',text:'Eintrag Nr. '+(i+1)+' in hub-apps.js hat keine <code>id</code> oder keinen <code>name</code> und wird übersprungen.'});return;}
+    if(seen[id]){problems.push({level:'warn',text:'Die id <code>'+esc(id)+'</code> steht zweimal in hub-apps.js — nur der erste Eintrag wird angezeigt.'});return;}
+    seen[id]=true;
+    apps.push({
+      id:id,name:String(a.name),beschreibung:String(a.beschreibung||''),
+      icon:String(a.icon||'🧩'),farbe:HEX.test(String(a.farbe||''))?String(a.farbe):'#4f5bd5',
+      bereich:String(a.bereich||'Weitere Apps'),
+      datei:a.datei?String(a.datei):null,link:a.link?String(a.link):null,
+      hinweis:String(a.hinweis||''),stichworte:String(a.stichworte||'')
+    });
+  });
+})();
+var S=window.CDSE_HUB||{};
+if(S.titel){$('brand-title').textContent=S.titel;$('top-title').textContent=S.titel;document.title=S.titel;}
+if(S.untertitel){$('brand-sub').textContent=S.untertitel;}
+var HUB_TITLE=S.titel||'CDSE Hub';
+
+function kind(a){return a.datei?'datei':(a.link?'link':'geplant');}
+function byId(id){for(var i=0;i<apps.length;i++){if(apps[i].id===id){return apps[i];}}return null;}
+function groups(list){var order=[],map={};list.forEach(function(a){if(!map[a.bereich]){map[a.bereich]=[];order.push(a.bereich);}map[a.bereich].push(a);});return order.map(function(k){return {name:k,apps:map[k]};});}
+function appHref(a){return kind(a)==='link'?a.link:'#/app/'+encodeURIComponent(a.id);}
+function extAttrs(a){return kind(a)==='link'?' target="_blank" rel="noopener"':'';}
+
+/* Kleine Live-Info auf der Kachel. Die Apps teilen sich den Browser-
+   Speicher mit dem Hub, deshalb kann er z. B. das Schuljahr lesen. */
+function liveInfo(a){
+  if(a.id!=='klassenbuch'){return '';}
+  try{
+    var y=JSON.parse(localStorage.getItem('klassebuch_years_v1')||'null');
+    var r=JSON.parse(localStorage.getItem('klassebuch_roster_v1')||'null');
+    var yk=(y&&y.active)||'', n=0;
+    if(Array.isArray(r)){r.forEach(function(s){
+      if(!s){return;}
+      var e=(yk&&s.years)?s.years[yk]:null;
+      if(yk&&s.years?(e&&e.status!=='ausgetreten'):(s.active!==false)){n++;}
+    });}
+    if(!yk&&!n){return '';}
+    return (yk?'📅 Schuljahr '+yk:'')+(yk&&n?' · ':'')+(n?n+' Schüler':'');
+  }catch(e){return '';}
+}
+
+/* ---------- Zustand ---------- */
+var view='home', current=null, frames={}, missing={}, sideOverride=null;
+
+/* ---------- Seitenleiste ---------- */
+function renderSide(){
+  var h='<a class="lnk" href="#/" data-route="home" title="Übersicht"><span class="ic">'+ICON_HOME+'</span><span class="lnk-t">Übersicht</span></a>';
+  groups(apps).forEach(function(g){
+    h+='<div class="navlabel">'+esc(g.name)+'</div><div class="navlabel-sep"></div>';
+    g.apps.forEach(function(a){
+      var k=kind(a);
+      h+='<a class="lnk'+(k==='geplant'?' planned':'')+'" href="'+esc(appHref(a))+'"'+extAttrs(a)+' data-app="'+esc(a.id)+'" title="'+esc(a.name)+(k==='geplant'?' (geplant)':'')+'" style="--ac:'+a.farbe+'">'+
+        '<span class="ic app-ic">'+esc(a.icon)+'</span>'+
+        '<span class="lnk-t">'+esc(a.name)+(k==='link'?'<span class="ext"> ↗</span>':'')+(k==='geplant'?'<span class="soon">geplant</span>':'')+'</span>'+
+        (frames[a.id]?'<span class="live" title="Im Hintergrund geöffnet"></span>':'')+'</a>';
+    });
+  });
+  $('nav').innerHTML=h;
+  var links=document.querySelectorAll('.lnk');
+  for(var i=0;i<links.length;i++){
+    var l=links[i], ap=l.getAttribute('data-app'), rt=l.getAttribute('data-route');
+    /* Immer genau EIN aktiver Eintrag: in der Anleitung zu einer geplanten
+       App ist das die App, sonst "App hinzufügen". */
+    l.classList.toggle('active',(view==='app'&&ap&&ap===current)||(view==='home'&&rt==='home')||(view==='guide'&&(current?(ap&&ap===current):rt==='guide')));
+  }
+}
+
+/* ---------- Übersicht ---------- */
+function tile(a){
+  var k=kind(a), info=liveInfo(a);
+  var chip=k==='link'?'<span class="chip web">Web ↗</span>':(k==='geplant'?'<span class="chip plan">geplant</span>':'');
+  var primary=k==='datei'?'<a class="btn primary" href="'+esc(appHref(a))+'">Öffnen</a>':
+             (k==='link'?'<a class="btn primary" href="'+esc(a.link)+'" target="_blank" rel="noopener">Öffnen ↗</a>':
+             '<a class="btn" href="'+esc(appHref(a))+'">So fügst du sie hinzu</a>');
+  var second=k==='datei'?'<a class="btn icon" href="'+esc(a.datei)+'" target="_blank" rel="noopener" title="In neuem Tab öffnen" aria-label="'+esc(a.name)+' in neuem Tab öffnen">↗</a>':'';
+  return '<article class="tile t-'+k+'" style="--ac:'+a.farbe+'" data-href="'+esc(appHref(a))+'" data-ext="'+(k==='link'?'1':'')+'">'+
+    '<div class="tile-top"><div class="tile-ic" aria-hidden="true">'+esc(a.icon)+'</div>'+chip+'</div>'+
+    '<div class="tile-eyebrow">'+esc(a.bereich)+'</div>'+
+    '<h3>'+esc(a.name)+'</h3>'+
+    '<p>'+esc(a.beschreibung)+'</p>'+
+    (info?'<div class="tile-info">'+esc(info)+'</div>':'')+
+    (a.hinweis?'<div class="tile-note">'+esc(a.hinweis)+'</div>':'')+
+    '<div class="tile-actions">'+primary+second+'</div></article>';
+}
+/* Alle Apps in EINEM Raster (statt einer Zeile pro Bereich - bei wenigen
+   Apps je Bereich blieb sonst die halbe Seite leer). Bereiche als Filter. */
+var activeCat='';
+var ADD_TILE='<a class="tile add" href="#/hinzufuegen">'+
+  '<span class="add-plus"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>'+
+  '<b>App hinzufügen</b><span>In 3 Schritten — Anleitung öffnen</span></a>';
+function renderHome(){
+  var q=($('q').value||'').trim().toLowerCase();
+  var cats=groups(apps);
+  if(activeCat&&!cats.some(function(g){return g.name===activeCat;})){activeCat='';}
+  var list=apps.filter(function(a){
+    return (!activeCat||a.bereich===activeCat)&&(!q||(a.name+' '+a.beschreibung+' '+a.bereich+' '+a.stichworte).toLowerCase().indexOf(q)>=0);
+  });
+  var h='';
+  problems.forEach(function(p){h+='<div class="problem '+p.level+'"><span>'+(p.level==='error'?'⚠️':'ℹ️')+'</span><div>'+p.text+'</div></div>';});
+  if(!q&&!activeCat){
+    var rec=lsGet(LS_RECENT,[]).map(byId).filter(function(a){return a&&kind(a)==='datei';});
+    if(rec.length){
+      h+='<div class="recent"><span class="recent-l">Zuletzt geöffnet</span>'+rec.map(function(a){
+        return '<a class="pill" href="'+esc(appHref(a))+'" style="--ac:'+a.farbe+'"><span class="pi">'+esc(a.icon)+'</span>'+esc(a.name)+'</a>';
+      }).join('')+'</div>';
+    }
+  }
+  if(cats.length>1){
+    h+='<div class="catbar" role="group" aria-label="Nach Bereich filtern">'+
+      '<button type="button" class="catchip'+(activeCat?'':' on')+'" data-cat="" aria-pressed="'+(!activeCat)+'">Alle<span class="n">'+apps.length+'</span></button>'+
+      cats.map(function(g){var on=activeCat===g.name;return '<button type="button" class="catchip'+(on?' on':'')+'" data-cat="'+esc(g.name)+'" aria-pressed="'+on+'">'+esc(g.name)+'<span class="n">'+g.apps.length+'</span></button>';}).join('')+
+      '</div>';
+  }
+  var ordered=[];groups(list).forEach(function(g){ordered=ordered.concat(g.apps);});
+  var addT=(!q&&!activeCat)?ADD_TILE:'';
+  if(ordered.length||addT){h+='<div class="tiles">'+ordered.map(tile).join('')+addT+'</div>';}
+  if(!ordered.length&&(q||activeCat)){h+='<div class="empty">Keine App passt'+(q?' zu „'+esc(q)+'“':'')+(activeCat?' im Bereich „'+esc(activeCat)+'“':'')+'.</div>';}
+  $('home-body').innerHTML=h;
+}
+function renderHello(){
+  var hr=new Date().getHours();
+  var g=hr<11?'Guten Morgen':(hr<18?'Guten Tag':'Guten Abend');
+  var who='';try{who=localStorage.getItem('anwesenheit_user')||'';}catch(e){}
+  $('hello').textContent=g+(who?', '+who:'');
+  var d=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  var ready=apps.filter(function(a){return kind(a)!=='geplant';}).length;
+  $('today').textContent=d+' · '+ready+(ready===1?' App':' Apps')+' an einem Ort';
+}
+
+/* ---------- App öffnen ---------- */
+function pushRecent(id){var r=lsGet(LS_RECENT,[]).filter(function(x){return x!==id;});r.unshift(id);lsSet(LS_RECENT,r.slice(0,5));}
+function openApp(id){
+  var a=byId(id);
+  if(!a){location.hash='#/';return;}
+  var k=kind(a);
+  if(k==='link'){window.open(a.link,'_blank','noopener');location.hash='#/';return;}
+  if(k==='geplant'){current=id;showGuide(a);return;}
+  current=id;
+  var fr=frames[id];
+  if(!fr){
+    fr=document.createElement('iframe');
+    fr.className='appframe';fr.title=a.name;
+    fr.setAttribute('allow','clipboard-read; clipboard-write; fullscreen');
+    fr.src=a.datei;
+    $('frames').appendChild(fr);frames[id]=fr;
+    if(!IS_FILE){checkExists(a);}
+  }
+  for(var f in frames){frames[f].classList.toggle('on',f===id);}
+  renderMissing();
+  $('bar-ic').textContent=a.icon;$('bar-ic').style.setProperty('--ac',a.farbe);
+  $('bar-name').textContent=a.name;$('bar-file').textContent=a.datei;
+  $('bar-tab').setAttribute('href',a.datei);
+  $('bar-hint').style.display=IS_FILE?'':'none';
+  pushRecent(id);
+  show('app');
+  document.title=a.name+' · '+HUB_TITLE;$('top-title').textContent=a.name;
+}
+/* Nur über einen Webserver kann der Hub prüfen, ob die Datei existiert.
+   Bei lokalen Dateien sperrt der Browser diesen Blick (getestet). */
+function checkExists(a){
+  if(!window.fetch){return;}
+  fetch(a.datei,{method:'HEAD',cache:'no-store'}).then(function(r){if(!r.ok){missing[a.id]=true;renderMissing();}}).catch(function(){});
+}
+function renderMissing(){
+  var old=$('missing');if(old){old.parentNode.removeChild(old);}
+  if(!current||!missing[current]){return;}
+  var a=byId(current);
+  var d=document.createElement('div');d.className='missing';d.id='missing';
+  d.innerHTML='<div class="missing-card"><h3>Datei nicht gefunden</h3><p>Der Hub findet <code>'+esc(a.datei)+'</code> nicht. Prüfe in <code>hub-apps.js</code> den Pfad bei <b>'+esc(a.name)+'</b> — Ordner, Dateiname und Groß-/Kleinschreibung.</p><a class="btn primary" href="#/hinzufuegen" data-anchor="probleme">Hilfe öffnen</a></div>';
+  $('frames').appendChild(d);
+}
+function reloadCurrent(){
+  var fr=current&&frames[current];if(!fr){return;}
+  var a=byId(current);fr.src='about:blank';setTimeout(function(){fr.src=a.datei;},40);
+}
+function closeCurrent(){
+  var fr=current&&frames[current];
+  if(fr){fr.parentNode.removeChild(fr);delete frames[current];}
+  delete missing[current];current=null;location.hash='#/';
+}
+
+/* ---------- Anleitung ---------- */
+function showGuide(a){
+  $('guide-banner').innerHTML=a?'<div class="banner" style="--ac:'+a.farbe+'"><span class="b-ic">'+esc(a.icon)+'</span><div><b>'+esc(a.name)+'</b> ist als <i>geplant</i> eingetragen und braucht noch eine Datei.'+(a.hinweis?'<br>'+esc(a.hinweis):'')+'</div></div>':'';
+  show('guide');
+  document.title='App hinzufügen · '+HUB_TITLE;$('top-title').textContent='App hinzufügen';
+  if(pendingAnchor){var t=$(pendingAnchor);pendingAnchor=null;if(t){setTimeout(function(){t.scrollIntoView({block:'start'});},30);return;}}
+  $('v-guide').scrollTop=0;
+}
+
+/* ---------- Ansichten & Seitenleiste ---------- */
+function show(v){
+  view=v;
+  ['home','app','guide'].forEach(function(n){$('v-'+n).classList.toggle('on',n===v);});
+  if(v!=='app'&&v!=='guide'){current=null;}
+  sideOverride=null;applySide();renderSide();
+}
+var mqRail=window.matchMedia('(max-width:1000px)'), mqMobile=window.matchMedia('(max-width:700px)');
+function applySide(){
+  var rail=sideOverride?sideOverride==='rail':(view==='app'||mqRail.matches);
+  if(mqMobile.matches){rail=false;}
+  hub.classList.toggle('rail',rail);
+  $('collapse-i').textContent=rail?'»':'«';
+  $('collapse-t').textContent=rail?'Ausklappen':'Einklappen';
+  $('collapse').setAttribute('aria-label',rail?'Menü ausklappen':'Menü einklappen');
+}
+$('collapse').addEventListener('click',function(){sideOverride=hub.classList.contains('rail')?'full':'rail';applySide();});
+(mqRail.addEventListener?mqRail.addEventListener('change',applySide):mqRail.addListener(applySide));
+(mqMobile.addEventListener?mqMobile.addEventListener('change',applySide):mqMobile.addListener(applySide));
+function closeDrawer(){hub.classList.remove('drawer');}
+$('burger').addEventListener('click',function(){hub.classList.toggle('drawer');});
+$('scrim').addEventListener('click',closeDrawer);
+
+/* ---------- Router ---------- */
+var pendingAnchor=null;
+function route(){
+  var h=location.hash||'#/', m=h.match(/^#\/app\/(.+)$/);
+  if(m){openApp(decodeURIComponent(m[1]));}
+  else if(h.indexOf('#/hinzufuegen')===0){current=null;showGuide(null);}
+  else{show('home');renderHome();renderHello();document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;}
+  closeDrawer();
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- Bedienung ---------- */
+document.addEventListener('click',function(e){
+  var chipEl=e.target.closest&&e.target.closest('.catchip');
+  if(chipEl){activeCat=chipEl.getAttribute('data-cat')||'';renderHome();return;}
+  var an=e.target.closest&&e.target.closest('[data-anchor]');
+  if(an){pendingAnchor=an.getAttribute('data-anchor');if(location.hash.indexOf('#/hinzufuegen')===0){e.preventDefault();showGuide(null);}}
+  var t=e.target.closest&&e.target.closest('.tile[data-href]');
+  if(t&&!e.target.closest('a,button')){
+    var href=t.getAttribute('data-href');
+    if(t.getAttribute('data-ext')){window.open(href,'_blank','noopener');}else{location.hash=href;}
+  }
+});
+$('q').addEventListener('input',renderHome);
+$('q').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){var first=document.querySelector('#home-body .tile[data-href]');if(first){first.querySelector('a').click();}}
+  if(e.key==='Escape'){$('q').value='';renderHome();$('q').blur();}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='/'&&view==='home'&&document.activeElement!==$('q')&&!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')){e.preventDefault();$('q').focus();}
+  if(e.key==='Escape'){closeDrawer();}
+});
+$('bar-reload').addEventListener('click',reloadCurrent);
+$('bar-close').addEventListener('click',closeCurrent);
+window.addEventListener('storage',function(){if(view==='home'){renderHome();renderHello();}});
+
+route();
+})();
+</script>
+</body>
+</html>
