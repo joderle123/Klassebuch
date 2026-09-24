@@ -8,11 +8,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 19719197
   },
   "screening": {
-    "stand": "2026-06-10",
-    "commit": "d48a9aa",
-    "quelle": "PEI-and-Compl-ment- · claude/fix-conners-scoring-ya2JP",
-    "aenderung": "feat: auto-save and restore all inputs via localStorage",
-    "groesse": 855942
+    "stand": "2026-09-24",
+    "commit": "e0b0e7a",
+    "quelle": "PEI-and-Compl-ment- · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Befund-Tool: alle 13 Verfahren im neuen Muster",
+    "groesse": 1458490
   },
   "eldib": {
     "stand": "2026-09-24",

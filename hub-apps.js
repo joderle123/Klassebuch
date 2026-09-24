@@ -94,15 +94,15 @@ window.CDSE_APPS = [
 
   {
     id: 'screening',
-    name: 'Screening',
-    beschreibung: 'CDSE-Testing Tool: SDQ, WISC-V, DISYPS-III, AFS, d2-R und Conners auswerten — Bericht auf Deutsch, Französisch oder Englisch.',
+    name: 'Befundbericht',
+    beschreibung: 'Ergebnisse aus 13 Tests und Fragebögen eingeben (u. a. WISC-V, KABC-II, SDQ, CBCL, Conners 3, DISYPS-III) — fertiger Befundbericht auf Deutsch, Französisch oder Englisch, als Word-Datei oder PDF.',
     symbol: 'test',
     farbe: '#B4533A',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/screening.html',
     teams: ['diagnostique'],
-    quelle: { repo: 'PEI-and-Compl-ment-', branch: 'claude/fix-conners-scoring-ya2JP', pfad: 'diagnostic-tool/index.html' },
-    stichworte: 'testing test auswertung sdq wisc disyps afs d2 conners fragebogen'
+    quelle: { repo: 'PEI-and-Compl-ment-', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'diagnostic-tool/index.html' },
+    stichworte: 'screening testing test auswertung befund bericht diagnostik sdq cbcl trf ysr conners disyps afs dikj feel-kj wisc kabc cft son-r d2 vineland fragebogen word'
   },
 
   {
