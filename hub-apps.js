@@ -121,14 +121,15 @@ window.CDSE_APPS = [
   {
     id: 'toolbox',
     name: 'Toolbox',
-    beschreibung: 'ISA-App: Material-Bibliothek mit Arbeitsblättern, Offline-Suche und Team-Ablage für PDF- und Word-Dateien.',
+    beschreibung: 'Material-Bibliothek mit über 600 Materialien und Arbeitsblättern: suchen, nach Cycle und ELDiB-Ziel filtern, als PDF drucken, Team-Ablage für eigene Dateien.',
     symbol: 'werkzeug',
     farbe: '#A8741A',
     bereich: 'Materialien',
     datei: 'apps/toolbox.html',
     dateizugriff: true,
-    quelle: { repo: 'ISA-APP', branch: 'claude/elegant-darwin-2317k6', pfad: 'offline/ISA-App.html' },
-    stichworte: 'isa material bibliothek arbeitsblatt arbeitsblätter finder suche ablage'
+    quelle: { repo: 'ISA-APP', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'offline/ISA-App.html',
+              zusatz: [{ pfad: 'offline/toolbox-index.js', datei: 'apps/toolbox-index.js' }] },
+    stichworte: 'isa material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf'
   },
 
   /* ---------- Vorübergehend ausgeblendet: zum Einblenden die Kommentarzeichen

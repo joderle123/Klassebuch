@@ -22,11 +22,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 4650723
   },
   "toolbox": {
-    "stand": "2026-07-13",
-    "commit": "b5d6a72",
-    "quelle": "ISA-APP · claude/elegant-darwin-2317k6",
-    "aenderung": "feat: „So geht's\"-Anleitung in der Team-Ablage",
-    "groesse": 5754055
+    "stand": "2026-09-24",
+    "commit": "a98b655",
+    "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Toolbox im CDSE-Design, Deep-Links und Index für den Hub",
+    "groesse": 2802802
   },
   "journal": {
     "stand": "2026-09-22",

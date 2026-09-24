@@ -682,6 +682,17 @@ a.ar-zeile:hover{background:var(--accent-soft);}
   .ar-wartend{grid-template-columns:auto 1fr;}
 }
 /* ==== Ende Arbeit ==== */
+
+/* Toolbox-Materialien je Ziel */
+.ar-ziel ul.ar-material{list-style:none;padding-left:0;display:flex;flex-direction:column;gap:6px;margin:4px 0 2px;}
+.ar-material li{display:flex;flex-direction:column;gap:2px;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:var(--surface-2);}
+.ar-material a{color:var(--accent);font-weight:600;text-decoration:none;}
+.ar-material a:hover{text-decoration:underline;text-underline-offset:3px;}
+.ar-material small{color:var(--muted);font-size:12px;}
+.ar-material .ar-ki{color:#8A6414;font-weight:600;}
+.ar-material-alle{margin-top:6px;font-size:13px;}
+.ar-tb{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
+.ar-tb:hover{text-decoration-color:var(--accent);}
 </style>
 
 <!-- App-Verzeichnis laden. Tippfehler darin abfangen, damit der Hub
@@ -696,6 +707,8 @@ window.addEventListener('error',function(e){
 <script src="apps/versionen.js"></script>
 <!-- Text-Motor des ELDiB-Generators für das Schülerprofil (von update-apps.cjs geholt) -->
 <script src="apps/ds-motor.js"></script>
+<!-- Materialverzeichnis der Toolbox für Materialvorschläge im Dossier (von update-apps.cjs geholt) -->
+<script src="apps/toolbox-index.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -3233,6 +3246,37 @@ function zielText(code,z){
   return f[0]||'';
 }
 function foerderideen(code){var inf=itemZu(code);if(!inf){return [];}return (ELDIB_BANK.interventionen||{})[code]||(ELDIB_BANK.fallback||{})[inf.bereich]||[];}
+/* Passende Materialien aus der Toolbox (apps/toolbox-index.js, von update-apps.cjs geholt).
+   Reihenfolge: gezielte Materialien (wenige ELDiB-Codes) vor Sammelmaterial, passender Cycle,
+   mit Arbeitsblatt; KI-Entwürfe etwas nach hinten. Links öffnen die Toolbox in ihrem Tab. */
+function toolboxDa(){var T=window.CDSE_TOOLBOX_INDEX;return !!(T&&Array.isArray(T.materialien));}
+function zyklusVon(klasse){
+  var k=String(klasse||'').toUpperCase().replace(/\s+/g,''), m=k.match(/C(?:YCLE)?([1-4])/)||k.match(/^([1-4])[.\/-]?[1-3]?$/);
+  if(m){return 'C'+m[1];}
+  return /ES|ESG|SECOND|LYC|^[1-7](E|EME|ÈME|IEME|IÈME|C|G|GCC|AD|PRO)?$/.test(k)?'ES':'';
+}
+function toolboxZuItem(code,klasse,max){
+  if(!toolboxDa()){return {liste:[],n:0};}
+  var zy=zyklusVon(klasse);
+  var l=window.CDSE_TOOLBOX_INDEX.materialien.filter(function(m){return (m.eldib||[]).indexOf(code)>=0;});
+  var bew=l.map(function(m){return {m:m,s:6/Math.max(1,(m.eldib||[]).length)+(zy&&(m.alter||[]).indexOf(zy)>=0?3:0)+(m.ab?1:0)-(m.ki?0.5:0)};});
+  bew.sort(function(a,b){return b.s-a.s||String(a.m.titel).localeCompare(String(b.m.titel),'de');});
+  var liste=bew.slice(0,max||3).map(function(x){return x.m;});
+  /* Gibt es ein vom ISA-Team erstelltes (geprüftes) Material, steht mindestens eines in der Auswahl */
+  if(liste.length&&!liste.some(function(m){return !m.ki;})){var team=bew.filter(function(x){return !x.m.ki;})[0];if(team){liste[liste.length-1]=team.m;}}
+  return {liste:liste,n:l.length};
+}
+function toolboxHref(teile){return 'apps/toolbox.html#'+teile.map(function(t){return t[0]+'='+encodeURIComponent(t[1]);}).join('&');}
+function toolboxBlock(code,d){
+  var T=toolboxZuItem(code,(d.person||{}).klasse,3);
+  if(!T.n){return '';}
+  return '<h4>Passende Materialien aus der Toolbox</h4><ul class="ar-material">'+T.liste.map(function(m){
+      var info=[(m.typ||[]).join(', '),(m.alter||[]).join(' · '),m.ab?'mit Arbeitsblatt':''].filter(Boolean).join(' · ');
+      return '<li><a href="'+esc(toolboxHref([['eldib',code],['material',m.id]]))+'" target="cdse-toolbox">'+esc(m.titel)+'</a>'+
+        '<small>'+esc(info)+(m.ki?' · <span class="ar-ki" title="Von einer KI entworfen – vor dem Einsatz fachlich prüfen">KI-Entwurf</span>':'')+'</small></li>';
+    }).join('')+'</ul>'+
+    (T.n>T.liste.length?'<a class="ar-link ar-material-alle" href="'+esc(toolboxHref([['eldib',code]]))+'" target="cdse-toolbox">Alle '+T.n+' Materialien zu '+esc(code)+' in der Toolbox</a>':'');
+}
 function beispiele(code){return (ELDIB_BANK.beispiele||{})[code]||[];}
 /* Hinweise des CDSE zum Item (z. B. „Logopädie einschalten“, „Piktogramme vorhanden“) */
 function itemHinweise(code){var h=(ELDIB_BANK.hinweise||{})[code];return h?(Array.isArray(h)?h:[h]).filter(Boolean):[];}
@@ -3416,7 +3460,9 @@ function icode(code){var inf=itemZu(code);return '<span class="ar-icode" style="
 function ueberZeile(u){
   return '<li class="ar-ueb'+(u.luecke>=UEBER_DEUTLICH?' stark':'')+'">'+icode(u.code)+'<div><b>'+esc(u.it.keyword)+'</b> – '+esc(u.it.description)+
     '<small>Stufe '+ROEM[u.stufe]+', üblich bis etwa '+ELDIB_BANK.stufen[u.stufe].max+' Jahre · <b>'+esc(jahreText(u.luecke))+' überfällig</b> · '+
-    (u.istZiel?'<span class="ar-ist-ziel">ist Förderziel</span>':'<span class="ar-kein-ziel">noch kein Förderziel</span>')+'</small>'+hinweisHtml(u.code)+'</div></li>';
+    (u.istZiel?'<span class="ar-ist-ziel">ist Förderziel</span>':'<span class="ar-kein-ziel">noch kein Förderziel</span>')+
+    (function(){var n=toolboxZuItem(u.code).n;return n?' · <a class="ar-tb" href="'+esc(toolboxHref([['eldib',u.code]]))+'" target="cdse-toolbox">'+n+(n>1?' Materialien':' Material')+' in der Toolbox</a>':'';})()+
+    '</small>'+hinweisHtml(u.code)+'</div></li>';
 }
 function eldibUeberblick(d){
   if(!bankDa()){return '';}
@@ -3441,6 +3487,7 @@ function zielKarte(z,d,r){
     '<p class="ar-ichsatz">„'+esc(z.text)+'“</p><p class="ar-klein">'+esc(z.it.description)+'</p>'+hinweisHtml(z.code)+
     (z.ideen.length?'<h4>Förderideen</h4><ul>'+z.ideen.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+
     (z.beispiele.length?'<h4>Woran man es merkt</h4><ul>'+z.beispiele.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+
+    toolboxBlock(z.code,d)+
     '<footer>'+(ein.length?'<span>'+ein.length+(ein.length>1?' Einträge':' Eintrag')+' dazu, zuletzt am '+esc(datum(ein[0].datum))+'</span>':'<span class="ar-leise">Noch keine Einträge zu diesem Ziel</span>')+
       (r.bearbeiten?'<button class="ar-link" type="button" data-ar="ziel-eintrag" data-item="'+esc(z.code)+'">'+svg('plus')+'Beobachtung eintragen</button>':'')+'</footer></article>';
 }
