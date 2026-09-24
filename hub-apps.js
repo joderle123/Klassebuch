@@ -113,7 +113,8 @@ window.CDSE_APPS = [
     farbe: '#1F6B6F',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/eldib-generator.html',
-    quelle: { repo: 'Eldib-Pleni-re', branch: 'claude/eldib-tool-analysis-LzdyL', pfad: 'app/New-PEI-Dok-claude-update-pei-document-JPvE4/index.html' },
+    quelle: { repo: 'Eldib-Pleni-re', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'app/eldib-generator.html',
+              zusatz: [{ pfad: 'app/ds-motor.js', datei: 'apps/ds-motor.js' }] },
     stichworte: 'eldib pei complément complement ds förderplan förderziele bericht word dtorf'
   },
 

@@ -335,6 +335,262 @@ html.tor-offen .hub{visibility:hidden;}
   .bar-file,.bar-hint{display:none;}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+/* ==== Arbeit: Schüler, Dossier, Einsatzplan, Team, Verwaltung ==== */
+.ar-zahl{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:8px;border-radius:999px;background:#C2410C;color:#fff;font-size:11.5px;font-weight:700;vertical-align:1px;}
+.hub.rail .ar-zahl{position:absolute;top:4px;right:6px;margin:0;}
+.ar-laedt{display:flex;align-items:center;gap:10px;color:var(--muted);padding:28px 4px;}
+.ar-karte{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);padding:20px 22px;margin:0 0 16px;}
+.ar-karte h2{font-size:17px;margin:0 0 10px;font-family:var(--font-display);letter-spacing:-.01em;}
+.ar-karte h3{font-size:14px;margin:0 0 8px;}
+.ar-karte p{margin:0 0 10px;line-height:1.6;}
+.ar-karte.ar-leer{max-width:680px;padding:28px 30px;}
+.ar-karte.ar-leer h2{font-size:21px;}
+.ar-kartenkopf{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px;}
+.ar-kartenkopf h2{margin:0;}
+.ar-leise{color:var(--muted);font-size:13px;}
+.ar-klein{font-size:13px;color:var(--muted);line-height:1.55;}
+.ar-knopfreihe{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px;}
+.ar-link{border:0;background:none;padding:2px 0;color:var(--accent);font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:3px;}
+.ar-link:hover{text-decoration-color:var(--accent);}
+.ar-link .ic{width:15px;height:15px;}
+.ar-link.gefahr,.btn.gefahr{color:#B42318;}
+.btn.gefahr.primary{background:#B42318;border-color:#B42318;color:#fff;}
+.ar-toolbar{align-items:flex-start;}
+.ar-toolbar .catbar{max-width:100%;}
+.ar-trenner{width:1px;align-self:stretch;background:var(--line-2);margin:4px 6px;}
+.catchip .ic{width:14px;height:14px;margin-right:4px;vertical-align:-2px;}
+/* Liste */
+.ar-tabelle{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-1);}
+.ar-zeile{display:grid;grid-template-columns:minmax(220px,2fr) minmax(160px,1.6fr) minmax(120px,1fr) minmax(140px,1.2fr) 96px;gap:14px;align-items:center;padding:12px 18px;border-top:1px solid var(--line);color:inherit;text-decoration:none;font-size:14px;}
+.ar-zeile:first-child{border-top:0;}
+.ar-zeile.kopf{background:var(--surface-2);font-size:12px;font-weight:650;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:10px 18px;}
+a.ar-zeile:hover{background:var(--accent-soft);}
+.ar-zeile.inaktiv{opacity:.62;}
+.ar-name{display:flex;align-items:center;gap:12px;min-width:0;}
+.ar-name b{display:block;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ar-name small{display:block;font-size:12.5px;color:var(--muted);}
+.ar-recht{color:var(--accent);font-weight:600;}
+.ava.klein{width:26px;height:26px;font-size:11px;}
+.ar-stelle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:620;padding:3px 10px 3px 8px;border-radius:999px;background:color-mix(in srgb,var(--tc) 12%,white);color:color-mix(in srgb,var(--tc) 80%,black);white-space:nowrap;}
+.ar-stelle::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--tc);}
+.ar-mitglieder .ar-zeile{grid-template-columns:minmax(200px,1.6fr) minmax(180px,1.6fr) minmax(140px,1.2fr) 160px 150px;}
+.ar-mitglieder select{font:inherit;font-size:13.5px;padding:5px 8px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);}
+/* Dossier */
+.ar-zurueck{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:600;margin-bottom:14px;}
+.ar-zurueck:hover{color:var(--accent);}
+.ar-zurueck .ic{width:16px;height:16px;}
+.ar-dkopf{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;padding-bottom:18px;margin-bottom:0;}
+.ar-dkopf>.ava{width:56px;height:56px;font-size:19px;}
+.ar-dtitel h1{margin:0;font-size:30px;line-height:1.15;font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);}
+.ar-dtitel p{margin:4px 0 10px;color:var(--muted);}
+.ar-chips{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.ar-status{font-size:12.5px;font-weight:620;padding:3px 10px;border-radius:999px;}
+.ar-status.an{background:#E3F4EA;color:#1E6B45;}
+.ar-status.aus{background:var(--bg-2);color:var(--muted);}
+.ar-meinrecht{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--muted);}
+.ar-meinrecht.ja{color:var(--accent);}
+.ar-meinrecht .ic{width:14px;height:14px;}
+.ar-daktionen{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+.ar-daktionen .btn .ic{width:16px;height:16px;}
+.ar-mehr{position:relative;}
+.ar-mehr summary{list-style:none;padding:9px 10px;}
+.ar-mehr summary::-webkit-details-marker{display:none;}
+.ar-mehr-menue{position:absolute;right:0;top:calc(100% + 6px);z-index:20;min-width:240px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-3);padding:6px;}
+.ar-mehr-menue button{display:flex;align-items:center;gap:9px;width:100%;border:0;background:none;padding:9px 10px;border-radius:8px;font:inherit;font-size:14px;color:var(--ink);cursor:pointer;text-align:left;}
+.ar-mehr-menue button:hover{background:var(--bg);}
+.ar-mehr-menue button.gefahr{color:#B42318;}
+.ar-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin:0 0 20px;overflow-x:auto;}
+.ar-tabs button{border:0;background:none;font:inherit;font-size:14px;font-weight:600;color:var(--muted);padding:11px 14px;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;white-space:nowrap;}
+.ar-tabs button:hover{color:var(--ink);}
+.ar-tabs button.on{color:var(--accent);border-bottom-color:var(--accent);}
+.ar-zwei{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start;}
+.ar-seite .ar-karte{padding:16px 18px;}
+.ar-dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0 0 10px;font-size:13.5px;}
+.ar-dl dt{color:var(--muted);}
+.ar-dl dd{margin:0;font-weight:560;}
+.ar-dl small{color:var(--muted);font-weight:400;}
+.ar-weg{list-style:none;margin:0;padding:0 0 0 14px;border-left:2px solid var(--accent-line);}
+.ar-weg li{position:relative;margin:0 0 10px;font-size:13.5px;}
+.ar-weg li::before{content:'';position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--surface);}
+.ar-weg small,.ar-weg span{display:block;color:var(--muted);font-size:12.5px;}
+.ar-blickkarte{border-top:3px solid var(--accent);}
+.ar-blickraster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;}
+.ar-blick{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+.ar-blick h3{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 6px;display:flex;align-items:center;gap:7px;}
+.ar-blick h3::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--faint);}
+.ar-blick.gut h3::before{background:#2E7D4F;}
+.ar-blick.schwer h3::before{background:#C2410C;}
+.ar-blick.hilft h3::before{background:var(--accent);}
+.ar-blick.wann h3::before{background:#A8741A;}
+.ar-blick.braucht h3::before{background:#6E4A7E;}
+.ar-blick ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5;}
+.ar-blick li{margin:3px 0;}
+.ar-wortlaut h3{margin:16px 0 6px;font-size:14.5px;color:var(--accent-strong);}
+.ar-wortlaut p{text-align:justify;}
+.ar-mini{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0;}
+.ar-mini th,.ar-mini td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top;}
+.ar-mini th{background:var(--surface-2);font-weight:650;}
+.ar-veraenderung td.besser{color:#1E6B45;font-weight:650;white-space:nowrap;}
+.ar-veraenderung td.schlechter{color:#B42318;font-weight:650;white-space:nowrap;}
+.ar-grafik{width:100%;max-width:720px;height:auto;display:block;}
+.ar-gitter{stroke:var(--line);stroke-width:1;}
+.ar-gitter.mitte{stroke:var(--line-2);stroke-dasharray:4 4;}
+.ar-achse{font-size:11px;fill:var(--faint);font-family:var(--font-ui);}
+.ar-legende{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin:6px 0 12px;}
+.ar-legende i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;}
+.ar-eintrag{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:0 0 10px;}
+.ar-karte .ar-eintrag{background:var(--surface-2);}
+.ar-eintrag header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:4px;}
+.ar-eintrag header small{color:var(--muted);font-size:12.5px;}
+.ar-eintrag p{margin:0;font-size:14px;line-height:1.6;}
+.ar-eintrag-aktion{margin-left:auto;display:flex;gap:12px;}
+.ar-art{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--accent-strong);background:var(--accent-soft);border-radius:6px;padding:2px 7px;}
+.ar-eintrag-form h2{margin-bottom:12px;}
+.ar-protokoll{list-style:none;margin:0;padding:0;font-size:13.5px;}
+.ar-protokoll li{display:grid;grid-template-columns:150px minmax(120px,200px) 1fr;gap:12px;padding:7px 0;border-top:1px solid var(--line);}
+.ar-protokoll li:first-child{border-top:0;}
+/* Formulare (Dialoge und Karten) */
+.ar-feld{display:flex;flex-direction:column;gap:5px;margin:0 0 12px;min-width:0;}
+.ar-feld>span{font-size:13px;font-weight:600;color:var(--ink-2);}
+.ar-feld input,.ar-feld select,.ar-feld textarea{font:inherit;font-size:14.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:9px 11px;width:100%;}
+.ar-feld textarea{resize:vertical;line-height:1.5;}
+.ar-feld input:focus,.ar-feld select:focus,.ar-feld textarea:focus{outline:0;border-color:var(--accent);box-shadow:var(--focus);}
+.ar-feld.voll{width:100%;}
+.ar-raster2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;}
+.ar-raster3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 14px;}
+.ar-haken{display:flex;align-items:center;gap:8px;font-size:14px;margin:4px 0 12px;cursor:pointer;}
+.ar-haken small{color:var(--muted);}
+.ar-checkliste{max-height:320px;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin-bottom:10px;}
+.ar-checkliste .ar-haken{margin:4px 0;}
+.ar-dialog{border:0;border-radius:16px;padding:0;width:min(520px,calc(100vw - 32px));box-shadow:var(--shadow-3);color:var(--ink);font-family:var(--font-ui);}
+.ar-dialog.breit{width:min(760px,calc(100vw - 32px));}
+.ar-dialog::backdrop{background:rgba(14,22,40,.42);}
+.ar-dialog form{padding:22px 24px;max-height:calc(100vh - 48px);overflow:auto;}
+.ar-dialog h2{margin:0 0 12px;font-size:19px;font-family:var(--font-display);}
+.ar-dialog h3{font-size:14px;margin:14px 0 6px;}
+.ar-dialog p{line-height:1.55;margin:0 0 12px;}
+.ar-dialog-fehler{background:#FCEDEA;border:1px solid #F0C9C0;color:#7A2A18;border-radius:10px;padding:9px 12px;font-size:13.5px;margin:4px 0 12px;}
+.ar-knoepfe{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.ar-rechteliste{list-style:none;padding:0;margin:0 0 12px;}
+.ar-rechteliste li{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);}
+.ar-rechteliste li small{color:var(--muted);flex:1;}
+.ar-wahlliste{display:flex;flex-direction:column;gap:6px;max-height:360px;overflow:auto;}
+.ar-wahl{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;}
+.ar-wahl:has(input:checked){border-color:var(--accent);background:var(--accent-soft);}
+.ar-wahl span b{display:block;}
+.ar-wahl span small{display:block;color:var(--muted);font-size:12.5px;}
+.ar-wahl.passt{border-color:var(--accent-line);}
+.ar-passt{margin-left:auto;font-size:11.5px;font-weight:700;color:#1E6B45;background:#E3F4EA;border-radius:6px;padding:2px 7px;}
+.ar-einsch-thema{border:1px solid var(--line);border-radius:12px;padding:8px 14px 10px;margin:0 0 12px;}
+.ar-einsch-thema legend{font-weight:650;font-size:13.5px;padding:0 6px;}
+.ar-einsch-zeile{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:6px 0;border-top:1px solid var(--line);font-size:13.5px;}
+.ar-einsch-zeile:first-of-type{border-top:0;}
+.ar-skala{display:flex;gap:3px;}
+.ar-skala button{width:30px;height:30px;border:1px solid var(--line-2);background:var(--surface);border-radius:7px;font:inherit;font-size:13px;font-weight:650;color:var(--muted);cursor:pointer;}
+.ar-skala button:hover{border-color:var(--accent);color:var(--accent);}
+.ar-skala button.an{background:var(--accent);border-color:var(--accent);color:#fff;}
+.ar-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;box-shadow:var(--shadow-3);z-index:3000;transition:opacity .4s,transform .4s;}
+.ar-toast.weg{opacity:0;transform:translateX(-50%) translateY(10px);}
+/* Einsatzplan */
+.ar-jetzt{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:14px 18px;margin:0 0 16px;box-shadow:var(--shadow-1);}
+.ar-jetzt small{display:block;color:var(--muted);font-size:12.5px;}
+.ar-jetzt b{font-size:16px;}
+.ar-puls{width:12px;height:12px;border-radius:50%;background:#2E7D4F;box-shadow:0 0 0 0 rgba(46,125,79,.5);animation:ar-puls 2s infinite;flex:0 0 auto;}
+.ar-jetzt.abwesend .ar-puls,.ar-jetzt.kein-plan .ar-puls,.ar-jetzt.feierabend .ar-puls{background:var(--faint);animation:none;}
+.ar-jetzt.unterwegs .ar-puls,.ar-jetzt.noch-nicht .ar-puls{background:#A8741A;}
+@keyframes ar-puls{0%{box-shadow:0 0 0 0 rgba(46,125,79,.45);}70%{box-shadow:0 0 0 10px rgba(46,125,79,0);}100%{box-shadow:0 0 0 0 rgba(46,125,79,0);}}
+.ar-sicht{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);}
+.ar-sicht .ic{width:14px;height:14px;}
+.ar-woche{display:grid;grid-template-columns:repeat(var(--tage),minmax(0,1fr));gap:10px;}
+.ar-tag{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:7px;min-height:150px;}
+.ar-tag h3{margin:0 0 2px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+.ar-block{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;border:0;border-left:4px solid var(--oc);background:var(--surface);border-radius:8px;padding:7px 9px;font:inherit;font-size:13px;color:var(--ink);cursor:pointer;box-shadow:var(--shadow-1);}
+.ar-block:hover{box-shadow:0 0 0 1px var(--accent-line),var(--shadow-1);}
+.ar-block b{font-size:12.5px;font-variant-numeric:tabular-nums;}
+.ar-block span{font-weight:600;}
+.ar-block small{color:var(--muted);font-size:12px;}
+.ar-blockneu{display:flex;align-items:center;justify-content:center;gap:5px;border:1.5px dashed var(--line-2);background:transparent;border-radius:8px;padding:7px;font:inherit;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;}
+.ar-blockneu:hover{border-color:var(--accent);color:var(--accent);}
+.ar-blockneu .ic,.ar-kopie .ic{width:14px;height:14px;}
+.ar-kopie{font-size:12px;align-self:center;}
+.ar-ausnahmen{list-style:none;margin:0;padding:0;}
+.ar-ausnahmen li{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);font-size:14px;}
+.ar-ausnahmen li button{margin-left:auto;}
+.ar-speicherleiste{position:sticky;bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px 10px 18px;box-shadow:var(--shadow-2);color:var(--muted);font-size:14px;}
+.ar-speicherleiste.offen{border-color:#E7B35A;color:#6B4A0C;background:#FFF8EA;}
+/* Team */
+.ar-ansicht{display:inline-flex;gap:2px;padding:4px;background:var(--bg-2);border-radius:12px;}
+.ar-ansicht button{border:0;background:transparent;font:inherit;font-size:14px;font-weight:600;color:var(--muted);padding:8px 16px;border-radius:9px;cursor:pointer;}
+.ar-ansicht button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-1),0 0 0 1px var(--line);}
+.ar-uhr{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:var(--muted);margin:0 0 14px;}
+.ar-uhr b{color:var(--ink);font-size:18px;font-variant-numeric:tabular-nums;}
+.ar-kennzahlen{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 18px;}
+.ar-kennzahlen div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow-1);}
+.ar-kennzahlen b{display:block;font-size:26px;font-family:var(--font-display);line-height:1.1;}
+.ar-kennzahlen span{font-size:12.5px;color:var(--muted);}
+.ar-orte{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:0 0 18px;}
+.ar-ort{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--oc);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow-1);}
+.ar-ort header{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ar-ort h3{margin:0;font-size:15px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ar-pin{color:var(--oc);display:grid;}
+.ar-anzahl{font-size:12px;font-weight:700;color:#fff;background:var(--oc);border-radius:999px;min-width:22px;height:22px;display:grid;place-items:center;}
+.ar-person{display:flex;align-items:center;gap:10px;padding:6px 0;border-top:1px solid var(--line);}
+.ar-person:first-of-type{border-top:0;}
+.ar-person .ava{width:32px;height:32px;font-size:12px;}
+.ar-person b{display:block;font-size:13.5px;}
+.ar-person small{display:block;font-size:12px;color:var(--muted);}
+.ar-gruppe{margin:0 0 14px;}
+.ar-gruppe h3{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 8px;}
+.ar-gruppe h3 span{color:var(--ink);}
+.ar-gruppe-l{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:6px 14px;}
+.ar-gruppe.abwesend .ar-gruppe-l{background:var(--bg);}
+.ar-ohneplan{margin-top:12px;}
+.ar-zeitstrahl{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px 14px;box-shadow:var(--shadow-1);overflow-x:auto;}
+.ar-zs-kopf,.ar-zs-zeile{display:grid;grid-template-columns:190px minmax(520px,1fr);align-items:center;gap:12px;}
+.ar-zs-skala{position:relative;height:18px;font-size:11px;color:var(--faint);}
+.ar-zs-skala span{position:absolute;transform:translateX(-50%);}
+.ar-zs-zeile{padding:6px 0;border-top:1px solid var(--line);}
+.ar-zs-name{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ar-zs-bahn{position:relative;height:34px;background:repeating-linear-gradient(90deg,var(--surface-2) 0,var(--surface-2) calc(100%/11 - 1px),var(--line) calc(100%/11 - 1px),var(--line) calc(100%/11));border-radius:8px;}
+.ar-zs-block{position:absolute;top:3px;bottom:3px;background:color-mix(in srgb,var(--oc) 18%,white);border-left:3px solid var(--oc);border-radius:6px;padding:0 6px;font-size:11.5px;line-height:28px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink);}
+.ar-zs-block.abw{background:var(--bg-2);color:var(--muted);}
+.ar-zs-abw{position:absolute;inset:3px;display:flex;align-items:center;padding:0 10px;font-size:12.5px;color:var(--muted);background:repeating-linear-gradient(45deg,var(--bg),var(--bg) 6px,var(--bg-2) 6px,var(--bg-2) 12px);border-radius:6px;}
+.ar-zs-jetzt{position:absolute;top:8px;bottom:10px;left:calc(16px + 190px + 12px + (100% - 16px - 16px - 190px - 12px) * var(--p) / 100);width:2px;background:#C2410C;pointer-events:none;}
+.ar-zs-jetzt span{position:absolute;top:-2px;left:4px;font-size:11px;font-weight:700;color:#C2410C;background:var(--surface);padding:0 3px;border-radius:4px;}
+.ar-wochenmatrix{display:grid;grid-template-columns:190px repeat(var(--tage),minmax(120px,1fr));background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow-1);}
+.ar-wochenmatrix>div{padding:8px 10px;border-top:1px solid var(--line);border-left:1px solid var(--line);font-size:12.5px;}
+.ar-wochenmatrix .kopf{background:var(--surface-2);font-weight:650;color:var(--muted);border-top:0;}
+.ar-wochenmatrix .kopf.heute{color:var(--accent);}
+.ar-wm-name{display:flex;align-items:center;gap:8px;font-weight:600;border-left:0!important;}
+.ar-wm-zelle{display:flex;flex-direction:column;gap:4px;}
+.ar-wm-block{border-left:3px solid var(--oc);padding-left:6px;line-height:1.35;}
+.ar-wm-abw{color:var(--muted);font-style:italic;}
+/* Verwaltung */
+.ar-wartende{display:flex;flex-direction:column;gap:8px;}
+.ar-wartend{display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px 14px;}
+.ar-wartend b{display:block;}
+.ar-wartend small{display:block;color:var(--muted);font-size:12.5px;}
+.ar-code{font-family:ui-monospace,Consolas,monospace;font-size:15px;font-weight:650;letter-spacing:.06em;background:var(--surface-2);border:1px dashed var(--line-2);border-radius:8px;padding:5px 10px;}
+/* Übersicht: Heute-Karte */
+.ar-heute{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 18px;color:inherit;text-decoration:none;box-shadow:var(--shadow-1);max-width:520px;}
+.ar-heute:hover{border-color:var(--accent-line);}
+.ar-heute .ic{width:22px;height:22px;color:var(--accent);}
+.ar-heute b{display:block;font-size:13px;color:var(--muted);font-weight:600;}
+.ar-heute small{display:block;font-size:15px;color:var(--ink);font-weight:600;}
+@media (max-width:1100px){.ar-zwei{grid-template-columns:minmax(0,1fr);}.ar-kennzahlen{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:860px){
+  .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}
+  .ar-zeile>span:nth-child(2),.ar-zeile>span:nth-child(4),.ar-zeile>span:nth-child(5){display:none;}
+  .ar-zeile.kopf{display:none;}
+  .ar-mitglieder .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}
+  .ar-dkopf{grid-template-columns:auto 1fr;}
+  .ar-daktionen{grid-column:1/-1;justify-content:flex-start;}
+  .ar-blickraster,.ar-raster2,.ar-raster3{grid-template-columns:minmax(0,1fr);}
+  .ar-woche{grid-template-columns:minmax(0,1fr);}
+  .ar-protokoll li{grid-template-columns:1fr;gap:2px;}
+  .ar-wartend{grid-template-columns:auto 1fr;}
+}
+/* ==== Ende Arbeit ==== */
 </style>
 
 <!-- App-Verzeichnis laden. Tippfehler darin abfangen, damit der Hub
@@ -347,6 +603,8 @@ window.addEventListener('error',function(e){
 <script src="hub-apps.js" onerror="window.__hubAppsMissing=true"></script>
 <!-- Stand jeder App (erzeugt von update-apps.cjs). Fehlt die Datei, zeigt der Hub einfach keinen Stand. -->
 <script src="apps/versionen.js"></script>
+<!-- Text-Motor des ELDiB-Generators für das Schülerprofil (von update-apps.cjs geholt) -->
+<script src="apps/ds-motor.js"></script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -382,6 +640,13 @@ window.addEventListener('error',function(e){
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8.5v-5h10v5"/><rect x="3.5" y="8.5" width="17" height="8.5" rx="2"/><path d="M7 14h10v6.5H7z"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-history" viewBox="0 0 24 24"><path d="M3.8 12a8.2 8.2 0 1 0 2.4-5.8"/><path d="M3.5 4v4.2h4.2"/><path d="M12 7.8V12l3 1.9"/></symbol>
+  <symbol id="i-schueler" viewBox="0 0 24 24"><path d="M12 4 2.5 8.5 12 13l9.5-4.5z"/><path d="M6.5 10.6v4.2c0 1.6 2.5 3.2 5.5 3.2s5.5-1.6 5.5-3.2v-4.2"/><path d="M21.5 8.5v5.5"/></symbol>
+  <symbol id="i-uhr" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="4.8" cy="10" r="2.1"/><circle cx="19.2" cy="10" r="2.1"/><path d="M1.8 18.5a3.8 3.8 0 0 1 4.6-3.5M22.2 18.5a3.8 3.8 0 0 0-4.6-3.5"/></symbol>
+  <symbol id="i-schild" viewBox="0 0 24 24"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8 7.5 9.5 4.4-1.5 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-weiter" viewBox="0 0 24 24"><path d="M4 12h12"/><path d="m12 7 5 5-5 5"/><path d="M20 5v14"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.4"/></symbol>
 </svg>
 
 <!-- Anmeldung: liegt ueber dem Hub, bis man angemeldet ist -->
@@ -582,6 +847,8 @@ window.addEventListener('error',function(e){
       </div>
     </section>
 
+    <!-- Arbeit: Schüler, Einsatzplan, Team, Verwaltung -->
+    <section class="view scroll" id="v-arbeit" aria-label="Arbeit"><div class="pad" id="arbeit-body"></div></section>
   </main>
 </div>
 
@@ -595,7 +862,8 @@ window.addEventListener('error',function(e){
    Salz (Empfehlung OWASP 2023). Ein zweiter "Umschlag" mit dem
    Wiederherstellungs-Code erlaubt ein neues Passwort, ohne dass irgendwer
    sonst den Schlüssel kennt. Klartext im Konto: nur Name, Team und
-   Zeitstempel - für die Auswahl "Wer bist du?".
+   Zeitstempel, Funktion und Responsable - für die Auswahl "Wer bist du?"
+   und damit Responsables sehen, wer zu ihnen gehört.
 
    Daten-Tresor: Die Daten der Apps (localStorage und IndexedDB dieses
    Browsers) werden pro Person verschlüsselt im Hub-Ordner gesichert
@@ -726,21 +994,22 @@ function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){ret
 
 /* ---------- Konten ---------- */
 function slug(n){return String(n).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'konto';}
-function kontoErstellen(name,teamId,pw){
+function kontoErstellen(name,teamId,pw,extra){
+  extra=extra||{};
   var roh=rnd(32), code=neuerCode(), id;
   do{id=slug(name)+'-'+Array.prototype.map.call(rnd(3),function(x){return ALPHA.charAt(x&31).toLowerCase();}).join('');}while(kontoVon(id));
   return Promise.all([umschlag(pw,roh),umschlag(codeNorm(code),roh),datenschluessel(roh),neuesPaar()]).then(function(r){
     var dek=r[2], kp=r[3];
     return Promise.all([crypto.subtle.exportKey('spki',kp.publicKey),crypto.subtle.exportKey('pkcs8',kp.privateKey)]).then(function(ex){
       return Promise.all([sha256(ex[0]),versiegeln(dek,new Uint8Array(ex[1]))]).then(function(q){
-        var prof={name:name,team:teamId,schluessel:q[0]};
+        var prof={name:name,team:teamId,schluessel:q[0],funktion:extra.funktion||'',responsable:extra.responsable||''};
         return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(profil){
           var jetzt=new Date().toISOString();
-          var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,erstellt:jetzt,geaendert:jetzt,
+          var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,funktion:prof.funktion,responsable:prof.responsable,erstellt:jetzt,geaendert:jetzt,
                  schluessel:{passwort:r[0],code:r[1]},oeffentlich:b64(ex[0]),privat:q[1],profil:profil};
           return schreibeKonto(k).then(function(){
             konten.push(k);roh.fill(0);
-            return {konto:k,code:code,s:{id:id,name:name,team:teamId,konto:k,dek:dek,prof:prof,pub:kp.publicKey,priv:kp.privateKey,hash:q[0]}};
+            return {konto:k,code:code,s:{id:id,name:name,team:teamId,funktion:prof.funktion,responsable:prof.responsable,rg:true,konto:k,dek:dek,prof:prof,pub:kp.publicKey,priv:kp.privateKey,hash:q[0]}};
           });
         });
       });
@@ -752,7 +1021,7 @@ function anmeldenMit(k,geheim,art){
     return datenschluessel(roh).then(function(dek){
       return oeffnen(dek,k.profil).then(function(p){
         var prof=JSON.parse(td.decode(p));
-        return {id:k.id,name:prof.name||k.name,team:prof.team||k.team,konto:k,dek:dek,roh:roh,prof:prof};
+        return {id:k.id,name:prof.name||k.name,team:prof.team||k.team,funktion:prof.funktion||k.funktion||'',responsable:prof.responsable||k.responsable||'',rg:Object.prototype.hasOwnProperty.call(prof,'responsable'),konto:k,dek:dek,roh:roh,prof:prof};
       });
     });
   });
@@ -785,10 +1054,10 @@ function schluesselBereit(s){
 function passwortSetzen(k,roh,pw){
   return umschlag(pw,roh).then(function(u){k.schluessel.passwort=u;k.geaendert=new Date().toISOString();return schreibeKonto(k);});
 }
-function teamSetzen(k,dek,prof,teamId){
-  prof.team=teamId;
+function profilSetzen(k,dek,prof,werte){
+  prof.team=werte.team;prof.funktion=werte.funktion||'';prof.responsable=werte.responsable||'';
   return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(profil){
-    k.team=teamId;k.profil=profil;k.geaendert=new Date().toISOString();return schreibeKonto(k);
+    k.team=prof.team;k.funktion=prof.funktion;k.responsable=prof.responsable;k.profil=profil;k.geaendert=new Date().toISOString();return schreibeKonto(k);
   });
 }
 function pwProblem(pw,name){
@@ -1187,18 +1456,29 @@ function tresorWiederaufnehmen(){
   if(!sitzung){return Promise.resolve();}
   var k=kontoVon(sitzung.id);
   if(!k){status({art:'fehler',text:'Dein Konto wurde im Hub-Ordner nicht gefunden.'});return Promise.resolve();}
-  return pubGeprueft(k).then(function(pub){tresor={id:k.id,pub:pub,priv:null};status({art:'bereit'});return autoSichern();},
+  return pubGeprueft(k).then(function(pub){
+    tresor={id:k.id,pub:pub,priv:null};status({art:'bereit'});
+    return idbGet('sitzung-schluessel').then(function(x){if(x&&x.priv&&x.sid&&sitzung&&x.sid===sitzung.sid&&x.konto===sitzung.id){tresor.priv=x.priv;}}).then(autoSichern);
+  },
     function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});
 }
 
 /* ---------- Sitzung ---------- */
-function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,bis:Date.now()+SPERRE_MS}));}catch(e){}}
+function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||'',bis:Date.now()+SPERRE_MS}));}catch(e){}}
 function sitzungLesen(){try{var s=JSON.parse(sessionStorage.getItem(SITZUNG)||'null');return (s&&s.id&&s.bis>Date.now())?s:null;}catch(e){return null;}}
 function sitzungLoeschen(){try{sessionStorage.removeItem(SITZUNG);}catch(e){}}
-function oeffentlich(s){var t=team(s.team);return {id:s.id,name:s.name,team:s.team,teamName:t.name,teamFarbe:t.farbe};}
+function oeffentlich(s){var t=team(s.team);return {id:s.id,name:s.name,team:s.team,teamName:t.name,teamFarbe:t.farbe,funktion:s.funktion||'',responsable:s.responsable||'',responsableGewaehlt:!!s.rg};}
+/* Privater Schlüssel für die Dauer der Sitzung: als nicht exportierbarer
+   CryptoKey in IndexedDB, damit er ein Neuladen des Tabs übersteht. Beim
+   Abmelden, Sperren und beim nächsten Start ohne Sitzung wird er gelöscht. */
+function sitzungsSchluesselMerken(){
+  if(!sitzung||!sitzung.sid||!tresor.priv){return Promise.resolve();}
+  return idbSet('sitzung-schluessel',{sid:sitzung.sid,konto:sitzung.id,priv:tresor.priv}).catch(function(){});
+}
+function sitzungsSchluesselLoeschen(){return idbSet('sitzung-schluessel',null).catch(function(){}).then(function(){if(cb.schluesselWeg){try{cb.schluesselWeg();}catch(e){}}});}
 function angemeldet(s,hinweise){
-  sitzung={id:s.id,name:s.name,team:s.team};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
-  if(s.pub){tresor={id:s.id,pub:s.pub,priv:s.priv||null};geprueftMerken(s.id,s.hash);}
+  sitzung={id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||b64(rnd(12))};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
+  if(s.pub){tresor={id:s.id,pub:s.pub,priv:s.priv||null};geprueftMerken(s.id,s.hash);sitzungsSchluesselMerken();}
   try{localStorage.setItem(ZULETZT,s.id);}catch(e){}
   if(s.roh&&s.roh.fill){s.roh.fill(0);}
   tor(false);
@@ -1206,7 +1486,7 @@ function angemeldet(s,hinweise){
   if(s.pub){letzteSicherung=0;status({art:'bereit'});}
 }
 function ende(){
-  sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();
+  sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();sitzungsSchluesselLoeschen();
   if(cb.abgemeldet){cb.abgemeldet();}
   status({art:'aus'});
   if(konten.length){zeigeKonten();}else{zeigeVerbinden(null,!!ordner);}
@@ -1254,7 +1534,7 @@ setInterval(function(){
   if(Date.now()-letzteAktivitaet>SPERRE_MS){sperren();}
 },15000);
 function sperren(){
-  gesperrt=true;sitzungLoeschen();
+  gesperrt=true;sitzungLoeschen();tresor.priv=null;sitzungsSchluesselLoeschen();
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
   zeigeAnmelden(k,'Nach '+Math.round(SPERRE_MS/60000)+' Minuten ohne Aktivität gesperrt. Bitte gib dein Passwort ein.');
 }
@@ -1270,6 +1550,21 @@ function meldung(t,art){return '<div class="meldung '+(art||'fehler')+'" role="'
 function beschaeftigt(btn,an,t){if(!btn){return;}btn.disabled=an;if(an){btn.setAttribute('data-t',btn.innerHTML);btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(t||'Einen Moment …');}else if(btn.getAttribute('data-t')){btn.innerHTML=btn.getAttribute('data-t');}}
 function knopfText(btn){return function(t){if(btn&&btn.disabled){btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(t);}};}
 function kontoKopf(k){return '<div class="konto konto-fix">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+'</small></span></div>';}
+var FUNKTIONEN=['Erzieher/in (Éducateur/trice gradué/e)','Lehrer/in (Instituteur/trice)','Psychologe/Psychologin','Pädagoge/Pädagogin','Sozialarbeiter/in (Assistant/e social/e)','Logopäde/Logopädin','Ergotherapeut/in','Psychomotoriker/in','Koordination','Direktion'];
+function funktionFeld(wert){
+  return '<div class="feld"><label for="g-funktion">Deine Funktion</label><input id="g-funktion" list="g-funktionen" autocomplete="off" value="'+esc(wert||'')+'" placeholder="z. B. Erzieher/in, Psychologin …">'+
+    '<datalist id="g-funktionen">'+FUNKTIONEN.map(function(f){return '<option value="'+esc(f)+'">';}).join('')+'</datalist></div>';
+}
+/* Wer ist dein/e Responsable? Auswahl aus allen Konten (ohne das eigene) */
+function responsableFeld(wert,ohneId){
+  var l=konten.filter(function(k){return k.id!==ohneId;});
+  return '<div class="feld"><label for="g-resp">Dein/e Responsable</label><select id="g-resp">'+
+    '<option value=""'+(wert==null?' selected':'')+' disabled>– bitte wählen –</option>'+
+    l.map(function(k){return '<option value="'+esc(k.id)+'"'+(wert===k.id?' selected':'')+'>'+esc(k.name)+' · '+esc(team(k.team).name)+'</option>';}).join('')+
+    '<option value="-"'+(wert==='-'||wert===''?' selected':'')+'>Ich habe keine/n Responsable (z. B. Direktion)</option></select>'+
+    '<span class="hilfe">Deine Responsable sieht deinen Einsatzplan: wo du wann arbeitest. Sonst niemand außer der Verwaltung.</span></div>';
+}
+function gewaehlterResponsable(){var e=$('g-resp');if(!e||e.value===''){return null;}return e.value==='-'?'':e.value;}
 function teamWahl(akt){return '<div class="teams" role="radiogroup" aria-label="Team">'+TEAMS.map(function(t){return '<label><input type="radio" name="g-team" value="'+esc(t.id)+'"'+(akt===t.id?' checked':'')+'>'+esc(t.name)+'</label>';}).join('')+'</div>';}
 function gewaehltesTeam(){var r=document.querySelector('input[name="g-team"]:checked');return r?r.value:'';}
 function pfadHinweis(){try{var p=decodeURIComponent(location.pathname).replace(/^\/([A-Za-z]:)/,'$1').replace(/\//g,'\\');return p.replace(/\\[^\\]*$/,'');}catch(e){return '';}}
@@ -1357,19 +1652,22 @@ function zeigeErstellen(erstes,fehlerText,werte){
     '<form id="g-form" novalidate>'+
     '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus></div>'+
     (TEAMS.length?'<div class="feld"><span class="label">In welchem Team arbeitest du?</span>'+teamWahl(werte.team)+'</div>':'')+
+    funktionFeld(werte.funktion)+responsableFeld(werte.responsable,null)+
     '<div class="feld"><label for="g-pw1">Passwort</label><input id="g-pw1" type="password" autocomplete="off" aria-describedby="g-pw-hilfe"><span class="hilfe" id="g-pw-hilfe">Mindestens 10 Zeichen. Ein kurzer Satz ist leicht zu merken und sicher.</span></div>'+
     '<div class="feld"><label for="g-pw2">Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
     '<button class="btn primary voll" type="submit" id="g-los">Konto erstellen</button></form>'+
     (konten.length?'<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>':''),true);
   formular('g-form',function(){
-    var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value, w={name:name,team:t};
+    var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value;
+    var fu=$('g-funktion').value.trim().replace(/\s+/g,' '), re=gewaehlterResponsable(), w={name:name,team:t,funktion:fu,responsable:re};
     if(name.length<3){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',w);return;}
     if(konten.some(function(k){return k.name.toLowerCase()===name.toLowerCase();})){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
     if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',w);return;}
+    if(re===null){zeigeErstellen(erstes,'Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
     var pr=pwProblem(pw1,name);if(pr){zeigeErstellen(erstes,pr,w);return;}
     if(pw1!==pw2){zeigeErstellen(erstes,'Die beiden Passwörter sind nicht gleich.',w);return;}
     beschaeftigt($('g-los'),true,'Konto wird verschlüsselt …');
-    ordnerBereit().then(function(){return kontoErstellen(name,t,pw1);}).then(zeigeCode).catch(function(e){
+    ordnerBereit().then(function(){return kontoErstellen(name,t,pw1,{funktion:fu,responsable:re});}).then(zeigeCode).catch(function(e){
       zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+text(e)+'. Ist der Server erreichbar?',w);
     });
   });
@@ -1470,20 +1768,23 @@ function zeigePasswortAendern(fehlerText){
   });
   $('g-abbruch').onclick=dialogZu;
 }
-function zeigeTeamAendern(fehlerText){
+function zeigeProfilAendern(fehlerText,werte){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
+  werte=werte||{team:sitzung.team,funktion:sitzung.funktion||k.funktion||'',responsable:(sitzung.responsable!=null?sitzung.responsable:k.responsable)};
   tor(true,true);
-  karte('<h2>Team ändern</h2><p class="sub">Das Team bestimmt, welche Apps du im Hub siehst. Deine Daten bleiben erhalten.</p>'+(fehlerText?meldung(fehlerText):'')+
-    '<form id="g-form" novalidate><div class="feld">'+teamWahl(sitzung.team)+'</div>'+
+  karte('<h2>Profil ändern</h2><p class="sub">Team, Funktion und Responsable. Das Team bestimmt, welche Apps du siehst; deine Responsable sieht deinen Einsatzplan.</p>'+(fehlerText?meldung(fehlerText):'')+
+    '<form id="g-form" novalidate>'+(TEAMS.length?'<div class="feld"><span class="label">Team</span>'+teamWahl(werte.team)+'</div>':'')+
+    funktionFeld(werte.funktion)+responsableFeld(werte.responsable,sitzung.id)+
     '<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>'+
     '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>',true);
   formular('g-form',function(){
-    var t=gewaehltesTeam(), alt=$('g-alt').value;
-    if(!t){zeigeTeamAendern('Bitte wähle ein Team.');return;}
+    var w={team:TEAMS.length?gewaehltesTeam():sitzung.team,funktion:$('g-funktion').value.trim().replace(/\s+/g,' '),responsable:gewaehlterResponsable()}, alt=$('g-alt').value;
+    if(!w.team){zeigeProfilAendern('Bitte wähle ein Team.',w);return;}
+    if(w.responsable===null){zeigeProfilAendern('Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
     beschaeftigt($('g-los'),true,'Speichere …');
-    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return teamSetzen(k,s.dek,s.prof,t);})
-      .then(function(){sitzung.team=t;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
-      .catch(function(e){zeigeTeamAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.');});
+    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return profilSetzen(k,s.dek,s.prof,w);})
+      .then(function(){sitzung.team=w.team;sitzung.funktion=w.funktion;sitzung.responsable=w.responsable;sitzung.rg=true;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
+      .catch(function(e){zeigeProfilAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.',w);});
   });
   $('g-abbruch').onclick=dialogZu;
 }
@@ -1576,6 +1877,57 @@ function zeigeStaende(fehlerText){
 }
 document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')&&!g.querySelector('button:disabled')){dialogZu();}}});
 
+/* ---------- Schnittstelle für den gemeinsamen Bereich (Schüler, Einsatzplan) ---------- */
+/* Privater Schlüssel der angemeldeten Person. Fehlt er (z. B. nach der Sperre),
+   wird einmal das Passwort erfragt. */
+function privat(grund){
+  if(!sitzung){return Promise.reject(fehler('Nicht angemeldet'));}
+  if(tresor.priv&&tresor.id===sitzung.id){return Promise.resolve(tresor.priv);}
+  var k=kontoVon(sitzung.id);
+  if(!k){return Promise.reject(fehler('Dein Konto wurde im Hub-Ordner nicht gefunden'));}
+  return new Promise(function(res,rej){
+    function zeige(fehlerText){
+      tor(true,true);
+      karte(kontoKopf(k)+'<h2>Passwort bestätigen</h2><p class="sub">'+esc(grund||'Für die Schülerdaten')+' braucht der Hub einmal dein Passwort.</p>'+(fehlerText?meldung(fehlerText):'')+
+        '<form id="g-form" novalidate><div class="feld"><label for="g-pw">Passwort</label><input id="g-pw" type="password" autocomplete="off" autofocus></div>'+
+        '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Bestätigen</button></div></form>');
+      formular('g-form',function(){
+        var pw=$('g-pw').value, b=$('g-los'), w=gebremst(k.id);
+        if(w){zeige('Zu viele Versuche. Bitte warte noch '+w+' Sekunden.');return;}
+        if(!pw){zeige('Bitte gib dein Passwort ein.');return;}
+        beschaeftigt(b,true,'Prüfe …');
+        ordnerBereit().then(function(){k=kontoVon(k.id)||k;return anmeldenMit(k,pw,'passwort');}).then(schluesselBereit).then(function(s2){
+          if(s2.roh&&s2.roh.fill){s2.roh.fill(0);}
+          tresor={id:s2.id,pub:s2.pub,priv:s2.priv};geprueftMerken(s2.id,s2.hash);sitzungsSchluesselMerken();
+          dialogZu();res(s2.priv);
+        }).catch(function(e){if(e&&e.falsch){fehlversuch(k.id);zeige('Das Passwort stimmt nicht.');return;}zeige('Das ging nicht: '+text(e)+'.');});
+      });
+      $('g-abbruch').onclick=function(){dialogZu();var e=fehler('Abgebrochen');e.abgebrochen=true;rej(e);};
+    }
+    zeige();
+  });
+}
+function oeffentlichesKonto(k){var t=team(k.team);return {id:k.id,name:k.name,team:k.team,teamName:t.name,teamFarbe:t.farbe,funktion:k.funktion||'',responsable:k.responsable||'',hatSchluessel:!!k.oeffentlich};}
+function kontoPub(id){var k=kontoVon(id);if(!k||!k.oeffentlich){return Promise.reject(fehler('Für dieses Konto gibt es keinen Schlüssel'));}return pubVon(k.oeffentlich);}
+/* Kontrollcode eines Kontos (aus dem Fingerabdruck des öffentlichen Schlüssels).
+   Beim Freischalten vergleichen: steht auf beiden Bildschirmen derselbe Code,
+   gehört der Schlüssel wirklich dieser Person. */
+function kontrollcode(id){
+  var k=kontoVon(id);if(!k||!k.oeffentlich){return Promise.resolve('');}
+  return crypto.subtle.digest('SHA-256',unb64(k.oeffentlich)).then(function(h){var b=new Uint8Array(h),c='';for(var i=0;i<8;i++){c+=ALPHA.charAt(b[i]&31);if(i===3){c+='-';}}return c;});
+}
+/* Dateien im Hub-Ordner (ohne Nachfrage; fehlt der Zugriff, zeigt die Seitenleiste den Knopf) */
+function ordnerDa(){
+  if(!ordner){return Promise.reject(fehler('Kein Zugriff auf den Hub-Ordner'));}
+  return recht(ordner,false).then(function(r){if(r!=='granted'){throw fehler('Kein Zugriff auf den Hub-Ordner');}return ordner;});
+}
+var speicher={
+  lesen:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return dateiLesen(d,name);});},
+  schreiben:function(pfad,name,inhalt){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return dateiSchreiben(d,name,inhalt);});},
+  liste:function(pfad){return ordnerDa().then(function(){return unterordner(pfad);}).then(eintraege).then(function(l){return l.map(function(h){return h.name;});});},
+  loeschen:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return d.removeEntry(name).catch(function(e){if(e&&e.name==='NotFoundError'){return;}throw e;});});}
+};
+
 /* ---------- Start ---------- */
 function start(callbacks){
   cb=callbacks||{};
@@ -1592,6 +1944,7 @@ function start(callbacks){
         return ladeKonten().then(tresorWiederaufnehmen);
       });
     }
+    sitzungsSchluesselLoeschen();   /* keine Sitzung: ein übrig gebliebener Schlüssel wird entfernt */
     if(!ordner){zeigeVerbinden(null,false);return;}
     return recht(ordner,false).then(function(r){
       if(r==='granted'){return ladeKonten().then(zeigeStart);}
@@ -1606,7 +1959,7 @@ return {
   menue:function(aktion){
     if(!sitzung){return;}
     if(aktion==='passwort'){zeigePasswortAendern();}
-    else if(aktion==='team'){zeigeTeamAendern();}
+    else if(aktion==='team'||aktion==='profil'){zeigeProfilAendern();}
     else if(aktion==='staende'){zeigeStaende();}
     else if(aktion==='abmelden'){abmelden();}
   },
@@ -1622,8 +1975,1426 @@ return {
   },
   pfad:pfadHinweis,
   team:team,
-  initialen:initialen
+  initialen:initialen,
+  /* für den gemeinsamen Bereich */
+  ich:function(){return sitzung?oeffentlich(sitzung):null;},
+  konten:function(){return konten.map(oeffentlichesKonto);},
+  kontenNeu:function(){return ordnerDa().then(ladeKonten).then(function(l){return l.map(oeffentlichesKonto);});},
+  privat:privat,
+  privatDa:function(){return !!(sitzung&&tresor.priv&&tresor.id===sitzung.id);},
+  kontoPub:kontoPub,
+  kontrollcode:kontrollcode,
+  sitzungsId:function(){return sitzung?sitzung.sid:'';},
+  speicher:speicher
 };
+})();
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Gemeinsamer Bereich: Schülerdossiers und Einsatzpläne
+   ---------------------------------------------------------------------
+   Schülerdaten sind mit einem gemeinsamen Schlüssel (AES-GCM 256)
+   verschlüsselt. Diesen Schlüssel bekommt jedes freigeschaltete Konto -
+   verschlossen mit seinem öffentlichen Schlüssel (RSA-OAEP 3072) in
+   gemeinsam/schluessel.json. Wer (noch) nicht freigeschaltet ist, kann
+   keine Schülerdaten lesen. Freischalten dürfen die Verwaltung (Admin)
+   und die Responsables.
+
+   gemeinsam/schluessel.json    Schlüsselring (je Konto der verschlossene Schlüssel)
+   gemeinsam/mitglieder.cdse    Rollen: admin, responsable, mitarbeiter (verschlüsselt)
+   gemeinsam/schueler/<id>.cdse ein Dossier pro Schüler (verschlüsselt)
+   gemeinsam/einsatz/<konto>.cdse  Einsatzplan einer Person - nur lesbar für
+                                sie selbst, ihre Responsable und die Verwaltung
+
+   Rechte (Dossiers): Alle Freigeschalteten lesen. Bearbeiten dürfen die
+   Verwaltung, die Responsables, die Fallverantwortlichen und alle, denen
+   ein Recht gegeben wurde. Jede Änderung steht im Verlauf des Dossiers.
+   Ehrliche Grenze: Ohne Server sind die Rechte eine Regel der App (wie die
+   Teams). Sie verhindern versehentliche Änderungen und machen alles
+   nachvollziehbar; gegen absichtliches Manipulieren von Dateien schützen
+   nur die Ordnerrechte auf O:\ (IT).
+   ===================================================================== */
+window.CDSE_TEAM=(function(){
+'use strict';
+var K=window.CDSE_KONTO;
+var P_BEREICH=['gemeinsam'], P_SCHUELER=['gemeinsam','schueler'], P_EINSATZ=['gemeinsam','einsatz'];
+var RSA={name:'RSA-OAEP',hash:'SHA-256'};
+var ALPHA='0123456789abcdefghjkmnpqrstvwxyz';
+var te=new TextEncoder(), td=new TextDecoder();
+var zustand={art:'unbekannt'};       /* unbekannt | kein-bereich | wartet | bereit | fehler */
+var ring=null, orgKey=null, mitgl=null, cache={}, cacheZeit=0;
+
+/* ---------- Hilfen ---------- */
+function fehler(t){return new Error(t);}
+function b64(buf){var b=buf instanceof Uint8Array?buf:new Uint8Array(buf),s='';for(var i=0;i<b.length;i+=32768){s+=String.fromCharCode.apply(null,b.subarray(i,i+32768));}return btoa(s);}
+function unb64(s){var t=atob(s),b=new Uint8Array(t.length);for(var i=0;i<t.length;i++){b[i]=t.charCodeAt(i);}return b;}
+function rnd(n){var b=new Uint8Array(n);crypto.getRandomValues(b);return b;}
+function neueId(n){var b=rnd(n||12),s='';for(var i=0;i<b.length;i++){s+=ALPHA.charAt(b[i]&31);}return s;}
+function jetzt(){return new Date().toISOString();}
+function ich(){return K.ich();}
+function gzip(bytes){
+  if(typeof CompressionStream==='undefined'){return Promise.resolve(null);}
+  return new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer().then(function(ab){return new Uint8Array(ab);});
+}
+function gunzip(bytes){return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer().then(function(ab){return new Uint8Array(ab);});}
+function aesVersiegeln(key,obj,kopf){
+  var roh=te.encode(JSON.stringify(obj)), iv=rnd(12);
+  return gzip(roh).then(function(z){
+    return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,z||roh).then(function(ct){
+      var box={};Object.keys(kopf||{}).forEach(function(k){box[k]=kopf[k];});
+      box.gzip=!!z;box.iv=b64(iv);box.ct=b64(ct);box.gespeichert=jetzt();
+      return JSON.stringify(box);
+    });
+  });
+}
+function aesOeffnen(key,box){
+  return crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},key,unb64(box.ct))
+    .then(function(ab){var b=new Uint8Array(ab);return box.gzip?gunzip(b):b;})
+    .then(function(b){return JSON.parse(td.decode(b));});
+}
+function aesKey(roh,export_){return crypto.subtle.importKey('raw',roh,'AES-GCM',!!export_,['encrypt','decrypt']);}
+/* Kleiner Speicher im Browser (dieselbe Datenbank wie das Konto-Modul) */
+function idb(){return new Promise(function(res,rej){var r=indexedDB.open('cdse-hub',1);r.onupgradeneeded=function(){r.result.createObjectStore('kv');};r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};});}
+function idbGet(k){return idb().then(function(db){return new Promise(function(res){var q=db.transaction('kv','readonly').objectStore('kv').get(k);q.onsuccess=function(){res(q.result);};q.onerror=function(){res(undefined);};});}).catch(function(){return undefined;});}
+function idbSet(k,v){return idb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});}).catch(function(){});}
+function json(t){if(!t){return null;}try{return JSON.parse(t);}catch(e){return null;}}
+/* Mehrere Dateien gleichzeitig, aber nicht zu viele (Netzlaufwerk) */
+function parallel(liste,n,fn){
+  var i=0, erg=new Array(liste.length);
+  function weiter(){if(i>=liste.length){return Promise.resolve();}var j=i++;return Promise.resolve(fn(liste[j],j)).then(function(r){erg[j]=r;},function(e){erg[j]={fehler:e};}).then(weiter);}
+  var w=[];for(var k=0;k<Math.min(n,liste.length);k++){w.push(weiter());}
+  return Promise.all(w).then(function(){return erg;});
+}
+
+/* =====================================================================
+   Bereich: Schlüsselring, Freischalten, Rollen
+   ===================================================================== */
+function ringLesen(){return K.speicher.lesen(P_BEREICH,'schluessel.json').then(json);}
+function ringSchreiben(r){return K.speicher.schreiben(P_BEREICH,'schluessel.json',JSON.stringify(r,null,1));}
+function mitgliederLesen(){
+  return K.speicher.lesen(P_BEREICH,'mitglieder.cdse').then(function(t){var b=json(t);return b?aesOeffnen(orgKey,b):{v:1,rev:0,mitglieder:{},verlauf:[]};});
+}
+function mitgliederSchreiben(m){return aesVersiegeln(orgKey,m,{format:'cdse-mitglieder',version:1}).then(function(t){return K.speicher.schreiben(P_BEREICH,'mitglieder.cdse',t);});}
+function mitgliederAendern(fn,text){
+  return mitgliederLesen().then(function(m){
+    fn(m);m.rev=(m.rev|0)+1;
+    m.verlauf=(m.verlauf||[]).concat([{z:jetzt(),v:ich().id,t:text}]).slice(-300);
+    return mitgliederSchreiben(m).then(function(){mitgl=m;return m;});
+  });
+}
+/* Beim Öffnen: Wo stehe ich? Liefert den Zustand. */
+function laden(opt){
+  opt=opt||{};
+  var me=ich();
+  if(!me){zustand={art:'unbekannt'};return Promise.resolve(zustand);}
+  return ringLesen().then(function(r){
+    ring=r;
+    if(!r||r.format!=='cdse-schluesselring'){zustand={art:'kein-bereich'};return zustand;}
+    if(!r.fuer||!r.fuer[me.id]){orgKey=null;zustand={art:'wartet'};return zustand;}
+    return schluesselHolen(me,opt.leise).then(function(){return mitgliederLesen();}).then(function(m){mitgl=m;zustand={art:'bereit'};return zustand;});
+  }).catch(function(e){if(e&&e.abgebrochen){zustand={art:'gesperrt'};return zustand;}zustand={art:'fehler',text:(e&&e.message)||String(e)};return zustand;});
+}
+/* Den gemeinsamen Schlüssel holen: aus der Sitzung oder mit dem privaten Schlüssel */
+function schluesselHolen(me,leise){
+  if(orgKey){return Promise.resolve(orgKey);}
+  return idbGet('team-schluessel').then(function(x){
+    if(x&&x.key&&x.sid===K.sitzungsId()&&x.konto===me.id&&x.gen===(ring.gen|0)){orgKey=x.key;return orgKey;}
+    /* im Hintergrund nie nach dem Passwort fragen */
+    if(leise&&!K.privatDa()){var e=fehler('Passwort nötig');e.abgebrochen=true;throw e;}
+    return K.privat('Für die Schülerdaten').then(function(priv){
+      return crypto.subtle.decrypt(RSA,priv,unb64(ring.fuer[me.id].k)).then(function(raw){
+        return aesKey(new Uint8Array(raw),false).then(function(k){
+          orgKey=k;
+          return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:ring.gen|0,key:k}).then(function(){return k;});
+        });
+      });
+    });
+  });
+}
+/* Beim Abmelden/Sperren alles vergessen */
+function vergessen(){ring=null;orgKey=null;mitgl=null;cache={};cacheZeit=0;zustand={art:'unbekannt'};return idbSet('team-schluessel',null);}
+/* Erste Einrichtung: wer das macht, wird Verwaltung (Admin) */
+function einrichten(){
+  var me=ich();
+  return ringLesen().then(function(r){
+    if(r&&r.format==='cdse-schluesselring'){throw fehler('Der Schülerbereich ist schon eingerichtet');}
+    var raw=rnd(32);
+    return K.kontoPub(me.id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,raw);}).then(function(w){
+      ring={format:'cdse-schluesselring',version:1,gen:1,erstellt:jetzt(),erstelltVon:me.id,fuer:{}};
+      ring.fuer[me.id]={k:b64(w),von:me.id,am:jetzt()};
+      return aesKey(raw,false);
+    }).then(function(k){
+      raw.fill(0);orgKey=k;
+      var m={v:1,rev:1,mitglieder:{},verlauf:[{z:jetzt(),v:me.id,t:'Schülerbereich eingerichtet'}]};
+      m.mitglieder[me.id]={rolle:'admin',seit:jetzt(),von:me.id};
+      return ringSchreiben(ring).then(function(){return mitgliederSchreiben(m);}).then(function(){
+        mitgl=m;zustand={art:'bereit'};
+        return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:1,key:k});
+      });
+    });
+  });
+}
+function rolle(id){
+  if(!ring||!ring.fuer||!ring.fuer[id]){return null;}
+  var m=mitgl&&mitgl.mitglieder&&mitgl.mitglieder[id];
+  return (m&&m.rolle)||'mitarbeiter';
+}
+function istAdmin(id){return rolle(id||ich().id)==='admin';}
+function istResponsable(id){var r=rolle(id||ich().id);return r==='responsable'||r==='admin';}
+function darfFreischalten(){return zustand.art==='bereit'&&istResponsable();}
+/* Konten, die auf Freischaltung warten */
+function wartende(){
+  if(!ring){return [];}
+  return K.konten().filter(function(k){return k.hatSchluessel&&!(ring.fuer&&ring.fuer[k.id]);});
+}
+function freischalten(id){
+  if(!darfFreischalten()){return Promise.reject(fehler('Freischalten dürfen die Verwaltung und die Responsables'));}
+  var me=ich();
+  return K.privat('Zum Freischalten').then(function(priv){
+    return ringLesen().then(function(r){
+      ring=r;
+      if(r.fuer[id]){return;}
+      return crypto.subtle.decrypt(RSA,priv,unb64(r.fuer[me.id].k)).then(function(raw){
+        return K.kontoPub(id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,raw);}).then(function(w){
+          new Uint8Array(raw).fill(0);
+          r.fuer[id]={k:b64(w),von:me.id,am:jetzt()};
+          return ringSchreiben(r);
+        });
+      });
+    });
+  }).then(function(){
+    var k=K.konten().filter(function(x){return x.id===id;})[0];
+    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:'mitarbeiter',seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id));
+  });
+}
+/* Zugang entziehen (nur Verwaltung). Hinweis: Wer den Schlüssel schon hatte,
+   konnte Daten bereits sehen - das lässt sich nicht rückgängig machen. */
+function entziehen(id){
+  if(!istAdmin()){return Promise.reject(fehler('Nur die Verwaltung kann den Zugang entziehen'));}
+  if(id===ich().id){return Promise.reject(fehler('Den eigenen Zugang kannst du nicht entziehen'));}
+  return ringLesen().then(function(r){ring=r;delete r.fuer[id];return ringSchreiben(r);}).then(function(){
+    var k=K.konten().filter(function(x){return x.id===id;})[0];
+    return mitgliederAendern(function(m){delete m.mitglieder[id];},'Zugang entzogen: '+(k?k.name:id));
+  });
+}
+function rolleSetzen(id,neu){
+  if(!istAdmin()){return Promise.reject(fehler('Rollen vergibt die Verwaltung'));}
+  if(['admin','responsable','mitarbeiter'].indexOf(neu)<0){return Promise.reject(fehler('Unbekannte Rolle'));}
+  if(id===ich().id&&neu!=='admin'){
+    var admins=Object.keys((mitgl&&mitgl.mitglieder)||{}).filter(function(x){return mitgl.mitglieder[x].rolle==='admin';});
+    if(admins.length<2){return Promise.reject(fehler('Es muss mindestens eine Verwaltung (Admin) geben'));}
+  }
+  var k=K.konten().filter(function(x){return x.id===id;})[0];
+  var namen={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
+  return mitgliederAendern(function(m){var e=m.mitglieder[id]||(m.mitglieder[id]={seit:jetzt(),von:ich().id});e.rolle=neu;e.geaendert=jetzt();},'Rolle von '+(k?k.name:id)+': '+namen[neu]);
+}
+function mitglieder(){
+  var m=(mitgl&&mitgl.mitglieder)||{};
+  return K.konten().map(function(k){var e=m[k.id];k.rolle=rolle(k.id);k.freigeschaltet=!!(ring&&ring.fuer&&ring.fuer[k.id]);k.seit=e&&e.seit;return k;});
+}
+function bereichsVerlauf(){return ((mitgl&&mitgl.verlauf)||[]).slice().reverse();}
+
+/* =====================================================================
+   Schülerdossiers
+   ===================================================================== */
+function istBereit(){if(zustand.art!=='bereit'||!orgKey){throw fehler('Der Schülerbereich ist nicht geöffnet');}}
+function dateiName(id){return id+'.cdse';}
+function dossierLesen(id){
+  return K.speicher.lesen(P_SCHUELER,dateiName(id)).then(function(t){
+    var b=json(t);if(!b){throw fehler('Dossier nicht gefunden');}
+    if(b.format!=='cdse-dossier'){throw fehler('Unbekanntes Dateiformat');}
+    return aesOeffnen(orgKey,b);
+  });
+}
+function dossierSchreiben(d){return aesVersiegeln(orgKey,d,{format:'cdse-dossier',version:1,id:d.id,gen:ring.gen|0}).then(function(t){return K.speicher.schreiben(P_SCHUELER,dateiName(d.id),t);});}
+/* Alle Dossiers laden (für die Liste). Mit Zwischenspeicher für die Sitzung. */
+function alleDossiers(neu){
+  istBereit();
+  if(!neu&&cacheZeit&&Date.now()-cacheZeit<60000){return Promise.resolve(Object.keys(cache).map(function(k){return cache[k];}));}
+  return K.speicher.liste(P_SCHUELER).then(function(namen){
+    namen=namen.filter(function(n){return /^[0-9a-z]+\.cdse$/.test(n);});
+    return parallel(namen,6,function(n){return dossierLesen(n.replace(/\.cdse$/,''));});
+  }).then(function(l){
+    var neuCache={}, kaputt=0;
+    l.forEach(function(d){if(d&&d.id&&!d.fehler){neuCache[d.id]=d;}else{kaputt++;}});
+    cache=neuCache;cacheZeit=Date.now();
+    var liste=Object.keys(cache).map(function(k){return cache[k];});
+    liste.kaputt=kaputt;
+    return liste;
+  });
+}
+function dossier(id,neu){
+  istBereit();
+  if(!neu&&cache[id]){return Promise.resolve(cache[id]);}
+  return dossierLesen(id).then(function(d){cache[id]=d;return d;});
+}
+/* Rechte an einem Dossier */
+function rechte(d,id){
+  id=id||ich().id;
+  var r=rolle(id), verantwortlich=(d.verantwortlich||[]).indexOf(id)>=0, gegeben=!!(d.rechte&&d.rechte[id]);
+  var leitend=r==='admin'||r==='responsable'||verantwortlich;
+  return {lesen:!!r, bearbeiten:leitend||gegeben, weitergeben:leitend, rechteVergeben:leitend, status:leitend, loeschen:r==='admin',
+          grund:r==='admin'?'Verwaltung':(r==='responsable'?'Responsable':(verantwortlich?'Fallverantwortlich':(gegeben?'Schreibrecht erhalten':'nur lesen')))};
+}
+function neuesDossier(person,opt){
+  istBereit();opt=opt||{};
+  var me=ich(), id=neueId(12), t=jetzt();
+  var stelle=opt.stelle||((window.CDSE_TEAMS||[]).some(function(x){return x.id===me.team;})?me.team:'diagnostique');
+  var d={v:1,id:id,rev:1,erstellt:t,erstelltVon:me.id,geaendert:t,geaendertVon:me.id,
+    person:person||{},status:'aktiv',statusSeit:t.slice(0,10),stelle:stelle,stelleSeit:t.slice(0,10),
+    verantwortlich:[me.id],rechte:{},profil:null,einschaetzungen:[],eintraege:[],
+    verlauf:[{z:t,v:me.id,a:'angelegt',t:'Dossier angelegt'}]};
+  return dossierSchreiben(d).then(function(){cache[id]=d;return d;});
+}
+/* Ändern: immer auf dem neuesten Stand der Datei, Rechte prüfen, Verlauf schreiben.
+   fn(d, recht) ändert d und liefert den Text für den Verlauf (oder wirft einen Fehler). */
+function aendern(id,fn,art){
+  istBereit();
+  var me=ich();
+  return dossierLesen(id).then(function(d){
+    var r=rechte(d,me.id);
+    var text=fn(d,r);
+    if(text===false){return d;}
+    d.rev=(d.rev|0)+1;d.geaendert=jetzt();d.geaendertVon=me.id;
+    d.verlauf=(d.verlauf||[]).concat([{z:d.geaendert,v:me.id,a:art||'geaendert',t:String(text||'Geändert')}]);
+    /* kurz vor dem Schreiben prüfen, ob inzwischen jemand anderes gespeichert hat */
+    return dossierLesen(id).then(function(frisch){
+      if((frisch.rev|0)!==(d.rev|0)-1){var e=fehler('Das Dossier wurde gerade von jemand anderem geändert. Bitte noch einmal versuchen.');e.konflikt=true;throw e;}
+      return dossierSchreiben(d);
+    }).then(function(){cache[id]=d;return d;});
+  });
+}
+function brauche(r,was){if(!r[was]){throw fehler(was==='bearbeiten'?'Du hast für dieses Dossier nur Leserechte. Bitte die Fallverantwortlichen um ein Schreibrecht.':'Dafür fehlt dir das Recht. Das dürfen die Fallverantwortlichen, die Responsables und die Verwaltung.');}}
+function name(id){var k=K.konten().filter(function(x){return x.id===id;})[0];return k?k.name:'(gelöschtes Konto)';}
+function teamName(id){return K.team(id).name;}
+var ops={
+  person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
+  status:function(id,status,grund,datum){return aendern(id,function(d,r){
+    brauche(r,'status');if(d.status===status){return false;}
+    d.status=status;d.statusGrund=grund||'';d.statusSeit=datum||jetzt().slice(0,10);
+    return status==='aktiv'?'Wieder aktiv':'Inaktiv gesetzt'+(grund?' ('+grund+')':'');
+  },'status');},
+  weitergeben:function(id,opt){return aendern(id,function(d,r){
+    brauche(r,'weitergeben');
+    var alt=d.stelle, altVer=(d.verantwortlich||[]).slice();
+    d.stelle=opt.stelle;d.stelleSeit=jetzt().slice(0,10);
+    if(opt.verantwortlich){d.verantwortlich=[opt.verantwortlich];}
+    if(opt.bisherigeBehalten){altVer.forEach(function(x){if((d.verantwortlich||[]).indexOf(x)<0){d.rechte[x]={von:ich().id,am:jetzt()};}});}
+    d.weitergaben=(d.weitergaben||[]).concat([{z:jetzt(),von:alt,an:opt.stelle,durch:ich().id,verantwortlich:opt.verantwortlich||'',notiz:opt.notiz||''}]);
+    return 'Weitergegeben: '+teamName(alt)+' → '+teamName(opt.stelle)+(opt.verantwortlich?' (fallverantwortlich: '+name(opt.verantwortlich)+')':'')+(opt.notiz?' – '+opt.notiz:'');
+  },'weitergabe');},
+  rechtGeben:function(id,konto){return aendern(id,function(d,r){brauche(r,'rechteVergeben');if(d.rechte[konto]){return false;}d.rechte[konto]={von:ich().id,am:jetzt()};return 'Schreibrecht für '+name(konto);},'recht');},
+  rechtNehmen:function(id,konto){return aendern(id,function(d,r){brauche(r,'rechteVergeben');if(!d.rechte[konto]){return false;}delete d.rechte[konto];return 'Schreibrecht entzogen: '+name(konto);},'recht');},
+  verantwortlich:function(id,liste){return aendern(id,function(d,r){brauche(r,'weitergeben');if(!liste.length){throw fehler('Mindestens eine Person muss fallverantwortlich sein');}d.verantwortlich=liste.slice();return 'Fallverantwortlich: '+liste.map(name).join(', ');},'recht');},
+  eintrag:function(id,e){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var neu={id:neueId(8),datum:e.datum||jetzt().slice(0,10),art:e.art||'notiz',titel:e.titel||'',text:e.text||'',von:ich().id,z:jetzt()};
+    d.eintraege=(d.eintraege||[]).concat([neu]);
+    return 'Eintrag: '+(e.titel||e.art||'Notiz');
+  },'eintrag');},
+  eintragAendern:function(id,eid,werte){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){throw fehler('Eintrag nicht gefunden');}
+    if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge ändern dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
+    ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null){e[k]=werte[k];}});e.geaendert=jetzt();e.geaendertVon=ich().id;
+    return 'Eintrag geändert: '+(e.titel||e.art);
+  },'eintrag');},
+  eintragLoeschen:function(id,eid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return false;}
+    if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge löschen dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
+    d.eintraege=d.eintraege.filter(function(x){return x.id!==eid;});
+    return 'Eintrag gelöscht: '+(e.titel||e.art)+' vom '+e.datum;
+  },'eintrag');},
+  profil:function(id,profil,text){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.profil=profil;return text||'Profil übernommen';},'profil');},
+  einschaetzung:function(id,e){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    d.einschaetzungen=(d.einschaetzungen||[]).concat([{id:neueId(8),datum:e.datum||jetzt().slice(0,10),bereich:e.bereich||'schule',bewertungen:e.bewertungen||{},notiz:e.notiz||'',von:ich().id,z:jetzt()}]);
+    return 'Neue Einschätzung ('+Object.keys(e.bewertungen||{}).length+' Aussagen)';
+  },'einschaetzung');},
+  loeschen:function(id){
+    istBereit();
+    return dossierLesen(id).then(function(d){
+      if(!rechte(d).loeschen){throw fehler('Löschen darf nur die Verwaltung');}
+      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){delete cache[id];
+        return mitgliederAendern(function(){},'Dossier gelöscht: '+((d.person&&(d.person.nachname+', '+d.person.vorname))||id));});
+    });
+  }
+};
+
+/* =====================================================================
+   Einsatzplan: jede Person verschlüsselt ihren Plan für sich, ihre
+   Responsable und die Verwaltung (je ein verschlossener Schlüssel)
+   ===================================================================== */
+function planDatei(id){return id+'.cdse';}
+function empfaengerFuer(me){
+  var l=[me.id];
+  if(me.responsable&&l.indexOf(me.responsable)<0){l.push(me.responsable);}
+  var m=(mitgl&&mitgl.mitglieder)||{};
+  Object.keys(m).forEach(function(id){if(m[id].rolle==='admin'&&l.indexOf(id)<0){l.push(id);}});
+  return l.filter(function(id){return K.konten().some(function(k){return k.id===id&&k.hatSchluessel;});});
+}
+function planSpeichern(plan){
+  var me=ich(), empf=empfaengerFuer(me), raw=rnd(32);
+  plan.konto=me.id;plan.geaendert=jetzt();
+  return aesKey(raw,false).then(function(key){
+    return Promise.all(empf.map(function(id){return K.kontoPub(id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,raw);}).then(function(w){return [id,b64(w)];},function(){return null;});}))
+      .then(function(ws){
+        raw.fill(0);
+        var fuer={};ws.filter(Boolean).forEach(function(x){fuer[x[0]]=x[1];});
+        return aesVersiegeln(key,plan,{format:'cdse-einsatz',version:1,konto:me.id,fuer:fuer});
+      });
+  }).then(function(t){return K.speicher.schreiben(P_EINSATZ,planDatei(me.id),t);}).then(function(){return {plan:plan,empfaenger:empf};});
+}
+function planOeffnen(box,priv){
+  var me=ich();
+  if(!box||box.format!=='cdse-einsatz'||!box.fuer||!box.fuer[me.id]){return Promise.resolve(null);}
+  return crypto.subtle.decrypt(RSA,priv,unb64(box.fuer[me.id])).then(function(raw){return aesKey(new Uint8Array(raw),false);}).then(function(key){return aesOeffnen(key,box);});
+}
+function meinPlan(){
+  var me=ich();
+  return K.speicher.lesen(P_EINSATZ,planDatei(me.id)).then(function(t){
+    var b=json(t);if(!b){return null;}
+    return K.privat('Für deinen Einsatzplan').then(function(priv){return planOeffnen(b,priv);}).then(function(p){
+      if(p){p.__empfaenger=Object.keys(b.fuer||{});}
+      return p;
+    });
+  });
+}
+/* Alle Pläne, die ich lesen darf (Responsable: mein Team, Verwaltung: alle, die für mich verschlüsselt haben) */
+function lesbarePlaene(){
+  var me=ich();
+  return K.speicher.liste(P_EINSATZ).then(function(namen){
+    namen=namen.filter(function(n){return /\.cdse$/.test(n);});
+    return K.privat('Für die Einsatzpläne deines Teams').then(function(priv){
+      return parallel(namen,6,function(n){
+        return K.speicher.lesen(P_EINSATZ,n).then(function(t){var b=json(t);if(!b||!b.fuer||!b.fuer[me.id]){return null;}
+          return planOeffnen(b,priv).then(function(p){if(p){p.konto=b.konto;p.__gespeichert=b.gespeichert;}return p;});});
+      });
+    });
+  }).then(function(l){return l.filter(function(p){return p&&!p.fehler&&p.konto;});});
+}
+
+return {
+  zustand:function(){return zustand;},
+  laden:laden, einrichten:einrichten, vergessen:vergessen,
+  rolle:rolle, istAdmin:istAdmin, istResponsable:istResponsable, darfFreischalten:darfFreischalten,
+  wartende:wartende, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
+  mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
+  alleDossiers:alleDossiers, dossier:dossier, neuesDossier:neuesDossier, rechte:rechte, ops:ops,
+  planSpeichern:planSpeichern, meinPlan:meinPlan, lesbarePlaene:lesbarePlaene, empfaengerFuer:function(){return empfaengerFuer(ich());},
+  name:name, neueId:neueId
+};
+})();
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Arbeit: Schüler, Dossiers, Einsatzplan, Team, Verwaltung
+   ---------------------------------------------------------------------
+   Oberfläche zum Modul CDSE_TEAM. Wird vom Hub-Router aufgerufen:
+     #/schueler              Liste aller Schüler (aktiv / inaktiv)
+     #/schueler/<id>         Dossier eines Schülers
+     #/einsatz               Mein Einsatzplan (Wochenplan + Ausnahmen)
+     #/team                  Mein Team: wer ist gerade wo (Responsables)
+     #/verwaltung            Freischalten, Rollen, Protokoll
+   Das Profil eines Schülers kommt aus dem DS des ELDiB-Generators
+   (Aussagen 1-7): Stärken, Schwierigkeiten, was hilft, wann es schwierig
+   wird, Bedürfnisse. Dafür lädt der Hub apps/ds-motor.js (Text-Motor des
+   ELDiB-Generators); fehlt die Datei, zeigt das Dossier nur die Fakten.
+   ===================================================================== */
+window.CDSE_ARBEIT=(function(){
+'use strict';
+var K=window.CDSE_KONTO, T=window.CDSE_TEAM;
+var TEAMS=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id;});
+var $=function(id){return document.getElementById(id);};
+var akt={seite:'',param:''}, filter={status:'aktiv',stelle:'',meine:false,q:''};
+var dossierTab='ueberblick', geladen=false, ladeVersprechen=null;
+var planEntwurf=null, planDirty=false, teamAnsicht='jetzt', teamDaten=null, teamZeit=0, uhrTimer=null;
+var ARTEN={notiz:'Notiz',gespraech_eltern:'Gespräch mit den Eltern',gespraech_schule:'Gespräch mit der Schule',gespraech_kind:'Gespräch mit dem Kind',beobachtung:'Beobachtung',reunion:'Réunion',massnahme:'Maßnahme',vereinbarung:'Vereinbarung',sonstiges:'Sonstiges'};
+var TAETIGKEIT={unterricht:'Unterricht / Klasse',beobachtung:'Beobachtung',gespraech:'Gespräch',diagnostik:'Diagnostik',reunion:'Réunion / Sitzung',buero:'Büro / Dokumentation',fahrt:'Fahrt',anderes:'Anderes'};
+var AUSNAHME={urlaub:'Urlaub',krank:'Krank',fortbildung:'Fortbildung',frei:'Frei / Ausgleich',termin:'Anderer Einsatz'};
+var TAGE=['So','Mo','Di','Mi','Do','Fr','Sa'], TAGE_LANG=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+
+/* ---------- Hilfen ---------- */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function svg(n,c){return '<svg class="ic'+(c?' '+c:'')+'" aria-hidden="true"><use href="#i-'+n+'"/></svg>';}
+function pad(n){return (n<10?'0':'')+n;}
+function heuteIso(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function datum(iso){if(!iso){return '';}var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso);return m?m[3]+'.'+m[2]+'.'+m[1]:iso;}
+function datumZeit(iso){if(!iso){return '';}var d=new Date(iso);return isNaN(d)?iso:datum(iso.slice(0,10))+', '+pad(d.getHours())+':'+pad(d.getMinutes());}
+function alter(geb){if(!geb){return null;}var g=new Date(geb+'T12:00:00'),h=new Date();if(isNaN(g)){return null;}var j=h.getFullYear()-g.getFullYear();if(h.getMonth()<g.getMonth()||(h.getMonth()===g.getMonth()&&h.getDate()<g.getDate())){j--;}return j;}
+function team(id){return K.team(id);}
+function ini(n){return K.initialen(n);}
+function ava(name,farbe,klein){return '<span class="ava'+(klein?' klein':'')+'" style="--tc:'+esc(farbe||'#586277')+'">'+esc(ini(name))+'</span>';}
+function konto(id){return K.konten().filter(function(k){return k.id===id;})[0]||null;}
+function kname(id){var k=konto(id);return k?k.name:'(unbekannt)';}
+function schuelerName(p){p=p||{};return ((p.nachname||'').toUpperCase()+(p.vorname?' '+p.vorname:'')).trim()||'(ohne Namen)';}
+function schuelerNameKurz(p){p=p||{};return ((p.vorname||'')+' '+(p.nachname||'')).trim()||'(ohne Namen)';}
+function kopf(ov,titel,lead,rechts){return '<header class="head"><div><p class="overline">'+esc(ov)+'</p><h1>'+titel+'</h1>'+(lead?'<p class="lead">'+lead+'</p>':'')+'</div>'+(rechts||'')+'</header>';}
+function karte(inhalt,kl){return '<div class="ar-karte'+(kl?' '+kl:'')+'">'+inhalt+'</div>';}
+function hinweis(t,art){return '<div class="callout'+(art==='info'?' info':'')+'">'+svg(art==='info'?'info':'warn')+'<div>'+t+'</div></div>';}
+function laedt(t){return '<div class="ar-laedt"><span class="laden dunkel" aria-hidden="true"></span>'+esc(t||'Lade …')+'</div>';}
+function fehlerText(e){return esc((e&&e.message)||String(e));}
+function body(){return $('arbeit-body');}
+function setzen(html){var b=body();if(b){b.innerHTML=html;}}
+function toast(t){Array.prototype.forEach.call(document.querySelectorAll('.ar-toast'),function(x){x.remove();});var el=document.createElement('div');el.className='ar-toast';el.setAttribute('role','status');el.textContent=t;document.body.appendChild(el);setTimeout(function(){el.classList.add('weg');},2600);setTimeout(function(){el.remove();},3200);}
+function stelleChip(id){var t=team(id);return '<span class="ar-stelle" style="--tc:'+esc(t.farbe)+'">'+esc(t.name)+'</span>';}
+function motorDa(){return typeof DsText!=='undefined'&&typeof DS_AUFBAU!=='undefined'&&typeof DS_TEXTE!=='undefined';}
+
+/* ---------- Dialog ---------- */
+function dialog(titel,inhalt,knoepfe,opt){
+  opt=opt||{};
+  return new Promise(function(res){
+    var d=document.createElement('dialog');d.className='ar-dialog'+(opt.breit?' breit':'');
+    d.innerHTML='<form method="dialog" novalidate><h2>'+esc(titel)+'</h2><div class="ar-dialog-inhalt">'+inhalt+'</div><p class="ar-dialog-fehler" hidden></p>'+
+      '<div class="ar-knoepfe">'+(knoepfe||[{text:'Schließen',wert:''}]).map(function(k){return '<button class="btn'+(k.primaer?' primary':'')+(k.gefahr?' gefahr':'')+'" value="'+esc(k.wert)+'"'+(k.primaer?' type="submit"':' type="button"')+'>'+esc(k.text)+'</button>';}).join('')+'</div></form>';
+    document.body.appendChild(d);
+    var form=d.querySelector('form'), fertig=false;
+    function werte(){var o={};Array.prototype.forEach.call(form.elements,function(el){if(!el.name){return;}if(el.type==='checkbox'){o[el.name]=el.checked;}else if(el.type==='radio'){if(el.checked){o[el.name]=el.value;}}else{o[el.name]=el.value;}});return o;}
+    function zu(w){if(fertig){return;}fertig=true;d.close();d.remove();res(w);}
+    d.fehler=function(t){var p=d.querySelector('.ar-dialog-fehler');p.textContent=t;p.hidden=!t;};
+    Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(b){
+      b.addEventListener('click',function(ev){
+        ev.preventDefault();
+        var w={aktion:b.value,werte:werte(),dialog:d};
+        if(b.value&&opt.pruefen){var f=opt.pruefen(w);if(f){d.fehler(f);return;}}
+        if(b.value&&opt.ausfuehren){
+          b.disabled=true;var alt=b.textContent;b.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(alt);
+          Promise.resolve(opt.ausfuehren(w)).then(function(r){zu({aktion:b.value,werte:w.werte,ergebnis:r});},function(e){b.disabled=false;b.textContent=alt;if(e&&e.abgebrochen){return;}d.fehler((e&&e.message)||String(e));});
+          return;
+        }
+        zu({aktion:b.value,werte:w.werte});
+      });
+    });
+    form.addEventListener('submit',function(ev){ev.preventDefault();var p=form.querySelector('button[type=submit]');if(p){p.click();}});
+    d.addEventListener('cancel',function(ev){ev.preventDefault();zu({aktion:'',werte:werte()});});
+    if(opt.nachAufbau){opt.nachAufbau(d);}
+    d.showModal();
+    var f=d.querySelector('[autofocus]')||d.querySelector('input,select,textarea');if(f){f.focus();}
+  });
+}
+function feld(name,label,wert,typ,extra){return '<label class="ar-feld"><span>'+esc(label)+'</span><input name="'+name+'" type="'+(typ||'text')+'" value="'+esc(wert==null?'':wert)+'"'+(extra||'')+'></label>';}
+function auswahl(name,label,wert,optionen,leer){return '<label class="ar-feld"><span>'+esc(label)+'</span><select name="'+name+'">'+(leer!=null?'<option value="">'+esc(leer)+'</option>':'')+optionen.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(o[0])===String(wert==null?'':wert)?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select></label>';}
+function textfeld(name,label,wert,zeilen){return '<label class="ar-feld voll"><span>'+esc(label)+'</span><textarea name="'+name+'" rows="'+(zeilen||4)+'">'+esc(wert||'')+'</textarea></label>';}
+function teamOptionen(){return TEAMS.map(function(t){return [t.id,t.name];});}
+function kontoOptionen(filterFn){return K.konten().filter(filterFn||function(){return true;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return [k.id,k.name+' · '+k.teamName];});}
+
+/* ---------- Laden des Bereichs ---------- */
+function bereichLaden(neu,leise){
+  var z0=T.zustand().art;
+  if(!neu&&geladen&&z0!=='unbekannt'&&!(z0==='gesperrt'&&!leise)){return Promise.resolve(T.zustand());}
+  if(ladeVersprechen&&!neu){return ladeVersprechen;}
+  ladeVersprechen=K.kontenNeu().catch(function(){return K.konten();}).then(function(){return T.laden({leise:!!leise});}).then(function(z){geladen=true;ladeVersprechen=null;navNeu();return z;},function(e){ladeVersprechen=null;throw e;});
+  return ladeVersprechen;
+}
+/* Nach dem Anmelden im Hintergrund: Menü (Verwaltung, Mein Team) aktuell halten */
+function vorladen(){return bereichLaden(false,true).catch(function(){});}
+function navNeu(){if(window.CDSE_HUB_NAV){window.CDSE_HUB_NAV();}}
+
+/* ---------- Seitenleiste ---------- */
+function zeigtTeam(){var me=K.ich();if(!me){return false;}if(T.zustand().art==='bereit'&&T.istResponsable()){return true;}return K.konten().some(function(k){return k.responsable===me.id;});}
+function navHtml(aktiv){
+  var me=K.ich();if(!me){return '';}
+  var z=T.zustand(), w=(z.art==='bereit'&&T.darfFreischalten())?T.wartende().length:0;
+  function lnk(seite,titel,icon,zahl){
+    return '<a class="lnk'+(aktiv===seite?' active':'')+'" href="#/'+seite+'" data-route="arbeit-'+seite+'" title="'+esc(titel)+'"><span class="lic">'+svg(icon)+'</span><span class="lnk-t">'+esc(titel)+(zahl?'<span class="ar-zahl">'+zahl+'</span>':'')+'</span></a>';
+  }
+  return '<div class="navlabel">Arbeit</div><div class="navsep"></div>'+
+    lnk('schueler','Schüler','schueler')+lnk('einsatz','Mein Einsatzplan','uhr')+
+    (zeigtTeam()?lnk('team','Mein Team','team'):'')+
+    ((z.art==='bereit'&&T.darfFreischalten())?lnk('verwaltung','Verwaltung','schild',w):'');
+}
+
+/* =====================================================================
+   Zustände des Schülerbereichs
+   ===================================================================== */
+function zustandsKarte(z){
+  if(z.art==='kein-bereich'){
+    return karte('<h2>Der Schülerbereich ist noch nicht eingerichtet</h2><p>Hier liegen später alle Schülerdossiers des CDSE – verschlüsselt im Hub-Ordner. Wer ihn einrichtet, wird <b>Verwaltung</b>: Sie oder er schaltet die Kolleginnen und Kollegen frei und vergibt die Rolle „Responsable“.</p>'+
+      '<button class="btn primary" type="button" data-ar="einrichten">'+svg('schild')+'Schülerbereich einrichten</button>','ar-leer');
+  }
+  if(z.art==='wartet'){
+    return karte('<h2>Noch nicht freigeschaltet</h2><p>Schülerdaten sind verschlüsselt. Damit du sie lesen kannst, muss dich eine <b>Responsable</b> oder die <b>Verwaltung</b> freischalten.</p>'+
+      '<p>Nenne ihr diesen <b>Kontrollcode</b>. Sie sieht denselben Code bei deinem Konto und weiß so, dass es wirklich deins ist:</p><div class="codebox" id="ar-mein-code">…</div>'+
+      '<button class="btn" type="button" data-ar="neu-laden">'+svg('reload')+'Nochmal prüfen</button>','ar-leer');
+  }
+  if(z.art==='gesperrt'){return karte('<h2>Schülerdaten gesperrt</h2><p>Für die Schülerdaten braucht der Hub dein Passwort.</p><button class="btn primary" type="button" data-ar="neu-laden">Passwort eingeben</button>','ar-leer');}
+  return karte('<h2>Der Schülerbereich ließ sich nicht öffnen</h2>'+hinweis(fehlerText(z.text||z))+'<button class="btn" type="button" data-ar="neu-laden">'+svg('reload')+'Nochmal versuchen</button>','ar-leer');
+}
+function meinenCodeZeigen(){var el=$('ar-mein-code');if(el){K.kontrollcode(K.ich().id).then(function(c){el.textContent=c||'—';});}}
+
+/* =====================================================================
+   Schülerliste
+   ===================================================================== */
+function seiteSchueler(neu){
+  var suche='<label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="ar-q" type="search" placeholder="Name, Klasse, Schule …" autocomplete="off" aria-label="Schüler suchen" value="'+esc(filter.q)+'"></label>';
+  setzen(kopf('Arbeit','Schüler','Alle Schülerinnen und Schüler des CDSE – aktiv und ehemalig. Jede und jeder im CDSE kann die Dossiers lesen; bearbeiten dürfen die Zuständigen.',suche)+'<div id="ar-liste">'+laedt('Lade Schülerdossiers …')+'</div>');
+  var q=$('ar-q');if(q){q.oninput=function(){filter.q=q.value;listeZeichnen(letzteListe);};}
+  bereichLaden(neu).then(function(z){
+    if(z.art!=='bereit'){$('ar-liste').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
+    return T.alleDossiers(neu).then(function(l){letzteListe=l;listeZeichnen(l);});
+  }).catch(function(e){$('ar-liste').innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});});
+}
+var letzteListe=null;
+function meineDossier(d,me){return (d.verantwortlich||[]).indexOf(me.id)>=0||!!(d.rechte&&d.rechte[me.id]);}
+function listeZeichnen(l){
+  var el=$('ar-liste');if(!el||!l){return;}
+  var me=K.ich(), q=filter.q.trim().toLowerCase();
+  var zaehl={aktiv:0,inaktiv:0,alle:l.length}, stellen={};
+  l.forEach(function(d){zaehl[d.status==='inaktiv'?'inaktiv':'aktiv']++;});
+  var sicht=l.filter(function(d){
+    if(filter.status!=='alle'&&(d.status==='inaktiv'?'inaktiv':'aktiv')!==filter.status){return false;}
+    stellen[d.stelle]=(stellen[d.stelle]||0)+1;
+    if(filter.stelle&&d.stelle!==filter.stelle){return false;}
+    if(filter.meine&&!meineDossier(d,me)){return false;}
+    if(q){var p=d.person||{},h=[p.nachname,p.vorname,p.klasse,p.schule,p.matricule,team(d.stelle).name].join(' ').toLowerCase();if(h.indexOf(q)<0){return false;}}
+    return true;
+  }).sort(function(a,b){return schuelerName(a.person).localeCompare(schuelerName(b.person),'de');});
+  var wart=T.darfFreischalten()?T.wartende().length:0;
+  var h='';
+  if(wart){h+=hinweis('<b>'+wart+(wart===1?' Konto wartet':' Konten warten')+' auf Freischaltung.</b> <a href="#/verwaltung">Zur Verwaltung</a>','info');}
+  if(l.kaputt){h+=hinweis(l.kaputt+' Dossier-Datei(en) ließen sich nicht öffnen. Bitte die Verwaltung informieren.');}
+  h+='<div class="toolbar ar-toolbar"><div class="catbar">'+
+    [['aktiv','Aktiv'],['inaktiv','Inaktiv'],['alle','Alle']].map(function(s){return '<button class="catchip'+(filter.status===s[0]?' on':'')+'" type="button" data-filter-status="'+s[0]+'">'+s[1]+'<span class="n">'+zaehl[s[0]]+'</span></button>';}).join('')+
+    '<span class="ar-trenner"></span>'+
+    '<button class="catchip'+(!filter.stelle?' on':'')+'" type="button" data-filter-stelle="">Alle Stellen</button>'+
+    TEAMS.map(function(t){return '<button class="catchip'+(filter.stelle===t.id?' on':'')+'" type="button" data-filter-stelle="'+esc(t.id)+'">'+esc(t.name)+(stellen[t.id]?'<span class="n">'+stellen[t.id]+'</span>':'')+'</button>';}).join('')+
+    '<span class="ar-trenner"></span><button class="catchip'+(filter.meine?' on':'')+'" type="button" data-filter-meine="1">'+svg('check')+'Nur meine</button></div>'+
+    '<button class="btn primary" type="button" data-ar="neu">'+svg('plus')+'Neuer Schüler</button></div>';
+  if(!sicht.length){
+    h+=karte(l.length?'<p>Keine Schüler für diese Auswahl.</p>':'<h2>Noch keine Dossiers</h2><p>Meist beginnt ein Dossier beim Diagnostique: <b>„Neuer Schüler“</b> anlegen, dann das Profil aus dem DS des ELDiB-Generators übernehmen.</p>','ar-leer');
+  }else{
+    h+='<div class="ar-tabelle" role="table" aria-label="Schüler"><div class="ar-zeile kopf" role="row"><span role="columnheader">Name</span><span role="columnheader">Klasse · Schule</span><span role="columnheader">Stelle</span><span role="columnheader">Fallverantwortlich</span><span role="columnheader">Geändert</span></div>'+
+      sicht.map(function(d){
+        var p=d.person||{}, a=alter(p.geburtsdatum), r=T.rechte(d);
+        return '<a class="ar-zeile'+(d.status==='inaktiv'?' inaktiv':'')+'" role="row" href="#/schueler/'+esc(d.id)+'">'+
+          '<span role="cell" class="ar-name">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<span><b>'+esc(schuelerName(p))+'</b><small>'+(a!=null?a+' Jahre':'')+(d.status==='inaktiv'?' · inaktiv':'')+(r.bearbeiten?' · <span class="ar-recht">bearbeitbar</span>':'')+'</small></span></span>'+
+          '<span role="cell">'+esc([p.klasse,p.schule].filter(Boolean).join(' · ')||'—')+'</span>'+
+          '<span role="cell">'+stelleChip(d.stelle)+'</span>'+
+          '<span role="cell">'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</span>'+
+          '<span role="cell" class="ar-leise">'+esc(datum((d.geaendert||'').slice(0,10)))+'</span></a>';
+      }).join('')+'</div>';
+  }
+  el.innerHTML=h;
+}
+function neuerSchueler(){
+  var me=K.ich();
+  var inhalt='<div class="ar-raster2">'+feld('nachname','Nachname','','text',' required autofocus autocomplete="off"')+feld('vorname','Vorname','','text',' required autocomplete="off"')+
+    feld('geburtsdatum','Geburtsdatum','','date')+auswahl('geschlecht','Geschlecht','',[['m','Junge'],['w','Mädchen']],'–')+
+    feld('schule','Schule','','text',' autocomplete="off"')+feld('klasse','Klasse / Cycle','','text',' autocomplete="off"')+
+    feld('matricule','Matricule (Sozialversicherungsnummer)','','text',' autocomplete="off"')+
+    auswahl('stelle','Zuständige Stelle',TEAMS.some(function(t){return t.id===me.team;})?me.team:'diagnostique',teamOptionen())+'</div>'+
+    '<p class="ar-klein">Du wirst fallverantwortlich und kannst später anderen ein Schreibrecht geben oder den Schüler an eine andere Stelle weitergeben.</p>';
+  dialog('Neuer Schüler',inhalt,[{text:'Abbrechen',wert:''},{text:'Anlegen',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){
+      if(!w.werte.nachname.trim()||!w.werte.vorname.trim()){return 'Bitte Vor- und Nachname eingeben.';}
+      var doppelt=(letzteListe||[]).filter(function(d){var p=d.person||{};return String(p.nachname).toLowerCase()===w.werte.nachname.trim().toLowerCase()&&String(p.vorname).toLowerCase()===w.werte.vorname.trim().toLowerCase()&&(!w.werte.geburtsdatum||!p.geburtsdatum||p.geburtsdatum===w.werte.geburtsdatum);})[0];
+      if(doppelt&&!w.dialog.dataset.bestaetigt){w.dialog.dataset.bestaetigt='1';return 'Es gibt schon ein Dossier für '+schuelerName(doppelt.person)+'. Nochmal „Anlegen“ klicken, wenn es wirklich ein anderer Schüler ist.';}
+      return '';
+    },
+    ausfuehren:function(w){
+      var v=w.werte;
+      return T.neuesDossier({nachname:v.nachname.trim(),vorname:v.vorname.trim(),geburtsdatum:v.geburtsdatum,geschlecht:v.geschlecht,schule:v.schule.trim(),klasse:v.klasse.trim(),matricule:v.matricule.trim()},{stelle:v.stelle});
+    }
+  }).then(function(r){if(r.ergebnis){if(letzteListe){letzteListe.push(r.ergebnis);}location.hash='#/schueler/'+r.ergebnis.id;}});
+}
+
+/* =====================================================================
+   Dossier
+   ===================================================================== */
+var aktDossier=null;
+function seiteDossier(id,neu){
+  setzen('<a class="ar-zurueck" href="#/schueler">'+svg('left')+'Alle Schüler</a><div id="ar-dossier">'+laedt('Öffne das Dossier …')+'</div>');
+  bereichLaden().then(function(z){
+    if(z.art!=='bereit'){$('ar-dossier').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
+    return T.dossier(id,neu).then(function(d){aktDossier=d;dossierZeichnen(d);});
+  }).catch(function(e){$('ar-dossier').innerHTML=karte('<h2>Dossier nicht gefunden</h2>'+hinweis(fehlerText(e))+'<a class="btn" href="#/schueler">Zur Liste</a>','ar-leer');});
+}
+function dossierZeichnen(d){
+  var el=$('ar-dossier');if(!el){return;}
+  var p=d.person||{}, r=T.rechte(d), a=alter(p.geburtsdatum);
+  var aktionen='';
+  if(r.weitergeben){aktionen+='<button class="btn" type="button" data-ar="weitergeben">'+svg('weiter')+'Weitergeben</button>';}
+  if(r.rechteVergeben){aktionen+='<button class="btn" type="button" data-ar="rechte">'+svg('users')+'Rechte</button>';}
+  aktionen+='<button class="btn" type="button" data-ar="drucken">'+svg('print')+'Übergabeblatt</button>';
+  aktionen+='<button class="btn" type="button" data-ar="eldib-oeffnen" title="Den Schüler im ELDiB-Generator öffnen (ELDiB und DS)">'+svg('ziel')+'ELDiB / DS</button>';
+  var mehr='<details class="ar-mehr"><summary class="btn" aria-label="Weitere Aktionen">'+svg('more')+'</summary><div class="ar-mehr-menue">'+
+    (r.bearbeiten?'<button type="button" data-ar="person">'+svg('edit')+'Stammdaten bearbeiten</button>':'')+
+    (r.status?'<button type="button" data-ar="status">'+svg('history')+(d.status==='inaktiv'?'Wieder aktiv setzen':'Inaktiv setzen')+'</button>':'')+
+    (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
+    '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
+    (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
+  var tabs=[['ueberblick','Überblick'],['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']];
+  el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
+      '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
+      '<div class="ar-chips">'+stelleChip(d.stelle)+'<span class="ar-status '+(d.status==='inaktiv'?'aus':'an')+'">'+(d.status==='inaktiv'?'inaktiv seit '+esc(datum(d.statusSeit)):'aktiv')+'</span>'+
+      '<span class="ar-meinrecht '+(r.bearbeiten?'ja':'nein')+'" title="'+esc(r.grund)+'">'+(r.bearbeiten?svg('edit')+'Du kannst bearbeiten':svg('lock')+'Nur lesen')+'</span></div></div>'+
+      '<div class="ar-daktionen">'+aktionen+mehr+'</div></header>'+
+    '<nav class="ar-tabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" aria-selected="'+(dossierTab===t[0])+'" class="'+(dossierTab===t[0]?'on':'')+'" data-tab="'+t[0]+'">'+esc(t[1])+'</button>';}).join('')+'</nav>'+
+    '<div class="ar-tabinhalt" id="ar-tabinhalt">'+tabInhalt(d,r)+'</div>';
+  nachZeichnen(d);
+}
+function tabInhalt(d,r){
+  if(dossierTab==='profil'){return tabProfil(d,r);}
+  if(dossierTab==='eintraege'){return tabEintraege(d,r);}
+  if(dossierTab==='verlauf'){return tabVerlauf(d);}
+  return tabUeberblick(d,r);
+}
+function nachZeichnen(d){
+  var f=$('ar-eintrag-form');
+  if(f){f.onsubmit=function(ev){ev.preventDefault();eintragSpeichern(d,f);};}
+}
+
+/* ---------- Auf einen Blick (aus dem DS-Profil) ---------- */
+function aktuelleBewertungen(d){
+  var b={}, g=(d.profil&&d.profil.ds&&d.profil.ds.bewertungen)||{};
+  Object.keys(g).forEach(function(k){b[k]=g[k];});
+  (d.einschaetzungen||[]).slice().sort(function(x,y){return x.datum<y.datum?-1:1;}).forEach(function(e){Object.keys(e.bewertungen||{}).forEach(function(k){b[k]=e.bewertungen[k];});});
+  return b;
+}
+function dsFuerText(d){
+  var ds=JSON.parse(JSON.stringify((d.profil&&d.profil.ds)||{v:2,bewertungen:{},chips:{},f:{},frei:{},tabellen:{}}));
+  ds.bewertungen=aktuelleBewertungen(d);
+  ds.geschlecht=ds.geschlecht||(d.person&&d.person.geschlecht)||'m';
+  return ds;
+}
+function stammFuerText(d){var p=d.person||{};return {schueler_name:(p.nachname||'')+', '+(p.vorname||''),geburtsdatum:p.geburtsdatum||'',klasse:p.klasse||'',foerderort:p.schule||''};}
+function aufEinenBlick(d){
+  if(!motorDa()){return null;}
+  var ds=dsFuerText(d), st=stammFuerText(d), b=ds.bewertungen, T2=DS_TEXTE.de;
+  var staerken=[], schwierig=[];
+  /* Was das Kind betrifft: Schule, Beobachtung, Alltag zu Hause; beim Kind selbst nur das
+     Befinden. Die Sicht auf die Eltern (Erziehung, Zusammenarbeit) gehört nicht dazu. */
+  var THEMEN={schule:['lernen','verhalten','beziehung'],beobachtung:['arbeit','verhalten','kontakt'],eltern:['alltag'],kind:['selbst']};
+  /* Beobachtung nur, wenn die Schule dasselbe Thema nicht schon eingeschätzt hat */
+  var GLEICH={b_start:'s_selbst',b_konz:'s_konz',b_ablenk:'s_konz',b_anweisung:'s_regeln',b_regeln:'s_regeln',b_hilfe:'s_hilfe',b_unruhe:'s_unruhe',b_frust:'s_frust',b_peers:'s_peers',b_erwachsene:'s_erwachsene',b_isol:'s_rueckzug',b_provo:'s_aggr',e_regeln:'s_regeln',e_wut:'s_wut',e_rueckzug:'s_rueckzug',e_angst:'s_angst',k_angst:'s_angst'};
+  Object.keys(THEMEN).forEach(function(ber){
+    (DS_AUFBAU[ber]||{themen:[]}).themen.filter(function(th){return THEMEN[ber].indexOf(th.id)>=0;}).forEach(function(th){
+      th.aussagen.forEach(function(a){
+        var r=b[a[0]];if(!r){return;}
+        if(GLEICH[a[0]]&&b[GLEICH[a[0]]]){return;}
+        var v=a[1]<0?8-r:r;
+        if(a[1]<0&&r<=2){return;}   /* "keine Wutausbrüche" ist keine Stärke, nur ein fehlender Hinweis */
+        var s=DsText.vorschauSatz('de',ds,st,a[0],r);if(!s){return;}
+        if(v>=6){staerken.push({s:s,v:v,ber:ber});}else if(v<=3){schwierig.push({s:s,v:v,ber:ber});}
+      });
+    });
+  });
+  schwierig.sort(function(x,y){return x.v-y.v;});staerken.sort(function(x,y){return y.v-x.v;});
+  function chipLabels(g){return ((ds.chips||{})[g]||[]).map(function(k){var c=(T2.chips[g]||{})[k];return c?c[0]:k;});}
+  function chipTexte(g){return ((ds.chips||{})[g]||[]).map(function(k){var c=(T2.chips[g]||{})[k];return c?(c[1]||c[0]):k;}).map(function(t){return DsText.fuelle?t:t;});}
+  var wann=[];
+  ((DS_AUFBAU.deutung.themen.filter(function(t){return t.id==='muster';})[0])||{aussagen:[]}).aussagen.forEach(function(a){
+    var r=b[a[0]];if(!r||r<5){return;}var t=T2.a[a[0]];
+    wann.push(t&&t.m?'vor allem '+t.m:DsText.vorschauSatz('de',ds,st,a[0],r));
+  });
+  var beduerf=[];
+  (DS_AUFBAU.beduerfnisse.themen[0].aussagen||[]).forEach(function(a){var r=b[a[0]];if(r&&r>=5){beduerf.push({t:T2.a[a[0]].q,r:r});}});
+  beduerf.sort(function(x,y){return y.r-x.r;});
+  var hilft=chipLabels('s_hilft').concat(chipTexte('empf_schule'));
+  return {staerken:staerken.slice(0,7),schwierig:schwierig.slice(0,7),hilft:hilft,wann:wann,beduerfnisse:beduerf.map(function(x){return x.t;}),
+    ressourcen:chipLabels('ressourcen').concat(chipLabels('s_staerken')).filter(function(x,i,l){return l.indexOf(x)===i;}),
+    interessen:chipLabels('k_interessen'),wuensche:chipLabels('k_wuensche'),diagnosen:chipLabels('diagnosen').filter(function(x){return x!=='andere';}),
+    empfehlungen:chipTexte('empf_familie').concat(chipTexte('empf_region')),cni:chipTexte('cni'),hatDaten:Object.keys(b).length>0||Object.keys(ds.chips||{}).length>0};
+}
+function blickListe(titel,l,kl,leer){
+  if(!l||!l.length){return leer?'<div class="ar-blick '+(kl||'')+'"><h3>'+esc(titel)+'</h3><p class="ar-leise">'+esc(leer)+'</p></div>':'';}
+  return '<div class="ar-blick '+(kl||'')+'"><h3>'+esc(titel)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul></div>';
+}
+function tabUeberblick(d,r){
+  var p=d.person||{}, blick=aufEinenBlick(d), h='<div class="ar-zwei"><div class="ar-haupt">';
+  if(!d.profil&&!(d.einschaetzungen||[]).length){
+    h+=karte('<h2>Auf einen Blick</h2><p>Noch kein Profil. Das Profil entsteht aus dem <b>DS des ELDiB-Generators</b> (Aussagen 1–7): Stärken, Schwierigkeiten, was hilft, wann es schwierig wird und was der Schüler braucht.</p>'+
+      (r.bearbeiten?'<div class="ar-knopfreihe"><button class="btn primary" type="button" data-ar="eldib-uebernehmen">'+svg('ziel')+'Aus dem ELDiB-Generator übernehmen</button><button class="btn" type="button" data-ar="einschaetzung">'+svg('check')+'Selbst einschätzen</button></div>':''),'ar-blickkarte');
+  }else if(!blick){
+    h+=karte('<h2>Auf einen Blick</h2>'+hinweis('Für die Auswertung fehlt die Datei <code>apps/ds-motor.js</code> im Hub-Ordner (Text-Motor des ELDiB-Generators). Bitte mit <code>update-apps.cjs</code> holen.'),'ar-blickkarte');
+  }else{
+    h+='<div class="ar-karte ar-blickkarte"><div class="ar-kartenkopf"><h2>Auf einen Blick</h2><span class="ar-leise">'+esc(profilQuelle(d))+'</span></div><div class="ar-blickraster">'+
+      blickListe('Stärken',blick.staerken,'gut','Noch keine Stärken eingeschätzt')+
+      blickListe('Schwierigkeiten',blick.schwierig,'schwer','Keine deutlichen Schwierigkeiten eingeschätzt')+
+      blickListe('Was hilft',blick.hilft,'hilft')+blickListe('Wann es schwierig wird',blick.wann,'wann')+
+      blickListe('Was '+(p.vorname||'das Kind')+' braucht',blick.beduerfnisse,'braucht')+
+      blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
+      '</div></div>';
+  }
+  if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
+    h+=karte('<h2>Aus dem DS</h2>'+(blick.diagnosen.length?'<p><b>Diagnosen:</b> '+esc(blick.diagnosen.join(', '))+'</p>':'')+
+      (blick.cni.length?'<p><b>Empfehlung an die CNI:</b> '+esc(blick.cni.join('; '))+'</p>':'')+
+      (blick.empfehlungen.length?'<p><b>Empfehlungen:</b></p><ul>'+blick.empfehlungen.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':''));
+  }
+  var letzte=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+b.z)<(a.datum+a.z)?-1:1;}).slice(0,3);
+  h+=karte('<div class="ar-kartenkopf"><h2>Letzte Einträge</h2><button class="ar-link" type="button" data-tab="eintraege">Alle Einträge</button></div>'+
+    (letzte.length?letzte.map(eintragHtml).join(''):'<p class="ar-leise">Noch keine Einträge.</p>'));
+  h+='</div><aside class="ar-seite">';
+  h+=karte('<h3>Stammdaten</h3><dl class="ar-dl">'+[['Geburtsdatum',datum(p.geburtsdatum)],['Geschlecht',p.geschlecht==='w'?'weiblich':(p.geschlecht==='m'?'männlich':'')],['Matricule',p.matricule],['Schule',p.schule],['Klasse',p.klasse],['Sprachen',p.sprachen],['Eltern / Kontakt',p.kontakt]].filter(function(x){return x[1];}).map(function(x){return '<dt>'+esc(x[0])+'</dt><dd>'+esc(x[1])+'</dd>';}).join('')+'</dl>'+
+    (r.bearbeiten?'<button class="ar-link" type="button" data-ar="person">'+svg('edit')+'Bearbeiten</button>':''));
+  var rechteListe=Object.keys(d.rechte||{});
+  h+=karte('<h3>Zuständigkeit</h3><dl class="ar-dl"><dt>Stelle</dt><dd>'+esc(team(d.stelle).name)+(d.stelleSeit?' <small>seit '+esc(datum(d.stelleSeit))+'</small>':'')+'</dd>'+
+    '<dt>Fallverantwortlich</dt><dd>'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</dd>'+
+    '<dt>Schreibrecht</dt><dd>'+esc(rechteListe.map(kname).join(', ')||'—')+'</dd></dl><p class="ar-klein">Außerdem bearbeiten dürfen die Responsables und die Verwaltung. Lesen dürfen alle Freigeschalteten.</p>');
+  var wg=(d.weitergaben||[]);
+  if(wg.length){h+=karte('<h3>Weg durch das CDSE</h3><ol class="ar-weg">'+wg.map(function(w){return '<li><b>'+esc(team(w.von).name)+' → '+esc(team(w.an).name)+'</b><small>'+esc(datum(w.z.slice(0,10)))+' · '+esc(kname(w.durch))+'</small>'+(w.notiz?'<span>'+esc(w.notiz)+'</span>':'')+'</li>';}).join('')+'</ol>');}
+  h+='</aside></div>';
+  return h;
+}
+function profilQuelle(d){
+  var e=(d.einschaetzungen||[]).slice().sort(function(a,b){return a.datum<b.datum?1:-1;})[0];
+  var t=[];
+  if(d.profil){t.push('DS vom '+datum(d.profil.datum)+(d.profil.von?' ('+kname(d.profil.von)+')':''));}
+  if(e){t.push('zuletzt eingeschätzt am '+datum(e.datum));}
+  return t.join(' · ');
+}
+
+/* ---------- Profil & Verlauf ---------- */
+var BEREICH_NAMEN={schule:'Schulalltag',beobachtung:'Beobachtung',kind:'Sicht des Kindes',eltern:'Sicht der Eltern'};
+function tabProfil(d,r){
+  var h='';
+  h+='<div class="ar-knopfreihe">'+(r.bearbeiten?'<button class="btn primary" type="button" data-ar="einschaetzung">'+svg('check')+'Neue Einschätzung</button><button class="btn" type="button" data-ar="eldib-uebernehmen">'+svg('ziel')+'DS aus dem ELDiB-Generator übernehmen</button>':'')+'</div>';
+  if(!motorDa()){return h+hinweis('Für Profil und Verlauf fehlt die Datei <code>apps/ds-motor.js</code> im Hub-Ordner.');}
+  var serien=verlaufsSerien(d);
+  if(serien.punkte.length>1){h+=karte('<h2>Verlauf</h2><p class="ar-leise">Durchschnitt der Einschätzungen je Bereich (7 = sehr günstig). Jede Einschätzung ist ein Punkt.</p>'+verlaufsGrafik(serien)+verlaufsTabelle(d));}
+  else if(serien.punkte.length===1){h+=karte('<h2>Verlauf</h2><p>Bisher gibt es eine Einschätzung. Mit der nächsten (z. B. nach einigen Wochen in der neuen Stelle) zeigt der Hub hier, was sich verbessert oder verschlechtert hat.</p>');}
+  if(d.profil&&d.profil.ds){
+    try{
+      var ab=DsText.bericht('de',dsFuerText(d),stammFuerText(d),d.profil.eldibProfil||null);
+      var teile=[['sozialbericht','Familie'],['schule','Sicht der Schule'],['kind','Sicht des Kindes'],['eltern','Sicht der Eltern'],['beobachtung','Beobachtung'],['deutung','Interpretation'],['beduerfnisse','Bedürfnisse und Ressourcen'],['empfehlungen','Empfehlungen']];
+      h+=karte('<div class="ar-kartenkopf"><h2>Profil im Wortlaut</h2><span class="ar-leise">'+esc(profilQuelle(d))+'</span></div>'+
+        teile.map(function(t){var bl=ab[t[0]]||[];if(!bl.length){return '';}return '<h3>'+esc(t[1])+'</h3>'+bloeckeHtml(bl);}).join(''),'ar-wortlaut');
+    }catch(e){h+=hinweis('Das Profil ließ sich nicht darstellen: '+fehlerText(e));}
+  }
+  return h;
+}
+function bloeckeHtml(bl){
+  return bl.map(function(b){
+    if(b.typ==='absatz'){return '<p>'+esc(b.text)+'</p>';}
+    if(b.typ==='zwischen'){return '<p><b>'+esc(b.text)+'</b></p>';}
+    if(b.typ==='liste'){return '<ul>'+b.punkte.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';}
+    if(b.typ==='tabelle'){return '<table class="ar-mini"><tr>'+b.kopf.map(function(k){return '<th>'+esc(k)+'</th>';}).join('')+'</tr>'+b.zeilen.map(function(z){return '<tr>'+z.map(function(x){return '<td>'+esc(x)+'</td>';}).join('')+'</tr>';}).join('')+'</table>';}
+    return '';
+  }).join('');
+}
+/* Zeitreihe: je Einschätzung (und DS) der Durchschnitt je Thema der Schule */
+function verlaufsSerien(d){
+  var punkte=[];
+  if(d.profil&&d.profil.ds&&d.profil.ds.bewertungen){punkte.push({datum:d.profil.datum||'',b:d.profil.ds.bewertungen,quelle:'DS'});}
+  (d.einschaetzungen||[]).forEach(function(e){punkte.push({datum:e.datum,b:e.bewertungen,quelle:kname(e.von)});});
+  punkte.sort(function(a,b){return a.datum<b.datum?-1:1;});
+  var themen=[];
+  (DS_AUFBAU.schule.themen||[]).forEach(function(th){themen.push({id:th.id,name:DS_TEXTE.de.ui.themen['schule.'+th.id]||th.id,aussagen:th.aussagen});});
+  punkte.forEach(function(pk){
+    pk.werte={};
+    themen.forEach(function(th){
+      var s=0,n=0;th.aussagen.forEach(function(a){var r=pk.b[a[0]];if(r){s+=a[1]<0?8-r:r;n++;}});
+      pk.werte[th.id]=n?s/n:null;
+    });
+  });
+  return {punkte:punkte.filter(function(p){return themen.some(function(t){return p.werte[t.id]!=null;});}),themen:themen};
+}
+function verlaufsGrafik(s){
+  var B=640,H=220,L=36,R=12,O=14,U=34, n=s.punkte.length;
+  var farben=['#2E3A9C','#B4533A','#1F6B6F','#A8741A'];
+  function x(i){return L+(n<2?0:(B-L-R)*i/(n-1));}
+  function y(v){return O+(H-O-U)*(7-v)/6;}
+  var g='<svg class="ar-grafik" viewBox="0 0 '+B+' '+H+'" role="img" aria-label="Verlauf der Einschätzungen">';
+  for(var v=1;v<=7;v++){g+='<line x1="'+L+'" x2="'+(B-R)+'" y1="'+y(v)+'" y2="'+y(v)+'" class="ar-gitter'+(v===4?' mitte':'')+'"/><text x="'+(L-8)+'" y="'+(y(v)+4)+'" class="ar-achse" text-anchor="end">'+v+'</text>';}
+  s.punkte.forEach(function(p,i){g+='<text x="'+x(i)+'" y="'+(H-12)+'" class="ar-achse" text-anchor="middle">'+esc(datum(p.datum).slice(0,5))+'</text>';});
+  s.themen.forEach(function(th,k){
+    var pts=s.punkte.map(function(p,i){return p.werte[th.id]==null?null:[x(i),y(p.werte[th.id])];}).filter(Boolean);
+    if(!pts.length){return;}
+    g+='<polyline fill="none" stroke="'+farben[k%4]+'" stroke-width="2.5" points="'+pts.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ')+'"/>';
+    pts.forEach(function(q){g+='<circle cx="'+q[0].toFixed(1)+'" cy="'+q[1].toFixed(1)+'" r="4" fill="'+farben[k%4]+'"/>';});
+  });
+  g+='</svg><div class="ar-legende">'+s.themen.map(function(th,k){return '<span><i style="background:'+farben[k%4]+'"></i>'+esc(th.name)+'</span>';}).join('')+'</div>';
+  return g;
+}
+/* Welche Aussagen haben sich zwischen der ersten und der letzten Einschätzung verändert? */
+function verlaufsTabelle(d){
+  var s=verlaufsSerien(d);if(s.punkte.length<2){return '';}
+  var erste=s.punkte[0], letzte=s.punkte[s.punkte.length-1], zeilen=[];
+  s.themen.forEach(function(th){th.aussagen.forEach(function(a){
+    var r1=erste.b[a[0]], r2=letzte.b[a[0]];if(!r1||!r2||r1===r2){return;}
+    var v1=a[1]<0?8-r1:r1, v2=a[1]<0?8-r2:r2;
+    zeilen.push({q:DS_TEXTE.de.a[a[0]].q,r1:r1,r2:r2,diff:v2-v1});
+  });});
+  if(!zeilen.length){return '<p class="ar-leise">Keine Aussage hat sich zwischen der ersten und der letzten Einschätzung verändert.</p>';}
+  zeilen.sort(function(a,b){return b.diff-a.diff;});
+  return '<table class="ar-mini ar-veraenderung"><tr><th>Aussage</th><th>'+esc(datum(erste.datum))+'</th><th>'+esc(datum(letzte.datum))+'</th><th></th></tr>'+
+    zeilen.map(function(z){return '<tr><td>'+esc(z.q)+'</td><td>'+z.r1+'</td><td>'+z.r2+'</td><td class="'+(z.diff>0?'besser':'schlechter')+'">'+(z.diff>0?'▲ günstiger':'▼ ungünstiger')+'</td></tr>';}).join('')+'</table>';
+}
+function einschaetzungDialog(d){
+  if(!motorDa()){toast('Für Einschätzungen fehlt apps/ds-motor.js');return;}
+  var b=aktuelleBewertungen(d), T2=DS_TEXTE.de;
+  var bereiche=['schule','beobachtung','kind','eltern'];
+  var inhalt='<p class="ar-klein">Dieselben Aussagen wie im DS. Bewerte, was <b>jetzt</b> zutrifft (1 = trifft gar nicht zu, 7 = trifft voll zu). Leer lassen, was du nicht beurteilen kannst. Die letzte Bewertung ist vorausgewählt.</p>'+
+    '<div class="ar-raster2">'+feld('datum','Datum',heuteIso(),'date')+auswahl('bereich','Welche Aussagen?','schule',bereiche.map(function(x){return [x,BEREICH_NAMEN[x]];}))+'</div>'+
+    '<div id="ar-einsch-aussagen"></div>'+textfeld('notiz','Notiz (optional)','',2);
+  var gewaehlt={};
+  function zeichne(dlg,bereich){
+    var box=dlg.querySelector('#ar-einsch-aussagen');
+    box.innerHTML=(DS_AUFBAU[bereich].themen||[]).map(function(th){
+      return '<fieldset class="ar-einsch-thema"><legend>'+esc(T2.ui.themen[bereich+'.'+th.id]||th.id)+'</legend>'+th.aussagen.map(function(a){
+        var r=gewaehlt[a[0]]!=null?gewaehlt[a[0]]:(b[a[0]]||0);
+        return '<div class="ar-einsch-zeile" data-id="'+a[0]+'"><span>'+esc(T2.a[a[0]].q)+'</span><span class="ar-skala">'+[1,2,3,4,5,6,7].map(function(i){return '<button type="button" class="'+(r===i?'an':'')+'" data-r="'+i+'">'+i+'</button>';}).join('')+'</span></div>';
+      }).join('')+'</fieldset>';
+    }).join('');
+  }
+  return dialog('Neue Einschätzung',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    nachAufbau:function(dlg){
+      var sel=dlg.querySelector('select[name=bereich]');
+      zeichne(dlg,sel.value);
+      sel.onchange=function(){zeichne(dlg,sel.value);};
+      dlg.addEventListener('click',function(ev){
+        var btn=ev.target.closest('.ar-skala button');if(!btn){return;}
+        var z=btn.closest('.ar-einsch-zeile'), id=z.dataset.id, r=+btn.dataset.r;
+        gewaehlt[id]=(gewaehlt[id]===r)?0:r;
+        Array.prototype.forEach.call(z.querySelectorAll('button'),function(x){x.classList.toggle('an',+x.dataset.r===gewaehlt[id]);});
+      });
+    },
+    ausfuehren:function(w){
+      var bereich=w.werte.bereich, bew={};
+      (DS_AUFBAU[bereich].themen||[]).forEach(function(th){th.aussagen.forEach(function(a){
+        var r=gewaehlt[a[0]]!=null?gewaehlt[a[0]]:(b[a[0]]||0);if(r){bew[a[0]]=r;}
+      });});
+      if(!Object.keys(bew).length){throw new Error('Bitte mindestens eine Aussage bewerten.');}
+      return T.ops.einschaetzung(d.id,{datum:w.werte.datum,bereich:bereich,bewertungen:bew,notiz:w.werte.notiz});
+    }
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierTab='profil';dossierZeichnen(r.ergebnis);toast('Einschätzung gespeichert');}});
+}
+
+/* ---------- Einträge ---------- */
+function eintragHtml(e,r,d){
+  var eigen=e.von===(K.ich()||{}).id;
+  return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span><b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
+    (r&&r.bearbeiten&&(eigen||r.weitergeben)?'<span class="ar-eintrag-aktion"><button type="button" class="ar-link" data-ar="eintrag-aendern" data-eid="'+esc(e.id)+'">'+svg('edit')+'Ändern</button><button type="button" class="ar-link gefahr" data-ar="eintrag-loeschen" data-eid="'+esc(e.id)+'">'+svg('x')+'Löschen</button></span>':'')+
+    '</header><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p></article>';
+}
+function tabEintraege(d,r){
+  var h='';
+  if(r.bearbeiten){
+    h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag</h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
+      auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
+      textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button></div></form>');
+  }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
+  var l=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
+  h+=l.length?l.map(function(e){return eintragHtml(e,r,d);}).join(''):karte('<p class="ar-leise">Noch keine Einträge.</p>');
+  return h;
+}
+function eintragSpeichern(d,f){
+  var text=f.elements.text.value.trim();
+  if(!text){toast('Bitte einen Text eingeben');return;}
+  var b=f.querySelector('button[type=submit]');b.disabled=true;
+  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
+}
+function tabVerlauf(d){
+  return karte('<h2>Protokoll</h2><p class="ar-leise">Jede Änderung am Dossier – wer, wann, was.</p><ol class="ar-protokoll">'+
+    (d.verlauf||[]).slice().reverse().map(function(v){return '<li><span class="ar-leise">'+esc(datumZeit(v.z))+'</span><b>'+esc(kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol>');
+}
+
+/* ---------- Aktionen am Dossier ---------- */
+function mitDossier(p,t){return p.then(function(d){aktDossier=d;dossierZeichnen(d);if(t){toast(t);}return d;});}
+function weitergebenDialog(d){
+  var inhalt='<p>Der Schüler wechselt die zuständige Stelle – z. B. vom Diagnostique in die Annexe. Alle können das Dossier weiter lesen; der ganze Weg bleibt im Dossier sichtbar.</p><div class="ar-raster2">'+
+    auswahl('stelle','An welche Stelle?','',teamOptionen().filter(function(o){return o[0]!==d.stelle;}),'– bitte wählen –')+
+    auswahl('verantwortlich','Neue/r Fallverantwortliche/r (optional)','',kontoOptionen(),'– später festlegen –')+'</div>'+
+    '<label class="ar-haken"><input type="checkbox" name="behalten"> Die bisherigen Fallverantwortlichen ('+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+') behalten ein Schreibrecht</label>'+
+    textfeld('notiz','Notiz zur Weitergabe (optional)','',2);
+  dialog('Weitergeben',inhalt,[{text:'Abbrechen',wert:''},{text:'Weitergeben',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){return w.werte.stelle?'':'Bitte die neue Stelle wählen.';},
+    ausfuehren:function(w){return T.ops.weitergeben(d.id,{stelle:w.werte.stelle,verantwortlich:w.werte.verantwortlich,bisherigeBehalten:!!w.werte.behalten,notiz:w.werte.notiz.trim()});}
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Weitergegeben an '+team(r.ergebnis.stelle).name);}});
+}
+function rechteDialog(d){
+  var liste=Object.keys(d.rechte||{});
+  var inhalt='<p>Wer ein Schreibrecht hat, kann Einträge schreiben, Einschätzungen machen und Stammdaten ändern. <b>Lesen</b> können ohnehin alle Freigeschalteten.</p>'+
+    '<h3>Fallverantwortlich</h3><p>'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
+    '<h3>Schreibrecht</h3>'+(liste.length?'<ul class="ar-rechteliste">'+liste.map(function(id){return '<li>'+esc(kname(id))+'<small> seit '+esc(datum(d.rechte[id].am.slice(0,10)))+', von '+esc(kname(d.rechte[id].von))+'</small><button type="button" class="ar-link gefahr" data-weg="'+esc(id)+'">Entziehen</button></li>';}).join('')+'</ul>':'<p class="ar-leise">Noch niemand.</p>')+
+    auswahl('neu','Schreibrecht geben an','',kontoOptionen(function(k){return liste.indexOf(k.id)<0&&(d.verantwortlich||[]).indexOf(k.id)<0;}),'– Person wählen –');
+  dialog('Rechte',inhalt,[{text:'Schließen',wert:''},{text:'Recht geben',wert:'ok',primaer:true}],{breit:true,
+    nachAufbau:function(dlg){
+      dlg.addEventListener('click',function(ev){
+        var b=ev.target.closest('[data-weg]');if(!b){return;}
+        b.disabled=true;
+        T.ops.rechtNehmen(d.id,b.getAttribute('data-weg')).then(function(neu){aktDossier=neu;dossierZeichnen(neu);b.closest('li').remove();toast('Schreibrecht entzogen');},function(e){b.disabled=false;dlg.fehler((e&&e.message)||String(e));});
+      });
+    },
+    pruefen:function(w){return w.werte.neu?'':'Bitte eine Person wählen.';},
+    ausfuehren:function(w){return T.ops.rechtGeben(d.id,w.werte.neu);}
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Schreibrecht gegeben');}});
+}
+function verantwortlichDialog(d){
+  var inhalt='<p>Fallverantwortliche leiten den Fall: Sie dürfen weitergeben und Rechte vergeben.</p>'+
+    '<div class="ar-checkliste">'+K.konten().sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return '<label class="ar-haken"><input type="checkbox" name="v_'+esc(k.id)+'"'+((d.verantwortlich||[]).indexOf(k.id)>=0?' checked':'')+'> '+esc(k.name)+' <small>'+esc(k.teamName)+'</small></label>';}).join('')+'</div>';
+  dialog('Fallverantwortliche',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    ausfuehren:function(w){var l=Object.keys(w.werte).filter(function(k){return /^v_/.test(k)&&w.werte[k];}).map(function(k){return k.slice(2);});return T.ops.verantwortlich(d.id,l);}
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Gespeichert');}});
+}
+function personDialog(d){
+  var p=d.person||{};
+  var inhalt='<div class="ar-raster2">'+feld('nachname','Nachname',p.nachname)+feld('vorname','Vorname',p.vorname)+feld('geburtsdatum','Geburtsdatum',p.geburtsdatum,'date')+
+    auswahl('geschlecht','Geschlecht',p.geschlecht||'',[['m','Junge'],['w','Mädchen']],'–')+feld('schule','Schule',p.schule)+feld('klasse','Klasse / Cycle',p.klasse)+
+    feld('matricule','Matricule',p.matricule)+feld('sprachen','Sprachen',p.sprachen)+'</div>'+textfeld('kontakt','Eltern / Kontakt (Namen, Telefon)',p.kontakt,2);
+  dialog('Stammdaten',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){return (w.werte.nachname.trim()&&w.werte.vorname.trim())?'':'Vor- und Nachname fehlen.';},
+    ausfuehren:function(w){var v=w.werte;Object.keys(v).forEach(function(k){v[k]=String(v[k]).trim();});return T.ops.person(d.id,v);}
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Stammdaten gespeichert');}});
+}
+function statusDialog(d){
+  if(d.status==='inaktiv'){
+    dialog('Wieder aktiv setzen','<p>'+esc(schuelerName(d.person))+' wird wieder als aktiv geführt.</p>',[{text:'Abbrechen',wert:''},{text:'Aktiv setzen',wert:'ok',primaer:true}],{ausfuehren:function(){return T.ops.status(d.id,'aktiv');}})
+      .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Wieder aktiv');}});
+    return;
+  }
+  var inhalt='<p>Inaktive Schüler bleiben mit allen Daten erhalten und sind unter „Inaktiv“ zu finden.</p><div class="ar-raster2">'+
+    auswahl('grund','Grund','Abschluss',[['Abschluss','Abschluss der Begleitung'],['Umzug','Umzug'],['Wechsel','Wechsel in eine andere Einrichtung'],['Schulende','Ende der Schulpflicht'],['Sonstiges','Sonstiges']])+feld('datum','Seit',heuteIso(),'date')+'</div>';
+  dialog('Inaktiv setzen',inhalt,[{text:'Abbrechen',wert:''},{text:'Inaktiv setzen',wert:'ok',primaer:true}],{ausfuehren:function(w){return T.ops.status(d.id,'inaktiv',w.werte.grund,w.werte.datum);}})
+    .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Inaktiv gesetzt');}});
+}
+function eintragAendernDialog(d,eid){
+  var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return;}
+  var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+textfeld('text','Text',e.text,6);
+  dialog('Eintrag ändern',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    ausfuehren:function(w){return T.ops.eintragAendern(d.id,eid,w.werte);}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
+}
+function eintragLoeschenDialog(d,eid){
+  dialog('Eintrag löschen','<p>Den Eintrag wirklich löschen? Im Protokoll bleibt vermerkt, dass er gelöscht wurde.</p>',[{text:'Abbrechen',wert:''},{text:'Löschen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.ops.eintragLoeschen(d.id,eid);}})
+    .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag gelöscht');}});
+}
+function loeschenDialog(d){
+  dialog('Dossier löschen','<p><b>'+esc(schuelerName(d.person))+'</b> und alle Einträge werden endgültig gelöscht. Meist ist „Inaktiv setzen“ die bessere Wahl.</p>'+feld('bestaetigung','Zur Bestätigung den Nachnamen eintippen','','text',' autocomplete="off"'),
+    [{text:'Abbrechen',wert:''},{text:'Endgültig löschen',wert:'ok',primaer:true,gefahr:true}],{
+      pruefen:function(w){return w.werte.bestaetigung.trim().toLowerCase()===String((d.person||{}).nachname||'').toLowerCase()?'':'Der Nachname stimmt nicht.';},
+      ausfuehren:function(){return T.ops.loeschen(d.id);}
+    }).then(function(r){if(r.aktion==='ok'){if(letzteListe){letzteListe=letzteListe.filter(function(x){return x.id!==d.id;});}location.hash='#/schueler';toast('Dossier gelöscht');}});
+}
+
+/* ---------- Verbindung zum ELDiB-Generator ---------- */
+function eldibListe(){try{return JSON.parse(localStorage.getItem('eldib-schueler-liste')||'[]')||[];}catch(e){return [];}}
+function eldibListeSpeichern(l){localStorage.setItem('eldib-schueler-liste',JSON.stringify(l));}
+function norm(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');}
+function eldibPasst(s,d){
+  if(s.hubId===d.id){return 3;}
+  var p=d.person||{}, n=String(s.name||'').split(','), nach=norm(n[0]), vor=norm(n.slice(1).join(','));
+  var name=nach===norm(p.nachname)&&vor===norm(p.vorname);
+  if(name&&(!s.geburtsdatum||!p.geburtsdatum||s.geburtsdatum===p.geburtsdatum)){return 2;}
+  return 0;
+}
+function eldibEinschaetzung(s){
+  var e2=s.einschaetzung2&&Object.keys(s.einschaetzung2).length?s.einschaetzung2:null, e1=s.einschaetzung1&&Object.keys(s.einschaetzung1).length?s.einschaetzung1:null;
+  return e2||e1;
+}
+function eldibUebernehmenDialog(d){
+  var l=eldibListe();
+  if(!l.length){dialog('Aus dem ELDiB-Generator übernehmen','<p>Im ELDiB-Generator ist auf diesem Konto noch kein Schüler angelegt.</p><p>Tipp: Mit <b>„ELDiB / DS“</b> oben im Dossier öffnest du den Schüler direkt im ELDiB-Generator – mit den Stammdaten aus dem Dossier.</p>');return;}
+  l=l.map(function(s){return {s:s,passt:eldibPasst(s,d),e:eldibEinschaetzung(s)};}).sort(function(a,b){return b.passt-a.passt||String(a.s.name).localeCompare(String(b.s.name),'de');});
+  var inhalt='<p>Welcher Schüler im ELDiB-Generator ist '+esc(schuelerNameKurz(d.person))+'? Übernommen werden der DS (Aussagen, Auswahlfelder, Fakten) und die ELDiB-Stufen der neuesten Einschätzung.</p><div class="ar-wahlliste">'+
+    l.map(function(x,i){
+      var ds=x.e&&x.e.dsData, n=ds&&ds.bewertungen?Object.keys(ds.bewertungen).length:0, sel=x.e&&x.e.selections?Object.keys(x.e.selections).length:0;
+      return '<label class="ar-wahl'+(x.passt?' passt':'')+'"><input type="radio" name="wahl" value="'+i+'"'+(i===0&&x.passt?' checked':'')+'><span><b>'+esc(x.s.name)+'</b><small>'+esc([x.s.geburtsdatum?datum(x.s.geburtsdatum):'',x.s.klasse,n?n+' DS-Aussagen':'kein DS',sel?sel+' ELDiB-Items':''].filter(Boolean).join(' · '))+'</small></span>'+(x.passt?'<span class="ar-passt">passt</span>':'')+'</label>';
+    }).join('')+'</div>';
+  dialog('Aus dem ELDiB-Generator übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){if(w.werte.wahl==null){return 'Bitte einen Schüler wählen.';}var x=l[+w.werte.wahl];if(!x.e||!x.e.dsData||(!Object.keys(x.e.dsData.bewertungen||{}).length&&!Object.keys(x.e.dsData.chips||{}).length)){return 'Bei diesem Schüler ist noch kein DS ausgefüllt.';}return '';},
+    ausfuehren:function(w){
+      var x=l[+w.werte.wahl], e=x.e, ds=JSON.parse(JSON.stringify(e.dsData));
+      delete ds.bearbeitet;delete ds.alt;
+      var profil={quelle:'eldib',datum:(e.savedAt||new Date().toISOString()).slice(0,10),von:K.ich().id,ds:ds,
+        eldib:{datum:(e.stammdaten&&e.stammdaten.einschaetzungsdatum)||'',erreicht:Object.keys(e.selections||{}).filter(function(c){return e.selections[c].status==='erreicht';}),ziele:Object.keys(e.selections||{}).filter(function(c){return e.selections[c].status==='ziel';})}};
+      return T.ops.profil(d.id,profil,'Profil aus dem DS übernommen ('+x.s.name+')').then(function(neu){
+        /* Verknüpfen, damit es beim nächsten Mal sofort passt */
+        var liste=eldibListe();liste.forEach(function(s){if(s.id===x.s.id){s.hubId=d.id;}});eldibListeSpeichern(liste);
+        return neu;
+      });
+    }
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Profil übernommen');}});
+}
+/* Den Schüler im ELDiB-Generator öffnen (anlegen, falls es ihn dort noch nicht gibt) */
+function eldibOeffnen(d){
+  var p=d.person||{}, l=eldibListe();
+  var s=l.map(function(x){return {x:x,p:eldibPasst(x,d)};}).filter(function(y){return y.p;}).sort(function(a,b){return b.p-a.p;})[0];
+  var eintrag;
+  if(s){eintrag=s.x;eintrag.hubId=d.id;}
+  else{
+    eintrag={id:'sch-'+Date.now()+'-'+Math.random().toString(36).slice(2,11),name:(p.nachname||'')+', '+(p.vorname||''),klasse:p.klasse||'',geburtsdatum:p.geburtsdatum||'',hubId:d.id,einschaetzung1:null,einschaetzung2:null};
+    var ds=d.profil&&d.profil.ds?JSON.parse(JSON.stringify(d.profil.ds)):{v:2,geschlecht:p.geschlecht||'',bewertungen:{},chips:{},f:{},frei:{},tabellen:{vorgeschichte:[],aktuell:[],interventionen:[]},bearbeitet:{}};
+    if(!ds.geschlecht&&p.geschlecht){ds.geschlecht=p.geschlecht;}
+    eintrag.einschaetzung1={language:'de',selections:{},zusaetzlicheZiele:{demarches_mentales:{},manieres_apprendre:{},attitudes_relationnelles:{},attitudes_affectives:{},competences_essentielles:{},culture_loisirs:{}},
+      stammdaten:{schueler_name:eintrag.name,geburtsdatum:p.geburtsdatum||'',matricule:p.matricule||'',foerderort:p.schule||'',klasse:p.klasse||'',periodenTyp:'trimester',periode:'1'},dsData:ds};
+    l.push(eintrag);
+  }
+  eldibListeSpeichern(l);
+  var nr=eintrag.einschaetzung2&&Object.keys(eintrag.einschaetzung2).length?2:1;
+  localStorage.setItem('eldib-sm-aktiv',JSON.stringify({id:eintrag.id,einschaetzungNr:nr}));
+  localStorage.removeItem('eldib-data');
+  if(window.CDSE_HUB_OEFFNE){window.CDSE_HUB_OEFFNE('eldib',true);}else{location.hash='#/app/eldib';}
+}
+
+/* ---------- Übergabeblatt (Druck / PDF) ---------- */
+function drucken(d){
+  var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum);
+  function liste(t,l){return l&&l.length?'<h3>'+esc(t)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul>':'';}
+  var letzte=(d.eintraege||[]).slice().sort(function(x,y){return x.datum<y.datum?1:-1;}).slice(0,5);
+  var html='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Übergabeblatt – '+esc(schuelerName(p))+'</title><style>'+
+    'body{font:10.5pt/1.45 Arial,Helvetica,sans-serif;color:#111;margin:0}main{max-width:17.5cm;margin:0 auto}h1{font-size:17pt;margin:0}h2{font-size:12pt;margin:14pt 0 4pt;color:#23307a;border-bottom:1px solid #c9cde0;padding-bottom:2pt}h3{font-size:10.5pt;margin:8pt 0 2pt}'+
+    'ul{margin:0 0 4pt 16pt;padding:0}li{margin:1pt 0}.sub{color:#444;margin:2pt 0 10pt}.raster{display:grid;grid-template-columns:1fr 1fr;gap:0 18pt}table{border-collapse:collapse;width:100%}td{border:1px solid #bbb;padding:3pt 5pt;vertical-align:top}td:first-child{width:32%;background:#f3f4f8}'+
+    '.eintrag{margin:4pt 0}.eintrag small{color:#555}.fuss{margin-top:16pt;font-size:8.5pt;color:#666}@page{margin:1.6cm}</style></head><body><main>'+
+    '<h1>Übergabeblatt: '+esc(schuelerName(p))+'</h1><p class="sub">'+esc([a!=null?a+' Jahre':'',p.klasse,p.schule].filter(Boolean).join(' · '))+' — Stelle: '+esc(team(d.stelle).name)+', fallverantwortlich: '+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
+    '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
+    (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein Profil vorhanden.</i></p>')+
+    (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small><br>'+esc(e.text).replace(/\n/g,'<br>')+'</div>';}).join(''):'')+
+    '<p class="fuss">Vertraulich – nur für die Arbeit im CDSE. Erstellt am '+esc(datum(heuteIso()))+' von '+esc(K.ich().name)+'. '+esc(profilQuelle(d))+'</p></main></body></html>';
+  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();
+  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+}
+
+/* =====================================================================
+   Einsatzplan
+   ===================================================================== */
+function leererPlan(){return {v:1,woche:[],ausnahmen:[],samstag:false};}
+function minuten(hhmm){var m=/^(\d{1,2}):(\d{2})/.exec(hhmm||'');return m?(+m[1])*60+(+m[2]):null;}
+function hhmm(min){return pad(Math.floor(min/60))+':'+pad(min%60);}
+/* Was steht jetzt (oder zu einem Zeitpunkt) im Plan? */
+function planZu(plan,wann){
+  wann=wann||new Date();
+  var iso=wann.getFullYear()+'-'+pad(wann.getMonth()+1)+'-'+pad(wann.getDate()), tag=wann.getDay(), min=wann.getHours()*60+wann.getMinutes();
+  var aus=(plan.ausnahmen||[]).filter(function(a){return a.von<=iso&&iso<=(a.bis||a.von);});
+  var ganz=aus.filter(function(a){return !a.zeitVon;})[0];
+  if(ganz&&ganz.art!=='termin'){return {art:'abwesend',grund:AUSNAHME[ganz.art]||ganz.art,bis:ganz.bis||ganz.von,notiz:ganz.notiz};}
+  var bloecke=tagesBloecke(plan,wann);
+  var jetzt=bloecke.filter(function(b){return minuten(b.von)<=min&&min<minuten(b.bis);})[0];
+  var naechster=bloecke.filter(function(b){return minuten(b.von)>min;})[0];
+  if(jetzt){return {art:'im-einsatz',block:jetzt,naechster:naechster};}
+  if(!bloecke.length){return {art:'kein-plan',naechster:null};}
+  if(min<minuten(bloecke[0].von)){return {art:'noch-nicht',naechster:naechster};}
+  if(naechster){return {art:'unterwegs',naechster:naechster,vorher:bloecke.filter(function(b){return minuten(b.bis)<=min;}).pop()};}
+  return {art:'feierabend',naechster:null};
+}
+function tagesBloecke(plan,wann){
+  var iso=wann.getFullYear()+'-'+pad(wann.getMonth()+1)+'-'+pad(wann.getDate()), tag=wann.getDay();
+  var aus=(plan.ausnahmen||[]).filter(function(a){return a.von<=iso&&iso<=(a.bis||a.von);});
+  var ganz=aus.filter(function(a){return !a.zeitVon;})[0];
+  if(ganz&&ganz.art!=='termin'){return [];}
+  var bl=(plan.woche||[]).filter(function(b){return +b.tag===tag;}).map(function(b){return {von:b.von,bis:b.bis,ort:b.ort,klasse:b.klasse,art:b.art,notiz:b.notiz};});
+  aus.filter(function(a){return a.zeitVon;}).forEach(function(a){
+    var v=minuten(a.zeitVon), e=minuten(a.zeitBis)||v+60;
+    bl=bl.filter(function(b){return minuten(b.bis)<=v||minuten(b.von)>=e;});   /* Ausnahme ersetzt diese Zeit */
+    if(a.art==='termin'){bl.push({von:a.zeitVon,bis:a.zeitBis||hhmm(e),ort:a.ort,klasse:a.klasse,art:'anderes',notiz:a.notiz,ausnahme:true});}
+    else{bl.push({von:a.zeitVon,bis:a.zeitBis||hhmm(e),ort:AUSNAHME[a.art]||a.art,art:'abwesend',notiz:a.notiz,ausnahme:true,abwesend:true});}
+  });
+  return bl.sort(function(a,b){return minuten(a.von)-minuten(b.von);});
+}
+function statusText(s){
+  if(s.art==='abwesend'){return s.grund+(s.bis?' bis '+datum(s.bis):'');}
+  if(s.art==='im-einsatz'){var b=s.block;return (b.abwesend?b.ort:(b.ort||'ohne Ort'))+(b.klasse?' · '+b.klasse:'')+' · bis '+b.bis;}
+  if(s.art==='unterwegs'){return 'Zwischen zwei Einsätzen – ab '+s.naechster.von+' '+(s.naechster.ort||'');}
+  if(s.art==='noch-nicht'){return 'Beginnt um '+s.naechster.von+(s.naechster.ort?' · '+s.naechster.ort:'');}
+  if(s.art==='feierabend'){return 'Für heute fertig';}
+  return 'Heute kein Einsatz eingetragen';
+}
+function seiteEinsatz(){
+  setzen(kopf('Arbeit','Mein Einsatzplan','Wann du wo arbeitest: Klasse, Ort und Zeit. Sichtbar nur für dich, deine Responsable und die Verwaltung – verschlüsselt im Hub-Ordner.')+'<div id="ar-einsatz">'+laedt('Lade deinen Plan …')+'</div>');
+  var me=K.ich();
+  bereichLaden().catch(function(){}).then(function(){return T.meinPlan();}).then(function(p){
+    planEntwurf=p||leererPlan();planDirty=false;
+    einsatzZeichnen();
+  }).catch(function(e){if(e&&e.abgebrochen){$('ar-einsatz').innerHTML=karte('<p>Ohne Passwort kann der Hub deinen Plan nicht öffnen.</p><button class="btn" type="button" data-ar="einsatz-neu">Nochmal</button>');return;}
+    $('ar-einsatz').innerHTML=karte(hinweis(fehlerText(e))+'<button class="btn" type="button" data-ar="einsatz-neu">Nochmal</button>');});
+  void me;
+}
+function sichtbarFuer(){
+  var me=K.ich(), l=[];
+  if(me.responsable){l.push(kname(me.responsable)+' (Responsable)');}
+  var z=T.zustand();
+  if(z.art==='bereit'){T.mitglieder().filter(function(k){return k.rolle==='admin'&&k.id!==me.id&&k.id!==me.responsable;}).forEach(function(k){l.push(k.name+' (Verwaltung)');});}
+  return l;
+}
+function einsatzZeichnen(){
+  var el=$('ar-einsatz');if(!el){return;}
+  var p=planEntwurf, me=K.ich(), tage=p.samstag?[1,2,3,4,5,6]:[1,2,3,4,5], s=planZu(p);
+  var h='';
+  if(!me.responsable){h+=hinweis('Du hast noch keine/n <b>Responsable</b> eingetragen. Konto-Menü → <b>Profil ändern</b>. Solange sieht nur die Verwaltung deinen Plan.','info');}
+  h+='<div class="ar-jetzt '+esc(s.art)+'"><span class="ar-puls"></span><div><small>Laut deinem Plan jetzt ('+pad(new Date().getHours())+':'+pad(new Date().getMinutes())+' Uhr)</small><b>'+esc(statusText(s))+'</b></div>'+
+    '<div class="ar-sicht">'+svg('lock')+'<span>Sichtbar für: du'+(sichtbarFuer().length?', '+esc(sichtbarFuer().join(', ')):'')+'</span></div></div>';
+  h+='<div class="ar-karte"><div class="ar-kartenkopf"><h2>Wochenplan</h2><label class="ar-haken"><input type="checkbox" id="ar-samstag"'+(p.samstag?' checked':'')+'> Samstag</label></div>'+
+    '<div class="ar-woche" style="--tage:'+tage.length+'">'+tage.map(function(t){
+      var bl=(p.woche||[]).filter(function(b){return +b.tag===t;}).sort(function(a,b){return minuten(a.von)-minuten(b.von);});
+      return '<div class="ar-tag"><h3>'+TAGE_LANG[t]+'</h3>'+bl.map(blockHtml).join('')+
+        '<button class="ar-blockneu" type="button" data-ar="block-neu" data-tag="'+t+'">'+svg('plus')+'Zeitblock</button>'+
+        (bl.length?'<button class="ar-link ar-kopie" type="button" data-ar="tag-kopieren" data-tag="'+t+'">'+svg('copy')+'auf andere Tage</button>':'')+'</div>';
+    }).join('')+'</div></div>';
+  var aus=(p.ausnahmen||[]).slice().sort(function(a,b){return a.von<b.von?-1:1;}).filter(function(a){return (a.bis||a.von)>=heuteIso();});
+  h+='<div class="ar-karte"><div class="ar-kartenkopf"><h2>Ausnahmen</h2><button class="btn" type="button" data-ar="ausnahme-neu">'+svg('plus')+'Ausnahme</button></div>'+
+    '<p class="ar-leise">Urlaub, Krankheit, Fortbildung oder ein anderer Einsatz an bestimmten Tagen. Vergangene Ausnahmen werden ausgeblendet.</p>'+
+    (aus.length?'<ul class="ar-ausnahmen">'+aus.map(function(a){return '<li><span class="ar-art">'+esc(AUSNAHME[a.art]||a.art)+'</span><b>'+esc(datum(a.von))+(a.bis&&a.bis!==a.von?' – '+esc(datum(a.bis)):'')+'</b>'+(a.zeitVon?' <span>'+esc(a.zeitVon)+'–'+esc(a.zeitBis||'')+'</span>':' <span>ganztags</span>')+(a.ort?' · '+esc(a.ort):'')+(a.notiz?' · '+esc(a.notiz):'')+'<button type="button" class="ar-link gefahr" data-ar="ausnahme-weg" data-id="'+esc(a.id)+'">'+svg('x')+'Entfernen</button></li>';}).join('')+'</ul>':'<p>Keine anstehenden Ausnahmen.</p>')+'</div>';
+  h+='<div class="ar-speicherleiste'+(planDirty?' offen':'')+'"><span>'+(planDirty?'Ungespeicherte Änderungen':'Alles gespeichert')+'</span><button class="btn primary" type="button" data-ar="plan-speichern"'+(planDirty?'':' disabled')+'>'+svg('check')+'Plan speichern</button></div>';
+  el.innerHTML=h;
+  var sa=$('ar-samstag');if(sa){sa.onchange=function(){planEntwurf.samstag=sa.checked;planDirty=true;einsatzZeichnen();};}
+}
+function ortFarbe(ort){var s=String(ort||'').toLowerCase(),h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}var f=['#3F5AA6','#1F6B6F','#B4533A','#A8741A','#6E4A7E','#2E7D4F','#9C3D6B','#476B9C'];return s?f[h%f.length]:'#8C96A8';}
+function blockHtml(b){
+  return '<button class="ar-block" type="button" data-ar="block-aendern" data-id="'+esc(b.id)+'" style="--oc:'+esc(ortFarbe(b.ort))+'"><b>'+esc(b.von)+'–'+esc(b.bis)+'</b><span>'+esc(b.ort||'ohne Ort')+'</span>'+(b.klasse?'<small>'+esc(b.klasse)+'</small>':'')+(b.art?'<small>'+esc(TAETIGKEIT[b.art]||b.art)+'</small>':'')+'</button>';
+}
+function bekannteOrte(){var s={};(planEntwurf.woche||[]).concat(planEntwurf.ausnahmen||[]).forEach(function(b){if(b.ort){s[b.ort]=1;}});return Object.keys(s).sort();}
+function blockDialog(tag,id){
+  var b=id?(planEntwurf.woche||[]).filter(function(x){return x.id===id;})[0]:{tag:tag,von:'08:00',bis:'11:45',ort:'',klasse:'',art:'unterwegs'};
+  if(!b){return;}
+  var orte=bekannteOrte();
+  var inhalt='<div class="ar-raster3">'+auswahl('tag','Tag',b.tag,[1,2,3,4,5,6].map(function(t){return [t,TAGE_LANG[t]];}))+feld('von','Von',b.von,'time')+feld('bis','Bis',b.bis,'time')+'</div>'+
+    '<div class="ar-raster2">'+feld('ort','Ort (Schule, Gebäude, Adresse)',b.ort,'text',' list="ar-orte" autocomplete="off" autofocus')+feld('klasse','Klasse / Gruppe',b.klasse,'text',' autocomplete="off"')+'</div>'+
+    '<datalist id="ar-orte">'+orte.map(function(o){return '<option value="'+esc(o)+'">';}).join('')+'</datalist>'+
+    auswahl('art','Tätigkeit',b.art==='unterwegs'?'unterricht':b.art,Object.keys(TAETIGKEIT).map(function(k){return [k,TAETIGKEIT[k]];}))+feld('notiz','Notiz (optional, keine Schülernamen)',b.notiz);
+  var knoepfe=[{text:'Abbrechen',wert:''}];if(id){knoepfe.push({text:'Löschen',wert:'weg',gefahr:true});}knoepfe.push({text:'Übernehmen',wert:'ok',primaer:true});
+  dialog(id?'Zeitblock ändern':'Neuer Zeitblock',inhalt,knoepfe,{breit:true,
+    pruefen:function(w){if(w.aktion==='weg'){return '';}var v=minuten(w.werte.von),e=minuten(w.werte.bis);if(v==null||e==null){return 'Bitte Von und Bis angeben.';}if(e<=v){return '„Bis“ muss nach „Von“ liegen.';}
+      var ueber=(planEntwurf.woche||[]).filter(function(x){return x.id!==id&&+x.tag===+w.werte.tag&&minuten(x.von)<e&&v<minuten(x.bis);})[0];
+      return ueber?'Überschneidet sich mit '+ueber.von+'–'+ueber.bis+' ('+(ueber.ort||'ohne Ort')+').':'';}
+  }).then(function(r){
+    if(r.aktion==='weg'){planEntwurf.woche=planEntwurf.woche.filter(function(x){return x.id!==id;});}
+    else if(r.aktion==='ok'){
+      var v=r.werte, neu={id:id||T.neueId(8),tag:+v.tag,von:v.von,bis:v.bis,ort:v.ort.trim(),klasse:v.klasse.trim(),art:v.art,notiz:v.notiz.trim()};
+      planEntwurf.woche=(planEntwurf.woche||[]).filter(function(x){return x.id!==id;}).concat([neu]);
+    }else{return;}
+    planDirty=true;einsatzZeichnen();
+  });
+}
+function tagKopierenDialog(tag){
+  var inhalt='<p>Die Zeitblöcke vom '+TAGE_LANG[tag]+' auf diese Tage kopieren (vorhandene Blöcke dort werden ersetzt):</p><div class="ar-checkliste">'+
+    [1,2,3,4,5,6].filter(function(t){return t!==tag&&(t<6||planEntwurf.samstag);}).map(function(t){return '<label class="ar-haken"><input type="checkbox" name="t'+t+'"> '+TAGE_LANG[t]+'</label>';}).join('')+'</div>';
+  dialog('Tag kopieren',inhalt,[{text:'Abbrechen',wert:''},{text:'Kopieren',wert:'ok',primaer:true}]).then(function(r){
+    if(r.aktion!=='ok'){return;}
+    var ziele=Object.keys(r.werte).filter(function(k){return r.werte[k];}).map(function(k){return +k.slice(1);});if(!ziele.length){return;}
+    var quelle=planEntwurf.woche.filter(function(b){return +b.tag===tag;});
+    planEntwurf.woche=planEntwurf.woche.filter(function(b){return ziele.indexOf(+b.tag)<0;});
+    ziele.forEach(function(t){quelle.forEach(function(b){var c=JSON.parse(JSON.stringify(b));c.id=T.neueId(8);c.tag=t;planEntwurf.woche.push(c);});});
+    planDirty=true;einsatzZeichnen();
+  });
+}
+function ausnahmeDialog(){
+  var inhalt='<div class="ar-raster3">'+auswahl('art','Art','urlaub',Object.keys(AUSNAHME).map(function(k){return [k,AUSNAHME[k]];}))+feld('von','Von',heuteIso(),'date')+feld('bis','Bis (optional)','','date')+'</div>'+
+    '<label class="ar-haken"><input type="checkbox" name="stunden"> Nur zu bestimmten Uhrzeiten</label>'+
+    '<div class="ar-raster2" id="ar-aus-zeit" hidden>'+feld('zeitVon','Von (Uhrzeit)','','time')+feld('zeitBis','Bis (Uhrzeit)','','time')+'</div>'+
+    '<div class="ar-raster2">'+feld('ort','Ort (bei anderem Einsatz)','','text',' list="ar-orte2" autocomplete="off"')+feld('klasse','Klasse (optional)','','text')+'</div>'+
+    '<datalist id="ar-orte2">'+bekannteOrte().map(function(o){return '<option value="'+esc(o)+'">';}).join('')+'</datalist>'+feld('notiz','Notiz (optional)','');
+  dialog('Ausnahme',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
+    nachAufbau:function(dlg){var c=dlg.querySelector('[name=stunden]');c.onchange=function(){dlg.querySelector('#ar-aus-zeit').hidden=!c.checked;};},
+    pruefen:function(w){var v=w.werte;if(!v.von){return 'Bitte das Datum angeben.';}if(v.bis&&v.bis<v.von){return '„Bis“ liegt vor „Von“.';}if(v.stunden&&(!v.zeitVon||!v.zeitBis)){return 'Bitte die Uhrzeiten angeben.';}return '';}
+  }).then(function(r){
+    if(r.aktion!=='ok'){return;}
+    var v=r.werte;
+    planEntwurf.ausnahmen=(planEntwurf.ausnahmen||[]).concat([{id:T.neueId(8),art:v.art,von:v.von,bis:v.bis||v.von,zeitVon:v.stunden?v.zeitVon:'',zeitBis:v.stunden?v.zeitBis:'',ort:v.ort.trim(),klasse:v.klasse.trim(),notiz:v.notiz.trim()}]);
+    planDirty=true;einsatzZeichnen();
+  });
+}
+function planSpeichern(btn){
+  if(btn){btn.disabled=true;}
+  var p=JSON.parse(JSON.stringify(planEntwurf));delete p.__empfaenger;
+  /* Vergangene Ausnahmen (älter als 60 Tage) nicht ewig mitschleppen */
+  var grenze=new Date(Date.now()-60*864e5).toISOString().slice(0,10);
+  p.ausnahmen=(p.ausnahmen||[]).filter(function(a){return (a.bis||a.von)>=grenze;});
+  T.planSpeichern(p).then(function(r){planEntwurf=r.plan;planDirty=false;einsatzZeichnen();toast('Plan gespeichert');},function(e){if(btn){btn.disabled=false;}toast('Nicht gespeichert: '+((e&&e.message)||e));});
+}
+
+/* =====================================================================
+   Mein Team: wer ist gerade wo?
+   ===================================================================== */
+function seiteTeam(neu){
+  setzen(kopf('Arbeit','Mein Team','Wo deine Mitarbeitenden laut Einsatzplan gerade sind – live, nach Ort sortiert.',
+    '<div class="ar-ansicht" role="tablist">'+[['jetzt','Jetzt'],['heute','Heute'],['woche','Woche']].map(function(a){return '<button type="button" role="tab" class="'+(teamAnsicht===a[0]?'on':'')+'" aria-selected="'+(teamAnsicht===a[0])+'" data-ansicht="'+a[0]+'">'+a[1]+'</button>';}).join('')+'</div>')+
+    '<div id="ar-team">'+laedt('Lade die Einsatzpläne …')+'</div>');
+  var p=(!neu&&teamDaten&&Date.now()-teamZeit<300000)?Promise.resolve(teamDaten):bereichLaden().catch(function(){}).then(function(){return T.lesbarePlaene();}).then(function(l){teamDaten=l;teamZeit=Date.now();return l;});
+  p.then(teamZeichnen).catch(function(e){if(e&&e.abgebrochen){$('ar-team').innerHTML=karte('<p>Ohne Passwort können die Pläne nicht geöffnet werden.</p><button class="btn" type="button" data-ar="team-neu">Nochmal</button>');return;}$('ar-team').innerHTML=karte(hinweis(fehlerText(e))+'<button class="btn" type="button" data-ar="team-neu">Nochmal</button>');});
+  uhrStarten();
+}
+function teamPersonen(){
+  var me=K.ich(), plaene={};(teamDaten||[]).forEach(function(p){if(p.konto!==me.id){plaene[p.konto]=p;}});
+  var ids={};
+  K.konten().forEach(function(k){if(k.responsable===me.id){ids[k.id]=1;}});
+  Object.keys(plaene).forEach(function(id){ids[id]=1;});
+  return Object.keys(ids).map(function(id){var k=konto(id)||{id:id,name:'(unbekannt)',teamFarbe:'#586277',teamName:''};return {k:k,plan:plaene[id]||null,direkt:k.responsable===me.id};})
+    .sort(function(a,b){return (b.direkt-a.direkt)||a.k.name.localeCompare(b.k.name,'de');});
+}
+function teamZeichnen(){
+  var el=$('ar-team');if(!el){return;}
+  var leute=teamPersonen(), jetzt=new Date();
+  if(!leute.length){el.innerHTML=karte('<h2>Noch niemand in deinem Team</h2><p>Hier erscheinen alle, die dich im Profil als <b>Responsable</b> eingetragen haben (Konto-Menü → Profil ändern) und ihren Einsatzplan gespeichert haben.</p>','ar-leer');return;}
+  var h='<p class="ar-uhr" id="ar-uhr">'+TAGE_LANG[jetzt.getDay()]+', '+datum(heuteIso())+' · <b>'+pad(jetzt.getHours())+':'+pad(jetzt.getMinutes())+'</b> Uhr <button class="ar-link" type="button" data-ar="team-neu">'+svg('reload')+'Pläne neu laden</button></p>';
+  if(teamAnsicht==='heute'){h+=teamHeute(leute);}
+  else if(teamAnsicht==='woche'){h+=teamWoche(leute);}
+  else{h+=teamJetzt(leute);}
+  var ohne=leute.filter(function(x){return !x.plan;});
+  if(ohne.length){h+='<p class="ar-leise ar-ohneplan">Noch kein Einsatzplan gespeichert: '+esc(ohne.map(function(x){return x.k.name;}).join(', '))+'</p>';}
+  el.innerHTML=h;
+}
+function personChip(x,s){
+  var b=s.block;
+  return '<div class="ar-person"><span class="ava" style="--tc:'+esc(x.k.teamFarbe)+'">'+esc(ini(x.k.name))+'</span><span><b>'+esc(x.k.name)+'</b><small>'+
+    esc(s.art==='im-einsatz'?((b.klasse?b.klasse+' · ':'')+'bis '+b.bis):statusText(s))+'</small></span></div>';
+}
+function teamJetzt(leute){
+  var orte={}, sonst={abwesend:[],unterwegs:[],frei:[],ohne:[]};
+  leute.forEach(function(x){
+    if(!x.plan){sonst.ohne.push(x);return;}
+    var s=planZu(x.plan);
+    if(s.art==='im-einsatz'&&!s.block.abwesend){var o=s.block.ort||'Ohne Ortsangabe';(orte[o]=orte[o]||[]).push({x:x,s:s});}
+    else if(s.art==='abwesend'||(s.art==='im-einsatz'&&s.block.abwesend)){sonst.abwesend.push({x:x,s:s});}
+    else if(s.art==='unterwegs'){sonst.unterwegs.push({x:x,s:s});}
+    else{sonst.frei.push({x:x,s:s});}
+  });
+  var namen=Object.keys(orte).sort(function(a,b){return orte[b].length-orte[a].length||a.localeCompare(b,'de');});
+  var zahl=leute.length, im=namen.reduce(function(n,o){return n+orte[o].length;},0);
+  var h='<div class="ar-kennzahlen"><div><b>'+im+'</b><span>im Einsatz</span></div><div><b>'+sonst.unterwegs.length+'</b><span>zwischen Einsätzen</span></div><div><b>'+sonst.abwesend.length+'</b><span>abwesend</span></div><div><b>'+(sonst.frei.length+sonst.ohne.length)+'</b><span>ohne Einsatz jetzt</span></div><div><b>'+zahl+'</b><span>im Team</span></div></div>';
+  h+='<div class="ar-orte">'+namen.map(function(o){
+    return '<section class="ar-ort" style="--oc:'+esc(ortFarbe(o))+'"><header><span class="ar-pin">'+svg('pin')+'</span><h3>'+esc(o)+'</h3><span class="ar-anzahl">'+orte[o].length+'</span></header>'+orte[o].map(function(e){return personChip(e.x,e.s);}).join('')+'</section>';
+  }).join('')+'</div>';
+  function gruppe(t,l,kl){return l.length?'<section class="ar-gruppe '+kl+'"><h3>'+esc(t)+' <span>'+l.length+'</span></h3><div class="ar-gruppe-l">'+l.map(function(e){return personChip(e.x,e.s);}).join('')+'</div></section>':'';}
+  h+=gruppe('Zwischen zwei Einsätzen',sonst.unterwegs,'unterwegs')+gruppe('Abwesend',sonst.abwesend,'abwesend')+gruppe('Jetzt kein Einsatz',sonst.frei,'frei');
+  return h;
+}
+function teamHeute(leute){
+  var START=7*60, ENDE=18*60, jetzt=new Date(), min=jetzt.getHours()*60+jetzt.getMinutes();
+  function pos(m){return Math.max(0,Math.min(100,(m-START)/(ENDE-START)*100));}
+  var skala='';for(var s=START;s<=ENDE;s+=60){skala+='<span style="left:'+pos(s)+'%">'+pad(s/60)+'</span>';}
+  var h='<div class="ar-zeitstrahl"><div class="ar-zs-kopf"><span></span><div class="ar-zs-skala">'+skala+'</div></div>';
+  leute.filter(function(x){return x.plan;}).forEach(function(x){
+    var bl=tagesBloecke(x.plan,jetzt), s=planZu(x.plan);
+    h+='<div class="ar-zs-zeile"><span class="ar-zs-name"><span class="ava klein" style="--tc:'+esc(x.k.teamFarbe)+'">'+esc(ini(x.k.name))+'</span>'+esc(x.k.name)+'</span><div class="ar-zs-bahn">'+
+      (s.art==='abwesend'?'<span class="ar-zs-abw">'+esc(statusText(s))+'</span>':'')+
+      bl.map(function(b){var v=minuten(b.von),e=minuten(b.bis);return '<span class="ar-zs-block'+(b.abwesend?' abw':'')+'" style="left:'+pos(v)+'%;width:'+Math.max(0.8,pos(e)-pos(v))+'%;--oc:'+esc(b.abwesend?'#8C96A8':ortFarbe(b.ort))+'" title="'+esc(b.von+'–'+b.bis+' · '+(b.ort||'')+(b.klasse?' · '+b.klasse:''))+'"><b>'+esc(b.ort||'')+'</b>'+(b.klasse?' '+esc(b.klasse):'')+'</span>';}).join('')+
+      '</div></div>';
+  });
+  if(min>=START&&min<=ENDE){h+='<div class="ar-zs-jetzt" style="--p:'+pos(min)+'"><span>'+pad(jetzt.getHours())+':'+pad(jetzt.getMinutes())+'</span></div>';}
+  return h+'</div>';
+}
+function teamWoche(leute){
+  var tage=[1,2,3,4,5], heute=new Date(), montag=new Date(heute);montag.setDate(heute.getDate()-((heute.getDay()+6)%7));
+  var h='<div class="ar-wochenmatrix" style="--tage:'+tage.length+'"><div class="kopf"></div>'+tage.map(function(t,i){var d=new Date(montag);d.setDate(montag.getDate()+i);return '<div class="kopf'+(d.toDateString()===heute.toDateString()?' heute':'')+'">'+TAGE[t]+' '+pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.</div>';}).join('');
+  leute.filter(function(x){return x.plan;}).forEach(function(x){
+    h+='<div class="ar-wm-name"><span class="ava klein" style="--tc:'+esc(x.k.teamFarbe)+'">'+esc(ini(x.k.name))+'</span>'+esc(x.k.name)+'</div>';
+    tage.forEach(function(t,i){
+      var d=new Date(montag);d.setDate(montag.getDate()+i);
+      var bl=tagesBloecke(x.plan,d), s=planZu(x.plan,new Date(d.getFullYear(),d.getMonth(),d.getDate(),12,0));
+      h+='<div class="ar-wm-zelle">'+(s.art==='abwesend'?'<span class="ar-wm-abw">'+esc(s.grund)+'</span>':bl.map(function(b){return '<span class="ar-wm-block" style="--oc:'+esc(b.abwesend?'#8C96A8':ortFarbe(b.ort))+'">'+esc(b.von)+'–'+esc(b.bis)+' <b>'+esc(b.ort||'')+'</b></span>';}).join(''))+'</div>';
+    });
+  });
+  return h+'</div>';
+}
+function uhrStarten(){
+  clearInterval(uhrTimer);
+  uhrTimer=setInterval(function(){
+    if(akt.seite!=='team'||!$('ar-team')){clearInterval(uhrTimer);return;}
+    if(Date.now()-teamZeit>300000){seiteTeam(true);return;}   /* alle 5 Minuten die Pläne neu lesen */
+    teamZeichnen();
+  },30000);
+}
+
+/* =====================================================================
+   Verwaltung: freischalten, Rollen, Protokoll
+   ===================================================================== */
+function seiteVerwaltung(){
+  setzen(kopf('Arbeit','Verwaltung','Neue Konten freischalten, Rollen vergeben und nachsehen, was im Schülerbereich passiert ist.')+'<div id="ar-verw">'+laedt()+'</div>');
+  bereichLaden(true).then(function(z){
+    if(z.art!=='bereit'){$('ar-verw').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
+    if(!T.darfFreischalten()){$('ar-verw').innerHTML=karte('<p>Die Verwaltung sehen nur die Verwaltung und die Responsables.</p>','ar-leer');return;}
+    verwaltungZeichnen();
+  }).catch(function(e){$('ar-verw').innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});});
+}
+function verwaltungZeichnen(){
+  var el=$('ar-verw');if(!el){return;}
+  var admin=T.istAdmin(), w=T.wartende(), m=T.mitglieder();
+  var ROLLEN={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
+  var h=karte('<h2>Warten auf Freischaltung'+(w.length?' <span class="ar-zahl">'+w.length+'</span>':'')+'</h2>'+
+    (w.length?'<p class="ar-klein">Vergleiche den <b>Kontrollcode</b> mit dem Code, den die Person auf ihrem Bildschirm sieht (Schüler → „Noch nicht freigeschaltet“) – zum Beispiel am Telefon. Stimmt er, gehört das Konto wirklich ihr.</p>'+
+      '<div class="ar-wartende">'+w.map(function(k){return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</small></span><code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
+      :'<p class="ar-leise">Niemand wartet.</p>'));
+  h+=karte('<h2>Mitglieder</h2><div class="ar-tabelle ar-mitglieder"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Responsable</span><span>Rolle</span><span></span></div>'+
+    m.filter(function(k){return k.freigeschaltet;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){
+      return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><b>'+esc(k.name)+'</b></span><span>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(k.responsable?kname(k.responsable):'—')+'</span>'+
+        '<span>'+(admin?'<select data-rolle="'+esc(k.id)+'" aria-label="Rolle von '+esc(k.name)+'">'+Object.keys(ROLLEN).map(function(r){return '<option value="'+r+'"'+(k.rolle===r?' selected':'')+'>'+ROLLEN[r]+'</option>';}).join('')+'</select>':esc(ROLLEN[k.rolle]||k.rolle))+'</span>'+
+        '<span>'+(admin&&k.id!==K.ich().id?'<button class="ar-link gefahr" type="button" data-ar="entziehen" data-id="'+esc(k.id)+'">Zugang entziehen</button>':'')+'</span></div>';
+    }).join('')+'</div>'+(admin?'<p class="ar-klein"><b>Responsables</b> können Konten freischalten und alle Dossiers bearbeiten. Die <b>Verwaltung</b> vergibt zusätzlich Rollen und kann Dossiers löschen.</p>':''));
+  var log=T.bereichsVerlauf().slice(0,60);
+  h+=karte('<h2>Protokoll des Schülerbereichs</h2><ol class="ar-protokoll">'+log.map(function(v){return '<li><span class="ar-leise">'+esc(datumZeit(v.z))+'</span><b>'+esc(kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol>');
+  el.innerHTML=h;
+  Array.prototype.forEach.call(el.querySelectorAll('[data-code]'),function(c){K.kontrollcode(c.getAttribute('data-code')).then(function(x){c.textContent=x||'—';});});
+  Array.prototype.forEach.call(el.querySelectorAll('select[data-rolle]'),function(s){
+    s.onchange=function(){var id=s.getAttribute('data-rolle'), alt=T.rolle(id);s.disabled=true;
+      T.rolleSetzen(id,s.value).then(function(){toast('Rolle geändert');verwaltungZeichnen();navNeu();},function(e){s.value=alt;s.disabled=false;toast((e&&e.message)||String(e));});};
+  });
+}
+
+/* =====================================================================
+   Ereignisse
+   ===================================================================== */
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-ar], #arbeit-body [data-tab], #arbeit-body [data-filter-status], #arbeit-body [data-filter-stelle], #arbeit-body [data-filter-meine], #arbeit-body [data-ansicht]');
+  if(!t){return;}
+  if(t.hasAttribute('data-filter-status')){filter.status=t.getAttribute('data-filter-status');listeZeichnen(letzteListe);return;}
+  if(t.hasAttribute('data-filter-stelle')){filter.stelle=t.getAttribute('data-filter-stelle');listeZeichnen(letzteListe);return;}
+  if(t.hasAttribute('data-filter-meine')){filter.meine=!filter.meine;listeZeichnen(letzteListe);return;}
+  if(t.hasAttribute('data-ansicht')){teamAnsicht=t.getAttribute('data-ansicht');Array.prototype.forEach.call(document.querySelectorAll('[data-ansicht]'),function(b){b.classList.toggle('on',b===t);b.setAttribute('aria-selected',String(b===t));});teamZeichnen();return;}
+  if(t.hasAttribute('data-tab')){dossierTab=t.getAttribute('data-tab');if(aktDossier){dossierZeichnen(aktDossier);}window.scrollTo(0,0);return;}
+  var a=t.getAttribute('data-ar'), d=aktDossier;
+  var det=t.closest('details');if(det){det.open=false;}
+  switch(a){
+    case 'einrichten':
+      t.disabled=true;T.einrichten().then(function(){toast('Schülerbereich eingerichtet – du bist Verwaltung');navNeu();seiteSchueler(true);},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
+    case 'neu-laden':geladen=false;T.vergessen().then(function(){zeigen(akt.seite,akt.param,true);});break;
+    case 'neu':neuerSchueler();break;
+    case 'weitergeben':weitergebenDialog(d);break;
+    case 'rechte':rechteDialog(d);break;
+    case 'verantwortlich':verantwortlichDialog(d);break;
+    case 'person':personDialog(d);break;
+    case 'status':statusDialog(d);break;
+    case 'loeschen':loeschenDialog(d);break;
+    case 'drucken':drucken(d);break;
+    case 'eldib-uebernehmen':eldibUebernehmenDialog(d);break;
+    case 'eldib-oeffnen':eldibOeffnen(d);break;
+    case 'einschaetzung':einschaetzungDialog(d);break;
+    case 'neu-laden-dossier':seiteDossier(d.id,true);break;
+    case 'eintrag-aendern':eintragAendernDialog(d,t.getAttribute('data-eid'));break;
+    case 'eintrag-loeschen':eintragLoeschenDialog(d,t.getAttribute('data-eid'));break;
+    case 'einsatz-neu':seiteEinsatz();break;
+    case 'block-neu':blockDialog(+t.getAttribute('data-tag'),null);break;
+    case 'block-aendern':blockDialog(null,t.getAttribute('data-id'));break;
+    case 'tag-kopieren':tagKopierenDialog(+t.getAttribute('data-tag'));break;
+    case 'ausnahme-neu':ausnahmeDialog();break;
+    case 'ausnahme-weg':planEntwurf.ausnahmen=planEntwurf.ausnahmen.filter(function(x){return x.id!==t.getAttribute('data-id');});planDirty=true;einsatzZeichnen();break;
+    case 'plan-speichern':planSpeichern(t);break;
+    case 'team-neu':seiteTeam(true);break;
+    case 'freischalten':
+      t.disabled=true;T.freischalten(t.getAttribute('data-id')).then(function(){toast('Freigeschaltet');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;if(!(e&&e.abgebrochen)){toast((e&&e.message)||String(e));}});break;
+    case 'entziehen':
+      dialog('Zugang entziehen','<p><b>'+esc(kname(t.getAttribute('data-id')))+'</b> kann danach keine Schülerdaten mehr öffnen. Was die Person bisher gesehen hat, lässt sich nicht zurückholen.</p>',[{text:'Abbrechen',wert:''},{text:'Entziehen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.entziehen(t.getAttribute('data-id'));}})
+        .then(function(r){if(r.aktion==='ok'){toast('Zugang entzogen');verwaltungZeichnen();}});break;
+  }
+});
+/* Ungespeicherten Einsatzplan nicht verlieren */
+window.addEventListener('beforeunload',function(ev){if(planDirty&&akt.seite==='einsatz'){ev.preventDefault();ev.returnValue='';}});
+
+/* ---------- Einstieg ---------- */
+function zeigen(seite,param,neu){
+  if(akt.seite==='einsatz'&&seite!=='einsatz'&&planDirty){
+    if(!window.confirm('Dein Einsatzplan hat ungespeicherte Änderungen. Trotzdem verlassen?')){history.back();return;}
+    planDirty=false;
+  }
+  akt={seite:seite,param:param||''};
+  if(seite==='schueler'&&param){if(!aktDossier||aktDossier.id!==param){dossierTab='ueberblick';}seiteDossier(param,neu);}
+  else if(seite==='schueler'){seiteSchueler(neu);}
+  else if(seite==='einsatz'){seiteEinsatz();}
+  else if(seite==='team'){seiteTeam(neu);}
+  else if(seite==='verwaltung'){seiteVerwaltung();}
+  var b=body();if(b&&b.parentNode){b.parentNode.scrollTop=0;}
+}
+function zuruecksetzen(){geladen=false;ladeVersprechen=null;aktDossier=null;letzteListe=null;teamDaten=null;planEntwurf=null;planDirty=false;akt={seite:'',param:''};clearInterval(uhrTimer);setzen('');return T.vergessen();}
+/* Kleine Zusammenfassung für die Übersicht des Hubs */
+function heuteKarte(){
+  var me=K.ich();if(!me||!K.privatDa()){return Promise.resolve('');}   /* auf der Übersicht nie nach dem Passwort fragen */
+  return T.meinPlan().then(function(p){
+    if(!p){return '<a class="ar-heute" href="#/einsatz">'+svg('uhr')+'<span><b>Mein Einsatzplan</b><small>Noch nicht eingetragen – wann bist du wo?</small></span></a>';}
+    var s=planZu(p);return '<a class="ar-heute '+esc(s.art)+'" href="#/einsatz">'+svg('uhr')+'<span><b>Jetzt laut Plan</b><small>'+esc(statusText(s))+'</small></span></a>';
+  }).catch(function(){return '';});
+}
+
+return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLaden:bereichLaden, vorladen:vorladen, heuteKarte:heuteKarte, planZu:planZu};
 })();
 </script>
 
@@ -1755,11 +3526,12 @@ function liveInfo(a){
 }
 
 /* ---------- Zustand ---------- */
-var view='home', current=null, frames={}, missing={}, sideOverride=null, tabs={};
+var view='home', current=null, frames={}, missing={}, sideOverride=null, tabs={}, arbeitSeite='';
 
 /* ---------- Seitenleiste ---------- */
 function renderSide(){
   var h='<a class="lnk" href="#/" data-route="home" title="Übersicht"><span class="lic">'+svg('home')+'</span><span class="lnk-t">Übersicht</span></a>';
+  if(ICH&&window.CDSE_ARBEIT){h+=window.CDSE_ARBEIT.navHtml(view==='arbeit'?arbeitSeite:'');}
   groups(meine()).forEach(function(g){
     h+='<div class="navlabel">'+esc(g.name)+'</div><div class="navsep"></div>';
     g.apps.forEach(function(a){
@@ -1776,7 +3548,7 @@ function renderSide(){
   for(var i=0;i<links.length;i++){
     var l=links[i], ap=l.getAttribute('data-app'), rt=l.getAttribute('data-route');
     /* Immer genau EIN aktiver Eintrag */
-    l.classList.toggle('active',(view==='app'&&ap&&ap===current)||(view==='home'&&rt==='home')||(view==='guide'&&(current?(ap&&ap===current):rt==='guide')));
+    l.classList.toggle('active',(view==='app'&&ap&&ap===current)||(view==='home'&&rt==='home')||(view==='guide'&&(current?(ap&&ap===current):rt==='guide'))||(view==='arbeit'&&rt==='arbeit-'+arbeitSeite));
   }
 }
 
@@ -1813,6 +3585,8 @@ function renderHome(){
   });
   var h='';
   problems.forEach(function(p){h+='<div class="problem '+p.level+'">'+svg(p.level==='error'?'warn':'info')+'<div>'+p.text+'</div></div>';});
+  if(!q&&!activeCat&&ICH&&!ICH.responsableGewaehlt){h+='<div class="problem info" role="status">'+svg('info')+'<div><b>Neu:</b> Bitte trage deine <b>Responsable</b> ein – Konto-Menü unten links → <b>Profil ändern</b>. Sie sieht dann deinen Einsatzplan.</div></div>';}
+  if(!q&&!activeCat){h+='<div id="ar-heute-platz"></div>';}
   if(!q&&!activeCat){HINWEISE.forEach(function(t,i){h+='<div class="problem info" role="status">'+svg('info')+'<div>'+t+'</div><button type="button" class="problem-x" data-hinweis="'+i+'" aria-label="Hinweis schließen">'+svg('x')+'</button></div>';});}
   var tb='';
   if(cats.length>1){
@@ -1835,6 +3609,7 @@ function renderHome(){
   if(ordered.length||addT){h+='<div class="tiles">'+ordered.map(tile).join('')+addT+'</div>';}
   if(!ordered.length&&(q||activeCat)){h+='<div class="empty">Keine App passt'+(q?' zu „'+esc(q)+'“':'')+(activeCat?' im Bereich „'+esc(activeCat)+'“':'')+'.</div>';}
   $('home-body').innerHTML=h;
+  if(window.CDSE_ARBEIT&&$('ar-heute-platz')){window.CDSE_ARBEIT.heuteKarte().then(function(k){var el=$('ar-heute-platz');if(el){el.innerHTML=k;}});}
 }
 function renderHello(){
   var hr=new Date().getHours();
@@ -1893,6 +3668,13 @@ function reloadCurrent(){
   var fr=current&&frames[current];if(!fr){return;}
   var a=byId(current);fr.src='about:blank';setTimeout(function(){fr.src=a.datei;},40);
 }
+/* Für den Arbeitsbereich: App öffnen, auf Wunsch neu laden */
+window.CDSE_HUB_OEFFNE=function(id,neuLaden){
+  var a=byId(id);if(!a){return;}
+  if(neuLaden&&frames[id]){var fr=frames[id];fr.src='about:blank';setTimeout(function(){fr.src=a.datei;},40);}
+  location.hash='#/app/'+encodeURIComponent(id);
+};
+window.CDSE_HUB_NAV=function(){renderSide();};
 function closeCurrent(){
   var fr=current&&frames[current];
   if(fr){fr.parentNode.removeChild(fr);delete frames[current];}
@@ -1923,7 +3705,7 @@ function showGuide(a){
 /* ---------- Ansichten & Seitenleiste ---------- */
 function show(v){
   view=v;
-  ['home','app','guide'].forEach(function(n){$('v-'+n).classList.toggle('on',n===v);});
+  ['home','app','guide','arbeit'].forEach(function(n){$('v-'+n).classList.toggle('on',n===v);});
   if(v!=='app'&&v!=='guide'){current=null;}
   sideOverride=null;applySide();renderSide();
 }
@@ -1945,8 +3727,14 @@ $('scrim').addEventListener('click',closeDrawer);
 /* ---------- Router ---------- */
 function route(){
   if(!ICH){return;}   /* erst anmelden */
-  var h=location.hash||'#/', m=h.match(/^#\/app\/(.+)$/);
-  if(m){openApp(decodeURIComponent(m[1]));}
+  var h=location.hash||'#/', m=h.match(/^#\/app\/(.+)$/), ar=h.match(/^#\/(schueler|einsatz|team|verwaltung)(?:\/([^\/?#]+))?/);
+  if(ar&&window.CDSE_ARBEIT){
+    current=null;arbeitSeite=ar[1];show('arbeit');
+    window.CDSE_ARBEIT.zeigen(ar[1],ar[2]?decodeURIComponent(ar[2]):'');
+    var titel={schueler:'Schüler',einsatz:'Mein Einsatzplan',team:'Mein Team',verwaltung:'Verwaltung'}[ar[1]];
+    document.title=titel+' · '+HUB_TITLE;$('top-title').textContent=titel;
+  }
+  else if(m){openApp(decodeURIComponent(m[1]));}
   else if(h.indexOf('#/hinzufuegen')===0){current=null;showGuide(null);}
   else{show('home');renderHome();renderHello();document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;}
   closeDrawer();
@@ -1994,7 +3782,7 @@ function renderMe(){
     '<button class="me-btn" id="me-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="me-menu" aria-label="Konto-Menü">'+svg('more')+'</button>'+
     '<div class="menu" id="me-menu" role="menu" hidden>'+
       '<button type="button" role="menuitem" data-konto="passwort">'+svg('key')+'Passwort ändern</button>'+
-      (TEAMS_AKTIV?'<button type="button" role="menuitem" data-konto="team">'+svg('users')+'Team ändern</button>':'')+
+      '<button type="button" role="menuitem" data-konto="profil">'+svg('users')+'Profil ändern</button>'+
       '<button type="button" role="menuitem" data-konto="staende">'+svg('history')+'Frühere Stände</button>'+
       '<button type="button" role="menuitem" data-konto="abmelden">'+svg('logout')+'Abmelden</button>'+
     '</div>';
@@ -2061,11 +3849,14 @@ window.CDSE_KONTO.start({
   bereit:function(ich,hinweise){
     ICH=ich;HINWEISE=(hinweise||[]).map(function(h){return HINWEIS_TEXT[h];}).filter(Boolean);
     renderMe();route();teamOrdnerAnlegen();
+    if(window.CDSE_ARBEIT){window.CDSE_ARBEIT.vorladen();}
   },
   status:datenStatus,
   appsSchliessen:function(){aufraeumen(true);if(view==='app'){show('home');}},
+  schluesselWeg:function(){if(window.CDSE_TEAM){window.CDSE_TEAM.vergessen();}},
   abgemeldet:function(){
     menuAuf(false);aufraeumen(true);ICH=null;HINWEISE=[];renderMe();activeCat='';$('q').value='';
+    if(window.CDSE_ARBEIT){window.CDSE_ARBEIT.zuruecksetzen();}
     try{history.replaceState(null,'','#/');}catch(e){}
     show('home');$('home-body').innerHTML='';$('hello').textContent='';$('lead').textContent='';
     document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;

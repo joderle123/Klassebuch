@@ -7,6 +7,9 @@
    Schreibt dazu apps/versionen.js — daraus zeigt der Hub auf jeder
    Kachel den Stand an.
 
+   Zusatzdateien: quelle.zusatz = [{ pfad, datei }] holt weitere Dateien
+   aus demselben Repository (z. B. den DS-Text-Motor des ELDiB-Generators).
+
    Aufruf:   node update-apps.cjs            alle Apps
              node update-apps.cjs eldib      nur die App mit id "eldib"
 
@@ -81,6 +84,16 @@ apps.forEach(function (a) {
     fs.mkdirSync(path.dirname(ziel), { recursive: true });
     var neu = !fs.existsSync(ziel) || !fs.readFileSync(ziel).equals(inhalt);
     fs.writeFileSync(ziel, inhalt);
+
+    /* Zusätzliche Dateien derselben Quelle, z. B. der DS-Text-Motor für das Schülerprofil */
+    (q.zusatz || []).forEach(function (z) {
+      var zi = git(['show', ref + ':' + z.pfad], dir, true);
+      if (zi.length < 1024) { throw new Error('"' + z.pfad + '" ist leer oder zu klein — nichts überschrieben.'); }
+      var zz = path.join(ROOT, z.datei);
+      fs.mkdirSync(path.dirname(zz), { recursive: true });
+      fs.writeFileSync(zz, zi);
+      console.log('   + ' + z.datei);
+    });
 
     vers[a.id] = {
       stand: wann.slice(0, 10), commit: commit,
