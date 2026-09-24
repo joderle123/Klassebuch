@@ -1613,8 +1613,13 @@ return {
   /* Knopf "Zugriff erlauben" in der Seitenleiste (braucht einen Klick) */
   zugriff:function(){return ordnerBereit().then(tresorWiederaufnehmen).catch(function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});},
   sichernJetzt:autoSichern,
-  /* Ordner für gemeinsame Team-Dateien (z. B. das Klassenbuch) anlegen */
-  teamOrdner:function(name){if(!ordner||!name){return Promise.resolve(false);}return unterordner(['teams',name]).then(function(){return true;},function(){return false;});},
+  /* Ordner für gemeinsame Team-Dateien (z. B. das Klassenbuch) anlegen. Der Zugang
+     liegt zusätzlich in IndexedDB "cdse-hub" → "kv" → "team-ordner": Apps können
+     ihren Dateidialog damit direkt dort öffnen (showOpenFilePicker({startIn})). */
+  teamOrdner:function(name){
+    if(!ordner||!name){return Promise.resolve(false);}
+    return unterordner(['teams',name]).then(function(h){return idbSet('team-ordner',h).catch(function(){}).then(function(){return true;});},function(){return false;});
+  },
   pfad:pfadHinweis,
   team:team,
   initialen:initialen
