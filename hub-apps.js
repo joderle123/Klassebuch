@@ -15,8 +15,11 @@
      id            kurzer Name ohne Leerzeichen, z. B. 'screening'
      name          Anzeigename
      beschreibung  ein Satz: wofür ist die App gut?
-     icon          ein Emoji (Windows-Taste + Punkt)
-     farbe         Akzentfarbe der Kachel als #rrggbb
+     symbol        eingebautes Liniensymbol: buch, test, ziel, werkzeug,
+                   wissen, web oder app
+     icon          statt symbol: ein Emoji (Windows-Taste + Punkt)
+     farbe         Erkennungsfarbe der App als #rrggbb — ruhige, gedeckte
+                   Töne passen am besten (z. B. #3F5AA6, #B4533A, #1F6B6F)
      bereich       Gruppe im Menü — gleicher Bereich = steht zusammen
      datei         Pfad zur App-Datei, relativ zu hub.html
      link          STATT datei: Adresse einer Webseite (öffnet neuen Tab)
@@ -50,8 +53,8 @@ window.CDSE_APPS = [
     id: 'klassenbuch',
     name: 'Klassenbuch',
     beschreibung: 'Schüler, Réunionen, Anwesenheit, Dossiers, Noten und Stundenplan — nach Schuljahr und Trimester.',
-    icon: '📘',
-    farbe: '#4f5bd5',
+    symbol: 'buch',
+    farbe: '#3F5AA6',
     bereich: 'Klasse & Schüler',
     datei: 'apps/klassenbuch.html',
     dateizugriff: true,
@@ -63,8 +66,8 @@ window.CDSE_APPS = [
     id: 'screening',
     name: 'Screening',
     beschreibung: 'CDSE-Testing Tool: SDQ, WISC-V, DISYPS-III, AFS, d2-R und Conners auswerten — Bericht auf Deutsch, Französisch oder Englisch.',
-    icon: '🧪',
-    farbe: '#c0562d',
+    symbol: 'test',
+    farbe: '#B4533A',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/screening.html',
     quelle: { repo: 'PEI-and-Compl-ment-', branch: 'claude/fix-conners-scoring-ya2JP', pfad: 'diagnostic-tool/index.html' },
@@ -75,8 +78,8 @@ window.CDSE_APPS = [
     id: 'eldib',
     name: 'ELDiB-Generator',
     beschreibung: 'ELDiB-Einschätzung erfassen und daraus PEI, Complément und DS als Word erzeugen — auf Deutsch, Französisch oder Englisch.',
-    icon: '🎯',
-    farbe: '#0f9d8a',
+    symbol: 'ziel',
+    farbe: '#1F6B6F',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/eldib-generator.html',
     quelle: { repo: 'Eldib-Pleni-re', branch: 'claude/eldib-tool-analysis-LzdyL', pfad: 'app/New-PEI-Dok-claude-update-pei-document-JPvE4/index.html' },
@@ -87,8 +90,8 @@ window.CDSE_APPS = [
     id: 'toolbox',
     name: 'Toolbox',
     beschreibung: 'ISA-App: Material-Bibliothek mit Arbeitsblättern, Offline-Suche und Team-Ablage für PDF- und Word-Dateien.',
-    icon: '🧰',
-    farbe: '#b8892d',
+    symbol: 'werkzeug',
+    farbe: '#A8741A',
     bereich: 'Materialien',
     datei: 'apps/toolbox.html',
     dateizugriff: true,
@@ -102,8 +105,8 @@ window.CDSE_APPS = [
     id: 'savoir',
     name: 'SAVOIR',
     beschreibung: 'Klinisches Wissen — Nachschlagewerk zu Diagnosen, Methoden und Hintergründen.',
-    icon: '📚',
-    farbe: '#7a52b3',
+    symbol: 'wissen',
+    farbe: '#6E4A7E',
     bereich: 'Wissen & Materialien',
     datei: 'SAVOIR.html'
   },
@@ -111,8 +114,8 @@ window.CDSE_APPS = [
     id: 'paedpath',
     name: 'PaedPath',
     beschreibung: 'Entwicklungsdiagnostik: Motorik, Wahrnehmung, Testverfahren und Berichte.',
-    icon: '🩺',
-    farbe: '#2f6fb0',
+    symbol: 'test',
+    farbe: '#3D5A8A',
     bereich: 'Diagnostik & Förderung',
     datei: null,
     hinweis: 'React-App — muss einmal als Einzeldatei gebaut werden (Anleitung: Weg B).'
@@ -124,8 +127,8 @@ window.CDSE_APPS = [
     id: 'meine-app',
     name: 'Meine App',
     beschreibung: 'Wofür die App gut ist — ein Satz.',
-    icon: '🧩',
-    farbe: '#c0562d',
+    symbol: 'app',
+    farbe: '#8A5A2B',
     bereich: 'Team & Organisation',
     datei: 'apps/meine-app.html'
   },
@@ -136,8 +139,8 @@ window.CDSE_APPS = [
     id: 'schulportal',
     name: 'Schulportal',
     beschreibung: 'Online-Dienst des Ministeriums.',
-    icon: '🌐',
-    farbe: '#2f6fb0',
+    symbol: 'web',
+    farbe: '#3D5A8A',
     bereich: 'Team & Organisation',
     link: 'https://www.beispiel.lu'
   },
