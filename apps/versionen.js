@@ -15,11 +15,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 855942
   },
   "eldib": {
-    "stand": "2026-07-01",
-    "commit": "2071200",
-    "quelle": "Eldib-Pleni-re · claude/eldib-tool-analysis-LzdyL",
-    "aenderung": "Generate all documents (PEI/IEP, Complement, DS) in English",
-    "groesse": 2570690
+    "stand": "2026-09-24",
+    "commit": "8846bc0",
+    "quelle": "Eldib-Pleni-re · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Itembank und DS-Text-Motor als eigene Datei für den CDSE Hub",
+    "groesse": 4528799
   },
   "toolbox": {
     "stand": "2026-07-13",

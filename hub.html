@@ -577,7 +577,98 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-heute .ic{width:22px;height:22px;color:var(--accent);}
 .ar-heute b{display:block;font-size:13px;color:var(--muted);font-weight:600;}
 .ar-heute small{display:block;font-size:15px;color:var(--ink);font-weight:600;}
-@media (max-width:1100px){.ar-zwei{grid-template-columns:minmax(0,1fr);}.ar-kennzahlen{grid-template-columns:repeat(3,minmax(0,1fr));}}
+/* Entwicklung & Ziele (ELDiB / PEI) */
+.ar-eldibkarte{border-top:3px solid #1F6B6F;}
+.ar-leiter{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px;}
+.ar-leiter-zeile{display:grid;grid-template-columns:148px minmax(0,1fr) 168px;gap:14px;align-items:center;}
+.ar-leiter-name b{display:flex;align-items:center;gap:7px;font-size:14px;}
+.ar-leiter-name b::before{content:'';width:9px;height:9px;border-radius:3px;background:var(--bc);flex:0 0 auto;}
+.ar-leiter-name small{display:block;font-size:12px;color:var(--muted);margin:1px 0 0 16px;}
+.ar-leiter-bahn{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
+.ar-seg{position:relative;height:30px;background:var(--surface-2);border:1px solid var(--line);border-radius:7px;display:grid;place-items:center;}
+.ar-leiter.gross .ar-seg{height:38px;}
+.ar-seg-f{position:absolute;left:0;top:0;bottom:0;width:calc(var(--f) * 100%);background:color-mix(in srgb,var(--bc) 62%,white);border-radius:6px 0 0 6px;}
+.ar-seg[style*="--f:1.000"] .ar-seg-f{border-radius:6px;}
+.ar-seg-t{position:relative;font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.02em;}
+.ar-seg.erwartet{outline:2px dashed var(--ink-2);outline-offset:1px;}
+.ar-seg.ueber{border-color:#C2410C;box-shadow:inset 0 0 0 1px #C2410C;}
+.ar-seg-u{position:absolute;top:-8px;right:-6px;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#B42318;color:#fff;font-style:normal;font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px var(--surface);}
+.ar-seg-z{position:absolute;bottom:4px;right:5px;width:8px;height:8px;border-radius:50%;background:#E0A800;box-shadow:0 0 0 1.5px var(--surface);}
+.ar-leiter-status{font-size:12.5px;font-weight:650;padding:4px 10px;border-radius:999px;justify-self:start;white-space:nowrap;}
+.ar-leiter-status.ok{background:#E3F4EA;color:#1E6B45;}
+.ar-leiter-status.warn{background:#FFF1D6;color:#7A4E00;}
+.ar-leiter-status.krit{background:#FCE4DF;color:#9A2412;}
+.ar-leiter-status.leer{background:var(--bg-2);color:var(--muted);}
+.ar-leiter-legende{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);margin:6px 0 0 162px;}
+.ar-leiter-legende i{display:inline-block;vertical-align:-2px;margin-right:6px;font-style:normal;}
+.ar-leiter-legende i.f{width:14px;height:11px;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,#B4533A 62%,white) 0 25%,color-mix(in srgb,#2E3A9C 62%,white) 25% 50%,color-mix(in srgb,#1F6B6F 62%,white) 50% 75%,color-mix(in srgb,#8A6414 62%,white) 75%);}
+.ar-leiter-legende i.e{width:13px;height:10px;border-radius:3px;outline:2px dashed var(--ink-2);outline-offset:-1px;}
+.ar-leiter-legende i.u{min-width:16px;height:16px;border-radius:999px;background:#B42318;color:#fff;font-size:10px;font-weight:700;text-align:center;line-height:16px;vertical-align:-3px;}
+.ar-leiter-legende i.z{width:9px;height:9px;border-radius:50%;background:#E0A800;vertical-align:-1px;}
+.ar-icode{display:inline-block;font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--bc) 85%,black);background:color-mix(in srgb,var(--bc) 12%,white);border-radius:6px;padding:2px 7px;white-space:nowrap;flex:0 0 auto;}
+.ar-ueber-kurz{background:#FFF6F3;border:1px solid #F3D2C8;border-radius:12px;padding:12px 14px;margin:14px 0 4px;}
+.ar-ueber-kurz p{margin:0 0 6px;font-size:14px;}
+.ar-ueb-liste{list-style:none;margin:0;padding:0;}
+.ar-ueb-liste li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;padding:8px 0 8px 10px;border-top:1px solid var(--line);font-size:13.5px;line-height:1.5;border-left:3px solid transparent;}
+.ar-ueb-liste li:first-child{border-top:0;}
+.ar-ueb-liste li.ar-ueb{border-left-color:#E8A08E;}
+.ar-ueb-liste li.ar-ueb.stark{border-left-color:#B42318;}
+.ar-ueb-liste small{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;}
+.ar-ueb-liste small b{color:#9A2412;font-weight:650;}
+.ar-ist-ziel{color:#1E6B45;font-weight:600;}
+.ar-kein-ziel{color:#9A2412;font-weight:650;}
+.ar-zwischen{margin:16px 0 8px!important;}
+.ar-zielkurz{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px;}
+.ar-zielkurz li{display:flex;gap:10px;align-items:baseline;font-size:14px;}
+.ar-zielkurz li span:last-child{font-style:italic;}
+.ar-eldibkopf{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:0 0 16px;}
+.ar-eldibkopf-knoepfe{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.ar-eldibkopf-knoepfe .btn .ic{width:16px;height:16px;}
+.ar-leitziele{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px;margin:18px 0 6px;}
+.ar-leitziele div{border-left:3px solid var(--bc);padding:2px 0 2px 12px;font-size:13.5px;line-height:1.5;}
+.ar-leitziele b{display:block;font-size:13px;}
+.ar-leitziele span{color:var(--ink-2);}
+.ar-leitziele q{display:block;margin-top:4px;color:var(--muted);font-style:italic;quotes:'„' '“';}
+.ar-bereichskopf{display:flex;align-items:center;gap:8px;margin:14px 0 4px!important;font-size:14px;}
+.ar-bereichskopf::before{content:'';width:10px;height:10px;border-radius:3px;background:var(--bc);}
+.ar-bereichskopf small{font-size:12px;font-weight:700;color:var(--muted);}
+.ar-ok{color:#1E6B45;font-weight:560;}
+.ar-zielraster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+.ar-ziel{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bc);border-radius:12px;padding:12px 16px;}
+.ar-ziel header{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;}
+.ar-ziel header small{color:var(--muted);font-size:12.5px;}
+.ar-ueb-badge{margin-left:auto;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#9A2412;background:#FCE4DF;border-radius:6px;padding:2px 7px;}
+.ar-ichsatz{font-family:var(--font-display);font-size:17px;line-height:1.4;margin:10px 0 4px!important;color:var(--ink);}
+.ar-ziel h4{margin:10px 0 3px;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+.ar-ziel ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5;}
+.ar-ziel footer{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px;font-size:12.5px;}
+.ar-zusatz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.ar-zusatz li small{display:block;color:var(--muted);font-size:11.5px;}
+.ar-zusatz h3 small{margin-left:auto;font-weight:700;color:var(--ink-2);}
+.ar-fortschritt div{border-left:4px solid var(--bc,var(--accent));}
+.ar-zielstand{list-style:none;margin:0 0 12px;padding:0;}
+.ar-zielstand li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:13.5px;}
+.ar-zielstand li span{font-style:italic;}
+.ar-zielstand li b{font-size:12px;padding:2px 8px;border-radius:999px;white-space:nowrap;}
+.ar-zielstand li.ja b{background:#E3F4EA;color:#1E6B45;}
+.ar-zielstand li.weiter b{background:#FFF1D6;color:#7A4E00;}
+.ar-zielstand li.nein b{background:#FCE4DF;color:#9A2412;}
+.ar-zielstand li.offen b{background:var(--bg-2);color:var(--muted);}
+.ar-zielchip{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:650;color:color-mix(in srgb,var(--bc) 85%,black);background:color-mix(in srgb,var(--bc) 12%,white);border-radius:6px;padding:2px 7px;}
+.ar-zielchip .ic{width:12px;height:12px;}
+.ar-zielkopf{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+.ar-zielkopf span:last-child{font-style:italic;}
+.ar-itemhinweis{display:flex;gap:7px;align-items:flex-start;background:#EEF3FB;border-radius:8px;padding:6px 10px;font-size:12.5px;line-height:1.45;color:#23407A;margin:6px 0 2px!important;}
+.ar-itemhinweis .ic{width:14px;height:14px;flex:0 0 auto;margin-top:2px;}
+.ar-ueb-mini{display:inline-flex;align-items:center;gap:3px;color:#9A2412;font-weight:650;}
+.ar-ueb-mini .ic{width:12px;height:12px;}
+@media (max-width:1100px){.ar-zwei{grid-template-columns:minmax(0,1fr);}.ar-kennzahlen{grid-template-columns:repeat(3,minmax(0,1fr));}.ar-zielraster{grid-template-columns:minmax(0,1fr);}}
+@media (max-width:760px){
+  .ar-leiter-zeile{grid-template-columns:minmax(0,1fr);gap:6px;}
+  .ar-leiter-legende{margin-left:0;}
+  .ar-leitziele,.ar-zusatz{grid-template-columns:minmax(0,1fr);}
+  .ar-eldibkopf-knoepfe{margin-left:0;}
+}
 @media (max-width:860px){
   .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}
   .ar-zeile>span:nth-child(2),.ar-zeile>span:nth-child(4),.ar-zeile>span:nth-child(5){display:none;}
@@ -804,7 +895,7 @@ window.addEventListener('error',function(e){
         <p>Jede Person erstellt beim ersten Mal ein eigenes Konto mit Name, Team und Passwort. Danach reicht das Passwort. Das Konto liegt als Datei im Hub-Ordner, im Unterordner <code>konten/</code>. Das Passwort selbst wird nirgends gespeichert — nur ein damit verschlüsselter Schlüssel.</p>
         <p>Das Team bestimmt, welche Apps man sieht:</p>
         <div class="table-wrap" id="guide-teams"></div>
-        <p>Welche Teams eine App sehen, steht in <code>hub-apps.js</code> im Feld <code>teams</code>. Ein neues Team trägst du dort oben bei <code>CDSE_TEAMS</code> ein. Das eigene Team ändert man im Hub unten links über das Menü <b>⋮</b> → <b>Team ändern</b>.</p>
+        <p>Welche Teams eine App sehen, steht in <code>hub-apps.js</code> im Feld <code>teams</code>. Ein neues Team trägst du dort oben bei <code>CDSE_TEAMS</code> ein. Das eigene Team (und die Responsable) ändert man im Hub unten links über das Menü <b>⋮</b> → <b>Profil ändern</b>.</p>
         <div class="callout"><svg class="ic"><use href="#i-warn"/></svg><div><b>Ehrlich gesagt:</b> Die Team-Wahl steuert, was man im Hub <i>sieht</i>. Eine echte Sperre ist das nicht — wer den Dateipfad kennt, kann eine App auch direkt öffnen. Soll das Screening wirklich nur für das Diagnostique-Team zugänglich sein, setzt die IT die Ordnerrechte: Nur diese Gruppe darf <code>apps/screening.html</code> lesen.</div></div>
         <h3 class="guide-h3">Deine Daten</h3>
         <p>Während du angemeldet bist, liegen die Daten der Apps wie gewohnt im Browser dieses PCs — die Apps merken keinen Unterschied. Der Hub sichert sie <b>jede Minute verschlüsselt</b> im Hub-Ordner (<code>daten/</code>) und <b>entfernt sie beim Abmelden</b> vom PC. Meldest du dich an einem anderen PC an, lädt er sie dort. Die Stände der letzten 14 Tage bleiben erhalten: Konto-Menü → <b>Frühere Stände</b>.</p>
@@ -2289,6 +2380,7 @@ var ops={
   eintrag:function(id,e){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var neu={id:neueId(8),datum:e.datum||jetzt().slice(0,10),art:e.art||'notiz',titel:e.titel||'',text:e.text||'',von:ich().id,z:jetzt()};
+    if(e.ziel){neu.ziel=String(e.ziel);}   /* Bezug zu einem ELDiB-Förderziel, z. B. "V-14" */
     d.eintraege=(d.eintraege||[]).concat([neu]);
     return 'Eintrag: '+(e.titel||e.art||'Notiz');
   },'eintrag');},
@@ -2296,7 +2388,9 @@ var ops={
     brauche(r,'bearbeiten');
     var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){throw fehler('Eintrag nicht gefunden');}
     if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge ändern dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
-    ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null){e[k]=werte[k];}});e.geaendert=jetzt();e.geaendertVon=ich().id;
+    ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null){e[k]=werte[k];}});
+    if(werte.ziel!=null){if(werte.ziel){e.ziel=String(werte.ziel);}else{delete e.ziel;}}
+    e.geaendert=jetzt();e.geaendertVon=ich().id;
     return 'Eintrag geändert: '+(e.titel||e.art);
   },'eintrag');},
   eintragLoeschen:function(id,eid){return aendern(id,function(d,r){
@@ -2397,9 +2491,11 @@ return {
      #/einsatz               Mein Einsatzplan (Wochenplan + Ausnahmen)
      #/team                  Mein Team: wer ist gerade wo (Responsables)
      #/verwaltung            Freischalten, Rollen, Protokoll
-   Das Profil eines Schülers kommt aus dem DS des ELDiB-Generators
-   (Aussagen 1-7): Stärken, Schwierigkeiten, was hilft, wann es schwierig
-   wird, Bedürfnisse. Dafür lädt der Hub apps/ds-motor.js (Text-Motor des
+   Das Profil eines Schülers kommt aus dem ELDiB-Generator: aus dem DS
+   (Aussagen 1-7) Stärken, Schwierigkeiten, was hilft, wann es schwierig
+   wird, Bedürfnisse; aus den ELDiB-Einschätzungen die Entwicklungsstufen,
+   die für das Alter längst erwarteten Items und die Förderziele (PEI).
+   Dafür lädt der Hub apps/ds-motor.js (Text-Motor und Itembank des
    ELDiB-Generators); fehlt die Datei, zeigt das Dossier nur die Fakten.
    ===================================================================== */
 window.CDSE_ARBEIT=(function(){
@@ -2407,7 +2503,7 @@ window.CDSE_ARBEIT=(function(){
 var K=window.CDSE_KONTO, T=window.CDSE_TEAM;
 var TEAMS=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id;});
 var $=function(id){return document.getElementById(id);};
-var akt={seite:'',param:''}, filter={status:'aktiv',stelle:'',meine:false,q:''};
+var akt={seite:'',param:''}, filter={status:'aktiv',stelle:'',meine:false,ueber:false,q:''};
 var dossierTab='ueberblick', geladen=false, ladeVersprechen=null;
 var planEntwurf=null, planDirty=false, teamAnsicht='jetzt', teamDaten=null, teamZeit=0, uhrTimer=null;
 var ARTEN={notiz:'Notiz',gespraech_eltern:'Gespräch mit den Eltern',gespraech_schule:'Gespräch mit der Schule',gespraech_kind:'Gespräch mit dem Kind',beobachtung:'Beobachtung',reunion:'Réunion',massnahme:'Maßnahme',vereinbarung:'Vereinbarung',sonstiges:'Sonstiges'};
@@ -2547,6 +2643,7 @@ function listeZeichnen(l){
     stellen[d.stelle]=(stellen[d.stelle]||0)+1;
     if(filter.stelle&&d.stelle!==filter.stelle){return false;}
     if(filter.meine&&!meineDossier(d,me)){return false;}
+    if(filter.ueber){var k=eldibKurz(d);if(!k||!k.ueber){return false;}}
     if(q){var p=d.person||{},h=[p.nachname,p.vorname,p.klasse,p.schule,p.matricule,team(d.stelle).name].join(' ').toLowerCase();if(h.indexOf(q)<0){return false;}}
     return true;
   }).sort(function(a,b){return schuelerName(a.person).localeCompare(schuelerName(b.person),'de');});
@@ -2559,16 +2656,19 @@ function listeZeichnen(l){
     '<span class="ar-trenner"></span>'+
     '<button class="catchip'+(!filter.stelle?' on':'')+'" type="button" data-filter-stelle="">Alle Stellen</button>'+
     TEAMS.map(function(t){return '<button class="catchip'+(filter.stelle===t.id?' on':'')+'" type="button" data-filter-stelle="'+esc(t.id)+'">'+esc(t.name)+(stellen[t.id]?'<span class="n">'+stellen[t.id]+'</span>':'')+'</button>';}).join('')+
-    '<span class="ar-trenner"></span><button class="catchip'+(filter.meine?' on':'')+'" type="button" data-filter-meine="1">'+svg('check')+'Nur meine</button></div>'+
+    '<span class="ar-trenner"></span><button class="catchip'+(filter.meine?' on':'')+'" type="button" data-filter-meine="1">'+svg('check')+'Nur meine</button>'+
+    (bankDa()?'<button class="catchip'+(filter.ueber?' on':'')+'" type="button" data-filter-ueber="1" title="Schüler mit ELDiB-Items, die für ihr Alter längst erwartet werden">'+svg('warn')+'Überfällige Items</button>':'')+'</div>'+
     '<button class="btn primary" type="button" data-ar="neu">'+svg('plus')+'Neuer Schüler</button></div>';
   if(!sicht.length){
     h+=karte(l.length?'<p>Keine Schüler für diese Auswahl.</p>':'<h2>Noch keine Dossiers</h2><p>Meist beginnt ein Dossier beim Diagnostique: <b>„Neuer Schüler“</b> anlegen, dann das Profil aus dem DS des ELDiB-Generators übernehmen.</p>','ar-leer');
   }else{
     h+='<div class="ar-tabelle" role="table" aria-label="Schüler"><div class="ar-zeile kopf" role="row"><span role="columnheader">Name</span><span role="columnheader">Klasse · Schule</span><span role="columnheader">Stelle</span><span role="columnheader">Fallverantwortlich</span><span role="columnheader">Geändert</span></div>'+
       sicht.map(function(d){
-        var p=d.person||{}, a=alter(p.geburtsdatum), r=T.rechte(d);
+        var p=d.person||{}, a=alter(p.geburtsdatum), r=T.rechte(d), k=eldibKurz(d);
+        var klein=[a!=null?a+' Jahre':'',d.status==='inaktiv'?'inaktiv':'',k&&k.ziele?k.ziele+(k.ziele>1?' Förderziele':' Förderziel'):'',r.bearbeiten?'<span class="ar-recht">bearbeitbar</span>':'',
+          k&&k.ueber?'<span class="ar-ueb-mini" title="'+k.ueber+' ELDiB-Items sind für das Alter längst erwartet und noch nicht erreicht'+(k.ohneZiel?', '+k.ohneZiel+' davon noch ohne Förderziel':'')+'">'+svg('warn')+k.ueber+' überfällig</span>':''].filter(Boolean);
         return '<a class="ar-zeile'+(d.status==='inaktiv'?' inaktiv':'')+'" role="row" href="#/schueler/'+esc(d.id)+'">'+
-          '<span role="cell" class="ar-name">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<span><b>'+esc(schuelerName(p))+'</b><small>'+(a!=null?a+' Jahre':'')+(d.status==='inaktiv'?' · inaktiv':'')+(r.bearbeiten?' · <span class="ar-recht">bearbeitbar</span>':'')+'</small></span></span>'+
+          '<span role="cell" class="ar-name">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<span><b>'+esc(schuelerName(p))+'</b><small>'+klein.join(' · ')+'</small></span></span>'+
           '<span role="cell">'+esc([p.klasse,p.schule].filter(Boolean).join(' · ')||'—')+'</span>'+
           '<span role="cell">'+stelleChip(d.stelle)+'</span>'+
           '<span role="cell">'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</span>'+
@@ -2624,7 +2724,7 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick'],['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']];
+  var tabs=[['ueberblick','Überblick'],['entwicklung','Entwicklung & Ziele'],['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']];
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
       '<div class="ar-chips">'+stelleChip(d.stelle)+'<span class="ar-status '+(d.status==='inaktiv'?'aus':'an')+'">'+(d.status==='inaktiv'?'inaktiv seit '+esc(datum(d.statusSeit)):'aktiv')+'</span>'+
@@ -2635,6 +2735,7 @@ function dossierZeichnen(d){
   nachZeichnen(d);
 }
 function tabInhalt(d,r){
+  if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
   if(dossierTab==='profil'){return tabProfil(d,r);}
   if(dossierTab==='eintraege'){return tabEintraege(d,r);}
   if(dossierTab==='verlauf'){return tabVerlauf(d);}
@@ -2693,9 +2794,14 @@ function aufEinenBlick(d){
   beduerf.sort(function(x,y){return y.r-x.r;});
   var hilft=chipLabels('s_hilft').concat(chipTexte('empf_schule'));
   return {staerken:staerken.slice(0,7),schwierig:schwierig.slice(0,7),hilft:hilft,wann:wann,beduerfnisse:beduerf.map(function(x){return x.t;}),
-    ressourcen:chipLabels('ressourcen').concat(chipLabels('s_staerken')).filter(function(x,i,l){return l.indexOf(x)===i;}),
+    ressourcen:ohneDoppelte(chipLabels('ressourcen').concat(chipLabels('s_staerken'))),
     interessen:chipLabels('k_interessen'),wuensche:chipLabels('k_wuensche'),diagnosen:chipLabels('diagnosen').filter(function(x){return x!=='andere';}),
     empfehlungen:chipTexte('empf_familie').concat(chipTexte('empf_region')),cni:chipTexte('cni'),hatDaten:Object.keys(b).length>0||Object.keys(ds.chips||{}).length>0};
+}
+/* „Kreativität“ und „kreativ“, „Sport“ und „sportlich“ nur einmal zeigen (gleicher Wortstamm) */
+function ohneDoppelte(l){
+  var gesehen={};
+  return l.filter(function(x){var k=String(x).toLowerCase().replace(/[^a-zäöüß]/g,'').slice(0,5);if(!k||gesehen[k]){return !k;}gesehen[k]=1;return true;});
 }
 function blickListe(titel,l,kl,leer){
   if(!l||!l.length){return leer?'<div class="ar-blick '+(kl||'')+'"><h3>'+esc(titel)+'</h3><p class="ar-leise">'+esc(leer)+'</p></div>':'';}
@@ -2703,11 +2809,15 @@ function blickListe(titel,l,kl,leer){
 }
 function tabUeberblick(d,r){
   var p=d.person||{}, blick=aufEinenBlick(d), h='<div class="ar-zwei"><div class="ar-haupt">';
+  var neu=(d.profil&&r.bearbeiten&&bankDa())?eldibNeuer(d):null;
+  if(neu){h+=hinweis('Im ELDiB-Generator auf diesem Computer gibt es neuere Daten zu '+esc(p.vorname||'diesem Schüler')+' (gespeichert am '+esc(datumZeit(neu.gespeichert))+'). <button class="ar-link" type="button" data-ar="eldib-uebernehmen">Jetzt übernehmen</button>','info');}
   if(!d.profil&&!(d.einschaetzungen||[]).length){
-    h+=karte('<h2>Auf einen Blick</h2><p>Noch kein Profil. Das Profil entsteht aus dem <b>DS des ELDiB-Generators</b> (Aussagen 1–7): Stärken, Schwierigkeiten, was hilft, wann es schwierig wird und was der Schüler braucht.</p>'+
+    h+=karte('<h2>Auf einen Blick</h2><p>Noch kein Profil. Es entsteht aus dem <b>ELDiB-Generator</b>: aus dem DS (Aussagen 1–7) Stärken, Schwierigkeiten, was hilft, wann es schwierig wird und was der Schüler braucht – aus der ELDiB-Einschätzung die Entwicklungsstufen, die für das Alter längst erwarteten Items und die Förderziele (PEI).</p>'+
       (r.bearbeiten?'<div class="ar-knopfreihe"><button class="btn primary" type="button" data-ar="eldib-uebernehmen">'+svg('ziel')+'Aus dem ELDiB-Generator übernehmen</button><button class="btn" type="button" data-ar="einschaetzung">'+svg('check')+'Selbst einschätzen</button></div>':''),'ar-blickkarte');
   }else if(!blick){
     h+=karte('<h2>Auf einen Blick</h2>'+hinweis('Für die Auswertung fehlt die Datei <code>apps/ds-motor.js</code> im Hub-Ordner (Text-Motor des ELDiB-Generators). Bitte mit <code>update-apps.cjs</code> holen.'),'ar-blickkarte');
+  }else if(!blick.hatDaten){
+    h+=karte('<h2>Auf einen Blick</h2><p class="ar-leise">Noch kein DS übernommen. Stärken, Schwierigkeiten und was hilft erscheinen hier, sobald der DS im ELDiB-Generator ausgefüllt und übernommen ist.</p>','ar-blickkarte');
   }else{
     h+='<div class="ar-karte ar-blickkarte"><div class="ar-kartenkopf"><h2>Auf einen Blick</h2><span class="ar-leise">'+esc(profilQuelle(d))+'</span></div><div class="ar-blickraster">'+
       blickListe('Stärken',blick.staerken,'gut','Noch keine Stärken eingeschätzt')+
@@ -2717,6 +2827,7 @@ function tabUeberblick(d,r){
       blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
       '</div></div>';
   }
+  h+=eldibUeberblick(d);
   if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
     h+=karte('<h2>Aus dem DS</h2>'+(blick.diagnosen.length?'<p><b>Diagnosen:</b> '+esc(blick.diagnosen.join(', '))+'</p>':'')+
       (blick.cni.length?'<p><b>Empfehlung an die CNI:</b> '+esc(blick.cni.join('; '))+'</p>':'')+
@@ -2740,7 +2851,7 @@ function tabUeberblick(d,r){
 function profilQuelle(d){
   var e=(d.einschaetzungen||[]).slice().sort(function(a,b){return a.datum<b.datum?1:-1;})[0];
   var t=[];
-  if(d.profil){t.push('DS vom '+datum(d.profil.datum)+(d.profil.von?' ('+kname(d.profil.von)+')':''));}
+  if(d.profil&&d.profil.ds){t.push('DS vom '+datum(d.profil.datum)+(d.profil.von?' ('+kname(d.profil.von)+')':''));}
   if(e){t.push('zuletzt eingeschätzt am '+datum(e.datum));}
   return t.join(' · ');
 }
@@ -2754,10 +2865,13 @@ function tabProfil(d,r){
   var serien=verlaufsSerien(d);
   if(serien.punkte.length>1){h+=karte('<h2>Verlauf</h2><p class="ar-leise">Durchschnitt der Einschätzungen je Bereich (7 = sehr günstig). Jede Einschätzung ist ein Punkt.</p>'+verlaufsGrafik(serien)+verlaufsTabelle(d));}
   else if(serien.punkte.length===1){h+=karte('<h2>Verlauf</h2><p>Bisher gibt es eine Einschätzung. Mit der nächsten (z. B. nach einigen Wochen in der neuen Stelle) zeigt der Hub hier, was sich verbessert oder verschlechtert hat.</p>');}
-  if(d.profil&&d.profil.ds){
+  var A=bankDa()?eldibAuswertung(d):null;
+  if(d.profil&&(d.profil.ds||A)){
     try{
-      var ab=DsText.bericht('de',dsFuerText(d),stammFuerText(d),d.profil.eldibProfil||null);
-      var teile=[['sozialbericht','Familie'],['schule','Sicht der Schule'],['kind','Sicht des Kindes'],['eltern','Sicht der Eltern'],['beobachtung','Beobachtung'],['deutung','Interpretation'],['beduerfnisse','Bedürfnisse und Ressourcen'],['empfehlungen','Empfehlungen']];
+      var ab=DsText.bericht('de',dsFuerText(d),stammFuerText(d),dsEldibProfilAus(A));
+      var teile=[['sozialbericht','Familie'],['schule','Sicht der Schule'],['kind','Sicht des Kindes'],['eltern','Sicht der Eltern'],['beobachtung','Beobachtung'],['eldib','ELDiB-Ergebnisse'],['deutung','Interpretation'],['beduerfnisse','Bedürfnisse und Ressourcen'],['empfehlungen','Empfehlungen']];
+      if(!d.profil.ds){teile=[['eldib','ELDiB-Ergebnisse']];}
+      if(!A){teile=teile.filter(function(t){return t[0]!=='eldib';});}
       h+=karte('<div class="ar-kartenkopf"><h2>Profil im Wortlaut</h2><span class="ar-leise">'+esc(profilQuelle(d))+'</span></div>'+
         teile.map(function(t){var bl=ab[t[0]]||[];if(!bl.length){return '';}return '<h3>'+esc(t[1])+'</h3>'+bloeckeHtml(bl);}).join(''),'ar-wortlaut');
     }catch(e){h+=hinweis('Das Profil ließ sich nicht darstellen: '+fehlerText(e));}
@@ -2862,17 +2976,26 @@ function einschaetzungDialog(d){
 }
 
 /* ---------- Einträge ---------- */
+function zielChip(code){if(!code){return '';}var inf=itemZu(code);return '<span class="ar-zielchip" style="--bc:'+(inf?elBereich(inf.bereich).farbe:'#586277')+'" title="Bezug zum Förderziel">'+svg('ziel')+esc(code)+(inf?' '+esc(inf.it.keyword):'')+'</span>';}
+/* Förderziele der neuesten Einschätzung als Auswahl (für Einträge) */
+function zielOptionen(d,dazu){
+  var A=bankDa()?eldibAuswertung(d):null, l=A?A.ziele.map(function(z){var t=z.text.length>70?z.text.slice(0,67)+'…':z.text;return [z.code,z.code+' '+z.it.keyword+' – „'+t+'“'];}):[];
+  if(dazu&&!l.some(function(o){return o[0]===dazu;})){var inf=itemZu(dazu);l.push([dazu,dazu+(inf?' '+inf.it.keyword:'')+' (früheres Ziel)']);}
+  return l;
+}
 function eintragHtml(e,r,d){
   var eigen=e.von===(K.ich()||{}).id;
-  return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span><b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
+  return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span>'+zielChip(e.ziel)+'<b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
     (r&&r.bearbeiten&&(eigen||r.weitergeben)?'<span class="ar-eintrag-aktion"><button type="button" class="ar-link" data-ar="eintrag-aendern" data-eid="'+esc(e.id)+'">'+svg('edit')+'Ändern</button><button type="button" class="ar-link gefahr" data-ar="eintrag-loeschen" data-eid="'+esc(e.id)+'">'+svg('x')+'Löschen</button></span>':'')+
     '</header><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p></article>';
 }
 function tabEintraege(d,r){
   var h='';
   if(r.bearbeiten){
+    var zo=zielOptionen(d);
     h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag</h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
       auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
+      (zo.length?auswahl('ziel','Bezug zu einem Förderziel (optional)','',zo,'– kein Bezug –'):'')+
       textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button></div></form>');
   }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
   var l=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
@@ -2883,7 +3006,7 @@ function eintragSpeichern(d,f){
   var text=f.elements.text.value.trim();
   if(!text){toast('Bitte einen Text eingeben');return;}
   var b=f.querySelector('button[type=submit]');b.disabled=true;
-  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
+  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text,ziel:f.elements.ziel?f.elements.ziel.value:''}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
 }
 function tabVerlauf(d){
   return karte('<h2>Protokoll</h2><p class="ar-leise">Jede Änderung am Dossier – wer, wann, was.</p><ol class="ar-protokoll">'+
@@ -2951,9 +3074,22 @@ function statusDialog(d){
 }
 function eintragAendernDialog(d,eid){
   var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return;}
-  var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+textfeld('text','Text',e.text,6);
+  var zo=zielOptionen(d,e.ziel);
+  var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+
+    (zo.length?auswahl('ziel','Bezug zu einem Förderziel',e.ziel||'',zo,'– kein Bezug –'):'')+textfeld('text','Text',e.text,6);
   dialog('Eintrag ändern',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     ausfuehren:function(w){return T.ops.eintragAendern(d.id,eid,w.werte);}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
+}
+/* Beobachtung direkt zu einem Förderziel eintragen */
+function zielEintragDialog(d,code){
+  var inf=itemZu(code), A=eldibAuswertung(d), z=A&&A.ziele.filter(function(x){return x.code===code;})[0];
+  var inhalt='<p class="ar-zielkopf">'+zielChip(code)+(z?'<span>„'+esc(z.text)+'“</span>':'')+'</p><div class="ar-raster2">'+feld('datum','Datum',heuteIso(),'date')+
+    auswahl('art','Art','beobachtung',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+'</div>'+
+    textfeld('text','Was hast du beobachtet? (Situation, was '+((d.person||{}).vorname||'das Kind')+' gemacht hat, was geholfen hat)','',5);
+  dialog('Beobachtung zum Förderziel',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){return w.werte.text.trim()?'':'Bitte beschreiben, was du beobachtet hast.';},
+    ausfuehren:function(w){return T.ops.eintrag(d.id,{datum:w.werte.datum,art:w.werte.art,titel:'Zum Ziel '+code+(inf?' ('+inf.it.keyword+')':''),text:w.werte.text.trim(),ziel:code});}
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Beobachtung gespeichert');}});
 }
 function eintragLoeschenDialog(d,eid){
   dialog('Eintrag löschen','<p>Den Eintrag wirklich löschen? Im Protokoll bleibt vermerkt, dass er gelöscht wurde.</p>',[{text:'Abbrechen',wert:''},{text:'Löschen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.ops.eintragLoeschen(d.id,eid);}})
@@ -2978,33 +3114,45 @@ function eldibPasst(s,d){
   if(name&&(!s.geburtsdatum||!p.geburtsdatum||s.geburtsdatum===p.geburtsdatum)){return 2;}
   return 0;
 }
-function eldibEinschaetzung(s){
-  var e2=s.einschaetzung2&&Object.keys(s.einschaetzung2).length?s.einschaetzung2:null, e1=s.einschaetzung1&&Object.keys(s.einschaetzung1).length?s.einschaetzung1:null;
-  return e2||e1;
-}
+function hatDs(e){var ds=e&&e.dsData;return !!(ds&&(Object.keys(ds.bewertungen||{}).length||Object.keys(ds.chips||{}).length||Object.keys(ds.f||{}).some(function(k){return ds.f[k];})));}
 function eldibUebernehmenDialog(d){
   var l=eldibListe();
-  if(!l.length){dialog('Aus dem ELDiB-Generator übernehmen','<p>Im ELDiB-Generator ist auf diesem Konto noch kein Schüler angelegt.</p><p>Tipp: Mit <b>„ELDiB / DS“</b> oben im Dossier öffnest du den Schüler direkt im ELDiB-Generator – mit den Stammdaten aus dem Dossier.</p>');return;}
-  l=l.map(function(s){return {s:s,passt:eldibPasst(s,d),e:eldibEinschaetzung(s)};}).sort(function(a,b){return b.passt-a.passt||String(a.s.name).localeCompare(String(b.s.name),'de');});
-  var inhalt='<p>Welcher Schüler im ELDiB-Generator ist '+esc(schuelerNameKurz(d.person))+'? Übernommen werden der DS (Aussagen, Auswahlfelder, Fakten) und die ELDiB-Stufen der neuesten Einschätzung.</p><div class="ar-wahlliste">'+
+  if(!l.length){dialog('Aus dem ELDiB-Generator übernehmen','<p>Im ELDiB-Generator ist auf diesem Computer noch kein Schüler angelegt.</p><p>Tipp: Mit <b>„ELDiB / DS“</b> oben im Dossier öffnest du den Schüler direkt im ELDiB-Generator – mit den Stammdaten aus dem Dossier.</p>');return;}
+  l=l.map(function(s){
+    var e2=hatDs(s.einschaetzung2)?s.einschaetzung2:null, e1=hatDs(s.einschaetzung1)?s.einschaetzung1:null;
+    return {s:s,passt:eldibPasst(s,d),dsE:e2||e1,ein:eldibAusEintrag(s)};
+  }).sort(function(a,b){return b.passt-a.passt||String(a.s.name).localeCompare(String(b.s.name),'de');});
+  var inhalt='<p>Welcher Schüler im ELDiB-Generator ist '+esc(schuelerNameKurz(d.person))+'? Übernommen werden der <b>DS</b> (Aussagen, Auswahlfelder, Fakten) und die <b>ELDiB-Einschätzungen</b> mit Stufen, Förderzielen, Zusatzzielen und Notizen. Was beim gewählten Schüler fehlt, bleibt im Dossier, wie es ist.</p><div class="ar-wahlliste">'+
     l.map(function(x,i){
-      var ds=x.e&&x.e.dsData, n=ds&&ds.bewertungen?Object.keys(ds.bewertungen).length:0, sel=x.e&&x.e.selections?Object.keys(x.e.selections).length:0;
-      return '<label class="ar-wahl'+(x.passt?' passt':'')+'"><input type="radio" name="wahl" value="'+i+'"'+(i===0&&x.passt?' checked':'')+'><span><b>'+esc(x.s.name)+'</b><small>'+esc([x.s.geburtsdatum?datum(x.s.geburtsdatum):'',x.s.klasse,n?n+' DS-Aussagen':'kein DS',sel?sel+' ELDiB-Items':''].filter(Boolean).join(' · '))+'</small></span>'+(x.passt?'<span class="ar-passt">passt</span>':'')+'</label>';
+      var n=x.dsE?Object.keys(x.dsE.dsData.bewertungen||{}).length:0, letzte=x.ein[x.ein.length-1];
+      var zi=letzte?Object.keys(letzte.sel).filter(function(c){return letzte.sel[c]==='z';}).length:0;
+      var info=[x.s.geburtsdatum?datum(x.s.geburtsdatum):'',x.s.klasse,x.dsE?(n?n+' DS-Aussagen':'DS begonnen'):'kein DS',
+        x.ein.length?(x.ein.length>1?'ELDiB-Einschätzung 1 und 2':'1 ELDiB-Einschätzung')+(zi?' · '+zi+(zi>1?' Ziele':' Ziel'):''):'kein ELDiB'];
+      return '<label class="ar-wahl'+(x.passt?' passt':'')+'"><input type="radio" name="wahl" value="'+i+'"'+(i===0&&x.passt?' checked':'')+'><span><b>'+esc(x.s.name)+'</b><small>'+esc(info.filter(Boolean).join(' · '))+'</small></span>'+(x.passt?'<span class="ar-passt">passt</span>':'')+'</label>';
     }).join('')+'</div>';
   dialog('Aus dem ELDiB-Generator übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
-    pruefen:function(w){if(w.werte.wahl==null){return 'Bitte einen Schüler wählen.';}var x=l[+w.werte.wahl];if(!x.e||!x.e.dsData||(!Object.keys(x.e.dsData.bewertungen||{}).length&&!Object.keys(x.e.dsData.chips||{}).length)){return 'Bei diesem Schüler ist noch kein DS ausgefüllt.';}return '';},
+    pruefen:function(w){if(w.werte.wahl==null){return 'Bitte einen Schüler wählen.';}var x=l[+w.werte.wahl];if(!x.dsE&&!x.ein.length){return 'Bei diesem Schüler ist noch nichts eingeschätzt – weder DS noch ELDiB.';}return '';},
     ausfuehren:function(w){
-      var x=l[+w.werte.wahl], e=x.e, ds=JSON.parse(JSON.stringify(e.dsData));
-      delete ds.bearbeitet;delete ds.alt;
-      var profil={quelle:'eldib',datum:(e.savedAt||new Date().toISOString()).slice(0,10),von:K.ich().id,ds:ds,
-        eldib:{datum:(e.stammdaten&&e.stammdaten.einschaetzungsdatum)||'',erreicht:Object.keys(e.selections||{}).filter(function(c){return e.selections[c].status==='erreicht';}),ziele:Object.keys(e.selections||{}).filter(function(c){return e.selections[c].status==='ziel';})}};
-      return T.ops.profil(d.id,profil,'Profil aus dem DS übernommen ('+x.s.name+')').then(function(neu){
+      var x=l[+w.werte.wahl], profil=JSON.parse(JSON.stringify(d.profil||{})), teile=[];
+      profil.quelle='eldib';profil.von=K.ich().id;profil.uebernommen=new Date().toISOString();
+      if(x.dsE){
+        var ds=JSON.parse(JSON.stringify(x.dsE.dsData));delete ds.bearbeitet;delete ds.alt;
+        profil.ds=ds;profil.datum=(x.dsE.savedAt||profil.uebernommen).slice(0,10);profil.gespeichert=x.dsE.savedAt||'';teile.push('DS');
+      }
+      if(x.ein.length){
+        var letzte=x.ein[x.ein.length-1];
+        profil.eldib={v:2,datum:letzte.datum,erreicht:Object.keys(letzte.sel).filter(function(c){return letzte.sel[c]==='e';}),
+          ziele:Object.keys(letzte.sel).filter(function(c){return letzte.sel[c]==='z';}),einschaetzungen:x.ein};
+        teile.push(x.ein.length>1?'ELDiB-Einschätzungen 1 und 2':'ELDiB-Einschätzung');
+      }
+      if(!profil.datum){profil.datum=profil.uebernommen.slice(0,10);}
+      return T.ops.profil(d.id,profil,'Aus dem ELDiB-Generator übernommen: '+teile.join(' und ')+' ('+x.s.name+')').then(function(neu){
         /* Verknüpfen, damit es beim nächsten Mal sofort passt */
         var liste=eldibListe();liste.forEach(function(s){if(s.id===x.s.id){s.hubId=d.id;}});eldibListeSpeichern(liste);
         return neu;
       });
     }
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Profil übernommen');}});
+  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;eldibWahl=null;dossierZeichnen(r.ergebnis);toast('Übernommen');}});
 }
 /* Den Schüler im ELDiB-Generator öffnen (anlegen, falls es ihn dort noch nicht gibt) */
 function eldibOeffnen(d){
@@ -3027,7 +3175,347 @@ function eldibOeffnen(d){
   if(window.CDSE_HUB_OEFFNE){window.CDSE_HUB_OEFFNE('eldib',true);}else{location.hash='#/app/eldib';}
 }
 
+/* =====================================================================
+   Entwicklung & Ziele: ELDiB und PEI im Dossier
+   ---------------------------------------------------------------------
+   Aus den übernommenen ELDiB-Einschätzungen: die Stufe je Bereich im
+   Vergleich zum Lebensalter, Items, die für das Alter längst erwartet
+   werden und noch fehlen, die aktuellen Förderziele (PEI) mit Ich-Satz,
+   Förderideen und Beobachtungsbeispielen, die Zusatzziele und der
+   Fortschritt zwischen zwei Einschätzungen. Die Items kommen aus
+   ELDIB_BANK (apps/ds-motor.js, gebaut vom ELDiB-Generator).
+   ===================================================================== */
+var EL_BEREICHE=[{id:'verhalten',name:'Verhalten',farbe:'#B4533A'},{id:'kommunikation',name:'Kommunikation',farbe:'#2E3A9C'},{id:'sozialisation',name:'Sozialisation',farbe:'#1F6B6F'},{id:'kognition',name:'Kognition',farbe:'#8A6414'}];
+var ROEM=['','I','II','III','IV','V'];
+var ZUSATZ_NAMEN={demarches_mentales:['Denkweisen','démarches mentales'],manieres_apprendre:['Lernweisen','manières d’apprendre'],attitudes_relationnelles:['Beziehungshaltungen','attitudes relationnelles'],
+  attitudes_affectives:['Emotionale Haltungen','attitudes affectives'],competences_essentielles:['Wesentliche Kompetenzen','compétences essentielles'],culture_loisirs:['Kultur und Freizeit','culture et loisirs']};
+/* Ein Item gilt als „für das Alter längst erwartet“, wenn das Kind mindestens
+   UEBER_AB Jahre älter ist als das Ende der Altersspanne seiner Stufe;
+   ab UEBER_DEUTLICH Jahren wird es deutlich hervorgehoben. */
+var UEBER_AB=1, UEBER_DEUTLICH=3, VERALTET_TAGE=183;
+var eldibWahl=null, itemIndex=null, kurzCache={};
+function bankDa(){return typeof ELDIB_BANK!=='undefined'&&!!ELDIB_BANK&&!!ELDIB_BANK.bereiche;}
+function elBereich(id){return EL_BEREICHE.filter(function(b){return b.id===id;})[0]||EL_BEREICHE[0];}
+function itemZu(code){
+  if(!bankDa()){return null;}
+  if(!itemIndex){
+    itemIndex={};
+    Object.keys(ELDIB_BANK.bereiche).forEach(function(b){var B=ELDIB_BANK.bereiche[b];
+      Object.keys(B.stufen).forEach(function(s){B.stufen[s].items.forEach(function(it){itemIndex[it.code]={bereich:b,stufe:+s,it:it};});});});
+  }
+  return itemIndex[code]||null;
+}
+function codeFolge(a,b){
+  var x=itemZu(a), y=itemZu(b), ids=EL_BEREICHE.map(function(q){return q.id;});
+  return ((x?ids.indexOf(x.bereich):9)-(y?ids.indexOf(y.bereich):9))||((x?x.it.nr:0)-(y?y.it.nr:0));
+}
+function stufeSpanne(s){var m=ELDIB_BANK.stufen[s];return m?m.min+'–'+m.max+' Jahre':'';}
+/* Alter in Jahren (mit Monaten als Bruchteil) an einem Tag */
+function alterAm(geb,iso){
+  if(!geb){return null;}
+  var g=new Date(geb+'T12:00:00'), h=iso?new Date(String(iso).slice(0,10)+'T12:00:00'):new Date();
+  if(isNaN(g)||isNaN(h)){return null;}
+  var m=(h.getFullYear()-g.getFullYear())*12+(h.getMonth()-g.getMonth())-(h.getDate()<g.getDate()?1:0);
+  return m<0?null:m/12;
+}
+function alterText(j){if(j==null){return '';}var y=Math.floor(j+1e-6), m=Math.round((j-y)*12);if(m>=12){y++;m=0;}return y+' J.'+(m?' '+m+' M.':'');}
+function jahreText(n){n=Math.max(1,Math.round(n));return 'rund '+n+(n===1?' Jahr':' Jahre');}
+function zielText(code,z){
+  var inf=itemZu(code), f=(inf&&inf.it.zielformulierungen)||[];
+  if(z&&typeof z.i==='number'&&z.i>=0&&f[z.i]){return f[z.i];}   /* Standard-Formulierung: immer deutsch */
+  if(z&&z.t){
+    /* ohne Nummer auf Französisch/Englisch gewählt? Dann die deutsche Fassung derselben Formulierung */
+    var fr=((ELDIB_BANK.zieleFremd||{})[code])||{}, t=String(z.t).trim(), k=-1;
+    ['fr','en'].forEach(function(l){if(k<0&&fr[l]){k=fr[l].map(function(x){return String(x).trim();}).indexOf(t);}});
+    if(k>=0&&f[k]){return f[k];}
+    return z.t;                                                   /* eigene Formulierung */
+  }
+  return f[0]||'';
+}
+function foerderideen(code){var inf=itemZu(code);if(!inf){return [];}return (ELDIB_BANK.interventionen||{})[code]||(ELDIB_BANK.fallback||{})[inf.bereich]||[];}
+function beispiele(code){return (ELDIB_BANK.beispiele||{})[code]||[];}
+/* Hinweise des CDSE zum Item (z. B. „Logopädie einschalten“, „Piktogramme vorhanden“) */
+function itemHinweise(code){var h=(ELDIB_BANK.hinweise||{})[code];return h?(Array.isArray(h)?h:[h]).filter(Boolean):[];}
+function hinweisHtml(code){var h=itemHinweise(code);return h.length?'<p class="ar-itemhinweis">'+svg('info')+'<span>'+h.map(esc).join(' ')+'</span></p>':'';}
+function einschaetzungName(e){return (e.nr?'Einschätzung '+e.nr:'ELDiB-Einschätzung')+(e.datum?' vom '+datum(e.datum):'');}
+
+/* Aus einem Schüler der ELDiB-Liste die Einschätzungen fürs Dossier
+   (nur Status, Ziel-Formulierung, Zusatzziele, Notizen – ohne DS) */
+function eldibAusEintrag(s){
+  var aus=[];
+  [[1,s.einschaetzung1],[2,s.einschaetzung2]].forEach(function(x){
+    var e=x[1];if(!e||typeof e!=='object'){return;}
+    var sel={}, ziele={}, zus={}, no={}, st=e.stammdaten||{};
+    Object.keys(e.selections||{}).forEach(function(c){
+      var v=e.selections[c]||{};
+      if(v.status==='erreicht'){sel[c]='e';}
+      else if(v.status==='nicht-erreicht'){sel[c]='n';}
+      else if(v.status==='ziel'){sel[c]='z';ziele[c]={t:v.zieltext||'',i:typeof v.zielIndex==='number'?v.zielIndex:null};}
+    });
+    Object.keys(e.zusaetzlicheZiele||{}).forEach(function(k){
+      var o=e.zusaetzlicheZiele[k]||{}, n={};
+      Object.keys(o).forEach(function(id){var w=o[id];w=w==='erreicht'?'stufe3':(w==='ziel'?'stufe1':w);var m=/^stufe([123])$/.exec(w||'');if(m){n[id]=+m[1];}});
+      if(Object.keys(n).length){zus[k]=n;}
+    });
+    Object.keys(e.bereichNotizen||{}).forEach(function(k){var t=String(e.bereichNotizen[k]||'').trim();if(t){no[k]=t;}});
+    if(!Object.keys(sel).length&&!Object.keys(zus).length){return;}
+    aus.push({nr:x[0],datum:st.einschaetzungsdatum||'',von:st.einschaetzende||'',schuljahr:st.schuljahr||'',
+      periode:st.periode?((st.periodenTyp==='semester'?'Semester ':'Trimester ')+st.periode):'',gespeichert:e.savedAt||'',sel:sel,ziele:ziele,zusatz:zus,notizen:no});
+  });
+  return aus;
+}
+/* Einschätzungen des Dossiers, älteste zuerst (auch aus älteren Übernahmen) */
+function eldibEinschaetzungen(d){
+  var e=d&&d.profil&&d.profil.eldib;if(!e){return [];}
+  if(e.einschaetzungen&&e.einschaetzungen.length){return e.einschaetzungen.slice().sort(function(a,b){return (a.nr||0)-(b.nr||0);});}
+  var sel={};(e.erreicht||[]).forEach(function(c){sel[c]='e';});(e.ziele||[]).forEach(function(c){sel[c]='z';});
+  return Object.keys(sel).length?[{nr:0,datum:e.datum||'',sel:sel,ziele:{},zusatz:{},notizen:{}}]:[];
+}
+/* Höchste Stufe mit erreichten Items (wie im DS-Bericht) */
+function hoechsteStufe(sel,bereich){
+  var bank=ELDIB_BANK.bereiche[bereich], h=0;
+  Object.keys(bank.stufen).forEach(function(s){if(bank.stufen[s].items.some(function(it){return sel[it.code]==='e';})){h=Math.max(h,+s);}});
+  return h;
+}
+function eldibAuswertung(d,nr){
+  if(!bankDa()){return null;}
+  var alle=eldibEinschaetzungen(d);if(!alle.length){return null;}
+  var i=alle.length-1;
+  if(nr!=null){alle.forEach(function(x,k){if(x.nr===nr){i=k;}});}
+  var e=alle[i], p=d.person||{};
+  var bezug=e.datum||(e.gespeichert||'').slice(0,10)||'';
+  var j=alterAm(p.geburtsdatum,bezug||null), jahre=j==null?null:Math.floor(j+1e-6);
+  var erwartet=jahre==null?null:(jahre<=2?1:jahre<=5?2:jahre<=9?3:jahre<=12?4:5);
+  var bereiche=[], ueber=[], offen=0;
+  EL_BEREICHE.forEach(function(B){
+    var bank=ELDIB_BANK.bereiche[B.id];if(!bank){return;}
+    var stufen=[], hoch=0, bewertet=false;
+    Object.keys(bank.stufen).map(Number).sort(function(a,b){return a-b;}).forEach(function(s){
+      var luecke=j==null?null:j-ELDIB_BANK.stufen[s].max;
+      var z={s:s,n:0,e:0,nicht:0,ziel:0,offen:0,ueber:0,spaet:luecke!=null&&luecke>=UEBER_AB};
+      bank.stufen[s].items.forEach(function(it){
+        var v=e.sel[it.code];z.n++;
+        if(v==='e'){z.e++;}else if(v==='n'){z.nicht++;}else if(v==='z'){z.ziel++;}else{z.offen++;}
+        if((v==='n'||v==='z')&&z.spaet){z.ueber++;ueber.push({code:it.code,it:it,bereich:B.id,stufe:s,luecke:luecke,istZiel:v==='z'});}
+      });
+      if(z.e){hoch=s;}
+      if(z.e||z.nicht||z.ziel){bewertet=true;}
+      stufen.push(z);
+    });
+    /* Nicht eingeschätzte Items in längst fälligen Stufen, die das Kind noch nicht sicher hinter sich hat */
+    stufen.forEach(function(z){if(bewertet&&z.spaet&&z.s>=hoch&&z.offen){offen+=z.offen;}});
+    var voll=hoch&&stufen[hoch-1].e===stufen[hoch-1].n, arbeit=!hoch?1:(voll&&hoch<5?hoch+1:hoch);
+    bereiche.push({id:B.id,name:B.name,code:bank.code,farbe:B.farbe,stufen:stufen,stufe:hoch,bewertet:bewertet,
+      abstand:(erwartet&&hoch)?erwartet-hoch:null,arbeit:arbeit,leitziel:(bank.stufen[arbeit]||{}).ziel||'',notiz:(e.notizen||{})[B.id]||''});
+  });
+  ueber.sort(function(a,b){return (b.luecke-a.luecke)||codeFolge(a.code,b.code);});
+  var ziele=Object.keys(e.sel).filter(function(c){return e.sel[c]==='z'&&itemZu(c);}).sort(codeFolge).map(function(c){
+    var inf=itemZu(c);
+    return {code:c,it:inf.it,bereich:inf.bereich,stufe:inf.stufe,text:zielText(c,(e.ziele||{})[c]),ideen:foerderideen(c),beispiele:beispiele(c),
+      ueber:ueber.filter(function(u){return u.code===c;})[0]||null};
+  });
+  return {e:e,alle:alle,index:i,alter:j,jahre:jahre,erwartet:erwartet,bereiche:bereiche,ueber:ueber,offen:offen,ziele:ziele,
+    zusatz:zusatzListen(e),naechste:naechsteSchritte(e,bereiche),fortschritt:i>0?fortschritt(alle[i-1],e):null,
+    tage:bezug?Math.floor((Date.now()-new Date(bezug.slice(0,10)+'T12:00:00').getTime())/864e5):null,
+    notizZusatz:(e.notizen||{}).zusaetzlich||''};
+}
+/* Kandidaten für die nächsten Ziele: je Bereich die ersten zwei offenen Items ab der Arbeitsstufe */
+function naechsteSchritte(e,bereiche){
+  var r=[];
+  bereiche.forEach(function(b){
+    if(!b.bewertet){return;}
+    var bank=ELDIB_BANK.bereiche[b.id], l=[];
+    Object.keys(bank.stufen).map(Number).sort(function(x,y){return x-y;}).forEach(function(s){
+      bank.stufen[s].items.forEach(function(it){var v=e.sel[it.code];if(v==='e'||v==='z'){return;}if(v==='n'||s>=b.arbeit){l.push({code:it.code,it:it,stufe:s,nicht:v==='n'});}});
+    });
+    if(l.length){r.push({bereich:b,items:l.slice(0,2)});}
+  });
+  return r;
+}
+function zusatzListen(e){
+  var r={kann:[],hilfe:[],lernt:[]};
+  Object.keys(ZUSATZ_NAMEN).forEach(function(kat){
+    var o=(e.zusatz||{})[kat]||{}, bank=(ELDIB_BANK.zusatz||{})[kat]||[];
+    bank.forEach(function(g){
+      var st=o[g.id];if(!st){return;}
+      var x={kat:kat,id:g.id,titel:g.title,text:(g.stufen||{})['stufe'+st]||'',ideen:g.intervention||[]};
+      (st===3?r.kann:(st===2?r.hilfe:r.lernt)).push(x);
+    });
+  });
+  return r;
+}
+/* Was hat sich zwischen zwei Einschätzungen getan? */
+function fortschritt(a,b){
+  var neu=[], zurueck=[], ziele=[];
+  Object.keys(b.sel).forEach(function(c){if(b.sel[c]==='e'&&a.sel[c]!=='e'&&itemZu(c)){neu.push(c);}});
+  Object.keys(a.sel).forEach(function(c){
+    if(!itemZu(c)){return;}
+    if(a.sel[c]==='e'&&(b.sel[c]==='n'||b.sel[c]==='z')){zurueck.push(c);}
+    if(a.sel[c]==='z'){ziele.push({code:c,jetzt:b.sel[c]||'',text:zielText(c,(a.ziele||{})[c])});}
+  });
+  neu.sort(codeFolge);zurueck.sort(codeFolge);ziele.sort(function(x,y){return codeFolge(x.code,y.code);});
+  var stufen=EL_BEREICHE.map(function(B){return {b:B,von:hoechsteStufe(a.sel,B.id),bis:hoechsteStufe(b.sel,B.id),
+    plus:Object.keys(b.sel).filter(function(c){var i=itemZu(c);return i&&i.bereich===B.id&&b.sel[c]==='e'&&a.sel[c]!=='e';}).length};});
+  return {von:a,bis:b,neu:neu,zurueck:zurueck,ziele:ziele,erreicht:ziele.filter(function(z){return z.jetzt==='e';}).length,stufen:stufen};
+}
+/* Kurzfassung für die Schülerliste (zwischengespeichert je Dossier-Stand) */
+function eldibKurz(d){
+  var k=d.id+':'+(d.rev|0);
+  if(!(k in kurzCache)){var A=bankDa()?eldibAuswertung(d):null;kurzCache[k]=A?{ueber:A.ueber.length,ohneZiel:A.ueber.filter(function(u){return !u.istZiel;}).length,ziele:A.ziele.length}:null;}
+  return kurzCache[k];
+}
+/* Profil im Format des DS-Berichts (Abschnitt „Ergebnisse der Testverfahren“) */
+function dsEldibProfilAus(A){
+  if(!A){return null;}
+  var bereiche=A.bereiche.map(function(b){
+    var er=[], zi=[], bank=ELDIB_BANK.bereiche[b.id];
+    Object.keys(bank.stufen).map(Number).sort(function(x,y){return x-y;}).forEach(function(s){
+      bank.stufen[s].items.forEach(function(it){
+        var v=A.e.sel[it.code], x={code:it.code,intern:it.code,nr:it.nr,description:it.description,keyword:it.keyword,stufe:s};
+        if(v==='e'){er.push(x);}else if(v==='z'){zi.push(x);}
+      });
+    });
+    var alter=0, r=(ELDIB_BANK.dsStufenAlter||{})[b.stufe];
+    if(b.stufe&&r){var st=b.stufen[b.stufe-1];alter=r[0]+(r[1]-r[0])*st.e/st.n;}
+    return {id:b.id,code:b.code,name:b.name,stufe:b.stufe,alter:alter,richtziel:(ELDIB_BANK.richtziel||[])[b.stufe]||'',erreicht:er,ziele:zi};
+  }).sort(function(x,y){return y.alter-x.alter;});
+  return {bereiche:bereiche,lebensalter:A.jahre,erwarteteStufe:A.erwartet};
+}
+/* Gibt es im ELDiB-Generator auf diesem Computer neuere Daten als im Dossier? */
+function eldibNeuer(d){
+  var l=eldibListe().map(function(x){return {x:x,p:eldibPasst(x,d)};}).filter(function(y){return y.p;}).sort(function(a,b){return b.p-a.p;});
+  if(!l.length){return null;}
+  var s=l[0].x, neu='';
+  [s.einschaetzung1,s.einschaetzung2].forEach(function(e){if(e&&e.savedAt&&e.savedAt>neu){neu=e.savedAt;}});
+  if(!neu){return null;}
+  var pr=d.profil||{}, bekannt=pr.gespeichert||'';
+  eldibEinschaetzungen(d).forEach(function(e){if(e.gespeichert&&e.gespeichert>bekannt){bekannt=e.gespeichert;}});
+  if(!bekannt){bekannt=pr.datum?pr.datum+'T23:59:59':'';}
+  return neu>bekannt?{s:s,gespeichert:neu}:null;
+}
+
+/* ---------- Darstellung ---------- */
+function stufenLeiter(A,gross){
+  return '<div class="ar-leiter'+(gross?' gross':'')+'">'+A.bereiche.map(function(b){
+    var art=!b.bewertet?'leer':(!b.stufe?'krit':(b.abstand==null?'leer':(b.abstand<=0?'ok':(b.abstand===1?'warn':'krit'))));
+    var txt=!b.bewertet?'nicht eingeschätzt':(!b.stufe?'noch kein Item erreicht':(b.abstand==null?'':(b.abstand<=0?'altersgemäß':(b.abstand===1?'1 Stufe unter dem Alter':b.abstand+' Stufen unter dem Alter'))));
+    return '<div class="ar-leiter-zeile" style="--bc:'+b.farbe+'">'+
+      '<div class="ar-leiter-name"><b>'+esc(b.name)+'</b><small>'+(b.stufe?'Stufe '+ROEM[b.stufe]+' · '+esc(stufeSpanne(b.stufe)):'–')+'</small></div>'+
+      '<div class="ar-leiter-bahn">'+b.stufen.map(function(z){
+        var f=z.n?z.e/z.n:0, erw=A.erwartet===z.s;
+        var t='Stufe '+ROEM[z.s]+' ('+stufeSpanne(z.s)+'): '+z.e+' von '+z.n+' Items erreicht'+(z.ziel?', '+z.ziel+(z.ziel>1?' Förderziele':' Förderziel'):'')+(z.nicht?', '+z.nicht+' nicht erreicht':'')+
+          (z.ueber?'. '+z.ueber+(z.ueber>1?' Items sind':' Item ist')+' für das Alter längst erwartet':'')+(erw?'. Diese Stufe ist für das Alter zu erwarten':'');
+        return '<div class="ar-seg'+(erw?' erwartet':'')+(z.ueber?' ueber':'')+'" style="--f:'+f.toFixed(3)+'" role="img" aria-label="'+esc(t)+'" title="'+esc(t)+'">'+
+          '<span class="ar-seg-f"></span><span class="ar-seg-t">'+ROEM[z.s]+'</span>'+(z.ueber?'<i class="ar-seg-u">'+z.ueber+'</i>':'')+(z.ziel?'<i class="ar-seg-z"></i>':'')+'</div>';
+      }).join('')+'</div>'+
+      '<div class="ar-leiter-status '+art+'">'+esc(txt)+'</div></div>';
+  }).join('')+
+  '<div class="ar-leiter-legende"><span><i class="f"></i>erreicht</span><span><i class="e"></i>für das Alter zu erwarten'+(A.jahre!=null?' ('+A.jahre+' Jahre)':'')+'</span><span><i class="u">3</i>Items überfällig</span><span><i class="z"></i>Förderziel in der Stufe</span></div></div>';
+}
+function icode(code){var inf=itemZu(code);return '<span class="ar-icode" style="--bc:'+(inf?elBereich(inf.bereich).farbe:'#586277')+'">'+esc(code)+'</span>';}
+function ueberZeile(u){
+  return '<li class="ar-ueb'+(u.luecke>=UEBER_DEUTLICH?' stark':'')+'">'+icode(u.code)+'<div><b>'+esc(u.it.keyword)+'</b> – '+esc(u.it.description)+
+    '<small>Stufe '+ROEM[u.stufe]+', üblich bis etwa '+ELDIB_BANK.stufen[u.stufe].max+' Jahre · <b>'+esc(jahreText(u.luecke))+' überfällig</b> · '+
+    (u.istZiel?'<span class="ar-ist-ziel">ist Förderziel</span>':'<span class="ar-kein-ziel">noch kein Förderziel</span>')+'</small>'+hinweisHtml(u.code)+'</div></li>';
+}
+function eldibUeberblick(d){
+  if(!bankDa()){return '';}
+  var A=eldibAuswertung(d);if(!A){return '';}
+  var h='<div class="ar-karte ar-eldibkarte"><div class="ar-kartenkopf"><h2>Entwicklung & Ziele</h2><span class="ar-leise">'+esc(einschaetzungName(A.e))+(A.alter!=null?' · Alter damals '+esc(alterText(A.alter)):'')+'</span></div>'+stufenLeiter(A);
+  if(A.ueber.length){
+    var oz=A.ueber.filter(function(u){return !u.istZiel;}).length;
+    h+='<div class="ar-ueber-kurz"><p><b>'+A.ueber.length+(A.ueber.length>1?' Items sind':' Item ist')+' für das Alter längst erwartet</b> und noch nicht erreicht'+(oz?' – '+oz+' davon noch ohne Förderziel':'')+'.</p><ul class="ar-ueb-liste">'+A.ueber.slice(0,4).map(ueberZeile).join('')+'</ul>'+
+      (A.ueber.length>4?'<button class="ar-link" type="button" data-tab="entwicklung">Alle '+A.ueber.length+' anzeigen</button>':'')+'</div>';
+  }
+  if(A.ziele.length){
+    h+='<h3 class="ar-zwischen">Woran wir gerade arbeiten</h3><ul class="ar-zielkurz">'+A.ziele.map(function(z){return '<li>'+icode(z.code)+'<span>„'+esc(z.text)+'“</span></li>';}).join('')+'</ul>';
+  }
+  h+='<button class="ar-link" type="button" data-tab="entwicklung">'+svg('ziel')+'Alles zu Entwicklung & Zielen</button></div>';
+  return h;
+}
+function zielKarte(z,d,r){
+  var B=elBereich(z.bereich);
+  var ein=(d.eintraege||[]).filter(function(e){return e.ziel===z.code;}).sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
+  return '<article class="ar-ziel" style="--bc:'+B.farbe+'"><header>'+icode(z.code)+'<b>'+esc(z.it.keyword)+'</b><small>'+esc(B.name)+' · Stufe '+ROEM[z.stufe]+'</small>'+
+      (z.ueber?'<span class="ar-ueb-badge" title="Für das Alter längst erwartet">überfällig</span>':'')+'</header>'+
+    '<p class="ar-ichsatz">„'+esc(z.text)+'“</p><p class="ar-klein">'+esc(z.it.description)+'</p>'+hinweisHtml(z.code)+
+    (z.ideen.length?'<h4>Förderideen</h4><ul>'+z.ideen.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+
+    (z.beispiele.length?'<h4>Woran man es merkt</h4><ul>'+z.beispiele.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>':'')+
+    '<footer>'+(ein.length?'<span>'+ein.length+(ein.length>1?' Einträge':' Eintrag')+' dazu, zuletzt am '+esc(datum(ein[0].datum))+'</span>':'<span class="ar-leise">Noch keine Einträge zu diesem Ziel</span>')+
+      (r.bearbeiten?'<button class="ar-link" type="button" data-ar="ziel-eintrag" data-item="'+esc(z.code)+'">'+svg('plus')+'Beobachtung eintragen</button>':'')+'</footer></article>';
+}
+function tabEntwicklung(d,r){
+  if(!bankDa()){return hinweis('Für diese Ansicht fehlt die Datei <code>apps/ds-motor.js</code> im Hub-Ordner (Text-Motor und Itembank des ELDiB-Generators). Bitte mit <code>update-apps.cjs</code> holen.');}
+  var alle=eldibEinschaetzungen(d), h='', neu=r.bearbeiten?eldibNeuer(d):null;
+  if(neu){h+=hinweis('Im ELDiB-Generator auf diesem Computer gibt es neuere Daten (gespeichert am '+esc(datumZeit(neu.gespeichert))+'). <button class="ar-link" type="button" data-ar="eldib-uebernehmen">Jetzt übernehmen</button>','info');}
+  if(!alle.length){
+    return h+karte('<h2>Noch keine ELDiB-Einschätzung</h2><p>Hier erscheinen der Entwicklungsstand je Bereich, die Items, die für das Alter längst erwartet werden, und die Förderziele des PEI – sobald eine Einschätzung aus dem ELDiB-Generator übernommen ist.</p>'+
+      (r.bearbeiten?'<div class="ar-knopfreihe"><button class="btn primary" type="button" data-ar="eldib-uebernehmen">'+svg('ziel')+'Aus dem ELDiB-Generator übernehmen</button><button class="btn" type="button" data-ar="eldib-oeffnen">Im ELDiB-Generator öffnen</button></div>':''),'ar-leer');
+  }
+  var A=eldibAuswertung(d,eldibWahl), p=d.person||{}, vn=p.vorname||'das Kind';
+  /* Kopf: welche Einschätzung, Alter, Aktualität */
+  h+='<div class="ar-eldibkopf">'+(alle.length>1?'<div class="ar-ansicht" role="tablist">'+alle.map(function(e){var an=e===A.e;return '<button type="button" role="tab" aria-selected="'+an+'" class="'+(an?'on':'')+'" data-ar="eldib-wahl" data-nr="'+e.nr+'">'+esc(einschaetzungName(e))+'</button>';}).join('')+'</div>':'<b>'+esc(einschaetzungName(A.e))+'</b>')+
+    '<span class="ar-leise">'+esc([A.e.von?'eingeschätzt von '+A.e.von:'',A.e.schuljahr?'Schuljahr '+A.e.schuljahr:'',A.e.periode,A.alter!=null?'Alter damals '+alterText(A.alter):''].filter(Boolean).join(' · '))+'</span>'+
+    (r.bearbeiten?'<span class="ar-eldibkopf-knoepfe"><button class="btn" type="button" data-ar="eldib-uebernehmen">'+svg('reload')+'Neu übernehmen</button><button class="btn" type="button" data-ar="eldib-oeffnen">'+svg('ziel')+'Im ELDiB-Generator öffnen</button></span>':'')+'</div>';
+  if(A.alter==null){h+=hinweis('Für den Vergleich mit dem Alter fehlt das Geburtsdatum in den Stammdaten.'+(r.bearbeiten?' <button class="ar-link" type="button" data-ar="person">Stammdaten ergänzen</button>':''),'info');}
+  if(A.tage!=null&&A.tage>VERALTET_TAGE&&A.index===A.alle.length-1){h+=hinweis('Diese Einschätzung ist über ein halbes Jahr alt. Für das PEI und für Übergaben lohnt sich eine neue ELDiB-Einschätzung.','info');}
+  /* Entwicklungsstand */
+  h+=karte('<div class="ar-kartenkopf"><h2>Entwicklungsstand je Bereich</h2><span class="ar-leise">Balken = erreichte Items je Stufe</span></div>'+stufenLeiter(A,true)+
+    '<div class="ar-leitziele">'+A.bereiche.filter(function(b){return b.bewertet;}).map(function(b){
+      return '<div style="--bc:'+b.farbe+'"><b>'+esc(b.name)+'</b><span>Leitziel Stufe '+ROEM[b.arbeit]+': '+esc(b.leitziel)+'</span>'+(b.notiz?'<q>'+esc(b.notiz)+'</q>':'')+'</div>';
+    }).join('')+'</div>'+(A.notizZusatz?'<p class="ar-klein"><b>Notiz:</b> '+esc(A.notizZusatz)+'</p>':''),'ar-eldibkarte');
+  /* Für das Alter längst erwartet */
+  if(A.ueber.length||A.offen){
+    var oz=A.ueber.filter(function(u){return !u.istZiel;}).length;
+    h+=karte('<div class="ar-kartenkopf"><h2>Für das Alter längst erwartet</h2><span class="ar-leise">nicht erreicht, obwohl '+esc(vn)+' mindestens '+UEBER_AB+' Jahr älter ist als die Altersspanne der Stufe</span></div>'+
+      (A.ueber.length?'<p>'+A.ueber.length+(A.ueber.length>1?' Items':' Item')+(oz?', davon <b>'+oz+' noch ohne Förderziel</b>':', alle sind bereits Förderziele')+'. Die ältesten Lücken stehen oben – hier lohnt es sich, zuerst anzusetzen.</p>':'')+
+      EL_BEREICHE.map(function(B){var l=A.ueber.filter(function(u){return u.bereich===B.id;});return l.length?'<h3 class="ar-bereichskopf" style="--bc:'+B.farbe+'">'+esc(B.name)+' <small>'+l.length+'</small></h3><ul class="ar-ueb-liste">'+l.map(ueberZeile).join('')+'</ul>':'';}).join('')+
+      (A.offen?hinweis('Außerdem sind '+A.offen+(A.offen>1?' Items':' Item')+' aus Stufen, die für das Alter längst abgeschlossen sein sollten, noch nicht eingeschätzt. Bitte im ELDiB-Generator ergänzen, damit das Bild vollständig ist.','info'):''));
+  }else if(A.alter!=null){
+    h+=karte('<h2>Für das Alter längst erwartet</h2><p class="ar-ok">Keine Lücken: Alle Items der Stufen, die für das Alter längst abgeschlossen sein sollten, sind erreicht oder waren nicht einzuschätzen.</p>');
+  }
+  /* Förderziele */
+  h+=karte('<div class="ar-kartenkopf"><h2>Aktuelle Förderziele (PEI)</h2><span class="ar-leise">'+(A.ziele.length?A.ziele.length+(A.ziele.length>1?' Ziele':' Ziel'):'')+'</span></div>'+
+    (A.ziele.length?'<p class="ar-klein">So formuliert '+esc(vn)+' die Ziele selbst. Alle, die mit '+esc(vn)+' arbeiten, können daran anknüpfen – und Beobachtungen direkt zum Ziel eintragen.</p><div class="ar-zielraster">'+A.ziele.map(function(z){return zielKarte(z,d,r);}).join('')+'</div>':
+      '<p class="ar-leise">In dieser Einschätzung sind keine Förderziele markiert.</p>'));
+  /* Nächste Schritte */
+  if(A.naechste.length){
+    h+=karte('<h2>Als Nächstes möglich</h2><p class="ar-klein">Die nächsten noch offenen Items je Bereich – Kandidaten, wenn ein Ziel erreicht ist.</p><ul class="ar-ueb-liste">'+
+      A.naechste.map(function(n){return n.items.map(function(x){return '<li>'+icode(x.code)+'<div><b>'+esc(x.it.keyword)+'</b> – '+esc(x.it.description)+'<small>'+esc(n.bereich.name)+' · Stufe '+ROEM[x.stufe]+(x.nicht?' · als nicht erreicht eingeschätzt':'')+'</small></div></li>';}).join('');}).join('')+'</ul>');
+  }
+  /* Zusatzziele */
+  var Z=A.zusatz;
+  if(Z.kann.length||Z.hilfe.length||Z.lernt.length){
+    var spalte=function(t,l,kl){return '<div class="ar-blick '+kl+'"><h3>'+esc(t)+' <small>'+l.length+'</small></h3>'+(l.length?'<ul>'+l.map(function(x){return '<li><b>'+esc(x.titel)+'</b> – '+esc(x.text)+'<small>'+esc(ZUSATZ_NAMEN[x.kat][0])+'</small></li>';}).join('')+'</ul>':'<p class="ar-leise">–</p>')+'</div>';};
+    h+=karte('<h2>Weitere Kompetenzen (PEI-Complément)</h2><div class="ar-zusatz">'+spalte('Lernt noch (Ziel)',Z.lernt,'schwer')+spalte('Mit Unterstützung',Z.hilfe,'wann')+spalte('Kann schon',Z.kann,'gut')+'</div>');
+  }
+  /* Fortschritt */
+  var F=A.fortschritt;
+  if(F){
+    h+=karte('<div class="ar-kartenkopf"><h2>Fortschritt</h2><span class="ar-leise">'+esc(einschaetzungName(F.von))+' → '+esc(einschaetzungName(F.bis))+'</span></div>'+
+      '<div class="ar-kennzahlen ar-fortschritt">'+F.stufen.map(function(s){return '<div style="--bc:'+s.b.farbe+'"><b>+'+s.plus+'</b><span>'+esc(s.b.name)+(s.bis>s.von?' · Stufe '+ROEM[s.von]+' → '+ROEM[s.bis]:(s.bis?' · Stufe '+ROEM[s.bis]:''))+'</span></div>';}).join('')+
+        '<div><b>'+F.erreicht+'/'+F.ziele.length+'</b><span>Ziele erreicht</span></div></div>'+
+      (F.ziele.length?'<h3>Ziele aus '+esc(einschaetzungName(F.von))+'</h3><ul class="ar-zielstand">'+F.ziele.map(function(z){var t=z.jetzt==='e'?['ja','erreicht']:(z.jetzt==='z'?['weiter','weiter Ziel']:(z.jetzt==='n'?['nein','nicht erreicht']:['offen','nicht mehr eingeschätzt']));return '<li class="'+t[0]+'">'+icode(z.code)+'<span>„'+esc(z.text)+'“</span><b>'+t[1]+'</b></li>';}).join('')+'</ul>':'')+
+      (F.neu.length?'<h3>Neu erreicht ('+F.neu.length+')</h3><p class="ar-klein">'+F.neu.map(function(c){return esc(c)+' '+esc(itemZu(c).it.keyword);}).join(' · ')+'</p>':'<p class="ar-leise">Seit der vorigen Einschätzung wurden keine Items neu als erreicht eingeschätzt.</p>')+
+      (F.zurueck.length?hinweis('<b>Rückschritt:</b> '+F.zurueck.map(function(c){return esc(c)+' '+esc(itemZu(c).it.keyword);}).join(', ')+' – war erreicht und ist jetzt wieder offen. Gibt es einen Anlass (Wechsel, Belastung zu Hause)?'):''));
+  }
+  return h;
+}
+
 /* ---------- Übergabeblatt (Druck / PDF) ---------- */
+function eldibDruck(d){
+  if(!bankDa()){return '';}
+  var A=eldibAuswertung(d);if(!A){return '';}
+  var h='<h2>Entwicklung (ELDiB) – '+esc(einschaetzungName(A.e))+(A.alter!=null?', Alter damals '+esc(alterText(A.alter)):'')+'</h2>'+
+    '<table class="eldib"><tr><th>Bereich</th><th>Stufe</th><th>Einordnung</th><th>Leitziel der Arbeitsstufe</th></tr>'+A.bereiche.map(function(b){
+      var txt=!b.bewertet?'nicht eingeschätzt':(!b.stufe?'noch kein Item erreicht':(b.abstand==null?'':(b.abstand<=0?'altersgemäß':(b.abstand===1?'1 Stufe unter dem Alter':b.abstand+' Stufen unter dem Alter'))));
+      return '<tr><td>'+esc(b.name)+'</td><td>'+(b.stufe?'Stufe '+ROEM[b.stufe]+' ('+esc(stufeSpanne(b.stufe))+')':'–')+'</td><td>'+esc(txt)+'</td><td>'+esc(b.bewertet?'Stufe '+ROEM[b.arbeit]+': '+b.leitziel:'')+'</td></tr>';
+    }).join('')+'</table>';
+  if(A.ueber.length){h+='<h3>Für das Alter längst erwartet, noch nicht erreicht ('+A.ueber.length+')</h3><ul>'+A.ueber.map(function(u){return '<li><b>'+esc(u.code)+' '+esc(u.it.keyword)+'</b> – '+esc(u.it.description)+' <small>(Stufe '+ROEM[u.stufe]+', '+esc(jahreText(u.luecke))+' überfällig'+(u.istZiel?', ist Förderziel':'')+')</small></li>';}).join('')+'</ul>';}
+  if(A.ziele.length){h+='<h2>Aktuelle Förderziele (PEI)</h2>'+A.ziele.map(function(z){var hw=itemHinweise(z.code);return '<div class="ziel"><b>'+esc(z.code)+' '+esc(z.it.keyword)+':</b> „'+esc(z.text)+'“'+(z.ideen.length?'<br><small>Förderideen: '+esc(z.ideen.join('; '))+'</small>':'')+(hw.length?'<br><small><b>Hinweis:</b> '+esc(hw.join(' '))+'</small>':'')+'</div>';}).join('');}
+  if(A.zusatz.lernt.length){h+='<h3>Weitere Kompetenzen – lernt noch</h3><ul>'+A.zusatz.lernt.map(function(x){return '<li><b>'+esc(x.titel)+'</b> – '+esc(x.text)+' <small>('+esc(ZUSATZ_NAMEN[x.kat][0])+')</small></li>';}).join('')+'</ul>';}
+  return h;
+}
 function drucken(d){
   var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum);
   function liste(t,l){return l&&l.length?'<h3>'+esc(t)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul>':'';}
@@ -3035,10 +3523,13 @@ function drucken(d){
   var html='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Übergabeblatt – '+esc(schuelerName(p))+'</title><style>'+
     'body{font:10.5pt/1.45 Arial,Helvetica,sans-serif;color:#111;margin:0}main{max-width:17.5cm;margin:0 auto}h1{font-size:17pt;margin:0}h2{font-size:12pt;margin:14pt 0 4pt;color:#23307a;border-bottom:1px solid #c9cde0;padding-bottom:2pt}h3{font-size:10.5pt;margin:8pt 0 2pt}'+
     'ul{margin:0 0 4pt 16pt;padding:0}li{margin:1pt 0}.sub{color:#444;margin:2pt 0 10pt}.raster{display:grid;grid-template-columns:1fr 1fr;gap:0 18pt}table{border-collapse:collapse;width:100%}td{border:1px solid #bbb;padding:3pt 5pt;vertical-align:top}td:first-child{width:32%;background:#f3f4f8}'+
-    '.eintrag{margin:4pt 0}.eintrag small{color:#555}.fuss{margin-top:16pt;font-size:8.5pt;color:#666}@page{margin:1.6cm}</style></head><body><main>'+
+    '.eintrag{margin:4pt 0}.eintrag small{color:#555}.fuss{margin-top:16pt;font-size:8.5pt;color:#666}@page{margin:1.6cm}'+
+    'table.eldib{margin-top:4pt}table.eldib th{border:1px solid #bbb;padding:3pt 5pt;background:#e8eaf3;text-align:left;font-size:9.5pt}table.eldib td{font-size:9.5pt}table.eldib td:first-child{width:18%}'+
+    '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}</style></head><body><main>'+
     '<h1>Übergabeblatt: '+esc(schuelerName(p))+'</h1><p class="sub">'+esc([a!=null?a+' Jahre':'',p.klasse,p.schule].filter(Boolean).join(' · '))+' — Stelle: '+esc(team(d.stelle).name)+', fallverantwortlich: '+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
     '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
-    (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein Profil vorhanden.</i></p>')+
+    (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein DS-Profil vorhanden.</i></p>')+
+    eldibDruck(d)+
     (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small><br>'+esc(e.text).replace(/\n/g,'<br>')+'</div>';}).join(''):'')+
     '<p class="fuss">Vertraulich – nur für die Arbeit im CDSE. Erstellt am '+esc(datum(heuteIso()))+' von '+esc(K.ich().name)+'. '+esc(profilQuelle(d))+'</p></main></body></html>';
   var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
@@ -3325,11 +3816,12 @@ function verwaltungZeichnen(){
    Ereignisse
    ===================================================================== */
 document.addEventListener('click',function(ev){
-  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-ar], #arbeit-body [data-tab], #arbeit-body [data-filter-status], #arbeit-body [data-filter-stelle], #arbeit-body [data-filter-meine], #arbeit-body [data-ansicht]');
+  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-ar], #arbeit-body [data-tab], #arbeit-body [data-filter-status], #arbeit-body [data-filter-stelle], #arbeit-body [data-filter-meine], #arbeit-body [data-filter-ueber], #arbeit-body [data-ansicht]');
   if(!t){return;}
   if(t.hasAttribute('data-filter-status')){filter.status=t.getAttribute('data-filter-status');listeZeichnen(letzteListe);return;}
   if(t.hasAttribute('data-filter-stelle')){filter.stelle=t.getAttribute('data-filter-stelle');listeZeichnen(letzteListe);return;}
   if(t.hasAttribute('data-filter-meine')){filter.meine=!filter.meine;listeZeichnen(letzteListe);return;}
+  if(t.hasAttribute('data-filter-ueber')){filter.ueber=!filter.ueber;listeZeichnen(letzteListe);return;}
   if(t.hasAttribute('data-ansicht')){teamAnsicht=t.getAttribute('data-ansicht');Array.prototype.forEach.call(document.querySelectorAll('[data-ansicht]'),function(b){b.classList.toggle('on',b===t);b.setAttribute('aria-selected',String(b===t));});teamZeichnen();return;}
   if(t.hasAttribute('data-tab')){dossierTab=t.getAttribute('data-tab');if(aktDossier){dossierZeichnen(aktDossier);}window.scrollTo(0,0);return;}
   var a=t.getAttribute('data-ar'), d=aktDossier;
@@ -3352,6 +3844,8 @@ document.addEventListener('click',function(ev){
     case 'neu-laden-dossier':seiteDossier(d.id,true);break;
     case 'eintrag-aendern':eintragAendernDialog(d,t.getAttribute('data-eid'));break;
     case 'eintrag-loeschen':eintragLoeschenDialog(d,t.getAttribute('data-eid'));break;
+    case 'ziel-eintrag':zielEintragDialog(d,t.getAttribute('data-item'));break;
+    case 'eldib-wahl':eldibWahl=+t.getAttribute('data-nr');dossierZeichnen(d);break;
     case 'einsatz-neu':seiteEinsatz();break;
     case 'block-neu':blockDialog(+t.getAttribute('data-tag'),null);break;
     case 'block-aendern':blockDialog(null,t.getAttribute('data-id'));break;

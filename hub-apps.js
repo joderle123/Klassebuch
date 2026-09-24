@@ -108,14 +108,14 @@ window.CDSE_APPS = [
   {
     id: 'eldib',
     name: 'ELDiB-Generator',
-    beschreibung: 'ELDiB-Einschätzung erfassen und daraus PEI, Complément und DS als Word erzeugen — auf Deutsch, Französisch oder Englisch.',
+    beschreibung: 'ELDiB-Einschätzung erfassen, den DS Schritt für Schritt mit Aussagen 1–7 durchklicken und PEI, Complément und DS als fertiges Word-Dokument erzeugen — auf Deutsch, Französisch oder Englisch.',
     symbol: 'ziel',
     farbe: '#1F6B6F',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/eldib-generator.html',
     quelle: { repo: 'Eldib-Pleni-re', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'app/eldib-generator.html',
               zusatz: [{ pfad: 'app/ds-motor.js', datei: 'apps/ds-motor.js' }] },
-    stichworte: 'eldib pei complément complement ds förderplan förderziele bericht word dtorf'
+    stichworte: 'eldib pei complément complement ds diagnostic spécialisé förderplan förderziele bericht word dtorf anamnese'
   },
 
   {
