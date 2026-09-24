@@ -4260,11 +4260,16 @@ window.KB_WEEKLY=(function(){
         add('Screenings',h.date,s.name,'','',h.acute?'akute Krise':(h.risk?'Risiko':''),mu);});});}
     }catch(e){}
     try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){if(!inW(e.date))return;
-      add('Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',
-          (window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status)||'','');});
+      var st=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status)||'';
+      /* Beim Retard gehoeren die Minuten dazu, sonst fehlt in der Sicherung
+         genau die Angabe, wegen der wir sie erfassen. */
+      if(e.status==='verspaetet'&&+e.lateMin>0)st+=' ('+(+e.lateMin)+' min)';
+      add('Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',st,'');});
     }catch(e){}
     try{(window.KB_ANW?KB_ANW.exportNotes():[]).forEach(function(n){if(!inW(n.date))return;
-      add('Klassenbuch-Notizen',n.date,'',n.subject||'',n.byUser||'',n.type||'Notiz',n.text||'');});
+      /* Notizen koennen einem Kind gehoeren - dann gehoert der Name in die Zeile. */
+      add('Klassenbuch-Notizen',n.date,n.studentId?nameOf(students,n.studentId):'ganze Klasse'+(n.level?' '+n.level:''),
+          n.subject||'',n.byUser||'',n.type||'Notiz',n.text||'');});
     }catch(e){}
     rows.sort(function(a,b){
       if(a.datum!==b.datum)return a.datum<b.datum?-1:1;

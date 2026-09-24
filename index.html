@@ -12063,10 +12063,16 @@ window.KB_BUBBLE=(function(){
   function periodEntries(){var p=curPeriod();return state.entries.filter(function(e){return inPeriod(e,p);});}
   function entryHours(e){return e.hours!=null?e.hours:(e.lektionen||0);}
 
+  /* Die offiziellen Zeitraeume kommen aus dem Schulkalender. Frueher wurden
+     sie nur einmal gesetzt - wer die App im Schuljahr 2025/26 eingerichtet
+     hat, hatte die Trimester von 2026/27 nie zur Auswahl. Fehlende werden
+     jetzt nachgetragen, eigene bleiben unberuehrt. */
   function ensurePeriods(){
-    if(state.periods.length)return;
-    state.periods=luPeriods(); // offizielle LU-Daten 2025/26
-    save();
+    var soll=luPeriods(), neu=0;
+    soll.forEach(function(p){
+      if(!state.periods.some(function(x){return x.name===p.name;})){state.periods.push(p);neu++;}
+    });
+    if(neu)save();
   }
 
   var toastTimer;
@@ -12076,7 +12082,23 @@ window.KB_BUBBLE=(function(){
     t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},undoFn?5000:2400);
   }
 
-  function fillPeriods(){var sel=document.getElementById('period-sel');var cur=sel.value;sel.innerHTML='<option value="">Ganzes Schuljahr</option>';state.periods.forEach(function(p){var o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);});if(cur)sel.value=cur;}
+  var PERIOD_KEY='anw_period';
+  function fillPeriods(){
+    var sel=document.getElementById('period-sel');
+    var cur=sel.value;
+    if(!cur){try{cur=localStorage.getItem(PERIOD_KEY)||'';}catch(e){}}
+    /* Ohne Zeitraum werden ALLE Jahre gezaehlt - frueher stand hier
+       "Ganzes Schuljahr", was etwas anderes verspricht als es tut. */
+    sel.innerHTML='<option value="">Alle Zeiträume (seit Beginn)</option>';
+    state.periods.forEach(function(p){var o=document.createElement('option');o.value=p.id;o.textContent=p.name;sel.appendChild(o);});
+    if(cur&&state.periods.some(function(p){return p.id===cur;})){sel.value=cur;return;}
+    // Beim ersten Mal das Trimester vorbelegen, in dem wir heute stehen
+    var t=today();
+    var jetzt=state.periods.filter(function(p){return t>=p.start&&t<=p.end&&/Trimester/.test(p.name);})[0]
+           || state.periods.filter(function(p){return t>=p.start&&t<=p.end;})[0];
+    sel.value=jetzt?jetzt.id:'';
+    try{localStorage.setItem(PERIOD_KEY,sel.value);}catch(e){}
+  }
 
   /* ---- Summary ---- */
   function renderSummary(){
@@ -12634,7 +12656,10 @@ window.KB_BUBBLE=(function(){
   function init(){
     load();if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}ensurePeriods();
 
-    document.getElementById('period-sel').addEventListener('change',function(){renderAll();});
+    document.getElementById('period-sel').addEventListener('change',function(e){
+      try{localStorage.setItem(PERIOD_KEY,e.target.value||'');}catch(x){}
+      renderAll();
+    });
     document.getElementById('btn-students').addEventListener('click',function(){renderStudentMgmt();openModal('modal-students');});
     document.getElementById('btn-add-student').addEventListener('click',function(){renderStudentMgmt();document.getElementById('new-student-level').value=classFilter;openModal('modal-students');document.getElementById('new-student-name').focus();});
     document.getElementById('btn-tt').addEventListener('click',function(){renderTTGrid();openModal('modal-tt');});
@@ -12686,7 +12711,7 @@ window.KB_BUBBLE=(function(){
       if((t=e.target.closest('[data-pick]'))){activeStudentId=t.dataset.pick;rememberStudent(activeStudentId);renderStudents();renderMain();return;}
       if((t=e.target.closest('[data-week]'))){var uu=ui[t.dataset.sid];var act=t.dataset.week;uu.date=act==='today'?today():addDays(uu.date,act==='next'?7:-7);rerenderStudent(t.dataset.sid);return;}
       if((t=e.target.closest('[data-noteact]'))){var s2=state.students.find(function(x){return x.id===t.dataset.sid;});openNoteModal({date:t.dataset.date,blockId:t.dataset.blk||null,subject:t.dataset.subj||null,level:s2?s2.level:(t.dataset.lvl||null),studentId:s2?s2.id:null,mode:t.dataset.noteact});return;}
-      if((t=e.target.closest('[data-noteopen]'))){var n=state.notes.find(function(x){return x.id===t.dataset.noteopen;});if(n)openNoteModal({date:n.date,blockId:n.blockId,subject:n.subject,level:n.level});return;}
+      if((t=e.target.closest('[data-noteopen]'))){var n=state.notes.find(function(x){return x.id===t.dataset.noteopen;});if(n)openNoteModal({date:n.date,blockId:n.blockId,subject:n.subject,level:n.level,studentId:n.studentId||null,mode:n.studentId?'block':'day'});return;}
       if((t=e.target.closest('[data-dayact]'))){if(t.dataset.dayact==='mark')markWholeDay(t.dataset.sid,t.dataset.date);else if(t.dataset.dayact==='clear')clearWholeDay(t.dataset.sid,t.dataset.date);return;}
       if((t=e.target.closest('[data-cweek]'))){
         var cu=ui._klasse||(ui._klasse={date:today()});
@@ -43300,11 +43325,16 @@ window.KB_WEEKLY=(function(){
         add('Screenings',h.date,s.name,'','',h.acute?'akute Krise':(h.risk?'Risiko':''),mu);});});}
     }catch(e){}
     try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){if(!inW(e.date))return;
-      add('Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',
-          (window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status)||'','');});
+      var st=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status)||'';
+      /* Beim Retard gehoeren die Minuten dazu, sonst fehlt in der Sicherung
+         genau die Angabe, wegen der wir sie erfassen. */
+      if(e.status==='verspaetet'&&+e.lateMin>0)st+=' ('+(+e.lateMin)+' min)';
+      add('Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',st,'');});
     }catch(e){}
     try{(window.KB_ANW?KB_ANW.exportNotes():[]).forEach(function(n){if(!inW(n.date))return;
-      add('Klassenbuch-Notizen',n.date,'',n.subject||'',n.byUser||'',n.type||'Notiz',n.text||'');});
+      /* Notizen koennen einem Kind gehoeren - dann gehoert der Name in die Zeile. */
+      add('Klassenbuch-Notizen',n.date,n.studentId?nameOf(students,n.studentId):'ganze Klasse'+(n.level?' '+n.level:''),
+          n.subject||'',n.byUser||'',n.type||'Notiz',n.text||'');});
     }catch(e){}
     rows.sort(function(a,b){
       if(a.datum!==b.datum)return a.datum<b.datum?-1:1;
