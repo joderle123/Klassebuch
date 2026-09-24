@@ -219,6 +219,76 @@ pre.code .s{color:#9FD8B5;}
 .faq summary{cursor:pointer;font-weight:620;font-size:14.5px;color:var(--ink);}
 .faq details p{margin:10px 0 2px;color:var(--muted);}
 
+/* ===== Anmeldung ===== */
+html.tor-offen .hub{visibility:hidden;}
+.gate{position:fixed;inset:0;z-index:100;display:grid;place-items:center;overflow:auto;padding:32px 18px;background:radial-gradient(1100px 560px at 88% -12%,var(--accent-soft),transparent 62%),var(--bg);}
+.gate[hidden]{display:none;}
+.gate.modal{background:rgba(14,22,40,.42);}
+.gate-card{width:min(460px,100%);background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-3);padding:28px 30px 26px;}
+.gate-card.breit{width:min(540px,100%);}
+.gate-brand{display:flex;align-items:center;gap:11px;margin-bottom:24px;}
+.gate-brand .mark{width:34px;height:34px;border-radius:10px;}
+.gate-brand .mark .ic{width:18px;height:18px;}
+.gate-brand b{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);font-size:17px;}
+.gate h2{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);font-size:25px;line-height:1.2;margin:0 0 8px;}
+.gate p.sub{margin:0 0 20px;color:var(--muted);line-height:1.6;}
+.feld{display:flex;flex-direction:column;gap:6px;margin:0 0 14px;}
+.feld label,.feld .label{font-size:13px;font-weight:620;color:var(--ink-2);}
+.feld input[type=password],.feld input:not([type]),.feld input[type=text]{font:inherit;font-size:15px;height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);color:var(--ink);transition:border-color .15s,box-shadow .15s;}
+.feld input:focus{outline:none;border-color:var(--accent);box-shadow:var(--focus);}
+.feld .hilfe{font-size:12.5px;color:var(--muted);line-height:1.45;}
+.meldung{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.5;padding:10px 12px;border-radius:10px;margin:0 0 16px;}
+.meldung.fehler{background:#FCEDEA;color:#7A2A18;border:1px solid #F0C9C0;}
+.meldung.info{background:var(--accent-soft);color:var(--accent-strong);border:1px solid var(--accent-line);}
+.meldung .ic{width:17px;height:17px;margin-top:1px;}
+.gate .btn{height:44px;}
+.gate .btn.voll{width:100%;}
+.gate .btn:disabled{opacity:.55;cursor:not-allowed;}
+.gate-links{display:flex;justify-content:space-between;gap:10px;margin-top:16px;font-size:13.5px;}
+.gate-links button{border:0;background:none;color:var(--accent);font-weight:620;cursor:pointer;padding:4px 0;}
+.gate-links button:hover{color:var(--accent-strong);text-decoration:underline;}
+.konto-liste{display:flex;flex-direction:column;gap:8px;margin:0 0 16px;max-height:340px;overflow:auto;}
+.konto{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer;text-align:left;width:100%;transition:border-color .15s,background .15s;}
+.konto:hover{border-color:var(--accent-line);background:var(--surface-2);}
+.konto-fix{cursor:default;margin-bottom:18px;background:var(--surface-2);}
+.konto-fix:hover{border-color:var(--line);background:var(--surface-2);}
+.ava{flex:0 0 auto;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff;background:var(--tc,var(--accent));letter-spacing:.02em;}
+.konto b{display:block;font-size:14.5px;font-weight:620;}
+.konto small{display:block;font-size:12.5px;color:var(--muted);}
+.konto > .ic{margin-left:auto;color:var(--faint);}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.teams label{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid var(--line-2);border-radius:10px;cursor:pointer;font-size:14px;font-weight:540;color:var(--ink-2);transition:border-color .15s,background .15s;}
+.teams label:hover{border-color:var(--accent-line);}
+.teams input{accent-color:var(--accent);margin:0;}
+.teams label:has(input:checked){border-color:var(--accent);background:var(--accent-soft);color:var(--accent-strong);font-weight:620;}
+.codebox{font-family:ui-monospace,Consolas,monospace;font-size:21px;font-weight:600;letter-spacing:.06em;text-align:center;padding:18px 12px;border:1.5px dashed var(--line-2);border-radius:12px;background:var(--surface-2);margin:0 0 14px;word-break:break-word;}
+.knopfreihe{display:flex;gap:8px;margin:0 0 14px;}
+.knopfreihe .btn{flex:1;}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:4px 0 16px;cursor:pointer;line-height:1.5;}
+.check input{margin-top:3px;accent-color:var(--accent);}
+.laden{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;border-radius:50%;animation:dreh .7s linear infinite;}
+.btn:not(.primary) .laden{border-color:var(--line-2);border-top-color:var(--accent);}
+@keyframes dreh{to{transform:rotate(360deg);}}
+@media (max-width:480px){.teams{grid-template-columns:1fr;}.gate-card{padding:22px 18px;}}
+
+/* ===== Angemeldete Person in der Seitenleiste ===== */
+.me{display:flex;align-items:center;gap:10px;padding:8px;margin:0 0 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);position:relative;}
+.me[hidden]{display:none;}
+.me .ava{width:32px;height:32px;font-size:12.5px;cursor:pointer;}
+.me-t{min-width:0;flex:1;line-height:1.25;}
+.me-t b{display:block;font-size:13.5px;font-weight:620;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.me-t small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.me-btn{width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:none;color:var(--muted);cursor:pointer;}
+.me-btn:hover{background:var(--bg-2);color:var(--ink);}
+/* fixed: sonst schneidet die Seitenleiste (overflow) das Menue im schmalen Modus ab; Lage setzt menuAuf() */
+.menu{position:fixed;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-3);padding:6px;z-index:60;}
+.menu[hidden]{display:none;}
+.menu button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 10px;border:0;background:none;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:540;color:var(--ink-2);text-align:left;}
+.menu button:hover{background:var(--bg);color:var(--ink);}
+.menu .ic{width:16px;height:16px;color:var(--muted);}
+.hub.rail .me{padding:4px;justify-content:center;border-color:transparent;background:none;}
+.hub.rail .me-t,.hub.rail .me-btn{display:none;}
+
 /* ===== Mobil ===== */
 .topbar{display:none;}
 .scrim{display:none;}
@@ -275,7 +345,19 @@ window.addEventListener('error',function(e){
   <symbol id="i-collapse" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/><path d="M20 4v16"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.2"/></symbol>
   <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5 21.5 20h-19z"/><path d="M12 10v4.5M12 17.3v.2"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="4"/><path d="m10.9 12.6 8.6-8.6M16.5 7l2.6 2.6M14 9.5l2 2"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9.5 20.5H6a2 2 0 0 1-2-2v-13a2 2 0 0 1 2-2h3.5"/><path d="m15.5 16.5 4.5-4.5-4.5-4.5"/><path d="M20 12H9"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.2a2 2 0 0 1 2-2h4.1l2.2 2.6h6.7a2 2 0 0 1 2 2v7.9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 5.2a3.5 3.5 0 0 1 0 6.6M18.4 14.6A6.5 6.5 0 0 1 21.5 20"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><path d="M12 5.5v.01M12 12v.01M12 18.5v.01" stroke-width="3"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5v-3a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/></symbol>
+  <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 8.5v-5h10v5"/><rect x="3.5" y="8.5" width="17" height="8.5" rx="2"/><path d="M7 14h10v6.5H7z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
 </svg>
+
+<!-- Anmeldung: liegt ueber dem Hub, bis man angemeldet ist -->
+<section class="gate" id="gate" aria-label="Anmeldung"><div class="gate-card" id="gate-card"><p class="sub" style="margin:0">Einen Moment …</p></div></section>
 
 <div class="hub" id="hub">
 
@@ -292,6 +374,7 @@ window.addEventListener('error',function(e){
     </a>
     <nav class="nav" id="nav"></nav>
     <div class="side-bottom">
+      <div class="me" id="me" hidden></div>
       <a class="lnk add" href="#/hinzufuegen" data-route="guide" title="App hinzufügen">
         <span class="lic"><svg class="ic"><use href="#i-plus"/></svg></span>
         <span class="lnk-t">App hinzufügen</span>
@@ -299,7 +382,7 @@ window.addEventListener('error',function(e){
       <button class="collapse" id="collapse" type="button" aria-label="Menü einklappen">
         <svg class="ic"><use href="#i-collapse"/></svg><span class="collapse-t" id="collapse-t">Einklappen</span>
       </button>
-      <div class="foot"><svg class="ic"><use href="#i-lock"/></svg><span>Alle Daten bleiben lokal auf diesem Gerät. Kein Server, keine Cloud.</span></div>
+      <div class="foot"><svg class="ic"><use href="#i-lock"/></svg><span id="foot-t">Konten liegen verschlüsselt im Hub-Ordner. App-Daten bleiben auf diesem Gerät. Keine Cloud.</span></div>
     </div>
   </aside>
 
@@ -416,12 +499,21 @@ window.addEventListener('error',function(e){
             <tr><td><code>link</code></td><td>Statt <code>datei</code>: Adresse einer Webseite.</td><td><code>'https://…'</code></td></tr>
             <tr><td><code>dateizugriff</code></td><td>Optional. <code>true</code>, wenn die App Dateien oder Ordner auswählt (Team-Datei auf O:\, Sicherungen). Sie öffnet dann in einem eigenen Tab.</td><td><code>true</code></td></tr>
             <tr><td><code>quelle</code></td><td>Optional. Woher die neueste Version kommt: Repository, Branch und Pfad. Damit hält <code>update-apps.cjs</code> die App aktuell.</td><td><code>{ repo: 'ISA-APP', … }</code></td></tr>
+            <tr><td><code>teams</code></td><td>Optional. Welche Teams die App sehen. Fehlt das Feld, sehen sie alle Teams.</td><td><code>['diagnostique']</code></td></tr>
             <tr><td><code>hinweis</code></td><td>Optional. Kurzer Hinweis auf der Karte.</td><td><code>'Wird noch gebaut'</code></td></tr>
             <tr><td><code>stichworte</code></td><td>Optional. Weitere Suchbegriffe für das Suchfeld.</td><td><code>'sdq conners'</code></td></tr>
           </tbody>
         </table>
         </div>
         <p>Eine App ohne <code>datei</code> und ohne <code>link</code> erscheint als <b>geplant</b> — praktisch, um schon einen Platz zu reservieren.</p>
+
+        <h2 id="konten">Konten &amp; Teams</h2>
+        <p>Jede Person erstellt beim ersten Mal ein eigenes Konto mit Name, Team und Passwort. Danach reicht das Passwort. Das Konto liegt als Datei im Hub-Ordner, im Unterordner <code>konten/</code>. Das Passwort selbst wird nirgends gespeichert — nur ein damit verschlüsselter Schlüssel.</p>
+        <p>Das Team bestimmt, welche Apps man sieht:</p>
+        <div class="table-wrap" id="guide-teams"></div>
+        <p>Welche Teams eine App sehen, steht in <code>hub-apps.js</code> im Feld <code>teams</code>. Ein neues Team trägst du dort oben bei <code>CDSE_TEAMS</code> ein. Das eigene Team ändert man im Hub unten links über das Menü <b>⋮</b> → <b>Team ändern</b>.</p>
+        <div class="callout"><svg class="ic"><use href="#i-warn"/></svg><div><b>Ehrlich gesagt:</b> Die Team-Wahl steuert, was man im Hub <i>sieht</i>. Eine echte Sperre ist das nicht — wer den Dateipfad kennt, kann eine App auch direkt öffnen. Soll das Screening wirklich nur für das Diagnostique-Team zugänglich sein, setzt die IT die Ordnerrechte: Nur diese Gruppe darf <code>apps/screening.html</code> lesen.</div></div>
+        <div class="callout info"><svg class="ic"><use href="#i-key"/></svg><div><b>Passwort vergessen?</b> Beim Erstellen bekommt jede Person einen <b>Wiederherstellungs-Code</b>. Nur damit lässt sich ein neues Passwort setzen. Ohne Code kann niemand helfen — auch die IT nicht. Genau das schützt die Daten.</div></div>
 
         <h2 id="probleme">Wenn etwas nicht klappt</h2>
         <div class="faq">
@@ -431,6 +523,9 @@ window.addEventListener('error',function(e){
           <details><summary>Sind meine Daten im Hub andere als sonst?</summary><p>Nein. Getestet: Eine App sieht im Hub genau dieselben Daten wie direkt geöffnet — solange du im selben Browser auf demselben Gerät arbeitest. Die Daten liegen im Browser, nicht in der Datei.</p></details>
           <details><summary>Warum öffnen Klassenbuch und Toolbox in einem eigenen Tab?</summary><p>Beide arbeiten mit Dateien und Ordnern: das Klassenbuch mit der Team-Datei und den Sicherungen auf O:\, die Toolbox mit der Team-Ablage. Edge erlaubt diese Auswahl bei lokalen Dateien nur in einem eigenen Tab, nicht in einer eingebetteten Seite. Deshalb öffnet der Hub solche Apps in ihrem eigenen Tab. Ist der Tab schon offen, holt der Hub ihn nur nach vorne — ohne Neuladen.</p></details>
           <details><summary>Wie kommt die neueste Version einer App in den Hub?</summary><p>Jede App hat in <code>hub-apps.js</code> eine <code>quelle</code>. Das Skript <code>update-apps.cjs</code> holt von dort die neueste Fassung und aktualisiert den „Stand" auf der Karte. Liegt irgendwo eine noch neuere Fassung derselben App, meldet es das, statt sie ungeprüft zu übernehmen. Am einfachsten bittest du Claude: „Aktualisiere die Apps im Hub."</p></details>
+          <details><summary>Der Hub fragt nach dem Hub-Ordner</summary><p>Beim ersten Mal wählst du den Ordner, in dem <code>hub.html</code> liegt (z. B. <code>O:\CDSE-Hub</code>). Danach fragt Edge meist nur noch einmal pro Sitzung: <b>Zugriff erlauben</b>. Ohne diesen Zugriff kann der Hub die Konten nicht lesen.</p></details>
+          <details><summary>Der Hub ist gesperrt</summary><p>Nach 60 Minuten ohne Aktivität sperrt sich der Hub; dein Passwort entsperrt ihn wieder. Die Zeit steht in <code>hub-apps.js</code> bei <code>sperreNachMinuten</code>. Gehst du vom Platz weg: <b>Windows-Taste + L</b> sperrt den ganzen PC.</p></details>
+          <details><summary>Ein Konto löschen</summary><p>Im Ordner <code>konten/</code> liegt pro Person eine Datei, z. B. <code>anna-muster-k3f.json</code>. Wer diese Datei löscht, löscht das Konto.</p></details>
           <details><summary>Eine Webseite lässt sich nicht einbetten</summary><p>Viele Webseiten verbieten das. Trag sie mit <code>link</code> statt <code>datei</code> ein — dann öffnet sie sich in einem neuen Tab.</p></details>
         </div>
 
@@ -438,9 +533,11 @@ window.addEventListener('error',function(e){
 <pre class="code"><span class="c">Ein eigener Ordner, z. B. O:\CDSE-Hub\</span>
 
   hub.html              <span class="c">← diese Seite: öffnen und als Favorit speichern</span>
-  hub-apps.js           <span class="c">← das App-Verzeichnis</span>
+  hub-apps.js           <span class="c">← das App-Verzeichnis (mit den Teams)</span>
+  konten/               <span class="c">← ein verschlüsseltes Konto pro Person (legt der Hub selbst an)</span>
   apps/
     klassenbuch.html
+    journal.html
     screening.html
     eldib-generator.html
     toolbox.html
@@ -450,6 +547,421 @@ window.addEventListener('error',function(e){
 
   </main>
 </div>
+
+<script>
+/* =====================================================================
+   CDSE Hub — Konten & Anmeldung
+   ---------------------------------------------------------------------
+   Konten liegen als Dateien im Hub-Ordner auf dem Server (Unterordner
+   konten/). Das Passwort schützt einen zufälligen Datenschlüssel:
+   AES-GCM 256, Schlüsselableitung PBKDF2-SHA256 mit 600 000 Durchläufen
+   und zufälligem Salz (Empfehlung OWASP 2023). Ein zweiter "Umschlag"
+   mit dem Wiederherstellungs-Code erlaubt ein neues Passwort, ohne dass
+   irgendjemand sonst den Schlüssel kennt. Klartext im Konto: nur Name,
+   Team und Zeitstempel - für die Auswahl "Wer bist du?".
+   Ehrliche Grenze: Ohne Anmeldeserver ist die Team-Zuordnung eine
+   Anzeige-Regel, keine Sperre. Echte Sperren setzt die IT über die
+   Ordnerrechte auf dem Server.
+   ===================================================================== */
+window.CDSE_KONTO=(function(){
+'use strict';
+var ITER=600000, SITZUNG='cdse_hub_sitzung', ZULETZT='cdse_hub_zuletzt', IDB_NAME='cdse-hub', IDB_STORE='kv', ORDNER_KEY='hub-ordner';
+var S=window.CDSE_HUB||{};
+var SPERRE_MS=(S.sperreNachMinuten>0?S.sperreNachMinuten:60)*60000;
+var TEAMS=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id&&t.name;});
+var ordner=null, konten=[], sitzung=null, cb={}, fehlversuche={}, letzteAktivitaet=Date.now(), gesperrt=false;
+var $=function(id){return document.getElementById(id);};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function ic(n){return '<svg class="ic" aria-hidden="true"><use href="#i-'+n+'"/></svg>';}
+function team(id){for(var i=0;i<TEAMS.length;i++){if(TEAMS[i].id===id){return TEAMS[i];}}return {id:id,name:id||'—',farbe:'#586277'};}
+function initialen(n){var p=String(n||'').trim().split(/\s+/).filter(Boolean);if(!p.length){return '?';}return (p[0].charAt(0)+(p.length>1?p[p.length-1].charAt(0):'')).toUpperCase();}
+function ava(k){return '<span class="ava" style="--tc:'+esc(team(k.team).farbe)+'">'+esc(initialen(k.name))+'</span>';}
+
+/* ---------- Kleiner Speicher im Browser: nur der Ordner-Zugang ---------- */
+function idb(){return new Promise(function(res,rej){var r=indexedDB.open(IDB_NAME,1);r.onupgradeneeded=function(){r.result.createObjectStore(IDB_STORE);};r.onsuccess=function(){res(r.result);};r.onerror=function(){rej(r.error);};});}
+function idbGet(k){return idb().then(function(db){return new Promise(function(res){var q=db.transaction(IDB_STORE,'readonly').objectStore(IDB_STORE).get(k);q.onsuccess=function(){res(q.result);};q.onerror=function(){res(undefined);};});}).catch(function(){return undefined;});}
+function idbSet(k,v){return idb().then(function(db){return new Promise(function(res,rej){var tx=db.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(v,k);tx.oncomplete=function(){res();};tx.onerror=function(){rej(tx.error);};});});}
+
+/* ---------- Verschlüsselung (Web Crypto, im Browser eingebaut) ---------- */
+var te=new TextEncoder(), td=new TextDecoder();
+function b64(buf){var b=new Uint8Array(buf),s='';for(var i=0;i<b.length;i++){s+=String.fromCharCode(b[i]);}return btoa(s);}
+function unb64(s){var t=atob(s),b=new Uint8Array(t.length);for(var i=0;i<t.length;i++){b[i]=t.charCodeAt(i);}return b;}
+function rnd(n){var b=new Uint8Array(n);crypto.getRandomValues(b);return b;}
+function ableiten(geheim,salz,iter){
+  return crypto.subtle.importKey('raw',te.encode(geheim),'PBKDF2',false,['deriveKey']).then(function(basis){
+    return crypto.subtle.deriveKey({name:'PBKDF2',hash:'SHA-256',salt:salz,iterations:iter},basis,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+  });
+}
+function versiegeln(schl,bytes){var iv=rnd(12);return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},schl,bytes).then(function(ct){return {iv:b64(iv),ct:b64(ct)};});}
+function oeffnen(schl,box){return crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},schl,unb64(box.ct));}
+function datenschluessel(roh){return crypto.subtle.importKey('raw',roh,'AES-GCM',false,['encrypt','decrypt']);}
+/* Code-Alphabet ohne I, L, O, U - nichts zum Verwechseln. 256 ist durch 32
+   teilbar, deshalb ist "Byte & 31" gleichverteilt. 20 Zeichen = 100 Bit. */
+var ALPHA='0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+function neuerCode(){var b=rnd(20),s='';for(var i=0;i<20;i++){s+=ALPHA.charAt(b[i]&31);if(i%4===3&&i<19){s+='-';}}return s;}
+function codeNorm(s){return String(s||'').toUpperCase().replace(/O/g,'0').replace(/[IL]/g,'1').replace(/U/g,'V').replace(/[^0-9A-Z]/g,'');}
+function umschlag(geheim,roh){
+  var salz=rnd(16);
+  return ableiten(geheim,salz,ITER).then(function(k){return versiegeln(k,roh);}).then(function(b){return {kdf:'PBKDF2-SHA256',iter:ITER,salz:b64(salz),iv:b.iv,ct:b.ct};});
+}
+function aufmachen(u,geheim){
+  return ableiten(geheim,unb64(u.salz),u.iter||ITER).then(function(k){return oeffnen(k,u);})
+    .then(function(roh){return new Uint8Array(roh);},function(){var e=new Error('falsch');e.falsch=true;throw e;});
+}
+
+/* ---------- Der gemeinsame Ordner auf dem Server ---------- */
+function testOrdner(){return typeof window.__CDSE_TEST_ORDNER==='function';}
+function kryptoDa(){return !!(window.isSecureContext&&window.crypto&&crypto.subtle);}
+function unterstuetzt(){return kryptoDa()&&(testOrdner()||!!window.showDirectoryPicker);}
+function istHubOrdner(h){if(testOrdner()){return Promise.resolve(true);}return h.getFileHandle('hub.html').then(function(){return true;},function(){return false;});}
+function recht(h,fragen){
+  if(!h||!h.queryPermission){return Promise.resolve('granted');}
+  var o={mode:'readwrite'};
+  return h.queryPermission(o).then(function(p){return (p==='granted'||!fragen)?p:h.requestPermission(o);});
+}
+function ordnerWaehlen(){
+  var p=testOrdner()?window.__CDSE_TEST_ORDNER():window.showDirectoryPicker({id:'cdse-hub',mode:'readwrite'});
+  return p.then(function(h){return istHubOrdner(h).then(function(ok){
+    if(!ok){var e=new Error('falscher Ordner');e.falscherOrdner=true;throw e;}
+    ordner=h;return idbSet(ORDNER_KEY,h).catch(function(){}).then(function(){return h;});
+  });});
+}
+/* Zugang sicherstellen - bei Bedarf nachfragen (nur innerhalb eines Klicks möglich) */
+function ordnerBereit(){
+  var p=ordner?Promise.resolve(ordner):idbGet(ORDNER_KEY);
+  return p.then(function(h){
+    if(h){ordner=h;return recht(h,true).then(function(r){if(r!=='granted'){throw new Error('kein Zugriff');}return h;});}
+    return ordnerWaehlen();
+  }).then(function(){return konten.length?konten:ladeKonten();});
+}
+function kontenOrdner(){return ordner.getDirectoryHandle('konten',{create:true});}
+function ladeKonten(){
+  return kontenOrdner().then(function(dir){
+    var liste=[], it=dir.values();
+    function weiter(){return it.next().then(function(r){
+      if(r.done){return liste;}
+      var h=r.value;
+      if(h.kind!=='file'||!/\.json$/i.test(h.name)){return weiter();}
+      return h.getFile().then(function(f){return f.text();}).then(function(t){
+        try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
+      },function(){}).then(weiter);
+    });}
+    return weiter();
+  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return l;});
+}
+function schreibeKonto(k){
+  return kontenOrdner().then(function(dir){return dir.getFileHandle(k.id+'.json',{create:true});})
+    .then(function(fh){return fh.createWritable();})
+    .then(function(w){return w.write(JSON.stringify(k,null,1)).then(function(){return w.close();});});
+}
+function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){return konten[i];}}return null;}
+
+/* ---------- Konten ---------- */
+function slug(n){return String(n).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'konto';}
+function kontoErstellen(name,teamId,pw){
+  var roh=rnd(32), code=neuerCode(), id;
+  do{id=slug(name)+'-'+Array.prototype.map.call(rnd(3),function(x){return ALPHA.charAt(x&31).toLowerCase();}).join('');}while(kontoVon(id));
+  return Promise.all([umschlag(pw,roh),umschlag(codeNorm(code),roh),datenschluessel(roh)]).then(function(r){
+    return versiegeln(r[2],te.encode(JSON.stringify({name:name,team:teamId}))).then(function(profil){
+      var jetzt=new Date().toISOString();
+      var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,erstellt:jetzt,geaendert:jetzt,
+             schluessel:{passwort:r[0],code:r[1]},profil:profil};
+      return schreibeKonto(k).then(function(){konten.push(k);roh.fill(0);return {konto:k,code:code,dek:r[2]};});
+    });
+  });
+}
+function anmeldenMit(k,geheim,art){
+  return aufmachen(k.schluessel[art],art==='code'?codeNorm(geheim):geheim).then(function(roh){
+    return datenschluessel(roh).then(function(dek){
+      return oeffnen(dek,k.profil).then(function(p){
+        var prof=JSON.parse(td.decode(p));
+        return {id:k.id,name:prof.name||k.name,team:prof.team||k.team,dek:dek,roh:roh};
+      });
+    });
+  });
+}
+function passwortSetzen(k,roh,pw){
+  return umschlag(pw,roh).then(function(u){k.schluessel.passwort=u;k.geaendert=new Date().toISOString();return schreibeKonto(k);});
+}
+function teamSetzen(k,dek,teamId){
+  return versiegeln(dek,te.encode(JSON.stringify({name:k.name,team:teamId}))).then(function(profil){
+    k.team=teamId;k.profil=profil;k.geaendert=new Date().toISOString();return schreibeKonto(k);
+  });
+}
+function pwProblem(pw,name){
+  if(pw.length<10){return 'Das Passwort braucht mindestens 10 Zeichen.';}
+  if(name&&pw.toLowerCase().indexOf(String(name).toLowerCase().split(/\s+/)[0])>=0){return 'Das Passwort darf deinen Namen nicht enthalten.';}
+  if(/^(.)\1+$/.test(pw)){return 'Bitte kein Passwort aus lauter gleichen Zeichen.';}
+  return '';
+}
+/* Nach 5 falschen Versuchen 30 Sekunden Pause - bremst Raten am Bildschirm */
+function gebremst(id){var f=fehlversuche[id];return (f&&f.bis>Date.now())?Math.ceil((f.bis-Date.now())/1000):0;}
+function fehlversuch(id){var f=fehlversuche[id]||(fehlversuche[id]={n:0,bis:0});f.n++;if(f.n>=5){f.n=0;f.bis=Date.now()+30000;}}
+
+/* ---------- Sitzung ---------- */
+function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,bis:Date.now()+SPERRE_MS}));}catch(e){}}
+function sitzungLesen(){try{var s=JSON.parse(sessionStorage.getItem(SITZUNG)||'null');return (s&&s.id&&s.bis>Date.now())?s:null;}catch(e){return null;}}
+function sitzungLoeschen(){try{sessionStorage.removeItem(SITZUNG);}catch(e){}}
+function oeffentlich(s){var t=team(s.team);return {id:s.id,name:s.name,team:s.team,teamName:t.name,teamFarbe:t.farbe};}
+function angemeldet(s){
+  sitzung={id:s.id,name:s.name,team:s.team};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
+  try{localStorage.setItem(ZULETZT,s.id);}catch(e){}
+  if(s.roh&&s.roh.fill){s.roh.fill(0);}
+  tor(false);
+  if(cb.bereit){cb.bereit(oeffentlich(sitzung));}
+}
+function abmelden(){
+  sitzung=null;gesperrt=false;sitzungLoeschen();
+  if(cb.abgemeldet){cb.abgemeldet();}
+  if(konten.length){zeigeKonten();}else{zeigeVerbinden(null,!!ordner);}
+}
+
+/* ---------- Sperre nach Inaktivität ---------- */
+function aktiv(){letzteAktivitaet=Date.now();if(sitzung&&!gesperrt){sitzungMerken(sitzung);}}
+['pointerdown','keydown','wheel','touchstart'].forEach(function(t){document.addEventListener(t,aktiv,{passive:true,capture:true});});
+window.addEventListener('storage',aktiv);   /* eine App in einem anderen Tab speichert: es wird gearbeitet */
+setInterval(function(){
+  if(!sitzung||gesperrt){return;}
+  if(document.hasFocus()&&document.activeElement&&document.activeElement.tagName==='IFRAME'){aktiv();return;}
+  if(Date.now()-letzteAktivitaet>SPERRE_MS){sperren();}
+},15000);
+function sperren(){
+  gesperrt=true;sitzungLoeschen();
+  var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
+  zeigeAnmelden(k,'Nach '+Math.round(SPERRE_MS/60000)+' Minuten ohne Aktivität gesperrt. Bitte gib dein Passwort ein.');
+}
+
+/* ---------- Oberfläche ---------- */
+function tor(an,modal){var g=$('gate'),h=$('hub');g.hidden=!an;g.classList.toggle('modal',!!(an&&modal));document.documentElement.classList.toggle('tor-offen',!!(an&&!modal));if(h){h.inert=!!an;}}
+function karte(html,breit){
+  var c=$('gate-card');c.className='gate-card'+(breit?' breit':'');
+  c.innerHTML='<div class="gate-brand"><span class="mark">'+ic('hub')+'</span><b>'+esc(S.titel||'CDSE Hub')+'</b></div>'+html;
+  var f=c.querySelector('[autofocus]');if(f){setTimeout(function(){f.focus();},40);}
+}
+function meldung(text,art){return '<div class="meldung '+(art||'fehler')+'" role="'+(art==='info'?'status':'alert')+'">'+ic(art==='info'?'info':'warn')+'<div>'+text+'</div></div>';}
+function beschaeftigt(btn,an,text){if(!btn){return;}btn.disabled=an;if(an){btn.setAttribute('data-t',btn.innerHTML);btn.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(text||'Einen Moment …');}else if(btn.getAttribute('data-t')){btn.innerHTML=btn.getAttribute('data-t');}}
+function kontoKopf(k){return '<div class="konto konto-fix">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+'</small></span></div>';}
+function teamWahl(aktiv){return '<div class="teams" role="radiogroup" aria-label="Team">'+TEAMS.map(function(t){return '<label><input type="radio" name="g-team" value="'+esc(t.id)+'"'+(aktiv===t.id?' checked':'')+'>'+esc(t.name)+'</label>';}).join('')+'</div>';}
+function gewaehltesTeam(){var r=document.querySelector('input[name="g-team"]:checked');return r?r.value:'';}
+function pfadHinweis(){try{var p=decodeURIComponent(location.pathname).replace(/^\/([A-Za-z]:)/,'$1').replace(/\//g,'\\');return p.replace(/\\[^\\]*$/,'');}catch(e){return '';}}
+function formular(id,fn){var f=$(id);if(f){f.onsubmit=function(e){e.preventDefault();fn(f);};}}
+
+function zeigeVerbinden(fehler,wiederkehr){
+  tor(true);
+  if(!window.isSecureContext){karte('<h2>Bitte direkt vom Laufwerk öffnen</h2><p class="sub">Über diese Adresse erlaubt der Browser keine Verschlüsselung. Öffne den Hub per Doppelklick auf <b>hub.html</b> im Hub-Ordner (z. B. O:\\CDSE-Hub).</p>');return;}
+  if(!unterstuetzt()){karte('<h2>Bitte Microsoft Edge verwenden</h2><p class="sub">Dieser Browser kann nicht auf den gemeinsamen Ordner zugreifen. Öffne den Hub in <b>Microsoft Edge</b> oder Google Chrome.</p>');return;}
+  var pfad=pfadHinweis();
+  karte((wiederkehr
+    ?'<h2>Willkommen zurück</h2><p class="sub">Edge fragt einmal pro Sitzung, ob der Hub auf den gemeinsamen Ordner zugreifen darf.</p>'
+    :'<h2>Mit dem Hub-Ordner verbinden</h2><p class="sub">Konten und Daten liegen im gemeinsamen Ordner auf dem Server. Wähle beim ersten Mal den Ordner, in dem diese Seite liegt'+(pfad?':<br><b>'+esc(pfad)+'</b>':'.')+'</p>')+
+    (fehler?meldung(fehler):'')+
+    '<button class="btn primary voll" id="g-ordner" type="button">'+ic('folder')+(wiederkehr?'Zugriff erlauben':'Ordner auswählen')+'</button>');
+  $('g-ordner').onclick=function(){
+    var b=this;beschaeftigt(b,true,'Verbinde …');
+    var p=(wiederkehr&&ordner)?recht(ordner,true).then(function(r){if(r!=='granted'){throw new Error('abgelehnt');}return ordner;}):ordnerWaehlen();
+    p.then(function(){return ladeKonten();}).then(function(){zeigeStart();}).catch(function(e){
+      beschaeftigt(b,false);
+      if(e&&e.name==='AbortError'){return;}
+      zeigeVerbinden(e&&e.falscherOrdner?'In diesem Ordner liegt keine <b>hub.html</b>. Bitte den Ordner wählen, in dem der Hub liegt.':'Der Zugriff wurde nicht erlaubt. Ohne Zugriff kann der Hub keine Konten lesen.',!!(wiederkehr&&!(e&&e.falscherOrdner)));
+    });
+  };
+}
+
+function zeigeKonten(){
+  tor(true);
+  if(!konten.length){zeigeErstellen(true);return;}
+  var viele=konten.length>8;
+  karte('<h2>Wer bist du?</h2><p class="sub">Wähle dein Konto.</p>'+
+    (viele?'<div class="feld"><input id="g-suche" type="search" placeholder="Name suchen …" aria-label="Konto suchen" autocomplete="off" autofocus></div>':'')+
+    '<div class="konto-liste" id="g-liste">'+
+    konten.map(function(k){return '<button class="konto" type="button" data-id="'+esc(k.id)+'">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+'</small></span>'+ic('right')+'</button>';}).join('')+
+    '</div><p class="sub" id="g-leer" hidden>Kein Konto mit diesem Namen.</p><button class="btn voll" id="g-neu" type="button">'+ic('plus')+'Neues Konto erstellen</button>');
+  if(viele){$('g-suche').oninput=function(){
+    var q=this.value.trim().toLowerCase(), n=0;
+    Array.prototype.forEach.call(document.querySelectorAll('#g-liste .konto'),function(el){var an=!q||el.textContent.toLowerCase().indexOf(q)>=0;el.hidden=!an;if(an){n++;}});
+    $('g-leer').hidden=n>0;
+  };}
+  Array.prototype.forEach.call(document.querySelectorAll('#gate .konto[data-id]'),function(el){el.onclick=function(){zeigeAnmelden(kontoVon(el.getAttribute('data-id')));};});
+  $('g-neu').onclick=function(){zeigeErstellen(false);};
+}
+
+function zeigeStart(){
+  var z=null;try{z=localStorage.getItem(ZULETZT);}catch(e){}
+  var k=z&&kontoVon(z);
+  if(k){zeigeAnmelden(k);}else{zeigeKonten();}
+}
+
+function zeigeAnmelden(k,hinweis,fehler){
+  tor(true);
+  karte(kontoKopf(k)+(hinweis?meldung(hinweis,'info'):'')+(fehler?meldung(fehler):'')+
+    '<form id="g-form" novalidate><div class="feld"><label for="g-pw">Passwort</label><input id="g-pw" type="password" autocomplete="off" autofocus></div>'+
+    '<button class="btn primary voll" id="g-los" type="submit">Anmelden</button></form>'+
+    '<div class="gate-links">'+(gesperrt?'<button type="button" id="g-ab">Abmelden</button>':'<button type="button" id="g-zurueck">← Anderes Konto</button>')+'<button type="button" id="g-vergessen">Passwort vergessen?</button></div>');
+  formular('g-form',function(){
+    var pw=$('g-pw').value, b=$('g-los'), warten=gebremst(k.id);
+    if(warten){zeigeAnmelden(k,hinweis,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
+    if(!pw){zeigeAnmelden(k,hinweis,'Bitte gib dein Passwort ein.');return;}
+    beschaeftigt(b,true,'Prüfe …');
+    ordnerBereit().then(function(){var echt=kontoVon(k.id);if(!echt){throw new Error('Konto nicht gefunden');}k=echt;return anmeldenMit(k,pw,'passwort');})
+      .then(angemeldet)
+      .catch(function(e){
+        if(e&&e.falsch){fehlversuch(k.id);zeigeAnmelden(k,hinweis,'Das Passwort stimmt nicht.');return;}
+        zeigeAnmelden(k,hinweis,'Anmelden ging nicht: '+esc((e&&e.message)||e)+'. Ist der Server erreichbar?');
+      });
+  });
+  if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
+  if($('g-ab')){$('g-ab').onclick=abmelden;}
+  $('g-vergessen').onclick=function(){zeigeVergessen(k);};
+}
+
+function zeigeErstellen(erstes,fehler,werte){
+  werte=werte||{};tor(true);
+  karte('<h2>'+(erstes?'Das erste Konto anlegen':'Neues Konto erstellen')+'</h2>'+
+    '<p class="sub">Das Konto wird einmal erstellt. Dein Passwort verschlüsselt deine Daten — niemand sonst kann sie lesen.</p>'+
+    (fehler?meldung(fehler):'')+
+    '<form id="g-form" novalidate>'+
+    '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus></div>'+
+    (TEAMS.length?'<div class="feld"><span class="label">In welchem Team arbeitest du?</span>'+teamWahl(werte.team)+'</div>':'')+
+    '<div class="feld"><label for="g-pw1">Passwort</label><input id="g-pw1" type="password" autocomplete="off" aria-describedby="g-pw-hilfe"><span class="hilfe" id="g-pw-hilfe">Mindestens 10 Zeichen. Ein kurzer Satz ist leicht zu merken und sicher.</span></div>'+
+    '<div class="feld"><label for="g-pw2">Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
+    '<button class="btn primary voll" type="submit" id="g-los">Konto erstellen</button></form>'+
+    (konten.length?'<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>':''),true);
+  formular('g-form',function(){
+    var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value, w={name:name,team:t};
+    if(name.length<3){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',w);return;}
+    if(konten.some(function(k){return k.name.toLowerCase()===name.toLowerCase();})){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
+    if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',w);return;}
+    var pr=pwProblem(pw1,name);if(pr){zeigeErstellen(erstes,pr,w);return;}
+    if(pw1!==pw2){zeigeErstellen(erstes,'Die beiden Passwörter sind nicht gleich.',w);return;}
+    beschaeftigt($('g-los'),true,'Konto wird verschlüsselt …');
+    ordnerBereit().then(function(){return kontoErstellen(name,t,pw1);}).then(zeigeCode).catch(function(e){
+      zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+esc((e&&e.message)||e)+'. Ist der Server erreichbar?',w);
+    });
+  });
+  if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
+}
+
+function druckeCode(k,code){
+  var w=window.open('','_blank','width=640,height=760');if(!w){return;}
+  w.document.write('<!doctype html><meta charset="utf-8"><title>Wiederherstellungs-Code</title><body style="font-family:Segoe UI,Arial,sans-serif;padding:40px;color:#0E1628">'+
+    '<h1 style="font-size:22px;margin:0 0 6px">CDSE Hub — Wiederherstellungs-Code</h1>'+
+    '<p style="margin:0 0 24px;color:#586277">'+esc(k.name)+' · '+esc(team(k.team).name)+' · erstellt am '+esc(new Date().toLocaleDateString('de-DE'))+'</p>'+
+    '<div style="font:600 26px/1.4 Consolas,monospace;letter-spacing:.06em;border:2px dashed #CFD6E0;border-radius:12px;padding:22px;text-align:center">'+esc(code)+'</div>'+
+    '<p style="margin:24px 0 0;line-height:1.6">Mit diesem Code setzt du ein neues Passwort, falls du deines vergisst. Er ist der <b>einzige</b> Weg zurück zu deinen Daten.<br>Bewahre ihn sicher auf — nicht am Bildschirm, nicht im selben Ordner wie deine Daten.</p></body>');
+  w.document.close();w.focus();try{w.print();}catch(e){}
+}
+function zeigeCode(res){
+  var k=res.konto;
+  karte('<h2>Dein Wiederherstellungs-Code</h2>'+
+    '<p class="sub">Falls du dein Passwort vergisst, ist dieser Code der <b>einzige</b> Weg zurück zu deinen Daten. Drucke ihn aus oder schreib ihn ab und bewahre ihn sicher auf.</p>'+
+    '<div class="codebox" id="g-code">'+esc(res.code)+'</div>'+
+    '<div class="knopfreihe"><button class="btn" type="button" id="g-kopie">'+ic('copy')+'Kopieren</button><button class="btn" type="button" id="g-druck">'+ic('print')+'Drucken</button></div>'+
+    '<label class="check"><input type="checkbox" id="g-ok"> Ich habe den Code sicher aufbewahrt.</label>'+
+    '<button class="btn primary voll" type="button" id="g-weiter" disabled>Weiter zum Hub</button>',true);
+  $('g-kopie').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(res.code):Promise.reject()).then(function(){b.innerHTML=ic('check')+'Kopiert';},function(){b.innerHTML='Bitte abschreiben';});};
+  $('g-druck').onclick=function(){druckeCode(k,res.code);};
+  $('g-ok').onchange=function(){$('g-weiter').disabled=!this.checked;};
+  $('g-weiter').onclick=function(){angemeldet({id:k.id,name:k.name,team:k.team,dek:res.dek});};
+}
+
+function zeigeVergessen(k,fehler){
+  tor(true);
+  karte(kontoKopf(k)+'<h2>Neues Passwort setzen</h2><p class="sub">Gib deinen Wiederherstellungs-Code ein. Groß-/Kleinschreibung und Bindestriche sind egal.</p>'+
+    (fehler?meldung(fehler):'')+
+    '<form id="g-form" novalidate>'+
+    '<div class="feld"><label for="g-code-in">Wiederherstellungs-Code</label><input id="g-code-in" autocomplete="off" spellcheck="false" autofocus placeholder="XXXX-XXXX-XXXX-XXXX-XXXX"></div>'+
+    '<div class="feld"><label for="g-pw1">Neues Passwort</label><input id="g-pw1" type="password" autocomplete="off"><span class="hilfe">Mindestens 10 Zeichen.</span></div>'+
+    '<div class="feld"><label for="g-pw2">Neues Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
+    '<button class="btn primary voll" type="submit" id="g-los">Passwort setzen und anmelden</button></form>'+
+    '<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>');
+  formular('g-form',function(){
+    var code=$('g-code-in').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, warten=gebremst(k.id);
+    if(warten){zeigeVergessen(k,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
+    if(codeNorm(code).length!==20){zeigeVergessen(k,'Der Code hat 20 Zeichen (ohne Bindestriche).');return;}
+    var pr=pwProblem(pw1,k.name);if(pr){zeigeVergessen(k,pr);return;}
+    if(pw1!==pw2){zeigeVergessen(k,'Die beiden Passwörter sind nicht gleich.');return;}
+    beschaeftigt($('g-los'),true,'Prüfe den Code …');
+    ordnerBereit().then(function(){k=kontoVon(k.id)||k;return anmeldenMit(k,code,'code');}).then(function(s){
+      return passwortSetzen(k,s.roh,pw1).then(function(){return s;});
+    }).then(angemeldet).catch(function(e){
+      if(e&&e.falsch){fehlversuch(k.id);zeigeVergessen(k,'Dieser Code passt nicht zu diesem Konto.');return;}
+      zeigeVergessen(k,'Das ging nicht: '+esc((e&&e.message)||e)+'.');
+    });
+  });
+  $('g-zurueck').onclick=function(){zeigeAnmelden(k);};
+}
+
+/* ---------- Konto-Menü (angemeldet) ---------- */
+function dialogZu(){tor(false);}
+function zeigePasswortAendern(fehler){
+  var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
+  tor(true,true);
+  karte('<h2>Passwort ändern</h2>'+(fehler?meldung(fehler):'')+
+    '<form id="g-form" novalidate>'+
+    '<div class="feld"><label for="g-alt">Bisheriges Passwort</label><input id="g-alt" type="password" autocomplete="off" autofocus></div>'+
+    '<div class="feld"><label for="g-pw1">Neues Passwort</label><input id="g-pw1" type="password" autocomplete="off"><span class="hilfe">Mindestens 10 Zeichen. Dein Wiederherstellungs-Code bleibt gültig.</span></div>'+
+    '<div class="feld"><label for="g-pw2">Neues Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
+    '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>');
+  formular('g-form',function(){
+    var alt=$('g-alt').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value;
+    var pr=pwProblem(pw1,k.name);if(pr){zeigePasswortAendern(pr);return;}
+    if(pw1!==pw2){zeigePasswortAendern('Die beiden neuen Passwörter sind nicht gleich.');return;}
+    beschaeftigt($('g-los'),true,'Speichere …');
+    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1);})
+      .then(function(){karte('<h2>Passwort geändert</h2><p class="sub">Ab jetzt meldest du dich mit dem neuen Passwort an.</p><button class="btn primary voll" type="button" id="g-fertig">Fertig</button>');$('g-fertig').onclick=dialogZu;})
+      .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+esc((e&&e.message)||e)+'.');});
+  });
+  $('g-abbruch').onclick=dialogZu;
+}
+function zeigeTeamAendern(fehler){
+  var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
+  tor(true,true);
+  karte('<h2>Team ändern</h2><p class="sub">Das Team bestimmt, welche Apps du im Hub siehst.</p>'+(fehler?meldung(fehler):'')+
+    '<form id="g-form" novalidate><div class="feld">'+teamWahl(sitzung.team)+'</div>'+
+    '<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>'+
+    '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>',true);
+  formular('g-form',function(){
+    var t=gewaehltesTeam(), alt=$('g-alt').value;
+    if(!t){zeigeTeamAendern('Bitte wähle ein Team.');return;}
+    beschaeftigt($('g-los'),true,'Speichere …');
+    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return teamSetzen(k,s.dek,t);})
+      .then(function(){sitzung.team=t;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
+      .catch(function(e){zeigeTeamAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+esc((e&&e.message)||e)+'.');});
+  });
+  $('g-abbruch').onclick=dialogZu;
+}
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')){dialogZu();}}});
+
+/* ---------- Start ---------- */
+function start(callbacks){
+  cb=callbacks||{};
+  var gemerkt=sitzungLesen();
+  tor(true);karte('<p class="sub" style="margin:0">Einen Moment …</p>');
+  idbGet(ORDNER_KEY).then(function(h){
+    if(h){ordner=h;}
+    if(gemerkt){  /* Tab neu geladen: angemeldet bleiben */
+      angemeldet(gemerkt);
+      if(ordner){recht(ordner,false).then(function(r){if(r==='granted'){ladeKonten().catch(function(){});}});}
+      return;
+    }
+    if(!ordner){zeigeVerbinden(null,false);return;}
+    return recht(ordner,false).then(function(r){
+      if(r==='granted'){return ladeKonten().then(zeigeStart);}
+      zeigeVerbinden(null,true);
+    });
+  }).catch(function(){zeigeVerbinden(null,false);});
+}
+
+return {
+  start:start,
+  abmelden:abmelden,
+  menue:function(aktion){if(!sitzung){return;}if(aktion==='passwort'){zeigePasswortAendern();}else if(aktion==='team'){zeigeTeamAendern();}else if(aktion==='abmelden'){abmelden();}},
+  team:team,
+  initialen:initialen
+};
+})();
+</script>
 
 <noscript><div style="padding:30px;font-family:sans-serif;">Der CDSE Hub braucht JavaScript. Bitte in Edge oder Chrome öffnen.</div></noscript>
 
@@ -502,6 +1014,7 @@ var problems=[], apps=[];
       bereich:String(a.bereich||'Weitere Apps'),
       datei:a.datei?String(a.datei):null,link:a.link?String(a.link):null,
       dateizugriff:!!a.dateizugriff,
+      teams:Array.isArray(a.teams)?a.teams.map(String):null,
       hinweis:String(a.hinweis||''),stichworte:String(a.stichworte||'')
     });
   });
@@ -510,9 +1023,14 @@ var S=window.CDSE_HUB||{};
 if(S.titel){$('brand-title').textContent=S.titel;$('top-title').textContent=S.titel;document.title=S.titel;}
 if(S.untertitel){$('brand-sub').textContent=S.untertitel;}
 var HUB_TITLE=S.titel||'CDSE Hub';
+/* Angemeldete Person {id,name,team,teamName,teamFarbe} - null = niemand.
+   Das Team bestimmt, welche Apps man sieht (Feld teams in hub-apps.js). */
+var ICH=null, TEAMS_AKTIV=(window.CDSE_TEAMS||[]).length>0;
+function sichtbar(a){if(!ICH){return false;}return !a.teams||!TEAMS_AKTIV||a.teams.indexOf(ICH.team)>=0;}
+function meine(){return apps.filter(sichtbar);}
 
 function kind(a){return a.datei?'datei':(a.link?'link':'geplant');}
-function byId(id){for(var i=0;i<apps.length;i++){if(apps[i].id===id){return apps[i];}}return null;}
+function byId(id){var l=meine();for(var i=0;i<l.length;i++){if(l[i].id===id){return l[i];}}return null;}
 function groups(list){var order=[],map={};list.forEach(function(a){if(!map[a.bereich]){map[a.bereich]=[];order.push(a.bereich);}map[a.bereich].push(a);});return order.map(function(k){return {name:k,apps:map[k]};});}
 /* Symbol der App: eingebautes Liniensymbol, sonst Emoji, sonst Raster */
 function glyph(a){if(a.symbol){return svg(a.symbol);}if(a.icon){return esc(a.icon);}return svg(kind(a)==='link'?'web':'app');}
@@ -540,6 +1058,7 @@ function openInTab(a){
   var frisch=false;
   try{frisch=(w.location.href==='about:blank');}catch(e){frisch=false;}
   if(frisch){w.location.href=new URL(a.datei,location.href).href;}
+  tabs[a.id]=w;
   try{w.focus();}catch(e){}
 }
 
@@ -572,12 +1091,12 @@ function liveInfo(a){
 }
 
 /* ---------- Zustand ---------- */
-var view='home', current=null, frames={}, missing={}, sideOverride=null;
+var view='home', current=null, frames={}, missing={}, sideOverride=null, tabs={};
 
 /* ---------- Seitenleiste ---------- */
 function renderSide(){
   var h='<a class="lnk" href="#/" data-route="home" title="Übersicht"><span class="lic">'+svg('home')+'</span><span class="lnk-t">Übersicht</span></a>';
-  groups(apps).forEach(function(g){
+  groups(meine()).forEach(function(g){
     h+='<div class="navlabel">'+esc(g.name)+'</div><div class="navsep"></div>';
     g.apps.forEach(function(a){
       var k=kind(a);
@@ -622,9 +1141,9 @@ var activeCat='';
 var ADD_TILE='<a class="tile add" href="#/hinzufuegen"><span class="add-plus">'+svg('plus')+'</span><b>App hinzufügen</b><span>In drei Schritten — Anleitung öffnen</span></a>';
 function renderHome(){
   var q=($('q').value||'').trim().toLowerCase();
-  var cats=groups(apps);
+  var cats=groups(meine());
   if(activeCat&&!cats.some(function(g){return g.name===activeCat;})){activeCat='';}
-  var list=apps.filter(function(a){
+  var list=meine().filter(function(a){
     return (!activeCat||a.bereich===activeCat)&&(!q||(a.name+' '+a.beschreibung+' '+a.bereich+' '+a.stichworte).toLowerCase().indexOf(q)>=0);
   });
   var h='';
@@ -632,12 +1151,12 @@ function renderHome(){
   var tb='';
   if(cats.length>1){
     tb+='<div class="catbar" role="group" aria-label="Nach Bereich filtern">'+
-      '<button type="button" class="catchip'+(activeCat?'':' on')+'" data-cat="" aria-pressed="'+(!activeCat)+'">Alle<span class="n">'+apps.length+'</span></button>'+
+      '<button type="button" class="catchip'+(activeCat?'':' on')+'" data-cat="" aria-pressed="'+(!activeCat)+'">Alle<span class="n">'+meine().length+'</span></button>'+
       cats.map(function(g){var on=activeCat===g.name;return '<button type="button" class="catchip'+(on?' on':'')+'" data-cat="'+esc(g.name)+'" aria-pressed="'+on+'">'+esc(g.name)+'<span class="n">'+g.apps.length+'</span></button>';}).join('')+
       '</div>';
   }
   if(!q&&!activeCat){
-    var rec=lsGet(LS_RECENT,[]).map(byId).filter(function(a){return a&&kind(a)==='datei';});
+    var rec=lsGet(recentKey(),[]).map(byId).filter(function(a){return a&&kind(a)==='datei';});
     if(rec.length){
       tb+='<div class="recent"><span class="recent-l">Zuletzt</span>'+rec.map(function(a){
         return '<a class="pill" href="'+esc(appHref(a))+'"'+extAttrs(a)+' style="--ac:'+a.farbe+'"><span class="pi">'+glyph(a)+'</span>'+esc(a.name)+'</a>';
@@ -654,15 +1173,16 @@ function renderHome(){
 function renderHello(){
   var hr=new Date().getHours();
   var g=hr<11?'Guten Morgen':(hr<18?'Guten Tag':'Guten Abend');
-  var who='';try{who=localStorage.getItem('anwesenheit_user')||'';}catch(e){}
+  var who=ICH?String(ICH.name).split(/\s+/)[0]:'';
   $('hello').textContent=g+(who?', '+who:'');
-  $('today').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  var ready=apps.filter(function(a){return kind(a)!=='geplant';}).length;
+  $('today').textContent=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+(ICH&&TEAMS_AKTIV?' · Team '+ICH.teamName:'');
+  var ready=meine().filter(function(a){return kind(a)!=='geplant';}).length;
   $('lead').textContent=(ready===1?'Ein Werkzeug':ready+' Werkzeuge')+' für den Alltag im CDSE — an einem Ort.';
 }
 
 /* ---------- App oeffnen ---------- */
-function pushRecent(id){var r=lsGet(LS_RECENT,[]).filter(function(x){return x!==id;});r.unshift(id);lsSet(LS_RECENT,r.slice(0,5));}
+function recentKey(){return LS_RECENT+(ICH?'_'+ICH.id:'');}
+function pushRecent(id){var r=lsGet(recentKey(),[]).filter(function(x){return x!==id;});r.unshift(id);lsSet(recentKey(),r.slice(0,5));}
 function openApp(id){
   var a=byId(id);
   if(!a){location.hash='#/';return;}
@@ -715,7 +1235,18 @@ function closeCurrent(){
 
 /* ---------- Anleitung ---------- */
 var pendingAnchor=null;
+function renderTeamTabelle(){
+  var el=$('guide-teams');if(!el){return;}
+  var T=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id&&t.name;});
+  if(!T.length){el.innerHTML='<p>In <code>hub-apps.js</code> sind keine Teams eingetragen — alle sehen alle Apps.</p>';return;}
+  el.innerHTML='<table class="fields"><thead><tr><th>Team</th><th>sieht diese Apps</th></tr></thead><tbody>'+
+    T.map(function(t){
+      var l=apps.filter(function(a){return !a.teams||a.teams.indexOf(t.id)>=0;}).map(function(a){return esc(a.name);});
+      return '<tr><td><b>'+esc(t.name)+'</b></td><td>'+(l.length?l.join(', '):'—')+'</td></tr>';
+    }).join('')+'</tbody></table>';
+}
 function showGuide(a){
+  renderTeamTabelle();
   $('guide-banner').innerHTML=a?'<div class="banner" style="--ac:'+a.farbe+'"><span class="b-ic">'+glyph(a)+'</span><div><b>'+esc(a.name)+'</b> ist als <i>geplant</i> eingetragen und braucht noch eine Datei.'+(a.hinweis?'<br>'+esc(a.hinweis):'')+'</div></div>':'';
   show('guide');
   document.title='App hinzufügen · '+HUB_TITLE;$('top-title').textContent='App hinzufügen';
@@ -747,6 +1278,7 @@ $('scrim').addEventListener('click',closeDrawer);
 
 /* ---------- Router ---------- */
 function route(){
+  if(!ICH){return;}   /* erst anmelden */
   var h=location.hash||'#/', m=h.match(/^#\/app\/(.+)$/);
   if(m){openApp(decodeURIComponent(m[1]));}
   else if(h.indexOf('#/hinzufuegen')===0){current=null;showGuide(null);}
@@ -778,13 +1310,63 @@ $('q').addEventListener('keydown',function(e){
 });
 document.addEventListener('keydown',function(e){
   if(e.key==='/'&&view==='home'&&document.activeElement!==$('q')&&!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||'')){e.preventDefault();$('q').focus();}
-  if(e.key==='Escape'){closeDrawer();}
+  if(e.key==='Escape'){closeDrawer();menuAuf(false);}
 });
 $('bar-reload').addEventListener('click',reloadCurrent);
 $('bar-close').addEventListener('click',closeCurrent);
-window.addEventListener('storage',function(){if(view==='home'){renderHome();renderHello();}});
+window.addEventListener('storage',function(){if(ICH&&view==='home'){renderHome();renderHello();}});
 
-route();
+/* ---------- Konto: Anzeige, Menue, Abmelden ---------- */
+function renderMe(){
+  var el=$('me');
+  if(!ICH){el.hidden=true;el.innerHTML='';return;}
+  el.hidden=false;
+  el.innerHTML='<span class="ava" id="me-ava" role="button" tabindex="0" aria-label="Konto-Menü" title="'+esc(ICH.name)+(TEAMS_AKTIV?' · '+esc(ICH.teamName):'')+'" style="--tc:'+esc(ICH.teamFarbe)+'">'+esc(window.CDSE_KONTO.initialen(ICH.name))+'</span>'+
+    '<span class="me-t"><b>'+esc(ICH.name)+'</b><small>'+(TEAMS_AKTIV?esc(ICH.teamName):'Angemeldet')+'</small></span>'+
+    '<button class="me-btn" id="me-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="me-menu" aria-label="Konto-Menü">'+svg('more')+'</button>'+
+    '<div class="menu" id="me-menu" role="menu" hidden>'+
+      '<button type="button" role="menuitem" data-konto="passwort">'+svg('key')+'Passwort ändern</button>'+
+      (TEAMS_AKTIV?'<button type="button" role="menuitem" data-konto="team">'+svg('users')+'Team ändern</button>':'')+
+      '<button type="button" role="menuitem" data-konto="abmelden">'+svg('logout')+'Abmelden</button>'+
+    '</div>';
+}
+function menuAuf(an){
+  var m=$('me-menu'),b=$('me-btn');if(!m){return;}
+  if(an){var r=$('me').getBoundingClientRect();m.style.left=Math.max(8,r.left)+'px';m.style.bottom=Math.max(8,window.innerHeight-r.top+6)+'px';m.style.width=Math.max(220,r.width)+'px';}
+  m.hidden=!an;if(b){b.setAttribute('aria-expanded',String(!!an));}
+  if(an){var f=m.querySelector('button');if(f){f.focus();}}
+}
+window.addEventListener('resize',function(){menuAuf(false);});
+document.addEventListener('click',function(e){
+  var t=e.target, k=t.closest&&t.closest('[data-konto]');
+  if(k){menuAuf(false);window.CDSE_KONTO.menue(k.getAttribute('data-konto'));return;}
+  if(t.closest&&t.closest('#me-btn,#me-ava')){var m=$('me-menu');menuAuf(!!(m&&m.hidden));return;}
+  if(!(t.closest&&t.closest('#me-menu'))){menuAuf(false);}
+});
+$('me').addEventListener('keydown',function(e){
+  if(e.target.id==='me-ava'&&(e.key==='Enter'||e.key===' ')){e.preventDefault();var m=$('me-menu');menuAuf(!!(m&&m.hidden));}
+});
+/* Apps schliessen, die man (nicht mehr) sehen darf - beim Abmelden alle */
+function aufraeumen(alle){
+  for(var f in frames){if(alle||!byId(f)){var fr=frames[f];if(fr&&fr.parentNode){fr.parentNode.removeChild(fr);}delete frames[f];delete missing[f];}}
+  for(var t in tabs){if(alle||!byId(t)){try{if(tabs[t]&&!tabs[t].closed){tabs[t].close();}}catch(e){}delete tabs[t];}}
+  if(current&&(alle||!byId(current))){current=null;}
+}
+
+window.CDSE_KONTO.start({
+  bereit:function(ich){ICH=ich;renderMe();route();},
+  abgemeldet:function(){
+    menuAuf(false);aufraeumen(true);ICH=null;renderMe();activeCat='';$('q').value='';
+    try{history.replaceState(null,'','#/');}catch(e){}
+    show('home');$('home-body').innerHTML='';$('hello').textContent='';$('lead').textContent='';
+    document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;
+  },
+  geaendert:function(ich){
+    ICH=ich;renderMe();aufraeumen(false);
+    if(view==='app'&&!current){location.hash='#/';}
+    route();
+  }
+});
 })();
 </script>
 </body>

@@ -30,6 +30,8 @@
      quelle        woher die neueste Version kommt (GitHub-Repository,
                    Branch, Pfad). Wird von update-apps.cjs benutzt, um die
                    App auf den neuesten Stand zu holen.
+     teams         (optional) welche Teams die App sehen, z. B.
+                   ['diagnostique']. Fehlt das Feld, sehen sie alle.
      hinweis       (optional) kurzer Hinweis auf der Kachel
      stichworte    (optional) zusätzliche Suchbegriffe
 
@@ -44,22 +46,50 @@
 /* Name und Untertitel des Hubs (oben links in der Seitenleiste) */
 window.CDSE_HUB = {
   titel: 'CDSE Hub',
-  untertitel: 'Gemeinsame Anlaufstelle'
+  untertitel: 'Gemeinsame Anlaufstelle',
+  sperreNachMinuten: 60        /* ohne Aktivität: Hub sperrt, Passwort nötig */
 };
+
+/* Teams im CDSE. Beim Erstellen eines Kontos wählt man sein Team.
+   Bei jeder App legt das Feld "teams" fest, wer sie sieht.
+   Hinweis: Ohne Server ist das eine ANZEIGE-Regel. Eine echte Sperre
+   (z. B. für das Screening) setzt die IT über die Ordnerrechte auf O:\. */
+window.CDSE_TEAMS = [
+  { id: 'annexe',       name: 'Annexe Junglinster',       farbe: '#3F5AA6' },
+  { id: 'isa',          name: 'ISA',                      farbe: '#1F6B6F' },
+  { id: 'diagnostique', name: 'Diagnostique',             farbe: '#B4533A' },
+  { id: 'cp',           name: 'Classes de participation', farbe: '#A8741A' },
+  { id: 'cst',          name: 'CST',                      farbe: '#6E4A7E' }
+];
 
 window.CDSE_APPS = [
 
   {
     id: 'klassenbuch',
     name: 'Klassenbuch',
-    beschreibung: 'Schüler, Réunionen, Anwesenheit, Dossiers, Noten und Stundenplan — nach Schuljahr und Trimester.',
+    beschreibung: 'Für die Arbeit im Team: Schüler, Réunionen, Anwesenheit, Dossiers, Noten und Stundenplan.',
     symbol: 'buch',
     farbe: '#3F5AA6',
     bereich: 'Klasse & Schüler',
     datei: 'apps/klassenbuch.html',
     dateizugriff: true,
+    teams: ['annexe', 'cp', 'cst'],
     quelle: { repo: 'Klassebuch', branch: 'claude/focused-galileo-e2s63b', pfad: 'index.html' },
     stichworte: 'anwesenheit absenzen dossier réunion protokoll noten stundenplan schuljahr trimester team'
+  },
+
+  {
+    id: 'journal',
+    name: 'Journal',
+    beschreibung: 'Das Klassenbuch für die Einzelarbeit: Mein Tag, Terminplan, eigene Schüler und Notizen.',
+    symbol: 'buch',
+    farbe: '#3F5AA6',
+    bereich: 'Klasse & Schüler',
+    datei: 'apps/journal.html',
+    dateizugriff: true,
+    teams: ['isa', 'diagnostique'],
+    quelle: { repo: 'Klassebuch', branch: 'claude/focused-galileo-e2s63b', pfad: 'isa.html' },
+    stichworte: 'isa journal mein tag terminplan agenda notizen schüler dossier'
   },
 
   {
@@ -70,6 +100,7 @@ window.CDSE_APPS = [
     farbe: '#B4533A',
     bereich: 'Diagnostik & Förderung',
     datei: 'apps/screening.html',
+    teams: ['diagnostique'],
     quelle: { repo: 'PEI-and-Compl-ment-', branch: 'claude/fix-conners-scoring-ya2JP', pfad: 'diagnostic-tool/index.html' },
     stichworte: 'testing test auswertung sdq wisc disyps afs d2 conners fragebogen'
   },

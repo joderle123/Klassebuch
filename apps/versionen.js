@@ -27,5 +27,12 @@ window.CDSE_APP_VERSIONEN = {
     "quelle": "ISA-APP · claude/elegant-darwin-2317k6",
     "aenderung": "feat: „So geht's\"-Anleitung in der Team-Ablage",
     "groesse": 5754055
+  },
+  "journal": {
+    "stand": "2026-09-22",
+    "commit": "7a19c5d",
+    "quelle": "Klassebuch · claude/focused-galileo-e2s63b",
+    "aenderung": "Klassenbuch: Notizen je Schueler, und eine Ansicht fuer die ganze Klasse",
+    "groesse": 17414457
   }
 };
