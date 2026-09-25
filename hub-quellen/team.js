@@ -311,6 +311,7 @@ var ops={
     brauche(r,'bearbeiten');
     var neu={id:neueId(8),datum:e.datum||jetzt().slice(0,10),art:e.art||'notiz',titel:e.titel||'',text:e.text||'',von:ich().id,z:jetzt()};
     if(e.ziel){neu.ziel=String(e.ziel);}   /* Bezug zu einem ELDiB-Förderziel, z. B. "V-14" */
+    if(e.vorfall&&typeof e.vorfall==='object'){neu.vorfall=e.vorfall;}   /* Vorfall-/Krisenprotokoll (Art „vorfall“) */
     d.eintraege=(d.eintraege||[]).concat([neu]);
     return 'Eintrag: '+(e.titel||e.art||'Notiz');
   },'eintrag');},
@@ -320,6 +321,7 @@ var ops={
     if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge ändern dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
     ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null){e[k]=werte[k];}});
     if(werte.ziel!=null){if(werte.ziel){e.ziel=String(werte.ziel);}else{delete e.ziel;}}
+    if(werte.vorfall!==undefined){if(werte.vorfall&&typeof werte.vorfall==='object'){e.vorfall=werte.vorfall;}else{delete e.vorfall;}}
     e.geaendert=jetzt();e.geaendertVon=ich().id;
     return 'Eintrag geändert: '+(e.titel||e.art);
   },'eintrag');},

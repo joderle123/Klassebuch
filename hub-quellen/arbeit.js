@@ -22,7 +22,7 @@ var $=function(id){return document.getElementById(id);};
 var akt={seite:'',param:''}, filter={status:'aktiv',stelle:'',meine:false,ueber:false,q:''};
 var dossierTab='ueberblick', geladen=false, ladeVersprechen=null;
 var planEntwurf=null, planDirty=false, teamAnsicht='jetzt', teamDaten=null, teamZeit=0, uhrTimer=null;
-var ARTEN={notiz:'Notiz',gespraech_eltern:'Gespräch mit den Eltern',gespraech_schule:'Gespräch mit der Schule',gespraech_kind:'Gespräch mit dem Kind',beobachtung:'Beobachtung',reunion:'Réunion',massnahme:'Maßnahme',vereinbarung:'Vereinbarung',sonstiges:'Sonstiges'};
+var ARTEN={notiz:'Notiz',gespraech_eltern:'Gespräch mit den Eltern',gespraech_schule:'Gespräch mit der Schule',gespraech_kind:'Gespräch mit dem Kind',beobachtung:'Beobachtung',vorfall:'Vorfall / Krise',reunion:'Réunion',massnahme:'Maßnahme',vereinbarung:'Vereinbarung',sonstiges:'Sonstiges'};
 var TAETIGKEIT={unterricht:'Unterricht / Klasse',beobachtung:'Beobachtung',gespraech:'Gespräch',diagnostik:'Diagnostik',reunion:'Réunion / Sitzung',buero:'Büro / Dokumentation',fahrt:'Fahrt',anderes:'Anderes'};
 var AUSNAHME={urlaub:'Urlaub',krank:'Krank',fortbildung:'Fortbildung',frei:'Frei / Ausgleich',termin:'Anderer Einsatz'};
 var TAGE=['So','Mo','Di','Mi','Do','Fr','Sa'], TAGE_LANG=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
@@ -273,7 +273,12 @@ function tabInhalt(d,r){
 }
 function nachZeichnen(d){
   var f=$('ar-eintrag-form');
-  if(f){f.onsubmit=function(ev){ev.preventDefault();eintragSpeichern(d,f);};}
+  if(f){
+    f.onsubmit=function(ev){ev.preventDefault();eintragSpeichern(d,f);};
+    /* Vorfall / Krise: Protokollfelder einblenden, der Text wird zum „Verlauf“ */
+    var art=f.elements.art, platz=f.querySelector('.ar-vorfall-platz'), lab=f.elements.text&&f.elements.text.closest('label');
+    if(art&&platz){art.onchange=function(){var v=art.value==='vorfall';platz.hidden=!v;if(lab){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}};}
+  }
 }
 
 /* ---------- Auf einen Blick (aus dem DS-Profil) ---------- */
@@ -533,7 +538,54 @@ function eintragHtml(e,r,d){
   var eigen=e.von===(K.ich()||{}).id;
   return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span>'+zielChip(e.ziel)+'<b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+(e.herkunft?'übernommen von ':'')+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
     (r&&r.bearbeiten&&(eigen||r.weitergeben)?'<span class="ar-eintrag-aktion"><button type="button" class="ar-link" data-ar="eintrag-aendern" data-eid="'+esc(e.id)+'">'+svg('edit')+'Ändern</button><button type="button" class="ar-link gefahr" data-ar="eintrag-loeschen" data-eid="'+esc(e.id)+'">'+svg('x')+'Löschen</button></span>':'')+
-    '</header><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p>'+herkunftZeile(e)+'</article>';
+    '</header>'+(e.vorfall?vorfallHtml(e.vorfall,e.text):'<p>'+esc(e.text).replace(/\n/g,'<br>')+'</p>')+herkunftZeile(e)+'</article>';
+}
+/* ---------- Vorfall-/Krisenprotokoll: feste Felder statt freiem Text ---------- */
+var VORFALL_TEXTE=[['ausloeser','Was ging voraus? (Auslöser)'],['intervention','Was wurde getan? (Maßnahme)'],['nachbesprechung','Nachbesprechung – was hilft beim nächsten Mal?']];
+var VORFALL_MELDUNG=[['leitung','Leitung/Responsable informiert'],['eltern','Eltern informiert'],['meldung','Meldepflicht geprüft (Signalement)']];
+function vorfallFelder(v){
+  v=v||{};
+  return '<fieldset class="ar-vorfall"><legend>Protokoll zum Vorfall</legend>'+
+    '<div class="ar-raster3">'+feld('v_zeit','Uhrzeit',v.zeit,'time')+feld('v_situation','Stunde / Situation',v.situation,'text',' placeholder="z. B. 3. Stunde, Pause, Bus"')+feld('v_ort','Ort',v.ort)+'</div>'+
+    VORFALL_TEXTE.map(function(t){return textfeld('v_'+t[0],t[1],v[t[0]],2);}).join('')+
+    '<div class="ar-raster3">'+feld('v_toVon','Time-out von',v.timeoutVon,'time')+feld('v_toBis','Time-out bis',v.timeoutBis,'time')+auswahl('v_schwere','Schwere',v.schwere||'',[['leicht','leicht'],['mittel','mittel'],['schwer','schwer']],'–')+'</div>'+
+    feld('v_beteiligte','Beteiligte (nur so viel wie nötig)',v.beteiligte)+
+    '<div class="ar-vorfall-checks">'+VORFALL_MELDUNG.map(function(m){return '<label class="ar-check"><input type="checkbox" name="v_'+m[0]+'"'+(v[m[0]]?' checked':'')+'><span>'+esc(m[1])+'</span></label>';}).join('')+'</div></fieldset>';
+}
+function vorfallAus(w){
+  function t(k){return String(w['v_'+k]||'').trim();}
+  var o={zeit:t('zeit'),situation:t('situation'),ort:t('ort'),timeoutVon:t('toVon'),timeoutBis:t('toBis'),schwere:t('schwere'),beteiligte:t('beteiligte')};
+  VORFALL_TEXTE.forEach(function(x){o[x[0]]=t(x[0]);});VORFALL_MELDUNG.forEach(function(m){o[m[0]]=!!w['v_'+m[0]];});
+  return o;
+}
+function formWerte(f){var o={};Array.prototype.forEach.call(f.elements,function(el){if(!el.name){return;}o[el.name]=el.type==='checkbox'?el.checked:el.value;});return o;}
+function vorfallMinuten(von,bis){var a=/^(\d\d):(\d\d)$/.exec(von||''), b=/^(\d\d):(\d\d)$/.exec(bis||'');if(!a||!b){return 0;}var m=(+b[1]*60+ +b[2])-(+a[1]*60+ +a[2]);return m>0?m:0;}
+function vorfallKopf(v){var m=vorfallMinuten(v.timeoutVon,v.timeoutBis);return [v.zeit?v.zeit+' Uhr':'',v.situation,v.ort,v.schwere?'Schwere: '+v.schwere:'',m?'Time-out '+v.timeoutVon+'–'+v.timeoutBis+' ('+m+' Min.)':''].filter(Boolean);}
+/* fürs Übergabeblatt: dieselben Angaben als schlichter Text */
+function vorfallDruck(v,text){
+  function z(t,x){return x?'<br><i>'+esc(t)+':</i> '+esc(x).replace(/\n/g,'<br>'):'';}
+  var kopf=vorfallKopf(v), info=VORFALL_MELDUNG.filter(function(m){return v[m[0]];}).map(function(m){return m[1];});
+  return (kopf.length?'<br><small>'+esc(kopf.join(' · '))+'</small>':'')+z('Auslöser',v.ausloeser)+z('Verlauf',text)+z('Maßnahme',v.intervention)+z('Nachbesprechung',v.nachbesprechung)+(info.length?'<br><small>'+esc(info.join(' · '))+'</small>':'');
+}
+function vorfallHtml(v,text){
+  var kopf=vorfallKopf(v);
+  return (kopf.length?'<p class="ar-vorfall-kopf">'+esc(kopf.join(' · '))+'</p>':'')+
+    '<dl class="ar-dl ar-vorfall-dl">'+(v.ausloeser?'<dt>Auslöser</dt><dd>'+esc(v.ausloeser).replace(/\n/g,'<br>')+'</dd>':'')+
+      '<dt>Verlauf</dt><dd>'+esc(text||'').replace(/\n/g,'<br>')+'</dd>'+
+      (v.intervention?'<dt>Maßnahme</dt><dd>'+esc(v.intervention).replace(/\n/g,'<br>')+'</dd>':'')+
+      (v.nachbesprechung?'<dt>Nachbesprechung</dt><dd>'+esc(v.nachbesprechung).replace(/\n/g,'<br>')+'</dd>':'')+
+      (v.beteiligte?'<dt>Beteiligte</dt><dd>'+esc(v.beteiligte)+'</dd>':'')+'</dl>'+
+    '<p class="ar-vorfall-meldung">'+VORFALL_MELDUNG.map(function(m){return '<span class="'+(v[m[0]]?'ja':'nein')+'">'+(v[m[0]]?'✓ ':'○ ')+esc(m[1])+'</span>';}).join('')+'</p>';
+}
+/* Wann häufen sich Vorfälle? Wochentag, Situation, Time-out – ab zwei Vorfällen */
+function vorfallAuswertung(d){
+  var l=(d.eintraege||[]).filter(function(e){return e.art==='vorfall';});if(l.length<2){return '';}
+  var tage={}, sit={}, to=0, acht=new Date(Date.now()-56*864e5).toISOString().slice(0,10), n8=0, offen=0;
+  l.forEach(function(e){var dt=new Date(e.datum+'T12:00:00'), t=TAGE[dt.getDay()];tage[t]=(tage[t]||0)+1;var v=e.vorfall||{};if(v.situation){sit[v.situation]=(sit[v.situation]||0)+1;}to+=vorfallMinuten(v.timeoutVon,v.timeoutBis);if(e.datum>=acht){n8++;}if(e.vorfall&&!(v.leitung&&v.eltern)){offen++;}});
+  function top(o){return Object.keys(o).sort(function(a,b){return o[b]-o[a];}).slice(0,3).map(function(k){return k+' ('+o[k]+')';}).join(', ');}
+  return karte('<h2>Vorfälle im Überblick</h2><p>'+l.length+' Vorfälle, davon '+n8+' in den letzten 8 Wochen.'+(to?' Time-out insgesamt '+to+' Minuten.':'')+'</p>'+
+    '<dl class="ar-dl"><dt>Häufigste Tage</dt><dd>'+esc(top(tage))+'</dd>'+(Object.keys(sit).length?'<dt>Häufigste Situationen</dt><dd>'+esc(top(sit))+'</dd>':'')+'</dl>'+
+    (offen?'<p class="ar-klein">Bei '+offen+(offen===1?' Vorfall':' Vorfällen')+' ist nicht vermerkt, dass Leitung und Eltern informiert wurden.</p>':''),'ar-vorfall-ueberblick');
 }
 /* Übernommen aus Klassenbuch/Journal: Kategorie, Schlagwörter, Verfasser und Bericht bleiben sichtbar */
 function herkunftZeile(e){
@@ -552,8 +604,10 @@ function tabEintraege(d,r){
     h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag</h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
       auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
       (zo.length?auswahl('ziel','Bezug zu einem Förderziel (optional)','',zo,'– kein Bezug –'):'')+
+      '<div class="ar-vorfall-platz" hidden>'+vorfallFelder()+'</div>'+
       textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button></div></form>');
   }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
+  h+=vorfallAuswertung(d);
   var l=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
   h+=l.length?l.map(function(e){return eintragHtml(e,r,d);}).join(''):karte('<p class="ar-leise">Noch keine Einträge.</p>');
   return h;
@@ -562,7 +616,7 @@ function eintragSpeichern(d,f){
   var text=f.elements.text.value.trim();
   if(!text){toast('Bitte einen Text eingeben');return;}
   var b=f.querySelector('button[type=submit]');b.disabled=true;
-  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text,ziel:f.elements.ziel?f.elements.ziel.value:''}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
+  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text,ziel:f.elements.ziel?f.elements.ziel.value:'',vorfall:f.elements.art.value==='vorfall'?vorfallAus(formWerte(f)):null}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
 }
 function tabVerlauf(d){
   return karte('<h2>Protokoll</h2><p class="ar-leise">Jede Änderung am Dossier – wer, wann, was.</p><ol class="ar-protokoll">'+
@@ -632,9 +686,12 @@ function eintragAendernDialog(d,eid){
   var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return;}
   var zo=zielOptionen(d,e.ziel);
   var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+
-    (zo.length?auswahl('ziel','Bezug zu einem Förderziel',e.ziel||'',zo,'– kein Bezug –'):'')+textfeld('text','Text',e.text,6);
+    (zo.length?auswahl('ziel','Bezug zu einem Förderziel',e.ziel||'',zo,'– kein Bezug –'):'')+
+    '<div class="ar-vorfall-platz"'+(e.art==='vorfall'?'':' hidden')+'>'+vorfallFelder(e.vorfall)+'</div>'+textfeld('text',e.art==='vorfall'?'Was ist passiert? (Verlauf)':'Text',e.text,6);
   dialog('Eintrag ändern',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
-    ausfuehren:function(w){return T.ops.eintragAendern(d.id,eid,w.werte);}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
+    nachAufbau:function(dlg){var a=dlg.querySelector('select[name="art"]'), p=dlg.querySelector('.ar-vorfall-platz'), t=dlg.querySelector('textarea[name="text"]'), lab=t&&t.closest('label');
+      if(a&&p){a.addEventListener('change',function(){var v=a.value==='vorfall';p.hidden=!v;if(lab&&lab.querySelector('span')){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}});}},
+    ausfuehren:function(w){var x=Object.assign({},w.werte);x.vorfall=w.werte.art==='vorfall'?vorfallAus(w.werte):null;Object.keys(x).forEach(function(k){if(k.indexOf('v_')===0){delete x[k];}});return T.ops.eintragAendern(d.id,eid,x);}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
 }
 /* Beobachtung direkt zu einem Förderziel eintragen */
 function zielEintragDialog(d,code){
@@ -1142,7 +1199,7 @@ function drucken(d){
     '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
     (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein DS-Profil vorhanden.</i></p>')+
     eldibDruck(d)+
-    (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small><br>'+esc(e.text).replace(/\n/g,'<br>')+'</div>';}).join(''):'')+
+    (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small>'+(e.vorfall?vorfallDruck(e.vorfall,e.text):'<br>'+esc(e.text).replace(/\n/g,'<br>'))+'</div>';}).join(''):'')+
     '<p class="fuss">Vertraulich – nur für die Arbeit im CDSE. Erstellt am '+esc(datum(heuteIso()))+' von '+esc(K.ich().name)+'. '+esc(profilQuelle(d))+'</p></main></body></html>';
   var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
   document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();

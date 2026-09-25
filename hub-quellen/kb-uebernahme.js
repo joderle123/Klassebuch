@@ -29,7 +29,7 @@ var APPS={
 var AUS='cdse-kb-uebernahme-ausgeblendet', ZUORDNUNG='cdse-kb-zuordnung';
 /* Klassenbuch-Kategorie bzw. Journal-Notiztyp → Art im Hub (Kategorie bleibt als „Thema“) */
 var ART={'Team-Réunion':'reunion','Wochenziel':'vereinbarung','Verhalten & Krisen':'beobachtung','Risiko & Sorge':'beobachtung',
-  'Krise / Vorfall':'beobachtung','Beobachtung':'beobachtung','Fördereinheit':'massnahme'};
+  'Krise / Vorfall':'vorfall','Beobachtung':'beobachtung','Fördereinheit':'massnahme'};
 var dateien=[];     /* gewählte Team-Dateien und Sicherungen – nur für diese Sitzung */
 var karteEl=null, karteListe=[];
 

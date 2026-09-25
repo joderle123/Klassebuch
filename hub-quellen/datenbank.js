@@ -299,8 +299,13 @@ var FELDER=[
   F('screeningStand','Screening: Einschätzung','Entwicklung und Dossier','auswahl',function(d){var l=scListe(d), k=l.length?scKurz(l[0]):null;return k?(SC_ART[k.gesamt]||''):'';},{optionen:['Heute handeln','Unterstützung planen','Gezielt fördern','Im Blick behalten','Unauffällig'],info:'Gesamteinschätzung des letzten Screenings (keine Diagnose)'}),
   F('screeningDeutlich','Screening: deutliche Bereiche','Entwicklung und Dossier','liste',function(d){var l=scListe(d), k=l.length?scKurz(l[0]):null;if(!k){return [];}return Object.keys(k.bereiche||{}).filter(function(id){return k.bereiche[id]&&k.bereiche[id].stufe==='rot';}).map(scBereichName);}),
   F('screeningWarn','Screening: Warnsignal (3 Monate)','Entwicklung und Dossier','ja-nein',function(d){var l=scListe(d);if(!l.length){return '';}var g=new Date(Date.now()-90*864e5).toISOString().slice(0,10);return l.some(function(s){var k=scKurz(s);return iso(s.datum)>=g&&k&&(k.warn||[]).length;})?'ja':'nein';},{optionen:['ja','nein']}),
-  F('letzterEintrag','Letzter Eintrag','Entwicklung und Dossier','datum',function(d){return (d.eintraege||[]).map(function(e){return iso(e&&e.datum);}).filter(Boolean).sort().pop()||'';})
+  F('letzterEintrag','Letzter Eintrag','Entwicklung und Dossier','datum',function(d){return (d.eintraege||[]).map(function(e){return iso(e&&e.datum);}).filter(Boolean).sort().pop()||'';}),
+  F('vorfaelle','Vorfälle (3 Monate)','Entwicklung und Dossier','zahl',function(d){return vorfaelle(d).length;},{info:'Einträge der Art „Vorfall / Krise“ in den letzten 90 Tagen'}),
+  F('timeout','Time-out-Minuten (3 Monate)','Entwicklung und Dossier','zahl',function(d){return vorfaelle(d).reduce(function(s,e){return s+toMinuten(e.vorfall);},0);},{info:'Summe der Time-outs aus den Vorfallprotokollen der letzten 90 Tage'})
 ];
+/* Vorfall-/Krisenprotokolle der letzten 90 Tage (Dossier → Einträge, Art „vorfall“) */
+function vorfaelle(d){var g=new Date(Date.now()-90*864e5).toISOString().slice(0,10);return (d.eintraege||[]).filter(function(e){return e&&e.art==='vorfall'&&iso(e.datum)>=g;});}
+function toMinuten(v){v=v||{};var a=/^(\d\d):(\d\d)$/.exec(v.timeoutVon||''), b=/^(\d\d):(\d\d)$/.exec(v.timeoutBis||'');if(!a||!b){return 0;}var m=(+b[1]*60+ +b[2])-(+a[1]*60+ +a[2]);return m>0?m:0;}
 /* Woher kommt der Wert? fiche = Fiche de renseignement (Reiter „Fiche“ im Dossier),
    db = nur Datenbank-Angaben, beide = Datenbank-Angabe mit Fiche als Ersatz, dossier = Dossier selbst */
 var AUS_FICHE=['nachname','vorname','matricule','mfiles','iam','geschlecht','geburtsdatum','alter','geburtsort','nationalitaet','erstsprache','sprache','migration','ankunft','wohnort',
@@ -559,7 +564,7 @@ function frageVerstehen(eingabe){
   /* 3) Zahlenfeld – besondere Wendungen zuerst (vor den Filtern) */
   if(kz.fn!=='anzahl'&&!kz.feld){
     var NUM1=[['isaDauer',/\b(dauer der isa|dauer einer isa|isa-dauer|isadauer|dauer isa)\b/],['beschulungDauer',/\b(dauer der (spezialisierten )?beschulung|beschulungsdauer)\b/],
-      ['dauerBegleitung',/\b(dauer der begleitung|begleitungsdauer|betreuungsdauer|dauer der betreuung)\b/],['iq',/\b(iq|intelligenzquotient\w*)\b/],['eldibZiele',/\b(forderziel\w*)\b/],['eldibUeber',/\b(uberfallig\w*)\b/],['eintraege',/\b(eintrage|eintragungen)\b/]];
+      ['dauerBegleitung',/\b(dauer der begleitung|begleitungsdauer|betreuungsdauer|dauer der betreuung)\b/],['iq',/\b(iq|intelligenzquotient\w*)\b/],['eldibZiele',/\b(forderziel\w*)\b/],['eldibUeber',/\b(uberfallig\w*)\b/],['eintraege',/\b(eintrage|eintragungen)\b/],['timeout',/\b(time-?outs?|auszeit\w*)\b/],['vorfaelle',/\b(vorfall|vorfalle|vorfallen|krisen)\b/]];
     for(i=0;i<NUM1.length;i++){if(finde(NUM1[i][1])){kz.feld=NUM1[i][0];break;}}
   }
   /* 4) Filter */

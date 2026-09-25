@@ -437,3 +437,17 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-netz li.aus b{text-decoration:line-through;color:var(--muted);}
 .ar-netz-n{display:block;}
 .kbu-link{margin:0 0 12px;}
+
+/* Vorfall-/Krisenprotokoll */
+.ar-vorfall{border:1px solid var(--line);border-left:4px solid #C0543F;border-radius:12px;padding:12px 16px;margin:10px 0;}
+.ar-vorfall legend{font-weight:700;padding:0 6px;}
+.ar-vorfall-checks{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:6px;}
+.ar-check{display:inline-flex;gap:7px;align-items:flex-start;font-size:13.5px;cursor:pointer;}
+.ar-check input{margin-top:3px;}
+.ar-vorfall-kopf{margin:6px 0 4px;font-size:13px;font-weight:650;color:var(--ink-2);}
+.ar-vorfall-dl{grid-template-columns:minmax(0,150px) minmax(0,1fr);margin:6px 0;}
+.ar-vorfall-dl dd{font-weight:400;line-height:1.5;}
+.ar-vorfall-meldung{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 0;font-size:12.5px;}
+.ar-vorfall-meldung .ja{color:#1E6B45;font-weight:650;}.ar-vorfall-meldung .nein{color:var(--muted);}
+.ar-vorfall-ueberblick{border-left:4px solid #C0543F;}
+@media (max-width:640px){.ar-vorfall-dl{grid-template-columns:minmax(0,1fr);gap:2px 0;}.ar-vorfall-dl dd{margin-bottom:6px;}}
