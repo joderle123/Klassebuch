@@ -349,6 +349,20 @@ var ops={
     d.einschaetzungen=(d.einschaetzungen||[]).concat([{id:neueId(8),datum:e.datum||jetzt().slice(0,10),bereich:e.bereich||'schule',bewertungen:e.bewertungen||{},notiz:e.notiz||'',von:ich().id,z:jetzt()}]);
     return 'Neue Einschätzung ('+Object.keys(e.bewertungen||{}).length+' Aussagen)';
   },'einschaetzung');},
+  /* Screening (Beobachtungsbogen): s = {datum, stufe, rolle, version, antworten, auswirkung, warn, warnNotiz, notiz, kurz} */
+  screening:function(id,s){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var neu=Object.assign({},s,{id:neueId(8),von:ich().id,z:jetzt()});
+    d.screenings=(d.screenings||[]).concat([neu]);
+    return 'Screening vom '+(s.datum||jetzt().slice(0,10))+((s.warn||[]).length?' – mit Warnsignal':'');
+  },'screening');},
+  screeningLoeschen:function(id,sid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var s=(d.screenings||[]).filter(function(x){return x.id===sid;})[0];if(!s){return false;}
+    if(s.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Screenings löschen dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
+    d.screenings=d.screenings.filter(function(x){return x.id!==sid;});
+    return 'Screening vom '+s.datum+' gelöscht';
+  },'screening');},
   loeschen:function(id){
     istBereit();
     return dossierLesen(id).then(function(d){

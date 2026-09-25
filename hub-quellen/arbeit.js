@@ -229,6 +229,7 @@ function seiteDossier(id,neu){
   setzen('<a class="ar-zurueck" href="#/schueler">'+svg('left')+'Alle Schüler</a><div id="ar-dossier">'+laedt('Öffne das Dossier …')+'</div>');
   bereichLaden().then(function(z){
     if(z.art!=='bereit'){$('ar-dossier').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
+    if(window.CDSE_SCREENING&&window.CDSE_SCREENING.geoeffnet){window.CDSE_SCREENING.geoeffnet(id);}
     return T.dossier(id,neu).then(function(d){aktDossier=d;dossierZeichnen(d);});
   }).catch(function(e){$('ar-dossier').innerHTML=karte('<h2>Dossier nicht gefunden</h2>'+hinweis(fehlerText(e))+'<a class="btn" href="#/schueler">Zur Liste</a>','ar-leer');});
 }
@@ -247,7 +248,8 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick'],['fiche','Fiche'],['entwicklung','Entwicklung & Ziele'],['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']];
+  var tabs=[['ueberblick','Überblick'],['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']].concat(window.CDSE_SCREENING?[['screening','Screening'+((d.screenings||[]).length?' ('+d.screenings.length+')':'')]]:[])
+    .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
       '<div class="ar-chips">'+stelleChip(d.stelle)+'<span class="ar-status '+(d.status==='inaktiv'?'aus':'an')+'">'+(d.status==='inaktiv'?'inaktiv seit '+esc(datum(d.statusSeit)):'aktiv')+'</span>'+
@@ -260,6 +262,7 @@ function dossierZeichnen(d){
 function tabInhalt(d,r){
   if(dossierTab==='fiche'){return tabFiche(d,r);}
   if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
+  if(dossierTab==='screening'&&window.CDSE_SCREENING){return window.CDSE_SCREENING.tab(d,r);}
   if(dossierTab==='profil'){return tabProfil(d,r);}
   if(dossierTab==='eintraege'){return tabEintraege(d,r);}
   if(dossierTab==='verlauf'){return tabVerlauf(d);}
@@ -1865,5 +1868,6 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
   hilfen:{esc:esc, svg:svg, pad:pad, heuteIso:heuteIso, datum:datum, datumZeit:datumZeit, alter:alter, team:team, ava:ava, kname:kname,
     schuelerName:schuelerName, schuelerNameKurz:schuelerNameKurz, kopf:kopf, karte:karte, hinweis:hinweis, laedt:laedt, fehlerText:fehlerText,
     toast:toast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,
-    eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);}}};
+    eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);},
+    aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){aktDossier=d;dossierZeichnen(d);}}};
 })();

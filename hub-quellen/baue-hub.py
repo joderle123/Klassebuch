@@ -62,12 +62,25 @@ def block_nach(anker, datei, ersatz=None):
     s = s[:b] + '\n<script>\n' + inhalt + '\n</script>' + s[b:]
 VORLAGE_B64 = base64.b64encode(open(os.path.join(SP, 'fiche', 'vorlage.docx'), 'rb').read()).decode('ascii')
 block_nach('CDSE Hub — Arbeit: Schüler', 'datenbank.js')
+# Screening: Titel der Lernmodule (für Verweise „Zum Nachlesen“) aus lern-app/module/*.json
+import glob, json as _json
+_lern = {}
+for _p in sorted(glob.glob(os.path.join(SP, '..', 'lern-app', 'module', '*.json'))):
+    try:
+        _m = _json.load(open(_p, encoding='utf-8'))
+        _lern[_m['id']] = _m['titel']
+    except Exception:
+        pass
+block_nach('CDSE Hub — Arbeit: Schüler', 'screening.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False)})
+block_nach('CDSE Hub — Arbeit: Schüler', 'screening-bogen.js')
 block_nach('CDSE Hub — Arbeit: Schüler', 'fiche.js', {'@@FICHE_VORLAGE_B64@@': VORLAGE_B64})
 
 # 3) Gestaltung
 css = lies('arbeit.css')
 if os.path.exists(os.path.join(SP, 'datenbank.css')):
     css = css + '\n' + lies('datenbank.css')
+if os.path.exists(os.path.join(SP, 'screening.css')):
+    css = css + '\n' + lies('screening.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]
