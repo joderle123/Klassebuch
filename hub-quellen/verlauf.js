@@ -36,7 +36,8 @@ function daten(d,ab,bis){
   var S=window.CDSE_SCREENING, sc=(d.screenings||[]).filter(function(s){return imZ(iso(s.datum));}).map(function(s){var e=null;try{e=S&&S.auswerten?S.auswerten(s):null;}catch(x){e=null;}
     return {datum:iso(s.datum),stufe:e&&SC_STUFE[e.gesamt.art]!=null?SC_STUFE[e.gesamt.art]:null,titel:e?e.gesamt.titel:'Screening',rot:e?e.bereiche.filter(function(b){return b.stufe==='rot';}).length:0};}).filter(function(x){return x.stufe!=null;});
   var gespr=ein.filter(function(e){return (e.ziel||/^gespraech_/.test(e.art)||e.art==='beobachtung')&&imZ(iso(e.datum));}).map(function(e){return {datum:iso(e.datum),art:e.art,ziel:e.ziel||''};});
-  return {vorf:vorf,tk:tk,tkr:tkr,sc:sc,gespr:gespr,marken:marken(d).filter(function(m){return imZ(m.datum);})};
+  var KM=window.CDSE_KINDMODUS, km=KM?KM.verlauf(d,ab,bis):null;
+  return {vorf:vorf,tk:tk,tkr:tkr,sc:sc,gespr:gespr,km:km&&(km.tage.length||km.runden.length)?km:null,marken:marken(d).filter(function(m){return imZ(m.datum);})};
 }
 /* Maßnahmen und Ereignisse: aus dem Protokoll (Fokusziele, Tageskarte), Überprüfungen, Berichten, Weitergaben */
 function marken(d){
@@ -46,6 +47,7 @@ function marken(d){
     if(/^Begleitplan: Fokusziele /.test(t)){l.push({datum:z,art:'massnahme',text:t.replace(/^Begleitplan: /,''),vergleich:true});}
     else if(/^Tageskarte (eingerichtet|wieder aufgenommen)/.test(t)){l.push({datum:z,art:'massnahme',text:t.replace(/:.*$/,''),vergleich:true});}
     else if(/^Tageskarte beendet/.test(t)){l.push({datum:z,art:'ende',text:'Tageskarte beendet'});}
+    else if(/^Kindmodus eingerichtet/.test(t)){l.push({datum:z,art:'massnahme',text:'Kindmodus eingerichtet',vergleich:true});}
   });
   ((d.begleitplan||{}).reviews||[]).forEach(function(v){l.push({datum:iso(v.datum),art:'review',text:'Überprüfung'});});
   (d.berichte||[]).forEach(function(b){var m=(b.medikamente||[]).map(function(x){return x.name;}).filter(Boolean);
@@ -90,6 +92,15 @@ function grafik(D,ab,bis){
       D.sc.forEach(function(e){var cx=x(e.datum), cy=yv(e.stufe);s+='<path d="M'+cx.toFixed(1)+' '+(cy-5).toFixed(1)+' l5 5 -5 5 -5 -5z" class="vl-sc'+e.stufe+'"><title>'+esc(kurzDatum(e.datum)+': '+e.titel+(e.rot?' ('+e.rot+(e.rot===1?' Bereich':' Bereiche')+' deutlich)':''))+'</title></path>';});
       return s;
     },'oben = mehr Bedarf');
+  }
+  /* Kindmodus: Sterne der Ziel-Quest je Tag (0–3), geübte Runden als Rauten */
+  if(D.km){
+    bahn('Kindmodus',54,function(y,h){
+      var s='', bw=Math.max(3,Math.min(8,(B-L-R)/Math.max(1,tageZwischen(ab,bis))*0.7));
+      D.km.tage.forEach(function(e){var hh=Math.max(2,(h-20)*e.sterne/3);s+='<rect x="'+(x(e.datum)-bw/2).toFixed(1)+'" y="'+(y+h-14-hh).toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+hh.toFixed(1)+'" rx="1.5" class="vl-km-stern"><title>'+esc(kurzDatum(e.datum)+': Ziel-Quest '+e.sterne+(e.sterne===1?' Stern':' Sterne')+(e.einig?' (einig)':''))+'</title></rect>';});
+      D.km.runden.forEach(function(e){var cx=x(e.datum), cy=y+h-6;s+='<path d="M'+cx.toFixed(1)+' '+(cy-4)+' l4 4 -4 4 -4 -4z" class="vl-km-runde '+e.spiel+'"><title>'+esc(kurzDatum(e.datum)+': '+(e.spiel==='atem'?'Atem-Raumschiff':'Stopp-Ampel geübt'))+'</title></path>';});
+      return s;
+    },'Sterne je Tag · ◆ geübt');
   }
   /* Gespräche und Beobachtungen: kleine Striche */
   if(D.gespr.length){
@@ -157,7 +168,7 @@ function vergleichHtml(d){
 function karte(d){
   if(!bausteine()){return '';}
   var bis=heute(), ab=plusTage(bis,-spanne+1), D=daten(d,ab,bis);
-  var leer=!D.tkr.length&&!D.vorf.length&&!D.sc.length&&!D.gespr.length&&!D.marken.length;
+  var leer=!D.tkr.length&&!D.vorf.length&&!D.sc.length&&!D.gespr.length&&!D.marken.length&&!D.km;
   return '<section class="ar-karte vl-karte" id="vl-karte"><div class="ar-kartenkopf"><div><h2>Verlauf auf einen Blick</h2><span class="ar-leise">Wirkt, was wir tun? Tageskarte, Vorfälle, Screenings und Gespräche auf einer Zeitachse</span></div>'+
       '<span class="catbar vl-spanne" role="group" aria-label="Zeitraum">'+BEREICHE.map(function(b){return '<button type="button" class="catchip'+(spanne===b[0]?' on':'')+'" data-vl="'+b[0]+'" aria-pressed="'+(spanne===b[0])+'">'+esc(b[1])+'</button>';}).join('')+'</span></div>'+
     (leer?'<p class="ar-leise">In diesem Zeitraum gibt es noch keine Daten. Die Zeitachse füllt sich mit Tageskarte, Vorfällen, Screenings, Gesprächen und Beobachtungen.</p>':

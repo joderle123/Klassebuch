@@ -316,6 +316,12 @@ function teamName(id){return K.team(id).name;}
    die vorgeschlagenen Schritte berechnet der Hub jedes Mal neu aus dem Dossier. */
 function planVon(d){d.begleitplan=d.begleitplan||{v:1};var b=d.begleitplan;b.schritte=b.schritte||{};return b;}
 var PLAN_STATUS={erledigt:'erledigt',spaeter:'auf später gelegt','passt-nicht':'passt nicht'};
+/* Kindmodus: erlaubte Werte (die Texte dazu stehen in kindmodus.js) */
+var KM_FIGUREN=['fuchs','eule','drache','roboter','katze','baer'], KM_WELTEN=['baum','burg','raumschiff'];
+var KM_STRATEGIEN=['atmen','zaehlen','weggehen','pausenkarte','hilfe','druecken','trinken','eigene'];
+var KM_SIGNALE=['herz','kopf','faeuste','bauch','traenen','zittern','schreien','nichts'];
+function kmMontag(iso){var t=new Date(iso+'T12:00:00'), w=t.getDay();t.setDate(t.getDate()-((w+6)%7));
+  return t.getFullYear()+'-'+(t.getMonth()<9?'0':'')+(t.getMonth()+1)+'-'+(t.getDate()<10?'0':'')+t.getDate();}
 var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
 var BERICHT_ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
 var ops={
@@ -549,6 +555,66 @@ var ops={
     tk.phasen=(tk.phasen||[]).concat([{z:tk.ende,art:'ende'}]);
     return 'Tageskarte beendet'+(tk.endeGrund?' – '+tk.endeGrund:'');
   },'tageskarte');},
+  /* ---- Kindmodus (optional, d.kindmodus): Einstellungen, Ziel-Quest je Woche, geübte Runden ----
+     cfg = {spitzname, figur, welt, ziel, code, schwelle, belohnungen:[≤3], strategien:[ids], eigene}.
+     Gespeichert werden nur Auswahl und Zahlen – keine Freitexte des Kindes. */
+  kindmodus:function(id,cfg){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');cfg=cfg||{};
+    var alt=d.kindmodus&&typeof d.kindmodus==='object'?d.kindmodus:null, km=alt||{v:1,start:jetzt().slice(0,10),wochen:{},runden:[]};
+    km.spitzname=String(cfg.spitzname||'').trim().slice(0,20);
+    if(!km.spitzname){throw fehler('Bitte einen Spitznamen eintragen.');}
+    km.ziel=String(cfg.ziel||'').trim().slice(0,90);
+    if(!km.ziel){throw fehler('Bitte das Wochenziel so eintragen, wie das Kind es sagt.');}
+    km.figur=KM_FIGUREN.indexOf(cfg.figur)>=0?cfg.figur:'fuchs';
+    km.welt=KM_WELTEN.indexOf(cfg.welt)>=0?cfg.welt:'baum';
+    km.code=String(cfg.code||'').slice(0,12);
+    var sw=+cfg.schwelle;km.schwelle=sw>=4&&sw<=15?Math.round(sw):8;
+    km.belohnungen=(cfg.belohnungen||[]).map(function(b){return String(b||'').trim().slice(0,60);}).filter(Boolean).slice(0,3);
+    km.eigene=String(cfg.eigene||'').trim().slice(0,60);
+    km.strategien=(cfg.strategien||[]).filter(function(x,i,l){return KM_STRATEGIEN.indexOf(x)>=0&&l.indexOf(x)===i&&(x!=='eigene'||km.eigene);}).slice(0,5);
+    if(km.eigene&&km.strategien.indexOf('eigene')<0){km.strategien.push('eigene');}
+    if(!km.strategien.length){throw fehler('Bitte mindestens eine Strategie für die Stopp-Ampel wählen.');}
+    km.geaendert=jetzt();km.geaendertVon=ich().id;
+    d.kindmodus=km;
+    return (alt?'Kindmodus geändert':'Kindmodus eingerichtet')+': Ziel „'+km.ziel+'“, '+km.strategien.length+(km.strategien.length===1?' Strategie':' Strategien');
+  },'kindmodus');},
+  /* Ziel-Quest: ein Tag. w = {k:0|1|2 (Kind), e:0|1|2 (Erwachsene)}; Sterne = e + 1, wenn beide gleich einschätzen */
+  kindQuestTag:function(id,tag,w){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');w=w||{};
+    var km=d.kindmodus;if(!km){throw fehler('Für dieses Kind ist der Kindmodus noch nicht eingerichtet.');}
+    tag=String(tag||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(tag)){throw fehler('Ungültiger Tag.');}
+    var k=+w.k, e=+w.e;if([0,1,2].indexOf(k)<0||[0,1,2].indexOf(e)<0||w.k==null||w.e==null){throw fehler('Bitte beide Einschätzungen wählen.');}
+    var mo=kmMontag(tag);km.wochen=km.wochen||{};
+    var wo=km.wochen[mo]||(km.wochen[mo]={ziel:km.ziel,code:km.code||'',schwelle:km.schwelle||8,welt:km.welt||'baum',tage:{}});
+    wo.tage=wo.tage||{};wo.tage[tag]={k:k,e:e,z:jetzt(),von:ich().id};
+    var st=e+(k===e?1:0);
+    return 'Kindmodus: Ziel-Quest am '+tag.split('-').reverse().join('.')+' – '+st+(st===1?' Stern':' Sterne')+(k===e?' (einig)':'');
+  },'kindmodus');},
+  /* Ziel-Quest: Belohnung der Woche (aus der Liste des Teams) */
+  kindBelohnung:function(id,woche,text){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var km=d.kindmodus, wo=km&&km.wochen&&km.wochen[String(woche||'')];if(!wo){throw fehler('Für diese Woche gibt es noch keine Sterne.');}
+    text=String(text||'').trim().slice(0,60);if(!text){return false;}
+    wo.belohnung=text;wo.belohnungAm=jetzt();
+    return 'Kindmodus: Belohnung der Woche ab '+String(woche).split('-').reverse().join('.')+' – '+text;
+  },'kindmodus');},
+  /* Stopp-Ampel oder Atem-Raumschiff: eine geübte Runde. Mehrere Runden derselben Sitzung stehen
+     im Protokoll als ein Eintrag („3 Runden geübt“). */
+  kindRunde:function(id,x){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');x=x||{};
+    var km=d.kindmodus;if(!km){throw fehler('Für dieses Kind ist der Kindmodus noch nicht eingerichtet.');}
+    function stufe(v){v=Math.round(+v);return v>=1&&v<=5?v:null;}
+    var ru={z:jetzt(),spiel:x.spiel==='atem'?'atem':'ampel',von:ich().id};
+    if(ru.spiel==='ampel'){
+      ru.szene=String(x.szene||'').replace(/[^a-z0-9-]/g,'').slice(0,20);ru.vor=stufe(x.vor);ru.nach=stufe(x.nach);
+      ru.strategie=KM_STRATEGIEN.indexOf(x.strategie)>=0?x.strategie:'';
+      ru.signale=(x.signale||[]).filter(function(s){return KM_SIGNALE.indexOf(s)>=0;}).slice(0,8);
+    }else{ru.dauer=Math.max(10,Math.min(900,Math.round(+x.dauer||60)));}
+    km.runden=(km.runden||[]).concat([ru]).slice(-300);
+    var v=d.verlauf||[], l=v[v.length-1], n=1;
+    if(l&&l.a==='kindmodus-runde'&&l.v===ich().id&&(Date.now()-new Date(l.z).getTime())<3*36e5){var m=/(\d+) Runden/.exec(l.t);n=(m?+m[1]:1)+1;d.verlauf=v.slice(0,-1);}
+    return 'Kindmodus: '+(n===1?'eine Runde':n+' Runden')+' geübt';
+  },'kindmodus-runde');},
   planUeberpruefung:function(id,rv){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');rv=rv||{};
     var bp=planVon(d), t=jetzt(), x={id:neueId(8),datum:String(rv.datum||t.slice(0,10)),notiz:String(rv.notiz||'').trim().slice(0,4000),

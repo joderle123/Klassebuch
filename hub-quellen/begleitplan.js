@@ -331,6 +331,7 @@ function tab(d,r){
       (window.CDSE_TAGESKARTE?window.CDSE_TAGESKARTE.fokusLink(d,r):'')+'</section>';
   }
   if(window.CDSE_TAGESKARTE){h+=window.CDSE_TAGESKARTE.karte(d,r);}
+  if(window.CDSE_KINDMODUS){h+=window.CDSE_KINDMODUS.karte(d,r);}
   /* Sofort */
   var sofort=P.liste.filter(function(s){return s.phase==='sofort';});
   if(sofort.length){h+='<section class="ar-karte bp-phase bp-sofort"><h3>'+svg('warn')+'Sofort</h3><ol class="bp-liste">'+sofort.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol></section>';}
@@ -363,6 +364,7 @@ function kennzahlenText(k){
   if(k.erreicht&&k.erreicht.length){t.push('erreicht: '+k.erreicht.join(', '));}
   if(k.screening){t.push('Screening: '+k.screening);}
   if(k.tageskarte){t.push('Tageskarte: im Schnitt '+k.tageskarte.schnitt+' % an '+k.tageskarte.tage+(k.tageskarte.tage===1?' Tag':' Tagen')+' (Tagesziel an '+k.tageskarte.erreicht+' erreicht)');}
+  if(k.kindmodus&&window.CDSE_KINDMODUS){var km=window.CDSE_KINDMODUS.kennzahlText(k.kindmodus);if(km){t.push(km);}}
   return t;
 }
 /* Kennzahlen seit der letzten Überprüfung (oder dem Beginn) */
@@ -379,6 +381,7 @@ function kennzahlen(d,P){
   if(ls&&imZeitraum(ls.s.datum)){k.screening=datum(ls.s.datum)+' – '+ls.e.gesamt.titel;}
   var TK=window.CDSE_TAGESKARTE, tk=TK?TK.karteVon(d):null;
   if(tk){var tl=TK.reihe(tk,'','').filter(function(x){return imZeitraum(x.datum);});if(tl.length){k.tageskarte={tage:tl.length,schnitt:TK.schnitt(tl),erreicht:tl.filter(function(x){return x.erreicht;}).length};}}
+  var KM=window.CDSE_KINDMODUS, kmz=KM?KM.kennzahlen(d,imZeitraum):null;if(kmz){k.kindmodus=kmz;}
   return k;
 }
 
@@ -392,6 +395,7 @@ function kurzKarte(d,r){
       (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
     (n?'<p class="bp-kurz-naechst"><span class="ar-leise">Als Nächstes:</span> <b>'+esc(n.titel)+'</b></p>':'<p class="ar-leise">Im Moment ist nichts offen.</p>')+
     (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p class="bp-kurz-tk">'+esc(window.CDSE_TAGESKARTE.kurz(d))+'</p>':'')+
+    (window.CDSE_KINDMODUS&&window.CDSE_KINDMODUS.kurz(d)?'<p class="bp-kurz-km">'+esc(window.CDSE_KINDMODUS.kurz(d))+'</p>':'')+
     (window.CDSE_VERLAUF&&window.CDSE_VERLAUF.kurz(d)?'<p class="bp-kurz-verlauf">'+esc(window.CDSE_VERLAUF.kurz(d))+' · <button class="ar-link" type="button" data-tab="profil">Verlauf ansehen</button></p>':'')+'</div>';
 }
 
@@ -420,6 +424,7 @@ function druckTeil(d){
   var offen=P.offen.slice(0,8), revs=((P.bp.reviews)||[]).slice().sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));}), rv=revs[0];
   return '<h2>Begleitplan</h2><p>'+P.fertig+' von '+P.gesamt+' Schritten erledigt.'+(P.naechster?' Als Nächstes: <b>'+esc(P.naechster.titel)+'</b>.':'')+'</p>'+
     (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p>'+esc(window.CDSE_TAGESKARTE.kurz(d))+'.</p>':'')+
+    (window.CDSE_KINDMODUS&&window.CDSE_KINDMODUS.kurz(d)?'<p>'+esc(window.CDSE_KINDMODUS.kurz(d))+'.</p>':'')+
     (P.fokus.length?'<h3>Fokusziele</h3><ul>'+P.fokus.map(function(c){var z=P.A?P.A.ziele.filter(function(x){return x.code===c;})[0]:null;return '<li><b>'+esc(c)+'</b>'+(z&&z.text?' – '+esc(z.text):'')+'</li>';}).join('')+'</ul>':'')+
     (offen.length?'<h3>Offene Schritte</h3><ul>'+offen.map(function(s){return '<li>'+esc(s.titel)+(s.status==='dringend'?' <small>(dringend)</small>':(s.faellig?' <small>(fällig '+esc(datum(s.faellig))+')</small>':''))+'</li>';}).join('')+'</ul>':'')+
     (rv?'<h3>Letzte Überprüfung ('+esc(datum(rv.datum))+')</h3><p>'+esc(rv.notiz||'').replace(/\n/g,'<br>')+'</p>':'');

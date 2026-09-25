@@ -54,3 +54,6 @@
 @media (max-width:640px){
   .vl-spanne{margin-left:0;}
 }
+.vl-km-stern{fill:#F5B700;}
+.vl-km-runde{fill:#6E4A7E;}
+.vl-km-runde.atem{fill:#3D7DD8;}

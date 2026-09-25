@@ -100,6 +100,8 @@ block_nach('CDSE Hub — Arbeit: Schüler', 'begleitplan.js', {'@@LERN_TITEL@@':
 block_nach('CDSE Hub — Arbeit: Schüler', 'tageskarte.js')
 # Verlauf auf einen Blick: Zeitachse mit Tageskarte, Vorfällen, Screenings, Maßnahmen
 block_nach('CDSE Hub — Arbeit: Schüler', 'verlauf.js')
+# Kindmodus: Ziel-Quest, Stopp-Ampel und Atem-Raumschiff (Karte im Begleitplan, Bildschirm für das Kind)
+block_nach('CDSE Hub — Arbeit: Schüler', 'kindmodus.js')
 
 # 3) Gestaltung
 css = lies('arbeit.css')
@@ -117,6 +119,8 @@ if os.path.exists(os.path.join(SP, 'tageskarte.css')):
     css = css + '\n' + lies('tageskarte.css')
 if os.path.exists(os.path.join(SP, 'verlauf.css')):
     css = css + '\n' + lies('verlauf.css')
+if os.path.exists(os.path.join(SP, 'kindmodus.css')):
+    css = css + '\n' + lies('kindmodus.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]
@@ -137,6 +141,7 @@ SYMBOLE = {
  'datei': '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M9.5 13h7M9.5 16.5h7"/>',
  'hoch': '<path d="M12 15V4"/><path d="m7.5 8.5 4.5-4.5 4.5 4.5"/><path d="M4.5 15.5v3.5h15v-3.5"/>',
  'runter': '<path d="M12 4v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 15.5v3.5h15v-3.5"/>',
+ 'spiel': '<path d="M7 8.5h10a4 4 0 0 1 4 4v2.2a2.8 2.8 0 0 1-5 1.7L14.8 15H9.2L8 16.4a2.8 2.8 0 0 1-5-1.7v-2.2a4 4 0 0 1 4-4z"/><path d="M8 10.8v3M6.5 12.3h3"/><circle cx="15.4" cy="11.6" r=".9"/><circle cx="17.4" cy="13.4" r=".9"/>',
 }
 sprite_ende = s.index('</svg>', s.index('<body>'))
 neu = ''.join('\n  <symbol id="i-%s" viewBox="0 0 24 24">%s</symbol>' % (k, v) for k, v in SYMBOLE.items() if ('id="i-%s"' % k) not in s)
