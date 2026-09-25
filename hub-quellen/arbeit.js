@@ -251,7 +251,7 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick'],['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']].concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
+  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
     .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
@@ -263,6 +263,7 @@ function dossierZeichnen(d){
   nachZeichnen(d);
 }
 function tabInhalt(d,r){
+  if(dossierTab==='kompass'&&window.CDSE_KOMPASS){return window.CDSE_KOMPASS.tab(d,r);}
   if(dossierTab==='fiche'){return tabFiche(d,r);}
   if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
   if(dossierTab==='screening'&&window.CDSE_SCREENING){return window.CDSE_SCREENING.tab(d,r);}
@@ -383,6 +384,7 @@ function tabUeberblick(d,r){
       blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
       '</div></div>';
   }
+  if(window.CDSE_KOMPASS){h+=window.CDSE_KOMPASS.kurzKarte(d);}
   h+=eldibUeberblick(d);
   if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
     h+=karte('<h2>Aus dem DS</h2>'+(blick.diagnosen.length?'<p><b>Diagnosen:</b> '+esc(blick.diagnosen.join(', '))+'</p>':'')+

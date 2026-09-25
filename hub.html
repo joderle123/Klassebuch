@@ -1230,6 +1230,126 @@ span.sc-kb-ziel .ic{width:16px;height:16px;}
   body.sc-druck #sc-ergebnis .keindruck{display:none!important;}
   body.sc-druck .ar-karte,body.sc-druck .sc-gesamt,body.sc-druck .sc-warn{break-inside:avoid;box-shadow:none;}
 }
+/* ==== Kompass (Reiter im Dossier) ==== */
+.ko-stand{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;margin:0 0 14px;border:1px dashed var(--line-2);border-radius:10px;background:var(--surface-2);font-size:13.5px;line-height:1.5;color:var(--ink-2);}
+.ko-stand .ic{width:16px;height:16px;flex:0 0 auto;color:var(--accent);margin-top:2px;}
+.ko-kopf{border-top:3px solid var(--accent);}
+.ko-kopf .ar-kartenkopf{align-items:flex-start;}
+.ko-kopf .overline{margin:0 0 2px;}
+.ko-kopf h2{margin:0;}
+.ko-profilchips{list-style:none;margin:12px 0 2px;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.ko-pchip{display:inline-flex;align-items:center;gap:8px;padding:5px 6px 5px 12px;border-radius:999px;border:1px solid var(--line-2);background:var(--surface);font:inherit;font-size:14px;font-weight:650;color:var(--ink);line-height:1.3;text-align:left;}
+button.ko-pchip{cursor:pointer;}
+button.ko-pchip:hover{border-color:var(--accent);box-shadow:var(--shadow-1);}
+.ko-art{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.01em;white-space:nowrap;border:1px solid transparent;}
+.ko-art.diagnose{background:var(--ink-2);color:#fff;}
+.ko-art.verdacht{background:#FDF1D8;color:#6B4A07;border-color:#EFD49A;}
+.ko-art.hypothese{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line);}
+.ko-art.beobachtet{background:#EAF3EE;color:#1E6B45;border-color:#BFDCCB;}
+.ko-fakten{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 18px;margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:14px;line-height:1.5;}
+.ko-fakten dt{color:var(--muted);font-weight:600;}
+.ko-fakten dd{margin:0;}
+.ko-leise{color:var(--muted);}
+.ko-leer{color:var(--ink-2);margin:12px 0 0!important;}
+.ko-frage{display:flex;gap:10px;align-items:flex-start;margin:12px 0 0;padding:10px 14px;border-radius:10px;background:#FDF6E4;border:1px solid #F0DDAA;font-size:14px;line-height:1.5;}
+.ko-frage>.ic{width:16px;height:16px;flex:0 0 auto;color:#8A6414;margin-top:3px;}
+.ko-frage p{margin:4px 0 0;}
+.ko-wahl{display:flex;flex-wrap:wrap;gap:6px 8px;margin-top:8px;align-items:center;}
+.ko-wahl .btn{padding:5px 11px;font-size:13px;min-height:0;}
+.ko-nurresp{display:inline-block;padding:0 7px;border-radius:5px;background:#F4E9F7;color:#6E3A7E;font-size:11px;font-weight:700;white-space:nowrap;}
+
+/* Punkte mit Herkunft, Passung und Quellen */
+.ko-liste{margin:6px 0 0;padding-left:20px;display:grid;gap:9px;}
+.ko-liste li{line-height:1.55;font-size:14.5px;padding-left:2px;}
+ol.ko-liste li::marker{font-weight:700;color:var(--accent);}
+.ko-t{margin-right:4px;}
+.ko-von{display:inline-block;margin-right:6px;font-size:12px;font-weight:650;color:var(--muted);}
+.ko-von::before{content:'· ';}
+.ko-passt{display:inline-flex;align-items:center;gap:3px;margin-right:6px;font-size:12px;font-weight:650;color:#1E6B45;}
+.ko-passt .ic{width:13px;height:13px;}
+.ko-tag{display:inline-block;margin-right:6px;padding:0 6px;border-radius:5px;background:var(--surface-2);border:1px solid var(--line);font-size:11.5px;color:var(--muted);font-weight:600;}
+.ko-qs{display:inline-flex;flex-wrap:wrap;gap:3px;vertical-align:1px;}
+.ko-q{display:inline-grid;place-items:center;min-width:19px;height:18px;padding:0 4px;border:1px solid var(--accent-line);border-radius:5px;background:var(--surface);color:var(--accent);font:inherit;font-size:11px;font-weight:700;line-height:1;cursor:pointer;}
+.ko-q:hover,.ko-q:focus-visible{background:var(--accent-soft);outline:none;box-shadow:var(--focus);}
+.ko-praxis{display:inline-block;padding:0 5px;border-radius:5px;border:1px dashed var(--line-2);color:var(--muted);font-size:11px;font-weight:650;line-height:16px;}
+
+/* Das Wichtigste zuerst */
+.ko-wichtig{border-left:4px solid var(--accent);}
+.ko-wichtig h3{display:flex;align-items:center;gap:8px;margin:0 0 4px;font-size:16px;}
+.ko-wichtig h3 .ic{width:18px;height:18px;color:var(--accent);}
+.ko-wichtig .ko-dringend{color:#8E2F1F;}
+.ko-wichtig .ko-dringend .ar-link{margin-left:6px;}
+
+/* Profilkarten */
+.ko-profil{padding:0;overflow:hidden;}
+.ko-profil>summary{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:14px 18px;cursor:pointer;list-style:none;}
+.ko-profil>summary::-webkit-details-marker{display:none;}
+.ko-profil>summary:hover .ko-pname{color:var(--accent);}
+.ko-profil>summary>.ic{margin-left:auto;width:18px;height:18px;color:var(--muted);transition:transform .15s;}
+.ko-profil[open]>summary>.ic{transform:rotate(90deg);}
+.ko-profil.diagnose{border-left:4px solid var(--ink-2);}
+.ko-profil.verdacht{border-left:4px solid #D9A93A;}
+.ko-profil.hypothese{border-left:4px solid var(--accent-line);}
+.ko-profil.beobachtet{border-left:4px solid #9FD3B3;}
+.ko-pkopf{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;min-width:0;}
+.ko-pname{font-family:var(--font-display);font-weight:760;font-size:17px;letter-spacing:-.01em;}
+.ko-umfasst{font-size:12.5px;color:var(--muted);}
+.ko-pinhalt{padding:0 18px 16px;border-top:1px solid var(--line);}
+.ko-warum{margin:14px 0 0;padding:10px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);font-size:13.5px;line-height:1.5;}
+.ko-warum ul{margin:4px 0 0;padding-left:18px;}
+.ko-kurz{margin:12px 0 0!important;font-size:14.5px;color:var(--ink-2);max-width:88ch;}
+.ko-ab{margin-top:16px;}
+.ko-ab h4{margin:0;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.ko-ab-lassen h4{color:#9A3A26;}
+.ko-ab-krise{padding:10px 14px 12px;border-radius:10px;background:#FCEDEA;}
+.ko-ab-krise h4{color:#9A3A26;}
+.ko-material{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px 18px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);}
+.ko-mtitel{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px;}
+.ko-material a{display:block;font-size:14px;color:var(--accent);text-decoration:none;font-weight:560;padding:2px 0;}
+.ko-material a:hover{text-decoration:underline;}
+.ko-material a small{margin-left:6px;color:var(--muted);font-weight:500;font-size:12px;}
+.ko-paktionen{display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:flex-end;margin-top:14px;padding-top:10px;border-top:1px dashed var(--line);}
+
+/* Weitere Blöcke */
+.ko-block h3{margin:0 0 4px;font-size:16px;}
+.ko-block>p{font-size:14px;}
+.ko-quellen>summary,.ko-wie>summary,.ko-aus>summary{cursor:pointer;list-style:none;}
+.ko-quellen>summary::-webkit-details-marker,.ko-wie>summary::-webkit-details-marker,.ko-aus>summary::-webkit-details-marker{display:none;}
+.ko-quellen h3,.ko-wie h3,.ko-aus h3{display:inline;margin:0;font-size:15px;}
+.ko-quellen>summary::before,.ko-wie>summary::before,.ko-aus>summary::before{content:'';display:inline-block;width:7px;height:7px;margin:0 10px 2px 2px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;}
+.ko-quellen[open]>summary::before,.ko-wie[open]>summary::before,.ko-aus[open]>summary::before{transform:rotate(45deg);}
+.ko-quellen ol{margin:12px 0 8px;padding-left:28px;display:grid;gap:6px;font-size:13px;line-height:1.5;color:var(--ink-2);}
+.ko-quellen li{transition:background .3s;}
+.ko-quellen li.ko-hell{background:#FFF3C4;border-radius:4px;}
+.ko-wie p{font-size:14px;color:var(--ink-2);max-width:88ch;margin-top:10px;}
+.ko-aus ul{margin:10px 0 0;padding-left:18px;display:grid;gap:6px;font-size:14px;}
+.ko-kurzkarte .ko-profilchips{margin-top:4px;}
+.ko-kurzkarte .ar-kartenkopf{margin-bottom:0;}
+.ko-dialog-art{border:0;padding:0;margin:12px 0;display:flex;gap:8px 18px;flex-wrap:wrap;}
+.ko-dialog-art legend{font-weight:600;font-size:14px;margin-bottom:6px;padding:0;}
+.ko-dialog-art label{display:inline-flex;align-items:center;gap:6px;font-size:14px;}
+.ko-dialog-hinweis{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--ink-2);margin-top:10px!important;}
+.ko-dialog-hinweis .ic{width:16px;height:16px;flex:0 0 auto;color:var(--accent);}
+
+@media (max-width:640px){
+  .ko-fakten{grid-template-columns:minmax(0,1fr);gap:0;}
+  .ko-fakten dd{margin-bottom:8px;}
+  .ko-profil>summary{padding:12px 14px;}
+  .ko-pinhalt{padding:0 14px 14px;}
+  .ko-liste{padding-left:18px;}
+  .ko-pname{font-size:16px;}
+}
+@media print{
+  body.ko-druck *{visibility:hidden!important;}
+  body.ko-druck #ko-ergebnis,body.ko-druck #ko-ergebnis *{visibility:visible!important;}
+  body.ko-druck #ko-ergebnis{position:absolute;left:0;top:0;width:100%;}
+  body.ko-druck #ko-ergebnis .keindruck{display:none!important;}
+  body.ko-druck .ar-karte{break-inside:avoid;box-shadow:none;}
+  body.ko-druck .ko-profil>summary>.ic{display:none;}
+  body.ko-druck .ko-q{border:0;padding:0;min-width:0;height:auto;}
+  body.ko-druck .ko-q::before{content:'[';}
+  body.ko-druck .ko-q::after{content:']';}
+}
 </style>
 
 <!-- App-Verzeichnis laden. Tippfehler darin abfangen, damit der Hub
@@ -3029,6 +3149,7 @@ function teamName(id){return K.team(id).name;}
    die vorgeschlagenen Schritte berechnet der Hub jedes Mal neu aus dem Dossier. */
 function planVon(d){d.begleitplan=d.begleitplan||{v:1};var b=d.begleitplan;b.schritte=b.schritte||{};return b;}
 var PLAN_STATUS={erledigt:'erledigt',spaeter:'auf später gelegt','passt-nicht':'passt nicht'};
+var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
 var ops={
   person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
@@ -3123,10 +3244,17 @@ var ops={
     d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
     return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
   },'screening');},
-  /* Übernahme aus Klassenbuch/Journal in EINEM Schreibvorgang: p = {app, kb, eintraege:[{datum, art, titel, text,
-     thema, tags, autorName, herkunft:{app,id,updatedAt,…}, bericht?, quelle?, skalen?}], helfernetz?:{daten, quellen}}.
-     Schon übernommene Einträge (gleiche Herkunft) werden nicht verdoppelt, geänderte (neueres updatedAt) nachgetragen. */
-  /* ---- Begleitplan ---- */
+  /* ---- Begleitplan und Kompass ---- */
+  /* Kompass: Entscheidung des Teams zu einem Profil (key = Profil-ID oder z. B. 'ds:emotional').
+     art: diagnose | verdacht (vom Team eingetragen) · aus (ausgeblendet) · geklaert (Rückfrage erledigt) · '' (zurücksetzen) */
+  planMerkmal:function(id,key,werte){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');werte=werte||{};key=String(key||'').slice(0,60);if(!key){throw fehler('Profil fehlt');}
+    var bp=planVon(d), mk=bp.merkmale=bp.merkmale||{}, art=String(werte.art||''), name=String(werte.name||key).slice(0,120);
+    if(!art){if(!mk[key]){return false;}delete mk[key];return 'Kompass: „'+name+'“ zurückgesetzt';}
+    if(!MERKMAL_ART[art]){throw fehler('Unbekannte Angabe');}
+    mk[key]={art:art,quelle:String(werte.quelle||'').trim().slice(0,300),bezug:String(werte.bezug||'').slice(0,60),z:jetzt(),von:ich().id};
+    return 'Kompass: „'+name+'“ '+MERKMAL_ART[art]+(mk[key].quelle&&art!=='aus'?' – '+mk[key].quelle:'');
+  },'begleitplan');},
   planSchritt:function(id,key,werte){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');werte=werte||{};
     var bp=planVon(d), alt=bp.schritte[key], st=werte.status||'', titel=String(werte.titel||key).slice(0,160);
@@ -3172,6 +3300,9 @@ var ops={
     bp.reviews=(bp.reviews||[]).concat([x]);if(!bp.start){bp.start=x.datum;}
     return 'Begleitplan: Überprüfung vom '+x.datum+(x.notiz?' – '+x.notiz.slice(0,200):'');
   },'begleitplan');},
+  /* Übernahme aus Klassenbuch/Journal in EINEM Schreibvorgang: p = {app, kb, eintraege:[{datum, art, titel, text,
+     thema, tags, autorName, herkunft:{app,id,updatedAt,…}, bericht?, quelle?, skalen?}], helfernetz?:{daten, quellen}}.
+     Schon übernommene Einträge (gleiche Herkunft) werden nicht verdoppelt, geänderte (neueres updatedAt) nachgetragen. */
   klassenbuchUebernehmen:function(id,p){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var t=jetzt(), me=ich().id, hk={}, neu=0, akt=0, extra=[];
@@ -3532,7 +3663,7 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick'],['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']].concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
+  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
     .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
@@ -3544,6 +3675,7 @@ function dossierZeichnen(d){
   nachZeichnen(d);
 }
 function tabInhalt(d,r){
+  if(dossierTab==='kompass'&&window.CDSE_KOMPASS){return window.CDSE_KOMPASS.tab(d,r);}
   if(dossierTab==='fiche'){return tabFiche(d,r);}
   if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
   if(dossierTab==='screening'&&window.CDSE_SCREENING){return window.CDSE_SCREENING.tab(d,r);}
@@ -3664,6 +3796,7 @@ function tabUeberblick(d,r){
       blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
       '</div></div>';
   }
+  if(window.CDSE_KOMPASS){h+=window.CDSE_KOMPASS.kurzKarte(d);}
   h+=eldibUeberblick(d);
   if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
     h+=karte('<h2>Aus dem DS</h2>'+(blick.diagnosen.length?'<p><b>Diagnosen:</b> '+esc(blick.diagnosen.join(', '))+'</p>':'')+
@@ -5261,6 +5394,934 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
     eldibAuswertung:function(d){return bankDa()?eldibAuswertung(d):null;}, blaetterZuItem:blaetterZuItem, toolboxHref:toolboxHref,
     itemZu:function(c){return bankDa()?itemZu(c):null;}, vorfallMinuten:vorfallMinuten, ARTEN:ARTEN,
     dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}}};
+})();
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Wissensbasis für den Kompass
+   ---------------------------------------------------------------------
+   Bausteine je Profil (dokumentierte Diagnose, Verdacht oder aus
+   Beobachtungen), je Entwicklungsstufe (ETEP), für häufige Kombinationen
+   und für das Umfeld. Der Kompass wählt daraus aus, was zum Profil eines
+   Kindes passt, und zeigt bei jedem Punkt, warum.
+
+   Quellen: nur Schlüssel aus lern-app/quellen.js (geprüfte Fachliteratur,
+   Leitlinien). Ohne Quelle steht ein Punkt als „Praxis“ da.
+
+   Felder einer Empfehlung:
+     t      Text (du-Form, für pädagogische Fachkräfte)
+     q      Quellen (Schlüssel)
+     b, st  nur für bestimmte ETEP-Stufen: Bereich (V, K, SOZ) und [von, bis]
+     alter  nur für ein Alter [von, bis] in Jahren
+
+   Felder eines Profils:
+     name   Name als Diagnose (bei Diagnose und Verdacht)
+     thema  neutraler Name (bei Arbeitshypothese und Beobachtung)
+     umfasst  andere Profile, die in diesem aufgehen (z. B. Emotionsregulation
+            in den Borderline-Zügen) – dann erscheint nur dieses
+
+   Erkennen eines Profils:
+     re     regulärer Ausdruck (ohne Groß-/Kleinschreibung) für Diagnosen und
+            Verdacht – ICD-10, ICD-11 und Namen auf Deutsch, Französisch, Englisch
+     beob   aus Beobachtungen (keine Diagnose): Liste von Alternativen, jede
+            eine Liste von Bedingungen, die alle erfüllt sein müssen:
+            'sc:<bereich>' (Screening deutlich) · 'sc:<bereich>:gelb' (auch
+            „einiges“) · 'warn:<id>' · 'alter:<n>+' · 'vorfaelle:<n>+'
+
+   Stand: Entwurf – vor dem Einsatz fachlich prüfen lassen.
+   ===================================================================== */
+window.CDSE_KOMPASS_WISSEN={
+stand:'2026-09-25',
+status:'Entwurf – bitte vor dem Einsatz vom Fachteam (z. B. Diagnostique) prüfen lassen',
+
+/* ---------------------------------------------------------------------
+   Profile
+   --------------------------------------------------------------------- */
+profile:[
+ {id:'adhs', name:'ADHS', thema:'Aufmerksamkeit und Unruhe',
+  re:'\\bF90|\\b6A05|\\badhs\\b|\\bads\\b|\\badhd\\b|\\btdah\\b|hyperkinet|aufmerksamkeitsdefizit',
+  beob:[['sc:aufmerksamkeit'],['sc:unruhe','sc:aufmerksamkeit:gelb']],
+  kurz:'Anhaltende Schwierigkeiten mit Aufmerksamkeit, Unruhe und Impulssteuerung in mehreren Lebensbereichen – eine Störung der Selbststeuerung mit starker biologischer Grundlage, kein Erziehungsfehler.',
+  verstehen:[
+   {t:'Selbststeuerung (Arbeitsgedächtnis, Impulshemmung, Zeitgefühl) ist verzögert entwickelt. Deshalb braucht das Kind Steuerung von außen, bis es sie selbst übernehmen kann.',q:['barkley2015']},
+   {t:'Später oder seltener Lohn wirkt kaum, sofortige und häufige Rückmeldung wirkt. Das erklärt, warum dasselbe Kind am Computer stundenlang dranbleibt und bei Hausaufgaben nach Minuten aufgibt.',q:['barkley2015','faraone2021']},
+   {t:'Die Leitlinien empfehlen ein Vorgehen auf mehreren Ebenen: Aufklärung, Elterntraining, Maßnahmen in Schule und Betreuung, bei Bedarf Medikamente.',q:['niceNG87','awmfAdhs2018']}],
+  umgang:[
+   {t:'Anweisungen kurz, einzeln und mit Blickkontakt geben; längere Aufträge zusätzlich schriftlich oder als Bild.',q:['doepfner2019']},
+   {t:'Viel häufiger loben als korrigieren – sofort und konkret („Du hast gleich angefangen“).',q:['doepfner2019','barkley2015']},
+   {t:'Fehlverhalten kurz und neutral ansprechen, ohne Moralpredigt; ruhig und berechenbar bleiben.',q:['doepfner2019']},
+   {t:'Die Steuerung liegt noch fast ganz bei dir: Nähe, feste Abläufe und ein einziges Ziel mit Sofortverstärker (Stempel, Punkt).',q:['doepfner2019','wood1996'],b:'V',st:[1,2]},
+   {t:'Selbstbeobachtung aufbauen: Das Kind schätzt sich mit einer einfachen Karte selbst ein und vergleicht mit deiner Einschätzung.',q:['doepfner2019'],b:'V',st:[3,5]}],
+  konkret:[
+   {t:'Aufgaben in kleine Etappen teilen und Zwischenkontrollen einbauen („Zeig mir die ersten drei“).',q:['niceNG87','doepfner2019']},
+   {t:'Arbeitsplatz mit wenig Ablenkung, nahe bei dir, Material vorbereitet; Zeit sichtbar machen (Sanduhr, Zeitbalken).',q:['doepfner2019','barkley2015']},
+   {t:'Punkteplan mit ein bis drei klar beschriebenen Zielen und schneller Einlösung.',q:['doepfner2019']},
+   {t:'Tägliche Rückmeldekarte zwischen Schule und Eltern (Check-in/Check-out).',q:['crone2010']},
+   {t:'Bewegung erlauben und einplanen: Materialdienst, kurze Bewegungspausen.',q:['doepfner2019']}],
+  lassen:[
+   {t:'Pause oder Sport als Strafe streichen – gerade diese Kinder brauchen Bewegung.',q:['doepfner2019']},
+   {t:'Strafen für Symptome (Vergessen, Zappeln) statt Hilfen zum Organisieren.',q:['barkley2015']},
+   {t:'Lange Ermahnungen, Ironie, Bloßstellen vor der Klasse.',q:['doepfner2019']}],
+  zusammenarbeit:[
+   {t:'Mit den Eltern gleiche Ziele und Verstärker absprechen; ein Elterntraining kann helfen.',q:['niceNG87']},
+   {t:'Bei Medikation: Beobachtungen aus der Schule (Wirkung, Tageszeit, Nebenwirkungen) sachlich an Eltern und Ärztin weitergeben – keine Empfehlungen zur Dosis.',q:['awmfAdhs2018']}],
+  blaetter:['bin-ich-bei-der-sache','stopp-denken-handeln','selbstcheck','punkteplan','check-in-check-out','konzentrations-tricks','schritt-fuer-schritt'],
+  lernen:['adhs','verstaerkung']},
+
+ {id:'sozialverhalten', name:'Oppositionelles und aggressives Verhalten', thema:'Regeln und Konflikte',
+  re:'\\bF9[12]|\\bF90\\.1|\\b6C9[01]|sozialverhalten|oppositionell|trotzverhalten|trouble (oppositionnel|des conduites)|conduct disorder|oppositional|\\bodd\\b',
+  beob:[['sc:verhalten'],['vorfaelle:3+','sc:verhalten:gelb']],
+  kurz:'Anhaltend oppositionelles, trotziges oder aggressives Verhalten, das über das Altersübliche hinausgeht. Entscheidend für den Umgang: Entsteht die Aggression aus Wut und Bedrohung (reaktiv) oder wird sie gezielt eingesetzt (proaktiv)?',
+  verstehen:[
+   {t:'Zwangsprozesse: Erwachsene und Kind schaukeln sich gegenseitig hoch; wer am Ende nachgibt, verstärkt ungewollt das Verhalten beider.',q:['kazdin2008','petermann2012']},
+   {t:'Reaktive Aggression entsteht aus Kränkung, Bedrohungserleben und Wut, proaktive wird eingesetzt, um etwas zu bekommen. Beide brauchen unterschiedliche Antworten.',q:['petermann2012','frick2014']},
+   {t:'Kaltherzig-unemotionale Züge (wenig Schuldgefühl und Mitgefühl) sind ein eigener Risikofaktor; diese Kinder sprechen besser auf Belohnung an als auf Strafe.',q:['frick2014']},
+   {t:'Die Leitlinie empfiehlt vor allem Elterntraining und Programme zur sozialen Kompetenz in der Schule.',q:['niceCG158']}],
+  umgang:[
+   {t:'Präsenz statt Machtkampf: ruhig bleiben, nicht sofort reagieren („Ich komme darauf zurück“), die Beziehung halten.',q:['omer2004']},
+   {t:'Wenige klare Regeln mit vorher bekannten Konsequenzen – konsequent und ohne Drama.',q:['petermann2012','webbStratton2003']},
+   {t:'Erwünschtes Verhalten gezielt beachten und das Verhältnis von Lob zu Kritik bewusst ändern.',q:['webbStratton2003','kazdin2008']},
+   {t:'Bei Wutausbrüchen zuerst Sicherheit und Beruhigung, erst danach das Gespräch; Auslöser wie Kränkung oder Überforderung früh erkennen.',q:['petermann2012'],b:'V',st:[1,3]},
+   {t:'Wiedergutmachung statt reiner Strafe: „Was kannst du tun, damit es wieder gut wird?“',q:['omer2004'],b:'SOZ',st:[3,5]}],
+  konkret:[
+   {t:'Training sozialer Fertigkeiten in der Gruppe über mehrere Wochen: Gefühle erkennen, Probleme lösen, Konflikte klären.',q:['petermann2012','durlak2011']},
+   {t:'Punkteplan oder Check-in/Check-out mit täglicher Rückmeldung.',q:['crone2010']},
+   {t:'Nachgespräch nach Konflikten mit festen Fragen: Was ist passiert? Was hast du gedacht und gefühlt? Was machst du beim nächsten Mal?',q:['petermann2012']},
+   {t:'Bei gezielt eingesetzter Aggression: klare Konsequenzen und Belohnung für faires Verhalten; nicht allein auf Appelle an das Mitgefühl setzen.',q:['frick2014']}],
+  lassen:[
+   {t:'Öffentliche Machtkämpfe und Diskussionen vor der Klasse.',q:['omer2004']},
+   {t:'Anschreien und Drohungen, die dann nicht umgesetzt werden.',q:['kazdin2008']},
+   {t:'Nur auf Fehlverhalten reagieren – das Kind lernt, dass Stören Aufmerksamkeit bringt.',q:['webbStratton2003']}],
+  zusammenarbeit:[
+   {t:'Elterntraining anregen; es gehört zu den am besten belegten Hilfen.',q:['niceCG158']},
+   {t:'Gleiche Regeln in Schule, Betreuung und Familie; Unterstützerkreis im Sinne der Neuen Autorität aufbauen.',q:['omer2004']}],
+  blaetter:['meine-stopp-hand','ampel-im-kopf','stopp-denken-handeln','konflikte-loesen','das-war-nicht-okay','verantwortung-uebernehmen','punkteplan'],
+  lernen:['oppositionell-aggressiv','neue-autoritaet','deeskalation']},
+
+ {id:'trauma', name:'Trauma und Traumafolgen', thema:'Belastende Erfahrungen',
+  beob:[['warn:gewalt']],
+  re:'\\bF43\\.[01]|\\b6B4[01]|\\bptbs\\b|\\bptsd\\b|\\btspt\\b|trauma|posttraumat|belastungsst[öo]rung|stress post',
+  kurz:'Folgen belastender Erlebnisse wie Gewalt, Vernachlässigung, Verlust oder Flucht. Das Verhalten ist oft eine früher sinnvolle Überlebensreaktion, die in der Schule nicht mehr passt.',
+  verstehen:[
+   {t:'Auslöser (Trigger), die an das Erlebte erinnern, lösen Kampf, Flucht oder Erstarren aus – oft ohne dass das Kind den Zusammenhang merkt.',q:['perry2006','vanDerKolk2014']},
+   {t:'Toleranzfenster: Außerhalb davon, in Übererregung oder Erstarrung, sind Lernen und Nachdenken kaum möglich.',q:['siegel1999']},
+   {t:'Belastende Kindheitserfahrungen erhöhen das Risiko für spätere Probleme; stabile Beziehungen und Sicherheit wirken schützend.',q:['felitti1998','rutter2012']}],
+  umgang:[
+   {t:'Sicherheit zuerst: vorhersehbare Abläufe, Veränderungen ankündigen, ruhige Stimme.',q:['perry2006']},
+   {t:'Verhalten als Folge von Erfahrungen verstehen, nicht als Absicht – und trotzdem Grenzen halten.',q:['perry2006']},
+   {t:'Mitregulieren: Du bleibst ruhig und hilfst beim Beruhigen, bevor du Selbststeuerung erwartest.',q:['perry2006','siegel1999']},
+   {t:'Wahlmöglichkeiten geben: Kontrolle über kleine Dinge stärkt das Gefühl, etwas bewirken zu können.',q:['vanDerKolk2014','bandura1977']}],
+  konkret:[
+   {t:'Auslöser gemeinsam herausfinden (Geräusche, Berührung, jemand hinter dem Rücken) und im Team bekanntmachen.',q:['vanDerKolk2014']},
+   {t:'Einen sicheren Platz im Raum und einfache Übungen zum Ankommen im Hier und Jetzt vereinbaren (Atmen, Dinge im Raum benennen, etwas Kaltes anfassen).',q:['vanDerKolk2014']},
+   {t:'Übergänge ankündigen und begleiten; Vertretungen vorbereiten.',q:['perry2006']},
+   {t:'Das Erlebte nicht in der Schule aufarbeiten: Erzählt das Kind davon, ruhig zuhören – die Aufarbeitung gehört in die Therapie.',q:['niceNG116']}],
+  lassen:[
+   {t:'Isolation, Festhalten oder Einsperren als Strafe.',q:['perry2006']},
+   {t:'Plötzliche Berührung, Anschreien, unberechenbare Reaktionen.',q:['perry2006']},
+   {t:'Nach Einzelheiten des Erlebten fragen.',q:['niceNG116']}],
+  krise:[
+   {t:'Bei Übererregung: Abstand, wenige Worte, ruhige Stimme, einen Ausweg lassen. Bei Erstarrung: mit Namen ansprechen und Orientierung geben (Ort, Zeit, wer da ist).',q:['siegel1999','perry2006']}],
+  zusammenarbeit:[
+   {t:'Traumafokussierte Therapie, etwa traumafokussierte kognitive Verhaltenstherapie, wird in den Leitlinien empfohlen – Kontakt zu den Behandelnden nur mit Einverständnis der Eltern.',q:['niceNG116']},
+   {t:'Bei Hinweisen auf eine aktuelle Gefährdung gilt sofort der interne Kinderschutz-Ablauf.',q:['whoMaltreatment2006']}],
+  blaetter:['ruhig-werden-drei-uebungen','meine-ruhe-insel','stress-werkzeugkoffer','ballon-atmen','wer-ist-fuer-mich-da'],
+  lernen:['trauma','traumapaedagogik','stress-gehirn']},
+
+ {id:'bindung', name:'Bindungsstörung', umfasst:['bindungsunsicher'],
+  re:'\\bF94\\.[12]|\\b6B4[45]|bindungsst[öo]rung|trouble de l.attachement|attachment disorder',
+  kurz:'Schwere Beziehungsauffälligkeiten nach frühen Versorgungsbrüchen oder Vernachlässigung: Rückzug und Misstrauen gegenüber Erwachsenen (gehemmt) oder wahllose Nähe auch zu Fremden (enthemmt).',
+  verstehen:[
+   {t:'Frühe Erfahrungen prägen innere Arbeitsmodelle: was ein Kind von Erwachsenen erwartet, etwa Zurückweisung oder Unberechenbarkeit.',q:['bowlby1969','grossmann2012']},
+   {t:'Bindungsstörungen entstehen durch schwere Vernachlässigung und sind etwas anderes als unsichere Bindungsmuster, die häufig und keine Störung sind.',q:['zeanah2015']},
+   {t:'Der wichtigste Wirkfaktor sind verlässliche, feinfühlige Bezugspersonen.',q:['niceNG26','grossmann2012']}],
+  umgang:[
+   {t:'Eine feste Bezugsperson im Team und Beständigkeit auch nach Konflikten („Ich bin morgen wieder da“).',q:['niceNG26']},
+   {t:'Feinfühlig reagieren: die Bedürfnisse hinter dem Verhalten sehen – Nähe suchen, Nähe testen, Nähe abwehren.',q:['grossmann2012']},
+   {t:'Beziehungstests aushalten: Abwertung und Provokation nicht persönlich nehmen, Grenzen trotzdem halten.',q:['zeanah2015']},
+   {t:'Bei distanzlosem Verhalten freundliche, klare Regeln für Nähe und Distanz, ohne zu beschämen.',q:['zeanah2015']}],
+  konkret:[
+   {t:'Rituale für Begrüßung, Abschied und Übergänge.',q:['grossmann2012']},
+   {t:'Wechsel von Personen und Räumen früh ankündigen und Vertretungen vorbereiten.',q:['niceNG26']},
+   {t:'Kleine, sichere Beziehungserfahrungen gezielt schaffen: eine gemeinsame Aufgabe, eine feste Zeit in der Woche.',q:['grossmann2012']}],
+  lassen:[
+   {t:'Liebesentzug oder Beziehungsabbruch als Konsequenz.',q:['niceNG26']},
+   {t:'Häufige Wechsel der Bezugspersonen.',q:['zeanah2015']}],
+  zusammenarbeit:[
+   {t:'Enge Absprache mit Pflegeeltern oder Heim; die Leitlinie empfiehlt, die Bezugspersonen in ihrer Feinfühligkeit zu unterstützen, etwa mit videogestützter Beratung.',q:['niceNG26']}],
+  blaetter:['wer-ist-fuer-mich-da','meine-helfer-hand','mein-unterstuetzungsnetz','trost-koffer'],
+  lernen:['bindungsstoerungen','bindung','bindungsmuster']},
+
+ {id:'bindungsunsicher', name:'Unsichere Bindung', thema:'Beziehung und Vertrauen',
+  kurz:'Das Kind wirkt in Beziehungen vorsichtig, misstrauisch oder klammernd – oft nach Brüchen, Wechseln oder wenig verlässlichen Erfahrungen. Unsichere Bindung ist häufig und keine Störung; sie zeigt, was das Kind von Erwachsenen erwartet.',
+  verstehen:[
+   {t:'Aus frühen Erfahrungen entstehen Erwartungen an Erwachsene, etwa „Ich muss allein klarkommen“ (vermeidend) oder „Ich muss um Zuwendung kämpfen“ (ambivalent).',q:['bowlby1969','ainsworth1978']},
+   {t:'Bindungsmuster sind veränderbar: Neue, verlässliche Beziehungen – auch zu Fachkräften – können korrigierende Erfahrungen sein.',q:['sroufe2005','grossmann2012']}],
+  umgang:[
+   {t:'Verlässlich und vorhersehbar sein: Zusagen halten, Abwesenheiten ankündigen, nach Konflikten die Beziehung aktiv wiederherstellen.',q:['grossmann2012']},
+   {t:'Bei vermeidendem Verhalten Nähe anbieten, ohne sie aufzudrängen – eher über gemeinsames Tun als über Gespräche.',q:['grossmann2012']},
+   {t:'Bei klammerndem Verhalten Sicherheit durch klare Abläufe geben und Selbstständigkeit in kleinen Schritten ermutigen.',q:['grossmann2012']}],
+  konkret:[
+   {t:'Eine feste Bezugsperson und ein kurzes tägliches Ritual (Begrüßung, kurzer Check-in am Morgen).',q:['grossmann2012','crone2010']},
+   {t:'Übergänge und Vertretungen vorbereiten: Wer kommt? Wann bist du wieder da?',q:['niceNG26']}],
+  lassen:[
+   {t:'Zuwendung als Belohnung einsetzen oder bei Fehlverhalten entziehen.',q:['grossmann2012']}],
+  zusammenarbeit:[
+   {t:'Mit Eltern oder Betreuenden besprechen, was dem Kind Sicherheit gibt, und Übergänge zwischen Familie und Schule gemeinsam gestalten.',q:['grossmann2012']}],
+  blaetter:['wer-ist-fuer-mich-da','meine-helfer-hand','trost-koffer'],
+  lernen:['bindung','bindungsmuster']},
+
+ {id:'regulation', name:'Schwierigkeiten der Emotionsregulation', thema:'Gefühle regulieren',
+  beob:[['sc:regulation']],
+  kurz:'Wut, Angst oder Enttäuschung werden schnell sehr stark und klingen nur langsam ab; eigene Wege, sie zu steuern, fehlen noch. Keine Diagnose, sondern ein Entwicklungsbereich, der bei vielen Schwierigkeiten mitläuft.',
+  verstehen:[
+   {t:'Emotionsregulation entwickelt sich von außen nach innen: Zuerst beruhigen Erwachsene das Kind (Mitregulation), erst allmählich übernimmt es das selbst.',q:['siegel1999','schneiderLindenberger2018']},
+   {t:'Regulation kann an verschiedenen Stellen ansetzen: Situation wählen oder verändern, Aufmerksamkeit lenken, anders bewerten, die Reaktion steuern. Je früher im Ablauf, desto leichter.',q:['gross1998']},
+   {t:'Toleranzfenster: Nur in einem mittleren Erregungsbereich ist Nachdenken möglich; bei starker Wut oder Panik und beim Abschalten nicht.',q:['siegel1999']}],
+  umgang:[
+   {t:'Selbst ruhig bleiben ist das wichtigste Werkzeug: leiser und langsamer sprechen, wenige Worte, Abstand lassen.',q:['siegel1999','perry2006']},
+   {t:'Erst beruhigen, dann die Beziehung sichern, dann nachdenken – in der Aufregung nicht erklären oder diskutieren.',q:['perry2006']},
+   {t:'Gefühle in Worte fassen helfen („Du bist gerade richtig wütend“) und das Gefühl vom Verhalten trennen: Das Gefühl ist in Ordnung, Schlagen nicht.',q:['petermann2012','bergsson1998']},
+   {t:'Du regulierst stellvertretend: Nähe, ruhiger Rhythmus, weniger Reize – noch keine Selbststeuerung erwarten.',q:['wood1996','bergsson1998'],b:'V',st:[1,2]},
+   {t:'Strategien gemeinsam in ruhigen Momenten üben und in der Situation mit einem vereinbarten Zeichen daran erinnern.',q:['petermann2012','wood1996'],b:'V',st:[3,5]}],
+  konkret:[
+   {t:'Ein Gefühlsthermometer oder eine Ampel einführen: Woran merkst du Grün, Gelb, Rot? Was hilft dir bei Gelb?',q:['petermann2012','kendallHedtke2006']},
+   {t:'Auslöser beobachten und vorbeugen: Wann, wo und bei wem wird es schwierig (Übergänge, Kritik, Warten, Lärm)? Dort früher Unterstützung anbieten.',q:['gross1998','crone2010']},
+   {t:'Eine Beruhigungskarte mit zwei oder drei Schritten, die das Kind selbst ausgewählt hat (z. B. atmen, an den ruhigen Platz gehen, etwas in die Hand nehmen).',q:['Praxis']},
+   {t:'Nachgespräch erst in Ruhe: Was ist passiert, was hast du gefühlt, was hilft beim nächsten Mal? Kurz halten und mit einem Plan beenden.',q:['petermann2012']}],
+  lassen:[
+   {t:'In der Hochphase diskutieren, erklären oder drohen.',q:['perry2006']},
+   {t:'Gefühle verbieten oder abwerten („Hör auf zu heulen“) statt das Verhalten zu begrenzen.',q:['linehan1993']}],
+  krise:[
+   {t:'Sicherheit geht vor: andere Kinder schützen, Abstand halten, wenige ruhige Worte, einen Ausweg lassen. Gesprochen wird erst, wenn das Kind wieder ruhig ist.',q:['perry2006','siegel1999']}],
+  zusammenarbeit:[
+   {t:'Mit den Eltern dieselben Worte und Hilfen vereinbaren (z. B. dieselbe Ampel), damit das Kind sie überall üben kann.',q:['webbStratton2003']}],
+  blaetter:['wut-thermometer','ampel-im-kopf','meine-ruhe-insel','gefuehle-detektiv','ich-brauche-eine-pause'],
+  lernen:['emotionsregulation','stress-gehirn','deeskalation']},
+
+ {id:'instabil', name:'Emotionale Instabilität / Borderline-Züge', thema:'Starke Gefühlsschwankungen', umfasst:['regulation'],
+  re:'\\bF60\\.3|\\b6D11\\.5|borderline|emotional instabil|emotionale instabilit|personnalit[ée] (limite|borderline)|emotionally unstable',
+  beob:[['sc:regulation','sc:stimmung','alter:12+'],['sc:regulation','warn:selbstverletzung','alter:12+']],
+  kurz:'Sehr starke, schnell wechselnde Gefühle, Impulsivität, instabile Beziehungen und oft Selbstverletzung. Im Jugendalter ernst zu nehmen und früh zu behandeln – als Entwicklungsrisiko, nicht als Etikett.',
+  verstehen:[
+   {t:'Biosoziales Modell: Eine hohe emotionale Empfindlichkeit trifft auf ein Umfeld, das Gefühle oft als falsch oder übertrieben zurückweist. Daraus entsteht die Schwierigkeit, Gefühle zu regulieren.',q:['linehan1993']},
+   {t:'Unter Stress bricht das Mentalisieren weg: Eigene Gefühle und die Absichten anderer werden schwer verstehbar, Zurückweisung wird schnell vermutet.',q:['fonagy2002','sharpFonagy2015']},
+   {t:'Die Diagnose ist ab dem Jugendalter möglich; frühe, spezifische Hilfe verbessert den Verlauf.',q:['kaess2014','awmfBps2022']}],
+  umgang:[
+   {t:'Validieren vor Verändern: das Gefühl als nachvollziehbar anerkennen („Ich sehe, wie sehr dich das trifft“), bevor du über das Verhalten sprichst.',q:['linehan1993','rathusMiller2015']},
+   {t:'Ruhig, vorhersehbar und verlässlich bleiben, auch bei Abwertung oder Idealisierung; die Beziehung nicht vom Verhalten abhängig machen.',q:['sharpFonagy2015']},
+   {t:'Mentalisierend nachfragen statt deuten („Was ging in dir vor, als …?“) und eigenes Nichtwissen zugeben.',q:['fonagy2002']},
+   {t:'Wenige klare Regeln, die alle im Team gleich handhaben – das schützt vor Spaltung.',q:['awmfBps2022']}],
+  konkret:[
+   {t:'Mit der Jugendlichen eine Skills-Liste für hohe Anspannung erstellen, zum Beispiel kaltes Wasser, intensive Bewegung, langsames Atmen, starke Sinnesreize – griffbereit als Karte.',q:['rathusMiller2015'],b:'V',st:[3,5]},
+   {t:'Anspannung auf einer Skala von 0 bis 100 einschätzen lassen: bei hoher Anspannung zuerst Skills zur Stresstoleranz, bei niedriger Gespräch und Gefühlsregulation.',q:['rathusMiller2015','linehan1993']},
+   {t:'Einfache Beruhigungshilfen mit Bildkarten; ein Erwachsener begleitet die Anwendung.',q:['rathusMiller2015','wood1996'],b:'V',st:[1,2]},
+   {t:'Nachgespräch als Verhaltensanalyse: Auslöser, Gedanken, Gefühle, Handlung, Folgen – und an welcher Stelle es beim nächsten Mal anders gehen kann.',q:['linehan1993']},
+   {t:'Feste Ansprechperson und regelmäßige kurze Kontakte auch ohne Krise, damit Zuwendung nicht nur in der Krise kommt.',q:['linehan1993']},
+   {t:'Einen Rückzugsort mit klarer Absprache: Signal, Dauer, wer nachschaut.',q:['Praxis']}],
+  lassen:[
+   {t:'Gefühle bagatellisieren oder als Manipulation abtun.',q:['linehan1993']},
+   {t:'Beziehungsabbruch oder Isolation als Strafe.',q:['sharpFonagy2015']},
+   {t:'Einzelne Kolleginnen oder Kollegen zu Retterinnen und Rettern werden lassen, ohne Absprache im Team.',q:['awmfBps2022']},
+   {t:'In der Hochspannung diskutieren oder Grundsatzgespräche führen.',q:['rathusMiller2015']}],
+  krise:[
+   {t:'Bei Selbstverletzung ruhig und sachlich reagieren, Wunden versorgen lassen, die Leitung informieren und Suizidgedanken direkt erfragen.',q:['niceNG225']},
+   {t:'Einen Krisenplan mit Frühwarnzeichen, Skills, Ansprechpersonen und Notfallnummern mit Fachleuten erarbeiten.',q:['stanleyBrown2012']}],
+  zusammenarbeit:[
+   {t:'Therapie wie DBT-A oder mentalisierungsbasierte Therapie machen dafür ausgebildete Therapeutinnen und Therapeuten. Absprechen, welche Skills die Schule unterstützt.',q:['millerRathusLinehan2007','rossouwFonagy2012']},
+   {t:'Bei häufiger Selbstverletzung und starker Gefühlsinstabilität empfiehlt die NICE-Leitlinie, DBT-A in Betracht zu ziehen.',q:['niceNG225']},
+   {t:'Eltern einbeziehen: In DBT-A sind Familien Teil der Behandlung, auch Eltern lernen Validierung.',q:['millerRathusLinehan2007']}],
+  blaetter:['sicherheitsplan','wut-thermometer','ruhig-werden-drei-uebungen','stress-werkzeugkoffer','nachgespraech-krise'],
+  lernen:['emotionsregulation','mentalisieren','selbstverletzung-suizid']},
+
+ {id:'selbstverletzung', name:'Selbstverletzung und Suizidalität',
+  re:'selbstverletz|\\bsvv\\b|\\bnssv\\b|automutilation|self.harm|suizid|suicid|\\bX(6[0-9]|7[0-9]|8[0-4])',
+  beob:[['warn:selbstverletzung'],['warn:suizid']],
+  kurz:'Absichtliche Selbstverletzung, meist als Versuch, unerträgliche Anspannung oder Gefühle zu regulieren. Sie ist kein Suizidversuch, erhöht aber das Risiko für Suizidalität und braucht immer eine fachliche Einschätzung.',
+  verstehen:[
+   {t:'Selbstverletzung hat Funktionen: Anspannung senken, Gefühle spürbar machen oder beenden, sich bestrafen, anderen Not zeigen.',q:['nock2010']},
+   {t:'Sie ist ein wichtiger Risikofaktor für Suizid; Suizidgedanken werden deshalb immer direkt erfragt.',q:['hawton2012','niceNG225']}],
+  umgang:[
+   {t:'Ruhig, sachlich und respektvoll reagieren – weder schockiert noch gleichgültig.',q:['niceNG225']},
+   {t:'Interesse an der Person zeigen, nicht an Einzelheiten der Verletzung; nicht nach Methoden fragen.',q:['niceNG225']}],
+  konkret:[
+   {t:'Wunden versorgen lassen, die Leitung informieren und die Eltern nach dem internen Ablauf einbeziehen.',q:['niceNG225']},
+   {t:'Mit Fachleuten einen Sicherheitsplan erarbeiten: Warnzeichen, eigene Strategien, Ansprechpersonen, Notfallnummern.',q:['stanleyBrown2012']},
+   {t:'Alternative Strategien für hohe Anspannung gemeinsam erarbeiten – als Ergänzung zur Therapie.',q:['rathusMiller2015']},
+   {t:'Ansteckung in Gruppen beachten: nicht öffentlich besprechen, Bilder in sozialen Medien ansprechen.',q:['hawton2012']}],
+  lassen:[
+   {t:'Versprechen erzwingen („Nie wieder!“) oder mit Konsequenzen drohen – das fördert Heimlichkeit.',q:['nock2010']},
+   {t:'Vor anderen darüber sprechen.',q:['hawton2012']}],
+  krise:[
+   {t:'Suizidgedanken direkt erfragen. Bei einem Plan oder akuter Gefahr nicht allein lassen, sofort die Leitung informieren, im Notfall 112. Beratung: Kanner-Jugendtelefon 116 111, SOS Détresse 45 45 45.',q:['niceNG225','stanleyBrown2012']}],
+  zusammenarbeit:[
+   {t:'Bei wiederholter Selbstverletzung und starker Gefühlsinstabilität empfiehlt die Leitlinie, DBT-A in Betracht zu ziehen; auch mentalisierungsbasierte Therapie wurde erfolgreich untersucht.',q:['niceNG225','rossouwFonagy2012']}],
+  blaetter:['sicherheitsplan','stress-werkzeugkoffer','wer-ist-fuer-mich-da','ruhig-werden-drei-uebungen'],
+  lernen:['selbstverletzung-suizid','emotionsregulation']},
+
+ {id:'autismus', name:'Autismus-Spektrum',
+  re:'\\bF84|\\b6A02|autis|\\bass\\b|asperger|\\btsa\\b|spectre de l.autisme',
+  kurz:'Unterschiede in sozialer Kommunikation und Interaktion, wiederholende Verhaltensweisen, starke Interessen und eine besondere Reizverarbeitung – sehr unterschiedlich ausgeprägt.',
+  verstehen:[
+   {t:'Autismus ist ein Spektrum: Sprache, Intelligenz und Unterstützungsbedarf unterscheiden sich stark.',q:['lord2018','dsm5tr']},
+   {t:'Viele Schwierigkeiten entstehen aus Überlastung durch Reize, soziale Anforderungen und Unvorhersehbares. Ein Zusammenbruch (Meltdown) oder Abschalten (Shutdown) ist keine Absicht.',q:['lord2018']},
+   {t:'Strukturierte Lehre nach TEACCH: Raum, Zeit und Aufgaben werden sichtbar geordnet.',q:['mesibov2004']}],
+  umgang:[
+   {t:'Klare, wörtliche Sprache; Ironie und Andeutungen vermeiden; Zeit zum Antworten lassen.',q:['niceCG170']},
+   {t:'Veränderungen früh ankündigen und sichtbar machen.',q:['mesibov2004']},
+   {t:'Interessen als Brücke zum Lernen und zu Kontakten nutzen.',q:['niceCG170']},
+   {t:'Reizbelastung ernst nehmen: Rückzugsmöglichkeit, Kopfhörer, ruhiger Platz.',q:['lord2018']}],
+  konkret:[
+   {t:'Visueller Tages- und Arbeitsplan: Was? Wie viel? Wann ist es fertig? Was kommt danach?',q:['mesibov2004']},
+   {t:'Soziale Situationen mit kurzen Sozialgeschichten vorbereiten.',q:['gray2015']},
+   {t:'Pausen und Übergänge strukturieren: fester Platz, Aufgabe oder Begleitperson.',q:['mesibov2004']},
+   {t:'Frühwarnzeichen für Überlastung kennen und eine Pause anbieten, bevor es zum Zusammenbruch kommt.',q:['lord2018']}],
+  lassen:[
+   {t:'Blickkontakt erzwingen.',q:['niceCG170']},
+   {t:'Überraschungen und kurzfristige Änderungen ohne Vorbereitung.',q:['mesibov2004']},
+   {t:'Einen Zusammenbruch als Trotz behandeln und bestrafen.',q:['lord2018']}],
+  zusammenarbeit:[
+   {t:'Eltern sind Expertinnen und Experten für ihr Kind: gemeinsame Strategien für Übergänge und Krisen abstimmen.',q:['niceCG170']}],
+  blaetter:['tagesplan-bildkarten','mein-tag-in-bildern','zuerst-dann','regeln-in-bildern','ruhe-ecke-karten','signalkarten'],
+  lernen:['autismus']},
+
+ {id:'angst', name:'Angststörung', thema:'Ängste und Sorgen',
+  re:'\\bF4[01]|\\bF93\\.[0-2]|\\b6B0[0-5]|angstst[öo]rung|trennungsangst|soziale (angst|phobie)|generalisierte angst|panik|trouble anxieux|anxi[ée]t[ée]|anxiety',
+  beob:[['sc:angst']],
+  kurz:'Ängste, die stärker, häufiger oder länger sind als altersüblich und den Alltag einschränken – etwa Trennungsangst, soziale Angst oder anhaltende Sorgen.',
+  verstehen:[
+   {t:'Teufelskreis der Vermeidung: Vermeiden bringt kurzfristig Erleichterung, hält die Angst aber aufrecht.',q:['kendallHedtke2006']},
+   {t:'Kognitive Verhaltenstherapie mit schrittweiser Konfrontation ist die am besten belegte Behandlung.',q:['kendallHedtke2006','niceCG159']},
+   {t:'Erwachsene verstärken Angst ungewollt, wenn sie zu schnell entlasten oder alles abnehmen.',q:['kendallHedtke2006']}],
+  umgang:[
+   {t:'Die Angst ernst nehmen und benennen – und Zutrauen zeigen („Das ist schwer, und ich glaube, du schaffst einen kleinen Schritt“).',q:['kendallHedtke2006']},
+   {t:'Nicht beim Vermeiden helfen, sondern kleine Schritte begleiten.',q:['kendallHedtke2006']},
+   {t:'Körperliche Angstzeichen erklären: Herzklopfen und Bauchweh sind unangenehm, aber ungefährlich.',q:['beesdo2009']}],
+  konkret:[
+   {t:'Eine Mut-Leiter planen: kleine Stufen von leicht bis schwer, eine nach der anderen üben und Erfolge festhalten.',q:['kendallHedtke2006']},
+   {t:'Bei Trennungsangst: kurzer, ruhiger Abschied mit Ritual und Übergabe an eine feste Person.',q:['beesdo2009']},
+   {t:'Bei sozialer Angst: vorbereitete Rollen in kleinen Gruppen statt Auftritt vor der Klasse, nicht bloßstellen.',q:['niceCG159']}],
+  lassen:[
+   {t:'Die Angst ausreden („Da ist doch nichts“).',q:['kendallHedtke2006']},
+   {t:'Dauerhafte Befreiung von allem, was Angst macht.',q:['kendallHedtke2006']}],
+  zusammenarbeit:[
+   {t:'Bei deutlicher Einschränkung eine psychotherapeutische Abklärung anregen.',q:['niceCG159']}],
+  blaetter:['angst-verstehen','mut-leiter','ich-kann-mutig-sein','was-hilft-bei-angst'],
+  lernen:['angst']},
+
+ {id:'schulvermeidung', name:'Schulvermeidung',
+  re:'schulvermeid|schulangst|schulverweiger|schulabsent|refus scolaire|d[ée]crochage|school refusal',
+  kurz:'Das Kind bleibt der Schule häufig fern oder kommt nur unter großem Druck. Dahinter stehen unterschiedliche Gründe, die unterschiedliche Hilfen brauchen.',
+  verstehen:[
+   {t:'Vier Funktionen: unangenehme Gefühle vermeiden, soziale oder Bewertungssituationen vermeiden, Zuwendung von Bezugspersonen bekommen, Angenehmeres außerhalb der Schule tun.',q:['kearney2008']}],
+  umgang:[
+   {t:'Zuerst die Funktion klären und daran ansetzen – nicht allen dieselbe Antwort geben.',q:['kearney2008']}],
+  konkret:[
+   {t:'Sehr schnelle Rückkehr in kleinen Schritten mit festem Plan; jede weitere Woche zu Hause erschwert die Rückkehr.',q:['kearney2008']},
+   {t:'Feste Ansprechperson am Morgen und ein klarer Ablauf für die ersten Minuten.',q:['kearney2008']}],
+  lassen:[
+   {t:'Abwarten, bis das Kind von selbst wiederkommt.',q:['kearney2008']}],
+  zusammenarbeit:[
+   {t:'Enge Absprache mit den Eltern über einen gemeinsamen Plan; bei Angst oder Depression Fachleute einbeziehen.',q:['kearney2008']}],
+  blaetter:['meine-morgenroutine','zuerst-dann','mut-leiter'],
+  lernen:['schulvermeidung','angst']},
+
+ {id:'depression', name:'Depression', thema:'Stimmung und Rückzug',
+  re:'\\bF3[23]|\\bF34\\.1|\\bF92\\.0|\\b6A7[0-3]|depress|d[ée]pressi|dysthym',
+  beob:[['sc:stimmung']],
+  kurz:'Über Wochen gedrückte oder gereizte Stimmung, Freudlosigkeit und weitere Beschwerden, die den Alltag deutlich beeinträchtigen. Bei jungen Menschen oft übersehen.',
+  verstehen:[
+   {t:'Bei Kindern und Jugendlichen steht oft Gereiztheit statt Traurigkeit im Vordergrund; Freudlosigkeit ist ein Kernmerkmal.',q:['dsm5tr','thapar2012']},
+   {t:'Die Depression ist der wichtigste Risikofaktor für Suizidalität im Jugendalter.',q:['hawton2012']}],
+  umgang:[
+   {t:'Die Veränderung ansprechen, zuhören, nicht bagatellisieren – und Suizidgedanken direkt erfragen.',q:['niceNG134','niceNG225']},
+   {t:'Verlässliche kurze Kontakte, auch ohne Anlass.',q:['niceNG134']}],
+  konkret:[
+   {t:'Anforderungen vorübergehend anpassen und kleine, erreichbare Erfolge ermöglichen.',q:['niceNG134']},
+   {t:'Aktivität, Bewegung und angenehme Erlebnisse unterstützen – Aktivierung ist auch ein Baustein der Therapie.',q:['niceNG134']}],
+  lassen:[
+   {t:'„Reiß dich zusammen“ oder Vergleiche („Anderen geht es schlechter“).',q:['niceNG134']},
+   {t:'Die Stimmung vor der Klasse ansprechen.',q:['Praxis']}],
+  zusammenarbeit:[
+   {t:'Eine fachliche Abklärung anregen; Psychotherapie steht im Vordergrund, Medikamente nur fachärztlich und eng begleitet.',q:['niceNG134']}],
+  blaetter:['wenn-ich-traurig-bin','wenn-es-laenger-schwer-ist','drei-gute-dinge','das-macht-mich-froh','wer-ist-fuer-mich-da'],
+  lernen:['depression','selbstverletzung-suizid']},
+
+ /* weitere Profile: erkannt und mit Lernmodul und Material verbunden – ausführliche Bausteine folgen */
+ {id:'lernstoerung', name:'Lese-, Rechtschreib- oder Rechenstörung', thema:'Lernen und Arbeitsorganisation', beob:[['sc:lernen']], re:'\\bF81|\\b6A03|legasthen|\\blrs\\b|dyslex|dyskalk|dyscalc|dysorthograph', lernen:['lernstoerungen'], blaetter:['schritt-fuer-schritt','fehler-sind-helfer','noch-nicht','aus-rueckschlaegen-lernen']},
+ {id:'sprache', name:'Sprachentwicklungsstörung', thema:'Sprache und Verständigung', beob:[['sc:sprache']], re:'\\bF80|\\b6A01|sprachentwicklungsst|\\bses\\b|trouble du langage|dysphasie|\\bdld\\b', lernen:['sprache-mutismus'], blaetter:['gefuehle-gesichter','regeln-in-bildern']},
+ {id:'mutismus', name:'Selektiver Mutismus', re:'\\bF94\\.0|\\b6B06|mutismus|mutisme', lernen:['sprache-mutismus','angst'], blaetter:['ich-kann-mutig-sein','mut-leiter']},
+ {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btic|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
+ {id:'essstoerung', name:'Essstörung', thema:'Auffälliges Essverhalten', beob:[['warn:essen']], re:'\\bF50|\\b6B8[0-5]|anorex|bulim|essst[öo]rung|\\barfid\\b|trouble alimentaire', lernen:['essstoerungen'], blaetter:['koerperbild','was-tut-mir-gut']},
+ {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
+ {id:'sucht', name:'Sucht und problematische Mediennutzung', thema:'Hinweise auf Suchtmittel', beob:[['warn:sucht']], re:'\\bF1[0-9]\\.|\\b6C5[01]|\\bsucht|abh[äa]ngigkeit|cannabis|addiction|gaming disorder', lernen:['sucht-medien'], blaetter:['medien-tagebuch','mein-handy-und-ich','bildschirmzeit']},
+ {id:'psychose', name:'Psychose oder bipolare Störung', thema:'Ungewöhnliche Wahrnehmungen', beob:[['warn:wahrnehmung']], re:'\\bF2[0-9]|\\bF31|\\b6A2|\\b6A6|psychos|schizophren|bipolar|manisch', lernen:['psychose-bipolar'], blaetter:[]}
+],
+
+/* ---------------------------------------------------------------------
+   Entwicklungsstufen (ETEP): Umgang nach der sozial-emotionalen Stufe
+   (Verhalten und Sozialisation aus der ELDiB) – nicht nach dem Alter
+   --------------------------------------------------------------------- */
+stufen:{
+ 1:{rolle:'Bedürfnisse erfüllen und Freude wecken',umgang:[
+   {t:'Körpernahe, sinnliche Angebote und viel Nähe; die Sprache kurz und begleitend („Du rollst den Ball“).',q:['wood1996','bergsson1998']},
+   {t:'Eine feste Bezugsperson und immer gleiche Abläufe geben Sicherheit.',q:['wood1996']},
+   {t:'Erfolg entsteht durch Freude am gemeinsamen Tun, noch nicht durch Regeln.',q:['bergsson1998']}]},
+ 2:{rolle:'Motivieren',umgang:[
+   {t:'Du steuerst von außen: kurze, klare Anweisungen, Bilder, vormachen statt erklären.',q:['wood1996','bergsson1998']},
+   {t:'Erfolg sofort sichtbar machen und konkret loben; einfache Belohnungen wirken.',q:['wood1996']},
+   {t:'Wenige, immer gleiche Regeln und feste Routinen als Halt.',q:['bergsson1998']}]},
+ 3:{rolle:'Ermutigen',umgang:[
+   {t:'Regeln gemeinsam begründen und in der Gruppe üben; das Kind beginnt, sich mit Hilfen selbst zu steuern (Signale, Karten).',q:['wood1996','bergsson1998']},
+   {t:'Gefühle benennen helfen und einfache Schritte zum Lösen von Problemen üben.',q:['bergsson1998']},
+   {t:'Ermutigen statt vormachen: „Du weißt, wie es geht – probier es.“',q:['wood1996']}]},
+ 4:{rolle:'Beraten und die Gruppe leiten',umgang:[
+   {t:'Über Gefühle, Sichtweisen und Gründe sprechen; Konflikte gemeinsam nachbesprechen.',q:['wood1996','bergsson1998']},
+   {t:'Verantwortung in der Gruppe übertragen: Dienste, Rollen, Klassenrat.',q:['bergsson1998']},
+   {t:'Die Gruppe als Lernfeld nutzen – Rückmeldungen von Gleichaltrigen wirken stark.',q:['wood1996']}]},
+ 5:{rolle:'Begleiten wie ein Mentor',umgang:[
+   {t:'Selbstständigkeit und Mitbestimmung: Ziele gemeinsam setzen, planen und auswerten.',q:['wood1996']},
+   {t:'Die Übertragung auf neue Situationen vorbereiten, etwa Praktikum oder neue Schule.',q:['wood1996','bergsson1998']},
+   {t:'Über Werte, Zukunft und Beziehungen sprechen; du bleibst verlässlich im Hintergrund.',q:['wood1996']}]}
+},
+
+/* ---------------------------------------------------------------------
+   Häufige Kombinationen
+   --------------------------------------------------------------------- */
+kombinationen:[
+ {wenn:['adhs','sozialverhalten'],t:'Häufige Kombination: Struktur, sofortige Verstärkung und Elterntraining stehen an erster Stelle. Machtkämpfe vermeiden, weil die Impulsivität Eskalationen beschleunigt.',q:['niceNG87','niceCG158','doepfner2019']},
+ {wenn:['trauma','sozialverhalten'],t:'Aggression kann eine Stressreaktion sein: Sicherheit und gemeinsames Beruhigen vor der Konsequenz; Konsequenzen ohne Beschämung und ohne Isolation.',q:['perry2006','niceNG116']},
+ {wenn:['trauma','bindung'],t:'Beziehung ist hier zugleich Hilfe und Auslöser: Nähe dosieren, Verlässlichkeit zeigen, Rückzüge aushalten.',q:['zeanah2015','perry2006']},
+ {wenn:['instabil','trauma'],t:'Stabilisierung geht vor: Skills für Anspannung und Wegtreten (Dissoziation), keine Konfrontation mit dem Erlebten in der Schule.',q:['niceNG116','rathusMiller2015']},
+ {wenn:['instabil','adhs'],t:'Impulsivität beschleunigt Krisen: äußere Struktur, kurze Wege zu den Skills (Karte griffbereit) und früh unterbrechen, wenn die Spannung steigt.',q:['rathusMiller2015','barkley2015']},
+ {wenn:['instabil','selbstverletzung'],t:'Sicherheit zuerst: Suizidgedanken regelmäßig und direkt erfragen, Krisenplan mit Fachleuten, Skills für Hochspannung.',q:['niceNG225','stanleyBrown2012']},
+ {wenn:['autismus','angst'],t:'Angst ist bei Autismus häufig: Vorhersehbarkeit ist die wichtigste Vorbeugung; Konfrontation nur in sehr kleinen, angekündigten Schritten.',q:['lord2018','kendallHedtke2006']},
+ {wenn:['autismus','adhs'],t:'Beides zusammen ist häufig: Abläufe sichtbar strukturieren und zugleich Bewegung und kurze Etappen einplanen.',q:['lord2018','niceNG87']},
+ {wenn:['depression','selbstverletzung'],t:'Erhöhtes Suizidrisiko: Suizidgedanken direkt und wiederholt erfragen, Sicherheitsplan, enge Abstimmung mit den Behandelnden.',q:['niceNG225','niceNG134']},
+ {wenn:['angst','schulvermeidung'],t:'Schnelle, schrittweise Rückkehr ist entscheidend; jede Woche Fehlzeit macht den Weg zurück schwerer.',q:['kearney2008']},
+ {wenn:['sozialverhalten','depression'],t:'Gereiztheit und Aggression können eine Depression verdecken: auch nach Stimmung, Schlaf und Freude fragen.',q:['thapar2012','dsm5tr']},
+ {wenn:['lernstoerung','sozialverhalten'],t:'Schulisches Scheitern verstärkt Verhaltensprobleme: die Lernstörung gezielt fördern und einen Nachteilsausgleich über die Leitung prüfen.',q:['schulteKoerne2010']},
+ {wenn:['regulation','sozialverhalten'],t:'Entsteht die Aggression vor allem aus Wut und Überforderung, gehen Beruhigung und Vorbeugung vor der Konsequenz: Auslöser erkennen, früh unterbrechen, erst in Ruhe nachbesprechen.',q:['petermann2012']},
+ {wenn:['regulation','adhs'],t:'Impulsivität und starke Gefühle verstärken sich gegenseitig: Beruhigungshilfen griffbereit, Übergänge vorbereiten, gelungenes Selbstberuhigen sofort anerkennen.',q:['barkley2015','doepfner2019']},
+ {wenn:['regulation','trauma'],t:'Heftige Gefühlsausbrüche können Stressreaktionen auf Auslöser sein: zuerst Sicherheit und gemeinsames Beruhigen, dann die Auslöser gemeinsam herausfinden.',q:['perry2006','siegel1999']},
+ {wenn:['bindungsunsicher','sozialverhalten'],t:'Provokation kann ein Beziehungstest sein: Grenzen halten und zugleich zeigen, dass die Beziehung bleibt („Das geht nicht – und ich bin morgen trotzdem für dich da“).',q:['grossmann2012','omer2004']},
+ {wenn:['lernstoerung','adhs'],t:'Lernstörung und ADHS treten oft gemeinsam auf: Förderung des Lesens, Schreibens oder Rechnens und Hilfen zur Aufmerksamkeit brauchen beide ihren Platz.',q:['schulteKoerne2010','niceNG87']}
+],
+
+/* ---------------------------------------------------------------------
+   Umfeld: Alter und Lebenslage
+   --------------------------------------------------------------------- */
+umfeld:[
+ {id:'klein',name:'Jüngeres Kind',t:'Jüngere Kinder brauchen es konkret, spielerisch und mit Bildern; die Eltern eng einbeziehen.',q:['schneiderLindenberger2018']},
+ {id:'jugend',name:'Jugendalter',t:'Im Jugendalter Mitbestimmung und Selbstständigkeit respektieren, Gleichaltrige mitdenken und die Grenzen der Vertraulichkeit von Anfang an erklären.',q:['casey2008','millerRollnick2013']},
+ {id:'fremd',name:'Lebt nicht bei den Eltern',t:'Bezugsbetreuerinnen und -betreuer als Partner einbeziehen, das Sorgerecht klären (wer entscheidet, wer wird informiert) und Übergänge sowie Besuchskontakte im Blick behalten.',q:['niceNG26','bronfenbrenner1979']},
+ {id:'neu',name:'Seit Kurzem in Luxemburg',t:'Sicherheit und Orientierung geben, Sprachschwierigkeiten nicht mit fehlender Leistung verwechseln, mögliche belastende Erfahrungen trauma-sensibel mitdenken und für Elterngespräche eine Dolmetscherin oder einen Dolmetscher einplanen.',q:['niceNG116','bishop2017']},
+ {id:'mehrsprachig',name:'Mehrsprachig',t:'Die Erstsprache wertschätzen. Sprachschwierigkeiten in allen Sprachen des Kindes betrachten, bevor an eine Sprachstörung gedacht wird.',q:['bishop2017']},
+ {id:'netz',name:'Weitere Dienste beteiligt',t:'Im Helfernetz absprechen, wer was macht, gemeinsame Ziele festhalten und Informationen nur mit Einverständnis weitergeben.',q:['bronfenbrenner1979']},
+ {id:'belastung',name:'Aktuelle Belastungen',t:'Belastungen wie Trennung, Umzug, Krankheit oder Verlust können das Verhalten erklären: nachfragen, was sich verändert hat, Anforderungen vorübergehend anpassen und eine feste Ansprechperson anbieten.',q:['lazarusFolkman1984','rutter2012']},
+ {id:'entwicklung',name:'Sozial-emotionale Entwicklung verzögert',t:'Anforderungen und Umgang an der Entwicklungsstufe ausrichten, nicht am Alter: Ein Kind auf Stufe II braucht Führung von außen, auch wenn es schon älter ist.',q:['wood1996','bergsson1998']},
+ {id:'ueberforderung',name:'Schulische Überforderung',t:'Überforderung zeigt sich oft als Verweigern, Stören oder Rückzug: Aufgaben an den Lernstand anpassen, Erfolge sichern und klären, ob ein besonderer Förderbedarf dahintersteht.',q:['bandura1977','nolting2002']},
+ {id:'unterforderung',name:'Schulische Unterforderung',t:'Unterforderung kann Langeweile, Stören oder Rückzug erklären: anspruchsvollere Aufgaben, Verantwortung und Wahlmöglichkeiten anbieten.',q:['nolting2002']},
+ {id:'vorfaelle',name:'Gehäufte Vorfälle',t:'Vorfälle mit Uhrzeit, Situation, Auslöser und Maßnahme festhalten und nach Mustern suchen; Nachgespräche führen und einen Krisenplan vereinbaren.',q:['crone2010','petermann2012']}
+],
+
+/* ---------------------------------------------------------------------
+   Aus dem DS (ELDiB-Generator)
+   --------------------------------------------------------------------- */
+ds:{
+ /* Auswahlfeld „Diagnosen“ → Profil */
+ diagnosen:{adhs:'adhs',ass:'autismus',lernstoerung:'lernstoerung',sprachstoerung:'sprache',bindung:'bindung',angst:'angst',opposition:'sozialverhalten'},
+ /* Oberbegriffe: Das Team wählt, welches Bild gemeint ist */
+ oberbegriff:{emotional:{name:'emotionale Störung',auswahl:['angst','depression','regulation','instabil','trauma']}},
+ /* Deutung: Arbeitshypothesen (ab 5 von 7) */
+ hypothesen:{i_hyp_aufmerksamkeit:'adhs',i_hyp_regulation:'regulation',i_hyp_bindung:'bindungsunsicher',i_hyp_trauma:'trauma',i_hyp_sozial:'angst'},
+ /* Deutung: Hypothesen, die die Lebenslage beschreiben */
+ umfeld:{i_hyp_belastung:'belastung',i_hyp_entwicklung:'entwicklung',i_hyp_ueberforderung:'ueberforderung',i_hyp_unterforderung:'unterforderung'},
+ /* Anlass der Anfrage → beobachtet */
+ anlass:{aufmerksamkeit:'adhs',aggression:'sozialverhalten',aengste:'angst',rueckzug:'depression',emotional:'regulation',schulverweigerung:'schulvermeidung'}
+},
+
+/* Kurztexte der Warnsignale des Screenings */
+warnKurz:{suizid:'Äußerungen über Tod oder Suizid',selbstverletzung:'Hinweise auf Selbstverletzung',gewalt:'Hinweise auf Gewalt oder Vernachlässigung',gefahr:'Gefährdung von sich oder anderen',
+ sucht:'Hinweise auf Suchtmittel',essen:'auffälliges Essverhalten',wechsel:'plötzliche starke Veränderung',wahrnehmung:'ungewöhnliche Wahrnehmungen'}
+};
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Kompass: Umgang, Förderung und Material passend zum Profil
+   ---------------------------------------------------------------------
+   Reiter „Kompass“ im Dossier. Liest, was das Dossier über ein Kind
+   weiß – Diagnosen und Verdacht (DS, Datenbank, Team), Arbeitshypothesen
+   und Anlass aus dem DS, Screenings, Warnsignale, Vorfälle, die
+   ELDiB-Stufen, Alter und Lebenslage – und wählt aus der Wissensbasis
+   (kompass-wissen.js) aus, was dazu passt. Jeder Punkt zeigt, warum er
+   erscheint, und nennt seine Fachquellen. Keine Diagnose.
+   Gespeichert werden nur Entscheidungen des Teams (d.begleitplan.merkmale,
+   über CDSE_TEAM.ops.planMerkmal). Angaben, die nur in der Datenbank
+   stehen, sehen wie dort nur Responsables und Verwaltung.
+   ===================================================================== */
+window.CDSE_KOMPASS=(function(){
+'use strict';
+var T=null, K=null, H=null;
+function bausteine(){T=window.CDSE_TEAM||null;K=window.CDSE_KONTO||null;H=(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.hilfen)||null;return !!(T&&K&&H);}
+function W(){return window.CDSE_KOMPASS_WISSEN||null;}
+var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
+var QUELLEN={"barkley2015": "Barkley, R. A. (2015). Attention-Deficit Hyperactivity Disorder: A Handbook for Diagnosis and Treatment (4th ed.). New York: Guilford.", "faraone2021": "Faraone, S. V. et al. (2021). The World Federation of ADHD International Consensus Statement: 208 evidence-based conclusions about the disorder. Neuroscience & Biobehavioral Reviews, 128, 789–818.", "niceNG87": "NICE (2018). Attention deficit hyperactivity disorder: diagnosis and management (NG87). London: National Institute for Health and Care Excellence.", "awmfAdhs2018": "AWMF (2018). S3-Leitlinie „Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung (ADHS) im Kindes-, Jugend- und Erwachsenenalter“ (AWMF-Registernummer 028-045).", "doepfner2019": "Döpfner, M., Schürmann, S. & Frölich, J. (2019). Therapieprogramm für Kinder mit hyperkinetischem und oppositionellem Problemverhalten THOP (6. Aufl.). Weinheim: Beltz.", "wood1996": "Wood, M. M. (1996). Developmental Therapy – Developmental Teaching (3rd ed.). Austin: Pro-Ed.", "crone2010": "Crone, D. A., Hawken, L. S. & Horner, R. H. (2010). Responding to Problem Behavior in Schools: The Behavior Education Program (2nd ed.). New York: Guilford.", "kazdin2008": "Kazdin, A. E. (2008). The Kazdin Method for Parenting the Defiant Child. Boston: Houghton Mifflin.", "petermann2012": "Petermann, F. & Petermann, U. (2012). Training mit aggressiven Kindern (13. Aufl.). Weinheim: Beltz.", "frick2014": "Frick, P. J., Ray, J. V., Thornton, L. C. & Kahn, R. E. (2014). Can callous-unemotional traits enhance the understanding, diagnosis, and treatment of serious conduct problems in children and adolescents? A comprehensive review. Psychological Bulletin, 140(1), 1–57.", "niceCG158": "NICE (2013). Antisocial behaviour and conduct disorders in children and young people: recognition and management (CG158). London: NICE.", "omer2004": "Omer, H. & von Schlippe, A. (2004). Autorität durch Beziehung. Göttingen: Vandenhoeck & Ruprecht.", "webbStratton2003": "Webster-Stratton, C. & Reid, M. J. (2003). Treating conduct problems and strengthening social and emotional competence in young children: The Dina Dinosaur treatment program. Journal of Emotional and Behavioral Disorders, 11(3), 130–143.", "durlak2011": "Durlak, J. A., Weissberg, R. P., Dymnicki, A. B., Taylor, R. D. & Schellinger, K. B. (2011). The impact of enhancing students’ social and emotional learning: A meta-analysis of school-based universal interventions. Child Development, 82(1), 405–432.", "perry2006": "Perry, B. D. & Szalavitz, M. (2006). The Boy Who Was Raised as a Dog. New York: Basic Books.", "vanDerKolk2014": "van der Kolk, B. (2014). The Body Keeps the Score. New York: Viking.", "siegel1999": "Siegel, D. J. (1999). The Developing Mind. New York: Guilford.", "felitti1998": "Felitti, V. J. et al. (1998). Relationship of childhood abuse and household dysfunction to many of the leading causes of death in adults: The Adverse Childhood Experiences (ACE) Study. American Journal of Preventive Medicine, 14(4), 245–258.", "rutter2012": "Rutter, M. (2012). Resilience as a dynamic concept. Development and Psychopathology, 24(2), 335–344.", "bandura1977": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191–215.", "niceNG116": "NICE (2018). Post-traumatic stress disorder (NG116). London: NICE.", "whoMaltreatment2006": "World Health Organization & ISPCAN (2006). Preventing child maltreatment: a guide to taking action and generating evidence. Genf: WHO.", "bowlby1969": "Bowlby, J. (1969). Attachment and Loss, Vol. 1: Attachment. New York: Basic Books.", "grossmann2012": "Grossmann, K. & Grossmann, K. E. (2012). Bindungen – das Gefüge psychischer Sicherheit (5. Aufl.). Stuttgart: Klett-Cotta.", "zeanah2015": "Zeanah, C. H. & Gleason, M. M. (2015). Annual research review: Attachment disorders in early childhood – clinical presentation, causes, correlates, and treatment. Journal of Child Psychology and Psychiatry, 56(3), 207–222.", "niceNG26": "NICE (2015). Children’s attachment: attachment in children and young people who are adopted from care, in care or at high risk of going into care (NG26). London: NICE.", "ainsworth1978": "Ainsworth, M. D. S., Blehar, M. C., Waters, E. & Wall, S. (1978). Patterns of Attachment. Hillsdale, NJ: Erlbaum.", "sroufe2005": "Sroufe, L. A. (2005). Attachment and development: A prospective, longitudinal study from birth to adulthood. Attachment & Human Development, 7(4), 349–367.", "schneiderLindenberger2018": "Schneider, W. & Lindenberger, U. (Hrsg.) (2018). Entwicklungspsychologie (8. Aufl.). Weinheim: Beltz.", "gross1998": "Gross, J. J. (1998). The emerging field of emotion regulation: An integrative review. Review of General Psychology, 2(3), 271–299.", "bergsson1998": "Bergsson, M. & Luckfiel, H. (1998). Umgang mit „schwierigen“ Kindern. Berlin: Cornelsen Scriptor.", "kendallHedtke2006": "Kendall, P. C. & Hedtke, K. A. (2006). Cognitive-Behavioral Therapy for Anxious Children: Therapist Manual (3rd ed.). Ardmore, PA: Workbook Publishing.", "linehan1993": "Linehan, M. M. (1993). Cognitive-Behavioral Treatment of Borderline Personality Disorder. New York: Guilford.", "fonagy2002": "Fonagy, P., Gergely, G., Jurist, E. L. & Target, M. (2002). Affect Regulation, Mentalization, and the Development of the Self. New York: Other Press.", "sharpFonagy2015": "Sharp, C. & Fonagy, P. (2015). Practitioner review: Borderline personality disorder in adolescence – recent conceptualization, intervention, and implications for clinical practice. Journal of Child Psychology and Psychiatry, 56(12), 1266–1288.", "kaess2014": "Kaess, M., Brunner, R. & Chanen, A. (2014). Borderline personality disorder in adolescence. Pediatrics, 134(4), 782–793.", "awmfBps2022": "AWMF (2022). S3-Leitlinie Borderline-Persönlichkeitsstörung. Federführung: Deutsche Gesellschaft für Psychiatrie und Psychotherapie, Psychosomatik und Nervenheilkunde (DGPPN).", "rathusMiller2015": "Rathus, J. H. & Miller, A. L. (2015). DBT Skills Manual for Adolescents. New York: Guilford.", "niceNG225": "NICE (2022). Self-harm: assessment, management and preventing recurrence (NG225). London: NICE.", "stanleyBrown2012": "Stanley, B. & Brown, G. K. (2012). Safety planning intervention: A brief intervention to mitigate suicide risk. Cognitive and Behavioral Practice, 19(2), 256–264.", "millerRathusLinehan2007": "Miller, A. L., Rathus, J. H. & Linehan, M. M. (2007). Dialectical Behavior Therapy with Suicidal Adolescents. New York: Guilford.", "rossouwFonagy2012": "Rossouw, T. I. & Fonagy, P. (2012). Mentalization-based treatment for self-harm in adolescents: a randomized controlled trial. Journal of the American Academy of Child and Adolescent Psychiatry, 51(12), 1304–1313.", "nock2010": "Nock, M. K. (2010). Self-injury. Annual Review of Clinical Psychology, 6, 339–363.", "hawton2012": "Hawton, K., Saunders, K. E. A. & O’Connor, R. C. (2012). Self-harm and suicide in adolescents. The Lancet, 379(9834), 2373–2382.", "lord2018": "Lord, C., Elsabbagh, M., Baird, G. & Veenstra-Vanderweele, J. (2018). Autism spectrum disorder. The Lancet, 392(10146), 508–520.", "dsm5tr": "American Psychiatric Association (2022). Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition, Text Revision (DSM-5-TR). Washington, DC: APA.", "mesibov2004": "Mesibov, G. B., Shea, V. & Schopler, E. (2004). The TEACCH Approach to Autism Spectrum Disorders. New York: Springer.", "niceCG170": "NICE (2013). Autism spectrum disorder in under 19s: support and management (CG170). London: NICE.", "gray2015": "Gray, C. (2015). The New Social Story Book. Arlington, TX: Future Horizons.", "niceCG159": "NICE (2013). Social anxiety disorder: recognition, assessment and treatment (CG159). London: NICE.", "beesdo2009": "Beesdo, K., Knappe, S. & Pine, D. S. (2009). Anxiety and anxiety disorders in children and adolescents: developmental issues and implications for DSM-V. Psychiatric Clinics of North America, 32(3), 483–524.", "kearney2008": "Kearney, C. A. (2008). School absenteeism and school refusal behavior in youth: A contemporary review. Clinical Psychology Review, 28(3), 451–471.", "thapar2012": "Thapar, A., Collishaw, S., Pine, D. S. & Thapar, A. K. (2012). Depression in adolescence. The Lancet, 379(9820), 1056–1067.", "niceNG134": "NICE (2019). Depression in children and young people: identification and management (NG134). London: NICE.", "schulteKoerne2010": "Schulte-Körne, G. (2010). The prevention, diagnosis, and treatment of dyslexia. Deutsches Ärzteblatt International, 107(41), 718–727.", "casey2008": "Casey, B. J., Jones, R. M. & Hare, T. A. (2008). The adolescent brain. Annals of the New York Academy of Sciences, 1124, 111–126.", "millerRollnick2013": "Miller, W. R. & Rollnick, S. (2013). Motivational Interviewing (3rd ed.). New York: Guilford.", "bronfenbrenner1979": "Bronfenbrenner, U. (1979). The Ecology of Human Development. Cambridge, MA: Harvard University Press.", "bishop2017": "Bishop, D. V. M. et al. (2017). Phase 2 of CATALISE: a multinational and multidisciplinary Delphi consensus study of problems with language development: Terminology. Journal of Child Psychology and Psychiatry, 58(10), 1068–1080.", "lazarusFolkman1984": "Lazarus, R. S. & Folkman, S. (1984). Stress, Appraisal, and Coping. New York: Springer.", "nolting2002": "Nolting, H.-P. (2002). Störungen in der Schulklasse. Weinheim: Beltz."};
+
+var RANG={diagnose:4,verdacht:3,hypothese:2,beobachtet:1};
+var ART_NAME={diagnose:'Diagnose',verdacht:'Verdacht',hypothese:'Arbeitshypothese',beobachtet:'Beobachtet'};
+var ART_TEXT={diagnose:'Eine Diagnose ist dokumentiert.',verdacht:'Ein Verdacht ist dokumentiert – noch nicht abgeklärt.',
+  hypothese:'Eine Arbeitshypothese aus dem DS oder der Lebensgeschichte – keine Diagnose.',beobachtet:'Aus Beobachtungen (Screening, DS, Einträge) – keine Diagnose.'};
+var ROEM=['','I','II','III','IV','V'];
+var ABSCHNITTE=[['verstehen','Verstehen'],['umgang','Umgang'],['konkret','Konkret im Alltag'],['lassen','Was eher schadet'],['krise','In der Krise'],['zusammenarbeit','Zusammenarbeit']];
+var HYP_AB=5, SC_TAGE=365, WARN_TAGE=90, VORFALL_TAGE=90, NEU_TAGE=730;
+var STUFE_RANG={gelb:1,rot:2};
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function svg(n){return H?H.svg(n):'';}
+function datum(i){return H?H.datum(i):i;}
+function tageSeit(iso){if(!iso){return 1e9;}var t=new Date(String(iso).slice(0,10)+'T12:00:00').getTime();return isNaN(t)?1e9:Math.floor((Date.now()-t)/864e5);}
+function zeilen(v){return (Array.isArray(v)?v:(v?String(v).split(/\n/):[])).map(function(x){return String(x&&typeof x==='object'?(x.label||x.name||''):x).trim();}).filter(Boolean);}
+function istResp(){return !!(T&&T.istResponsable&&T.istResponsable());}
+function vorname(d){return ((d&&d.person)||{}).vorname||'das Kind';}
+
+/* ---------- Wissensbasis ---------- */
+var reCache=null;
+function profilDef(id){var w=W();if(!w){return null;}for(var i=0;i<w.profile.length;i++){if(w.profile[i].id===id){return w.profile[i];}}return null;}
+function profilIndex(id){var w=W();for(var i=0;i<w.profile.length;i++){if(w.profile[i].id===id){return i;}}return 999;}
+/* Diagnose- oder Verdachtstext → passende Profile (ICD-10, ICD-11, Namen DE/FR/EN) */
+function passende(text){
+  var w=W();if(!w||!text){return [];}
+  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
+  var t=String(text).normalize?String(text).normalize('NFC'):String(text);
+  return reCache.filter(function(x){return x.re.test(t);}).map(function(x){return x.id;});
+}
+function dsFrage(k){var a=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.a)||{};return (a[k]&&a[k].q)||k;}
+function chipName(g,k){var c=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.chips&&DS_TEXTE.de.chips[g])||{};return (c[k]&&c[k][0])||k;}
+function umfeldDef(id){var w=W();return w?w.umfeld.filter(function(u){return u.id===id;})[0]||null:null;}
+
+/* ---------- Datensatz der Datenbank: für alle ohne die reinen Datenbank-Angaben ---------- */
+function datensatz(d,resp){
+  var D=window.CDSE_DATENBANK;if(!D||!D.datensatz){return {};}
+  try{return resp?D.datensatz(d):D.datensatz(Object.assign({},d,{db:{},id:''}));}catch(e){return {};}
+}
+
+/* =====================================================================
+   Profil lesen
+   ===================================================================== */
+function lesen(d){
+  var w=W(), resp=istResp(), m={}, offen=[], klaeren=[], umfeld={};
+  var team=((d.begleitplan||{}).merkmale)||{};
+  function grund(pid,art,text,quelle,nurResp){
+    if(!profilDef(pid)){return;}
+    var x=m[pid]||(m[pid]={id:pid,def:profilDef(pid),art:art,gruende:[]});
+    if(RANG[art]>RANG[x.art]){x.art=art;}
+    if(!x.gruende.some(function(g){return g.text===text;})){x.gruende.push({art:art,text:text,quelle:quelle,nurResp:!!nurResp});}
+  }
+  function lage(id,text){if(!umfeldDef(id)){return;}(umfeld[id]=umfeld[id]||[]);if(text&&umfeld[id].indexOf(text)<0){umfeld[id].push(text);}}
+  var st=(H.dsStand?H.dsStand(d):null)||{bewertungen:{},chips:{},frei:{},f:{},datum:''};
+  var ch=st.chips||{}, f=st.f||{};
+  var geklaert={};Object.keys(team).forEach(function(k){if(team[k]&&team[k].bezug){geklaert[team[k].bezug]=1;}if(team[k]&&team[k].art==='geklaert'){geklaert[k]=1;}});
+
+  /* 1) DS: Diagnosen */
+  (ch.diagnosen||[]).forEach(function(k){
+    var det=String(((f.diagnosen_details||{})[k])||'').trim();
+    if(k==='andere'){
+      var t=[String((st.frei||{}).diagnose_andere||'').trim(),det].filter(Boolean).join(' – ');if(!t){return;}
+      var ids=passende(t);ids.forEach(function(id){grund(id,'diagnose','Im DS eingetragen: „'+t+'“','ds');});
+      if(!ids.length&&!geklaert['ds-text:'+t.slice(0,50)]){offen.push({text:t,quelle:'DS',art:'diagnose'});}
+      return;
+    }
+    var pid=w.ds.diagnosen[k], aus=det?passende(det):[];
+    if(pid){grund(pid,'diagnose','Im DS eingetragen: '+chipName('diagnosen',k)+(det?' ('+det+')':''),'ds');}
+    aus.forEach(function(id){if(id!==pid){grund(id,'diagnose','Im DS eingetragen: '+chipName('diagnosen',k)+' ('+det+')','ds');}});
+    var ob=w.ds.oberbegriff[k];
+    if(ob&&!aus.length&&!geklaert['ds:'+k]){klaeren.push({key:'ds:'+k,name:ob.name,auswahl:ob.auswahl});}
+  });
+  /* 2) Datenbank: Diagnosen und Verdacht (nur Responsables und Verwaltung) */
+  if(resp&&d.db){
+    [['diagnosen','diagnose','Datenbank'],['verdacht','verdacht','Datenbank, Verdacht']].forEach(function(z){
+      zeilen(d.db[z[0]]).forEach(function(t){
+        var ids=passende(t);ids.forEach(function(id){grund(id,z[1],z[2]+': „'+t+'“','db',true);});
+        if(!ids.length&&!geklaert['db:'+t.slice(0,50)]){offen.push({text:t,quelle:z[2],art:z[1],nurResp:true});}
+      });
+    });
+  }
+  /* 3) vom Team eingetragen (z. B. aus einem Arztbrief) */
+  Object.keys(team).forEach(function(k){
+    var x=team[k];if(!x||(x.art!=='diagnose'&&x.art!=='verdacht')){return;}
+    grund(k,x.art,'Vom Team eingetragen'+(x.art==='verdacht'?' (Verdacht)':'')+(x.quelle?': '+x.quelle:''),'team');
+  });
+  /* 4) DS: Arbeitshypothesen, Lebenslage, Anlass, Ereignisse */
+  var b=st.bewertungen||{};
+  Object.keys(w.ds.hypothesen).forEach(function(k){var r=b[k];if(r>=HYP_AB){grund(w.ds.hypothesen[k],'hypothese','Arbeitshypothese im DS: „'+dsFrage(k)+'“ ('+r+' von 7)','ds');}});
+  Object.keys(w.ds.umfeld).forEach(function(k){var r=b[k];if(r>=HYP_AB){lage(w.ds.umfeld[k],'DS: „'+dsFrage(k)+'“ ('+r+' von 7)');}});
+  (ch.anlass||[]).forEach(function(k){var pid=w.ds.anlass[k];if(pid){grund(pid,'beobachtet','Anlass der Anfrage (DS): '+chipName('anlass',k),'ds');}});
+  (ch.ereignisse||[]).forEach(function(k){
+    if(k==='trauma'){grund('trauma','hypothese','Belastendes Erlebnis im DS genannt','ds');}
+    if(k==='migration'){lage('mehrsprachig','Migrationserfahrung (DS)');}
+    else{lage('belastung',chipName('ereignisse',k)+' (DS)');}
+  });
+  /* 5) Beobachtungen: Screening, auffällige Bereiche laut DS, Warnsignale, Vorfälle */
+  var o=beobachtungen(d,st);
+  w.profile.forEach(function(p){
+    (p.beob||[]).some(function(alt){
+      var g=[], ok=alt.every(function(bed){var r=bedingung(bed,o);if(r&&r.text){g.push(r);}return !!r;});
+      if(ok){g.forEach(function(r){grund(p.id,'beobachtet',r.text,r.quelle);});}
+      return ok;
+    });
+  });
+  /* 6) Entscheidungen des Teams: ausgeblendet */
+  var ausgeblendet=[];
+  Object.keys(m).forEach(function(id){if(team[id]&&team[id].art==='aus'){m[id].aus=team[id];ausgeblendet.push(m[id]);delete m[id];}});
+  /* 7) Profile, die in einem anderen aufgehen (z. B. Emotionsregulation in den Borderline-Zügen) */
+  Object.keys(m).forEach(function(id){
+    var x=m[id];if(!x){return;}
+    (x.def.umfasst||[]).forEach(function(u){
+      var y=m[u];if(!y||u===id){return;}
+      /* Gründe übernehmen, aber nicht für die Einstufung zählen */
+      y.gruende.forEach(function(g){if(!x.gruende.some(function(h){return h.text===g.text;})){x.gruende.push({art:g.art,text:g.text,quelle:g.quelle,nurResp:g.nurResp,umfasst:true});}});
+      x.umfasst=(x.umfasst||[]).concat([y.def.thema||y.def.name]);delete m[u];
+    });
+  });
+  /* Was sieht das Team ohne die reinen Datenbank-Angaben? (teilen: Einstufung beruht nur auf der Datenbank) */
+  var liste=Object.keys(m).map(function(id){
+      var x=m[id], sicht=x.gruende.filter(function(g){return !g.nurResp&&!g.umfasst;});
+      x.nurResp=!sicht.length;x.artTeam=sicht.reduce(function(a,g){return (!a||RANG[g.art]>RANG[a])?g.art:a;},null);x.teilen=x.artTeam!==x.art;
+      return x;})
+    .sort(function(a,c){return (RANG[c.art]-RANG[a.art])||(c.gruende.length-a.gruende.length)||(profilIndex(a.id)-profilIndex(c.id));});
+  var ids={};liste.forEach(function(x){ids[x.id]=1;});
+  var ctx=kontext(d,resp,o,umfeld,ids);
+  return {profile:liste,ids:ids,offen:offen,klaeren:klaeren,ausgeblendet:ausgeblendet,beob:o,ctx:ctx,ds:st};
+}
+
+/* Screenings der letzten 12 Monate (je Bereich die deutlichste Einschätzung), sonst die
+   auffälligen Bereiche laut DS; Warnsignale der letzten drei Monate; Vorfälle */
+function beobachtungen(d,st){
+  var o={sc:{},warn:{},vorfaelle:0,alter:null}, S=window.CDSE_SCREENING, w=W();
+  var g=(d.person||{}).geburtsdatum;o.alter=(g&&H.alter)?H.alter(g):null;
+  var neuestesSc='';
+  if(S&&S.auswerten){
+    (d.screenings||[]).forEach(function(s){
+      if(String(s.datum)>neuestesSc){neuestesSc=String(s.datum);}
+      if(tageSeit(s.datum)>SC_TAGE){return;}
+      var e;try{e=S.auswerten(s);}catch(x){return;}
+      e.bereiche.forEach(function(b){
+        if(!STUFE_RANG[b.stufe]){return;}
+        var alt=o.sc[b.id];
+        if(!alt||STUFE_RANG[b.stufe]>STUFE_RANG[alt.stufe]||(b.stufe===alt.stufe&&String(s.datum)>String(alt.datum))){o.sc[b.id]={stufe:b.stufe,name:b.name,datum:s.datum,quelle:'screening'};}
+      });
+      if(tageSeit(s.datum)<=WARN_TAGE){e.warn.forEach(function(x){o.warn[x.id]={text:(w.warnKurz||{})[x.id]||x.text,datum:s.datum};});}
+    });
+    /* Der DS zählt nur, wenn danach noch kein Screening gemacht wurde */
+    var dsb=(S.dsBereiche&&st&&st.datum&&!(neuestesSc&&neuestesSc>=st.datum))?S.dsBereiche(d):null;
+    if(dsb){Object.keys(dsb.bereiche).forEach(function(id){var x=dsb.bereiche[id];if(STUFE_RANG[x.stufe]&&!o.sc[id]){o.sc[id]={stufe:x.stufe,name:x.name,datum:dsb.datum,quelle:'ds'};}});}
+  }
+  o.vorfaelle=(d.eintraege||[]).filter(function(e){return e&&e.art==='vorfall'&&tageSeit(e.datum)<=VORFALL_TAGE;}).length;
+  return o;
+}
+function bedingung(b,o){
+  var t=String(b).split(':');
+  if(t[0]==='sc'){
+    var x=o.sc[t[1]];if(!x){return null;}if(t[2]!=='gelb'&&x.stufe!=='rot'){return null;}
+    return {text:(x.quelle==='ds'?'DS vom ':'Screening vom ')+datum(x.datum)+': „'+x.name+'“ '+(x.stufe==='rot'?'deutlich':'zu beobachten'),quelle:x.quelle};
+  }
+  if(t[0]==='warn'){var w=o.warn[t[1]];return w?{text:'Warnsignal im Screening vom '+datum(w.datum)+': '+w.text,quelle:'screening'}:null;}
+  if(t[0]==='alter'){var n=parseInt(t[1],10);return (o.alter!=null&&o.alter>=n)?{}:null;}
+  if(t[0]==='vorfaelle'){var v=parseInt(t[1],10);return o.vorfaelle>=v?{text:o.vorfaelle+' Vorfälle in den letzten drei Monaten',quelle:'eintraege'}:null;}
+  return null;
+}
+
+/* ---------- Entwicklungsstufe (ELDiB) und Lebenslage ---------- */
+function stufenLesen(d){
+  var A=null;try{A=H.eldibAuswertung?H.eldibAuswertung(d):null;}catch(e){A=null;}
+  if(!A){return null;}
+  var o={};A.bereiche.forEach(function(b){if(b.bewertet){o[b.code]={stufe:b.arbeit,name:b.name,abstand:b.abstand};}});
+  var l=['V','SOZ'].map(function(c){return o[c];}).filter(Boolean);if(!l.length){return null;}
+  return {bereiche:o,rolle:Math.min.apply(null,l.map(function(x){return x.stufe;})),datum:(A.e&&A.e.datum)||''};
+}
+function schulstufe(r,alter){
+  var c=r.cycle;if(c&&c!=='andere'){return c;}
+  if(alter==null){return '';}
+  return alter<6?'C1':(alter<8?'C2':(alter<10?'C3':(alter<12?'C4':'ES')));
+}
+function kontext(d,resp,o,umfeld,ids){
+  var r=datensatz(d,resp), a=o.alter, st=stufenLesen(d);
+  function lage(id,text){if(!umfeldDef(id)){return;}(umfeld[id]=umfeld[id]||[]);if(text&&umfeld[id].indexOf(text)<0){umfeld[id].push(text);}}
+  if(a!=null&&a<8){lage('klein',a+' Jahre');}
+  if(a!=null&&a>=12){lage('jugend',a+' Jahre');}
+  var sr=(r.sorgerecht||[]).filter(function(x){return /pflege|foyer|vormund|one\b/i.test(x);});
+  if(sr.length){lage('fremd','Sorgerecht: '+sr.join(', '));}
+  if(resp){
+    (r.massnahmenFamilie||[]).filter(function(x){return /placement|foyer|accueil|pflege|heim/i.test(x);}).forEach(function(x){lage('fremd',x+' (Datenbank)');});
+    if(r.eltern==='anderes'){lage('fremd','Elternsituation „anderes“ (Datenbank)');}
+  }
+  if(r.ankunft&&tageSeit(r.ankunft)<=NEU_TAGE){lage('neu','in Luxemburg seit '+datum(r.ankunft));}
+  if(r.sprache&&r.sprache!=='LU'){lage('mehrsprachig','Erstsprache: '+(r.erstsprache||r.sprache));}
+  var netz=(r.dienste||[]).slice();if(r.scas==='ja'&&netz.join(' ').toUpperCase().indexOf('SCAS')<0){netz.push('SCAS');}
+  if(netz.length>=2||r.scas==='ja'){lage('netz',netz.join(', '));}
+  if(o.vorfaelle>=3){lage('vorfaelle',o.vorfaelle+' Vorfälle in drei Monaten');}
+  if(st){['V','SOZ'].forEach(function(c){var x=st.bereiche[c];if(x&&x.abstand!=null&&x.abstand>=2){lage('entwicklung','ELDiB '+x.name+': Stufe '+ROEM[x.stufe]+', '+x.abstand+' Stufen unter dem Alter');}});}
+  return {alter:a,stufen:st,schulstufe:schulstufe(r,a),umfeld:umfeld,ids:ids};
+}
+
+/* ---------- Passt ein Baustein zu diesem Kind? ---------- */
+function passt(it,ctx){
+  var tag='', warum='';
+  if(it.b&&it.st){
+    var s=ctx.stufen&&ctx.stufen.bereiche[it.b];
+    var bereich=it.st[0]===it.st[1]?ROEM[it.st[0]]:ROEM[it.st[0]]+'–'+ROEM[it.st[1]];
+    if(s){if(s.stufe<it.st[0]||s.stufe>it.st[1]){return null;}warum='passt zu ETEP-Stufe '+ROEM[s.stufe]+' ('+s.name+')';}
+    else{tag='bei Stufe '+bereich;}
+  }
+  if(it.alter){
+    if(ctx.alter==null){tag=(tag?tag+', ':'')+it.alter[0]+'–'+it.alter[1]+' Jahre';}
+    else if(ctx.alter<it.alter[0]||ctx.alter>it.alter[1]){return null;}
+  }
+  return {tag:tag,warum:warum};
+}
+
+/* =====================================================================
+   Darstellung
+   ===================================================================== */
+function neueQ(){return {liste:[],nr:{}};}
+function zit(q,Q){
+  var teile=[];
+  (q||[]).forEach(function(k){
+    if(k==='Praxis'){teile.push('<span class="ko-praxis" title="Erfahrung aus der pädagogischen Praxis, keine eigene Studie">Praxis</span>');return;}
+    if(!QUELLEN[k]){return;}
+    if(!Q.nr[k]){Q.liste.push(k);Q.nr[k]=Q.liste.length;}
+    teile.push('<button type="button" class="ko-q" data-ko="quelle" data-nr="'+Q.nr[k]+'" title="'+esc(QUELLEN[k])+'" aria-label="Quelle '+Q.nr[k]+'">'+Q.nr[k]+'</button>');
+  });
+  return teile.length?'<span class="ko-qs">'+teile.join('')+'</span>':'';
+}
+function punkt(it,ctx,Q,extra){
+  var p=passt(it,ctx);if(!p){return '';}
+  return '<li><span class="ko-t">'+esc(it.t)+'</span>'+(extra?'<span class="ko-von">'+esc(extra)+'</span>':'')+
+    (p.warum?'<span class="ko-passt">'+svg('check')+esc(p.warum)+'</span>':'')+(p.tag?'<span class="ko-tag">'+esc(p.tag)+'</span>':'')+zit(it.q,Q)+'</li>';
+}
+function anzeigeName(x){return (x.art==='diagnose'||x.art==='verdacht')?x.def.name:(x.def.thema||x.def.name);}
+function artChip(art){return '<span class="ko-art '+art+'" title="'+esc(ART_TEXT[art])+'">'+ART_NAME[art]+'</span>';}
+
+/* Arbeitsblatt in der Fassung für die Schulstufe des Kindes (gleiches Thema, andere Stufe) */
+function blattFuer(id,stufe){
+  var T0=window.CDSE_TOOLBOX_INDEX, bl=(T0&&Array.isArray(T0.blaetter))?T0.blaetter:[];
+  var b=bl.filter(function(x){return x.id===id;})[0];if(!b){return null;}
+  if(!stufe||(b.stufen||[]).indexOf(stufe)>=0){return b;}
+  return bl.filter(function(x){return x.bereich===b.bereich&&x.thema===b.thema&&(x.stufen||[]).indexOf(stufe)>=0;})[0]||b;
+}
+function material(ids,ctx){
+  var gesehen={}, l=[];
+  (ids||[]).forEach(function(id){var b=blattFuer(id,ctx.schulstufe);if(b&&!gesehen[b.id]){gesehen[b.id]=1;l.push(b);}});
+  return l;
+}
+function blattLink(b){return '<a href="apps/toolbox.html#blatt='+encodeURIComponent(b.id)+'" target="cdse-toolbox">'+esc(b.nr?b.nr+' ':'')+esc(b.titel)+'<small>'+esc((b.stufen||[]).join(', '))+'</small></a>';}
+function lernLink(id){return LERN_TITEL[id]?'<a href="apps/lernen.html#/modul/'+encodeURIComponent(id)+'" target="cdse-lernen">'+esc(LERN_TITEL[id])+'</a>':'';}
+
+/* ---------- Reiter ---------- */
+function tab(d,r){
+  if(!bausteine()||!W()){return '<p>Der Kompass fehlt in dieser Hub-Datei.</p>';}
+  var L=lesen(d), ctx=L.ctx, Q=neueQ(), w=W(), vn=vorname(d), h='';
+  h+='<div class="ko" id="ko-ergebnis">';
+  h+='<div class="ko-stand keindruck" role="note">'+svg('info')+'<span><b>Entwurf, Stand '+esc(datum(w.stand))+':</b> Die Inhalte sind vor dem Einsatz fachlich zu prüfen (z. B. durch die Diagnostique). Der Kompass ordnet Fachwissen dem Profil zu. Er stellt keine Diagnose und ersetzt keine Behandlung.</span></div>';
+  /* Profil */
+  h+='<section class="ar-karte ko-kopf"><div class="ar-kartenkopf"><div><p class="overline">Kompass</p><h2>Was '+esc(vn)+' braucht</h2></div>'+
+    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-ko="ergaenzen">'+svg('plus')+'Profil ergänzen</button>':'')+
+    '<button class="btn" type="button" data-ko="drucken">'+svg('print')+'Drucken</button></span></div>';
+  if(L.profile.length){
+    h+='<ul class="ko-profilchips">'+L.profile.map(function(x){
+      return '<li><button type="button" class="ko-pchip '+x.art+'" data-ko="springen" data-id="'+esc(x.def.id)+'">'+esc(anzeigeName(x))+artChip(x.art)+'</button></li>';}).join('')+'</ul>';
+  }else{
+    h+='<p class="ko-leer">Noch kein Profil erkennbar. Der Kompass liest Diagnosen und Hypothesen aus dem DS, das Screening, Warnsignale und Vorfälle'+(istResp()?', die Datenbank-Angaben':'')+' und was das Team einträgt. '+
+      (r.bearbeiten?'Liegt ein Befund oder Arztbrief vor, trag das Profil mit <b>„Profil ergänzen“</b> ein.':'')+'</p>';
+  }
+  var st=ctx.stufen;
+  h+='<dl class="ko-fakten">'+
+    '<dt>Entwicklung (ELDiB)</dt><dd>'+(st?Object.keys(st.bereiche).filter(function(c){return c==='V'||c==='SOZ'||c==='K';}).map(function(c){var x=st.bereiche[c];return esc(x.name)+' Stufe '+ROEM[x.stufe];}).join(' · ')+
+      ' <span class="ko-leise">→ Rolle der Erwachsenen: <b>'+esc(w.stufen[st.rolle].rolle)+'</b></span>':'<span class="ko-leise">noch keine ELDiB-Einschätzung – Hinweise gelten dann für alle Stufen</span>')+'</dd>'+
+    '<dt>Lebenslage</dt><dd>'+(Object.keys(ctx.umfeld).length?Object.keys(ctx.umfeld).map(function(id){return esc(umfeldDef(id).name);}).join(' · '):'<span class="ko-leise">keine besonderen Angaben</span>')+'</dd>'+
+    '<dt>Material für</dt><dd>'+(ctx.schulstufe?esc(ctx.schulstufe):'<span class="ko-leise">Schulstufe unbekannt</span>')+'</dd></dl>';
+  /* Rückfragen */
+  L.klaeren.forEach(function(k){
+    h+='<div class="ko-frage">'+svg('info')+'<div><b>Im DS steht „'+esc(k.name)+'“.</b> Das ist ein Oberbegriff. Welches Bild passt am ehesten?'+
+      (r.bearbeiten?'<div class="ko-wahl">'+k.auswahl.map(function(id){var p=profilDef(id);return '<button type="button" class="btn klein" data-ko="klaeren" data-key="'+esc(k.key)+'" data-id="'+esc(id)+'">'+esc(p.name)+'</button>';}).join('')+
+        '<button type="button" class="ar-link" data-ko="klaeren" data-key="'+esc(k.key)+'" data-id="">keines davon</button></div>':'<p class="ko-leise">Das kann jemand mit Schreibrecht zuordnen.</p>')+'</div></div>';
+  });
+  L.offen.forEach(function(x){
+    h+='<div class="ko-frage">'+svg('info')+'<div><b>'+esc(x.quelle)+': „'+esc(x.text)+'“</b> ist keinem Profil zugeordnet.'+(x.nurResp?' <span class="ko-nurresp">nur Responsables</span>':'')+
+      (r.bearbeiten?' <button type="button" class="ar-link" data-ko="zuordnen" data-text="'+esc(x.text)+'" data-art="'+esc(x.art)+'" data-resp="'+(x.nurResp?1:0)+'">Profil wählen</button>':'')+'</div></div>';
+  });
+  h+='</section>';
+  if(!L.profile.length&&!Object.keys(ctx.umfeld).length&&!st){return h+ausgeblendetKarte(L,r)+'</div>';}
+  /* Das Wichtigste zuerst */
+  h+=wichtigstes(d,L,ctx,Q,r);
+  /* Profile */
+  L.profile.forEach(function(x,i){h+=profilKarte(d,x,ctx,Q,r,i===0);});
+  /* Kombinationen */
+  var kombi=w.kombinationen.filter(function(k){return k.wenn.every(function(id){return L.ids[id];});});
+  if(kombi.length){h+='<section class="ar-karte ko-block"><h3>Wenn mehreres zusammenkommt</h3><ul class="ko-liste">'+kombi.map(function(k){return punkt(k,ctx,Q,k.wenn.map(function(id){var x=L.profile.filter(function(p){return p.id===id;})[0];return x?anzeigeName(x):id;}).join(' + '));}).join('')+'</ul></section>';}
+  /* Entwicklungsstufe */
+  if(st){
+    var s=w.stufen[st.rolle];
+    h+='<section class="ar-karte ko-block"><h3>Umgang nach der Entwicklungsstufe</h3><p class="ko-leise">ETEP-Stufe '+ROEM[st.rolle]+' (niedrigere Stufe aus Verhalten und Sozialisation der ELDiB'+(st.datum?' vom '+esc(datum(st.datum)):'')+'). Rolle der Erwachsenen: <b>'+esc(s.rolle)+'</b>.</p>'+
+      '<ul class="ko-liste">'+s.umgang.map(function(it){return punkt(it,ctx,Q);}).join('')+'</ul></section>';
+  }
+  /* Lebenslage */
+  var ul=Object.keys(ctx.umfeld);
+  if(ul.length){h+='<section class="ar-karte ko-block"><h3>Lebenslage mitdenken</h3><ul class="ko-liste">'+ul.map(function(id){var u=umfeldDef(id);return punkt(u,ctx,Q,u.name+(ctx.umfeld[id].length?': '+ctx.umfeld[id].join('; '):''));}).join('')+'</ul></section>';}
+  h+=ausgeblendetKarte(L,r);
+  /* Quellen */
+  if(Q.liste.length){
+    h+='<details class="ar-karte ko-quellen" id="ko-quellen"><summary><h3>Quellen ('+Q.liste.length+')</h3></summary><ol>'+Q.liste.map(function(k,i){return '<li id="ko-q-'+(i+1)+'">'+esc(QUELLEN[k])+'</li>';}).join('')+'</ol>'+
+      '<p class="ko-leise">Die Zahlen hinter jedem Punkt verweisen auf diese Liste. „Praxis“ heißt: bewährte pädagogische Erfahrung ohne eigene Studie.</p></details>';
+  }
+  h+='<details class="ar-karte ko-wie keindruck"><summary><h3>Wie der Kompass arbeitet</h3></summary><p>Der Kompass liest, was im Dossier steht: Diagnosen und Verdacht (DS'+(istResp()?', Datenbank':'')+', vom Team eingetragen), Arbeitshypothesen und Anlass aus dem DS, die Screenings der letzten zwölf Monate, Warnsignale und Vorfälle der letzten drei Monate, die ELDiB-Stufen sowie Alter und Lebenslage. Daraus wählt er Bausteine aus einer Wissensbasis mit Leitlinien und Fachliteratur. Hinweise für bestimmte Entwicklungsstufen erscheinen nur, wenn sie zur ELDiB-Stufe passen.</p>'+
+    '<p>Die Abzeichen zeigen, worauf ein Profil beruht: <b>Diagnose</b> (dokumentiert), <b>Verdacht</b>, <b>Arbeitshypothese</b> (DS-Deutung, keine Diagnose), <b>Beobachtet</b> (Screening, DS, Einträge – keine Diagnose). Was nicht passt, kann das Team ausblenden. Jede Änderung steht im Protokoll.</p></details>';
+  return h+'</div>';
+}
+
+/* „Das Wichtigste zuerst“: Warnsignale, je Profil der wichtigste Umgangshinweis, Kombinationen, Rolle nach Stufe */
+function wichtigstes(d,L,ctx,Q,r){
+  var w=W(), l=[];
+  var warn=Object.keys(L.beob.warn);
+  if(warn.length){
+    l.push('<li class="ko-dringend"><span class="ko-t"><b>Warnsignal im Screening:</b> '+esc(warn.map(function(k){return L.beob.warn[k].text;}).join(', '))+'. Die Schritte im Screening gehen allem anderen vor.</span>'+
+      '<button type="button" class="ar-link" data-tab="screening">Zum Screening</button></li>');
+    L.profile.forEach(function(x){(x.def.krise||[]).slice(0,1).forEach(function(it){var p=punkt(it,ctx,Q,anzeigeName(x));if(p&&l.length<3){l.push(p);}});});
+  }
+  L.profile.slice(0,3).forEach(function(x){
+    var um=(x.def.umgang||[]), spez=um.filter(function(it){var p=passt(it,ctx);return p&&p.warum;})[0], it=spez||um.filter(function(i){return passt(i,ctx);})[0];
+    if(it){l.push(punkt(it,ctx,Q,anzeigeName(x)));}
+  });
+  w.kombinationen.filter(function(k){return k.wenn.every(function(id){return L.ids[id];});}).slice(0,2).forEach(function(k){l.push(punkt(k,ctx,Q,'Kombination'));});
+  if(ctx.stufen){var s=w.stufen[ctx.stufen.rolle];if(s&&s.umgang[0]){l.push(punkt(s.umgang[0],ctx,Q,'ETEP-Stufe '+ROEM[ctx.stufen.rolle]+': '+s.rolle));}}
+  l=l.filter(Boolean).slice(0,7);
+  if(!l.length){return '';}
+  return '<section class="ar-karte ko-wichtig"><h3>'+svg('ziel')+'Das Wichtigste zuerst</h3><ol class="ko-liste">'+l.join('')+'</ol></section>';
+}
+
+function profilKarte(d,x,ctx,Q,r,offen){
+  var p=x.def, vn=vorname(d), h='<details class="ar-karte ko-profil '+x.art+'" id="ko-p-'+esc(p.id)+'"'+(offen?' open':'')+'>'+
+    '<summary><span class="ko-pkopf"><span class="ko-pname">'+esc(anzeigeName(x))+'</span>'+artChip(x.art)+(x.teilen?'<span class="ko-nurresp" title="'+esc(x.nurResp?'Steht nur in der Datenbank – sichtbar für Responsables und Verwaltung':'Diese Einstufung beruht auf der Datenbank – das Team sieht hier „'+ART_NAME[x.artTeam]+'“')+'">nur Responsables</span>':'')+'</span>'+
+    (x.umfasst&&x.umfasst.length?'<span class="ko-umfasst">umfasst: '+esc(x.umfasst.join(', '))+'</span>':'')+svg('right')+'</summary><div class="ko-pinhalt">';
+  h+='<div class="ko-warum"><b>Warum für '+esc(vn)+'?</b><ul>'+x.gruende.map(function(g){return '<li>'+esc(g.text)+(g.nurResp?' <span class="ko-nurresp">nur Responsables</span>':'')+'</li>';}).join('')+'</ul></div>';
+  if(p.kurz){h+='<p class="ko-kurz">'+esc(p.kurz)+'</p>';}
+  var inhalt=0;
+  ABSCHNITTE.forEach(function(a){
+    var l=(p[a[0]]||[]).map(function(it){return punkt(it,ctx,Q);}).filter(Boolean);
+    if(l.length){inhalt++;h+='<section class="ko-ab ko-ab-'+a[0]+'"><h4>'+esc(a[1])+'</h4><ul class="ko-liste">'+l.join('')+'</ul></section>';}
+  });
+  if(!inhalt){h+='<p class="ko-leise">Ausführliche Bausteine für dieses Profil folgen. Bis dahin: das Lernmodul und das Material unten.</p>';}
+  var bl=material(p.blaetter,ctx), lm=(p.lernen||[]).map(lernLink).filter(Boolean);
+  if(bl.length||lm.length){
+    h+='<div class="ko-material">'+(bl.length?'<div><span class="ko-mtitel">Arbeitsblätter'+(ctx.schulstufe?' ('+esc(ctx.schulstufe)+')':'')+'</span>'+bl.map(blattLink).join('')+'</div>':'')+
+      (lm.length?'<div><span class="ko-mtitel">Zum Nachlesen (Lernen)</span>'+lm.join('')+'</div>':'')+'</div>';
+  }
+  if(r.bearbeiten){
+    var teamEintrag=x.gruende.some(function(g){return g.quelle==='team';});
+    h+='<div class="ko-paktionen keindruck">'+
+      (x.teilen&&istResp()?'<button type="button" class="ar-link" data-ko="teilen" data-id="'+esc(p.id)+'" data-art="'+esc(x.art)+'">'+svg('users')+'Für das Team sichtbar machen</button>':'')+
+      (teamEintrag?'<button type="button" class="ar-link" data-ko="zuruecksetzen" data-id="'+esc(p.id)+'">'+svg('x')+'Eintrag des Teams entfernen</button>':'')+
+      '<button type="button" class="ar-link" data-ko="aus" data-id="'+esc(p.id)+'">Passt nicht – ausblenden</button></div>';
+  }
+  return h+'</div></details>';
+}
+function ausgeblendetKarte(L,r){
+  if(!L.ausgeblendet.length){return '';}
+  return '<details class="ar-karte ko-aus keindruck"><summary><h3>Ausgeblendet ('+L.ausgeblendet.length+')</h3></summary><ul>'+L.ausgeblendet.map(function(x){
+    return '<li><b>'+esc(anzeigeName(x))+'</b> '+artChip(x.art)+(x.aus.quelle?' <span class="ko-leise">– '+esc(x.aus.quelle)+'</span>':'')+
+      (r.bearbeiten?' <button type="button" class="ar-link" data-ko="zuruecksetzen" data-id="'+esc(x.def.id)+'">Wieder zeigen</button>':'')+'</li>';}).join('')+'</ul></details>';
+}
+
+/* ---------- Kurzfassung für den Überblick ---------- */
+function kurzKarte(d){
+  if(!bausteine()||!W()){return '';}
+  var L;try{L=lesen(d);}catch(e){return '';}
+  if(!L.profile.length&&!L.klaeren.length){return '';}
+  return '<div class="ar-karte ko-kurzkarte"><div class="ar-kartenkopf"><h2>Kompass</h2><button class="ar-link" type="button" data-tab="kompass">Umgang und Material ansehen'+svg('right')+'</button></div>'+
+    (L.profile.length?'<ul class="ko-profilchips">'+L.profile.slice(0,5).map(function(x){return '<li><span class="ko-pchip '+x.art+'">'+esc(anzeigeName(x))+artChip(x.art)+'</span></li>';}).join('')+'</ul>':'')+
+    (L.klaeren.length?'<p class="ko-leise">Im DS steht ein Oberbegriff, der noch zugeordnet werden kann.</p>':'')+'</div>';
+}
+
+/* =====================================================================
+   Aktionen
+   ===================================================================== */
+function aktuell(){var d=H&&H.aktDossier&&H.aktDossier();return d||null;}
+function speichern(d,key,werte,meldung){
+  return T.ops.planMerkmal(d.id,key,werte).then(function(neu){H.toast(meldung);H.dossierZeichnen(neu);return neu;},function(e){H.toast((e&&e.message)||String(e));});
+}
+function profilOptionen(){return W().profile.map(function(p){return [p.id,p.name+(p.thema&&p.thema!==p.name?' ('+p.thema+')':'')];});}
+function ergaenzenDialog(d,vorgabe){
+  vorgabe=vorgabe||{};
+  var hinweis=vorgabe.resp?'<p class="ko-dialog-hinweis">'+svg('users')+'Danach sehen alle, die das Dossier lesen dürfen, dieses Profil im Kompass.</p>':'';
+  var inhalt=(vorgabe.text?'<p>Zuordnen: <b>„'+esc(vorgabe.text)+'“</b></p>':'<p>Zum Beispiel aus einem Arztbrief, einem Befund oder einem Bericht der Diagnostique. Der Kompass zeigt dann Umgang, Material und Quellen dazu.</p>')+
+    H.auswahl('profil','Profil',vorgabe.id||'',profilOptionen(),'– bitte wählen –')+
+    '<fieldset class="ko-dialog-art"><legend>Stand</legend><label><input type="radio" name="art" value="diagnose"'+(vorgabe.art!=='verdacht'?' checked':'')+'> Diagnose liegt vor</label><label><input type="radio" name="art" value="verdacht"'+(vorgabe.art==='verdacht'?' checked':'')+'> Verdacht (noch nicht abgeklärt)</label></fieldset>'+
+    H.feld('quelle','Woher? (z. B. „Bericht Kinderpsychiatrie, 03/2026“)',vorgabe.quelle||'','text',' maxlength="300"')+hinweis;
+  H.dialog(vorgabe.text?'Profil zuordnen':'Profil ergänzen',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{
+    pruefen:function(x){return x.werte.profil?'':'Bitte ein Profil wählen.';},
+    ausfuehren:function(x){
+      var p=profilDef(x.werte.profil), q=String(x.werte.quelle||'').trim();
+      var werte={art:x.werte.art==='verdacht'?'verdacht':'diagnose',quelle:q,name:p.name};
+      var weiter=T.ops.planMerkmal(d.id,p.id,werte);
+      if(vorgabe.bezug){weiter=weiter.then(function(){return T.ops.planMerkmal(d.id,vorgabe.bezug,{art:'geklaert',name:vorgabe.text||vorgabe.bezug});});}
+      return weiter;
+    }
+  }).then(function(res){if(res&&res.ergebnis){H.toast('Im Kompass eingetragen');H.dossierZeichnen(res.ergebnis);}});
+}
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-ko]');if(!t||!bausteine()){return;}
+  var d=aktuell();if(!d){return;}
+  var a=t.getAttribute('data-ko'), id=t.getAttribute('data-id')||'', p=id?profilDef(id):null;
+  if(a==='quelle'){
+    ev.preventDefault();var q=document.getElementById('ko-quellen'), li=document.getElementById('ko-q-'+t.getAttribute('data-nr'));
+    if(q){q.open=true;}if(li){li.scrollIntoView({block:'center',behavior:'smooth'});li.classList.add('ko-hell');setTimeout(function(){li.classList.remove('ko-hell');},1600);}
+    return;
+  }
+  if(a==='springen'){var el=document.getElementById('ko-p-'+id);if(el){el.open=true;el.scrollIntoView({block:'start',behavior:'smooth'});}return;}
+  if(a==='drucken'){
+    Array.prototype.forEach.call(document.querySelectorAll('#ko-ergebnis details'),function(x){x.setAttribute('data-war-offen',x.open?'1':'');x.open=true;});
+    document.body.classList.add('ko-druck');setTimeout(function(){window.print();},50);return;
+  }
+  if(a==='ergaenzen'){ergaenzenDialog(d);return;}
+  if(a==='zuordnen'){
+    var text=t.getAttribute('data-text')||'';
+    ergaenzenDialog(d,{text:text,art:t.getAttribute('data-art')==='verdacht'?'verdacht':'diagnose',quelle:(t.getAttribute('data-resp')==='1'?'Datenbank: ':'DS: ')+'„'+text+'“',resp:t.getAttribute('data-resp')==='1',
+      bezug:(t.getAttribute('data-resp')==='1'?'db:':'ds-text:')+text.slice(0,50)});
+    return;
+  }
+  if(a==='klaeren'){
+    var key=t.getAttribute('data-key');
+    if(!id){speichern(d,key,{art:'geklaert',name:'Oberbegriff im DS'},'Erledigt');return;}
+    t.disabled=true;
+    T.ops.planMerkmal(d.id,id,{art:'diagnose',quelle:'DS: „'+(((W().ds.oberbegriff[key.replace(/^ds:/,'')]||{}).name)||key)+'“, vom Team zugeordnet',bezug:key,name:p.name})
+      .then(function(neu){H.toast('Zugeordnet: '+p.name);H.dossierZeichnen(neu);},function(e){t.disabled=false;H.toast((e&&e.message)||String(e));});
+    return;
+  }
+  if(a==='teilen'&&p){
+    H.dialog('Für das Team sichtbar machen','<p>„'+esc(p.name)+'“ steht bisher nur in der Datenbank. Danach sehen alle, die das Dossier lesen dürfen, dieses Profil im Kompass – mit dem Vermerk „vom Team eingetragen“.</p>',
+      [{text:'Abbrechen',wert:''},{text:'Sichtbar machen',wert:'ok',primaer:true}],
+      {ausfuehren:function(){return T.ops.planMerkmal(d.id,p.id,{art:t.getAttribute('data-art')==='verdacht'?'verdacht':'diagnose',quelle:'Datenbank-Angabe',name:p.name});}})
+      .then(function(res){if(res&&res.ergebnis){H.toast('Für das Team sichtbar');H.dossierZeichnen(res.ergebnis);}});
+    return;
+  }
+  if(a==='aus'&&p){
+    var L=lesen(d), x=L.profile.filter(function(y){return y.id===id;})[0], still=x&&x.nurResp;
+    H.dialog('Ausblenden','<p>„'+esc(x?anzeigeName(x):p.name)+'“ passt nicht zu '+esc(vorname(d))+'? Das Profil verschwindet aus dem Kompass und lässt sich unten unter „Ausgeblendet“ wieder zeigen.</p>'+H.feld('grund','Warum? (optional)','','text',' maxlength="200"'),
+      [{text:'Abbrechen',wert:''},{text:'Ausblenden',wert:'ok',primaer:true}],
+      {ausfuehren:function(z){return T.ops.planMerkmal(d.id,id,{art:'aus',quelle:String(z.werte.grund||'').trim(),name:still?'ein Profil aus der Datenbank':(x?anzeigeName(x):p.name)});}})
+      .then(function(res){if(res&&res.ergebnis){H.toast('Ausgeblendet');H.dossierZeichnen(res.ergebnis);}});
+    return;
+  }
+  if(a==='zuruecksetzen'&&p){speichern(d,id,{art:'',name:p.name},'Zurückgesetzt');return;}
+});
+window.addEventListener('afterprint',function(){
+  if(!document.body.classList.contains('ko-druck')){return;}
+  document.body.classList.remove('ko-druck');
+  Array.prototype.forEach.call(document.querySelectorAll('#ko-ergebnis details[data-war-offen]'),function(x){x.open=x.getAttribute('data-war-offen')==='1';x.removeAttribute('data-war-offen');});
+});
+
+return {tab:tab, kurzKarte:kurzKarte, lesen:function(d){bausteine();return lesen(d);}, passende:passende, blattFuer:blattFuer};
 })();
 </script>
 <script>

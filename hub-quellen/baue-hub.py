@@ -76,6 +76,22 @@ block_nach('CDSE Hub — Arbeit: Schüler', 'screening-bogen.js')
 block_nach('CDSE Hub — Arbeit: Schüler', 'fiche.js', {'@@FICHE_VORLAGE_B64@@': VORLAGE_B64})
 # Übernahme aus Klassenbuch und Journal (Einträge, Wochenziele, Helfernetz, frühere Screenings)
 block_nach('CDSE Hub — Arbeit: Schüler', 'kb-uebernahme.js')
+# Kompass: Wissensbasis und Reiter. Eingebettet werden nur die Fachquellen aus lern-app/quellen.js,
+# die die Wissensbasis nennt (vollständige Literaturangaben, keine erfundenen Quellen)
+_q_js = open(os.path.join(SP, '..', 'lern-app', 'quellen.js'), encoding='utf-8').read()
+_quellen = {k: v.replace("\\'", "'") for k, v in re.findall(r"^\s*(\w+):\s*'((?:[^'\\]|\\.)*)',?\s*$", _q_js, re.M)}
+_wissen = lies('kompass-wissen.js') if os.path.exists(os.path.join(SP, 'kompass-wissen.js')) else ''
+_genutzt = []
+for _liste in re.findall(r"q:\[([^\]]*)\]", _wissen):
+    for _k in re.findall(r"'(\w+)'", _liste):
+        if _k != 'Praxis' and _k not in _genutzt:
+            _genutzt.append(_k)
+_fehlt = [k for k in _genutzt if k not in _quellen]
+if _fehlt:
+    raise SystemExit('Kompass: Quellen fehlen in lern-app/quellen.js: ' + ', '.join(_fehlt))
+block_nach('CDSE Hub — Arbeit: Schüler', 'kompass.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False),
+    '@@KOMPASS_QUELLEN@@': _json.dumps({k: _quellen[k] for k in _genutzt}, ensure_ascii=False)})
+block_nach('CDSE Hub — Arbeit: Schüler', 'kompass-wissen.js')
 
 # 3) Gestaltung
 css = lies('arbeit.css')
@@ -83,6 +99,8 @@ if os.path.exists(os.path.join(SP, 'datenbank.css')):
     css = css + '\n' + lies('datenbank.css')
 if os.path.exists(os.path.join(SP, 'screening.css')):
     css = css + '\n' + lies('screening.css')
+if os.path.exists(os.path.join(SP, 'kompass.css')):
+    css = css + '\n' + lies('kompass.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]
