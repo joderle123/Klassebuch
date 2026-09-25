@@ -127,7 +127,7 @@ window.CDSE_APPS = [
   {
     id: 'toolbox',
     name: 'Toolbox',
-    beschreibung: 'Material-Bibliothek mit über 600 Materialien und Arbeitsblättern: suchen, nach Cycle und ELDiB-Ziel filtern, als PDF drucken, Team-Ablage für eigene Dateien.',
+    beschreibung: '125 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
     symbol: 'werkzeug',
     farbe: '#A8741A',
     bereich: 'Materialien',

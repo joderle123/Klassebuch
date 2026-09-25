@@ -22,11 +22,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 4650723
   },
   "toolbox": {
-    "stand": "2026-09-24",
-    "commit": "a98b655",
+    "stand": "2026-09-25",
+    "commit": "5689c5a",
     "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Toolbox im CDSE-Design, Deep-Links und Index für den Hub",
-    "groesse": 2802802
+    "aenderung": "Toolbox: Offline-Datei mit 125 Arbeitsblättern",
+    "groesse": 3475093
   },
   "journal": {
     "stand": "2026-09-22",
