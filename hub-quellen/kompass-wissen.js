@@ -307,7 +307,7 @@ profile:[
    {t:'Dauerhafte Befreiung von allem, was Angst macht.',q:['kendallHedtke2006']}],
   zusammenarbeit:[
    {t:'Bei deutlicher Einschränkung eine psychotherapeutische Abklärung anregen.',q:['niceCG159']}],
-  blaetter:['angst-verstehen','mut-leiter','ich-kann-mutig-sein','was-hilft-bei-angst'],
+  blaetter:['angst-verstehen','mut-leiter','ich-kann-mutig-sein','was-hilft-bei-angst','pruefungsangst'],
   lernen:['angst']},
 
  {id:'schulvermeidung', name:'Schulvermeidung',
@@ -349,7 +349,7 @@ profile:[
   lernen:['depression','selbstverletzung-suizid']},
 
  /* weitere Profile: erkannt und mit Lernmodul und Material verbunden – ausführliche Bausteine folgen */
- {id:'lernstoerung', name:'Lese-, Rechtschreib- oder Rechenstörung', thema:'Lernen und Arbeitsorganisation', beob:[['sc:lernen']], re:'\\bF81|\\b6A03|legasthen|\\blrs\\b|dyslex|dyskalk|dyscalc|dysorthograph', lernen:['lernstoerungen'], blaetter:['schritt-fuer-schritt','fehler-sind-helfer','noch-nicht','aus-rueckschlaegen-lernen']},
+ {id:'lernstoerung', name:'Lese-, Rechtschreib- oder Rechenstörung', thema:'Lernen und Arbeitsorganisation', beob:[['sc:lernen']], re:'\\bF81|\\b6A03|legasthen|\\blrs\\b|dyslex|dyskalk|dyscalc|dysorthograph', lernen:['lernstoerungen'], blaetter:['wie-lerne-ich-am-besten','schritt-fuer-schritt','fehler-sind-helfer','noch-nicht','aus-rueckschlaegen-lernen']},
  {id:'sprache', name:'Sprachentwicklungsstörung', thema:'Sprache und Verständigung', beob:[['sc:sprache']], re:'\\bF80|\\b6A01|sprachentwicklungsst|\\bses\\b|trouble du langage|dysphasie|\\bdld\\b', lernen:['sprache-mutismus'], blaetter:['gefuehle-gesichter','regeln-in-bildern']},
  {id:'mutismus', name:'Selektiver Mutismus', re:'\\bF94\\.0|\\b6B06|mutismus|mutisme', lernen:['sprache-mutismus','angst'], blaetter:['ich-kann-mutig-sein','mut-leiter']},
  {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btic|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
