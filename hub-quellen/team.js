@@ -363,6 +363,23 @@ var ops={
     d.screenings=d.screenings.filter(function(x){return x.id!==sid;});
     return 'Screening vom '+s.datum+' gelöscht';
   },'screening');},
+  /* Früheres Screening aus dem alten Klassenbuch oder Journal (nur zum Nachlesen):
+     a = {quelle, kb, kbName, stand, quellen, beobachtungen, vertiefung, umfeld, gate, akut, verlauf, roh, fruehere}.
+     Derselbe Stand desselben Kindes wird nur einmal übernommen. */
+  screeningAlt:function(id,a){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var gleich=(d.screeningsAlt||[]).some(function(x){return x.kb===a.kb&&String(x.stand||'')===String(a.stand||'');});
+    if(gleich){return false;}
+    d.screeningsAlt=(d.screeningsAlt||[]).concat([Object.assign({},a,{id:neueId(8),von:ich().id,z:jetzt()})]);
+    return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' übernommen'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
+  },'screening');},
+  screeningAltLoeschen:function(id,aid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var a=(d.screeningsAlt||[]).filter(function(x){return x.id===aid;})[0];if(!a){return false;}
+    if(a.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Übernahmen entfernen dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
+    d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
+    return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
+  },'screening');},
   loeschen:function(id){
     istBereit();
     return dossierLesen(id).then(function(d){

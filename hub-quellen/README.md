@@ -10,6 +10,8 @@
 | `arbeit.js`, `arbeit.css` | Oberfläche: Schülerliste, Dossier (Überblick, Fiche, Entwicklung & Ziele …), Einsatzplan, Team, Verwaltung |
 | `fiche.js` + `fiche/vorlage.docx` | Fiche de renseignement lesen (Upload) und ausfüllen (Download); die leere Vorlage wird beim Bauen eingebettet |
 | `datenbank.js`, `datenbank.css` | Datenbank-Bereich (nur Responsables und Verwaltung) – optional |
+| `screening.js`, `screening-bogen.js`, `screening.css` | Screening im Dossier (Beobachtungsbogen, keine Diagnose) und Übersicht aller Schüler; übernimmt auch frühere Screenings aus dem alten Klassenbuch |
+| `kb-texte.cjs` | erzeugt `apps/kb-screening-texte.js` (Wortlaut der alten Klassenbuch-Aussagen, nur für die Übernahme) aus `apps/klassenbuch.html`: `node hub-quellen/kb-texte.cjs` – nach jeder neuen Klassenbuch-Version einmal aufrufen |
 
 Bauen: `python3 hub-quellen/baue-hub.py` → schreibt `hub.html` (anderes Ziel: Umgebungsvariable `CDSE_HUB_ZIEL`).
 

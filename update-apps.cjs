@@ -102,6 +102,12 @@ apps.forEach(function (a) {
     };
     console.log((neu ? '↻ aktualisiert ' : '✓ schon aktuell') + '  ' + a.id.padEnd(12) + wann.slice(0, 10) + '  ' + commit + '  «' + aenderung.slice(0, 60) + '»');
 
+    /* Klassenbuch: Wortlaut der alten Screening-Aussagen für die Übernahme in den Hub neu erzeugen */
+    if (a.id === 'klassenbuch' && fs.existsSync(path.join(ROOT, 'hub-quellen', 'kb-texte.cjs'))) {
+      try { console.log('   ' + cp.execFileSync(process.execPath, [path.join(ROOT, 'hub-quellen', 'kb-texte.cjs')], { stdio: ['ignore', 'pipe', 'pipe'] }).toString('utf8').trim()); }
+      catch (e) { console.log('   ⚠ apps/kb-screening-texte.js nicht erneuert: ' + String((e.stderr || e.message || e)).split('\n')[0]); }
+    }
+
     /* Neuere Branches melden, die DIESELBE App enthalten. "Dieselbe" heißt:
        gleicher Pfad UND gleicher Seitentitel - sonst meldet das Skript
        jede Datei, die zufällig genauso heißt (z. B. irgendein index.html). */
