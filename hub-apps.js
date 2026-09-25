@@ -80,7 +80,10 @@ window.CDSE_APPS = [
     datei: 'apps/klassenbuch.html',
     dateizugriff: true,
     teams: ['annexe', 'cp', 'cst'],
-    quelle: { repo: 'Klassebuch', branch: 'claude/focused-galileo-e2s63b', pfad: 'index.html' },
+    /* Testversion: gebaut aus klassenbuch/quellen (node klassenbuch/quellen/build-merged.cjs). Die Quelle
+       zeigt auf die eigene, gepushte Datei – so bleibt der Stand auf der Kachel richtig, und der
+       Galileo-Stand (claude/focused-galileo-e2s63b) überschreibt die Testversion nicht. */
+    quelle: { repo: 'Klassebuch', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'apps/klassenbuch.html' },
     stichworte: 'anwesenheit absenzen dossier réunion protokoll noten stundenplan schuljahr trimester team'
   },
 

@@ -4,22 +4,26 @@
    ---------------------------------------------------------------------
    Das alte Screening im Klassenbuch speichert nur Kürzel ('16.2',
    'mund-vs-schrift' …). Dieses Skript liest die dazugehörigen Texte aus
-   apps/klassenbuch.html und schreibt apps/kb-screening-texte.js
-   (window.CDSE_KB_TEXTE). Der Hub lädt die Datei nur, wenn jemand alte
-   Screenings übernimmt – danach stehen die Texte im Dossier selbst.
+   einem Klassenbuch-Stand MIT SAVOIR (Galileo, z. B. dessen index.html
+   oder SAVOIR.html) und schreibt apps/kb-screening-texte.js
+   (window.CDSE_KB_TEXTE). Hub und Testversion des Klassenbuchs laden die
+   Datei nur bei Bedarf. Die Datei ist ein eingefrorener Stand: das alte
+   Screening wird nicht mehr weiterentwickelt, neu erzeugen ist nur nötig,
+   wenn sich die alten Texte doch noch ändern.
 
    Übernommen werden nur beobachtbare Aussagen, Kategorien, Fragen zum
    Umfeld und die Fragen zu Dauer und Beeinträchtigung – keine
    Verdachtsachsen, keine Muster, keine Auswertung.
 
-   Aufruf:  node hub-quellen/kb-texte.cjs
+   Aufruf:  node hub-quellen/kb-texte.cjs <Pfad zu index.html oder SAVOIR.html aus dem Galileo-Branch>
    ===================================================================== */
 'use strict';
 var fs = require('fs');
 var path = require('path');
 
 var ROOT = path.join(__dirname, '..');
-var QUELLE = path.join(ROOT, 'apps', 'klassenbuch.html');
+var QUELLE = process.argv[2];
+if (!QUELLE) { console.error('Bitte den Pfad zu einem Klassenbuch-Stand mit SAVOIR angeben (Galileo: index.html oder SAVOIR.html).'); process.exit(1); }
 var ZIEL = path.join(ROOT, 'apps', 'kb-screening-texte.js');
 
 var s = fs.readFileSync(QUELLE, 'utf8');
@@ -45,7 +49,7 @@ function literalAb(i) {
 function wert(literal) { return new Function('return (' + literal + ');')(); }
 function suche(re, was) {
   var m = re.exec(s);
-  if (!m) { throw new Error(was + ' nicht gefunden – hat sich das Klassenbuch geändert?'); }
+  if (!m) { throw new Error(was + ' nicht gefunden – ist das ein Klassenbuch-Stand mit SAVOIR (Galileo)?'); }
   return m;
 }
 
@@ -115,7 +119,7 @@ Object.keys(KRISE_FRAGEN).forEach(function (th) {
 
 var daten = { version: 1, kategorien: kategorien, symptome: symptome, akut: akut, gate: gate, themen: themen, krise: KRISE, kriseFragen: KRISE_FRAGEN };
 var n = Object.keys(themen).reduce(function (a, k) { return a + Object.keys(themen[k].sym).length; }, 0);
-var kopf = '/* Texte des alten Klassenbuch-Screenings – erzeugt von hub-quellen/kb-texte.cjs aus apps/klassenbuch.html.\n' +
+var kopf = '/* Texte des alten Klassenbuch-Screenings – erzeugt von hub-quellen/kb-texte.cjs aus ' + path.basename(QUELLE) + ' (Galileo, eingefrorener Stand).\n' +
   '   Nicht von Hand ändern. ' + Object.keys(symptome).length + ' Aussagen im Pool, ' + Object.keys(themen).length + ' Vertiefungen mit ' + n + ' Aussagen. */\n';
 fs.writeFileSync(ZIEL, kopf + 'window.CDSE_KB_TEXTE=' + JSON.stringify(daten) + ';\n');
 console.log('✓ ' + path.relative(ROOT, ZIEL) + ' – ' + Object.keys(symptome).length + ' Aussagen, ' + Object.keys(themen).length + ' Vertiefungen (' + n + ' Aussagen), ' +
