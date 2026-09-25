@@ -131,7 +131,7 @@ window.CDSE_APPS = [
   {
     id: 'toolbox',
     name: 'Toolbox',
-    beschreibung: '180 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
+    beschreibung: '287 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
     symbol: 'werkzeug',
     farbe: '#A8741A',
     bereich: 'Materialien',
@@ -145,7 +145,7 @@ window.CDSE_APPS = [
   {
     id: 'skills-kurs',
     name: 'Skills-Kurs',
-    beschreibung: 'Skills-Unterricht für Kleingruppen von 12 bis 16 Jahren: 30 Einheiten und 9 Joker, jede mit Ablauf in Minuten, Anleitung mit Beispielsätzen, Material zum Abhaken und 51 Schülerblättern. Die nächste Einheit der Gruppe steht immer oben.',
+    beschreibung: 'Skills-Unterricht für Kleingruppen von 12 bis 16 Jahren: drei Kursjahre mit 100 Einheiten und 17 Jokern, jede mit Ablauf in Minuten, Anleitung mit Beispielsätzen, Material zum Abhaken und insgesamt 158 Schülerblättern. Die nächste Einheit der Gruppe steht immer oben.',
     symbol: 'ziel',
     farbe: '#6E4A7E',
     bereich: 'Materialien',

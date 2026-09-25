@@ -23,10 +23,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "toolbox": {
     "stand": "2026-09-25",
-    "commit": "93b5dcc",
+    "commit": "212004b",
     "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Skills-Kurs, Kursjahr 1: alle 30 Einheiten, 9 Joker und 51 Schülerblätter",
-    "groesse": 4176314
+    "aenderung": "Skills-Kurs, Kursjahr 2 und 3: je 35 Einheiten und 4 Joker, 107 neue Schülerblätter",
+    "groesse": 5731850
   },
   "journal": {
     "stand": "2026-09-25",
