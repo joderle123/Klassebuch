@@ -259,7 +259,7 @@ function rechte(d,id){
 function neuesDossier(person,opt){
   istBereit();opt=opt||{};
   var me=ich(), id=neueId(12), t=jetzt();
-  var stelle=opt.stelle||((window.CDSE_TEAMS||[]).some(function(x){return x.id===me.team;})?me.team:'diagnostique');
+  var stelle=opt.stelle||((window.CDSE_TEAMS||[]).some(function(x){return x.id===me.team&&x.stelle!==false;})?me.team:'diagnostique');
   var d={v:1,id:id,rev:1,erstellt:t,erstelltVon:me.id,geaendert:t,geaendertVon:me.id,
     person:person||{},status:'aktiv',statusSeit:t.slice(0,10),stelle:stelle,stelleSeit:t.slice(0,10),
     verantwortlich:[me.id],rechte:{},profil:null,einschaetzungen:[],eintraege:[],

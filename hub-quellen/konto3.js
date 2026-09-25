@@ -166,8 +166,11 @@ function teamlisteSchreiben(personen){
 function teamlisteEintrag(name){var k=namensSchluessel(name);if(!k){return null;}for(var i=0;i<teamliste.length;i++){if(namensSchluessel(teamliste[i].name)===k){return teamliste[i];}}return null;}
 function kontoMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<konten.length;i++){if(namensSchluessel(konten[i].name)===k){return konten[i];}}return null;}
 /* Team aus einer Angabe wie „ISA“, „Diagnostic spécialisé“, „CLAPA“, „Annexe Junglinster“ */
-var TEAM_WOERTER={annexe:['annexe','junglinster'],isa:['isa'],diagnostique:['diagnostic','diagnostique','diagnostik','ds'],
-  cp:['classes de participation','classe de participation','clapa','cdp','cp'],cst:['cst','centre socio therapeutique','socio therapeutique']};
+var TEAM_WOERTER={annexe:['annexe','junglinster'],isa:['isa','interventions specialisees ambulatoires','interventions specialisees','ambulatoires','stop mobbing'],
+  diagnostique:['diagnostic','diagnostique','diagnostik','ds'],cp:['classes de participation','classe de participation','clapa','cdp','cp'],
+  cst:['cst','centre socio therapeutique','centres socio therapeutiques','socio therapeutique','socio therapeutiques'],
+  reeducation:['reeducation','ateliers','atelier','therapie','volet parents'],social:['service social','social','assistante sociale','assistant social'],
+  direction:['direction','administration','administrative','uat','secretariat','coordination','gestion pedagogique']};
 function tlNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
 function teamAusText(t){
   var n=tlNorm(t);if(!n){return '';}

@@ -15,7 +15,7 @@ const LISTE = [
   'Beispiel Tom\tCLAPA\tInstituteur\t',
   'Emma Probe; Annexe Junglinster; Éducatrice; ',
   'Noah Test; CST; Pédagogue; Responsable',
-  'Luca Fiktiv; Atelier; Logopède;',
+  'Luca Fiktiv; Werkstatt; Logopède;',
   'Lea Beispiel\tISA\tÉducatrice graduée (Koordination)\tResponsable'
 ].join('\n');
 
@@ -70,7 +70,7 @@ const LISTE = [
   await page.waitForSelector('dialog.ar-dialog .ar-tl-vorschau');
   const vorschau = await text('dialog.ar-dialog');
   check('Vorschau: 6 Personen, Kopfzeile übersprungen, Dublette gemeldet', /6<\/b>|6 Personen/.test(await page.innerHTML('dialog.ar-dialog')) && vorschau.includes('steht doppelt'), vorschau.slice(0, 200));
-  check('Vorschau: unbekanntes Team „Atelier“ gemeldet, CLAPA → Classes de participation', vorschau.includes('Team „Atelier“ unbekannt') && vorschau.includes('Classes de participation'));
+  check('Vorschau: unbekanntes Team „Werkstatt“ gemeldet, CLAPA → Classes de participation', vorschau.includes('Team „Werkstatt“ unbekannt') && vorschau.includes('Classes de participation'));
   await dialogKnopf('Übernehmen');
   await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await warte(300);
   const datei = await page.evaluate(async () => { const r = await navigator.storage.getDirectory(); return JSON.parse(await (await (await r.getFileHandle('teamliste.json')).getFile()).text()); });
@@ -153,7 +153,18 @@ const LISTE = [
   const csv = require('fs').readFileSync(await dl.path(), 'utf8');
   check('Export: CSV mit Kopf, Semikolon, Konto-Stand', dl.suggestedFilename() === 'CDSE-Teamliste.csv' && csv.includes('Name;Team;Funktion;Rolle;Responsable;Konto') && /Lea Beispiel;ISA;.*;Responsable;;Konto aktiv/.test(csv), csv.slice(0, 200));
 
-  console.log('8) Handy (390 px)');
+  console.log('8) Team „Direction & Administration“: alle Apps, aber keine Stelle für Dossiers');
+  await page.click('[data-ar="neu"]').catch(() => {});
+  await gehe('#/schueler'); await page.waitForSelector('[data-ar="neu"]'); await page.click('[data-ar="neu"]'); await page.waitForSelector('dialog.ar-dialog select[name="stelle"]');
+  const stellen = await page.$$eval('dialog.ar-dialog select[name="stelle"] option', l => l.map(o => o.value));
+  check('Neues Dossier: Stellen ohne „direction“, mit Rééducation und Service social', !stellen.includes('direction') && stellen.includes('reeducation') && stellen.includes('social'), stellen);
+  await page.keyboard.press('Escape'); await warte(200);
+  await abmelden(); await neuesKontoFormular(); await erstelle('Nora Beispiel', 'direction', 'fuenftes Passwort 555');
+  const kacheln = await page.$$eval('.tile[data-href] h3', h => h.map(x => x.textContent));
+  check('Direction sieht alle Apps (auch Klassenbuch, Journal, Befundbericht)', ['Klassenbuch', 'Journal', 'Befundbericht', 'Toolbox', 'Lernen'].every(n => kacheln.includes(n)), kacheln);
+  await abmelden(); await anmelden('Mia Muster', 'ein sicheres Passwort 1');
+
+  console.log('9) Handy (390 px)');
   await page.setViewportSize({ width: 390, height: 844 }); await warte(300);
   await verwaltung();
   const quer = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);

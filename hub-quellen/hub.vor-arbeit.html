@@ -1690,7 +1690,8 @@ var HUB_TITLE=S.titel||'CDSE Hub';
 /* Angemeldete Person {id,name,team,teamName,teamFarbe} - null = niemand.
    Das Team bestimmt, welche Apps man sieht (Feld teams in hub-apps.js). */
 var ICH=null, TEAMS_AKTIV=(window.CDSE_TEAMS||[]).length>0;
-function sichtbar(a){if(!ICH){return false;}return !a.teams||!TEAMS_AKTIV||a.teams.indexOf(ICH.team)>=0;}
+function alleApps(teamId){return (window.CDSE_TEAMS||[]).some(function(t){return t&&t.id===teamId&&t.alleApps===true;});}
+function sichtbar(a){if(!ICH){return false;}return !a.teams||!TEAMS_AKTIV||a.teams.indexOf(ICH.team)>=0||alleApps(ICH.team);}
 function meine(){return apps.filter(sichtbar);}
 
 function kind(a){return a.datei?'datei':(a.link?'link':'geplant');}
@@ -1907,7 +1908,7 @@ function renderTeamTabelle(){
   if(!T.length){el.innerHTML='<p>In <code>hub-apps.js</code> sind keine Teams eingetragen — alle sehen alle Apps.</p>';return;}
   el.innerHTML='<table class="fields"><thead><tr><th>Team</th><th>sieht diese Apps</th></tr></thead><tbody>'+
     T.map(function(t){
-      var l=apps.filter(function(a){return !a.teams||a.teams.indexOf(t.id)>=0;}).map(function(a){return esc(a.name);});
+      var l=apps.filter(function(a){return !a.teams||a.teams.indexOf(t.id)>=0||t.alleApps===true;}).map(function(a){return esc(a.name);});
       return '<tr><td><b>'+esc(t.name)+'</b></td><td>'+(l.length?l.join(', '):'—')+'</td></tr>';
     }).join('')+'</tbody></table>';
 }

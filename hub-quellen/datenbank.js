@@ -70,7 +70,7 @@ function sjAktuell(){return sjVon(heute());}
 function sjAusZahl(s){var y=parseInt(s,10);if(!isFinite(y)){return sjAktuell();}if(y<100){y+=2000;}return sjName(y);}
 
 /* ---------- Stellen, Sprachen, Cycle, Directions ---------- */
-function teams(){return (H&&H.TEAMS)||(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id;});}
+function teams(){return ((H&&H.TEAMS)||window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id&&t.stelle!==false;});}   /* Stellen */
 function stelleName(id){if(!id){return '';}var t=teams().filter(function(x){return x.id===id;})[0];return t?t.name:(H?H.team(id).name:id);}
 function stelleFarbe(name){var t=teams().filter(function(x){return x.name===name;})[0];return t?t.farbe:'';}
 function kontoName(id){try{return T&&T.name?T.name(id):id;}catch(e){return id;}}

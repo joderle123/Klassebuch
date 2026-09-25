@@ -53,13 +53,19 @@ window.CDSE_HUB = {
 /* Teams im CDSE. Beim Erstellen eines Kontos wählt man sein Team.
    Bei jeder App legt das Feld "teams" fest, wer sie sieht.
    Hinweis: Ohne Server ist das eine ANZEIGE-Regel. Eine echte Sperre
-   (z. B. für das Screening) setzt die IT über die Ordnerrechte auf O:\. */
+   (z. B. für das Screening) setzt die IT über die Ordnerrechte auf O:\.
+     stelle: false   Team begleitet keine Schüler (erscheint nicht als
+                     „Stelle“ eines Dossiers, z. B. Direction)
+     alleApps: true  sieht alle Apps, auch solche mit "teams" */
 window.CDSE_TEAMS = [
-  { id: 'annexe',       name: 'Annexe Junglinster',       farbe: '#3F5AA6' },
-  { id: 'isa',          name: 'ISA',                      farbe: '#1F6B6F' },
-  { id: 'diagnostique', name: 'Diagnostique',             farbe: '#B4533A' },
-  { id: 'cp',           name: 'Classes de participation', farbe: '#A8741A' },
-  { id: 'cst',          name: 'CST',                      farbe: '#6E4A7E' }
+  { id: 'annexe',       name: 'Annexe Junglinster',         farbe: '#3F5AA6' },
+  { id: 'isa',          name: 'ISA',                        farbe: '#1F6B6F' },
+  { id: 'diagnostique', name: 'Diagnostique',               farbe: '#B4533A' },
+  { id: 'cp',           name: 'Classes de participation',   farbe: '#A8741A' },
+  { id: 'cst',          name: 'CST',                        farbe: '#6E4A7E' },
+  { id: 'reeducation',  name: 'Rééducation & Ateliers',     farbe: '#8A5A2B' },
+  { id: 'social',       name: 'Service social',             farbe: '#4F7A3A' },
+  { id: 'direction',    name: 'Direction & Administration', farbe: '#4A5468', stelle: false, alleApps: true }
 ];
 
 window.CDSE_APPS = [

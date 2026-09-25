@@ -89,6 +89,10 @@ function feld(name,label,wert,typ,extra){return '<label class="ar-feld"><span>'+
 function auswahl(name,label,wert,optionen,leer){return '<label class="ar-feld"><span>'+esc(label)+'</span><select name="'+name+'">'+(leer!=null?'<option value="">'+esc(leer)+'</option>':'')+optionen.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(o[0])===String(wert==null?'':wert)?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select></label>';}
 function textfeld(name,label,wert,zeilen){return '<label class="ar-feld voll"><span>'+esc(label)+'</span><textarea name="'+name+'" rows="'+(zeilen||4)+'">'+esc(wert||'')+'</textarea></label>';}
 function teamOptionen(){return TEAMS.map(function(t){return [t.id,t.name];});}
+/* Stellen = Teams, die Schüler begleiten (nicht z. B. die Direction) */
+var STELLEN=TEAMS.filter(function(t){return t.stelle!==false;});
+function stellenOptionen(){return STELLEN.map(function(t){return [t.id,t.name];});}
+function eigeneStelle(me){return STELLEN.some(function(t){return t.id===me.team;})?me.team:'diagnostique';}
 function kontoOptionen(filterFn){return K.konten().filter(filterFn||function(){return true;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return [k.id,k.name+' · '+k.teamName];});}
 
 /* ---------- Laden des Bereichs ---------- */
@@ -172,7 +176,7 @@ function listeZeichnen(l){
     [['aktiv','Aktiv'],['inaktiv','Inaktiv'],['alle','Alle']].map(function(s){return '<button class="catchip'+(filter.status===s[0]?' on':'')+'" type="button" data-filter-status="'+s[0]+'">'+s[1]+'<span class="n">'+zaehl[s[0]]+'</span></button>';}).join('')+
     '<span class="ar-trenner"></span>'+
     '<button class="catchip'+(!filter.stelle?' on':'')+'" type="button" data-filter-stelle="">Alle Stellen</button>'+
-    TEAMS.map(function(t){return '<button class="catchip'+(filter.stelle===t.id?' on':'')+'" type="button" data-filter-stelle="'+esc(t.id)+'">'+esc(t.name)+(stellen[t.id]?'<span class="n">'+stellen[t.id]+'</span>':'')+'</button>';}).join('')+
+    STELLEN.map(function(t){return '<button class="catchip'+(filter.stelle===t.id?' on':'')+'" type="button" data-filter-stelle="'+esc(t.id)+'">'+esc(t.name)+(stellen[t.id]?'<span class="n">'+stellen[t.id]+'</span>':'')+'</button>';}).join('')+
     '<span class="ar-trenner"></span><button class="catchip'+(filter.meine?' on':'')+'" type="button" data-filter-meine="1">'+svg('check')+'Nur meine</button>'+
     (bankDa()?'<button class="catchip'+(filter.ueber?' on':'')+'" type="button" data-filter-ueber="1" title="Schüler mit ELDiB-Items, die für ihr Alter längst erwartet werden">'+svg('warn')+'Überfällige Items</button>':'')+'</div>'+
     '<span class="ar-knopfreihe"><button class="btn" type="button" data-ar="fiche-hochladen" title="Aus einer Fiche de renseignement (.docx) ein Dossier anlegen oder aktualisieren">'+svg('hoch')+'Fiche hochladen</button>'+
@@ -201,7 +205,7 @@ function neuerSchueler(){
     feld('geburtsdatum','Geburtsdatum','','date')+auswahl('geschlecht','Geschlecht','',[['m','Junge'],['w','Mädchen']],'–')+
     feld('schule','Schule','','text',' autocomplete="off"')+feld('klasse','Klasse / Cycle','','text',' autocomplete="off"')+
     feld('matricule','Matricule (Sozialversicherungsnummer)','','text',' autocomplete="off"')+
-    auswahl('stelle','Zuständige Stelle',TEAMS.some(function(t){return t.id===me.team;})?me.team:'diagnostique',teamOptionen())+'</div>'+
+    auswahl('stelle','Zuständige Stelle',eigeneStelle(me),stellenOptionen())+'</div>'+
     '<p class="ar-klein">Du wirst fallverantwortlich und kannst später anderen ein Schreibrecht geben oder den Schüler an eine andere Stelle weitergeben.</p>';
   dialog('Neuer Schüler',inhalt,[{text:'Abbrechen',wert:''},{text:'Anlegen',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){
@@ -537,7 +541,7 @@ function tabVerlauf(d){
 function mitDossier(p,t){return p.then(function(d){aktDossier=d;dossierZeichnen(d);if(t){toast(t);}return d;});}
 function weitergebenDialog(d){
   var inhalt='<p>Der Schüler wechselt die zuständige Stelle – z. B. vom Diagnostique in die Annexe. Alle können das Dossier weiter lesen; der ganze Weg bleibt im Dossier sichtbar.</p><div class="ar-raster2">'+
-    auswahl('stelle','An welche Stelle?','',teamOptionen().filter(function(o){return o[0]!==d.stelle;}),'– bitte wählen –')+
+    auswahl('stelle','An welche Stelle?','',stellenOptionen().filter(function(o){return o[0]!==d.stelle;}),'– bitte wählen –')+
     auswahl('verantwortlich','Neue/r Fallverantwortliche/r (optional)','',kontoOptionen(),'– später festlegen –')+'</div>'+
     '<label class="ar-haken"><input type="checkbox" name="behalten"> Die bisherigen Fallverantwortlichen ('+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+') behalten ein Schreibrecht</label>'+
     textfeld('notiz','Notiz zur Weitergabe (optional)','',2);
@@ -1605,7 +1609,7 @@ function stelleAusFiche(f){
   if(c.annexe&&c.annexe.aktiv){return 'annexe';}
   if(c.isa&&c.isa.aktiv){return 'isa';}
   if(c.diagnostic&&c.diagnostic.aktiv){return 'diagnostique';}
-  return TEAMS.some(function(t){return t.id===me.team;})?me.team:'diagnostique';
+  return eigeneStelle(me);
 }
 function ficheHochladen(ziel){
   if(!ficheDa()){toast('Das Fiche-Modul fehlt in dieser Hub-Datei.');return;}
@@ -1656,7 +1660,7 @@ function ficheVorschau(erg,ziel,liste){
       feld('nachname','Nachname',p.nachname,'text',' required')+feld('vorname','Vorname',p.vorname,'text',' required')+
       feld('geburtsdatum','Geburtsdatum',p.geburtsdatum,'date')+auswahl('geschlecht','Geschlecht',p.geschlecht||'',[['m','Junge'],['w','Mädchen']],'–')+
       feld('matricule','Matricule',p.matricule)+feld('schule','Schule',p.schule)+feld('klasse','Klasse / Cycle',p.klasse)+
-      (treffer&&ziel?'':auswahl('stelle','Zuständige Stelle (bei neuem Dossier)',stelleAusFiche(f),teamOptionen()))+'</div>'+
+      (treffer&&ziel?'':auswahl('stelle','Zuständige Stelle (bei neuem Dossier)',stelleAusFiche(f),stellenOptionen()))+'</div>'+
     '<h3 class="ar-zwischen">Außerdem in der Fiche</h3>'+ficheZusammenfassung(f);
   dialog('Fiche de renseignement übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){return (String(w.werte.nachname).trim()&&String(w.werte.vorname).trim())?'':'Vor- und Nachname fehlen.';},

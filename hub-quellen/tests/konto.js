@@ -84,8 +84,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Team in der Seitenleiste', (await page.textContent('#me')).includes('Annexe Junglinster'));
   check('Begrüßung mit Vorname', (await page.textContent('#hello')).includes('Anna'), await page.textContent('#hello'));
   let na = await navApps();
-  check('Annexe sieht Klassenbuch, ELDiB, Toolbox', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'klassenbuch', 'toolbox']), na.join(','));
-  check('Kacheln passend (3)', (await page.$$('#home-body .tile[data-href]')).length === 3);
+  check('Annexe sieht Klassenbuch, ELDiB, Toolbox, Lernen', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'klassenbuch', 'lernen', 'toolbox']), na.join(','));
+  check('Kacheln passend (4)', (await page.$$('#home-body .tile[data-href]')).length === 4);
   await page.screenshot({ path: OUT + '/g4-hub-annexe.png' });
   await page.evaluate(() => { location.hash = '#/app/screening'; });
   await page.waitForTimeout(300);
@@ -113,7 +113,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.click('#g-neu');
   const codeBen = await erstelle('Ben Beispiel', 'diagnostique', 'Kaffee mit Milch 7');
   na = await navApps();
-  check('Diagnostique sieht Journal, Screening, ELDiB, Toolbox', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'journal', 'screening', 'toolbox']), na.join(','));
+  check('Diagnostique sieht Journal, Screening, ELDiB, Toolbox, Lernen', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'journal', 'lernen', 'screening', 'toolbox']), na.join(','));
   await page.click('#nav .lnk[data-app="screening"]');
   await page.waitForTimeout(400);
   check('Screening öffnet im Hub', await page.evaluate(() => location.hash === '#/app/screening' && !!document.querySelector('#frames iframe.on')));
@@ -161,7 +161,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.check('input[name="g-team"][value="isa"]'); await page.fill('#g-alt', 'Tee mit Zitrone 8'); await page.click('#g-los');
   await page.waitForFunction(() => document.getElementById('gate').hidden, null, { timeout: 20000 });
   na = await navApps();
-  check('ISA sieht Journal, ELDiB, Toolbox', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'journal', 'toolbox']), na.join(','));
+  check('ISA sieht Journal, ELDiB, Toolbox, Lernen', JSON.stringify(na.sort()) === JSON.stringify(['eldib', 'journal', 'lernen', 'toolbox']), na.join(','));
   check('Screening-Ansicht geschlossen', await page.evaluate(() => location.hash === '#/' ), await page.evaluate(() => location.hash));
   check('Team in Seitenleiste = ISA', (await page.textContent('#me .me-t small')) === 'ISA');
 
