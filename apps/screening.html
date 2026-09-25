@@ -94,7 +94,7 @@ button{font:inherit;}
 .schritt .nr{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:var(--surface);border:1px solid var(--line-2);color:var(--muted);flex:0 0 auto;}
 .schritt.an .nr{background:var(--accent);border-color:var(--accent);color:#fff;}
 .schritt.fertig .nr{background:var(--ok-bg);border-color:#BFE3CE;color:var(--ok);}
-.schritt .txt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.schritt .txt{flex:1;min-width:0;overflow:hidden;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}   /* lange Schritte (z. B. „Beobachtung und Einordnung“) zweizeilig statt abgeschnitten */
 .schritt .zahl{font-size:11.5px;color:var(--faint);font-weight:600;}
 .schritt .warn{color:#B42318;}
 

@@ -8,11 +8,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 1285390
   },
   "screening": {
-    "stand": "2026-09-24",
-    "commit": "e0b0e7a",
+    "stand": "2026-09-25",
+    "commit": "58640bd",
     "quelle": "PEI-and-Compl-ment- · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Befund-Tool: alle 13 Verfahren im neuen Muster",
-    "groesse": 1458490
+    "aenderung": "Befund-Tool: lange Schrittnamen zweizeilig statt abgeschnitten",
+    "groesse": 1458628
   },
   "eldib": {
     "stand": "2026-09-24",
