@@ -2,10 +2,10 @@
 window.CDSE_APP_VERSIONEN = {
   "klassenbuch": {
     "stand": "2026-09-25",
-    "commit": "1e09847",
+    "commit": "2a45e9d",
     "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Klassenbuch (Testversion): Heute-Tafel als Startseite",
-    "groesse": 1284492
+    "aenderung": "Klassenbuch (Testversion): Anwesenheit passt auf Laptop, Tablet und Handy",
+    "groesse": 1284869
   },
   "screening": {
     "stand": "2026-09-24",
