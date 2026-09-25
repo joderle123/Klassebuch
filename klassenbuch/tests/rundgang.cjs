@@ -97,7 +97,19 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   const off2 = await page.evaluate(() => window.__geoeffnet);
   check('„Arbeitsblatt in der Toolbox“ und „Toolbox öffnen zum Ziel“ verlinken in die Hub-Toolbox', /^toolbox\.html#blatt=/.test(off2[0][0]) && off2[1][0] === 'toolbox.html#eldib=V-21' && off2[0][1] === 'cdse-toolbox', off2);
 
-  console.log('7) Keine Anfragen ins Internet, keine Fehler');
+  console.log('7) Person und Team aus dem Hub');
+  await page.evaluate(() => { localStorage.setItem('cdse-nutzer', JSON.stringify({ id: 'k1', name: 'Mia Muster', team: 'cp', rolle: 'mitarbeiter' })); });
+  await page.reload({ waitUntil: 'load' }); await warte(1500);
+  const hub = await page.evaluate(() => ({ gate: !!document.querySelector('#kb-gate.open'), user: window.KB_USER.get(), chip: document.getElementById('kb-userchip').textContent, team: document.getElementById('kb-brand-team').textContent, titel: document.title }));
+  check('Angemeldet im Hub: keine Personenwahl, Autor ist die Hub-Person', !hub.gate && hub.user === 'Mia Muster' && /Mia Muster/.test(hub.chip) && /Hub/.test(hub.chip), hub);
+  check('Team aus dem Hub in Seitenleiste und Titel', hub.team === 'Classes de participation' && hub.titel === 'Klassenbuch · Classes de participation', hub);
+  await page.evaluate(() => { localStorage.setItem('cdse-nutzer', JSON.stringify({ id: 'k2', name: 'Lea Beispiel', team: 'cst' })); window.dispatchEvent(new StorageEvent('storage', { key: 'cdse-nutzer' })); }); await warte(300);
+  const hub2 = await page.evaluate(() => ({ user: window.KB_USER.get(), team: document.getElementById('kb-brand-team').textContent }));
+  check('Personenwechsel im Hub wird übernommen', hub2.user === 'Lea Beispiel' && hub2.team === 'CST', hub2);
+  await page.evaluate(() => { window.__geoeffnet = []; }); await page.click('#kb-userchip');
+  check('Klick auf die Person öffnet den Hub (statt einer Namensliste)', JSON.stringify(await page.evaluate(() => window.__geoeffnet)) === JSON.stringify([['../hub.html#/', 'cdse-hub']]) && !(await page.$('#kb-gate.open')));
+
+  console.log('8) Keine Anfragen ins Internet, keine Fehler');
   check('Keine externen Anfragen (Google Fonts o. ä.)', extern.length === 0, extern);
   check('Keine Fehler in der Konsole', errors.length === 0, errors.slice(0, 5));
   console.log('\n' + ok + ' ok, ' + bad + ' Fehler  (' + Math.round((Date.now() - t0) / 1000) + ' s, Bilder in ' + OUT + ')');

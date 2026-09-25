@@ -2341,13 +2341,29 @@ var SHELL_CONTROLLER = `
   function openGate(){if(!gate)buildGate();renderGateGrid();gate.classList.add('open');}
   function closeGate(){if(gate)gate.classList.remove('open');}
   function pickUser(u){if(window.KB_ANW&&KB_ANW.setUser){try{KB_ANW.setUser(u);}catch(e){}}closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render();}catch(e){}}}
-  function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser();
-    if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">wechseln</span>';c.title='Angemeldet als '+u+' — klicken zum Wechseln';}
+  /* Angemeldet im CDSE Hub? Dann gilt diese Person – kein zweites „Wer arbeitet
+     hier?“ und kein frei wählbarer Name. Der Hub legt sie beim Anmelden in
+     'cdse-nutzer' ab und entfernt sie beim Abmelden. Ohne Hub (Datei einzeln
+     geöffnet) bleibt die Personenwahl wie bisher. */
+  function hubNutzer(){try{var n=JSON.parse(localStorage.getItem('cdse-nutzer')||'null');return (n&&n.name)?n:null;}catch(e){return null;}}
+  function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser(), hn=hubNutzer();
+    if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">'+(hn?'Hub':'wechseln')+'</span>';
+      c.title=hn?('Angemeldet im CDSE Hub als '+u+' – Person wechseln: im Hub abmelden und neu anmelden'):('Angemeldet als '+u+' — klicken zum Wechseln');}
     else{c.innerHTML='<span class="kb-uc-av">?</span><span class="kb-uc-n">Wer bist du?</span>';c.title='Person wählen';}
   }
-  var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',openGate);}
-  updateUserChip();
-  if(!curUser()){openGate();}
+  var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',function(){if(hubNutzer()){hubOpen('hub');}else{openGate();}});}
+  function hubPersonUebernehmen(){var hn=hubNutzer();if(hn&&curUser()!==hn.name){pickUser(hn.name);}else{updateUserChip();}return !!hn;}
+  if(!hubPersonUebernehmen()&&!curUser()){openGate();}
+  window.addEventListener('storage',function(e){if(e.key==='cdse-nutzer'){hubPersonUebernehmen();teamZeigen();}});
+
+  /* Team aus dem Hub: Name in der Seitenleiste und im Fenstertitel */
+  function teamZeigen(){
+    var hn=hubNutzer(), t=hn&&hn.team, name='';
+    var liste=(window.CDSE_TEAMS||[]);for(var i=0;i<liste.length;i++){if(liste[i].id===t){name=liste[i].name;break;}}
+    var el=$('kb-brand-team');if(el){el.textContent=name||'CDSE';}
+    document.title='Klassenbuch · '+(name||'CDSE');
+  }
+  teamZeigen();
 
   /* Stundenpläne je Trimester scharfschalten (übernimmt beim ersten Start
      den bestehenden Plan ins laufende Trimester). */
@@ -3501,6 +3517,7 @@ var parts = [
   '<section class="kb-panel" id="dos-root">', dosBody, '</section>',
   SHELL_PANELS_EXTRA,
   '<script src="toolbox-index.js"></' + 'script>',
+  '<script src="../hub-apps.js"></' + 'script>',
   '<script>window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
   '<script>' + TERMS_MODULE + '</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',

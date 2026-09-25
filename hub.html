@@ -8860,6 +8860,12 @@ function datenStatus(st){
 }
 function teamOrdnerAnlegen(){if(ICH&&TEAMS_AKTIV&&byId('klassenbuch')){window.CDSE_KONTO.teamOrdner(ICH.teamName);}}
 
+/* Fester Fenstername: Apps wie das Klassenbuch öffnen den Hub mit
+   window.open('../hub.html#/…','cdse-hub') – so landen sie im schon offenen
+   Hub-Tab (nur die Adresse nach # ändert sich, kein Neuladen, die Anmeldung
+   bleibt bestehen) statt in einem zweiten Hub. */
+try{if(!window.name){window.name='cdse-hub';}}catch(e){}
+
 /* Name (und, sobald bekannt, Rolle) für die Apps ablegen – z. B. zeigt die
    Toolbox damit, wer Material hochlädt. Beim Abmelden entfernt der Hub den
    Eintrag wie alle App-Daten. */

@@ -10,8 +10,9 @@ const ROOT='file:///home/user/Klassebuch/', SHOT=process.argv[2];
 
   const kb0=await ctx.newPage();
   await kb0.goto(ROOT+'apps/klassenbuch.html'); await kb0.waitForTimeout(3500);
+  /* Die Testversion bringt keine eingebaute Klasse mit – zwei erfundene Kinder anlegen */
+  await kb0.evaluate(()=>{window.KB_ROSTER.add('Tom Muster','','L1','ES');window.KB_ROSTER.add('Lea Beispiel','','L2','ES');});
   const kbInfo=await kb0.evaluate(()=>({year:window.KB_TERMS&&window.KB_TERMS.yearLabel(), term:window.KB_TERMS&&window.KB_TERMS.activeTermKey(), n:window.KB_ROSTER&&window.KB_ROSTER.list().filter(s=>s.active!==false).length}));
-  await kb0.evaluate(()=>{const s=window.KB_ROSTER.list()[0];window.KB_ROSTER.update(s.id,{klasse:s.klasse||''});});
   console.log('[0] Klassenbuch direkt: Jahr '+kbInfo.year+', '+kbInfo.term+', '+kbInfo.n+' aktive Schüler');
   await kb0.close();
 
