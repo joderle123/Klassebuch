@@ -18,6 +18,14 @@ unverändert. Hier wird der Stand weiterentwickelt und nach `apps/klassenbuch.ht
   - Der KI-Export ist aus dem Menü genommen.
 - **Menü „Im CDSE Hub“:** Toolbox, Screening und Lernen öffnen sich in denselben Tabs wie aus dem Hub.
 - **Keine Anfragen ins Internet:** Die Google-Schriften sind entfernt.
+- **„Heute“ (neue Startseite, fürs Morning Meeting):**
+  - wer heute fehlt,
+  - offene Entschuldigungen (älter als 3 Tage),
+  - Fehlzeiten im Trimester ab 10 % der Schulstunden,
+  - Prüfungen und Hausaufgaben für heute,
+  - offene Wochenziele der letzten Réunion.
+
+  Ein Klick auf ein Kind öffnet es im Klassenbuch.
 
 ## Journal
 
@@ -47,6 +55,7 @@ node klassenbuch/quellen/build-isa.cjs         # → apps/journal.html
 npx http-server . -p 8099 -s                   # im Hauptordner, in einem zweiten Fenster
 node klassenbuch/tests/rundgang.cjs            # Klassenbuch: Rundgang
 node klassenbuch/tests/fehler.cjs              # Klassenbuch: behobene Fehler (zwei Geräte, Team-Datei)
+node klassenbuch/tests/heute.cjs               # Klassenbuch: Heute-Tafel
 node klassenbuch/tests/journal.cjs             # Journal: Rundgang
 ```
 

@@ -386,6 +386,22 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-acc .sv-prose{padding:0 0 14px;}
 .sv-do strong{color:var(--kb-accent2-dark);}
 .sv-dont strong{color:var(--kb-danger-dark);}
+/* ===== Heute-Tafel ===== */
+.kb-heute-datum{margin:0 0 16px;color:var(--kb-muted);}
+.kb-heute-frei{background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:12px;padding:10px 14px;margin:0 0 14px;font-weight:650;}
+.kb-heute-raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;align-items:start;}
+.kb-heute-karte h3{margin:0 0 10px;font-size:16px;}
+.kb-heute-liste{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
+.kb-heute-liste li{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-size:14px;}
+.kb-heute-liste.ziele li{flex-direction:column;align-items:flex-start;gap:2px;}
+.kb-heute-kind{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--kb-text);cursor:pointer;text-align:left;}
+.kb-heute-kind:hover{color:var(--kb-accent);text-decoration:underline;}
+.kb-heute-chip{font-size:12.5px;font-weight:650;border-radius:999px;padding:2px 10px;background:var(--kb-surface-2);color:var(--kb-text-soft);}
+.kb-heute-chip.gelb{background:var(--kb-warn-50);color:#7a5200;}
+.kb-heute-chip.rot{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
+.kb-heute-typ{flex:0 0 auto;font-size:13px;font-weight:650;color:var(--kb-muted);}
+.kb-heute-fuss{margin:10px 0 0;font-size:12.5px;color:var(--kb-muted);}
+.kb-link-btn{border:0;background:none;padding:0;font:inherit;font-weight:700;color:var(--kb-accent);cursor:pointer;text-decoration:underline;}
 /* ===== Verlauf: Filter-Chips (der aktive war blau auf blau) ===== */
 .tl-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);font-size:13px;font-weight:650;text-decoration:none;}
 .tl-chip:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
@@ -1575,6 +1591,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
     <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
     <button class="kb-termchip" id="kb-termchip" aria-label="Schuljahr und Trimester — klicken zum Ändern"></button>
     <nav class="kb-nav">
+      <button class="kb-link" data-kb-nav="heute"><span class="kb-ic">☀️</span>Heute</button>
       <button class="kb-link" data-kb-nav="students"><span class="kb-ic">👥</span>Schüler</button>
       <button class="kb-link" data-kb-nav="search"><span class="kb-ic">🔎</span>Suche</button>
       <div class="kb-navgroup">
@@ -1781,6 +1798,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 
 </section>
 
+    <section class="kb-panel kb-pad" id="kb-heute"><div id="kb-heute-body"></div></section>
     <section class="kb-panel kb-pad" id="kb-klasse">
       <div class="kb-pagehead"><h2>🏫 Klasse, Stundenplan &amp; Schuljahr</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Alles, was die Klasse strukturiert — an einem Ort. Der Stundenplan wird <b>je Trimester</b> geführt.</p></div>
 
@@ -8226,6 +8244,10 @@ window.KB_BUBBLE=(function(){
     notes:function(){return state.notes.slice().sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:0);});},
     tasksForLevel:function(level,sid){return state.notes.filter(function(n){return (n.type==='hausaufgabe'||n.type==='pruefung')&&(!n.level||!level||n.level===level)&&(!n.studentId||n.studentId===sid);}).sort(function(a,b){return a.date<b.date?1:-1;});},
     statusLabel:function(s){return (STATUS[s]&&STATUS[s].label)||s;},
+    /* für die Heute-Tafel: gezählte Stunden einer Absenz, Stunden eines Schultags, Ferien/Feiertag */
+    hoursOf:function(e){return countHours(e);},
+    dayHours:function(){var n=0;for(var k in BLOCK_WEIGHTS){n+=BLOCK_WEIGHTS[k];}return n;},
+    holidayInfo:function(iso){return holidayInfo(iso);},
     fmt:function(iso){return fmtD(iso);},
     openStudent:function(id){activeStudentId=id;rememberStudent(id);var s=state.students.find(function(x){return x.id===id;});if(s){classFilter=s.level||classFilter;}renderAll();},
     openNoteToday:function(){openNoteModal({date:today(),blockId:null,subject:null,level:null});},
@@ -8830,6 +8852,77 @@ window.KB_WEEKLY=(function(){
 })();
 </script>
 <script>
+window.KB_HEUTE=(function(){
+  var OFFEN_TAGE=3, SCHWELLE=10, ROT=20;   /* Entschuldigung offen seit … Tagen; Fehlzeit ab … % bzw. … % */
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
+  function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  function tag(isoStr){var p=isoStr.split('-');return new Date(+p[0],+p[1]-1,+p[2]);}
+  function datum(i){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(String(i||''));return m?(m[3]+'.'+m[2]+'.'):'';}
+  function A(){return window.KB_ANW||null;}
+  function kinder(){return (window.KB_ROSTER?window.KB_ROSTER.list():[]).filter(function(s){return s.active!==false;});}
+  /* Schultage (Mo–Fr ohne Ferien und Feiertage) zwischen zwei Daten, beide eingeschlossen */
+  function schultage(von,bis){var a=A(),n=0,d=tag(von),e=tag(bis);if(d>e){return 0;}
+    for(;d<=e;d.setDate(d.getDate()+1)){var w=d.getDay();if(w===0||w===6){continue;}if(a&&a.holidayInfo&&a.holidayInfo(iso(d))){continue;}n++;}return n;}
+  function karte(titel,inhalt,extra){return '<div class="kb-card kb-heute-karte'+(extra?' '+extra:'')+'"><h3>'+titel+'</h3>'+inhalt+'</div>';}
+  function render(el){
+    if(!el){return;}
+    var a=A(), heute=iso(new Date()), frei=a&&a.holidayInfo?a.holidayInfo(heute):null, wt=new Date().getDay();
+    if(!a||!a.exportEntries){el.innerHTML='<p>Das Klassenbuch lädt …</p>';return;}
+    var ks=kinder(), idx={};ks.forEach(function(k){idx[k.id]=k;});
+    var alle=a.exportEntries().filter(function(e){return idx[e.studentId];});
+    var titel=new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    var h='<div class="kb-pagehead"><h2>☀️ Heute</h2><p class="kb-heute-datum">'+esc(titel)+(window.KB_TERMS?' · '+esc(window.KB_TERMS.label()):'')+'</p></div>';
+    if(frei||wt===0||wt===6){h+='<div class="kb-heute-frei">'+(frei?esc(frei.name)+' – heute ist schulfrei.':'Wochenende – heute ist schulfrei.')+'</div>';}
+    if(!ks.length){el.innerHTML=h+karte('Noch keine Klasse','<p class="kb-hint">Unter „Klasse &amp; Stundenplan“ die Schülerliste anlegen – oder die Kinder über die Team-Datei übernehmen.</p><button class="kb-btn" data-kb-nav-go="klasse">Klasse anlegen</button>');return;}
+    /* 1) Anwesenheit heute */
+    var heuteE=alle.filter(function(e){return e.date===heute;}), jeKind={};
+    heuteE.forEach(function(e){(jeKind[e.studentId]=jeKind[e.studentId]||[]).push(e);});
+    var fehlend=Object.keys(jeKind).map(function(sid){
+      var l=jeKind[sid], u=0,en=0,v=0,min=0;l.forEach(function(e){var hh=a.hoursOf?a.hoursOf(e):0;if(e.status==='unentschuldigt'){u+=hh||0;}else if(e.status==='entschuldigt'){en+=hh||0;}else if(e.status==='verspaetet'){v++;min+=(+e.lateMin||0);}});
+      var t=[];if(u){t.push(u+' Std. unentschuldigt');}if(en){t.push(en+' Std. entschuldigt');}if(v){t.push('verspätet'+(min?' ('+min+' Min.)':''));}
+      if(!t.length){t.push(l.length+(l.length===1?' Eintrag':' Einträge'));}
+      return {k:idx[sid],t:t.join(' · '),rot:u>0};
+    }).sort(function(x,y){return x.k.name.localeCompare(y.k.name,'de');});
+    h+='<div class="kb-heute-raster">';
+    h+=karte('Anwesenheit heute',(fehlend.length?'<ul class="kb-heute-liste">'+fehlend.map(function(f){return '<li><button class="kb-heute-kind" data-heute-kind="'+esc(f.k.id)+'">'+esc(f.k.name)+'</button><span class="kb-heute-chip'+(f.rot?' rot':'')+'">'+esc(f.t)+'</span></li>';}).join('')+'</ul>':'<p class="kb-hint">Noch keine Absenz für heute eingetragen.</p>')+
+      '<p class="kb-heute-fuss">'+(ks.length-fehlend.length)+' von '+ks.length+' ohne Eintrag · <button class="kb-link-btn" data-kb-nav-go="absenzen">Im Klassenbuch eintragen</button></p>');
+    /* 2) Offene Entschuldigungen */
+    var grenze=new Date();grenze.setDate(grenze.getDate()-OFFEN_TAGE);var g=iso(grenze), offen={};
+    alle.filter(function(e){return e.status==='unentschuldigt'&&e.date<=g;}).forEach(function(e){var o=offen[e.studentId]||(offen[e.studentId]={n:0,std:0,erst:e.date});o.n++;o.std+=(a.hoursOf?a.hoursOf(e):0)||0;if(e.date<o.erst){o.erst=e.date;}});
+    var ol=Object.keys(offen).map(function(sid){return {k:idx[sid],o:offen[sid]};}).sort(function(x,y){return x.o.erst.localeCompare(y.o.erst);});
+    h+=karte('Entschuldigung offen',(ol.length?'<ul class="kb-heute-liste">'+ol.map(function(x){return '<li><button class="kb-heute-kind" data-heute-kind="'+esc(x.k.id)+'">'+esc(x.k.name)+'</button><span class="kb-heute-chip gelb">'+(x.o.std?x.o.std+' Std.':x.o.n+(x.o.n===1?' Eintrag':' Einträge'))+' seit '+esc(datum(x.o.erst))+'</span></li>';}).join('')+'</ul><p class="kb-heute-fuss">Unentschuldigt und älter als '+OFFEN_TAGE+' Tage: Eltern kontaktieren oder im Klassenbuch als entschuldigt markieren.</p>':'<p class="kb-hint">Keine offenen Entschuldigungen.</p>'));
+    /* 3) Fehlzeiten im laufenden Trimester */
+    var r=window.KB_TERMS?window.KB_TERMS.dateRange():null, fz=[];
+    if(r&&r.from){
+      var bis=heute<r.to?heute:r.to, tage=schultage(r.from,bis), moeglich=tage*(a.dayHours?a.dayHours():7);
+      if(moeglich>0){
+        var std={};alle.filter(function(e){return e.date>=r.from&&e.date<=bis&&(e.status==='unentschuldigt'||e.status==='entschuldigt');}).forEach(function(e){var x=std[e.studentId]||(std[e.studentId]={u:0,e:0});x[e.status==='unentschuldigt'?'u':'e']+=(a.hoursOf?a.hoursOf(e):0)||0;});
+        fz=Object.keys(std).map(function(sid){var x=std[sid], p=Math.round((x.u+x.e)/moeglich*100);return {k:idx[sid],x:x,p:p};}).filter(function(y){return y.p>=SCHWELLE;}).sort(function(x,y){return y.p-x.p;});
+        h+=karte('Fehlzeiten im Trimester',(fz.length?'<ul class="kb-heute-liste">'+fz.map(function(y){return '<li><button class="kb-heute-kind" data-heute-kind="'+esc(y.k.id)+'">'+esc(y.k.name)+'</button><span class="kb-heute-chip'+(y.p>=ROT?' rot':' gelb')+'">'+y.p+' % · '+(y.x.u+y.x.e)+' Std. ('+y.x.u+' unentsch.)</span></li>';}).join('')+'</ul><p class="kb-heute-fuss">Ab '+SCHWELLE+' % der Schulstunden seit Trimesterbeginn ('+tage+' Schultage): im Team besprechen, mit den Eltern reden – bevor es ein Signalement braucht.</p>':'<p class="kb-hint">Niemand fehlt in diesem Trimester '+SCHWELLE+' % oder mehr ('+tage+' Schultage bisher).</p>'));
+      }
+    }
+    /* 4) Für heute eingetragen: Prüfungen, Hausaufgaben, Bemerkungen */
+    var TYP={pruefung:'📝 Prüfung',hausaufgabe:'📒 Hausaufgabe',bemerkung:'💬 Bemerkung',allgemein:'📌 Allgemein'};
+    var no=(a.notes?a.notes():[]).filter(function(n){return n.date===heute;});
+    h+=karte('Für heute eingetragen',(no.length?'<ul class="kb-heute-liste">'+no.map(function(n){return '<li><span class="kb-heute-typ">'+(TYP[n.type]||'📌')+'</span><span>'+(n.subject?'<b>'+esc(n.subject)+':</b> ':'')+esc(n.text||'')+(n.studentId&&idx[n.studentId]?' <small>(nur '+esc(idx[n.studentId].name)+')</small>':(n.level?' <small>('+esc(n.level)+')</small>':''))+'</span></li>';}).join('')+'</ul>':'<p class="kb-hint">Für heute ist nichts eingetragen.</p>'));
+    /* 5) Offene Wochenziele aus der letzten Réunion */
+    var reus=(window.Repo&&Repo.listReunions?Repo.listReunions():[]).filter(function(x){return x.date<=heute;}).sort(function(x,y){return y.date.localeCompare(x.date);}), letzte=reus[0], wz=[];
+    if(letzte&&letzte.goals&&window.kbZiele){Object.keys(letzte.goals).forEach(function(sid){if(sid!=='group'&&!idx[sid]){return;}var z=window.kbZiele(letzte.goals[sid]).filter(function(x){return !x.done;});if(z.length){wz.push({name:sid==='group'?'Gruppe':idx[sid].name,z:z});}});}
+    h+=karte('Offene Wochenziele',(wz.length?'<p class="kb-heute-fuss">aus der Réunion vom '+esc(datum(letzte.date))+'</p><ul class="kb-heute-liste ziele">'+wz.map(function(w){return '<li><b>'+esc(w.name)+'</b><span>'+w.z.map(function(x){return esc(x.text);}).join(' · ')+'</span></li>';}).join('')+'</ul>':'<p class="kb-hint">'+(letzte?'Alle Wochenziele der letzten Réunion sind erledigt.':'Noch keine Réunion.')+'</p>')+
+      '<p class="kb-heute-fuss"><button class="kb-link-btn" data-kb-nav-go="reunion">Zur Réunion</button></p>');
+    h+='</div>';
+    el.innerHTML=h;
+  }
+  document.addEventListener('click',function(ev){
+    var k=ev.target.closest&&ev.target.closest('[data-heute-kind]');
+    if(k){var sid=k.getAttribute('data-heute-kind');if(window.__kbGo){window.__kbGo('absenzen');}if(window.KB_ANW&&window.KB_ANW.openStudent){window.KB_ANW.openStudent(sid);}return;}
+    var n=ev.target.closest&&ev.target.closest('[data-kb-nav-go]');
+    if(n&&window.__kbGo){window.__kbGo(n.getAttribute('data-kb-nav-go'));}
+  });
+  return {render:render, schultage:schultage};
+})();
+</script>
+<script>
 window.KB_SYNC=(function(){
   var FMT='klassebuch-shared-v1';
   /* ACHTUNG: Jede Sammlung, die collGet() liefert, MUSS hier stehen. Fehlt sie,
@@ -9407,7 +9500,7 @@ window.KB_MATERIALS=(function(){
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['anw-root','dos-root','kb-klasse','kb-werkzeuge','kb-data'];
+  var PANELS=['anw-root','dos-root','kb-heute','kb-klasse','kb-werkzeuge','kb-data'];
   /* Hub-Apps im selben Ordner bzw. den Hub selbst öffnen – in denselben
      benannten Tabs wie der Hub (ein Tab je App, kein Neuladen des Hubs) */
   var HUB_ZIELE={toolbox:['toolbox.html','cdse-toolbox'],lernen:['lernen.html','cdse-lernen'],screening:['../hub.html#/screening','cdse-hub'],hub:['../hub.html#/','cdse-hub'],schueler:['../hub.html#/schueler','cdse-hub']};
@@ -9429,6 +9522,9 @@ window.KB_MATERIALS=(function(){
       showPanel('anw-root'); setActive('absenzen'); closeAnwModals();
     } else if(nav==='absenzen-pdf'){
       showPanel('anw-root'); setActive('werkzeuge'); closeAnwModals(); clickAnwBtn('btn-pdf');
+    } else if(nav==='heute'){
+      showPanel('kb-heute'); setActive('heute');
+      if(window.KB_HEUTE){try{window.KB_HEUTE.render($('kb-heute-body'));}catch(e){}}
     } else if(nav==='klasse'){
       showPanel('kb-klasse'); setActive('klasse'); renderKlasse();
     } else if(nav==='werkzeuge'){
@@ -10011,8 +10107,8 @@ window.KB_MATERIALS=(function(){
   if(window.KB_BLOCKS){try{window.KB_BLOCKS.init();}catch(e){}}
   if(window.KB_TIMETABLE){try{window.KB_TIMETABLE.init();}catch(e){}}
 
-  // Startseite: Klassenbuch (Anwesenheit)
-  go('absenzen');
+  // Startseite: die Heute-Tafel (fürs Morning Meeting) – von dort ein Klick ins Klassenbuch
+  go('heute');
 })();
 </script>
 <script>
