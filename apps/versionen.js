@@ -30,9 +30,9 @@ window.CDSE_APP_VERSIONEN = {
   },
   "journal": {
     "stand": "2026-09-25",
-    "commit": "910ed95",
+    "commit": "dfb28fc",
     "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Klassenbuch/Journal (Testversion): Design-Fehler aus dem Galileo-Stand behoben",
-    "groesse": 1136657
+    "aenderung": "Journal (Testversion): „Neuer Schüler“ neben „Neuer Eintrag“ statt versetzt darüber",
+    "groesse": 1136906
   }
 };
