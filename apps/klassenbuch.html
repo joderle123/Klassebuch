@@ -389,7 +389,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 /* ===== Heute-Tafel ===== */
 .kb-heute-datum{margin:0 0 16px;color:var(--kb-muted);}
 .kb-heute-frei{background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:12px;padding:10px 14px;margin:0 0 14px;font-weight:650;}
-.kb-heute-raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;align-items:start;}
+.kb-heute-raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;align-items:stretch;}
+.kb-heute-raster>.kb-heute-karte{margin:0;}
 .kb-heute-karte h3{margin:0 0 10px;font-size:16px;}
 .kb-heute-liste{list-style:none;margin:0;padding:0;display:grid;gap:6px;}
 .kb-heute-liste li{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap;font-size:14px;}
