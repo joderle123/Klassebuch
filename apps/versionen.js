@@ -23,10 +23,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "toolbox": {
     "stand": "2026-09-25",
-    "commit": "5689c5a",
+    "commit": "0798669",
     "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Toolbox: Offline-Datei mit 125 Arbeitsblättern",
-    "groesse": 3475093
+    "aenderung": "Arbeitsblätter: Kopfzeile bei langen Bereichen, Motivations-Plan auf 2 Seiten",
+    "groesse": 3473289
   },
   "journal": {
     "stand": "2026-09-25",
