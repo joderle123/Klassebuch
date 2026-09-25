@@ -1127,9 +1127,11 @@ var DOS_OVERRIDES = `
     var _origDash=viewDashboard;
     window.viewDashboard=function(){
       var r=_origDash.apply(this,arguments);
-      var bar='<div class="isa-dash-add"><button class="btn btn-primary" data-kb-act="add-student">➕ Neuer Schüler</button></div>';
-      if(r&&typeof r==='object'&&typeof r.html==='string'){r.html=bar+r.html;return r;}
-      if(typeof r==='string'){return bar+r;}
+      /* in die Knopfleiste neben „+ Neuer Eintrag“ (vorher eigene Zeile darüber, Knöpfe versetzt) */
+      var knopf='<button class="btn" data-kb-act="add-student">+ Neuer Schüler</button>';
+      function rein(h){return h.indexOf('<div class="actions">')>=0?h.replace('<div class="actions">','<div class="actions">'+knopf):'<div class="isa-dash-add">'+knopf+'</div>'+h;}
+      if(r&&typeof r==='object'&&typeof r.html==='string'){r.html=rein(r.html);return r;}
+      if(typeof r==='string'){return rein(r);}
       return r;
     };
   }
