@@ -742,6 +742,28 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-blaetter-alle{display:inline-block;margin:0 0 8px;font-size:13px;}
 .ar-tb{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
 .ar-tb:hover{text-decoration-color:var(--accent);}
+
+/* ---------- Teamliste (Verwaltung) ---------- */
+.ar-tl .ar-kartenkopf{align-items:center;flex-wrap:wrap;gap:10px;}
+.ar-tl-stand{display:flex;flex-wrap:wrap;gap:6px 22px;margin:4px 0 12px;font-size:13.5px;color:var(--muted);}
+.ar-tl-stand b{font-family:var(--font-display,inherit);font-size:18px;color:var(--ink);margin-right:3px;font-variant-numeric:tabular-nums;}
+.ar-tl .catbar{margin-bottom:10px;}
+.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1.3fr) minmax(0,1.5fr) minmax(0,.8fr) minmax(0,1fr) 40px;}
+.ar-tl-st{display:inline-block;font-size:12px;font-weight:650;border-radius:999px;padding:2px 9px;white-space:nowrap;}
+.ar-tl-st.aktiv{background:#E6F4EC;color:#1E6B45;}
+.ar-tl-st.wartet{background:#FBF3E1;color:#6B4A0C;}
+.ar-tl-st.fehlt{background:var(--bg);color:var(--muted);}
+.ar-tl-ok,.ar-tl-fehlt{display:flex!important;align-items:center;gap:5px;margin-top:2px;font-weight:600;}
+.ar-tl-ok{color:#1E6B45!important;}
+.ar-tl-fehlt{color:#8A3A24!important;}
+.ar-tl-ok .ic,.ar-tl-fehlt .ic{width:13px;height:13px;}
+.ar-tl-rolle{display:block;font-size:12px;margin-top:4px;}
+.ar-tl-vorschau{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px;}
+.ar-tl-vorschau table{border-collapse:collapse;width:100%;font-size:13.5px;}
+.ar-tl-vorschau th{position:sticky;top:0;background:var(--bg);text-align:left;padding:7px 10px;font-weight:650;}
+.ar-tl-vorschau td{padding:6px 10px;border-top:1px solid var(--line);}
+.ar-tl-vorschau td.fehlt{color:#8A3A24;font-weight:600;}
+@media (max-width:760px){.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}.ar-tl-tab .ar-zeile>span:nth-child(2),.ar-tl-tab .ar-zeile>span:nth-child(3){grid-column:1/-1;}}
 /* ==== Datenbank (nur Responsables und Verwaltung) – Klassen mit db- ==== */
 .db-sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 .db-tabs{display:flex;flex-wrap:wrap;gap:2px 4px;border-bottom:1px solid var(--line);margin:-8px 0 20px;}
@@ -1370,7 +1392,78 @@ function ladeKonten(){
         try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
       },function(){});});
     },Promise.resolve()).then(function(){return liste;});
-  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return l;});
+  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return teamlisteLesen().then(function(){return l;});});
+}
+/* ---------- Teamliste: vorbereitete Konten ----------
+   Die Verwaltung trägt alle Mitarbeitenden ein (Name, Team, Funktion, Rolle).
+   Wer ein Konto erstellt, wählt seinen Namen aus der Liste: Team und Funktion
+   sind dann vorausgefüllt, das Passwort legt jede Person selbst fest. Die Datei
+   „teamliste.json“ liegt im Hub-Ordner im Klartext – wie Name und Team in den
+   Konto-Dateien; sie enthält keine Schülerdaten und keine Passwörter. Rollen
+   daraus übernimmt der Hub nur, wenn die Verwaltung freischaltet – und nie die
+   Rolle „Verwaltung“ selbst. */
+var teamliste=[];
+var ROLLEN_TL=['mitarbeiter','responsable','admin'];
+function namensSchluessel(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(Boolean).sort().join(' ');}
+function tlPerson(x){
+  if(!x||typeof x!=='object'){return null;}
+  var name=String(x.name||'').trim().replace(/\s+/g,' ');if(name.length<3){return null;}
+  return {name:name,team:TEAMS.some(function(t){return t.id===x.team;})?x.team:'',funktion:String(x.funktion||'').trim(),rolle:ROLLEN_TL.indexOf(x.rolle)>=0?x.rolle:'mitarbeiter',responsable:String(x.responsable||'').trim()};
+}
+function teamlisteLesen(){
+  if(!ordner){teamliste=[];return Promise.resolve([]);}
+  return dateiLesen(ordner,'teamliste.json').then(function(t){
+    var l=[];try{var o=JSON.parse(t||'null');if(o&&o.format==='cdse-teamliste'&&Array.isArray(o.personen)){l=o.personen.map(tlPerson).filter(Boolean);}}catch(e){}
+    teamliste=l;return l;
+  },function(){teamliste=[];return [];});
+}
+function teamlisteSchreiben(personen){
+  var l=(personen||[]).map(tlPerson).filter(Boolean);
+  l.sort(function(a,b){return a.name.localeCompare(b.name,'de');});
+  var o={format:'cdse-teamliste',version:1,geaendert:new Date().toISOString(),von:sitzung?sitzung.id:'',personen:l};
+  return ordnerBereit().then(function(){return dateiSchreiben(ordner,'teamliste.json',JSON.stringify(o,null,1));}).then(function(){teamliste=l;return l;});
+}
+function teamlisteEintrag(name){var k=namensSchluessel(name);if(!k){return null;}for(var i=0;i<teamliste.length;i++){if(namensSchluessel(teamliste[i].name)===k){return teamliste[i];}}return null;}
+function kontoMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<konten.length;i++){if(namensSchluessel(konten[i].name)===k){return konten[i];}}return null;}
+/* Team aus einer Angabe wie „ISA“, „Diagnostic spécialisé“, „CLAPA“, „Annexe Junglinster“ */
+var TEAM_WOERTER={annexe:['annexe','junglinster'],isa:['isa'],diagnostique:['diagnostic','diagnostique','diagnostik','ds'],
+  cp:['classes de participation','classe de participation','clapa','cdp','cp'],cst:['cst','centre socio therapeutique','socio therapeutique']};
+function tlNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function teamAusText(t){
+  var n=tlNorm(t);if(!n){return '';}
+  for(var i=0;i<TEAMS.length;i++){if(n===TEAMS[i].id||n===tlNorm(TEAMS[i].name)){return TEAMS[i].id;}}
+  var ids=Object.keys(TEAM_WOERTER), m=' '+n+' ';
+  for(var j=0;j<ids.length;j++){
+    if(!TEAMS.some(function(x){return x.id===ids[j];})){continue;}
+    if(TEAM_WOERTER[ids[j]].some(function(w){return m.indexOf(' '+w+' ')>=0;})){return ids[j];}
+  }
+  return '';
+}
+function rolleAusText(t){
+  var n=String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(/respons/.test(n)){return 'responsable';}
+  if(/verwaltung|admin|direct|direkt/.test(n)){return 'admin';}
+  return 'mitarbeiter';
+}
+/* Eingefügte Liste lesen: eine Person pro Zeile – „Name; Team; Funktion; Rolle; Responsable“
+   (Tabulator aus Excel, Semikolon oder Komma). Kopfzeile wird erkannt. */
+function teamlisteParsen(text){
+  var personen=[], probleme=[], gesehen={};
+  String(text||'').split(/\r?\n/).forEach(function(zeile,i){
+    var z=zeile.trim();if(!z){return;}
+    var teile=z.indexOf('\t')>=0?z.split('\t'):(z.indexOf(';')>=0?z.split(';'):(z.indexOf(',')>=0?z.split(','):[z]));
+    teile=teile.map(function(x){return x.trim().replace(/^"|"$/g,'').trim();});
+    if(i===0&&/^name$/i.test(teile[0])&&teile.length>1){return;}
+    var name=(teile[0]||'').replace(/\s+/g,' ');
+    if(name.length<3){probleme.push({zeile:i+1,text:'kein Name: „'+z.slice(0,40)+'“'});return;}
+    var team=teamAusText(teile[1]||'');
+    if(teile[1]&&!team){probleme.push({zeile:i+1,text:'Team „'+teile[1]+'“ unbekannt – bitte in der Liste wählen'});}
+    var p={name:name,team:team,funktion:teile[2]||'',rolle:rolleAusText(teile[3]||''),responsable:teile[4]||''};
+    var k=namensSchluessel(name);
+    if(gesehen[k]!=null){probleme.push({zeile:i+1,text:name+' steht doppelt – die letzte Zeile gilt'});personen[gesehen[k]]=p;return;}
+    gesehen[k]=personen.length;personen.push(p);
+  });
+  return {personen:personen,probleme:probleme};
 }
 function schreibeKonto(k){return unterordner(['konten']).then(function(dir){return dateiSchreiben(dir,k.id+'.json',JSON.stringify(k,null,1));});}
 function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){return konten[i];}}return null;}
@@ -2027,19 +2120,33 @@ function zeigeAnmelden(k,hinweis,fehlerText){
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
 
+/* Personen der Teamliste, die noch kein Konto haben */
+function offeneTL(){return teamliste.filter(function(p){return !kontoMitNamen(p.name);});}
 function zeigeErstellen(erstes,fehlerText,werte){
   werte=werte||{};tor(true);
   karte('<h2>'+(erstes?'Das erste Konto anlegen':'Neues Konto erstellen')+'</h2>'+
     '<p class="sub">Das Konto wird einmal erstellt. Dein Passwort verschlüsselt deine Daten — niemand sonst kann sie lesen.</p>'+
     (fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+
-    '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus></div>'+
+    '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus'+(offeneTL().length?' list="g-namen"':'')+'>'+
+      (offeneTL().length?'<datalist id="g-namen">'+offeneTL().map(function(p){return '<option value="'+esc(p.name)+'">';}).join('')+'</datalist><span class="hilfe" id="g-tl">Tippe deinen Namen – du stehst wahrscheinlich schon in der Teamliste.</span>':'')+'</div>'+
     (TEAMS.length?'<div class="feld"><span class="label">In welchem Team arbeitest du?</span>'+teamWahl(werte.team)+'</div>':'')+
     funktionFeld(werte.funktion)+responsableFeld(werte.responsable,null)+
     '<div class="feld"><label for="g-pw1">Passwort</label><input id="g-pw1" type="password" autocomplete="off" aria-describedby="g-pw-hilfe"><span class="hilfe" id="g-pw-hilfe">Mindestens 10 Zeichen. Ein kurzer Satz ist leicht zu merken und sicher.</span></div>'+
     '<div class="feld"><label for="g-pw2">Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
     '<button class="btn primary voll" type="submit" id="g-los">Konto erstellen</button></form>'+
     (konten.length?'<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>':''),true);
+  /* Name aus der Teamliste gewählt: Team, Funktion und Responsable vorausfüllen */
+  function tlVorfuellen(){
+    var e=teamlisteEintrag($('g-name').value), h=$('g-tl');
+    if(!e){if(h){h.textContent='Tippe deinen Namen – du stehst wahrscheinlich schon in der Teamliste.';}return;}
+    if(e.team){var r=document.querySelector('input[name="g-team"][value="'+e.team+'"]');if(r){r.checked=true;}}
+    if(e.funktion&&!$('g-funktion').value.trim()){$('g-funktion').value=e.funktion;}
+    var rs=$('g-resp');
+    if(rs&&rs.value===''){var rk=e.responsable&&kontoMitNamen(e.responsable);if(rk){rs.value=rk.id;}else if(e.rolle==='admin'){rs.value='-';}}
+    if(h){h.textContent='In der Teamliste: '+[team(e.team).name,e.funktion,e.rolle==='responsable'?'Responsable':''].filter(Boolean).join(' · ')+'. Bitte prüfen und ein eigenes Passwort wählen.';}
+  }
+  if($('g-tl')){$('g-name').addEventListener('input',tlVorfuellen);$('g-name').addEventListener('change',tlVorfuellen);if(werte.name){tlVorfuellen();}}
   formular('g-form',function(){
     var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value;
     var fu=$('g-funktion').value.trim().replace(/\s+/g,' '), re=gewaehlterResponsable(), w={name:name,team:t,funktion:fu,responsable:re};
@@ -2362,6 +2469,13 @@ return {
   /* für den gemeinsamen Bereich */
   ich:function(){return sitzung?oeffentlich(sitzung):null;},
   konten:function(){return konten.map(oeffentlichesKonto);},
+  /* Teamliste (vorbereitete Konten) */
+  teamliste:function(){return teamliste.map(function(p){return Object.assign({},p);});},
+  teamlisteNeu:function(){return ordnerDa().then(teamlisteLesen);},
+  teamlisteSpeichern:teamlisteSchreiben,
+  teamlisteEintrag:function(n){var e=teamlisteEintrag(n);return e?Object.assign({},e):null;},
+  teamlisteParsen:teamlisteParsen,
+  namensSchluessel:namensSchluessel,
   kontenNeu:function(){return ordnerDa().then(ladeKonten).then(function(l){return l.map(oeffentlichesKonto);});},
   privat:privat,
   privatDa:function(){return !!(sitzung&&tresor.priv&&tresor.id===sitzung.id);},
@@ -2556,7 +2670,10 @@ function freischalten(id){
     });
   }).then(function(){
     var k=K.konten().filter(function(x){return x.id===id;})[0];
-    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:'mitarbeiter',seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id));
+    /* Teamliste: „Responsable“ übernimmt der Hub nur, wenn die Verwaltung freischaltet – „Verwaltung“ nie automatisch */
+    var tl=k&&K.teamlisteEintrag?K.teamlisteEintrag(k.name):null;
+    var r=(tl&&tl.rolle==='responsable'&&istAdmin())?'responsable':'mitarbeiter';
+    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:r,seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id)+(r==='responsable'?' (Responsable laut Teamliste)':''));
   });
 }
 /* Zugang entziehen (nur Verwaltung). Hinweis: Wer den Schlüssel schon hatte,
@@ -4165,20 +4282,120 @@ function seiteVerwaltung(){
     verwaltungZeichnen();
   }).catch(function(e){$('ar-verw').innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});});
 }
+/* ---------- Teamliste: alle Mitarbeitenden vorbereiten (Verwaltung) ---------- */
+var tlFilter='';
+function T_NAME(id){return team(id).name;}
+function tlVon(name){return K.teamlisteEintrag?K.teamlisteEintrag(name):null;}
+function tlKonto(p,m){var s=K.namensSchluessel(p.name);return m.filter(function(k){return K.namensSchluessel(k.name)===s;})[0]||null;}
+var TL_STAND={aktiv:'Konto aktiv',wartet:'wartet auf Freischaltung',fehlt:'noch kein Konto'};
+function teamlisteKarte(admin,ROLLEN){
+  if(!K.teamliste){return '';}
+  var tl=K.teamliste(), m=T.mitglieder();
+  var z=tl.map(function(p,i){var k=tlKonto(p,m);return {p:p,i:i,k:k,st:!k?'fehlt':(k.freigeschaltet?'aktiv':'wartet')};});
+  var n={aktiv:0,wartet:0,fehlt:0};z.forEach(function(x){n[x.st]++;});
+  var ohne=m.filter(function(k){return !tlVon(k.name);});
+  var teams=TEAMS.filter(function(t){return tl.some(function(p){return p.team===t.id;});});
+  var sicht=z.filter(function(x){return !tlFilter||(tlFilter==='_'?!x.p.team:x.p.team===tlFilter);});
+  var reihe=TEAMS.map(function(t){return t.id;});function rang(p){var i=reihe.indexOf(p.team);return i<0?999:i;}
+  sicht.sort(function(a,b){return (rang(a.p)-rang(b.p))||a.p.name.localeCompare(b.p.name,'de');});
+  var h='<div class="ar-kartenkopf"><h2>Teamliste'+(tl.length?' <span class="ar-zahl">'+tl.length+'</span>':'')+'</h2>'+
+    (admin?'<div class="ar-knopfreihe"><button class="btn" type="button" data-ar="tl-einfuegen">'+svg('hoch')+'Liste einfügen</button><button class="btn" type="button" data-ar="tl-neu">'+svg('plus')+'Person</button>'+(tl.length?'<button class="btn" type="button" data-ar="tl-export">'+svg('runter')+'Als Tabelle</button>':'')+'</div>':'')+'</div>'+
+    '<p class="ar-klein">Alle Mitarbeitenden mit Team, Funktion und Rolle. Wer ein Konto erstellt, wählt seinen Namen aus dieser Liste – Team und Funktion sind dann schon eingetragen, das Passwort wählt jede Person selbst. '+
+      'Beim Freischalten durch die Verwaltung übernimmt der Hub die Rolle „Responsable“ aus der Liste; die Rolle „Verwaltung“ vergibt er nie von selbst.</p>';
+  if(!tl.length){
+    return karte(h+'<p class="ar-leise">Noch leer. '+(admin?'Mit „Liste einfügen“ lässt sich die Teamliste aus Excel oder einer Textliste übernehmen – eine Person pro Zeile.':'Die Verwaltung pflegt die Liste.')+'</p>','ar-tl');
+  }
+  h+='<div class="ar-tl-stand"><span><b>'+n.aktiv+'</b> '+(n.aktiv===1?'Konto':'Konten')+' aktiv</span><span><b>'+n.wartet+'</b> '+(n.wartet===1?'wartet':'warten')+' auf Freischaltung</span><span><b>'+n.fehlt+'</b> noch ohne Konto</span></div>'+
+    '<div class="catbar" role="group" aria-label="Team"><button class="catchip'+(!tlFilter?' on':'')+'" type="button" data-ar="tl-filter" data-team="" aria-pressed="'+!tlFilter+'">Alle</button>'+
+    teams.map(function(t){var c=tl.filter(function(p){return p.team===t.id;}).length;return '<button class="catchip'+(tlFilter===t.id?' on':'')+'" type="button" data-ar="tl-filter" data-team="'+esc(t.id)+'" aria-pressed="'+(tlFilter===t.id)+'">'+esc(t.name)+'<span class="n">'+c+'</span></button>';}).join('')+
+    (tl.some(function(p){return !p.team;})?'<button class="catchip'+(tlFilter==='_'?' on':'')+'" type="button" data-ar="tl-filter" data-team="_" aria-pressed="'+(tlFilter==='_')+'">ohne Team</button>':'')+'</div>'+
+    '<div class="ar-tabelle ar-tl-tab"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Rolle</span><span>Konto</span><span></span></div>'+
+    sicht.map(function(x){
+      return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(team(x.p.team).farbe||'#8C96A8')+'">'+esc(ini(x.p.name))+'</span><b>'+esc(x.p.name)+'</b></span>'+
+        '<span>'+esc([x.p.team?T_NAME(x.p.team):'ohne Team',x.p.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(ROLLEN[x.p.rolle]||'Mitarbeiter/in')+'</span>'+
+        '<span><span class="ar-tl-st '+x.st+'">'+TL_STAND[x.st]+'</span></span>'+
+        '<span>'+(admin?'<button class="ar-link" type="button" data-ar="tl-bearbeiten" data-i="'+x.i+'" aria-label="'+esc(x.p.name)+' bearbeiten">'+svg('edit')+'</button>':'')+'</span></div>';
+    }).join('')+'</div>'+
+    (ohne.length?'<p class="ar-klein">Konten, die nicht in der Teamliste stehen: '+ohne.map(function(k){return esc(k.name);}).join(', ')+'.</p>':'');
+  return karte(h,'ar-tl');
+}
+function tlPersonDialog(i){
+  var tl=K.teamliste(), p=i!=null?tl[i]:{name:'',team:'',funktion:'',rolle:'mitarbeiter',responsable:''};
+  var inh='<datalist id="ar-tl-namen">'+tl.filter(function(x){return x.rolle!=='mitarbeiter';}).map(function(x){return '<option value="'+esc(x.name)+'">';}).join('')+'</datalist>'+
+    '<div class="ar-raster2">'+feld('name','Vor- und Nachname',p.name,'text',' required autofocus')+auswahl('team','Team',p.team,teamOptionen(),'– ohne Team –')+
+    feld('funktion','Funktion',p.funktion)+auswahl('rolle','Rolle im Hub',p.rolle,[['mitarbeiter','Mitarbeiter/in'],['responsable','Responsable'],['admin','Verwaltung']])+
+    feld('responsable','Responsable dieser Person (Name)',p.responsable,'text',' list="ar-tl-namen" autocomplete="off"')+'</div>'+
+    '<p class="ar-klein">„Verwaltung“ ist hier nur ein Vermerk: Diese Rolle vergibt die Verwaltung nach der Freischaltung selbst.</p>';
+  var kn=[{text:'Abbrechen',wert:''}];if(i!=null){kn.push({text:'Entfernen',wert:'weg',gefahr:true});}kn.push({text:'Speichern',wert:'ok',primaer:true});
+  dialog(i!=null?'Person bearbeiten':'Person hinzufügen',inh,kn,{breit:true,
+    pruefen:function(w){
+      if(w.aktion!=='ok'){return '';}
+      var n=(w.werte.name||'').trim().replace(/\s+/g,' ');if(n.length<3){return 'Bitte den Vor- und Nachnamen eintragen.';}
+      var s=K.namensSchluessel(n);if(tl.some(function(x,j){return j!==i&&K.namensSchluessel(x.name)===s;})){return n+' steht schon in der Liste.';}
+      return '';
+    },
+    ausfuehren:function(w){
+      var l=K.teamliste();
+      if(w.aktion==='weg'){l.splice(i,1);return K.teamlisteSpeichern(l).then(function(){return 'Entfernt';});}
+      var v=w.werte, neu={name:v.name.trim().replace(/\s+/g,' '),team:v.team,funktion:(v.funktion||'').trim(),rolle:v.rolle,responsable:(v.responsable||'').trim()};
+      if(i!=null){l[i]=neu;}else{l.push(neu);}
+      return K.teamlisteSpeichern(l).then(function(){return 'Gespeichert';});
+    }
+  }).then(function(r){if(r.ergebnis){toast(r.ergebnis);verwaltungZeichnen();}});
+}
+function tlEinfuegenDialog(text){
+  var inh='<p class="ar-klein">Eine Person pro Zeile: <b>Name; Team; Funktion; Rolle</b> – so, wie es aus Excel kommt (Spalten mit Tabulator) oder mit Semikolon getrennt. Team zum Beispiel „ISA“, „Diagnostique“, „Annexe“, „CLAPA“ oder „CST“; Rolle „Responsable“ oder leer. Personen, die schon in der Liste stehen, werden aktualisiert.</p>'+
+    textfeld('text','Liste',text||'',12)+'<p class="ar-klein">Beispiel: <code>Lea Beispiel; ISA; Éducatrice graduée; Responsable</code></p>';
+  dialog('Teamliste einfügen',inh,[{text:'Abbrechen',wert:''},{text:'Prüfen',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){if(w.aktion==='ok'&&!(w.werte.text||'').trim()){return 'Bitte die Liste einfügen.';}return '';}
+  }).then(function(r){
+    if(r.aktion!=='ok'){return;}
+    var erg=K.teamlisteParsen(r.werte.text), alt=K.teamliste();
+    var neu=0, akt=0;erg.personen.forEach(function(p){if(alt.some(function(x){return K.namensSchluessel(x.name)===K.namensSchluessel(p.name);})){akt++;}else{neu++;}});
+    var ROL={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:''};
+    var inh2='<p><b>'+erg.personen.length+'</b> Personen erkannt: '+neu+' neu, '+akt+' aktualisiert.</p>'+
+      (erg.probleme.length?'<div class="callout"><div><b>Bitte prüfen</b><ul>'+erg.probleme.map(function(x){return '<li>Zeile '+x.zeile+': '+esc(x.text)+'</li>';}).join('')+'</ul></div></div>':'')+
+      '<div class="ar-tl-vorschau"><table><thead><tr><th>Name</th><th>Team</th><th>Funktion</th><th>Rolle</th></tr></thead><tbody>'+erg.personen.map(function(p){
+        return '<tr><td>'+esc(p.name)+'</td><td'+(p.team?'':' class="fehlt"')+'>'+esc(p.team?T_NAME(p.team):'– fehlt –')+'</td><td>'+esc(p.funktion)+'</td><td>'+esc(ROL[p.rolle])+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+    dialog('Teamliste übernehmen?',inh2,[{text:'Zurück',wert:'zurueck'},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
+      ausfuehren:function(w){
+        if(w.aktion!=='ok'){return null;}
+        var l=K.teamliste();
+        erg.personen.forEach(function(p){var s=K.namensSchluessel(p.name), j=-1;l.forEach(function(x,k){if(K.namensSchluessel(x.name)===s){j=k;}});if(j>=0){l[j]=Object.assign({},l[j],p,{team:p.team||l[j].team,funktion:p.funktion||l[j].funktion});}else{l.push(p);}});
+        return K.teamlisteSpeichern(l).then(function(){return erg.personen.length;});
+      }
+    }).then(function(r2){
+      if(r2.aktion==='zurueck'){tlEinfuegenDialog(r.werte.text);return;}
+      if(r2.ergebnis){toast('Teamliste gespeichert ('+r2.ergebnis+' Personen)');verwaltungZeichnen();}
+    });
+  });
+}
+function tlExport(){
+  var ROL={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'}, m=T.mitglieder();
+  var zeilen=[['Name','Team','Funktion','Rolle','Responsable','Konto']].concat(K.teamliste().map(function(p){var k=tlKonto(p,m);return [p.name,p.team?T_NAME(p.team):'',p.funktion,ROL[p.rolle],p.responsable,!k?TL_STAND.fehlt:(k.freigeschaltet?TL_STAND.aktiv:TL_STAND.wartet)];}));
+  var csv='\ufeff'+zeilen.map(function(z){return z.map(function(c){c=String(c==null?'':c);return /[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(';');}).join('\r\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='CDSE-Teamliste.csv';document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);toast('Teamliste als Tabelle gespeichert (CSV)');
+}
 function verwaltungZeichnen(){
   var el=$('ar-verw');if(!el){return;}
   var admin=T.istAdmin(), w=T.wartende(), m=T.mitglieder();
   var ROLLEN={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
   var h=karte('<h2>Warten auf Freischaltung'+(w.length?' <span class="ar-zahl">'+w.length+'</span>':'')+'</h2>'+
     (w.length?'<p class="ar-klein">Vergleiche den <b>Kontrollcode</b> mit dem Code, den die Person auf ihrem Bildschirm sieht (Schüler → „Noch nicht freigeschaltet“) – zum Beispiel am Telefon. Stimmt er, gehört das Konto wirklich ihr.</p>'+
-      '<div class="ar-wartende">'+w.map(function(k){return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</small></span><code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
+      '<div class="ar-wartende">'+w.map(function(k){var tl=tlVon(k.name);return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</small>'+
+        (K.teamliste&&K.teamliste().length?(tl?'<small class="ar-tl-ok">'+svg('check')+'In der Teamliste'+(tl.rolle==='responsable'?' · Responsable'+(admin?' (wird übernommen)':''):'')+(tl.team&&tl.team!==k.team?' · Team laut Liste: '+esc(T_NAME(tl.team)):'')+'</small>':'<small class="ar-tl-fehlt">'+svg('warn')+'Nicht in der Teamliste – Identität besonders sorgfältig prüfen</small>'):'')+'</span>'+
+        '<code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
       :'<p class="ar-leise">Niemand wartet.</p>'));
   h+=karte('<h2>Mitglieder</h2><div class="ar-tabelle ar-mitglieder"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Responsable</span><span>Rolle</span><span></span></div>'+
     m.filter(function(k){return k.freigeschaltet;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){
       return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><b>'+esc(k.name)+'</b></span><span>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(k.responsable?kname(k.responsable):'—')+'</span>'+
-        '<span>'+(admin?'<select data-rolle="'+esc(k.id)+'" aria-label="Rolle von '+esc(k.name)+'">'+Object.keys(ROLLEN).map(function(r){return '<option value="'+r+'"'+(k.rolle===r?' selected':'')+'>'+ROLLEN[r]+'</option>';}).join('')+'</select>':esc(ROLLEN[k.rolle]||k.rolle))+'</span>'+
+        '<span>'+(admin?'<select data-rolle="'+esc(k.id)+'" aria-label="Rolle von '+esc(k.name)+'">'+Object.keys(ROLLEN).map(function(r){return '<option value="'+r+'"'+(k.rolle===r?' selected':'')+'>'+ROLLEN[r]+'</option>';}).join('')+'</select>':esc(ROLLEN[k.rolle]||k.rolle))+
+          (function(){var tl=tlVon(k.name);return admin&&tl&&tl.rolle!==k.rolle?'<button class="ar-link ar-tl-rolle" type="button" data-ar="tl-rolle" data-id="'+esc(k.id)+'" data-rolle="'+esc(tl.rolle)+'">Teamliste: '+esc(ROLLEN[tl.rolle])+' übernehmen</button>':'';})()+'</span>'+
         '<span>'+(admin&&k.id!==K.ich().id?'<button class="ar-link gefahr" type="button" data-ar="entziehen" data-id="'+esc(k.id)+'">Zugang entziehen</button>':'')+'</span></div>';
     }).join('')+'</div>'+(admin?'<p class="ar-klein"><b>Responsables</b> können Konten freischalten und alle Dossiers bearbeiten. Die <b>Verwaltung</b> vergibt zusätzlich Rollen und kann Dossiers löschen.</p>':''));
+  h+=teamlisteKarte(admin,ROLLEN);
   var log=T.bereichsVerlauf().slice(0,60);
   h+=karte('<h2>Protokoll des Schülerbereichs</h2><ol class="ar-protokoll">'+log.map(function(v){return '<li><span class="ar-leise">'+esc(datumZeit(v.z))+'</span><b>'+esc(kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol>');
   el.innerHTML=h;
@@ -4212,6 +4429,12 @@ document.addEventListener('click',function(ev){
     case 'fiche-hochladen-dossier':ficheHochladen(d);break;
     case 'fiche-download':ficheHerunterladen(d,t);break;
     case 'fiche-teil':ficheTeilDialog(d,t.getAttribute('data-teil'));break;
+    case 'tl-neu':tlPersonDialog(null);break;
+    case 'tl-bearbeiten':tlPersonDialog(+t.getAttribute('data-i'));break;
+    case 'tl-einfuegen':tlEinfuegenDialog('');break;
+    case 'tl-export':tlExport();break;
+    case 'tl-filter':tlFilter=t.getAttribute('data-team')||'';verwaltungZeichnen();var fb=document.querySelector('[data-ar="tl-filter"][data-team="'+tlFilter+'"]');if(fb){fb.focus();}break;
+    case 'tl-rolle':t.disabled=true;T.rolleSetzen(t.getAttribute('data-id'),t.getAttribute('data-rolle')).then(function(){toast('Rolle laut Teamliste übernommen');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
     case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){aktDossier=neu;dossierZeichnen(neu);}});}break;
     case 'db-zeigen':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.zeigen(d.id);}break;
     case 'weitergeben':weitergebenDialog(d);break;

@@ -18,3 +18,9 @@ dist-ssr
 # Bilder aus Testläufen
 hub-quellen/tests/*-aus/
 hub-quellen/tests/*.png
+
+# Daten aus dem Hub-Ordner auf O:\ – gehören nie ins (öffentliche) Repository
+teamliste.json
+konten/
+gemeinsam/
+teams/

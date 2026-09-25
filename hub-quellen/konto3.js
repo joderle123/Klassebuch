@@ -132,7 +132,78 @@ function ladeKonten(){
         try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
       },function(){});});
     },Promise.resolve()).then(function(){return liste;});
-  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return l;});
+  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return teamlisteLesen().then(function(){return l;});});
+}
+/* ---------- Teamliste: vorbereitete Konten ----------
+   Die Verwaltung trägt alle Mitarbeitenden ein (Name, Team, Funktion, Rolle).
+   Wer ein Konto erstellt, wählt seinen Namen aus der Liste: Team und Funktion
+   sind dann vorausgefüllt, das Passwort legt jede Person selbst fest. Die Datei
+   „teamliste.json“ liegt im Hub-Ordner im Klartext – wie Name und Team in den
+   Konto-Dateien; sie enthält keine Schülerdaten und keine Passwörter. Rollen
+   daraus übernimmt der Hub nur, wenn die Verwaltung freischaltet – und nie die
+   Rolle „Verwaltung“ selbst. */
+var teamliste=[];
+var ROLLEN_TL=['mitarbeiter','responsable','admin'];
+function namensSchluessel(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(Boolean).sort().join(' ');}
+function tlPerson(x){
+  if(!x||typeof x!=='object'){return null;}
+  var name=String(x.name||'').trim().replace(/\s+/g,' ');if(name.length<3){return null;}
+  return {name:name,team:TEAMS.some(function(t){return t.id===x.team;})?x.team:'',funktion:String(x.funktion||'').trim(),rolle:ROLLEN_TL.indexOf(x.rolle)>=0?x.rolle:'mitarbeiter',responsable:String(x.responsable||'').trim()};
+}
+function teamlisteLesen(){
+  if(!ordner){teamliste=[];return Promise.resolve([]);}
+  return dateiLesen(ordner,'teamliste.json').then(function(t){
+    var l=[];try{var o=JSON.parse(t||'null');if(o&&o.format==='cdse-teamliste'&&Array.isArray(o.personen)){l=o.personen.map(tlPerson).filter(Boolean);}}catch(e){}
+    teamliste=l;return l;
+  },function(){teamliste=[];return [];});
+}
+function teamlisteSchreiben(personen){
+  var l=(personen||[]).map(tlPerson).filter(Boolean);
+  l.sort(function(a,b){return a.name.localeCompare(b.name,'de');});
+  var o={format:'cdse-teamliste',version:1,geaendert:new Date().toISOString(),von:sitzung?sitzung.id:'',personen:l};
+  return ordnerBereit().then(function(){return dateiSchreiben(ordner,'teamliste.json',JSON.stringify(o,null,1));}).then(function(){teamliste=l;return l;});
+}
+function teamlisteEintrag(name){var k=namensSchluessel(name);if(!k){return null;}for(var i=0;i<teamliste.length;i++){if(namensSchluessel(teamliste[i].name)===k){return teamliste[i];}}return null;}
+function kontoMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<konten.length;i++){if(namensSchluessel(konten[i].name)===k){return konten[i];}}return null;}
+/* Team aus einer Angabe wie „ISA“, „Diagnostic spécialisé“, „CLAPA“, „Annexe Junglinster“ */
+var TEAM_WOERTER={annexe:['annexe','junglinster'],isa:['isa'],diagnostique:['diagnostic','diagnostique','diagnostik','ds'],
+  cp:['classes de participation','classe de participation','clapa','cdp','cp'],cst:['cst','centre socio therapeutique','socio therapeutique']};
+function tlNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
+function teamAusText(t){
+  var n=tlNorm(t);if(!n){return '';}
+  for(var i=0;i<TEAMS.length;i++){if(n===TEAMS[i].id||n===tlNorm(TEAMS[i].name)){return TEAMS[i].id;}}
+  var ids=Object.keys(TEAM_WOERTER), m=' '+n+' ';
+  for(var j=0;j<ids.length;j++){
+    if(!TEAMS.some(function(x){return x.id===ids[j];})){continue;}
+    if(TEAM_WOERTER[ids[j]].some(function(w){return m.indexOf(' '+w+' ')>=0;})){return ids[j];}
+  }
+  return '';
+}
+function rolleAusText(t){
+  var n=String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  if(/respons/.test(n)){return 'responsable';}
+  if(/verwaltung|admin|direct|direkt/.test(n)){return 'admin';}
+  return 'mitarbeiter';
+}
+/* Eingefügte Liste lesen: eine Person pro Zeile – „Name; Team; Funktion; Rolle; Responsable“
+   (Tabulator aus Excel, Semikolon oder Komma). Kopfzeile wird erkannt. */
+function teamlisteParsen(text){
+  var personen=[], probleme=[], gesehen={};
+  String(text||'').split(/\r?\n/).forEach(function(zeile,i){
+    var z=zeile.trim();if(!z){return;}
+    var teile=z.indexOf('\t')>=0?z.split('\t'):(z.indexOf(';')>=0?z.split(';'):(z.indexOf(',')>=0?z.split(','):[z]));
+    teile=teile.map(function(x){return x.trim().replace(/^"|"$/g,'').trim();});
+    if(i===0&&/^name$/i.test(teile[0])&&teile.length>1){return;}
+    var name=(teile[0]||'').replace(/\s+/g,' ');
+    if(name.length<3){probleme.push({zeile:i+1,text:'kein Name: „'+z.slice(0,40)+'“'});return;}
+    var team=teamAusText(teile[1]||'');
+    if(teile[1]&&!team){probleme.push({zeile:i+1,text:'Team „'+teile[1]+'“ unbekannt – bitte in der Liste wählen'});}
+    var p={name:name,team:team,funktion:teile[2]||'',rolle:rolleAusText(teile[3]||''),responsable:teile[4]||''};
+    var k=namensSchluessel(name);
+    if(gesehen[k]!=null){probleme.push({zeile:i+1,text:name+' steht doppelt – die letzte Zeile gilt'});personen[gesehen[k]]=p;return;}
+    gesehen[k]=personen.length;personen.push(p);
+  });
+  return {personen:personen,probleme:probleme};
 }
 function schreibeKonto(k){return unterordner(['konten']).then(function(dir){return dateiSchreiben(dir,k.id+'.json',JSON.stringify(k,null,1));});}
 function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){return konten[i];}}return null;}
@@ -789,19 +860,33 @@ function zeigeAnmelden(k,hinweis,fehlerText){
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
 
+/* Personen der Teamliste, die noch kein Konto haben */
+function offeneTL(){return teamliste.filter(function(p){return !kontoMitNamen(p.name);});}
 function zeigeErstellen(erstes,fehlerText,werte){
   werte=werte||{};tor(true);
   karte('<h2>'+(erstes?'Das erste Konto anlegen':'Neues Konto erstellen')+'</h2>'+
     '<p class="sub">Das Konto wird einmal erstellt. Dein Passwort verschlüsselt deine Daten — niemand sonst kann sie lesen.</p>'+
     (fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+
-    '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus></div>'+
+    '<div class="feld"><label for="g-name">Vor- und Nachname</label><input id="g-name" autocomplete="off" value="'+esc(werte.name||'')+'" autofocus'+(offeneTL().length?' list="g-namen"':'')+'>'+
+      (offeneTL().length?'<datalist id="g-namen">'+offeneTL().map(function(p){return '<option value="'+esc(p.name)+'">';}).join('')+'</datalist><span class="hilfe" id="g-tl">Tippe deinen Namen – du stehst wahrscheinlich schon in der Teamliste.</span>':'')+'</div>'+
     (TEAMS.length?'<div class="feld"><span class="label">In welchem Team arbeitest du?</span>'+teamWahl(werte.team)+'</div>':'')+
     funktionFeld(werte.funktion)+responsableFeld(werte.responsable,null)+
     '<div class="feld"><label for="g-pw1">Passwort</label><input id="g-pw1" type="password" autocomplete="off" aria-describedby="g-pw-hilfe"><span class="hilfe" id="g-pw-hilfe">Mindestens 10 Zeichen. Ein kurzer Satz ist leicht zu merken und sicher.</span></div>'+
     '<div class="feld"><label for="g-pw2">Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
     '<button class="btn primary voll" type="submit" id="g-los">Konto erstellen</button></form>'+
     (konten.length?'<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>':''),true);
+  /* Name aus der Teamliste gewählt: Team, Funktion und Responsable vorausfüllen */
+  function tlVorfuellen(){
+    var e=teamlisteEintrag($('g-name').value), h=$('g-tl');
+    if(!e){if(h){h.textContent='Tippe deinen Namen – du stehst wahrscheinlich schon in der Teamliste.';}return;}
+    if(e.team){var r=document.querySelector('input[name="g-team"][value="'+e.team+'"]');if(r){r.checked=true;}}
+    if(e.funktion&&!$('g-funktion').value.trim()){$('g-funktion').value=e.funktion;}
+    var rs=$('g-resp');
+    if(rs&&rs.value===''){var rk=e.responsable&&kontoMitNamen(e.responsable);if(rk){rs.value=rk.id;}else if(e.rolle==='admin'){rs.value='-';}}
+    if(h){h.textContent='In der Teamliste: '+[team(e.team).name,e.funktion,e.rolle==='responsable'?'Responsable':''].filter(Boolean).join(' · ')+'. Bitte prüfen und ein eigenes Passwort wählen.';}
+  }
+  if($('g-tl')){$('g-name').addEventListener('input',tlVorfuellen);$('g-name').addEventListener('change',tlVorfuellen);if(werte.name){tlVorfuellen();}}
   formular('g-form',function(){
     var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value;
     var fu=$('g-funktion').value.trim().replace(/\s+/g,' '), re=gewaehlterResponsable(), w={name:name,team:t,funktion:fu,responsable:re};
@@ -1124,6 +1209,13 @@ return {
   /* für den gemeinsamen Bereich */
   ich:function(){return sitzung?oeffentlich(sitzung):null;},
   konten:function(){return konten.map(oeffentlichesKonto);},
+  /* Teamliste (vorbereitete Konten) */
+  teamliste:function(){return teamliste.map(function(p){return Object.assign({},p);});},
+  teamlisteNeu:function(){return ordnerDa().then(teamlisteLesen);},
+  teamlisteSpeichern:teamlisteSchreiben,
+  teamlisteEintrag:function(n){var e=teamlisteEintrag(n);return e?Object.assign({},e):null;},
+  teamlisteParsen:teamlisteParsen,
+  namensSchluessel:namensSchluessel,
   kontenNeu:function(){return ordnerDa().then(ladeKonten).then(function(l){return l.map(oeffentlichesKonto);});},
   privat:privat,
   privatDa:function(){return !!(sitzung&&tresor.priv&&tresor.id===sitzung.id);},

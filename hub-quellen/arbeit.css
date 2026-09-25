@@ -405,3 +405,25 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-blaetter-alle{display:inline-block;margin:0 0 8px;font-size:13px;}
 .ar-tb{color:var(--accent);font-weight:600;text-decoration:underline;text-decoration-color:var(--accent-line);text-underline-offset:2px;}
 .ar-tb:hover{text-decoration-color:var(--accent);}
+
+/* ---------- Teamliste (Verwaltung) ---------- */
+.ar-tl .ar-kartenkopf{align-items:center;flex-wrap:wrap;gap:10px;}
+.ar-tl-stand{display:flex;flex-wrap:wrap;gap:6px 22px;margin:4px 0 12px;font-size:13.5px;color:var(--muted);}
+.ar-tl-stand b{font-family:var(--font-display,inherit);font-size:18px;color:var(--ink);margin-right:3px;font-variant-numeric:tabular-nums;}
+.ar-tl .catbar{margin-bottom:10px;}
+.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1.3fr) minmax(0,1.5fr) minmax(0,.8fr) minmax(0,1fr) 40px;}
+.ar-tl-st{display:inline-block;font-size:12px;font-weight:650;border-radius:999px;padding:2px 9px;white-space:nowrap;}
+.ar-tl-st.aktiv{background:#E6F4EC;color:#1E6B45;}
+.ar-tl-st.wartet{background:#FBF3E1;color:#6B4A0C;}
+.ar-tl-st.fehlt{background:var(--bg);color:var(--muted);}
+.ar-tl-ok,.ar-tl-fehlt{display:flex!important;align-items:center;gap:5px;margin-top:2px;font-weight:600;}
+.ar-tl-ok{color:#1E6B45!important;}
+.ar-tl-fehlt{color:#8A3A24!important;}
+.ar-tl-ok .ic,.ar-tl-fehlt .ic{width:13px;height:13px;}
+.ar-tl-rolle{display:block;font-size:12px;margin-top:4px;}
+.ar-tl-vorschau{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:10px;}
+.ar-tl-vorschau table{border-collapse:collapse;width:100%;font-size:13.5px;}
+.ar-tl-vorschau th{position:sticky;top:0;background:var(--bg);text-align:left;padding:7px 10px;font-weight:650;}
+.ar-tl-vorschau td{padding:6px 10px;border-top:1px solid var(--line);}
+.ar-tl-vorschau td.fehlt{color:#8A3A24;font-weight:600;}
+@media (max-width:760px){.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}.ar-tl-tab .ar-zeile>span:nth-child(2),.ar-tl-tab .ar-zeile>span:nth-child(3){grid-column:1/-1;}}

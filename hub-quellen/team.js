@@ -181,7 +181,10 @@ function freischalten(id){
     });
   }).then(function(){
     var k=K.konten().filter(function(x){return x.id===id;})[0];
-    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:'mitarbeiter',seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id));
+    /* Teamliste: „Responsable“ übernimmt der Hub nur, wenn die Verwaltung freischaltet – „Verwaltung“ nie automatisch */
+    var tl=k&&K.teamlisteEintrag?K.teamlisteEintrag(k.name):null;
+    var r=(tl&&tl.rolle==='responsable'&&istAdmin())?'responsable':'mitarbeiter';
+    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:r,seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id)+(r==='responsable'?' (Responsable laut Teamliste)':''));
   });
 }
 /* Zugang entziehen (nur Verwaltung). Hinweis: Wer den Schlüssel schon hatte,

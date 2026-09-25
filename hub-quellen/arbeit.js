@@ -1364,20 +1364,120 @@ function seiteVerwaltung(){
     verwaltungZeichnen();
   }).catch(function(e){$('ar-verw').innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});});
 }
+/* ---------- Teamliste: alle Mitarbeitenden vorbereiten (Verwaltung) ---------- */
+var tlFilter='';
+function T_NAME(id){return team(id).name;}
+function tlVon(name){return K.teamlisteEintrag?K.teamlisteEintrag(name):null;}
+function tlKonto(p,m){var s=K.namensSchluessel(p.name);return m.filter(function(k){return K.namensSchluessel(k.name)===s;})[0]||null;}
+var TL_STAND={aktiv:'Konto aktiv',wartet:'wartet auf Freischaltung',fehlt:'noch kein Konto'};
+function teamlisteKarte(admin,ROLLEN){
+  if(!K.teamliste){return '';}
+  var tl=K.teamliste(), m=T.mitglieder();
+  var z=tl.map(function(p,i){var k=tlKonto(p,m);return {p:p,i:i,k:k,st:!k?'fehlt':(k.freigeschaltet?'aktiv':'wartet')};});
+  var n={aktiv:0,wartet:0,fehlt:0};z.forEach(function(x){n[x.st]++;});
+  var ohne=m.filter(function(k){return !tlVon(k.name);});
+  var teams=TEAMS.filter(function(t){return tl.some(function(p){return p.team===t.id;});});
+  var sicht=z.filter(function(x){return !tlFilter||(tlFilter==='_'?!x.p.team:x.p.team===tlFilter);});
+  var reihe=TEAMS.map(function(t){return t.id;});function rang(p){var i=reihe.indexOf(p.team);return i<0?999:i;}
+  sicht.sort(function(a,b){return (rang(a.p)-rang(b.p))||a.p.name.localeCompare(b.p.name,'de');});
+  var h='<div class="ar-kartenkopf"><h2>Teamliste'+(tl.length?' <span class="ar-zahl">'+tl.length+'</span>':'')+'</h2>'+
+    (admin?'<div class="ar-knopfreihe"><button class="btn" type="button" data-ar="tl-einfuegen">'+svg('hoch')+'Liste einfügen</button><button class="btn" type="button" data-ar="tl-neu">'+svg('plus')+'Person</button>'+(tl.length?'<button class="btn" type="button" data-ar="tl-export">'+svg('runter')+'Als Tabelle</button>':'')+'</div>':'')+'</div>'+
+    '<p class="ar-klein">Alle Mitarbeitenden mit Team, Funktion und Rolle. Wer ein Konto erstellt, wählt seinen Namen aus dieser Liste – Team und Funktion sind dann schon eingetragen, das Passwort wählt jede Person selbst. '+
+      'Beim Freischalten durch die Verwaltung übernimmt der Hub die Rolle „Responsable“ aus der Liste; die Rolle „Verwaltung“ vergibt er nie von selbst.</p>';
+  if(!tl.length){
+    return karte(h+'<p class="ar-leise">Noch leer. '+(admin?'Mit „Liste einfügen“ lässt sich die Teamliste aus Excel oder einer Textliste übernehmen – eine Person pro Zeile.':'Die Verwaltung pflegt die Liste.')+'</p>','ar-tl');
+  }
+  h+='<div class="ar-tl-stand"><span><b>'+n.aktiv+'</b> '+(n.aktiv===1?'Konto':'Konten')+' aktiv</span><span><b>'+n.wartet+'</b> '+(n.wartet===1?'wartet':'warten')+' auf Freischaltung</span><span><b>'+n.fehlt+'</b> noch ohne Konto</span></div>'+
+    '<div class="catbar" role="group" aria-label="Team"><button class="catchip'+(!tlFilter?' on':'')+'" type="button" data-ar="tl-filter" data-team="" aria-pressed="'+!tlFilter+'">Alle</button>'+
+    teams.map(function(t){var c=tl.filter(function(p){return p.team===t.id;}).length;return '<button class="catchip'+(tlFilter===t.id?' on':'')+'" type="button" data-ar="tl-filter" data-team="'+esc(t.id)+'" aria-pressed="'+(tlFilter===t.id)+'">'+esc(t.name)+'<span class="n">'+c+'</span></button>';}).join('')+
+    (tl.some(function(p){return !p.team;})?'<button class="catchip'+(tlFilter==='_'?' on':'')+'" type="button" data-ar="tl-filter" data-team="_" aria-pressed="'+(tlFilter==='_')+'">ohne Team</button>':'')+'</div>'+
+    '<div class="ar-tabelle ar-tl-tab"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Rolle</span><span>Konto</span><span></span></div>'+
+    sicht.map(function(x){
+      return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(team(x.p.team).farbe||'#8C96A8')+'">'+esc(ini(x.p.name))+'</span><b>'+esc(x.p.name)+'</b></span>'+
+        '<span>'+esc([x.p.team?T_NAME(x.p.team):'ohne Team',x.p.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(ROLLEN[x.p.rolle]||'Mitarbeiter/in')+'</span>'+
+        '<span><span class="ar-tl-st '+x.st+'">'+TL_STAND[x.st]+'</span></span>'+
+        '<span>'+(admin?'<button class="ar-link" type="button" data-ar="tl-bearbeiten" data-i="'+x.i+'" aria-label="'+esc(x.p.name)+' bearbeiten">'+svg('edit')+'</button>':'')+'</span></div>';
+    }).join('')+'</div>'+
+    (ohne.length?'<p class="ar-klein">Konten, die nicht in der Teamliste stehen: '+ohne.map(function(k){return esc(k.name);}).join(', ')+'.</p>':'');
+  return karte(h,'ar-tl');
+}
+function tlPersonDialog(i){
+  var tl=K.teamliste(), p=i!=null?tl[i]:{name:'',team:'',funktion:'',rolle:'mitarbeiter',responsable:''};
+  var inh='<datalist id="ar-tl-namen">'+tl.filter(function(x){return x.rolle!=='mitarbeiter';}).map(function(x){return '<option value="'+esc(x.name)+'">';}).join('')+'</datalist>'+
+    '<div class="ar-raster2">'+feld('name','Vor- und Nachname',p.name,'text',' required autofocus')+auswahl('team','Team',p.team,teamOptionen(),'– ohne Team –')+
+    feld('funktion','Funktion',p.funktion)+auswahl('rolle','Rolle im Hub',p.rolle,[['mitarbeiter','Mitarbeiter/in'],['responsable','Responsable'],['admin','Verwaltung']])+
+    feld('responsable','Responsable dieser Person (Name)',p.responsable,'text',' list="ar-tl-namen" autocomplete="off"')+'</div>'+
+    '<p class="ar-klein">„Verwaltung“ ist hier nur ein Vermerk: Diese Rolle vergibt die Verwaltung nach der Freischaltung selbst.</p>';
+  var kn=[{text:'Abbrechen',wert:''}];if(i!=null){kn.push({text:'Entfernen',wert:'weg',gefahr:true});}kn.push({text:'Speichern',wert:'ok',primaer:true});
+  dialog(i!=null?'Person bearbeiten':'Person hinzufügen',inh,kn,{breit:true,
+    pruefen:function(w){
+      if(w.aktion!=='ok'){return '';}
+      var n=(w.werte.name||'').trim().replace(/\s+/g,' ');if(n.length<3){return 'Bitte den Vor- und Nachnamen eintragen.';}
+      var s=K.namensSchluessel(n);if(tl.some(function(x,j){return j!==i&&K.namensSchluessel(x.name)===s;})){return n+' steht schon in der Liste.';}
+      return '';
+    },
+    ausfuehren:function(w){
+      var l=K.teamliste();
+      if(w.aktion==='weg'){l.splice(i,1);return K.teamlisteSpeichern(l).then(function(){return 'Entfernt';});}
+      var v=w.werte, neu={name:v.name.trim().replace(/\s+/g,' '),team:v.team,funktion:(v.funktion||'').trim(),rolle:v.rolle,responsable:(v.responsable||'').trim()};
+      if(i!=null){l[i]=neu;}else{l.push(neu);}
+      return K.teamlisteSpeichern(l).then(function(){return 'Gespeichert';});
+    }
+  }).then(function(r){if(r.ergebnis){toast(r.ergebnis);verwaltungZeichnen();}});
+}
+function tlEinfuegenDialog(text){
+  var inh='<p class="ar-klein">Eine Person pro Zeile: <b>Name; Team; Funktion; Rolle</b> – so, wie es aus Excel kommt (Spalten mit Tabulator) oder mit Semikolon getrennt. Team zum Beispiel „ISA“, „Diagnostique“, „Annexe“, „CLAPA“ oder „CST“; Rolle „Responsable“ oder leer. Personen, die schon in der Liste stehen, werden aktualisiert.</p>'+
+    textfeld('text','Liste',text||'',12)+'<p class="ar-klein">Beispiel: <code>Lea Beispiel; ISA; Éducatrice graduée; Responsable</code></p>';
+  dialog('Teamliste einfügen',inh,[{text:'Abbrechen',wert:''},{text:'Prüfen',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){if(w.aktion==='ok'&&!(w.werte.text||'').trim()){return 'Bitte die Liste einfügen.';}return '';}
+  }).then(function(r){
+    if(r.aktion!=='ok'){return;}
+    var erg=K.teamlisteParsen(r.werte.text), alt=K.teamliste();
+    var neu=0, akt=0;erg.personen.forEach(function(p){if(alt.some(function(x){return K.namensSchluessel(x.name)===K.namensSchluessel(p.name);})){akt++;}else{neu++;}});
+    var ROL={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:''};
+    var inh2='<p><b>'+erg.personen.length+'</b> Personen erkannt: '+neu+' neu, '+akt+' aktualisiert.</p>'+
+      (erg.probleme.length?'<div class="callout"><div><b>Bitte prüfen</b><ul>'+erg.probleme.map(function(x){return '<li>Zeile '+x.zeile+': '+esc(x.text)+'</li>';}).join('')+'</ul></div></div>':'')+
+      '<div class="ar-tl-vorschau"><table><thead><tr><th>Name</th><th>Team</th><th>Funktion</th><th>Rolle</th></tr></thead><tbody>'+erg.personen.map(function(p){
+        return '<tr><td>'+esc(p.name)+'</td><td'+(p.team?'':' class="fehlt"')+'>'+esc(p.team?T_NAME(p.team):'– fehlt –')+'</td><td>'+esc(p.funktion)+'</td><td>'+esc(ROL[p.rolle])+'</td></tr>';
+      }).join('')+'</tbody></table></div>';
+    dialog('Teamliste übernehmen?',inh2,[{text:'Zurück',wert:'zurueck'},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
+      ausfuehren:function(w){
+        if(w.aktion!=='ok'){return null;}
+        var l=K.teamliste();
+        erg.personen.forEach(function(p){var s=K.namensSchluessel(p.name), j=-1;l.forEach(function(x,k){if(K.namensSchluessel(x.name)===s){j=k;}});if(j>=0){l[j]=Object.assign({},l[j],p,{team:p.team||l[j].team,funktion:p.funktion||l[j].funktion});}else{l.push(p);}});
+        return K.teamlisteSpeichern(l).then(function(){return erg.personen.length;});
+      }
+    }).then(function(r2){
+      if(r2.aktion==='zurueck'){tlEinfuegenDialog(r.werte.text);return;}
+      if(r2.ergebnis){toast('Teamliste gespeichert ('+r2.ergebnis+' Personen)');verwaltungZeichnen();}
+    });
+  });
+}
+function tlExport(){
+  var ROL={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'}, m=T.mitglieder();
+  var zeilen=[['Name','Team','Funktion','Rolle','Responsable','Konto']].concat(K.teamliste().map(function(p){var k=tlKonto(p,m);return [p.name,p.team?T_NAME(p.team):'',p.funktion,ROL[p.rolle],p.responsable,!k?TL_STAND.fehlt:(k.freigeschaltet?TL_STAND.aktiv:TL_STAND.wartet)];}));
+  var csv='\ufeff'+zeilen.map(function(z){return z.map(function(c){c=String(c==null?'':c);return /[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(';');}).join('\r\n');
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='CDSE-Teamliste.csv';document.body.appendChild(a);a.click();
+  setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);toast('Teamliste als Tabelle gespeichert (CSV)');
+}
 function verwaltungZeichnen(){
   var el=$('ar-verw');if(!el){return;}
   var admin=T.istAdmin(), w=T.wartende(), m=T.mitglieder();
   var ROLLEN={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
   var h=karte('<h2>Warten auf Freischaltung'+(w.length?' <span class="ar-zahl">'+w.length+'</span>':'')+'</h2>'+
     (w.length?'<p class="ar-klein">Vergleiche den <b>Kontrollcode</b> mit dem Code, den die Person auf ihrem Bildschirm sieht (Schüler → „Noch nicht freigeschaltet“) – zum Beispiel am Telefon. Stimmt er, gehört das Konto wirklich ihr.</p>'+
-      '<div class="ar-wartende">'+w.map(function(k){return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</small></span><code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
+      '<div class="ar-wartende">'+w.map(function(k){var tl=tlVon(k.name);return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</small>'+
+        (K.teamliste&&K.teamliste().length?(tl?'<small class="ar-tl-ok">'+svg('check')+'In der Teamliste'+(tl.rolle==='responsable'?' · Responsable'+(admin?' (wird übernommen)':''):'')+(tl.team&&tl.team!==k.team?' · Team laut Liste: '+esc(T_NAME(tl.team)):'')+'</small>':'<small class="ar-tl-fehlt">'+svg('warn')+'Nicht in der Teamliste – Identität besonders sorgfältig prüfen</small>'):'')+'</span>'+
+        '<code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
       :'<p class="ar-leise">Niemand wartet.</p>'));
   h+=karte('<h2>Mitglieder</h2><div class="ar-tabelle ar-mitglieder"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Responsable</span><span>Rolle</span><span></span></div>'+
     m.filter(function(k){return k.freigeschaltet;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){
       return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><b>'+esc(k.name)+'</b></span><span>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(k.responsable?kname(k.responsable):'—')+'</span>'+
-        '<span>'+(admin?'<select data-rolle="'+esc(k.id)+'" aria-label="Rolle von '+esc(k.name)+'">'+Object.keys(ROLLEN).map(function(r){return '<option value="'+r+'"'+(k.rolle===r?' selected':'')+'>'+ROLLEN[r]+'</option>';}).join('')+'</select>':esc(ROLLEN[k.rolle]||k.rolle))+'</span>'+
+        '<span>'+(admin?'<select data-rolle="'+esc(k.id)+'" aria-label="Rolle von '+esc(k.name)+'">'+Object.keys(ROLLEN).map(function(r){return '<option value="'+r+'"'+(k.rolle===r?' selected':'')+'>'+ROLLEN[r]+'</option>';}).join('')+'</select>':esc(ROLLEN[k.rolle]||k.rolle))+
+          (function(){var tl=tlVon(k.name);return admin&&tl&&tl.rolle!==k.rolle?'<button class="ar-link ar-tl-rolle" type="button" data-ar="tl-rolle" data-id="'+esc(k.id)+'" data-rolle="'+esc(tl.rolle)+'">Teamliste: '+esc(ROLLEN[tl.rolle])+' übernehmen</button>':'';})()+'</span>'+
         '<span>'+(admin&&k.id!==K.ich().id?'<button class="ar-link gefahr" type="button" data-ar="entziehen" data-id="'+esc(k.id)+'">Zugang entziehen</button>':'')+'</span></div>';
     }).join('')+'</div>'+(admin?'<p class="ar-klein"><b>Responsables</b> können Konten freischalten und alle Dossiers bearbeiten. Die <b>Verwaltung</b> vergibt zusätzlich Rollen und kann Dossiers löschen.</p>':''));
+  h+=teamlisteKarte(admin,ROLLEN);
   var log=T.bereichsVerlauf().slice(0,60);
   h+=karte('<h2>Protokoll des Schülerbereichs</h2><ol class="ar-protokoll">'+log.map(function(v){return '<li><span class="ar-leise">'+esc(datumZeit(v.z))+'</span><b>'+esc(kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol>');
   el.innerHTML=h;
@@ -1411,6 +1511,12 @@ document.addEventListener('click',function(ev){
     case 'fiche-hochladen-dossier':ficheHochladen(d);break;
     case 'fiche-download':ficheHerunterladen(d,t);break;
     case 'fiche-teil':ficheTeilDialog(d,t.getAttribute('data-teil'));break;
+    case 'tl-neu':tlPersonDialog(null);break;
+    case 'tl-bearbeiten':tlPersonDialog(+t.getAttribute('data-i'));break;
+    case 'tl-einfuegen':tlEinfuegenDialog('');break;
+    case 'tl-export':tlExport();break;
+    case 'tl-filter':tlFilter=t.getAttribute('data-team')||'';verwaltungZeichnen();var fb=document.querySelector('[data-ar="tl-filter"][data-team="'+tlFilter+'"]');if(fb){fb.focus();}break;
+    case 'tl-rolle':t.disabled=true;T.rolleSetzen(t.getAttribute('data-id'),t.getAttribute('data-rolle')).then(function(){toast('Rolle laut Teamliste übernommen');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
     case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){aktDossier=neu;dossierZeichnen(neu);}});}break;
     case 'db-zeigen':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.zeigen(d.id);}break;
     case 'weitergeben':weitergebenDialog(d);break;
