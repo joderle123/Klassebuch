@@ -214,6 +214,11 @@ function laufbahnVon(f){return (Array.isArray(f.progression)?f.progression:[]).m
 var DEPISTAGE=[['cl','CL'],['cdm','CDM'],['cdv','CDV'],['autres','andere']];
 function depistageVon(f){var dp=f.depistage||{};return DEPISTAGE.filter(function(z){var v=dp[z[0]];return txt(v)!==''&&jaNein(v)!=='nein';}).map(function(z){return z[1];});}
 function clotureVon(f){var c=(f.cdse||{}).cloture;return (c&&typeof c==='object')?(iso(c.von)||iso(c.bis)):'';}
+/* Screening (Beobachtungsbogen): gespeicherte Kurzfassung des letzten Bogens */
+var SC_ART={sofort:'Heute handeln',planen:'Unterstützung planen',foerdern:'Gezielt fördern',beobachten:'Im Blick behalten',unauffaellig:'Unauffällig'};
+function scListe(d){return (Array.isArray(d.screenings)?d.screenings:[]).filter(function(s){return s&&iso(s.datum);}).slice().sort(function(a,b){return iso(b.datum).localeCompare(iso(a.datum))||String(b.z||'').localeCompare(String(a.z||''));});}
+function scKurz(s){if(s.kurz&&s.kurz.bereiche){return s.kurz;}try{return window.CDSE_SCREENING?window.CDSE_SCREENING.kurz(s):null;}catch(e){return null;}}
+function scBereichName(id){var b=window.CDSE_SCREENING_BOGEN;var x=b&&b.bereiche.filter(function(y){return y.id===id;})[0];return x?x.name:id;}
 
 /* =====================================================================
    FELDER: alle Variablen – {key, label, gruppe, typ, optionen?, info?, wert(d)}
@@ -290,6 +295,10 @@ var FELDER=[
   F('eldibZiele','ELDiB: Förderziele','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ziele:null;}),
   F('eldibUeber','ELDiB: überfällige Items','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ueber:null;}),
   F('eintraege','Anzahl Einträge','Entwicklung und Dossier','zahl',function(d){return (d.eintraege||[]).length;}),
+  F('screeningDatum','Letztes Screening','Entwicklung und Dossier','datum',function(d){var l=scListe(d);return l.length?iso(l[0].datum):'';}),
+  F('screeningStand','Screening: Einschätzung','Entwicklung und Dossier','auswahl',function(d){var l=scListe(d), k=l.length?scKurz(l[0]):null;return k?(SC_ART[k.gesamt]||''):'';},{optionen:['Heute handeln','Unterstützung planen','Gezielt fördern','Im Blick behalten','Unauffällig'],info:'Gesamteinschätzung des letzten Screenings (keine Diagnose)'}),
+  F('screeningDeutlich','Screening: deutliche Bereiche','Entwicklung und Dossier','liste',function(d){var l=scListe(d), k=l.length?scKurz(l[0]):null;if(!k){return [];}return Object.keys(k.bereiche||{}).filter(function(id){return k.bereiche[id]&&k.bereiche[id].stufe==='rot';}).map(scBereichName);}),
+  F('screeningWarn','Screening: Warnsignal (3 Monate)','Entwicklung und Dossier','ja-nein',function(d){var l=scListe(d);if(!l.length){return '';}var g=new Date(Date.now()-90*864e5).toISOString().slice(0,10);return l.some(function(s){var k=scKurz(s);return iso(s.datum)>=g&&k&&(k.warn||[]).length;})?'ja':'nein';},{optionen:['ja','nein']}),
   F('letzterEintrag','Letzter Eintrag','Entwicklung und Dossier','datum',function(d){return (d.eintraege||[]).map(function(e){return iso(e&&e.datum);}).filter(Boolean).sort().pop()||'';})
 ];
 /* Woher kommt der Wert? fiche = Fiche de renseignement (Reiter „Fiche“ im Dossier),

@@ -108,6 +108,7 @@ function stufeName(id){var s=(B().stufen||[]).filter(function(x){return x.id===i
 function tab(d,r){
   if(!bausteine()||!B()){return '<p>Das Screening fehlt in dieser Hub-Datei.</p>';}
   var zu=z(d.id);
+  if(zu.neuGewuenscht){zu.neuGewuenscht=false;if(r.bearbeiten){zu.entwurf=zu.entwurf||entwurfLaden(d.id)||neuerEntwurf(d);zu.modus='neu';}}
   if(zu.modus==='neu'&&r.bearbeiten){return formular(d);}
   if(zu.modus==='detail'){var s=screenings(d).filter(function(x){return x.id===zu.id;})[0];if(s){return detail(d,s,r);}zu.modus='liste';}
   return liste(d,r);
@@ -344,6 +345,99 @@ function letztes(d){var l=screenings(d);return l.length?{s:l[0],e:auswerten(l[0]
 /* Dossier neu geöffnet: mit der Übersicht beginnen – ein angefangener Bogen bleibt offen */
 function geoeffnet(id){var zu=z(id);if(zu.modus==='detail'){zu.modus='liste';zu.id=null;}}
 
-return {tab:tab, geoeffnet:geoeffnet, auswerten:auswerten, kurz:kurz, letztes:letztes, items:items, stufeAusKlasse:stufeAusKlasse,
+/* =====================================================================
+   Übersicht aller Schüler (#/screening)
+   ===================================================================== */
+var ub={filter:'alle',q:'',el:null,liste:[]};
+var ART_TEXT={sofort:'Heute handeln',planen:'Unterstützung planen',foerdern:'Gezielt fördern',beobachten:'Im Blick behalten',unauffaellig:'Unauffällig'};
+function warnNeu(d){var g=new Date(Date.now()-90*864e5).toISOString().slice(0,10);return screenings(d).some(function(s){return String(s.datum)>=g&&auswerten(s).warn.length;});}
+function uebersicht(el,liste){
+  if(!bausteine()||!B()){el.innerHTML='<p>Das Screening fehlt in dieser Hub-Datei.</p>';return;}
+  ub.el=el;ub.liste=(liste||[]).filter(function(d){return d.status!=='inaktiv';});
+  if(!el.__sc){el.__sc=true;
+    el.addEventListener('click',function(ev){
+      var t=ev.target.closest('[data-scu]');if(!t){return;}
+      var a=t.getAttribute('data-scu'), id=t.getAttribute('data-id');
+      if(a==='filter'){ub.filter=t.getAttribute('data-wert');ubZeichnen();var f=ub.el.querySelector('[data-scu="filter"][data-wert="'+ub.filter+'"]');if(f){f.focus();}return;}
+      if(a==='oeffnen'){H.dossierOeffnen(id,'screening');return;}
+      if(a==='neu'){z(id).neuGewuenscht=true;H.dossierOeffnen(id,'screening');return;}
+    });
+    el.addEventListener('input',function(ev){if(ev.target.id==='sc-ub-q'){ub.q=ev.target.value;var f=ub.el.querySelector('#sc-ub-tabelle');if(f){f.outerHTML=ubTabelle();}}});
+  }
+  ubZeichnen();
+}
+function ubDaten(){
+  return ub.liste.map(function(d){var l=screenings(d), e=l.length?auswerten(l[0]):null;return {d:d,s:l[0]||null,e:e,warn:warnNeu(d),r:T.rechte(d)};});
+}
+function ubZeichnen(){
+  var x=ubDaten(), n={alle:x.length,warn:0,bedarf:0,ohne:0,meine:0}, me=K.ich();
+  x.forEach(function(y){if(y.warn){n.warn++;}if(y.e&&(y.e.gesamt.art==='planen'||y.e.gesamt.art==='foerdern')){n.bedarf++;}if(!y.s){n.ohne++;}if(meine(y.d,me)){n.meine++;}});
+  var h='<div class="sc-ub-zahlen">'+[['warn','Warnsignale (3 Monate)','rot'],['bedarf','Handlungsbedarf','gelb'],['ohne','ohne Screening',''],['alle','aktive Schüler','']].map(function(k){
+      return '<div class="sc-ub-zahl '+k[2]+'"><b>'+n[k[0]]+'</b><span>'+k[1]+'</span></div>';}).join('')+'</div>'+
+    '<div class="toolbar ar-toolbar"><div class="catbar" role="group" aria-label="Auswahl">'+[['alle','Alle'],['warn','Warnsignale'],['bedarf','Handlungsbedarf'],['ohne','Ohne Screening'],['meine','Nur meine']].map(function(f){
+      return '<button class="catchip'+(ub.filter===f[0]?' on':'')+'" type="button" data-scu="filter" data-wert="'+f[0]+'" aria-pressed="'+(ub.filter===f[0])+'">'+f[1]+'<span class="n">'+n[f[0]]+'</span></button>';}).join('')+'</div>'+
+    '<label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="sc-ub-q" type="search" placeholder="Name, Klasse …" autocomplete="off" aria-label="Schüler suchen" value="'+esc(ub.q)+'"></label></div>'+
+    ubTabelle()+
+    '<p class="sc-klein">Aktive Schülerinnen und Schüler. Ein Screening dauert etwa zehn Minuten; am aussagekräftigsten ist es, wenn zwei Personen unabhängig voneinander einschätzen. Einschätzungen älter als sechs Monate sind grau markiert.</p>';
+  ub.el.innerHTML=h;
+}
+function meine(d,me){return !!me&&((d.verantwortlich||[]).indexOf(me.id)>=0||!!(d.rechte&&d.rechte[me.id]));}
+function ubTabelle(){
+  var me=K.ich(), q=ub.q.trim().toLowerCase(), alt=new Date(Date.now()-182*864e5).toISOString().slice(0,10);
+  var x=ubDaten().filter(function(y){
+    if(ub.filter==='warn'&&!y.warn){return false;}
+    if(ub.filter==='bedarf'&&!(y.e&&(y.e.gesamt.art==='planen'||y.e.gesamt.art==='foerdern'))){return false;}
+    if(ub.filter==='ohne'&&y.s){return false;}
+    if(ub.filter==='meine'&&!meine(y.d,me)){return false;}
+    if(q){var p=y.d.person||{};if([p.nachname,p.vorname,p.klasse,p.schule].join(' ').toLowerCase().indexOf(q)<0){return false;}}
+    return true;
+  });
+  var rang={sofort:0,planen:1,foerdern:2,beobachten:3,unauffaellig:4};
+  x.sort(function(a,b){return ((b.warn?1:0)-(a.warn?1:0))||((a.e?rang[a.e.gesamt.art]:5)-(b.e?rang[b.e.gesamt.art]:5))||H.schuelerName(a.d.person).localeCompare(H.schuelerName(b.d.person),'de');});
+  if(!x.length){return '<div id="sc-ub-tabelle" class="ar-karte ar-leer"><p>Keine Schülerinnen und Schüler für diese Auswahl.</p></div>';}
+  return '<div id="sc-ub-tabelle" class="ar-tabelle sc-ub-tab" role="table" aria-label="Screening je Schüler"><div class="ar-zeile kopf" role="row"><span role="columnheader">Name</span><span role="columnheader">Letztes Screening</span><span role="columnheader">Einschätzung</span><span role="columnheader">Deutlich</span><span role="columnheader"></span></div>'+
+    x.map(function(y){
+      var p=y.d.person||{}, rot=y.e?y.e.bereiche.filter(function(b){return b.stufe==='rot';}):[];
+      return '<div class="ar-zeile'+(y.s&&String(y.s.datum)<alt?' sc-alt':'')+'" role="row"><span role="cell" class="ar-name"><button type="button" class="sc-ub-name" data-scu="oeffnen" data-id="'+esc(y.d.id)+'"><b>'+esc(H.schuelerName(p))+'</b><small>'+esc([p.klasse,H.team(y.d.stelle).name].filter(Boolean).join(' · '))+'</small></button></span>'+
+        '<span role="cell">'+(y.s?esc(datum(y.s.datum))+'<small class="sc-ub-von">'+esc(H.kname(y.s.von))+'</small>':'<span class="ar-leise">noch keins</span>')+'</span>'+
+        '<span role="cell">'+(y.warn?'<span class="sc-chip rot">'+svg('warn')+'Warnsignal</span> ':'')+(y.e?'<span class="sc-art '+ART_KLASSE[y.e.gesamt.art]+'">'+esc(ART_TEXT[y.e.gesamt.art])+'</span>':'')+'</span>'+
+        '<span role="cell" class="sc-ub-bereiche">'+rot.map(function(b){return '<span class="sc-chip rot">'+esc(b.name)+'</span>';}).join('')+'</span>'+
+        '<span role="cell">'+(y.r.bearbeiten?'<button class="btn" type="button" data-scu="neu" data-id="'+esc(y.d.id)+'">'+svg('plus')+'Screening</button>':'')+'</span></div>';
+    }).join('')+'</div>';
+}
+
+/* ---------- Leerer Bogen zum Ausdrucken ---------- */
+function leerDrucken(stufe){
+  var bog=B(), st=(bog.stufen.filter(function(s){return s.id===stufe;})[0]||bog.stufen[1]);
+  var sk=bog.skala.map(function(x){return x.t;}).concat(['k. A.']);
+  function tabelle(titel,hinweis,l){
+    return '<h2>'+esc(titel)+'</h2>'+(hinweis?'<p class="h">'+esc(hinweis)+'</p>':'')+'<table><thead><tr><th></th>'+sk.map(function(t){return '<th class="k">'+esc(t)+'</th>';}).join('')+'</tr></thead><tbody>'+
+      l.map(function(i){return '<tr><td>'+esc(i.text)+'</td>'+sk.map(function(){return '<td class="k"><span class="box"></span></td>';}).join('')+'</tr>';}).join('')+'</tbody></table>';
+  }
+  var h='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>'+esc(bog.titel)+' – '+esc(st.name)+'</title><style>'+
+    'body{font:10.5pt/1.4 "Segoe UI",Arial,sans-serif;color:#0E1628;margin:18mm 16mm;}h1{font-size:17pt;margin:0 0 2pt;}h2{font-size:11.5pt;margin:14pt 0 3pt;break-after:avoid;}'+
+    '.u{color:#586277;margin:0 0 8pt;}.f{display:grid;grid-template-columns:repeat(4,1fr);gap:6pt 14pt;margin:8pt 0 10pt;}.f div{border-bottom:1px solid #8C96A8;padding-top:14pt;font-size:8.5pt;color:#586277;}'+
+    '.a{background:#ECEEFA;border-radius:6pt;padding:6pt 9pt;font-size:9.5pt;}p.h{margin:0 0 4pt;font-size:8.5pt;color:#586277;}table{border-collapse:collapse;width:100%;break-inside:auto;}tr{break-inside:avoid;}'+
+    'td,th{border-top:1px solid #E2E6EC;padding:4pt 4pt;vertical-align:middle;font-size:9.5pt;text-align:left;}th{font-size:8pt;color:#586277;font-weight:600;}.k{width:42pt;text-align:center;}'+
+    '.box{display:inline-block;width:10pt;height:10pt;border:1.2px solid #586277;border-radius:2pt;}.w td:first-child{width:14pt;}.lin{border-bottom:1px solid #8C96A8;height:16pt;}'+
+    '.fuss{margin-top:14pt;font-size:8pt;color:#8C96A8;border-top:1px solid #E2E6EC;padding-top:5pt;}@page{margin:0;}</style></head><body>'+
+    '<h1>'+esc(bog.titel)+'</h1><p class="u">'+esc(st.name)+' ('+esc(st.alter)+') · CDSE · strukturierte Beobachtung, kein Test und keine Diagnose</p>'+
+    '<div class="f"><div>Name des Kindes</div><div>Klasse</div><div>Beobachtet von</div><div>Datum</div></div>'+
+    '<p class="a">Wie oft haben Sie das <b>'+esc(bog.zeitraum)+'</b> beobachtet? Bewerten Sie nur, was Sie selbst gesehen haben – sonst „k. A.“ (kann ich nicht beurteilen).</p>';
+  bog.bereiche.forEach(function(b,i){h+=tabelle((i+1)+'. '+b.name,b.hinweis,items(b,stufe));});
+  h+=tabelle(bog.staerken.name,bog.staerken.hinweis,items(bog.staerken,stufe));
+  h+='<h2>Auswirkungen im Alltag</h2><table>'+bog.auswirkung.map(function(f){return '<tr><td><b>'+esc(f.frage)+'</b><br>'+f.optionen.map(function(o){return '<span class="box"></span> '+esc(o[1]);}).join('&nbsp;&nbsp;&nbsp;')+'</td></tr>';}).join('')+'</table>';
+  h+='<h2>Warnsignale – jedes Kreuz heißt: heute handeln und die Leitung informieren</h2><table class="w">'+warnsignale(stufe).map(function(w){return '<tr><td><span class="box"></span></td><td>'+esc(w.text)+'</td></tr>';}).join('')+'</table>';
+  h+='<h2>Notiz</h2><div class="lin"></div><div class="lin"></div><div class="lin"></div>'+
+    '<p class="fuss">Auswertung im CDSE Hub (Schüler → Dossier → Screening). Eigene Formulierungen des CDSE, keine Aussagen aus geschützten Fragebögen.</p></body></html>';
+  var w=window.open('','_blank');if(!w){H.toast('Das Druckfenster wurde blockiert.');return;}
+  w.document.write(h);w.document.close();w.focus();setTimeout(function(){try{w.print();}catch(e){}},300);
+}
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('[data-scu="leer"]');if(!t||!bausteine()){return;}
+  H.dialog('Leeren Bogen drucken','<p>Für welche Stufe?</p>',B().stufen.map(function(s){return {text:s.name,wert:s.id};}).concat([{text:'Abbrechen',wert:''}]),{}).then(function(r){if(r.aktion){leerDrucken(r.aktion);}});
+});
+
+return {tab:tab, geoeffnet:geoeffnet, uebersicht:uebersicht, leerDrucken:leerDrucken, auswerten:auswerten, kurz:kurz, letztes:letztes, items:items, stufeAusKlasse:stufeAusKlasse,
   /* für Tests */ schwellen:{gelb:GELB,rot:ROT}};
 })();

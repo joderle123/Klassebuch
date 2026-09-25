@@ -131,11 +131,11 @@ ersetze("""var view='home', current=null, frames={}, missing={}, sideOverride=nu
         """var view='home', current=null, frames={}, missing={}, sideOverride=null, tabs={}, arbeitSeite='';""", pflicht=False)
 ersetze("""  var h=location.hash||'#/', m=h.match(/^#\\/app\\/(.+)$/);
   if(m){openApp(decodeURIComponent(m[1]));}""",
-"""  var h=location.hash||'#/', m=h.match(/^#\\/app\\/(.+)$/), ar=h.match(/^#\\/(schueler|einsatz|team|verwaltung|datenbank)(?:\\/([^\\/?#]+))?/);
+"""  var h=location.hash||'#/', m=h.match(/^#\\/app\\/(.+)$/), ar=h.match(/^#\\/(schueler|screening|einsatz|team|verwaltung|datenbank)(?:\\/([^\\/?#]+))?/);
   if(ar&&window.CDSE_ARBEIT){
     current=null;arbeitSeite=ar[1];show('arbeit');
     window.CDSE_ARBEIT.zeigen(ar[1],ar[2]?decodeURIComponent(ar[2]):'');
-    var titel={schueler:'Schüler',einsatz:'Mein Einsatzplan',team:'Mein Team',verwaltung:'Verwaltung',datenbank:'Datenbank'}[ar[1]];
+    var titel={schueler:'Schüler',screening:'Screening',einsatz:'Mein Einsatzplan',team:'Mein Team',verwaltung:'Verwaltung',datenbank:'Datenbank'}[ar[1]];
     document.title=titel+' · '+HUB_TITLE;$('top-title').textContent=titel;
   }
   else if(m){openApp(decodeURIComponent(m[1]));}""", pflicht=False)

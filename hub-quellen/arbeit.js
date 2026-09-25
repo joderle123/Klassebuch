@@ -116,7 +116,7 @@ function navHtml(aktiv){
     return '<a class="lnk'+(aktiv===seite?' active':'')+'" href="#/'+seite+'" data-route="arbeit-'+seite+'" title="'+esc(titel)+'"><span class="lic">'+svg(icon)+'</span><span class="lnk-t">'+esc(titel)+(zahl?'<span class="ar-zahl">'+zahl+'</span>':'')+'</span></a>';
   }
   return '<div class="navlabel">Arbeit</div><div class="navsep"></div>'+
-    lnk('schueler','Schüler','schueler')+lnk('einsatz','Mein Einsatzplan','uhr')+
+    lnk('schueler','Schüler','schueler')+((z.art==='bereit'&&window.CDSE_SCREENING)?lnk('screening','Screening','test'):'')+lnk('einsatz','Mein Einsatzplan','uhr')+
     (zeigtTeam()?lnk('team','Mein Team','team'):'')+
     ((z.art==='bereit'&&T.istResponsable()&&window.CDSE_DATENBANK)?lnk('datenbank','Datenbank','daten'):'')+
     ((z.art==='bereit'&&T.darfFreischalten())?lnk('verwaltung','Verwaltung','schild',w):'');
@@ -1559,6 +1559,18 @@ document.addEventListener('click',function(ev){
 /* Ungespeicherten Einsatzplan nicht verlieren */
 window.addEventListener('beforeunload',function(ev){if(planDirty&&akt.seite==='einsatz'){ev.preventDefault();ev.returnValue='';}});
 
+/* ---------- Screening: Übersicht aller Schüler (Modul CDSE_SCREENING) ---------- */
+function seiteScreening(neu){
+  setzen(kopf('Arbeit','Screening','Strukturierte Beobachtung – keine Diagnose: Wo braucht ein Kind Unterstützung, wo liegen seine Stärken, was ist der nächste Schritt? Hier stehen alle Schülerinnen und Schüler mit ihrem letzten Screening.',
+    '<button class="btn" type="button" data-scu="leer">'+svg('print')+'Leeren Bogen drucken</button>')+'<div id="ar-sc">'+laedt('Lade die Dossiers …')+'</div>');
+  bereichLaden(neu).then(function(z){
+    if(z.art!=='bereit'){$('ar-sc').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
+    if(!window.CDSE_SCREENING){$('ar-sc').innerHTML=karte('<h2>Screening fehlt</h2>'+hinweis('Das Modul ist in dieser Hub-Datei nicht enthalten.'),'ar-leer');return;}
+    return T.alleDossiers(neu).then(function(l){letzteListe=l;window.CDSE_SCREENING.uebersicht($('ar-sc'),l);});
+  }).catch(function(e){var el=$('ar-sc');if(el){el.innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});}});
+}
+var naechsterTab=null;   /* Reiter, der beim Öffnen eines anderen Dossiers gezeigt werden soll */
+
 /* ---------- Einstieg ---------- */
 function zeigen(seite,param,neu){
   if(akt.seite==='einsatz'&&seite!=='einsatz'&&planDirty){
@@ -1566,7 +1578,8 @@ function zeigen(seite,param,neu){
     planDirty=false;
   }
   akt={seite:seite,param:param||''};
-  if(seite==='schueler'&&param){if(!aktDossier||aktDossier.id!==param){dossierTab='ueberblick';}seiteDossier(param,neu);}
+  if(seite==='schueler'&&param){if(!aktDossier||aktDossier.id!==param){dossierTab=naechsterTab||'ueberblick';}naechsterTab=null;seiteDossier(param,neu);}
+  else if(seite==='screening'){seiteScreening(neu);}
   else if(seite==='schueler'){seiteSchueler(neu);}
   else if(seite==='einsatz'){seiteEinsatz();}
   else if(seite==='team'){seiteTeam(neu);}
@@ -1868,6 +1881,6 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
   hilfen:{esc:esc, svg:svg, pad:pad, heuteIso:heuteIso, datum:datum, datumZeit:datumZeit, alter:alter, team:team, ava:ava, kname:kname,
     schuelerName:schuelerName, schuelerNameKurz:schuelerNameKurz, kopf:kopf, karte:karte, hinweis:hinweis, laedt:laedt, fehlerText:fehlerText,
     toast:toast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,
-    eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);},
+    eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;naechsterTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);},
     aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){aktDossier=d;dossierZeichnen(d);}}};
 })();
