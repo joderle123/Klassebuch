@@ -391,7 +391,8 @@ function kurzKarte(d,r){
     '<div class="bp-fortschritt"><span class="bp-balken" aria-hidden="true"><span style="width:'+(P.gesamt?Math.round(P.fertig/P.gesamt*100):0)+'%"></span></span><span class="bp-zahlen"><b>'+P.fertig+' von '+P.gesamt+'</b> erledigt'+
       (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
     (n?'<p class="bp-kurz-naechst"><span class="ar-leise">Als Nächstes:</span> <b>'+esc(n.titel)+'</b></p>':'<p class="ar-leise">Im Moment ist nichts offen.</p>')+
-    (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p class="bp-kurz-tk">'+esc(window.CDSE_TAGESKARTE.kurz(d))+'</p>':'')+'</div>';
+    (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p class="bp-kurz-tk">'+esc(window.CDSE_TAGESKARTE.kurz(d))+'</p>':'')+
+    (window.CDSE_VERLAUF&&window.CDSE_VERLAUF.kurz(d)?'<p class="bp-kurz-verlauf">'+esc(window.CDSE_VERLAUF.kurz(d))+' · <button class="ar-link" type="button" data-tab="profil">Verlauf ansehen</button></p>':'')+'</div>';
 }
 
 /* ---------- Für die Startseite: was bei diesem Kind bis zum Stichtag ansteht ----------

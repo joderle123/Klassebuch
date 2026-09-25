@@ -420,12 +420,12 @@ function profilQuelle(d){
 /* ---------- Profil & Verlauf ---------- */
 var BEREICH_NAMEN={schule:'Schulalltag',beobachtung:'Beobachtung',kind:'Sicht des Kindes',eltern:'Sicht der Eltern'};
 function tabProfil(d,r){
-  var h='';
+  var h=window.CDSE_VERLAUF?window.CDSE_VERLAUF.karte(d):'';
   h+='<div class="ar-knopfreihe">'+(r.bearbeiten?'<button class="btn primary" type="button" data-ar="einschaetzung">'+svg('check')+'Neue Einschätzung</button><button class="btn" type="button" data-ar="eldib-uebernehmen">'+svg('ziel')+'DS aus dem ELDiB-Generator übernehmen</button>':'')+'</div>';
   if(!motorDa()){return h+hinweis('Für Profil und Verlauf fehlt die Datei <code>apps/ds-motor.js</code> im Hub-Ordner.');}
   var serien=verlaufsSerien(d);
-  if(serien.punkte.length>1){h+=karte('<h2>Verlauf</h2><p class="ar-leise">Durchschnitt der Einschätzungen je Bereich (7 = sehr günstig). Jede Einschätzung ist ein Punkt.</p>'+verlaufsGrafik(serien)+verlaufsTabelle(d));}
-  else if(serien.punkte.length===1){h+=karte('<h2>Verlauf</h2><p>Bisher gibt es eine Einschätzung. Mit der nächsten (z. B. nach einigen Wochen in der neuen Stelle) zeigt der Hub hier, was sich verbessert oder verschlechtert hat.</p>');}
+  if(serien.punkte.length>1){h+=karte('<h2>Einschätzungen im Verlauf</h2><p class="ar-leise">Durchschnitt der Einschätzungen je Bereich (7 = sehr günstig). Jede Einschätzung ist ein Punkt.</p>'+verlaufsGrafik(serien)+verlaufsTabelle(d));}
+  else if(serien.punkte.length===1){h+=karte('<h2>Einschätzungen im Verlauf</h2><p>Bisher gibt es eine Einschätzung. Mit der nächsten (z. B. nach einigen Wochen in der neuen Stelle) zeigt der Hub hier, was sich verbessert oder verschlechtert hat.</p>');}
   var A=bankDa()?eldibAuswertung(d):null;
   if(d.profil&&(d.profil.ds||A)){
     try{

@@ -1,0 +1,56 @@
+/* ==== Verlauf auf einen Blick (Reiter „Profil & Verlauf“) ==== */
+.vl-karte{border-top:3px solid var(--accent);}
+.vl-karte .ar-kartenkopf{align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.vl-karte h2{margin:0 0 2px;}
+.vl-spanne{margin-left:auto;background:var(--bg-2);border-radius:11px;padding:3px;display:inline-flex;gap:2px;}
+.vl-spanne .catchip{padding:5px 11px;font-size:13px;}
+.vl-rahmen{overflow-x:auto;margin:10px -4px 0;padding:0 4px;}
+.vl-grafik{display:block;width:100%;min-width:640px;height:auto;}
+.vl-grafik .vl-bahn{fill:var(--surface-2);stroke:var(--line);stroke-width:1;rx:8;}
+.vl-grafik .vl-raster{stroke:var(--line);stroke-width:1;}
+.vl-grafik .vl-achse{font:600 12px var(--font-ui);fill:var(--muted);}
+.vl-grafik .vl-titel{font:700 14px var(--font-ui);fill:var(--ink-2);}
+.vl-grafik .vl-info{font:500 10.5px var(--font-ui);fill:var(--faint);}
+.vl-grafik .vl-leer{font:500 12.5px var(--font-ui);fill:var(--faint);}
+.vl-grafik .vl-ziel{stroke:#1E6B45;stroke-width:1.2;stroke-dasharray:4 4;opacity:.75;}
+.vl-grafik .vl-linie{fill:none;stroke:var(--accent);stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round;}
+.vl-grafik .vl-linie.vl-sc{stroke:#8C96A8;stroke-width:1.4;stroke-dasharray:3 3;}
+.vl-grafik .vl-gut{fill:#2F8A5B;}
+.vl-grafik .vl-knapp{fill:#D9A93A;}
+.vl-grafik .vl-vorfall{fill:#C98A7A;}
+.vl-grafik .vl-schwer{fill:#B23A24;}
+.vl-grafik .vl-sc0{fill:#2F8A5B;}
+.vl-grafik .vl-sc1{fill:#8FB39C;}
+.vl-grafik .vl-sc2{fill:#D9A93A;}
+.vl-grafik .vl-sc3{fill:#C0543F;}
+.vl-grafik .vl-sc4{fill:#8E1F10;}
+.vl-grafik .vl-strich{stroke:#8C96A8;stroke-width:2;stroke-linecap:round;}
+.vl-grafik .vl-strich.ziel{stroke:var(--accent);}
+.vl-grafik .vl-marke{stroke:#6E4A7E;stroke-width:1.4;stroke-dasharray:5 4;}
+.vl-grafik .vl-marke.massnahme,.vl-grafik .vl-nr.massnahme{stroke:var(--accent);}
+.vl-grafik .vl-marke.medikation,.vl-grafik .vl-nr.medikation{stroke:#B4533A;}
+.vl-grafik .vl-marke.review,.vl-grafik .vl-nr.review{stroke:#1F6B6F;}
+.vl-grafik .vl-marke.ende,.vl-grafik .vl-nr.ende{stroke:#8C96A8;}
+.vl-grafik .vl-nr{fill:#fff;stroke:#6E4A7E;stroke-width:2;}
+.vl-grafik .vl-nrt{font:800 11.5px var(--font-ui);fill:var(--ink);}
+.vl-legende{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--ink-2);}
+.vl-legende li{display:inline-flex;align-items:baseline;gap:6px;}
+.vl-lnr{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;border:2px solid #6E4A7E;font-size:11px;font-weight:800;color:var(--ink);transform:translateY(-1px);}
+.vl-legende .massnahme .vl-lnr{border-color:var(--accent);}
+.vl-legende .medikation .vl-lnr{border-color:#B4533A;}
+.vl-legende .review .vl-lnr{border-color:#1F6B6F;}
+.vl-legende .ende .vl-lnr{border-color:#8C96A8;}
+.vl-ld{font-weight:650;color:var(--muted);}
+.vl-vergleich{margin-top:16px;padding-top:14px;border-top:1px solid var(--line);}
+.vl-vergleich h3{font-size:15px;margin:0 0 8px;}
+.vl-vergleich ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.vl-vergleich li{display:flex;flex-direction:column;gap:2px;font-size:14px;}
+.vl-v-text{color:var(--ink-2);}
+.vl-pfeil{font-size:12px;font-weight:700;border-radius:999px;padding:0 7px;}
+.vl-pfeil.besser{background:#E4F2EA;color:#1E6B45;}
+.vl-pfeil.schlechter{background:#FBE9E5;color:#9A3A26;}
+.vl-pfeil.gleich{background:var(--bg-2);color:var(--muted);}
+.bp-kurz-verlauf{margin:2px 0 0!important;font-size:13.5px;color:var(--ink-2);}
+@media (max-width:640px){
+  .vl-spanne{margin-left:0;}
+}
