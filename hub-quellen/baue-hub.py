@@ -92,8 +92,6 @@ if _fehlt:
 block_nach('CDSE Hub — Arbeit: Schüler', 'kompass.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False),
     '@@KOMPASS_QUELLEN@@': _json.dumps({k: _quellen[k] for k in _genutzt}, ensure_ascii=False)})
 block_nach('CDSE Hub — Arbeit: Schüler', 'kompass-wissen.js')
-# Netz um das Kind (Überblick)
-block_nach('CDSE Hub — Arbeit: Schüler', 'netz.js')
 # Berichte und Arztbriefe (Auslesen, Bestätigen, Originaldatei verschlüsselt)
 block_nach('CDSE Hub — Arbeit: Schüler', 'berichte.js')
 # Begleitplan: Schritt für Schritt aus Dossier, Kompass und ELDiB
@@ -111,8 +109,6 @@ if os.path.exists(os.path.join(SP, 'begleitplan.css')):
     css = css + '\n' + lies('begleitplan.css')
 if os.path.exists(os.path.join(SP, 'berichte.css')):
     css = css + '\n' + lies('berichte.css')
-if os.path.exists(os.path.join(SP, 'netz.css')):
-    css = css + '\n' + lies('netz.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]

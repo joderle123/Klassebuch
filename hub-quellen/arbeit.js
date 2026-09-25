@@ -366,7 +366,7 @@ function helfernetzKarte(d){
   }).join('');
 }
 function tabUeberblick(d,r){
-  var p=d.person||{}, blick=aufEinenBlick(d), h=(window.CDSE_NETZ?window.CDSE_NETZ.karte(d):'')+'<div class="ar-zwei"><div class="ar-haupt">';
+  var p=d.person||{}, blick=aufEinenBlick(d), h='<div class="ar-zwei"><div class="ar-haupt">';
   var neu=(d.profil&&r.bearbeiten&&bankDa())?eldibNeuer(d):null;
   if(neu){h+=hinweis('Im ELDiB-Generator auf diesem Computer gibt es neuere Daten zu '+esc(p.vorname||'diesem Schüler')+' (gespeichert am '+esc(datumZeit(neu.gespeichert))+'). <button class="ar-link" type="button" data-ar="eldib-uebernehmen">Jetzt übernehmen</button>','info');}
   if(!d.profil&&!(d.einschaetzungen||[]).length){

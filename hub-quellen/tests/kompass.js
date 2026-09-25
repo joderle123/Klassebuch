@@ -171,21 +171,6 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Überblick: Kurzkarte „Kompass“ mit Profilen', (await text('.ko-kurzkarte')).includes('ADHS') && (await page.$$('.ko-kurzkarte .ko-pchip')).length >= 4);
   await page.click('.ko-kurzkarte [data-tab="kompass"]'); await warte(250);
   check('Kurzkarte führt zum Kompass', await page.isVisible('#ko-ergebnis'));
-  await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(250);
-  const nz = await page.evaluate(() => ({ koepfe: document.querySelectorAll('.nz-kopf').length, knoten: document.querySelectorAll('.nz-knoten').length,
-    namen: [...document.querySelectorAll('.nz-kopf text:not(.nz-zahl)')].map(t => t.textContent), warn: document.querySelectorAll('.nz-knoten.warn').length,
-    diag: document.querySelectorAll('.nz-knoten.diagnose').length, titel: document.querySelector('.nz-karte summary h2').textContent }));
-  check('Überblick: Netz um Lea mit 7 Bereichen und vielen Punkten', nz.koepfe === 7 && nz.knoten >= 12 && nz.titel === 'Netz um Lea' && nz.namen.join() === 'Profil,Entwicklung,Stärken,Familie & Umfeld,Schule,Helfernetz & CDSE,Ziele & Plan', nz);
-  check('Netz: Diagnosen dunkel, Warnsignal und deutliche Bereiche rot markiert', nz.diag >= 2 && nz.warn >= 2, nz);
-  await page.screenshot({ path: path.join(OUT, 'k3-netz.png') });
-  await page.click('.nz-knoten[data-tab="begleitplan"]'); await warte(300);
-  check('Klick auf einen Punkt im Netz führt zum Reiter (Begleitplan)', await page.isVisible('#bp-plan'));
-  await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(200);
-  await page.click('.nz-karte > summary'); await warte(150);
-  const zu = await page.evaluate(() => localStorage.getItem('cdse-netz-zu'));
-  await page.click('.ar-tabs [data-tab="kompass"]'); await warte(150); await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(200);
-  check('Netz zugeklappt bleibt zugeklappt', zu === '1' && !(await page.evaluate(() => document.querySelector('.nz-karte').open)));
-  await page.click('.nz-karte > summary'); await warte(150);
   await reiter(ids.ben, 'kompass');
   check('Leeres Dossier: „Noch kein Profil erkennbar“ mit Hinweis auf „Profil ergänzen“', (await text('.ko-kopf')).includes('Noch kein Profil erkennbar') && (await text('.ko-kopf')).includes('Profil ergänzen'));
   await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(200);
@@ -193,9 +178,6 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.setViewportSize({ width: 390, height: 844 });
   await reiter(ids.lea, 'kompass');
   check('390 px: kein seitliches Scrollen', (await quer()) <= 1, await quer());
-  await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(200);
-  check('390 px: Netz als Liste statt Bild, ohne seitliches Scrollen', await page.isVisible('.nz-liste') && !(await page.isVisible('.nz-bild')) && (await quer()) <= 1);
-  await page.click('.ar-tabs [data-tab="kompass"]'); await warte(200);
   await page.screenshot({ path: path.join(OUT, 'k2-schmal.png') });
   await page.click('#ko-p-instabil > summary'); await warte(100);
   if (!(await page.evaluate(() => document.getElementById('ko-p-instabil').open))) await page.click('#ko-p-instabil > summary');
