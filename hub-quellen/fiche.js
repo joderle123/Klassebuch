@@ -203,7 +203,7 @@ var MASSNAHMEN=[
   ['diagnostic specialise','diagnostic','Diagnostic spécialisé'],
   ['conseil et guidance des prof','cgPro','Conseil et guidance des professionnel·le·s'],
   ['conseil et guidance parent','cgEltern','Conseil et guidance parents'],
-  ['isa','isa','ISA'],
+  ['isa','isa','Intervention spécialisée ambulatoire (ISA)'],
   ['atelier d','atelier','Atelier d’apprentissage spécifique'],
   ['reeducation','reeducation','Rééducation'],
   ['scolarisation specialisee','scol','']

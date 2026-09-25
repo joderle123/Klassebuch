@@ -10,8 +10,8 @@
    gespeichert – mit Rechteprüfung und Eintrag im Protokoll des Dossiers.
      #/datenbank            Übersicht: Kennzahlen und Diagramme
      #/datenbank/tabelle    alle Variablen, Spaltenwahl, Suche, Export
-     #/datenbank/abfragen   Baukasten, Vorlagen, gespeicherte Abfragen, Freitext
-     #/datenbank/import     Übernahme aus CDSE Stats (JSON oder CSV)
+     #/datenbank/abfragen   Baukasten (und/oder, „eines von“, Kreuztabelle), Vorlagen, gespeicherte Abfragen, Freitext
+     #/datenbank/import     Übernahme aus einer Excel-Tabelle (.xlsx/.csv, Spalten zuordnen) oder aus CDSE Stats (JSON/CSV)
      #/datenbank/protokoll  eigene Exporte/Importe, zuletzt geänderte Dossiers
    FELDER ist die eine Quelle für alle Variablen (wie FIELD_DEFS in CDSE
    Stats): Tabelle, Seitenblatt, Export, Abfragen und Diagramme lesen dort.
@@ -130,7 +130,7 @@ var MASSNAHMEN=[
   {key:'diagnostic',kurz:'DS',lang:'Diagnostic spécialisé'},
   {key:'cgPro',kurz:'C&G Fachkräfte',lang:'Conseil et guidance des professionnel·le·s'},
   {key:'cgEltern',kurz:'C&G Eltern',lang:'Conseil et guidance parents'},
-  {key:'isa',kurz:'ISA',lang:'ISA'},
+  {key:'isa',kurz:'ISA',lang:'Intervention spécialisée ambulatoire (ISA)'},
   {key:'atelier',kurz:'Atelier',lang:'Atelier d’apprentissage spécifique'},
   {key:'reeducation',kurz:'Rééducation',lang:'Rééducation'},
   {key:'annexe',kurz:'Annexe',lang:'Scolarisation spécialisée – Annexe Junglinster',beschulung:'Annexe Junglinster'},
@@ -139,6 +139,8 @@ var MASSNAHMEN=[
 ];
 var ARTEN=MASSNAHMEN.map(function(m){return m.kurz;});
 var STAND={laufend:'laufend',beendet:'beendet',geplant:'geplant'};
+/* Dauer-Variablen je Maßnahme (Übersicht „Durchschnittliche Dauer je Maßnahme“) */
+var DAUER=[['dsDauer','DS'],['isaDauer','ISA'],['cgDauer','C&G'],['atelierDauer','Atelier'],['reeducationDauer','Rééducation'],['annexeDauer','Annexe'],['cstDauer','CST'],['cdpDauer','CdP'],['andereDauer','andere Maßnahme']];
 /* Alles, was mehrere Variablen brauchen, einmal je Dossier ausrechnen.
    Eine Maßnahme zählt, wenn sie in der Fiche angekreuzt ist (aktiv).
    laufend = begonnen (oder ohne Beginn) und das Ende ist nicht überschritten;
@@ -188,8 +190,66 @@ function diensteVon(x){
   var o=[];function add(t){t=txt(t);if(t&&o.map(norm).indexOf(norm(t))<0){o.push(t);}}
   (Array.isArray(x.f.intervenants)?x.f.intervenants:[]).forEach(function(i){if(i&&typeof i==='object'){add(i.institution);}});
   var mr=(x.f.ef||{}).maisonRelais;if(mr&&typeof mr==='object'&&[mr.name,mr.adresse,mr.tel,mr.mail].some(txt)){add('Maison Relais');}
-  add(x.db.autreCc);
+  ccListe(x.db.autreCc).forEach(add);
   return o;
+}
+/* Andere Kompetenzzentren (Centres de compétences en psycho-pédagogie spécialisée): gespeichert
+   in db.autreCc als Kürzel, mit „; “ getrennt. Ältere Freitexte („Centre de Logopédie“, „CL und CDI“)
+   werden beim Lesen erkannt; was kein Kompetenzzentrum ist, bleibt als Text stehen. */
+var CC=[['CDA','Centre pour le développement des apprentissages Grande-Duchesse Maria Teresa',['apprentissage']],
+  ['CDI','Centre pour le développement intellectuel',['intellectuel','intellektuell']],
+  ['CDM','Centre pour le développement moteur',['moteur','motorisch','motorik']],
+  ['CDV','Centre pour le développement des compétences relatives à la vue',['vue','visuel','sehen']],
+  ['CEJHP','Centre pour enfants et jeunes à haut potentiel',['haut potentiel','hochbegab']],
+  ['CL','Centre de logopédie',['logopedie','logopadie']],
+  ['CTSA','Centre pour enfants et jeunes présentant un trouble du spectre de l’autisme',['autisme','autismus','autist']]];
+var CC_CODES=CC.map(function(c){return c[0];});
+function ccCodes(t){
+  var n=' '+norm(t).replace(/[^a-z0-9]+/g,' ').trim()+' ';
+  return CC.filter(function(c){return n.indexOf(' '+c[0].toLowerCase()+' ')>=0||c[2].some(function(k){return n.indexOf(' '+k)>=0;});}).map(function(c){return c[0];});
+}
+function ccListe(v){
+  var o=[];
+  (Array.isArray(v)?v:[v]).forEach(function(x){
+    String(x==null?'':x).split(/\s*[;,\/+|\n]\s*/).forEach(function(t){
+      t=txt(t);if(!t){return;}
+      var cs=ccCodes(t);(cs.length?cs:[t]).forEach(function(c){if(o.indexOf(c)<0){o.push(c);}});
+    });
+  });
+  return o;
+}
+/* ELDiB-Stufen je Bereich: aus der Einschätzung im Dossier (ELDiB-Generator), sonst aus den
+   Datenbank-Angaben (ältere Fälle, Import). Erwartet = Stufe für das Alter am Tag der Einschätzung. */
+var ELDIB_B=[['verhalten','Verhalten','V'],['kommunikation','Kommunikation','K'],['sozialisation','Sozialisation','SOZ'],['kognition','Kognition','KOG']];
+function stufeFuerAlter(j){return j==null?null:(j<=2?1:(j<=5?2:(j<=9?3:(j<=12?4:5))));}
+function stufeZahl(v){var n=zahl(v);return (n!=null&&n>=0&&n<=5)?Math.round(n):null;}
+function eldibStufen(d,x){
+  if(x.el!==undefined){return x.el;}
+  var k=eldib(d), m=x.db.eldibStufen, r=null;
+  if(k&&k.stufen&&ELDIB_B.some(function(b){return istZahl(k.stufen[b[0]]);})){
+    r={herkunft:'Einschätzung im Dossier',datum:iso(k.datum),erwartet:istZahl(k.erwartet)?k.erwartet:null,stufen:{}};
+    ELDIB_B.forEach(function(b){r.stufen[b[0]]=istZahl(k.stufen[b[0]])?k.stufen[b[0]]:null;});
+  }else if(m&&typeof m==='object'&&ELDIB_B.some(function(b){return stufeZahl(m[b[0]])!=null;})){
+    var dt=iso(m.datum), geb=iso(x.p.geburtsdatum), mo=geb?monate(geb,dt||heute()):null;
+    r={herkunft:'Datenbank-Angabe',datum:dt,erwartet:stufeFuerAlter(mo==null?null:Math.floor(mo/12)),stufen:{}};
+    ELDIB_B.forEach(function(b){r.stufen[b[0]]=stufeZahl(m[b[0]]);});
+  }
+  if(r){
+    var w=ELDIB_B.map(function(b){return r.stufen[b[0]];}).filter(istZahl);r.min=w.length?Math.min.apply(null,w):null;
+    r.unter=r.erwartet==null?[]:ELDIB_B.filter(function(b){var s=r.stufen[b[0]];return istZahl(s)&&s<r.erwartet;}).map(function(b){return b[1];});
+  }
+  x.el=r;return r;
+}
+/* Variablen je Maßnahme: die laufende bzw. jüngste Maßnahme dieser Art */
+function mWert(key,prop){return function(d,x){var m=eineMassnahme(x,key);return m?m[prop]:(prop==='dauer'?null:'');};}
+function cgArtVon(x){var p=x.ms.some(function(m){return m.key==='cgPro';}), e=x.ms.some(function(m){return m.key==='cgEltern';});return p&&e?'Fachkräfte und Eltern':(p?'Fachkräfte':(e?'Eltern':''));}
+function cgEndeVon(x){var l=x.ms.filter(istCg);if(!l.length||l.some(function(m){return !m.bis;})){return '';}return l.map(function(m){return m.bis;}).sort().pop();}
+function cgDauerVon(x){var w=x.ms.filter(istCg).map(function(m){return m.dauer;}).filter(istZahl);return w.length?Math.max.apply(null,w):null;}
+/* Gibt es im Dossier eine Maßnahme zu dieser Variablen? (Seitenblatt zeigt nur diese) */
+function hatMassnahme(ms,mk){
+  if(mk==='cg'){return ms.some(istCg);}
+  if(mk==='beschulung'){return ms.some(function(m){return !!m.beschulung;});}
+  return ms.some(function(m){return m.key===mk;});
 }
 function hilfenVon(x){var o=[];[(x.f.ef||{}).weitere,(x.f.es||{}).weitere].forEach(function(l){(Array.isArray(l)?l:[]).forEach(function(w){var r=txt(w&&w.rolle).replace(/[:\s]+$/,'');if(r&&o.indexOf(r)<0){o.push(r);}});});return o;}
 function scasAuto(x){return (Array.isArray(x.f.intervenants)?x.f.intervenants:[]).some(function(i){var t=norm(i&&i.institution);return /\bscas\b/.test(t)||/service central d.?assistance sociale/.test(t);});}
@@ -224,7 +284,7 @@ function scBereichName(id){var b=window.CDSE_SCREENING_BOGEN;var x=b&&b.bereiche
    FELDER: alle Variablen – {key, label, gruppe, typ, optionen?, info?, wert(d)}
    typ: text | zahl | datum | auswahl | liste | ja-nein
    ===================================================================== */
-var GRUPPEN=['Identität','Person','Schule','Begleitung im CDSE','Maßnahmen','Familie und Umfeld','Klinisches Profil','Entwicklung und Dossier'];
+var GRUPPEN=['Identität','Person','Schule','Begleitung im CDSE','Maßnahmen','Familie und Umfeld','Klinisches Profil','ELDiB','Entwicklung und Dossier'];
 function F(key,label,gruppe,typ,fn,extra){
   var f={key:key,label:label,gruppe:gruppe,typ:typ,wert:function(d,x){if(!H){bausteine();}d=d||{};return fn(d,x||kontext(d));}};
   Object.keys(extra||{}).forEach(function(k){if(k==='optionen'&&typeof extra.optionen==='function'){Object.defineProperty(f,'optionen',{get:extra.optionen,enumerable:true});}else{f[k]=extra[k];}});
@@ -266,23 +326,51 @@ var FELDER=[
   F('cloture','Clôture du dossier','Begleitung im CDSE','datum',function(d,x){return clotureVon(x.f);},{info:'Datum der Clôture in der Fiche'}),
   F('massnahmen','Laufende Maßnahmen','Maßnahmen','liste',function(d,x){return eindeutig(x.ms.filter(function(m){return m.stand==='laufend';}).map(function(m){return m.kurz;}));},{optionen:ARTEN,info:'in der Fiche angekreuzt, begonnen und nicht beendet'}),
   F('massnahmenAlle','Alle Maßnahmen (auch beendete)','Maßnahmen','liste',function(d,x){return eindeutig(x.ms.map(function(m){return m.kurz;}));},{optionen:ARTEN}),
-  F('dsDatum','DS: Datum','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'diagnostic');return m?(m.von||m.bis):'';}),
-  F('dsWer','DS: Intervenant·e','Maßnahmen','text',function(d,x){var m=eineMassnahme(x,'diagnostic');return m?m.wer:'';}),
-  F('isaBeginn','ISA: Beginn','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'isa');return m?m.von:'';}),
-  F('isaEnde','ISA: Ende','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'isa');return m?m.bis:'';}),
-  F('isaWer','ISA: Intervenant·e','Maßnahmen','text',function(d,x){var m=eineMassnahme(x,'isa');return m?m.wer:'';}),
-  F('isaDauer','ISA: Dauer (Monate)','Maßnahmen','zahl',function(d,x){var m=eineMassnahme(x,'isa');return m?m.dauer:null;}),
-  F('cgBeginn','C&G: Beginn','Maßnahmen','datum',function(d,x){return x.ms.filter(istCg).map(function(m){return m.von;}).filter(Boolean).sort()[0]||'';}),
-  F('cgWer','C&G: Intervenant·e','Maßnahmen','text',function(d,x){return eindeutig(x.ms.filter(istCg).map(function(m){return m.wer;})).join(', ');}),
-  F('beschulung','Spezialisierte Beschulung','Maßnahmen','auswahl',function(d,x){var m=beschulungVon(x);return m?m.beschulung:'';},{optionen:['Annexe Junglinster','Classe de participation','CST']}),
-  F('beschulungOrt','Standort (CdP / CST)','Maßnahmen','text',function(d,x){var m=beschulungVon(x);return m?m.standort:'';}),
-  F('beschulungBeginn','Spez. Beschulung: Beginn','Maßnahmen','datum',function(d,x){var m=beschulungVon(x);return m?m.von:'';}),
-  F('beschulungDauer','Spez. Beschulung: Dauer (Monate)','Maßnahmen','zahl',function(d,x){var m=beschulungVon(x);return m?m.dauer:null;}),
+  F('massnahmenAnzahl','Anzahl Maßnahmen (auch beendete)','Maßnahmen','zahl',function(d,x){return x.ms.length;},{info:'in der Fiche angekreuzte Maßnahmen und die „andere Maßnahme“ der Datenbank'}),
+  F('dsDatum','DS: Datum','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'diagnostic');return m?(m.von||m.bis):'';},{mk:'diagnostic'}),
+  F('dsEnde','DS: Ende','Maßnahmen','datum',mWert('diagnostic','bis'),{mk:'diagnostic'}),
+  F('dsDauer','DS: Dauer (Monate)','Maßnahmen','zahl',mWert('diagnostic','dauer'),{mk:'diagnostic'}),
+  F('dsWer','DS: Intervenant·e','Maßnahmen','text',function(d,x){var m=eineMassnahme(x,'diagnostic');return m?m.wer:'';},{mk:'diagnostic'}),
+  F('isaBeginn','ISA: Beginn','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'isa');return m?m.von:'';},{mk:'isa'}),
+  F('isaEnde','ISA: Ende','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'isa');return m?m.bis:'';},{mk:'isa'}),
+  F('isaWer','ISA: Intervenant·e','Maßnahmen','text',function(d,x){var m=eineMassnahme(x,'isa');return m?m.wer:'';},{mk:'isa'}),
+  F('isaDauer','ISA: Dauer (Monate)','Maßnahmen','zahl',function(d,x){var m=eineMassnahme(x,'isa');return m?m.dauer:null;},{mk:'isa',info:'Intervention spécialisée ambulatoire: vom Beginn bis zum Ende, sonst bis heute'}),
+  F('cgArt','C&G: für wen','Maßnahmen','auswahl',function(d,x){return cgArtVon(x);},{optionen:['Fachkräfte','Eltern','Fachkräfte und Eltern'],mk:'cg'}),
+  F('cgBeginn','C&G: Beginn','Maßnahmen','datum',function(d,x){return x.ms.filter(istCg).map(function(m){return m.von;}).filter(Boolean).sort()[0]||'';},{mk:'cg'}),
+  F('cgEnde','C&G: Ende','Maßnahmen','datum',function(d,x){return cgEndeVon(x);},{mk:'cg',info:'leer, solange ein C&G läuft'}),
+  F('cgDauer','C&G: Dauer (Monate)','Maßnahmen','zahl',function(d,x){return cgDauerVon(x);},{mk:'cg'}),
+  F('cgWer','C&G: Intervenant·e','Maßnahmen','text',function(d,x){return eindeutig(x.ms.filter(istCg).map(function(m){return m.wer;})).join(', ');},{mk:'cg'}),
+  F('atelierArt','Atelier: welches','Maßnahmen','text',mWert('atelier','standort'),{mk:'atelier',info:'„Quel atelier“ in der Fiche'}),
+  F('atelierBeginn','Atelier: Beginn','Maßnahmen','datum',mWert('atelier','von'),{mk:'atelier'}),
+  F('atelierEnde','Atelier: Ende','Maßnahmen','datum',mWert('atelier','bis'),{mk:'atelier'}),
+  F('atelierDauer','Atelier: Dauer (Monate)','Maßnahmen','zahl',mWert('atelier','dauer'),{mk:'atelier'}),
+  F('atelierWer','Atelier: Intervenant·e','Maßnahmen','text',mWert('atelier','wer'),{mk:'atelier'}),
+  F('reeducationArt','Rééducation: welche','Maßnahmen','text',mWert('reeducation','standort'),{mk:'reeducation',info:'„Type de rééducation“ in der Fiche'}),
+  F('reeducationBeginn','Rééducation: Beginn','Maßnahmen','datum',mWert('reeducation','von'),{mk:'reeducation'}),
+  F('reeducationEnde','Rééducation: Ende','Maßnahmen','datum',mWert('reeducation','bis'),{mk:'reeducation'}),
+  F('reeducationDauer','Rééducation: Dauer (Monate)','Maßnahmen','zahl',mWert('reeducation','dauer'),{mk:'reeducation'}),
+  F('reeducationWer','Rééducation: Intervenant·e','Maßnahmen','text',mWert('reeducation','wer'),{mk:'reeducation'}),
+  F('beschulung','Spezialisierte Beschulung','Maßnahmen','auswahl',function(d,x){var m=beschulungVon(x);return m?m.beschulung:'';},{optionen:['Annexe Junglinster','Classe de participation','CST'],mk:'beschulung',info:'Annexe, Classe de participation oder CST – die laufende bzw. jüngste'}),
+  F('beschulungOrt','Standort (CdP / CST)','Maßnahmen','text',function(d,x){var m=beschulungVon(x);return m?m.standort:'';},{mk:'beschulung'}),
+  F('beschulungBeginn','Spez. Beschulung: Beginn','Maßnahmen','datum',function(d,x){var m=beschulungVon(x);return m?m.von:'';},{mk:'beschulung'}),
+  F('beschulungDauer','Spez. Beschulung: Dauer (Monate)','Maßnahmen','zahl',function(d,x){var m=beschulungVon(x);return m?m.dauer:null;},{mk:'beschulung'}),
+  F('annexeBeginn','Annexe: Beginn','Maßnahmen','datum',mWert('annexe','von'),{mk:'annexe'}),
+  F('annexeEnde','Annexe: Ende','Maßnahmen','datum',mWert('annexe','bis'),{mk:'annexe'}),
+  F('annexeDauer','Annexe: Dauer (Monate)','Maßnahmen','zahl',mWert('annexe','dauer'),{mk:'annexe'}),
+  F('cstGruppe','CST: Gruppe','Maßnahmen','auswahl',mWert('cst','standort'),{mk:'cst'}),
+  F('cstBeginn','CST: Beginn','Maßnahmen','datum',mWert('cst','von'),{mk:'cst'}),
+  F('cstEnde','CST: Ende','Maßnahmen','datum',mWert('cst','bis'),{mk:'cst'}),
+  F('cstDauer','CST: Dauer (Monate)','Maßnahmen','zahl',mWert('cst','dauer'),{mk:'cst'}),
+  F('cdpRegion','CdP: Region (Direction)','Maßnahmen','auswahl',mWert('cdp','standort'),{optionen:DR,mk:'cdp'}),
+  F('cdpBeginn','CdP: Beginn','Maßnahmen','datum',mWert('cdp','von'),{mk:'cdp'}),
+  F('cdpEnde','CdP: Ende','Maßnahmen','datum',mWert('cdp','bis'),{mk:'cdp'}),
+  F('cdpDauer','CdP: Dauer (Monate)','Maßnahmen','zahl',mWert('cdp','dauer'),{mk:'cdp'}),
   F('cni','CNI-Entscheidung','Maßnahmen','datum',function(d,x){return iso(x.db.cni);}),
   F('andereMassnahme','Andere Maßnahme','Maßnahmen','text',function(d,x){return txt((x.db.autreMesure||{}).name);}),
-  F('dienste','Weitere Dienste','Familie und Umfeld','liste',function(d,x){return diensteVon(x);},{info:'Autres intervenant·e·s der Fiche, Maison Relais, anderes Kompetenzzentrum'}),
+  F('andereDauer','Andere Maßnahme: Dauer (Monate)','Maßnahmen','zahl',mWert('autre','dauer'),{mk:'autre'}),
+  F('dienste','Weitere Dienste','Familie und Umfeld','liste',function(d,x){return diensteVon(x);},{info:'Autres intervenant·e·s der Fiche, Maison Relais, andere Kompetenzzentren'}),
   F('schulHilfen','Unterstützung in der Schule','Familie und Umfeld','liste',function(d,x){return hilfenVon(x);},{info:'I-EBS, A-EBS, ESEB, SePas, SSE aus der Fiche'}),
-  F('autreCc','Anderes Kompetenzzentrum','Familie und Umfeld','text',function(d,x){return txt(x.db.autreCc);}),
+  F('autreCc','Andere Kompetenzzentren','Familie und Umfeld','liste',function(d,x){return ccListe(x.db.autreCc);},{optionen:CC_CODES,info:'CDA, CDI, CDM, CDV, CEJHP, CL, CTSA – mehrere möglich'}),
   F('scas','SCAS','Familie und Umfeld','ja-nein',function(d,x){return scasVon(x);},{optionen:['ja','nein'],info:'„ja“ auch automatisch, wenn der SCAS bei den Intervenants der Fiche steht – außer es ist ausdrücklich eingetragen'}),
   F('sorgerecht','Sorgerecht (autorité parentale)','Familie und Umfeld','liste',function(d,x){return sorgerechtVon(x);},{info:'Datenbank-Angabe, sonst die Représentant·e·s mit autorité parentale aus der Fiche'}),
   F('eltern','Elternsituation','Familie und Umfeld','auswahl',function(d,x){var e=norm(x.db.eltern);return ['zusammen','getrennt','anderes'].indexOf(e)>=0?e:'';},{optionen:['zusammen','getrennt','anderes']}),
@@ -292,8 +380,17 @@ var FELDER=[
   F('verdacht','Verdacht / Profil','Klinisches Profil','liste',function(d,x){return liste(x.db.verdacht);}),
   F('iq','IQ','Klinisches Profil','zahl',function(d,x){return zahl(x.db.iq);}),
   F('depistage','Dépistage','Klinisches Profil','liste',function(d,x){return depistageVon(x.f);},{optionen:['CL','CDM','CDV','andere'],info:'Kompetenzzentren mit einem Eintrag unter „Dépistage“ in der Fiche'}),
-  F('eldibZiele','ELDiB: Förderziele','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ziele:null;}),
-  F('eldibUeber','ELDiB: überfällige Items','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ueber:null;}),
+  F('eldibDatum','ELDiB: Datum der Einschätzung','ELDiB','datum',function(d,x){var e=eldibStufen(d,x);return e?e.datum:'';},{quelle:'eldib'}),
+  F('eldibHerkunft','ELDiB: Stufen aus','ELDiB','auswahl',function(d,x){var e=eldibStufen(d,x);return e?e.herkunft:'';},{quelle:'eldib',optionen:['Einschätzung im Dossier','Datenbank-Angabe'],info:'die ELDiB-Einschätzung im Dossier gilt; die Datenbank-Angabe nur, wenn es keine gibt (ältere Fälle)'}),
+  F('eldibVerhalten','ELDiB: Stufe Verhalten (V)','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.stufen.verhalten:null;},{quelle:'eldib',info:'höchste Stufe mit erreichten Items (1–5, 0 = noch keine)'}),
+  F('eldibKommunikation','ELDiB: Stufe Kommunikation (K)','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.stufen.kommunikation:null;},{quelle:'eldib'}),
+  F('eldibSozialisation','ELDiB: Stufe Sozialisation (SOZ)','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.stufen.sozialisation:null;},{quelle:'eldib'}),
+  F('eldibKognition','ELDiB: Stufe Kognition (KOG)','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.stufen.kognition:null;},{quelle:'eldib'}),
+  F('eldibMin','ELDiB: niedrigste Stufe','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.min:null;},{quelle:'eldib',info:'die niedrigste der vier Bereichsstufen'}),
+  F('eldibErwartet','ELDiB: erwartete Stufe (Alter)','ELDiB','zahl',function(d,x){var e=eldibStufen(d,x);return e?e.erwartet:null;},{quelle:'eldib',info:'für das Alter am Tag der Einschätzung: bis 2 Jahre Stufe 1, 3–5 Stufe 2, 6–9 Stufe 3, 10–12 Stufe 4, ab 13 Stufe 5'}),
+  F('eldibUnter','ELDiB: Bereiche unter der erwarteten Stufe','ELDiB','liste',function(d,x){var e=eldibStufen(d,x);return e?e.unter:[];},{quelle:'eldib',optionen:['Verhalten','Kommunikation','Sozialisation','Kognition']}),
+  F('eldibZiele','ELDiB: Förderziele','ELDiB','zahl',function(d){var k=eldib(d);return k?k.ziele:null;}),
+  F('eldibUeber','ELDiB: überfällige Items','ELDiB','zahl',function(d){var k=eldib(d);return k?k.ueber:null;}),
   F('eintraege','Anzahl Einträge','Entwicklung und Dossier','zahl',function(d){return (d.eintraege||[]).length;}),
   F('screeningDatum','Letztes Screening','Entwicklung und Dossier','datum',function(d){var l=scListe(d);return l.length?iso(l[0].datum):'';}),
   F('screeningStand','Screening: Einschätzung','Entwicklung und Dossier','auswahl',function(d){var l=scListe(d), k=l.length?scKurz(l[0]):null;return k?(SC_ART[k.gesamt]||''):'';},{optionen:['Heute handeln','Unterstützung planen','Gezielt fördern','Im Blick behalten','Unauffällig'],info:'Gesamteinschätzung des letzten Screenings (keine Diagnose)'}),
@@ -309,12 +406,12 @@ function toMinuten(v){v=v||{};var a=/^(\d\d):(\d\d)$/.exec(v.timeoutVon||''), b=
 /* Woher kommt der Wert? fiche = Fiche de renseignement (Reiter „Fiche“ im Dossier),
    db = nur Datenbank-Angaben, beide = Datenbank-Angabe mit Fiche als Ersatz, dossier = Dossier selbst */
 var AUS_FICHE=['nachname','vorname','matricule','mfiles','iam','geschlecht','geburtsdatum','alter','geburtsort','nationalitaet','erstsprache','sprache','migration','ankunft','wohnort',
-  'schule','klasse','cycle','direction','laufbahn','ficheDatum','ficheSchuljahr','cloture','massnahmen','massnahmenAlle','dsDatum','dsWer','isaBeginn','isaEnde','isaWer','isaDauer',
-  'cgBeginn','cgWer','beschulung','beschulungOrt','beschulungBeginn','beschulungDauer','schulHilfen','depistage','beginn','dauerBegleitung'];
+  'schule','klasse','cycle','direction','laufbahn','ficheDatum','ficheSchuljahr','cloture','massnahmen','massnahmenAlle','massnahmenAnzahl','schulHilfen','depistage','beginn','dauerBegleitung'];
 var AUS_BEIDEN=['dienste','scas','sorgerecht'];
-var NUR_DB=['schulform','vorherigeSchule','schulwechsel','cni','andereMassnahme','autreCc','eltern','massnahmenFamilie','scolEtranger','diagnosen','verdacht','iq'];
-FELDER.forEach(function(f){f.quelle=AUS_FICHE.indexOf(f.key)>=0?'fiche':(AUS_BEIDEN.indexOf(f.key)>=0?'beide':(NUR_DB.indexOf(f.key)>=0?'db':'dossier'));});
-var QUELLE_TEXT={fiche:'Fiche',beide:'Fiche + Datenbank',db:'Datenbank',dossier:'Dossier'};
+var NUR_DB=['schulform','vorherigeSchule','schulwechsel','cni','andereMassnahme','andereDauer','autreCc','eltern','massnahmenFamilie','scolEtranger','diagnosen','verdacht','iq'];
+/* Variablen je Maßnahme (mk) kommen aus der Fiche – außer der „anderen Maßnahme“ der Datenbank; ELDiB: Dossier, sonst Datenbank */
+FELDER.forEach(function(f){f.quelle=f.quelle||((AUS_FICHE.indexOf(f.key)>=0||(f.mk&&f.mk!=='autre'))?'fiche':(AUS_BEIDEN.indexOf(f.key)>=0?'beide':(NUR_DB.indexOf(f.key)>=0?'db':'dossier')));});
+var QUELLE_TEXT={fiche:'Fiche',beide:'Fiche + Datenbank',db:'Datenbank',dossier:'Dossier',eldib:'ELDiB im Dossier, sonst Datenbank'};
 var FELD_MAP=null;
 function feldVon(k){if(!FELD_MAP){FELD_MAP={};FELDER.forEach(function(f){FELD_MAP[f.key]=f;});}return FELD_MAP[k]||null;}
 function optionenVon(f){var o=f&&f.optionen;return Array.isArray(o)?o:[];}
@@ -345,19 +442,24 @@ function anzeige(f,v){
    Filter und Abfragen (wie query-engine.js von CDSE Stats)
    ===================================================================== */
 var OPS={
-  text:[['ist','ist'],['istNicht','ist nicht'],['enthaelt','enthält'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
-  auswahl:[['ist','ist'],['istNicht','ist nicht'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
+  text:[['ist','ist'],['istNicht','ist nicht'],['einesVon','ist eines von'],['keinesVon','ist keines von'],['enthaelt','enthält'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
+  auswahl:[['ist','ist'],['istNicht','ist nicht'],['einesVon','ist eines von'],['keinesVon','ist keines von'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
   'ja-nein':[['ist','ist'],['istNicht','ist nicht'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
   zahl:[['gleich','gleich'],['ungleich','ungleich'],['groesser','größer als'],['mindestens','mindestens'],['kleiner','kleiner als'],['hoechstens','höchstens'],['zwischen','zwischen'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
   datum:[['am','am'],['nach','nach dem'],['ab','ab dem'],['vor','vor dem'],['bis','bis zum'],['zwischen','zwischen'],['imSchuljahr','im Schuljahr'],['leer','ohne Angabe'],['gefuellt','mit Angabe']],
-  liste:[['enthaelt','enthält'],['enthaeltNicht','enthält nicht'],['enthaeltText','enthält den Text'],['leer','ohne Angabe'],['gefuellt','mit Angabe']]
+  liste:[['enthaelt','enthält'],['enthaeltEines','enthält eines von'],['enthaeltAlle','enthält alle von'],['enthaeltNicht','enthält nicht'],['enthaeltKeines','enthält keines von'],['enthaeltText','enthält den Text'],['leer','ohne Angabe'],['gefuellt','mit Angabe']]
 };
 var KENNZAHLEN=[['anzahl','Anzahl der Dossiers'],['mittel','Mittelwert'],['median','Median'],['min','Minimum'],['max','Maximum'],['summe','Summe']];
+/* Bedingungen mit mehreren Werten (fl.werte): „ist eines von“, „enthält alle von“ … */
+var MEHRFACH=['einesVon','keinesVon','enthaeltEines','enthaeltAlle','enthaeltKeines'];
+function mehrfach(op){return MEHRFACH.indexOf(op)>=0;}
+function werteVon(fl){return eindeutig(Array.isArray(fl.werte)?fl.werte:(txt(fl.wert)?String(fl.wert).split('|'):[]));}
 function brauchtWert(op){return op!=='leer'&&op!=='gefuellt';}
 function opsFuer(f){return f?(OPS[f.typ]||[]):[];}
 function vollstaendig(fl){
   var f=fl&&feldVon(fl.feld);if(!f){return false;}
   if(!opsFuer(f).some(function(o){return o[0]===fl.op;})){return false;}
+  if(mehrfach(fl.op)){return werteVon(fl).length>0;}
   if(brauchtWert(fl.op)&&txt(fl.wert)===''){return false;}
   if(fl.op==='zwischen'&&txt(fl.wert2)===''){return false;}
   return true;
@@ -367,6 +469,20 @@ function passt(r,fl){
   var v=r[fl.feld], op=fl.op;
   if(op==='leer'){return istLeer(v);}
   if(op==='gefuellt'){return !istLeer(v);}
+  if(mehrfach(op)){
+    var ws=werteVon(fl).map(norm);
+    if(f.typ==='liste'){
+      var lv=(v||[]).map(norm), drin=function(w){return lv.indexOf(w)>=0;};
+      if(op==='enthaeltEines'){return ws.some(drin);}
+      if(op==='enthaeltAlle'){return ws.every(drin);}
+      if(op==='enthaeltKeines'){return !ws.some(drin);}
+      return true;
+    }
+    var sv=norm(v);
+    if(op==='einesVon'){return ws.indexOf(sv)>=0;}
+    if(op==='keinesVon'){return ws.indexOf(sv)<0;}
+    return true;
+  }
   if(f.typ==='zahl'){
     if(!istZahl(v)){return false;}
     var a=zahl(fl.wert), b=zahl(fl.wert2);if(a==null){return true;}
@@ -413,16 +529,12 @@ function rechnen(kz,rows){
   }
   return {wert:erg,n:rows.length,mitWert:w.length};
 }
-/* Abfrage: {kennzahl:{fn,feld}, filter:[{feld,op,wert,wert2}], gruppe:key} */
-function ausfuehren(rows,a){
-  var fl=(a.filter||[]).filter(vollstaendig), kz=a.kennzahl||{fn:'anzahl'};
-  var treffer=rows.filter(function(r){return fl.every(function(x){return passt(r,x);});});
-  var g=feldVon(a.gruppe), res={n:treffer.length,basis:rows.length,treffer:treffer,gruppe:g?g.key:'',gruppen:[],gesamt:rechnen(kz,treffer),mehrfach:false};
-  if(!g){return res;}
-  var eimer={}, keys=[];
-  treffer.forEach(function(r){var ks=gruppenSchluessel(g,r[g.key]);if(ks.length>1){res.mehrfach=true;}ks.forEach(function(k){if(!eimer[k]){eimer[k]=[];keys.push(k);}eimer[k].push(r);});});
+/* Gruppen einer Variablen (Mehrfachnennung bei Listen); sortiert wie die Auswahl, sonst nach Größe */
+function gruppenBilden(rows,g,kz){
+  var eimer={}, keys=[], mehr=false;
+  rows.forEach(function(r){var ks=gruppenSchluessel(g,r[g.key]);if(ks.length>1){mehr=true;}ks.forEach(function(k){if(!eimer[k]){eimer[k]=[];keys.push(k);}eimer[k].push(r);});});
   var opt=g.key==='sprache'?[]:optionenVon(g);
-  res.gruppen=keys.map(function(k){var e=rechnen(kz,eimer[k]);e.key=k;return e;}).sort(function(x,y){
+  var l=keys.map(function(k){var e=rechnen(kz,eimer[k]);e.key=k;return e;}).sort(function(x,y){
     if(x.key===OHNE){return 1;}if(y.key===OHNE){return -1;}
     if(g.typ==='zahl'){return Number(x.key)-Number(y.key);}
     if(g.typ==='datum'){return x.key<y.key?-1:1;}
@@ -430,6 +542,25 @@ function ausfuehren(rows,a){
     if(ix>=0||iy>=0){return (ix<0?999:ix)-(iy<0?999:iy);}
     return (y.n-x.n)||x.key.localeCompare(y.key,'de');
   });
+  return {gruppen:l,mehrfach:mehr};
+}
+/* Abfrage: {kennzahl:{fn,feld}, filter:[{feld,op,wert,wert2,werte}], verknuepfung:'und'|'oder', gruppe:key, gruppe2:key}
+   verknuepfung „oder“: mindestens ein Filter trifft zu. gruppe2: Kreuztabelle gruppe × gruppe2. */
+function ausfuehren(rows,a){
+  var fl=(a.filter||[]).filter(vollstaendig), kz=a.kennzahl||{fn:'anzahl'}, oder=a.verknuepfung==='oder';
+  var treffer=rows.filter(function(r){if(!fl.length){return true;}var t=function(x){return passt(r,x);};return oder?fl.some(t):fl.every(t);});
+  var g=feldVon(a.gruppe), g2=g?feldVon(a.gruppe2):null;if(g2&&g2.key===g.key){g2=null;}
+  var res={n:treffer.length,basis:rows.length,treffer:treffer,gruppe:g?g.key:'',gruppe2:g2?g2.key:'',gruppen:[],gesamt:rechnen(kz,treffer),mehrfach:false,kreuz:null};
+  if(!g){return res;}
+  var gb=gruppenBilden(treffer,g,kz);res.gruppen=gb.gruppen;res.mehrfach=gb.mehrfach;
+  if(g2){
+    var sp=gruppenBilden(treffer,g2,kz), fach={};if(sp.mehrfach){res.mehrfach=true;}
+    treffer.forEach(function(r){var k2=gruppenSchluessel(g2,r[g2.key]);gruppenSchluessel(g,r[g.key]).forEach(function(k1){k2.forEach(function(k){var z=k1+'\u0000'+k;(fach[z]=fach[z]||[]).push(r);});});});
+    res.kreuz={spalten:sp.gruppen,zeilen:res.gruppen.map(function(z){
+      var zellen={};sp.gruppen.forEach(function(s){zellen[s.key]=rechnen(kz,fach[z.key+'\u0000'+s.key]||[]);});
+      return {key:z.key,n:z.n,wert:z.wert,mitWert:z.mitWert,zellen:zellen};
+    })};
+  }
   return res;
 }
 function wertText(f,w,op){
@@ -442,21 +573,32 @@ function filterText(fl){
   var f=feldVon(fl.feld);if(!f){return '';}
   var o=opsFuer(f).filter(function(x){return x[0]===fl.op;})[0], ol=o?o[1]:fl.op;
   if(!brauchtWert(fl.op)){return f.label+' '+ol;}
+  if(mehrfach(fl.op)){return f.label+' '+ol+' '+werteVon(fl).map(function(w){return '„'+wertText(f,w,'ist')+'“';}).join(', ');}
   if(fl.op==='zwischen'){return f.label+' zwischen '+wertText(f,fl.wert,fl.op)+' und '+wertText(f,fl.wert2,fl.op);}
   var w=wertText(f,fl.wert,fl.op);
   return f.label+' '+ol+' '+((f.typ==='zahl'||f.typ==='datum'||fl.op==='imSchuljahr')?w:'„'+w+'“');
 }
+function oderListe(l){return l.length<2?l.join(''):l.slice(0,-1).join(', ')+' oder '+l[l.length-1];}
 /* Die Abfrage als Satz: „Durchschnittsalter der Mädchen mit ISA in der DR 06 Esch/Alzette, gruppiert nach Stelle.“ */
 function satz(a){
   var kz=a.kennzahl||{fn:'anzahl'}, nf=kz.fn!=='anzahl'?feldVon(kz.feld):null, fl=(a.filter||[]).filter(vollstaendig);
-  var wer='Schüler', mit=[], ohne=[], orte=[], rest=[];
+  var wer='Schüler', mit=[], ohne=[], orte=[], rest=[], oder=a.verknuepfung==='oder'&&fl.length>1;
+  if(oder){rest=fl.map(filterText);fl=[];}
   fl.forEach(function(x){
+    var ws=mehrfach(x.op)?werteVon(x):[];
     if(x.feld==='geschlecht'&&x.op==='ist'&&(x.wert==='Mädchen'||x.wert==='Junge')&&wer==='Schüler'){wer=x.wert==='Mädchen'?'Mädchen':'Jungen';return;}
+    if(x.feld==='geschlecht'&&x.op==='einesVon'&&ws.length===1&&(ws[0]==='Mädchen'||ws[0]==='Junge')&&wer==='Schüler'){wer=ws[0]==='Mädchen'?'Mädchen':'Jungen';return;}
     if(x.feld==='massnahmen'&&(x.op==='enthaelt'||x.op==='enthaeltText')){mit.push(String(x.wert).split('|')[0]);return;}
+    if(x.feld==='massnahmen'&&x.op==='enthaeltEines'){mit.push(oderListe(ws));return;}
+    if(x.feld==='massnahmen'&&x.op==='enthaeltAlle'){mit.push(ws.join(' und '));return;}
     if(x.feld==='massnahmen'&&x.op==='enthaeltNicht'){ohne.push(x.wert);return;}
+    if(x.feld==='massnahmen'&&x.op==='enthaeltKeines'){ohne.push(ws.join(' und '));return;}
     if(x.feld==='direction'&&x.op==='ist'){orte.push('in der DR '+x.wert);return;}
+    if(x.feld==='direction'&&x.op==='einesVon'){orte.push((ws.length>1?'in den DR ':'in der DR ')+oderListe(ws));return;}
     if(x.feld==='stelle'&&x.op==='ist'){orte.push('in der Stelle '+x.wert);return;}
+    if(x.feld==='stelle'&&x.op==='einesVon'){orte.push((ws.length>1?'in den Stellen ':'in der Stelle ')+oderListe(ws));return;}
     if(x.feld==='cycle'&&x.op==='ist'&&/^C[1-4]$/.test(x.wert)){orte.push('im Cycle '+x.wert.slice(1));return;}
+    if(x.feld==='cycle'&&x.op==='einesVon'&&ws.length&&ws.every(function(c){return /^C[1-4]$/.test(c);})){orte.push('im Cycle '+oderListe(ws.map(function(c){return c.slice(1);})));return;}
     if(x.feld==='cycle'&&x.op==='ist'&&x.wert==='ES'){orte.push('im Enseignement secondaire');return;}
     if(x.feld==='alter'){
       var ap={zwischen:'zwischen '+x.wert+' und '+x.wert2+' Jahren',gleich:'mit '+x.wert+' Jahren',kleiner:'unter '+x.wert+' Jahren',groesser:'über '+x.wert+' Jahren',mindestens:'ab '+x.wert+' Jahren',hoechstens:'bis '+x.wert+' Jahre'}[x.op];
@@ -473,30 +615,65 @@ function satz(a){
   if(mit.length){s+=' mit '+mit.join(' und ');}
   if(ohne.length){s+=' ohne '+ohne.join(' und ');}
   if(orte.length){s+=' '+orte.join(' ');}
-  if(rest.length){s+=' ('+rest.join('; ')+')';}
-  var g=feldVon(a.gruppe);if(g){s+=', gruppiert nach '+g.label+(g.typ==='datum'?' (Schuljahr)':'');}
+  if(oder){s+=', bei denen mindestens eine Bedingung zutrifft: '+rest.join(' oder ');}
+  else if(rest.length){s+=' ('+rest.join('; ')+')';}
+  var g=feldVon(a.gruppe), g2=g?feldVon(a.gruppe2):null;
+  if(g){s+=', gruppiert nach '+g.label+(g.typ==='datum'?' (Schuljahr)':'')+(g2&&g2.key!==g.key?' und '+g2.label+(g2.typ==='datum'?' (Schuljahr)':''):'');}
   return s+'.';
 }
-function neueAbfrage(){return {kennzahl:{fn:'anzahl',feld:''},filter:[],gruppe:'stelle'};}
-function abfrageNorm(a){a=kopie(a||{});a.kennzahl=a.kennzahl||{fn:'anzahl',feld:''};a.kennzahl.feld=a.kennzahl.feld||'';a.filter=Array.isArray(a.filter)?a.filter:[];a.gruppe=a.gruppe||'';return a;}
+function neueAbfrage(){return {kennzahl:{fn:'anzahl',feld:''},filter:[],verknuepfung:'und',gruppe:'stelle',gruppe2:''};}
+/* Gespeicherte Abfragen älterer Stände bleiben gültig: fehlende Angaben ergänzen,
+   „ist“ bei Listen-Variablen als „enthält“ lesen, „Anderes Kompetenzzentrum“ war früher Freitext */
+function abfrageNorm(a){
+  a=kopie(a||{});a.kennzahl=a.kennzahl||{fn:'anzahl',feld:''};a.kennzahl.feld=a.kennzahl.feld||'';
+  a.filter=(Array.isArray(a.filter)?a.filter:[]).filter(function(fl){return fl&&typeof fl==='object';}).map(function(fl){
+    var f=feldVon(fl.feld);
+    if(f&&f.typ==='liste'){if(fl.op==='ist'){fl.op='enthaelt';}else if(fl.op==='istNicht'){fl.op='enthaeltNicht';}}
+    if(f&&f.key==='autreCc'&&fl.op==='enthaelt'&&CC_CODES.indexOf(txt(fl.wert))<0){var cs=ccCodes(fl.wert);if(cs.length===1){fl.wert=cs[0];}else{fl.op='enthaeltText';}}
+    if(mehrfach(fl.op)){fl.werte=werteVon(fl);delete fl.wert;}
+    return fl;
+  });
+  a.verknuepfung=a.verknuepfung==='oder'?'oder':'und';a.gruppe=a.gruppe||'';a.gruppe2=a.gruppe&&a.gruppe2&&a.gruppe2!==a.gruppe?a.gruppe2:'';
+  return a;
+}
 
-/* Vorlagen: typische Fragen der Leitung und des Ministeriums */
+/* Vorlagen: typische Fragen der Leitung und des Ministeriums – nach Bereichen geordnet */
+var VORLAGEN_BEREICHE=['Überblick','Maßnahmen und Dauer','Profil, ELDiB und Umfeld','Mehrere Variablen verknüpfen'];
+function mitM(m){return {feld:'massnahmenAlle',op:'enthaelt',wert:m};}
 var VORLAGEN=[
-  {id:'stelle',titel:'Schüler je Stelle',text:'Wie viele Schüler betreut jede Stelle?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'stelle'}},
-  {id:'massnahmen',titel:'Laufende Maßnahmen nach Art',text:'Welche Maßnahmen laufen gerade – und wie oft?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'massnahmen'}},
-  {id:'dr',titel:'Schüler je Direction régionale',text:'Aus welchen Regionen kommen die Schüler (Enseignement fondamental)?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'direction'}},
-  {id:'cycle',titel:'Verteilung nach Cycle',text:'C1 bis C4 und Enseignement secondaire',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'cycle'}},
-  {id:'geschlecht',titel:'Jungen und Mädchen',text:'Verteilung nach Geschlecht',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'geschlecht'}},
-  {id:'alterStelle',titel:'Durchschnittsalter je Stelle',text:'Wie alt sind die Schüler im Schnitt?',a:{kennzahl:{fn:'mittel',feld:'alter'},filter:[],gruppe:'stelle'}},
-  {id:'neu',titel:'Neue Fälle je Schuljahr',text:'Beginn der Begleitung, gezählt je Schuljahr (ab 15. August)',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'beginn'}},
-  {id:'isaDauer',titel:'Dauer der ISA',text:'Durchschnittliche Dauer der ISA in Monaten, je Stelle',a:{kennzahl:{fn:'mittel',feld:'isaDauer'},filter:[{feld:'massnahmenAlle',op:'enthaelt',wert:'ISA'}],gruppe:'stelle'}},
-  {id:'beschulung',titel:'Spezialisierte Beschulung',text:'Annexe, Classes de participation und CST',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'massnahmen',op:'gefuellt'},{feld:'beschulung',op:'gefuellt'}],gruppe:'beschulung'}},
-  {id:'scas',titel:'SCAS beteiligt, je Direction',text:'Bei wie vielen Schülern ist der SCAS beteiligt?',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'scas',op:'ist',wert:'ja'}],gruppe:'direction'}},
-  {id:'sprache',titel:'Erstsprachen',text:'Welche Erstsprachen sprechen die Schüler?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'sprache'}},
-  {id:'cni',titel:'CNI-Entscheidungen je Schuljahr',text:'Entscheidungen der Commission nationale d’inclusion',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'cni',op:'gefuellt'}],gruppe:'cni'}},
-  {id:'eltern',titel:'Elternsituation',text:'Zusammen, getrennt oder anders',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'eltern'}},
-  {id:'iqCycle',titel:'IQ je Cycle',text:'Mittlerer IQ – nur Dossiers mit IQ-Angabe',a:{kennzahl:{fn:'mittel',feld:'iq'},filter:[],gruppe:'cycle'}},
-  {id:'eldib',titel:'Überfällige ELDiB-Items je Stelle',text:'Summe der für das Alter längst erwarteten, noch nicht erreichten Items',a:{kennzahl:{fn:'summe',feld:'eldibUeber'},filter:[],gruppe:'stelle'}}
+  {id:'stelle',b:0,titel:'Schüler je Stelle',text:'Wie viele Schüler betreut jede Stelle?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'stelle'}},
+  {id:'massnahmen',b:0,titel:'Laufende Maßnahmen nach Art',text:'Welche Maßnahmen laufen gerade – und wie oft?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'massnahmen'}},
+  {id:'dr',b:0,titel:'Schüler je Direction régionale',text:'Aus welchen Regionen kommen die Schüler (Enseignement fondamental)?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'direction'}},
+  {id:'cycle',b:0,titel:'Verteilung nach Cycle',text:'C1 bis C4 und Enseignement secondaire',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'cycle'}},
+  {id:'geschlecht',b:0,titel:'Jungen und Mädchen',text:'Verteilung nach Geschlecht',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'geschlecht'}},
+  {id:'alterStelle',b:0,titel:'Durchschnittsalter je Stelle',text:'Wie alt sind die Schüler im Schnitt?',a:{kennzahl:{fn:'mittel',feld:'alter'},filter:[],gruppe:'stelle'}},
+  {id:'neu',b:0,titel:'Neue Fälle je Schuljahr',text:'Beginn der Begleitung, gezählt je Schuljahr (ab 15. August)',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'beginn'}},
+  {id:'isaDauer',b:1,titel:'Dauer der ISA je Stelle',text:'Durchschnittliche Dauer der Intervention spécialisée ambulatoire in Monaten',a:{kennzahl:{fn:'mittel',feld:'isaDauer'},filter:[mitM('ISA')],gruppe:'stelle'}},
+  {id:'isaProfil',b:1,titel:'Dauer der ISA je Profil',text:'Mittlere Dauer der ISA, gruppiert nach „Verdacht / Profil“',a:{kennzahl:{fn:'mittel',feld:'isaDauer'},filter:[mitM('ISA')],gruppe:'verdacht'}},
+  {id:'isaSchule',b:1,titel:'Dauer der ISA je Schule',text:'Mittlere Dauer der ISA, gruppiert nach Schule',a:{kennzahl:{fn:'mittel',feld:'isaDauer'},filter:[mitM('ISA')],gruppe:'schule'}},
+  {id:'atelierArt',b:1,titel:'Ateliers nach Art',text:'Welche Ateliers – und wie oft (auch beendete)?',a:{kennzahl:{fn:'anzahl'},filter:[mitM('Atelier')],gruppe:'atelierArt'}},
+  {id:'atelierDauer',b:1,titel:'Dauer je Atelier',text:'Mittlere Dauer in Monaten, je Atelier',a:{kennzahl:{fn:'mittel',feld:'atelierDauer'},filter:[mitM('Atelier')],gruppe:'atelierArt'}},
+  {id:'reeducationArt',b:1,titel:'Rééducations nach Art',text:'Welche Rééducations – und wie oft?',a:{kennzahl:{fn:'anzahl'},filter:[mitM('Rééducation')],gruppe:'reeducationArt'}},
+  {id:'cgArt',b:1,titel:'C&G für Fachkräfte oder Eltern',text:'Conseil et guidance: für wen?',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'cgArt',op:'gefuellt'}],gruppe:'cgArt'}},
+  {id:'beschulung',b:1,titel:'Spezialisierte Beschulung',text:'Annexe, Classes de participation und CST (laufend)',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'massnahmen',op:'gefuellt'},{feld:'beschulung',op:'gefuellt'}],gruppe:'beschulung'}},
+  {id:'beschulungDauer',b:1,titel:'Dauer der spezialisierten Beschulung',text:'Mittlere Dauer in Monaten: Annexe, CdP, CST',a:{kennzahl:{fn:'mittel',feld:'beschulungDauer'},filter:[{feld:'beschulung',op:'gefuellt'}],gruppe:'beschulung'}},
+  {id:'cstGruppe',b:1,titel:'CST nach Gruppe',text:'Moveo, Passo … (auch beendete)',a:{kennzahl:{fn:'anzahl'},filter:[mitM('CST')],gruppe:'cstGruppe'}},
+  {id:'cdpRegion',b:1,titel:'Classes de participation nach Region',text:'In welcher Direction liegt die Klasse?',a:{kennzahl:{fn:'anzahl'},filter:[mitM('CdP')],gruppe:'cdpRegion'}},
+  {id:'begleitungDauer',b:1,titel:'Dauer der Begleitung je Stelle',text:'Vom Beginn der Begleitung bis heute bzw. bis zum Abschluss',a:{kennzahl:{fn:'mittel',feld:'dauerBegleitung'},filter:[],gruppe:'stelle'}},
+  {id:'cni',b:1,titel:'CNI-Entscheidungen je Schuljahr',text:'Entscheidungen der Commission nationale d’inclusion',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'cni',op:'gefuellt'}],gruppe:'cni'}},
+  {id:'cc',b:2,titel:'Andere Kompetenzzentren',text:'Welche Kompetenzzentren sind außerdem beteiligt?',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'autreCc',op:'gefuellt'}],gruppe:'autreCc'}},
+  {id:'scas',b:2,titel:'SCAS beteiligt, je Direction',text:'Bei wie vielen Schülern ist der SCAS beteiligt?',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'scas',op:'ist',wert:'ja'}],gruppe:'direction'}},
+  {id:'sprache',b:2,titel:'Erstsprachen',text:'Welche Erstsprachen sprechen die Schüler?',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'sprache'}},
+  {id:'eltern',b:2,titel:'Elternsituation',text:'Zusammen, getrennt oder anders',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'eltern'}},
+  {id:'iqCycle',b:2,titel:'IQ je Cycle',text:'Mittlerer IQ – nur Dossiers mit IQ-Angabe',a:{kennzahl:{fn:'mittel',feld:'iq'},filter:[],gruppe:'cycle'}},
+  {id:'eldibUnter',b:2,titel:'ELDiB: Bereiche unter der erwarteten Stufe',text:'In welchen Bereichen liegen die Schüler unter der Stufe für ihr Alter?',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'eldibUnter',op:'gefuellt'}],gruppe:'eldibUnter'}},
+  {id:'eldibVerhalten',b:2,titel:'ELDiB-Stufe Verhalten je Maßnahme',text:'Mittlere Stufe im Bereich Verhalten, je laufender Maßnahme',a:{kennzahl:{fn:'mittel',feld:'eldibVerhalten'},filter:[{feld:'eldibVerhalten',op:'gefuellt'}],gruppe:'massnahmen'}},
+  {id:'eldib',b:2,titel:'Überfällige ELDiB-Items je Stelle',text:'Summe der für das Alter längst erwarteten, noch nicht erreichten Items',a:{kennzahl:{fn:'summe',feld:'eldibUeber'},filter:[],gruppe:'stelle'}},
+  {id:'massnahmenDr',b:3,titel:'Laufende Maßnahmen je Direction',text:'Kreuztabelle: Direction régionale × Maßnahme',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'direction',gruppe2:'massnahmen'}},
+  {id:'geschlechtCycle',b:3,titel:'Jungen und Mädchen je Cycle',text:'Kreuztabelle: Cycle × Geschlecht',a:{kennzahl:{fn:'anzahl'},filter:[],gruppe:'cycle',gruppe2:'geschlecht'}},
+  {id:'isaSchuleProfil',b:3,titel:'Dauer der ISA je Schule und Profil',text:'Kreuztabelle: mittlere Dauer der ISA, Schule × Profil',a:{kennzahl:{fn:'mittel',feld:'isaDauer'},filter:[mitM('ISA')],gruppe:'schule',gruppe2:'verdacht'}},
+  {id:'isaOderAtelier',b:3,titel:'Mädchen mit ISA oder Atelier, je Cycle',text:'„eines von“: Geschlecht, Maßnahmen und Cycle zusammen',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'geschlecht',op:'ist',wert:'Mädchen'},{feld:'massnahmen',op:'enthaeltEines',werte:['ISA','Atelier']}],gruppe:'cycle'}},
+  {id:'oder',b:3,titel:'Mit ISA oder mit SCAS',text:'„oder“: mindestens eine Bedingung trifft zu – je Stelle',a:{kennzahl:{fn:'anzahl'},filter:[{feld:'massnahmen',op:'enthaelt',wert:'ISA'},{feld:'scas',op:'ist',wert:'ja'}],verknuepfung:'oder',gruppe:'stelle'}}
 ];
 
 /* =====================================================================
@@ -504,7 +681,8 @@ var VORLAGEN=[
    keine KI – nichts verlässt den Browser. Zeigt, wie die Frage
    verstanden wurde und welche Wörter nicht berücksichtigt sind.
    ===================================================================== */
-var BEISPIELE=['Durchschnittsalter der Mädchen mit ISA in DR Esch','Wie viele Schüler im CST?','Anzahl nach Stelle','Wie viele Jungen zwischen 10 und 12 Jahren nach Cycle?','Neue Fälle in diesem Schuljahr nach Direction','Mittlere Dauer der ISA nach Stelle'];
+var BEISPIELE=['Durchschnittsalter der Mädchen mit ISA in DR Esch','Wie viele Schüler im CST?','Anzahl nach Stelle','Wie viele Jungen zwischen 10 und 12 Jahren nach Cycle?','Neue Fälle in diesem Schuljahr nach Direction','Mittlere Dauer der ISA nach Stelle',
+  'Wie viele Mädchen mit ISA oder Atelier nach Cycle?','Anzahl nach Direction und Maßnahme','Mittlere Dauer der Ateliers nach Atelier'];
 var STOPP=('wie viele viel wieviele wieviel der die das den dem des ein eine einer eines einem einen und oder mit ohne im in bei beim von vom zu zum zur an am auf aus fur gibt es sind ist war waren sein haben hat hatten werden wird wurden betreut betreuten betreute begleitet begleiteten schuler schulerin schulerinnen schulers kinder kind kindern jugendliche jugendlichen dossiers dossier falle fall fallen alle aller allen insgesamt zurzeit derzeit aktuell momentan gerade bitte zeige zeig mir uns wir welche welcher welches was wo wer nach je pro jahre jahren jahr alt cdse dieses diesem dieser da dort hier noch schon auch nur etwa ca sich sie er ihr unsere unser unseren denen deren dessen als eigentlich denn gerne mal').split(' ');
 var ARTIKEL=['der','die','das','den','dem','des','einer','eines','einem','einen'];
 var EINLEITER=['mit','ohne','im','in','bei','beim','fur','und','zwischen','von','ab','unter','uber','aus','an','am','nur','die','der','das','den','dem','des'];
@@ -512,7 +690,10 @@ var GSYN={stelle:'stelle',stellen:'stelle',team:'stelle',teams:'stelle',massnahm
   cycle:'cycle',cycles:'cycle',zyklus:'cycle',zyklen:'cycle',geschlecht:'geschlecht',alter:'alter',altersjahr:'alter',sprache:'sprache',sprachen:'sprache',erstsprache:'sprache',muttersprache:'sprache',schule:'schule',schulen:'schule',klasse:'klasse',klassen:'klasse',schulform:'schulform',status:'status',
   nationalitat:'nationalitaet',nationalitaten:'nationalitaet',eltern:'eltern',elternsituation:'eltern',familiensituation:'eltern',diagnose:'diagnosen',diagnosen:'diagnosen',verdacht:'verdacht',schuljahr:'beginn',schuljahren:'beginn',aufnahme:'beginn',aufnahmejahr:'beginn',beginn:'beginn',
   fallverantwortlich:'verantwortlich',fallverantwortlichen:'verantwortlich',fallverantwortlicher:'verantwortlich',verantwortlichen:'verantwortlich',sorgerecht:'sorgerecht',scas:'scas',dienste:'dienste',diensten:'dienste',dienst:'dienste',beschulung:'beschulung','spezialisierter beschulung':'beschulung','spezialisierte beschulung':'beschulung',einrichtung:'beschulung',
-  migration:'migration',migrationskontext:'migration',ausland:'scolEtranger',geburtsort:'geburtsort',cni:'cni'};
+  migration:'migration',migrationskontext:'migration',ausland:'scolEtranger',geburtsort:'geburtsort',cni:'cni',
+  atelier:'atelierArt',ateliers:'atelierArt','art des ateliers':'atelierArt',reeducation:'reeducationArt',reeducations:'reeducationArt','cst-gruppe':'cstGruppe','cst gruppe':'cstGruppe','gruppe im cst':'cstGruppe',
+  profil:'verdacht',profilen:'verdacht',profile:'verdacht',kompetenzzentrum:'autreCc',kompetenzzentren:'autreCc','anderem kompetenzzentrum':'autreCc','anderen kompetenzzentren':'autreCc',cc:'autreCc',
+  'eldib-bereich':'eldibUnter','eldib-bereichen':'eldibUnter','c&g-art':'cgArt'};
 function gruppeAus(ph){
   if(GSYN[ph]){return GSYN[ph];}
   if(ph.length<4){return '';}
@@ -535,8 +716,22 @@ function frageVerstehen(eingabe){
   function frei(a,b){for(var k=a;k<b;k++){if(weg[k]){return false;}}return true;}
   function nimm(a,b){for(var k=a;k<b;k++){weg[k]=true;}}
   function finde(re){var g=new RegExp(re.source,'g'),m;while((m=g.exec(text))){if(!m[0]){g.lastIndex++;continue;}if(frei(m.index,m.index+m[0].length)){nimm(m.index,m.index+m[0].length);return m;}}return null;}
-  var kz={fn:'anzahl',feld:''}, kzErkannt=false, filter=[], gruppe='', hinweise=[];
+  var kz={fn:'anzahl',feld:''}, kzErkannt=false, filter=[], gruppe='', gruppe2='', hinweise=[];
   function fil(feld,op,wert,wert2){var o={feld:feld,op:op};if(wert!=null){o.wert=String(wert);}if(wert2!=null){o.wert2=String(wert2);}filter.push(o);}
+  function filMehr(feld,op,werte){filter.push({feld:feld,op:op,werte:eindeutig(werte)});}
+  /* „… oder X oder Y“ direkt nach einem Treffer: weitere Werte derselben Variablen einsammeln */
+  function weitere(pos,re,lesen){
+    var l=[], wm;
+    while((wm=re.exec(text.slice(pos)))){var w=lesen(wm[1]);if(!w||!frei(pos,pos+wm[0].length)){break;}nimm(pos,pos+wm[0].length);l.push(w);pos+=wm[0].length;}
+    return l;
+  }
+  function gruppeLesen(start){
+    var woerter=text.slice(start).trim().split(' '), vor=0, kette=[], k2, n;
+    while(vor<woerter.length&&ARTIKEL.indexOf(woerter[vor])>=0){vor++;}
+    for(k2=vor;k2<woerter.length&&kette.length<4;k2++){if(EINLEITER.indexOf(woerter[k2])>=0){break;}kette.push(woerter[k2]);}
+    for(n=kette.length;n>=1;n--){var fk=gruppeAus(kette.slice(0,n).join(' '));if(fk){return {key:fk,ende:start+woerter.slice(0,vor).concat(kette.slice(0,n)).join(' ').length,kette:kette};}}
+    return {key:'',ende:start,kette:kette};
+  }
   /* 1) Kennzahl */
   if(finde(/\bdurchschnittsalter\w*/)){kz={fn:'mittel',feld:'alter'};kzErkannt=true;}
   else if(finde(/\baltest\w*/)){kz={fn:'max',feld:'alter'};kzErkannt=true;}
@@ -548,22 +743,30 @@ function frageVerstehen(eingabe){
     AGG.forEach(function(a){var g=new RegExp(a[1].source,'g'),m;while((m=g.exec(text))){if(frei(m.index,m.index+m[0].length)){if(!best||m.index<best.a){best={fn:a[0],a:m.index,b:m.index+m[0].length};}break;}}});
     if(best){nimm(best.a,best.b);kz={fn:best.fn,feld:''};kzErkannt=true;}
   }
-  /* 2) Gruppieren nach … (das letzte „nach / je / pro“) */
-  var GB=/\b(gruppiert nach|aufgeteilt nach|aufgeschlusselt nach|getrennt nach|unterteilt nach|sortiert nach|verteilt nach|nach|je|pro)\s+/g, gm, gbT=null;
-  while((gm=GB.exec(text))){if(frei(gm.index,gm.index+gm[1].length)){gbT={a:gm.index,kw:gm[1],start:gm.index+gm[0].length};}}
+  /* 2) Gruppieren nach … (das letzte „nach / je / pro“); „nach A und B“ oder „nach A und nach B“ → Kreuztabelle */
+  var GB=/\b(gruppiert nach|aufgeteilt nach|aufgeschlusselt nach|getrennt nach|unterteilt nach|sortiert nach|verteilt nach|nach|je|pro)\s+/g, gm, gbs=[];
+  while((gm=GB.exec(text))){if(frei(gm.index,gm.index+gm[1].length)){gbs.push({a:gm.index,kw:gm[1],start:gm.index+gm[0].length});}}
+  var gbT=gbs.length?gbs[gbs.length-1]:null;
   if(gbT){
-    var woerter=text.slice(gbT.start).trim().split(' '), vor=0, kette=[], n;
-    while(vor<woerter.length&&ARTIKEL.indexOf(woerter[vor])>=0){vor++;}
-    for(i=vor;i<woerter.length&&kette.length<4;i++){if(EINLEITER.indexOf(woerter[i])>=0){break;}kette.push(woerter[i]);}
-    for(n=kette.length;n>=1;n--){
-      var fk=gruppeAus(kette.slice(0,n).join(' '));
-      if(fk){gruppe=fk;nimm(gbT.a,gbT.start+woerter.slice(0,vor).concat(kette.slice(0,n)).join(' ').length);break;}
+    var g1=gruppeLesen(gbT.start);
+    if(g1.key){
+      gruppe=g1.key;nimm(gbT.a,g1.ende);
+      var um=/^ (und|sowie) (?:(?:nach|je|pro) )?/.exec(text.slice(g1.ende));
+      if(um){var gz=gruppeLesen(g1.ende+um[0].length);if(gz.key&&gz.key!==gruppe){gruppe2=gz.key;nimm(g1.ende,gz.ende);}}
+      if(!gruppe2&&gbs.length>1){
+        var vg=gbs[gbs.length-2], g0=gruppeLesen(vg.start);
+        if(g0.key&&g0.key!==gruppe&&/^ (und|sowie) $/.test(text.slice(g0.ende,gbT.a))){gruppe2=gruppe;gruppe=g0.key;nimm(vg.a,gbT.a);}
+      }
     }
-    if(!gruppe&&kette.length){hinweise.push('Wonach gruppiert werden soll („'+gbT.kw+' '+kette.join(' ')+'“), wurde nicht erkannt.');}
+    else if(g1.kette.length){hinweise.push('Wonach gruppiert werden soll („'+gbT.kw+' '+g1.kette.join(' ')+'“), wurde nicht erkannt.');}
   }
   /* 3) Zahlenfeld – besondere Wendungen zuerst (vor den Filtern) */
   if(kz.fn!=='anzahl'&&!kz.feld){
     var NUM1=[['isaDauer',/\b(dauer der isa|dauer einer isa|isa-dauer|isadauer|dauer isa)\b/],['beschulungDauer',/\b(dauer der (spezialisierten )?beschulung|beschulungsdauer)\b/],
+      ['atelierDauer',/\b(dauer (der |des |eines |im )?ateliers?|atelierdauer)\b/],['reeducationDauer',/\b(dauer (der |einer )?reeducation\w*)\b/],['annexeDauer',/\b(dauer (in der |der )?annexe)\b/],
+      ['cstDauer',/\b(dauer (im |des )?cst)\b/],['cdpDauer',/\b(dauer (in der |der )?(cdp|classe de participation))\b/],['cgDauer',/\b(dauer (des |der )?(c ?& ?g|conseil et guidance))\b/],['dsDauer',/\b(dauer (des |der )?(ds|diagnostic\w*))\b/],
+      ['eldibVerhalten',/\b(stufe (im bereich )?verhalten)\b/],['eldibKommunikation',/\b(stufe (im bereich )?kommunikation)\b/],['eldibSozialisation',/\b(stufe (im bereich )?sozialisation)\b/],['eldibKognition',/\b(stufe (im bereich )?kognition)\b/],
+      ['massnahmenAnzahl',/\b(anzahl (der )?massnahmen)\b/],
       ['dauerBegleitung',/\b(dauer der begleitung|begleitungsdauer|betreuungsdauer|dauer der betreuung)\b/],['iq',/\b(iq|intelligenzquotient\w*)\b/],['eldibZiele',/\b(forderziel\w*)\b/],['eldibUeber',/\b(uberfallig\w*)\b/],['eintraege',/\b(eintrage|eintragungen)\b/],['timeout',/\b(time-?outs?|auszeit\w*)\b/],['vorfaelle',/\b(vorfall|vorfalle|vorfallen|krisen)\b/]];
     for(i=0;i<NUM1.length;i++){if(finde(NUM1[i][1])){kz.feld=NUM1[i][0];break;}}
   }
@@ -587,7 +790,17 @@ function frageVerstehen(eingabe){
   else if((am=finde(/\b(\d{1,2})\s*-?\s*jahrig\w*/)||finde(/\b(\d{1,2})\s+jahre alt\b/)||finde(/\bmit\s+(\d{1,2})\s+jahren\b/))){fil('alter','gleich',am[1]);}
   var sm=finde(/\b(?:im|in der|in|bei der|beim|bei|an der|stelle|team)\s+(annexe(?: junglinster)?|isa|diagnostique|diagnostic|diagnostik|cst|cp|cdp|classes? de participation)\b/);
   if(sm){fil('stelle','ist',stelleName(stelleWort(sm[1])));}
-  var MW=[['DS','(ds|diagnostic specialise|diagnostic|diagnostik)'],['C&G','(c ?& ?g|cg|conseil et guidance|guidance)'],['ISA','(isa)'],['Atelier','(atelier\\w*)'],['Rééducation','(reeducation|reedukation)'],['Annexe','(annexe)'],['CdP','(cdp|classe de participation)'],['CST','(cst)']];
+  var MW=[['DS','(ds|diagnostic specialise|diagnostic|diagnostik)'],['C&G','(c ?& ?g|cg|conseil et guidance|guidance)'],['ISA','(isa)'],['Atelier','(atelier\\w*)'],['Rééducation','(reeducation\\w*|reedukation)'],['Annexe','(annexe)'],['CdP','(cdp|classes? de participation)'],['CST','(cst)']];
+  /* „mit ISA oder Atelier“ → enthält eines von; „mit ISA und Atelier“ → beide; „ohne ISA oder Atelier“ → keines von */
+  var MWNC='(?:'+MW.map(function(m){return m[1].replace(/^\(/,'(?:');}).join('|')+')';
+  var ml=finde(new RegExp('\\b(mit|ohne)\\s+(?:(?:einer|einem|der|dem|laufender|laufendem|laufenden|laufende)\\s+)?('+MWNC+'(?:\\s+(?:oder|und|bzw|sowie)\\s+(?:(?:einer|einem|der|dem)\\s+)?'+MWNC+')+)\\b'));
+  if(ml){
+    var mk=eindeutig((ml[2].match(new RegExp('\\b'+MWNC+'\\b','g'))||[]).map(function(w){for(var j=0;j<MW.length;j++){if(new RegExp('^'+MW[j][1]+'$').test(w)){return MW[j][0];}}return '';}));
+    var mkCg=[];mk.forEach(function(k){if(k==='C&G'){mkCg.push('C&G Fachkräfte','C&G Eltern');}else{mkCg.push(k);}});
+    if(ml[1]==='ohne'){filMehr('massnahmen','enthaeltKeines',mkCg);}
+    else if(/\b(oder|bzw)\b/.test(ml[2])){filMehr('massnahmen','enthaeltEines',mkCg);}
+    else{mk.forEach(function(k){if(k==='C&G'){fil('massnahmen','enthaeltText','C&G');}else{fil('massnahmen','enthaelt',k);}});}
+  }
   MW.forEach(function(mw){
     var m=finde(new RegExp('\\b(mit|ohne)\\s+(?:(?:einer|einem|der|dem|laufender|laufendem|laufenden|laufende)\\s+)?'+mw[1]+'\\b'));
     if(!m){return;}
@@ -598,11 +811,18 @@ function frageVerstehen(eingabe){
     if(finde(mw[1])){if(mw[0]==='C&G'){fil('massnahmen','enthaeltText','C&G');}else{fil('massnahmen','enthaelt',mw[0]);}}
   });
   var sb=finde(/\b(annexe|cst|diagnostique)\b/);if(sb){fil('stelle','ist',stelleName(stelleWort(sb[1])));}
+  /* Direction: „in DR Esch“, „aus Mamer“ – auch „DR 05 oder 06“, „in Esch oder Sanem“ (→ ist eines von) */
+  var DR_WEITER=/^\s+(?:oder|bzw|und)\s+(?:(?:in der |in |aus |der )?(?:dr|dir|direction|region)\s+|in\s+|aus\s+)?(\d{1,2}|[a-z][a-z\/\-]*)\b/;
+  function drFilter(erst,pos){var l=[erst].concat(weitere(pos,DR_WEITER,drParser));l=eindeutig(l);if(l.length>1){filMehr('direction','einesVon',l);}else{fil('direction','ist',erst);}}
   var dm=finde(/\b(?:dr|dir|direction(?: regionale)?|direktion|regionaldirektion|region)\s+(\d{1,2}|[a-z][a-z\/\-]*)\b/);
-  if(dm){var dv=drParser(dm[1]);if(dv){fil('direction','ist',dv);}else{hinweise.push('Die Direction „'+dm[1]+'“ wurde nicht erkannt.');}}
-  else{var dm2=finde(/\b(?:in|aus|bei)\s+(luxemburg|luxembourg|mamer|petange|petingen|differdange|differdingen|sanem|esch(?:[\/\-](?:sur-)?alzette)?|dudelange|dudelingen|bettembourg|bettemburg|remich|grevenmacher|echternach|mersch|redange|redingen|diekirch|wiltz)\b/);if(dm2){var dv2=drParser(dm2[1]);if(dv2){fil('direction','ist',dv2);}}}
+  if(dm){var dv=drParser(dm[1]);if(dv){drFilter(dv,dm.index+dm[0].length);}else{hinweise.push('Die Direction „'+dm[1]+'“ wurde nicht erkannt.');}}
+  else{var dm2=finde(/\b(?:in|aus|bei)\s+(luxemburg|luxembourg|mamer|petange|petingen|differdange|differdingen|sanem|esch(?:[\/\-](?:sur-)?alzette)?|dudelange|dudelingen|bettembourg|bettemburg|remich|grevenmacher|echternach|mersch|redange|redingen|diekirch|wiltz)\b/);if(dm2){var dv2=drParser(dm2[1]);if(dv2){drFilter(dv2,dm2.index+dm2[0].length);}}}
+  /* Cycle: „Cycle 3“, „C4“ – auch „Cycle 3 oder 4“ */
   var cy=finde(/\b(?:im |in )?(?:cycle|zyklus)\s*([1-4])\b/)||finde(/\bc([1-4])(?:\.[1-3])?\b/);
-  if(cy){fil('cycle','ist','C'+cy[1]);}
+  if(cy){
+    var cyl=['C'+cy[1]].concat(weitere(cy.index+cy[0].length,/^\s+(?:oder|bzw|und)\s+(?:(?:im |in )?(?:cycle|zyklus)\s*|c)?([1-4])(?:\.[1-3])?\b/,function(z){return 'C'+z;}));
+    cyl=eindeutig(cyl);if(cyl.length>1){filMehr('cycle','einesVon',cyl);}else{fil('cycle','ist',cyl[0]);}
+  }
   else if(finde(/\b(sekundar\w*|secondaire|enseignement secondaire|lycee|lyzeum|gymnasium)\b/)){fil('cycle','ist','ES');}
   if(finde(/\b(inaktive?[nrs]?|ehemalige?[nrs]?|abgeschlossene?[nrs]?)\b/)){fil('status','ist','inaktiv');}
   else if(finde(/\b(aktive[nrs]?)\b/)){fil('status','ist','aktiv');}
@@ -634,7 +854,7 @@ function frageVerstehen(eingabe){
   }
   var unklar=[];
   toks.forEach(function(t,k){var a=starts[k], genommen=false;for(var j=a;j<a+t.length;j++){if(weg[j]){genommen=true;break;}}if(!genommen&&STOPP.indexOf(t)<0){unklar.push(orig[k]);}});
-  var abfrage={kennzahl:kz,filter:filter,gruppe:gruppe};
+  var abfrage={kennzahl:kz,filter:filter,verknuepfung:'und',gruppe:gruppe,gruppe2:gruppe2};
   return {abfrage:abfrage,satz:satz(abfrage),unklar:unklar,hinweise:hinweise,verstanden:kzErkannt||filter.length>0||!!gruppe};
 }
 
@@ -643,7 +863,8 @@ function frageVerstehen(eingabe){
    ===================================================================== */
 var zust={el:null,seite:'',daten:[],kaputt:0};
 var gf={status:'alle',stelle:'',sj:''};
-var tab={q:'',sortFeld:'nachname',sortAuf:true,schnell:{geschlecht:'',cycle:'',direction:'',massnahme:''},filter:[],mehr:0};
+/* tab.filter: alle müssen zutreffen; tab.oder: mindestens einer (aus einer Abfrage mit „oder“) */
+var tab={q:'',sortFeld:'nachname',sortAuf:true,schnell:{geschlecht:'',cycle:'',direction:'',massnahme:''},filter:[],oder:[],mehr:0};
 var abf={a:neueAbfrage(),frage:'',verstanden:null};
 var imp=null, protFilter='alle', dg={}, resizeAn=false, resizeTimer=null, fokusKey=null;
 var STANDARD_SPALTEN=['alter','geschlecht','klasse','schule','direction','stelle','massnahmen'];
@@ -699,7 +920,7 @@ function zeichnen(){
 }
 function leerKarte(){
   return H.karte('<h2>Noch keine Dossiers</h2><p>Die Datenbank rechnet mit den Schülerdossiers des Hubs. Sobald unter <b>Schüler</b> Dossiers angelegt sind – am besten mit der Fiche de renseignement –, erscheinen hier Kennzahlen, Diagramme und Abfragen.</p>'+
-    '<p>Gibt es die Fälle schon in CDSE Stats, lassen sie sich übernehmen.</p><div class="ar-knopfreihe"><a class="btn primary" href="#/schueler">'+svg('schueler')+'Zu den Schülern</a><a class="btn" href="#/datenbank/import">'+svg('hoch')+'Aus CDSE Stats übernehmen</a></div>','ar-leer db-leer');
+    '<p>Gibt es die Fälle schon in einer Excel-Tabelle oder in CDSE Stats, lassen sie sich übernehmen.</p><div class="ar-knopfreihe"><a class="btn primary" href="#/schueler">'+svg('schueler')+'Zu den Schülern</a><a class="btn" href="#/datenbank/import">'+svg('hoch')+'Aus CDSE Stats übernehmen</a></div>','ar-leer db-leer');
 }
 
 /* ---------- Filter oben (gelten für Übersicht, Tabelle und Abfragen) ---------- */
@@ -806,6 +1027,16 @@ function uebersicht(){
   dg.sprache={art:'balken',titel:'Nach Erstsprache',eintraege:sk.map(function(k){return ein('sprache',k,zS[k],{label:k==='andere'?'andere Sprache':spracheName(k),titel:k});}).concat(zS[OHNE]?[ein('sprache',OHNE,zS[OHNE])]:[])};
   var zSch=zaehlen(rows,'schule'), schk=Object.keys(zSch).filter(function(k){return k!==OHNE;}).sort(function(x,y){return zSch[y]-zSch[x]||x.localeCompare(y,'de');});
   dg.schule={art:'balken',titel:'Schulen',eintraege:schk.slice(0,10).map(function(k){return ein('schule',k,zSch[k]);})};
+  /* Dauer je Maßnahme (Monate): Mittelwert über die Dossiers mit dieser Maßnahme (laufend bis heute) */
+  var dauerE=DAUER.map(function(z){var w=rows.map(function(r){return r[z[0]];}).filter(istZahl);
+    return w.length?{label:z[1],titel:'Mittlere Dauer',wert:mittel(w),text:zahlDe(mittel(w),1)+' Mon. · '+w.length,drill:{feld:z[0],op:'gefuellt'}}:null;}).filter(Boolean);
+  dg.dauer={art:'balken',titel:'Durchschnittliche Dauer je Maßnahme',eintraege:dauerE};
+  /* ELDiB: mittlere Stufe je Bereich – nur, wenn Stufen eingetragen sind */
+  var elE=ELDIB_B.map(function(b,i){var k='eldib'+b[1].charAt(0).toUpperCase()+b[1].slice(1), w=rows.map(function(r){return r[k];}).filter(istZahl);
+    return w.length?{label:b[1],titel:'Mittlere Stufe',wert:mittel(w),text:zahlDe(mittel(w),1)+' · '+w.length,farbe:['#B4533A','#2E3A9C','#1F6B6F','#8A6414'][i],drill:{feld:k,op:'gefuellt'}}:null;}).filter(Boolean);
+  var elErw=rows.map(function(r){return r.eldibErwartet;}).filter(istZahl);
+  if(elE.length&&elErw.length){elE.push({label:'erwartet',titel:'Mittlere erwartete Stufe (Alter)',wert:mittel(elErw),text:zahlDe(mittel(elErw),1),leer:true,drill:{feld:'eldibErwartet',op:'gefuellt'}});}
+  dg.eldib={art:'balken',titel:'ELDiB: mittlere Stufe je Bereich',eintraege:elE};
   h+='<div class="db-raster">'+
     dgKarte('stelle','Nach Stelle',l.length+(l.length===1?' Dossier':' Dossiers'))+
     dgKarte('massnahmen','Laufende Maßnahmen nach Art','Mehrfachnennung möglich')+
@@ -815,6 +1046,8 @@ function uebersicht(){
     dgKarte('geschlecht','Nach Geschlecht','')+
     dgKarte('sprache','Nach Erstsprache','')+
     dgKarte('schule','Schulen (die zehn häufigsten)',schk.length>10?(schk.length-10)+' weitere Schulen':(zSch[OHNE]?zSch[OHNE]+' ohne Angabe':''))+
+    (dauerE.length?dgKarte('dauer','Durchschnittliche Dauer je Maßnahme','in Monaten · Zahl der Dossiers'):'')+
+    (elE.length?dgKarte('eldib','ELDiB: mittlere Stufe je Bereich','Stufe 1–5 · Zahl der Dossiers'):'')+
   '</div><p class="ar-klein db-fuss">Ein Klick auf einen Balken zeigt diese Dossiers in der Tabelle. Gezählt wird nur, was in den Dossiers steht – „ohne Angabe“ heißt: nicht eingetragen.</p>';
   inhalt(h);diagrammeZeichnen();
 }
@@ -886,7 +1119,7 @@ function sortWert(f,r){
   return f.typ==='datum'?(v||''):norm(v);
 }
 function tabZeilen(basis){
-  var q=norm(tab.q), s=tab.schnell, fl=tab.filter.filter(vollstaendig);
+  var q=norm(tab.q), s=tab.schnell, fl=tab.filter.filter(vollstaendig), od=tab.oder.filter(vollstaendig);
   var l=basis.filter(function(x){
     var r=x.r;
     if(q&&norm([r.nachname,r.vorname,r.matricule,r.mfiles,r.schule,r.klasse].join(' ')).indexOf(q)<0){return false;}
@@ -894,7 +1127,7 @@ function tabZeilen(basis){
     if(s.cycle&&r.cycle!==s.cycle){return false;}
     if(s.direction&&r.direction!==s.direction){return false;}
     if(s.massnahme&&r.massnahmen.indexOf(s.massnahme)<0){return false;}
-    return fl.every(function(f){return passt(r,f);});
+    return fl.every(function(f){return passt(r,f);})&&(!od.length||od.some(function(f){return passt(r,f);}));
   });
   var f=feldVon(tab.sortFeld)||feldVon('nachname'), auf=tab.sortAuf?1:-1;
   return l.sort(function(a,b){
@@ -933,7 +1166,8 @@ function zelle(f,x){
 }
 function tabTeilHtml(){
   var basis=gefiltert(), zeilen=tabZeilen(basis), sp=spalten().map(feldVon).filter(Boolean), h='';
-  if(tab.filter.length){h+='<div class="db-aktivfilter" role="group" aria-label="Filter aus Diagramm oder Abfrage">'+tab.filter.map(function(fl,i){var t=filterText(fl);return '<span class="db-fchip">'+esc(t)+'<button type="button" data-db="tf-weg" data-i="'+i+'" aria-label="Filter „'+esc(t)+'“ entfernen">'+svg('x')+'</button></span>';}).join('')+
+  if(tab.filter.length||tab.oder.length){h+='<div class="db-aktivfilter" role="group" aria-label="Filter aus Diagramm oder Abfrage">'+tab.filter.map(function(fl,i){var t=filterText(fl);return '<span class="db-fchip">'+esc(t)+'<button type="button" data-db="tf-weg" data-i="'+i+'" aria-label="Filter „'+esc(t)+'“ entfernen">'+svg('x')+'</button></span>';}).join('')+
+    (tab.oder.length?(function(){var t='mindestens eine: '+tab.oder.map(filterText).join(' oder ');return '<span class="db-fchip db-fchip-oder">'+esc(t)+'<button type="button" data-db="tf-oder-weg" aria-label="Oder-Filter entfernen">'+svg('x')+'</button></span>';})():'')+
     '<button class="ar-link" type="button" data-db="tf-alle-weg">Alle entfernen</button></div>';}
   h+='<p class="db-anzahl" aria-live="polite"><b>'+zeilen.length+'</b> von '+basis.length+' Dossiers'+(filterAktiv()?' <span class="ar-leise">('+esc(filterBeschreibung())+')</span>':'')+'</p>';
   if(!zeilen.length){return h+H.karte('<p>Keine Dossiers für diese Auswahl.</p><button class="btn" type="button" data-db="tab-leeren">'+svg('reload')+'Suche und Schnellfilter zurücksetzen</button>','ar-leer');}
@@ -976,7 +1210,7 @@ function blattOeffnen(id,ausloeser){
     var b=ev.target.closest('[data-db-b]');if(!b){return;}
     var a=b.getAttribute('data-db-b');
     if(a==='zu'){dlg.close();}
-    else if(a==='dossier'||a==='fiche'){dlg.close();H.dossierOeffnen(id,a==='fiche'?'fiche':'ueberblick');}
+    else if(a==='dossier'||a==='fiche'||a==='eldib'){dlg.close();H.dossierOeffnen(id,a==='fiche'?'fiche':(a==='eldib'?'entwicklung':'ueberblick'));}
     else if(a==='db'){
       var akt=eintragVon(id);if(!akt){return;}
       dbDialog(akt.d).then(function(neu){
@@ -1001,10 +1235,12 @@ function blattHtml(x){
     return '<li class="'+m.stand+'"><b>'+esc(m.lang)+(m.standort?' · '+esc(m.standort):'')+'</b><span class="db-stand">'+esc(STAND[m.stand])+'</span><small>'+esc([m.von?'Beginn '+datumDe(m.von):'ohne Beginn',m.bis?'Ende '+datumDe(m.bis):'',m.dauer!=null?m.dauer+(m.dauer===1?' Monat':' Monate'):'',m.wer?'Intervenant·e: '+m.wer:''].filter(Boolean).join(' · '))+'</small></li>';
   }).join('')+'</ul>':'<p class="ar-leise">Keine Maßnahme in der Fiche angekreuzt.</p>')+'</section>';
   GRUPPEN.forEach(function(g){
-    var fs=FELDER.filter(function(f){return f.gruppe===g;});
-    var ausFiche=fs.some(function(f){return f.quelle==='fiche'||f.quelle==='beide';}), ausDb=fs.some(function(f){return f.quelle==='db'||f.quelle==='beide';});
+    /* Variablen einer Maßnahme nur zeigen, wenn es die Maßnahme im Dossier gibt */
+    var fs=FELDER.filter(function(f){return f.gruppe===g&&(!f.mk||hatMassnahme(ms,f.mk));});
+    var ausFiche=fs.some(function(f){return f.quelle==='fiche'||f.quelle==='beide';}), ausDb=fs.some(function(f){return f.quelle==='db'||f.quelle==='beide'||f.quelle==='eldib';}), ausEldib=fs.some(function(f){return f.quelle==='eldib';});
     h+='<section class="db-blatt-teil"><div class="db-blatt-teilkopf"><h3>'+esc(g)+'</h3><span class="db-blatt-wo">'+
       (ausFiche?'<button class="ar-link" type="button" data-db-b="fiche" title="Diese Werte kommen aus der Fiche de renseignement">'+svg('datei')+'Fiche</button>':'')+
+      (ausEldib?'<button class="ar-link" type="button" data-db-b="eldib" title="Die Stufen kommen aus der ELDiB-Einschätzung im Dossier (Reiter „Entwicklung & Ziele“)">'+svg('daten')+'ELDiB im Dossier</button>':'')+
       (ausDb?'<button class="ar-link" type="button" data-db-b="db" title="Angaben, die nur in der Datenbank stehen">'+svg('edit')+'Datenbank-Angaben</button>':'')+'</span></div><dl class="ar-dl db-dl">'+fs.map(function(f){
       var v=anzeige(f,r[f.key]);return '<dt>'+esc(f.label)+'</dt><dd'+(v?'':' class="leer"')+'>'+(v?esc(v):'—')+'</dd>';
     }).join('')+'</dl></section>';
@@ -1058,11 +1294,13 @@ function bearbeiten(d){
 function zeigen(id){offenId=id||null;location.hash='#/datenbank/tabelle';}
 
 /* ---------- Datenbank-Angaben bearbeiten (d.db; nur Responsables und Verwaltung) ---------- */
-var DB_NAMEN={schulform:'Schulform',vorherigeSchule:'vorherige Schule',schulwechsel:'Schulwechsel',scolEtranger:'Schulbesuch im Ausland',cni:'CNI-Entscheidung',autreCc:'anderes Kompetenzzentrum',autreMesure:'andere Maßnahme',
-  eltern:'Elternsituation',scas:'SCAS',tutelle:'Sorgerecht',massnahmenFamilie:'Maßnahmen Familie',diagnosen:'Diagnosen',verdacht:'Verdacht/Profil',iq:'IQ',notiz:'Notiz'};
+var DB_NAMEN={schulform:'Schulform',vorherigeSchule:'vorherige Schule',schulwechsel:'Schulwechsel',scolEtranger:'Schulbesuch im Ausland',cni:'CNI-Entscheidung',autreCc:'andere Kompetenzzentren',autreMesure:'andere Maßnahme',
+  eltern:'Elternsituation',scas:'SCAS',tutelle:'Sorgerecht',massnahmenFamilie:'Maßnahmen Familie',diagnosen:'Diagnosen',verdacht:'Verdacht/Profil',iq:'IQ',eldibStufen:'ELDiB-Stufen',notiz:'Notiz'};
 function zeilen(t){return eindeutig(String(t||'').split(/\n|;/));}
 function dbWert(k,v){
   if(k==='iq'){return zahl(v);}
+  if(k==='autreCc'){return ccListe(v).join('; ');}
+  if(k==='eldibStufen'){v=v&&typeof v==='object'?v:{};var o={datum:iso(v.datum)}, da=false;ELDIB_B.forEach(function(b){var s=stufeZahl(v[b[0]]);o[b[0]]=s;if(s!=null){da=true;}});return da?o:null;}
   if(k==='autreMesure'){v=v&&typeof v==='object'?v:{};var o={name:txt(v.name),von:iso(v.von),bis:iso(v.bis)};return (o.name||o.von||o.bis)?o:null;}
   if(['tutelle','massnahmenFamilie','diagnosen','verdacht'].indexOf(k)>=0){return liste(v);}
   if(['schulwechsel','cni'].indexOf(k)>=0){return iso(v);}
@@ -1081,13 +1319,28 @@ function listenFeld(name,label,wert,hilfe,vorschlaege){
     (hilfe?'<p class="ar-klein db-hilfe">'+esc(hilfe)+'</p>':'')+
     (vorschlaege&&vorschlaege.length?'<div class="db-vorschlaege" role="group" aria-label="Vorschläge für '+esc(label)+'"><span>Übernehmen:</span>'+vorschlaege.map(function(v){return '<button type="button" class="db-chip" data-feld="'+name+'" data-db-vorschlag="'+esc(v)+'">'+svg('plus')+esc(v)+'</button>';}).join('')+'</div>':'');
 }
+/* Andere Kompetenzzentren zum Ankreuzen, dazu ein Textfeld für alles andere */
+function ccFeld(wert){
+  var akt=ccListe(wert), rest=akt.filter(function(c){return CC_CODES.indexOf(c)<0;});
+  return '<fieldset class="db-wahl db-ccwahl"><legend>Andere Kompetenzzentren</legend><div class="db-ccliste">'+CC.map(function(c){
+      return '<label class="ar-haken"><input type="checkbox" name="cc_'+c[0]+'"'+(akt.indexOf(c[0])>=0?' checked':'')+'><span><b>'+esc(c[0])+'</b><small>'+esc(c[1])+'</small></span></label>';}).join('')+'</div>'+
+    H.feld('cc_weitere','Weitere (mit „;“ getrennt)',rest.join('; '))+'</fieldset>';
+}
+/* ELDiB-Stufen von Hand: nur für ältere Fälle ohne Einschätzung im Dossier */
+function eldibFeld(d,wert){
+  var es=wert&&typeof wert==='object'?wert:{}, ek=eldib(d), da=!!(ek&&ek.stufen&&ELDIB_B.some(function(b){return istZahl(ek.stufen[b[0]]);}));
+  var stufen=[['0','0 – noch keine'],['1','1'],['2','2'],['3','3'],['4','4'],['5','5']];
+  return '<h3>ELDiB-Stufen</h3>'+(da?H.hinweis('Im Dossier gibt es eine ELDiB-Einschätzung'+(ek.datum?' vom '+esc(datumDe(iso(ek.datum))):'')+' ('+esc(ELDIB_B.map(function(b){return b[2]+' '+(istZahl(ek.stufen[b[0]])?ek.stufen[b[0]]:'–');}).join(' · '))+'). Sie gilt – die Angaben hier werden nur benutzt, wenn es keine Einschätzung im Dossier gibt.','info')
+      :'<p class="ar-klein">Nur für ältere Fälle ohne ELDiB-Einschätzung im Dossier: je Bereich die höchste Stufe mit erreichten Items.</p>')+
+    '<div class="db-eldibwahl">'+H.feld('el_datum','Datum der Einschätzung',iso(es.datum),'date')+ELDIB_B.map(function(b){var s=stufeZahl(es[b[0]]);return H.auswahl('el_'+b[0],b[1]+' ('+b[2]+')',s==null?'':String(s),stufen,'–');}).join('')+'</div>';
+}
 function dbDialog(d){
   var db=d.db||{}, x=kontext(d), vk=vokabular(), am=db.autreMesure||{}, fs=sorgerechtAusFiche(x);
   var inh='<p class="ar-klein">Angaben nur für die Datenbank (Statistik). Sie stehen verschlüsselt im Dossier; jede Änderung kommt ins Protokoll des Dossiers. Bearbeiten dürfen Responsables und die Verwaltung. Was in der Fiche steht (Schule, Maßnahmen, Erstsprache …), wird im Dossier im Reiter „Fiche“ geändert.</p>'+
     '<h3>Schule</h3><div class="ar-raster2">'+H.auswahl('schulform','Schulform',db.schulform||'',[['public','öffentlich'],['prive','privat']],'– keine Angabe –')+H.feld('vorherigeSchule','Vorherige Schule',db.vorherigeSchule)+
       H.feld('schulwechsel','Schulwechsel am',iso(db.schulwechsel),'date')+H.auswahl('scolEtranger','Schulbesuch im Ausland',jaNein(db.scolEtranger),[['ja','ja'],['nein','nein']],'– keine Angabe –')+'</div>'+
-    '<h3>Maßnahmen und Dienste</h3><div class="ar-raster2">'+H.feld('cni','CNI-Entscheidung (Datum)',iso(db.cni),'date')+H.feld('autreCc','Anderes Kompetenzzentrum',db.autreCc)+'</div>'+
-    '<div class="ar-raster3">'+H.feld('am_name','Andere Maßnahme',am.name)+H.feld('am_von','von',iso(am.von),'date')+H.feld('am_bis','bis',iso(am.bis),'date')+'</div>'+
+    '<h3>Maßnahmen und Dienste</h3><div class="ar-raster2">'+H.feld('cni','CNI-Entscheidung (Datum)',iso(db.cni),'date')+'</div>'+ccFeld(db.autreCc)+
+    '<div class="ar-raster3">'+H.feld('am_name','Andere Maßnahme (welche)',am.name)+H.feld('am_von','von',iso(am.von),'date')+H.feld('am_bis','bis',iso(am.bis),'date')+'</div>'+
     '<h3>Familie</h3><div class="ar-raster2">'+H.auswahl('eltern','Elternsituation',db.eltern||'',[['zusammen','Eltern zusammen'],['getrennt','Eltern getrennt'],['anderes','andere Situation']],'– keine Angabe –')+
       H.auswahl('scas','SCAS beteiligt',jaNein(db.scas),[['ja','ja'],['nein','nein']],'– automatisch: '+(scasAuto(x)?'ja (steht bei den Intervenants)':'keine Angabe')+' –')+'</div>'+
     listenFeld('tutelle','Sorgerecht (eine Angabe pro Zeile)',db.tutelle,'Leer lassen: Dann gilt die Fiche (Représentant·e·s mit autorité parentale'+(fs.length?': '+fs.join(', '):'')+').',vk.tutelle)+
@@ -1096,6 +1349,7 @@ function dbDialog(d){
     listenFeld('diagnosen','Diagnosen (eine pro Zeile)',db.diagnosen,'Nur gesicherte Diagnosen aus Berichten eintragen – nichts ableiten.',vk.diagnosen)+
     listenFeld('verdacht','Verdacht / Profil (eine Angabe pro Zeile)',db.verdacht,'',vk.verdacht)+
     '<div class="ar-raster2">'+H.feld('iq','IQ (Gesamt-IQ, 40–160)',db.iq==null?'':db.iq,'number',' min="40" max="160" step="1" inputmode="numeric"')+'</div>'+
+    eldibFeld(d,db.eldibStufen)+
     H.textfeld('notiz','Notiz (nur Datenbank)',db.notiz,2);
   return H.dialog('Datenbank-Angaben – '+H.schuelerName(d.person),inh,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){dlg.addEventListener('click',function(ev){
@@ -1107,12 +1361,18 @@ function dbDialog(d){
       var v=w.werte;if(!w.aktion){return '';}
       if(txt(v.iq)!==''){var n=zahl(v.iq);if(n==null||n<40||n>160){return 'Der IQ muss zwischen 40 und 160 liegen (oder leer bleiben).';}}
       if(v.am_von&&v.am_bis&&v.am_bis<v.am_von){return 'Bei der anderen Maßnahme liegt „bis“ vor „von“.';}
+      if(v.el_datum&&!ELDIB_B.some(function(b){return v['el_'+b[0]]!=='';})){return 'Bei den ELDiB-Stufen fehlt noch mindestens eine Stufe (oder das Datum löschen).';}
       return '';
     },
     ausfuehren:function(w){
-      var v=w.werte, neu={schulform:v.schulform,vorherigeSchule:txt(v.vorherigeSchule),schulwechsel:iso(v.schulwechsel),scolEtranger:v.scolEtranger,cni:iso(v.cni),autreCc:txt(v.autreCc),
+      var v=w.werte, ccNeu=eindeutig(CC_CODES.filter(function(c){return v['cc_'+c];}).concat(ccListe(v.cc_weitere)));
+      /* gleiche Kompetenzzentren wie vorher: den gespeicherten Text lassen, wie er ist */
+      var ccAlt=ccListe(db.autreCc), ccGleich=ccAlt.slice().sort().join('|')===ccNeu.slice().sort().join('|');
+      var neu={schulform:v.schulform,vorherigeSchule:txt(v.vorherigeSchule),schulwechsel:iso(v.schulwechsel),scolEtranger:v.scolEtranger,cni:iso(v.cni),
+        autreCc:ccGleich?(Array.isArray(db.autreCc)?db.autreCc.join('; '):txt(db.autreCc)):ccNeu.join('; '),
         autreMesure:dbWert('autreMesure',{name:v.am_name,von:v.am_von,bis:v.am_bis}),eltern:v.eltern,scas:v.scas,tutelle:zeilen(v.tutelle),massnahmenFamilie:zeilen(v.massnahmenFamilie),
-        diagnosen:zeilen(v.diagnosen),verdacht:zeilen(v.verdacht),iq:txt(v.iq)===''?null:Math.round(zahl(v.iq)),notiz:txt(v.notiz)};
+        diagnosen:zeilen(v.diagnosen),verdacht:zeilen(v.verdacht),iq:txt(v.iq)===''?null:Math.round(zahl(v.iq)),
+        eldibStufen:dbWert('eldibStufen',{datum:v.el_datum,verhalten:v.el_verhalten,kommunikation:v.el_kommunikation,sozialisation:v.el_sozialisation,kognition:v.el_kognition}),notiz:txt(v.notiz)};
       var ae=Object.keys(neu).filter(function(k){return JSON.stringify(dbWert(k,db[k]))!==JSON.stringify(dbWert(k,neu[k]));}).map(function(k){return DB_NAMEN[k]||k;});
       if(!ae.length){return {unveraendert:true};}
       return T.ops.datenbank(d.id,neu,'Datenbank-Angaben geändert: '+ae.join(', '));
@@ -1130,6 +1390,7 @@ function auswahlText(){
   if(tab.q){t.push('Suche „'+tab.q+'“');}
   Object.keys(tab.schnell).forEach(function(k){if(tab.schnell[k]){t.push(k+': '+tab.schnell[k]);}});
   tab.filter.filter(vollstaendig).forEach(function(f){t.push(filterText(f));});
+  if(tab.oder.length){t.push('mindestens eine: '+tab.oder.filter(vollstaendig).map(filterText).join(' oder '));}
   return t.join(' · ');
 }
 function csvZelle(s){
@@ -1229,7 +1490,7 @@ function protokollSeite(){
   var arten=[['alle','Alle Änderungen'],['datenbank','Datenbank-Angaben'],['import','Importe'],['fiche','Fiche']];
   ev=ev.filter(function(e){
     if(protFilter==='datenbank'){return e.v.a==='datenbank';}
-    if(protFilter==='import'){return /CDSE Stats/.test(e.v.t||'');}
+    if(protFilter==='import'){return /CDSE Stats|Excel-Tabelle|CSV-Tabelle/.test(e.v.t||'');}
     if(protFilter==='fiche'){return e.v.a==='fiche'||/Fiche/.test(e.v.t||'');}
     return true;
   }).sort(function(a,b){return String(b.v.z).localeCompare(String(a.v.z));});
@@ -1277,6 +1538,13 @@ function wertOptionen(f){
 function feldHtml(lab,ctrl){return '<label class="ar-feld"><span>'+esc(lab)+'</span>'+ctrl+'</label>';}
 function wertEingabe(f,fl,i,k){
   var v=fl[k]==null?'':String(fl[k]), lab=k==='wert2'?'und':'Wert', attr=' data-db-fz="'+k+'" data-i="'+i+'" data-fokus="fz-'+i+'-'+k+'"';
+  if(mehrfach(fl.op)){
+    var mo=wertOptionen(f), ws=werteVon(fl);
+    ws.forEach(function(w){if(!mo.some(function(o){return o[0]===w;})){mo.push([w,w]);}});
+    if(!mo.length){return '<p class="ar-leise db-mehrfach-leer">Noch keine Werte in den Dossiers.</p>';}
+    return '<fieldset class="db-mehrfach"><legend>Werte <small>– mehrere ankreuzen</small></legend><div class="db-mehrfach-liste">'+mo.map(function(o,j){
+      return '<label class="ar-haken"><input type="checkbox" data-db-fw data-i="'+i+'" value="'+esc(o[0])+'"'+(ws.indexOf(o[0])>=0?' checked':'')+' data-fokus="fw-'+i+'-'+j+'"> '+esc(o[1])+'</label>';}).join('')+'</div></fieldset>';
+  }
   if(fl.op==='imSchuljahr'){var sjs=schuljahre();if(v&&sjs.indexOf(v)<0){sjs.unshift(v);}return feldHtml(lab,'<select'+attr+'><option value="">– wählen –</option>'+sjs.map(function(s){return '<option'+(s===v?' selected':'')+'>'+esc(s)+'</option>';}).join('')+'</select>');}
   if(f.typ==='zahl'){return feldHtml(lab,'<input type="number" step="any" inputmode="decimal" value="'+esc(v)+'"'+attr+'>');}
   if(f.typ==='datum'){return feldHtml(lab,'<input type="date" value="'+esc(iso(v))+'"'+attr+'>');}
@@ -1289,21 +1557,23 @@ function wertEingabe(f,fl,i,k){
 }
 function filterZeileHtml(fl,i){
   var f=feldVon(fl.feld)||FELDER[0], ops=opsFuer(f);
-  return '<div class="db-fzeile'+(fl.op==='zwischen'?' zwei':(brauchtWert(fl.op)?'':' ohnewert'))+'" data-i="'+i+'">'+
+  return '<div class="db-fzeile'+(mehrfach(fl.op)?' mehr':(fl.op==='zwischen'?' zwei':(brauchtWert(fl.op)?'':' ohnewert')))+'" data-i="'+i+'">'+
     '<div class="db-f-feld">'+feldHtml('Feld','<select data-db-fz="feld" data-i="'+i+'" data-fokus="fz-'+i+'-feld">'+feldOptionen(FELDER,f.key)+'</select>')+'</div>'+
     '<div class="db-f-op">'+feldHtml('Bedingung','<select data-db-fz="op" data-i="'+i+'" data-fokus="fz-'+i+'-op">'+ops.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===fl.op?' selected':'')+'>'+esc(o[1])+'</option>';}).join('')+'</select>')+'</div>'+
     (brauchtWert(fl.op)?'<div class="db-f-wert">'+wertEingabe(f,fl,i,'wert')+'</div>':'')+(fl.op==='zwischen'?'<div class="db-f-wert2">'+wertEingabe(f,fl,i,'wert2')+'</div>':'')+
     '<button class="db-x db-f-x" type="button" data-db="fz-weg" data-i="'+i+'" aria-label="Filter „'+esc(f.label)+'“ entfernen">'+svg('x')+'</button></div>';
 }
 function bauHtml(){
-  var a=abf.a, kz=a.kennzahl;
+  var a=abf.a, kz=a.kennzahl, oder=a.verknuepfung==='oder';
   return '<section class="ar-karte"><div class="ar-kartenkopf"><h2>Baukasten</h2><button class="ar-link" type="button" data-db="abfrage-neu" data-fokus="abfrage-neu">'+svg('reload')+'Neu beginnen</button></div>'+
     '<div class="db-bauzeile">'+feldHtml('Kennzahl','<select data-db-bau="fn" data-fokus="bau-fn">'+KENNZAHLEN.map(function(k){return '<option value="'+k[0]+'"'+(k[0]===kz.fn?' selected':'')+'>'+esc(k[1])+'</option>';}).join('')+'</select>')+
       (kz.fn!=='anzahl'?feldHtml('von','<select data-db-bau="feld" data-fokus="bau-feld">'+feldOptionen(FELDER,kz.feld,function(f){return f.typ==='zahl';})+'</select>'):'')+'</div>'+
-    '<fieldset class="db-filterbox"><legend>Filter <small>– alle müssen zutreffen</small></legend>'+
-      (a.filter.length?a.filter.map(filterZeileHtml).join(''):'<p class="ar-leise">Kein Filter – gezählt wird die ganze Grundmenge.</p>')+
+    '<fieldset class="db-filterbox"><legend>Filter <small>– '+(oder?'mindestens einer muss zutreffen':'alle müssen zutreffen')+'</small></legend>'+
+      (a.filter.length>1?'<div class="db-verkn">'+feldHtml('Verknüpfung','<select data-db-bau="verknuepfung" data-fokus="bau-verkn"><option value="und"'+(oder?'':' selected')+'>und – alle Filter müssen zutreffen</option><option value="oder"'+(oder?' selected':'')+'>oder – mindestens ein Filter trifft zu</option></select>')+'</div>':'')+
+      (a.filter.length?a.filter.map(function(fl,i){return (i?'<p class="db-verbinder" aria-hidden="true"><span>'+(oder?'oder':'und')+'</span></p>':'')+filterZeileHtml(fl,i);}).join(''):'<p class="ar-leise">Kein Filter – gezählt wird die ganze Grundmenge.</p>')+
       '<button class="btn" type="button" data-db="fz-plus" data-fokus="fz-plus">'+svg('plus')+'Filter hinzufügen</button></fieldset>'+
-    feldHtml('Gruppieren nach','<select data-db-bau="gruppe" data-fokus="bau-gruppe"><option value="">– nicht gruppieren –</option>'+feldOptionen(FELDER,a.gruppe,gruppierbar)+'</select>')+
+    '<div class="db-bauzeile">'+feldHtml('Gruppieren nach','<select data-db-bau="gruppe" data-fokus="bau-gruppe"><option value="">– nicht gruppieren –</option>'+feldOptionen(FELDER,a.gruppe,gruppierbar)+'</select>')+
+      (a.gruppe?feldHtml('und danach nach (Kreuztabelle)','<select data-db-bau="gruppe2" data-fokus="bau-gruppe2"><option value="">– keine zweite Gruppe –</option>'+feldOptionen(FELDER,a.gruppe2,function(f){return gruppierbar(f)&&f.key!==a.gruppe;})+'</select>'):'')+'</div>'+
     '<p class="db-satz" id="db-satz" aria-live="polite">'+esc(satz(a))+'</p>'+
     '<div class="ar-knopfreihe"><button class="btn" type="button" data-db="abfrage-speichern" data-fokus="abfrage-speichern">'+svg('check')+'Abfrage speichern</button>'+
       '<button class="btn" type="button" data-db="abfrage-tabelle" data-fokus="abfrage-tabelle">'+svg('datei')+'Diese Dossiers in der Tabelle</button></div></section>';
@@ -1319,8 +1589,13 @@ function ergebnisHtml(){
     return h+'</section>';
   }
   if(!res.gruppen.length){return h+'<p class="ar-leise">Keine Dossiers erfüllen die Filter.</p></section>';}
+  if(res.kreuz){
+    h+=kreuzHtml(res,g,feldVon(res.gruppe2),kz,num,a);
+    if(res.mehrfach){h+='<p class="ar-klein">Mehrfachnennung: Ein Dossier kann in mehreren Zeilen oder Spalten zählen (z. B. mit zwei laufenden Maßnahmen).</p>';}
+    return h+'</section>';
+  }
   dg.ergebnis={art:'balken',titel:'Ergebnis nach '+g.label,eintraege:res.gruppen.map(function(x){
-    var drill=[drillFuer(g.key,x.key)].concat((a.filter||[]).filter(vollstaendig));
+    var drill=drillMit(a,[drillFuer(g.key,x.key)]);
     return {label:x.key===OHNE?'ohne Angabe':(g.key==='sprache'&&x.key!=='andere'?spracheName(x.key):x.key),titel:g.key==='sprache'?x.key:'',wert:num?(istZahl(x.wert)?x.wert:0):x.n,text:num?kzZahl(kz,x.wert):null,leer:x.key===OHNE,drill:x.n?drill:null};
   })};
   h+='<div class="db-ergraster"><div class="db-dg" data-dg="ergebnis"></div><table class="ar-mini db-ergtab"><thead><tr><th scope="col">'+esc(g.label)+(g.typ==='datum'?' (Schuljahr)':'')+'</th><th scope="col" class="zahl">Dossiers</th>'+
@@ -1331,10 +1606,33 @@ function ergebnisHtml(){
   if(res.mehrfach){h+='<p class="ar-klein">Mehrfachnennung: Ein Dossier kann in mehreren Gruppen zählen (z. B. mit zwei laufenden Maßnahmen). Die Gruppen ergeben zusammen deshalb mehr als '+res.n+'.</p>';}
   return h+'</section>';
 }
+/* Filter einer Abfrage für die Tabelle: {und:[…], oder:[…]} (bei „oder“ muss mindestens einer zutreffen) */
+function drillBasis(a){var fl=(a.filter||[]).filter(vollstaendig);return (a.verknuepfung==='oder'&&fl.length>1)?{und:[],oder:fl}:{und:fl,oder:[]};}
+function drillMit(a,extra){var b=drillBasis(a);return {und:extra.concat(b.und),oder:b.oder};}
+function gruppeText(g,k){return k===OHNE?'ohne Angabe':(g.key==='sprache'&&k!=='andere'?k+' – '+spracheName(k):k);}
+/* Kreuztabelle: Zeilen = erste Gruppe, Spalten = zweite Gruppe; je Zelle die Kennzahl, Klick → Tabelle */
+function kreuzHtml(res,g,g2,kz,num,a){
+  var K=res.kreuz, max=0;
+  K.zeilen.forEach(function(z){K.spalten.forEach(function(s){var c=z.zellen[s.key], w=num?c.wert:c.n;if(istZahl(w)&&w>max){max=w;}});});
+  function zelle(c,drill){
+    if(!c.n){return '<td class="zahl leer">–</td>';}
+    var w=num?c.wert:c.n, anteil=max&&istZahl(w)?Math.round(100*w/max):0;
+    return '<td class="zahl" style="--db-anteil:'+anteil+'%"><a href="#/datenbank/tabelle" data-db-drill="'+esc(JSON.stringify(drill))+'" title="Diese Dossiers in der Tabelle">'+esc(num?kzZahl(kz,c.wert):String(c.n))+(num?'<small>n = '+c.mitWert+'</small>':'')+'</a></td>';
+  }
+  return '<p class="ar-klein db-kreuz-info">Zeilen: <b>'+esc(g.label)+'</b> · Spalten: <b>'+esc(g2.label)+'</b> · in den Zellen: '+esc(num?kzLabel(kz)+' (n = Dossiers mit Angabe)':'Zahl der Dossiers')+'. Ein Klick auf eine Zahl zeigt diese Dossiers in der Tabelle.</p>'+
+    '<div class="db-tabrahmen db-kreuzrahmen"><table class="db-kreuz" data-db-kreuz><thead><tr><th scope="col" class="db-kreuz-ecke">'+esc(g.label)+' ↓ · '+esc(g2.label)+' →</th>'+
+      K.spalten.map(function(s){return '<th scope="col" class="zahl">'+esc(gruppeText(g2,s.key))+'</th>';}).join('')+'<th scope="col" class="zahl">Gesamt</th></tr></thead><tbody>'+
+    K.zeilen.map(function(z){
+      return '<tr data-gruppe="'+esc(z.key)+'"><th scope="row">'+esc(gruppeText(g,z.key))+'</th>'+K.spalten.map(function(s){return zelle(z.zellen[s.key],drillMit(a,[drillFuer(g.key,z.key),drillFuer(g2.key,s.key)]));}).join('')+
+        '<td class="zahl summe">'+esc(num?kzZahl(kz,z.wert):String(z.n))+'</td></tr>';
+    }).join('')+'</tbody><tfoot><tr><th scope="row">Gesamt</th>'+K.spalten.map(function(s){return '<td class="zahl">'+esc(num?kzZahl(kz,s.wert):String(s.n))+'</td>';}).join('')+
+      '<td class="zahl">'+esc(num?kzZahl(kz,res.gesamt.wert):String(res.n))+'</td></tr></tfoot></table></div>';
+}
 function vorlagenHtml(){
   var gs=gespeicherte();
-  return '<section class="ar-karte"><h2>Vorlagen</h2><p class="ar-klein">Häufige Fragen der Leitung und des Ministeriums – ein Klick füllt den Baukasten.</p><div class="db-vorlagenliste">'+
-      VORLAGEN.map(function(v){return '<button type="button" class="db-vorlage" data-db-vorlage="'+v.id+'" data-fokus="v-'+v.id+'"><b>'+esc(v.titel)+'</b><small>'+esc(v.text)+'</small></button>';}).join('')+'</div></section>'+
+  return '<section class="ar-karte"><h2>Vorlagen</h2><p class="ar-klein">Häufige Fragen der Leitung und des Ministeriums – ein Klick füllt den Baukasten.</p>'+
+      VORLAGEN_BEREICHE.map(function(b,bi){var l=VORLAGEN.filter(function(v){return v.b===bi;});
+        return l.length?'<h3 class="db-vorlagen-b">'+esc(b)+'</h3><div class="db-vorlagenliste">'+l.map(function(v){return '<button type="button" class="db-vorlage" data-db-vorlage="'+v.id+'" data-fokus="v-'+v.id+'"><b>'+esc(v.titel)+'</b><small>'+esc(v.text)+'</small></button>';}).join('')+'</div>':'';}).join('')+'</section>'+
     '<section class="ar-karte" id="db-gespeichert"><h2>Gespeicherte Abfragen</h2>'+(gs.length?'<ul class="db-gliste">'+gs.map(function(g){
       return '<li><button type="button" class="db-vorlage" data-db-gespeichert="'+esc(g.id)+'" data-fokus="g-'+esc(g.id)+'"><b>'+esc(g.name)+'</b><small>'+esc(satz(abfrageNorm(g.abfrage)))+'</small></button><button type="button" class="db-x" data-db="gespeichert-weg" data-id="'+esc(g.id)+'" aria-label="Abfrage „'+esc(g.name)+'“ löschen">'+svg('x')+'</button></li>';
     }).join('')+'</ul>':'<p class="ar-leise">Noch keine. Im Baukasten eine Abfrage zusammenstellen und „Abfrage speichern“ wählen – sie wird nur für dich gemerkt.</p>')+'</section>';
@@ -1382,6 +1680,8 @@ function speichernDialog(){
      date_decision_cni → db.cni · autre_cc_implique → db.autreCc · autre_mesure (+ Daten) → db.autreMesure
      scol_etranger → db.scolEtranger · diagnostics → db.diagnosen · verdachtsdiagnosen_profil → db.verdacht
      iq → db.iq · parents → db.eltern · scas → db.scas · tutelle → db.tutelle · mesures_famille → db.massnahmenFamilie
+     eldib_date, eldib_v/k/soz/kog → db.eldibStufen (nur ohne ELDiB-Einschätzung im Dossier)
+     Excel-Tabelle zusätzlich: classe → Klasse, nationalite, lieu_naissance, stelle, mesures (Liste), remarque → db.notiz
      id, created_at, updated_at → db.herkunft · age → nicht übernommen (wird berechnet)
    ===================================================================== */
 var STATS_FELDER=[['id','ID'],['matricule','National ID','Matricule'],['dossier_mfile','M-File No.','N° M-File','Dossier M-File'],['nom','Last name','Nom'],['prenom','First name','Prénom'],
@@ -1410,13 +1710,13 @@ var ZUORDNUNG=[['matricule','person.matricule','Abgleich mit vorhandenen Dossier
   ['langue_1 (LU, FR, DE, PT …)','fiche.ersteSprache','„Other“ → andere'],['mesure_cdse_1–3, date_ds, ds_realise_par','fiche.cdse.diagnostic','angekreuzt; Beginn und Ende = date_ds (ein Termin); Intervenant·e'],['debut_isa, fin_isa, isa_realise_par','fiche.cdse.isa',''],
   ['debut_cg, fin_cg, cg_realise_par','fiche.cdse.cgPro oder .cgEltern','wählbar'],['spec_school, scolarisation_specialisee, debut/fin_scol_spe','fiche.cdse.annexe / .cdp / .cst','Institution = Standort (CdP/CST); ohne spec_school: fiche.cdse.sonstige'],
   ['autres_services','fiche.intervenants (Institution)',''],['school_type (Public / Privé)','db.schulform',''],['previous_school, date_school_change','db.vorherigeSchule, db.schulwechsel',''],['date_decision_cni','db.cni',''],
-  ['autres_cc (ab 0.5, Liste) oder autre_cc_implique','db.autreCc','Liste mit „; “ verbunden'],
+  ['autres_cc (ab 0.5, Liste) oder autre_cc_implique','db.autreCc','als Kürzel: „CL; CDI“ – Unbekanntes bleibt als Text'],
   ['cg_type (Professionals / Parents / beide)','fiche.cdse.cgPro und/oder .cgEltern','ohne cg_type: Wahl oben'],
   ['atelier_type, debut/fin_atelier, atelier_realise_par','fiche.cdse.atelier','welches Atelier = Standort'],
   ['reeducation_type, debut/fin_reeducation, reeducation_realise_par','fiche.cdse.reeducation','welche Rééducation = Standort'],
   ['debut/fin_annexe · cst_groupe, debut/fin_cst · cdp_region, debut/fin_cdp','fiche.cdse.annexe · .cst · .cdp','ab CDSE Stats 0.5; CST-Gruppe und CdP-Region = Standort'],
   ['langue_1_autre, parents_autre','fiche.ersteSprache, db.eltern','Text zu „Other“'],
-  ['eldib_*, dur_*, measures_* (berechnet)','–','nicht übernommen: ELDiB-Stufen kommen aus dem ELDiB-Generator, Dauern rechnet der Hub selbst'],['autre_mesure + Daten','db.autreMesure',''],['scol_etranger (Yes / No)','db.scolEtranger (ja / nein)',''],['diagnostics, verdachtsdiagnosen_profil','db.diagnosen, db.verdacht','unverändert übernommen'],
+  ['eldib_date, eldib_v, eldib_k, eldib_soz, eldib_kog','db.eldibStufen','gelten nur, solange es im Dossier keine ELDiB-Einschätzung gibt'],['dur_*, measures_* (berechnet)','–','nicht übernommen: Dauern rechnet der Hub selbst'],['autre_mesure + Daten','db.autreMesure',''],['scol_etranger (Yes / No)','db.scolEtranger (ja / nein)',''],['diagnostics, verdachtsdiagnosen_profil','db.diagnosen, db.verdacht','unverändert übernommen'],
   ['iq','db.iq','nur 40–160'],['parents (Together / Separated / Other)','db.eltern (zusammen / getrennt / anderes)',''],['scas (Yes / No)','db.scas (ja / nein)',''],
   ['tutelle','db.tutelle','Mother → Mutter, Father → Vater, Both parents → Mutter + Vater, Foster family → Pflegefamilie …'],['mesures_famille','db.massnahmenFamilie',''],
   ['id, created_at, updated_at','db.herkunft','created_at zählt für den Beginn der Begleitung'],['age','–','wird aus dem Geburtsdatum berechnet']];
@@ -1437,7 +1737,250 @@ function csvLesen(text){
   if(feld.length||zeile.length){zeile.push(feld);zeilenL.push(zeile);}
   return zeilenL.filter(function(r){return r.some(function(x){return txt(x)!=='';});});
 }
+/* =====================================================================
+   Excel-Tabelle (.xlsx, auch CSV mit eigenen Spalten): im Browser gelesen –
+   ZIP und XML ohne Bibliothek, nichts verlässt den Computer, keine KI.
+   Jede Spalte wird einer Angabe zugeordnet (geraten, in der Vorschau
+   änderbar); daraus entstehen Datensätze im Format von CDSE Stats, die
+   denselben Weg gehen wie dort (abbilden → Abgleich → Vorschau → Import).
+   ===================================================================== */
+function entpacken(bytes){
+  if(typeof DecompressionStream==='undefined'){return Promise.reject(new Error('Dieser Browser kann Excel-Dateien nicht entpacken. Bitte eine aktuelle Version von Edge oder Chrome nutzen – oder die Tabelle in Excel als CSV speichern.'));}
+  var st=new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Response(st).arrayBuffer().then(function(b){return new Uint8Array(b);});
+}
+function zipLesen(buf){
+  var v=new DataView(buf.buffer,buf.byteOffset,buf.byteLength), eocd=-1, i, e={}, dec=new TextDecoder('utf-8');
+  for(i=buf.length-22;i>=Math.max(0,buf.length-65557);i--){if(v.getUint32(i,true)===0x06054b50){eocd=i;break;}}
+  if(eocd<0){throw new Error('Das ist keine gültige Excel-Datei (.xlsx).');}
+  var n=v.getUint16(eocd+10,true), p=v.getUint32(eocd+16,true);
+  for(var k=0;k<n;k++){
+    if(p+46>buf.length||v.getUint32(p,true)!==0x02014b50){break;}
+    var meth=v.getUint16(p+10,true), csize=v.getUint32(p+20,true), nlen=v.getUint16(p+28,true), elen=v.getUint16(p+30,true), clen=v.getUint16(p+32,true), lok=v.getUint32(p+42,true);
+    var name=dec.decode(buf.subarray(p+46,p+46+nlen)), start=lok+30+v.getUint16(lok+26,true)+v.getUint16(lok+28,true);
+    e[name]={m:meth,d:buf.subarray(start,start+csize)};
+    p+=46+nlen+elen+clen;
+  }
+  return {text:function(nm){
+    var x=e[nm];if(!x){return Promise.resolve(null);}
+    var b=x.m===0?Promise.resolve(x.d):(x.m===8?entpacken(x.d):Promise.reject(new Error('Unbekannte Kompression in der Excel-Datei.')));
+    return b.then(function(u){return dec.decode(u);});
+  }};
+}
+function xmlLesen(t){return new DOMParser().parseFromString(t,'application/xml');}
+function xtags(n,name){return Array.prototype.slice.call(n.getElementsByTagNameNS('*',name));}
+function spalteNr(ref){var s=String(ref).replace(/[^A-Z]/gi,'').toUpperCase(), n=0;for(var i=0;i<s.length;i++){n=n*26+(s.charCodeAt(i)-64);}return n-1;}
+function spaltenName(i){var s='';i++;while(i>0){var r=(i-1)%26;s=String.fromCharCode(65+r)+s;i=Math.floor((i-1)/26);}return s;}
+var XL_DATUM=[14,15,16,17,22,27,30,36,45,46,47,50,57];
+/* → [{name, kopf:[…], zeilen:[[…]], nummern:[…]}] – Zellen mit Datumsformat als {excelDatum:n} */
+function xlsxBlaetter(buffer){
+  var zip, rel={}, geteilt=[], datumStil={}, d1904=false;
+  try{zip=zipLesen(new Uint8Array(buffer));}catch(e){return Promise.reject(e);}
+  return zip.text('xl/workbook.xml').then(function(wb){
+    if(!wb){throw new Error('Das ist keine gültige Excel-Datei (.xlsx).');}
+    return Promise.all([zip.text('xl/_rels/workbook.xml.rels'),zip.text('xl/sharedStrings.xml'),zip.text('xl/styles.xml')]).then(function(r){
+      if(r[0]){xtags(xmlLesen(r[0]),'Relationship').forEach(function(x){rel[x.getAttribute('Id')]=x.getAttribute('Target');});}
+      if(r[1]){xtags(xmlLesen(r[1]),'si').forEach(function(si){geteilt.push(xtags(si,'t').filter(function(t){return !t.parentNode||t.parentNode.localName!=='rPh';}).map(function(t){return t.textContent;}).join(''));});}
+      if(r[2]){
+        var st=xmlLesen(r[2]), eigen={};xtags(st,'numFmt').forEach(function(f){eigen[f.getAttribute('numFmtId')]=f.getAttribute('formatCode')||'';});
+        var xfs=xtags(st,'cellXfs')[0];
+        if(xfs){xtags(xfs,'xf').forEach(function(xf,i){var id=+(xf.getAttribute('numFmtId')||0), c=(eigen[id]||'').replace(/"[^"]*"|\[[^\]]*\]/g,'');if(XL_DATUM.indexOf(id)>=0||(/[dmy]/i.test(c)&&!/^[#0.,%\s]+$/.test(c))){datumStil[i]=1;}});}
+      }
+      var wdoc=xmlLesen(wb), pr=xtags(wdoc,'workbookPr')[0];d1904=!!(pr&&/^(1|true)$/.test(pr.getAttribute('date1904')||''));
+      var bl=xtags(wdoc,'sheet').map(function(s){return {name:s.getAttribute('name')||'Blatt',ziel:rel[s.getAttribute('r:id')||s.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id')]||''};}).filter(function(s){return s.ziel;});
+      return Promise.all(bl.map(function(s){return zip.text('xl/'+s.ziel.replace(/^\/?xl\//,'').replace(/^\//,'')).then(function(x){return {name:s.name,xml:x};});}));
+    });
+  }).then(function(bl){
+    var out=[];
+    bl.forEach(function(s){
+      if(!s.xml){return;}
+      var zeilen=[], nummern=[];
+      xtags(xmlLesen(s.xml),'row').forEach(function(row){
+        var z=[];nummern.push(+row.getAttribute('r')||nummern.length+1);
+        xtags(row,'c').forEach(function(c){
+          var ref=c.getAttribute('r'), nr=ref?spalteNr(ref):z.length, t=c.getAttribute('t')||'n', vv=xtags(c,'v')[0], v=vv?vv.textContent:'', w;
+          if(t==='s'){w=geteilt[+v]||'';}
+          else if(t==='inlineStr'){w=xtags(c,'t').map(function(x){return x.textContent;}).join('');}
+          else if(t==='b'){w=v==='1'?'ja':'nein';}
+          else if(t==='str'||t==='e'){w=v;}
+          else if(v!==''&&datumStil[+(c.getAttribute('s')||0)]){w={excelDatum:+v+(d1904?1462:0)};}
+          else{w=v;}
+          if(nr>=0){z[nr]=w;}
+        });
+        zeilen.push(z);
+      });
+      var t=tabelleAus(s.name,zeilen,nummern);if(t){out.push(t);}
+    });
+    if(!out.length){throw new Error('In der Excel-Datei ist kein Tabellenblatt ausgefüllt.');}
+    return out;
+  });
+}
+/* Kopfzeile = erste Zeile mit mindestens zwei Einträgen (Titelzeilen darüber werden übersprungen);
+   nummern = Zeilennummern wie in Excel (für Hinweise „Zeile 7: …“) */
+function tabelleAus(name,zeilen,nummern){
+  var voll=function(x){return x!=null&&zelleText(x)!=='';}, nr=[], l=[];
+  zeilen.forEach(function(z,i){if(z.some(voll)){l.push(z);nr.push(nummern?nummern[i]:i+1);}});
+  if(!l.length){return null;}
+  var k=0;while(k<l.length-1&&l[k].filter(voll).length<2){k++;}
+  var breite=0;l.forEach(function(z){if(z.length>breite){breite=z.length;}});
+  var auf=function(z){var o=[];for(var i=0;i<breite;i++){o.push(z[i]==null?'':z[i]);}return o;};
+  return {name:name,kopf:auf(l[k]).map(zelleText),zeilen:l.slice(k+1).map(auf),nummern:nr.slice(k+1)};
+}
+function excelIso(n){n=+n;if(!isFinite(n)||n<10000||n>80000){return '';}var d=new Date(Math.round((n-25569)*864e5));return d.getUTCFullYear()+'-'+pad2(d.getUTCMonth()+1)+'-'+pad2(d.getUTCDate());}
+function zelleText(v){if(v&&typeof v==='object'&&v.excelDatum!=null){return excelIso(v.excelDatum);}return txt(v);}
+function zelleAnzeige(v){var t=zelleText(v);return (v&&typeof v==='object')?datumDe(t):t;}
+/* Tag, der es wirklich gibt (kein 31.02.) */
+function ymd(y,mo,d){var Y=+y, M=+mo, D=+d;if(!(M>=1&&M<=12&&D>=1&&D<=31&&Y>=1900&&Y<=2100)){return '';}var t=new Date(Date.UTC(Y,M-1,D));return (t.getUTCMonth()===M-1&&t.getUTCDate()===D)?Y+'-'+pad2(M)+'-'+pad2(D):'';}
+function datumAus(v){
+  if(v&&typeof v==='object'&&v.excelDatum!=null){return excelIso(v.excelDatum);}
+  var s=txt(v), m;if(!s){return '';}
+  if((m=/^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(s))){return ymd(m[1],m[2],m[3]);}
+  if((m=/^(\d{1,2})[.\/\-](\d{1,2})[.\/\-](\d{4})$/.exec(s))){return ymd(m[3],m[2],m[1]);}
+  if((m=/^(\d{1,2})[.\/\-](\d{1,2})[.\/\-](\d{2})$/.exec(s))){return ymd(+m[3]<50?2000+ +m[3]:1900+ +m[3],m[2],m[1]);}
+  if(/^\d{5}(\.\d+)?$/.test(s)){return excelIso(s);}
+  return '';
+}
+/* Ziele einer Spalte: [Schlüssel (wie CDSE Stats), Bezeichnung, Gruppe, Art, Wörter in Spaltenüberschriften] */
+var ZIELE=[
+  ['nom','Nachname','Person','text',['nom','nom de famille','name','nachname','familienname','numm','last name','family name','surname']],
+  ['prenom','Vorname','Person','text',['prenom','vorname','virnumm','first name','given name']],
+  ['nom_prenom','Name und Vorname in einer Spalte','Person','name',['nom et prenom','nom prenom','nom de l eleve','eleve','name vorname','nachname vorname','name des kindes','schuler','schulerin','kind','enfant','full name']],
+  ['matricule','Matricule','Person','text',['matricule','numero matricule','n matricule','no matricule','nr matricule','matrikel','matrikelnummer','national id','id national','secu']],
+  ['sexe','Geschlecht','Person','geschlecht',['sexe','sex','gender','geschlecht','genre']],
+  ['date_naissance','Geburtsdatum','Person','datum',['date de naissance','naissance','ne le','nee le','geburtsdatum','gebuertsdatum','geboren','date of birth','birth date','birthdate','dob']],
+  ['lieu_naissance','Geburtsort','Person','text',['lieu de naissance','geburtsort','place of birth']],
+  ['nationalite','Nationalität','Person','text',['nationalite','nationalitat','staatsangehorigkeit','nationality']],
+  ['langue_1','Erstsprache','Person','text',['langue','premiere langue','langue maternelle','langue parlee','sprache','erstsprache','muttersprache','familiensprache','sprooch','language','first language','mother tongue']],
+  ['ecole_lycee','Schule','Schule','text',['ecole','ecole fondamentale','lycee','etablissement','ecole lycee','schule','schoul','school']],
+  ['classe','Klasse','Schule','text',['classe','classe actuelle','klasse','class','cycle','niveau']],
+  ['dir','Direction régionale','Schule','text',['direction','direction regionale','direction de region','dr','dir','region','direktion','regionaldirektion']],
+  ['school_type','Schulform (öffentlich / privat)','Schule','text',['secteur','public prive','ecole publique privee','schulform','school sector']],
+  ['previous_school','Vorherige Schule','Schule','text',['ecole precedente','ancienne ecole','vorherige schule','fruhere schule','previous school']],
+  ['date_school_change','Schulwechsel am','Schule','datum',['changement d ecole','date changement ecole','schulwechsel','school change']],
+  ['scol_etranger','Schulbesuch im Ausland','Schule','janein',['scolarite a l etranger','scolarite etranger','schulbesuch im ausland','ausland','schooling abroad']],
+  ['stelle','Stelle im CDSE (für neue Dossiers)','Begleitung und Maßnahmen','text',['stelle','equipe','team','service','antenne','unite']],
+  ['created_at','Beginn der Begleitung','Begleitung und Maßnahmen','datum',['date d entree','entree','date entree','debut prise en charge','date de debut','date demande','date de la demande','aufnahme','aufnahmedatum','beginn','beginn der begleitung','anfrage','eingang','date fiche','datum der fiche']],
+  ['mesures','Maßnahmen (auch mehrere)','Begleitung und Maßnahmen','massnahmen',['mesure','mesures','mesure cdse','mesures cdse','prise en charge','prises en charge','massnahme','massnahmen','measure','measures']],
+  ['date_ds','DS: Datum','Begleitung und Maßnahmen','datum',['date ds','ds date','datum ds','date diagnostic']],
+  ['ds_realise_par','DS: Intervenant·e','Begleitung und Maßnahmen','text',['ds realise par','ds par','intervenant ds']],
+  ['debut_isa','ISA: Beginn','Begleitung und Maßnahmen','datum',['debut isa','isa debut','isa depuis','isa von','isa beginn','beginn isa','isa start']],
+  ['fin_isa','ISA: Ende','Begleitung und Maßnahmen','datum',['fin isa','isa fin','isa bis','isa ende','ende isa','isa end']],
+  ['isa_realise_par','ISA: Intervenant·e','Begleitung und Maßnahmen','text',['isa realise par','isa par','intervenant isa']],
+  ['cg_type','C&G: für wen (Fachkräfte / Eltern)','Begleitung und Maßnahmen','text',['c&g pour','cg pour','type c&g','type cg','c&g fur','cg fur']],
+  ['debut_cg','C&G: Beginn','Begleitung und Maßnahmen','datum',['debut c&g','debut cg','c&g debut','c&g beginn','cg beginn']],
+  ['fin_cg','C&G: Ende','Begleitung und Maßnahmen','datum',['fin c&g','fin cg','c&g fin','c&g ende','cg ende']],
+  ['cg_realise_par','C&G: Intervenant·e','Begleitung und Maßnahmen','text',['c&g realise par','cg realise par','c&g par','intervenant c&g']],
+  ['atelier_type','Atelier: welches','Begleitung und Maßnahmen','text',['atelier','quel atelier','type atelier','type d atelier','welches atelier']],
+  ['debut_atelier','Atelier: Beginn','Begleitung und Maßnahmen','datum',['debut atelier','atelier debut','atelier beginn']],
+  ['fin_atelier','Atelier: Ende','Begleitung und Maßnahmen','datum',['fin atelier','atelier fin','atelier ende']],
+  ['atelier_realise_par','Atelier: Intervenant·e','Begleitung und Maßnahmen','text',['atelier realise par','atelier par','intervenant atelier']],
+  ['reeducation_type','Rééducation: welche','Begleitung und Maßnahmen','text',['reeducation','type de reeducation','type reeducation','welche reeducation']],
+  ['debut_reeducation','Rééducation: Beginn','Begleitung und Maßnahmen','datum',['debut reeducation','reeducation debut','reeducation beginn']],
+  ['fin_reeducation','Rééducation: Ende','Begleitung und Maßnahmen','datum',['fin reeducation','reeducation fin','reeducation ende']],
+  ['reeducation_realise_par','Rééducation: Intervenant·e','Begleitung und Maßnahmen','text',['reeducation realise par','reeducation par','intervenant reeducation']],
+  ['debut_annexe','Annexe: Beginn','Begleitung und Maßnahmen','datum',['debut annexe','annexe debut','annexe beginn','annexe depuis']],
+  ['fin_annexe','Annexe: Ende','Begleitung und Maßnahmen','datum',['fin annexe','annexe fin','annexe ende']],
+  ['cst_groupe','CST: Gruppe','Begleitung und Maßnahmen','text',['cst','groupe cst','cst groupe','cst gruppe','gruppe cst']],
+  ['debut_cst','CST: Beginn','Begleitung und Maßnahmen','datum',['debut cst','cst debut','cst beginn','cst depuis']],
+  ['fin_cst','CST: Ende','Begleitung und Maßnahmen','datum',['fin cst','cst fin','cst ende']],
+  ['cdp_region','CdP: Region (Direction)','Begleitung und Maßnahmen','text',['cdp','classe de participation','cdp region','region cdp']],
+  ['debut_cdp','CdP: Beginn','Begleitung und Maßnahmen','datum',['debut cdp','cdp debut','cdp beginn']],
+  ['fin_cdp','CdP: Ende','Begleitung und Maßnahmen','datum',['fin cdp','cdp fin','cdp ende']],
+  ['autre_mesure','Andere Maßnahme (welche)','Begleitung und Maßnahmen','text',['autre mesure','andere massnahme','other measure']],
+  ['debut_autre_mesure','Andere Maßnahme: Beginn','Begleitung und Maßnahmen','datum',['debut autre mesure','andere massnahme beginn']],
+  ['fin_autre_mesure','Andere Maßnahme: Ende','Begleitung und Maßnahmen','datum',['fin autre mesure','andere massnahme ende']],
+  ['date_decision_cni','CNI-Entscheidung (Datum)','Begleitung und Maßnahmen','datum',['cni','decision cni','date cni','date decision cni','cni entscheidung']],
+  ['autres_cc','Andere Kompetenzzentren','Familie und Umfeld','liste',['autre cc','autres cc','cc','centre de competences','centres de competences','autre centre de competences','autres centres de competences','kompetenzzentrum','kompetenzzentren','andere kompetenzzentren','other cc']],
+  ['autres_services','Weitere Dienste','Familie und Umfeld','liste',['autres services','services','autres intervenants','intervenants','weitere dienste','dienste','other services']],
+  ['parents','Elternsituation','Familie und Umfeld','text',['parents','situation parents','situation des parents','situation familiale','eltern','elternsituation','familiensituation']],
+  ['scas','SCAS','Familie und Umfeld','janein',['scas']],
+  ['tutelle','Sorgerecht','Familie und Umfeld','liste',['tutelle','autorite parentale','garde','sorgerecht','guardianship']],
+  ['mesures_famille','Maßnahmen Familie','Familie und Umfeld','liste',['mesures famille','mesures familiales','massnahmen familie','family measures']],
+  ['diagnostics','Diagnosen','Klinisches Profil','liste',['diagnostics','diagnose','diagnosen','cim 10','icd 10','icd','diagnosis','diagnoses']],
+  ['verdachtsdiagnosen_profil','Verdacht / Profil','Klinisches Profil','liste',['profil','profile','verdacht','verdachtsdiagnose','verdachtsdiagnosen','hypothese','hypotheses']],
+  ['iq','IQ','Klinisches Profil','zahl',['qi','qit','iq','quotient intellectuel','gesamt iq']],
+  ['eldib_date','ELDiB: Datum','ELDiB','datum',['eldib','date eldib','eldib date','eldib datum']],
+  ['eldib_v','ELDiB: Stufe Verhalten (V)','ELDiB','zahl',['eldib v','stufe v','eldib verhalten','eldib comportement','verhalten','comportement']],
+  ['eldib_k','ELDiB: Stufe Kommunikation (K)','ELDiB','zahl',['eldib k','stufe k','eldib kommunikation','eldib communication','kommunikation','communication']],
+  ['eldib_soz','ELDiB: Stufe Sozialisation (SOZ)','ELDiB','zahl',['eldib soz','stufe soz','eldib sozialisation','eldib socialisation','sozialisation','socialisation']],
+  ['eldib_kog','ELDiB: Stufe Kognition (KOG)','ELDiB','zahl',['eldib kog','stufe kog','eldib kognition','eldib cognition','kognition','cognition']],
+  ['remarque','Notiz (nur Datenbank)','Sonstiges','text',['remarque','remarques','commentaire','commentaires','bemerkung','bemerkungen','notiz','notizen','kommentar','notes']]
+];
+function zielVon(k){return ZIELE.filter(function(z){return z[0]===k;})[0]||null;}
+function kopfNorm(h){return norm(h).replace(/[^a-z0-9&]+/g,' ').trim();}
+/* Zuordnung raten: gleiche Bezeichnung > bekanntes Wort > Wort mit Nummer („Mesure 2“) > Anfang/Ende der Überschrift */
+function zuordnungRaten(kopf){
+  var belegt={};
+  return kopf.map(function(h){
+    var n=kopfNorm(h), ohneNr=n.replace(/\s*\d+$/,''), best='', punkte=0;if(!n){return '';}
+    ZIELE.forEach(function(z){
+      var mehrere=z[3]==='liste'||z[3]==='massnahmen';if(belegt[z[0]]&&!mehrere){return;}
+      var p=0;
+      if(n===kopfNorm(z[0])||n===kopfNorm(z[1])){p=100;}
+      else if(z[4].indexOf(n)>=0){p=90;}
+      else if(ohneNr!==n&&z[4].indexOf(ohneNr)>=0){p=mehrere?85:0;}
+      else if(z[4].some(function(w){return w.length>3&&(n.indexOf(w+' ')===0||n.slice(-w.length-1)===' '+w);})){p=60;}
+      if(p>punkte){punkte=p;best=z[0];}
+    });
+    if(best){belegt[best]=true;}
+    return best;
+  });
+}
+function listeTeilen(t){return eindeutig(String(t||'').split(/\s*[;|\n]\s*|\s*,\s+(?=[A-ZÀ-Ý0-9])/));}
+var MASS_WOERTER=[['ds',['ds','diagnostic','diagnostic specialise','diagnostique','diagnostik']],['isa',['isa','intervention specialisee ambulatoire','interventions specialisees ambulatoires']],
+  ['c&g',['c&g','cg','c g','conseil et guidance','guidance']],['atelier',['atelier','ateliers','atelier d apprentissage specifique']],['reeducation',['reeducation','reeducations']],
+  ['annexe',['annexe','annexe junglinster']],['cst',['cst','centre socio therapeutique']],['cdp',['cdp','classe de participation','classes de participation','clapa']]];
+function massWort(t){
+  var n=kopfNorm(t), i;if(!n){return '';}
+  for(i=0;i<MASS_WOERTER.length;i++){if(MASS_WOERTER[i][1].indexOf(n)>=0){return MASS_WOERTER[i][0];}}
+  for(i=0;i<MASS_WOERTER.length;i++){if(MASS_WOERTER[i][1].some(function(w){return w.length>1&&(n.indexOf(w+' ')===0);})){return MASS_WOERTER[i][0];}}
+  return '';
+}
+function geschlechtAus(t){var n=kopfNorm(t);if(/^(m|h|j|masculin|garcon|homme|male|boy|junge|jong|mannlich|maennlich)$/.test(n)){return 'M';}if(/^(f|w|feminin|fille|femme|female|girl|madchen|maedchen|meedchen|weiblich)$/.test(n)){return 'F';}return '';}
+function jaNeinWort(t){var n=kopfNorm(t);if(/^(yes|y|oui|o|ja|j|x|1|vrai|true)$/.test(n)){return 'Yes';}if(/^(no|n|non|nein|0|faux|false)$/.test(n)){return 'No';}return '';}
+function nameTeilen(t){
+  t=txt(t);if(!t){return null;}
+  if(t.indexOf(',')>0){var p=t.split(',');return {nach:txt(p[0]),vor:txt(p.slice(1).join(','))};}
+  var w=t.split(/\s+/), gross=w.filter(function(x){return x.length>1&&x===x.toUpperCase()&&x!==x.toLowerCase();});
+  if(gross.length&&gross.length<w.length){return {nach:gross.join(' '),vor:w.filter(function(x){return gross.indexOf(x)<0;}).join(' ')};}
+  return w.length===1?{nach:w[0],vor:''}:{nach:w[0],vor:w.slice(1).join(' ')};
+}
+/* Zeilen der Tabelle → Datensätze im Format von CDSE Stats (+ Klasse, Nationalität, Stelle, Notiz, Maßnahmen als Liste) */
+function tabelleZuRoh(b,map){
+  var roh=[], probleme=[];
+  b.zeilen.forEach(function(z,zi){
+    var s={}, da=false, nr=(b.nummern&&b.nummern[zi])||zi+2, name='';
+    map.forEach(function(ziel,sp){
+      var zd=ziel&&zielVon(ziel);if(!zd){return;}
+      var v=z[sp], t=zelleText(v);if(t===''){return;}
+      da=true;
+      if(zd[3]==='datum'){var dt=datumAus(v);if(dt){s[ziel]=dt;}else{probleme.push('Zeile '+nr+': „'+t+'“ ist kein Datum ('+zd[1]+')');}}
+      else if(zd[3]==='zahl'){var n=zahl(t);if(n!=null){s[ziel]=n;}else{probleme.push('Zeile '+nr+': „'+t+'“ ist keine Zahl ('+zd[1]+')');}}
+      else if(zd[3]==='liste'){s[ziel]=eindeutig((s[ziel]||[]).concat(listeTeilen(t)));}
+      else if(zd[3]==='massnahmen'){
+        listeTeilen(t).forEach(function(p){
+          var mw=massWort(p);
+          if(!mw){s.autre_mesure=s.autre_mesure?s.autre_mesure+'; '+p:p;return;}
+          s.mesures=eindeutig((s.mesures||[]).concat([mw]));
+          if(mw==='c&g'){var pn=norm(p);if(/parent|eltern|famil/.test(pn)){s.cg_type=s.cg_type&&s.cg_type!=='Parents'?'Both':'Parents';}else if(/prof|fachkr|enseign|equipe|ecole|schule/.test(pn)){s.cg_type=s.cg_type&&s.cg_type!=='Professionals'?'Both':'Professionals';}}
+        });
+      }
+      else if(zd[3]==='geschlecht'){s.sexe=geschlechtAus(t)||t;}
+      else if(zd[3]==='janein'){s[ziel]=jaNeinWort(t)||t;}
+      else if(zd[3]==='name'){name=t;}
+      else if(ziel==='nom'||ziel==='prenom'){s[ziel]=t;}
+      else{s[ziel]=s[ziel]?s[ziel]+'; '+t:t;}
+    });
+    if(name){var nt=nameTeilen(name);if(!s.nom){s.nom=nt.nach;}if(!s.prenom){s.prenom=nt.vor;}}
+    if(da){s.__zeile=nr;roh.push(s);}
+  });
+  return {roh:roh,probleme:probleme};
+}
 function importLesen(datei){
+  if(/\.xls$/i.test(datei.name)){return Promise.reject(new Error('Alte Excel-Dateien (.xls) lassen sich nicht lesen. In Excel: Datei → Speichern unter → „Excel-Arbeitsmappe (.xlsx)“ und diese Datei wählen.'));}
+  if(/\.xls[xm]$/i.test(datei.name)){
+    return datei.arrayBuffer().then(xlsxBlaetter).then(function(bl){return {art:'Excel-Tabelle',tabelle:{blaetter:bl,blatt:0,map:null,probleme:[]},roh:[],unbekannt:[]};});
+  }
   return datei.text().then(function(t){
     t=t.replace(/^\uFEFF/,'');
     if(/\.json$/i.test(datei.name)||/^\s*[\[{]/.test(t)){
@@ -1451,9 +1994,25 @@ function importLesen(datei){
     }
     var z=csvLesen(t);if(z.length<2){throw new Error('Die CSV-Datei enthält keine Datensätze.');}
     var map=z[0].map(statsSchluessel), unbekannt=z[0].filter(function(h,i){return txt(h)&&!map[i];});
-    if(map.indexOf('nom')<0&&map.indexOf('prenom')<0){throw new Error('In der CSV fehlen die Spalten „nom“ und „prenom“ (bzw. „Last name“, „First name“). Ist das ein Export von CDSE Stats?');}
+    /* Keine Spalten von CDSE Stats: wie eine Excel-Tabelle mit eigener Zuordnung behandeln */
+    if(map.indexOf('nom')<0&&map.indexOf('prenom')<0){var tb=tabelleAus(datei.name,z);if(!tb||!tb.zeilen.length){throw new Error('Die CSV-Datei enthält keine Datensätze.');}return {art:'CSV-Tabelle',tabelle:{blaetter:[tb],blatt:0,map:null,probleme:[]},roh:[],unbekannt:[]};}
     return {art:'CSV',unbekannt:unbekannt,roh:z.slice(1).map(function(r){var o={};map.forEach(function(k,i){if(!k){return;}var v=txt(r[i]);o[k]=STATS_LISTEN.indexOf(k)>=0?(v?v.split(/\s*[;|]\s*/).filter(Boolean):[]):v;});return o;})};
   });
+}
+/* Tabelle (Excel/CSV): Zuordnung raten oder übernehmen, Datensätze bilden, neue Directions vorbelegen */
+function tabelleVorbereiten(){
+  var tb=imp.tabelle, b=tb.blaetter[tb.blatt]||tb.blaetter[0];
+  if(!tb.map||tb.map.length!==b.kopf.length){tb.map=zuordnungRaten(b.kopf);}
+  var r=tabelleZuRoh(b,tb.map);imp.roh=r.roh;tb.probleme=r.probleme;
+  eindeutig(imp.roh.map(function(s){return txt(s.dir);})).forEach(function(a){if(!(a in imp.einst.dr)){imp.einst.dr[a]=drImport(a);}});
+}
+/* Leere Vorlage (CSV für Excel) mit den Spaltenüberschriften, die der Import sicher erkennt */
+function importVorlage(){
+  var kopf=['nom','prenom','matricule','sexe','date_naissance','nationalite','langue_1','ecole_lycee','classe','dir','stelle','created_at','mesures','debut_isa','fin_isa','atelier_type','debut_atelier','fin_atelier',
+    'reeducation_type','debut_reeducation','fin_reeducation','cst_groupe','debut_cst','fin_cst','cdp_region','debut_cdp','fin_cdp','debut_annexe','fin_annexe','cg_type','debut_cg','fin_cg','date_decision_cni',
+    'autres_cc','autres_services','parents','scas','tutelle','diagnostics','verdachtsdiagnosen_profil','iq','eldib_date','eldib_v','eldib_k','eldib_soz','eldib_kog','remarque'].map(function(k){return zielVon(k)[1];});
+  herunterladen('cdse-import-vorlage.csv',new Blob(['﻿'+kopf.map(csvZelle).join(';')+'\r\n'],{type:'text/csv;charset=utf-8'}));
+  H.toast('Vorlage heruntergeladen – in Excel ausfüllen, als .xlsx speichern und hier wählen');
 }
 function drImport(alt){var n=norm(alt);if(DR_ALT[n]){return DR_ALT[n];}if(DR_UNKLAR.indexOf(n)>=0){return '';}var d=drAus(alt);return DR.indexOf(d)>=0?d:'';}
 function tutelleDe(x){
@@ -1473,10 +2032,14 @@ function abbilden(s,e){
   var sx=norm(s.sexe);if(sx==='m'){person.geschlecht='m';}else if(sx==='f'||sx==='w'){person.geschlecht='w';}else if(sx){w.push('Geschlecht „'+t('sexe')+'“ nicht übernommen');}
   var geb=iso(s.date_naissance);if(geb){person.geburtsdatum=geb;}else if(t('date_naissance')){w.push('Geburtsdatum unlesbar');}
   if(t('ecole_lycee')){person.schule=t('ecole_lycee');fiche.schule={name:t('ecole_lycee')};}
+  /* aus einer Excel-Tabelle zusätzlich: Klasse, Nationalität, Geburtsort */
+  if(t('classe')){person.klasse=t('classe');fiche.schule=Object.assign(fiche.schule||{},{klasse:t('classe')});}
+  if(t('nationalite')){fiche.nationalitaet=t('nationalite');}
+  if(t('lieu_naissance')){fiche.geburtsort=t('lieu_naissance');}
   if(t('dossier_mfile')){fiche.mfiles=t('dossier_mfile');}
   if(t('dir')){var dr=e.dr[t('dir')];if(dr){fiche.ef={dr:dr};}else{w.push('Direction „'+t('dir')+'“ nicht zugeordnet');}}
   if(t('langue_1')){fiche.ersteSprache=(norm(s.langue_1)==='other'&&t('langue_1_autre'))?t('langue_1_autre'):(SPRACHE_STATS[t('langue_1').toUpperCase()]||t('langue_1'));}
-  var mass=[s.mesure_cdse_1,s.mesure_cdse_2,s.mesure_cdse_3].map(norm).filter(Boolean);
+  var mass=[s.mesure_cdse_1,s.mesure_cdse_2,s.mesure_cdse_3].concat(liste(s.mesures)).map(norm).filter(Boolean);
   function mn(key,von,bis,wer){var o={aktiv:true};if(iso(von)){o.von=iso(von);}if(iso(bis)){o.bis=iso(bis);}if(txt(wer)){o.name=txt(wer);}cdse[key]=o;return o;}
   /* Der DS ist in CDSE Stats ein Termin (date_ds): Beginn und Ende an diesem Tag */
   if(mass.indexOf('ds')>=0||iso(s.date_ds)||t('ds_realise_par')){mn('diagnostic',s.date_ds,s.date_ds,s.ds_realise_par);}
@@ -1498,28 +2061,42 @@ function abbilden(s,e){
   else if(!sk&&(inst||mass.indexOf('spec. school.')>=0||iso(s.debut_scol_spe))){cdse.sonstige=[{aktiv:true,label:'Scolarisation spécialisée'+(inst?' – '+inst:''),von:iso(s.debut_scol_spe),bis:iso(s.fin_scol_spe)}];}
   if(Object.keys(cdse).length){fiche.cdse=cdse;}
   var dienste=liste(s.autres_services);if(dienste.length){fiche.intervenants=dienste.map(function(x){return {institution:x};});}
-  var st=norm(s.school_type);if(st==='public'){db.schulform='public';}else if(st==='prive'||st==='private'){db.schulform='prive';}
+  var st=norm(s.school_type);if(/^(public|publique|offentlich|oeffentlich|staatlich)/.test(st)){db.schulform='public';}else if(/^priv/.test(st)){db.schulform='prive';}
   if(t('previous_school')){db.vorherigeSchule=t('previous_school');}
   if(iso(s.date_school_change)){db.schulwechsel=iso(s.date_school_change);}
   if(iso(s.date_decision_cni)){db.cni=iso(s.date_decision_cni);}
-  var cc=liste(s.autres_cc);if(cc.length){db.autreCc=cc.join('; ');}else if(t('autre_cc_implique')){db.autreCc=t('autre_cc_implique');}
+  /* andere Kompetenzzentren als Kürzel („CL; CDI“), Unbekanntes bleibt als Text */
+  var cc=ccListe(liste(s.autres_cc));if(cc.length){db.autreCc=cc.join('; ');}else if(t('autre_cc_implique')){db.autreCc=t('autre_cc_implique');}
   if(t('autre_mesure')||iso(s.debut_autre_mesure)){db.autreMesure={name:t('autre_mesure')||'andere Maßnahme',von:iso(s.debut_autre_mesure),bis:iso(s.fin_autre_mesure)};}
   else if(mass.indexOf('other')>=0){db.autreMesure={name:'andere Maßnahme',von:'',bis:''};}
   var se=jaNein(norm(s.scol_etranger)==='yes'?'ja':s.scol_etranger);if(se){db.scolEtranger=se;}
   var dg2=liste(s.diagnostics);if(dg2.length){db.diagnosen=dg2;}
   var vd=liste(s.verdachtsdiagnosen_profil);if(vd.length){db.verdacht=vd;}
   var iq=zahl(s.iq);if(iq!=null){if(iq>=40&&iq<=160){db.iq=Math.round(iq);}else{w.push('IQ '+iq+' liegt außerhalb 40–160 und wird nicht übernommen');}}
-  var pa=norm(s.parents);if(pa==='together'||pa==='ensemble'){db.eltern='zusammen';}else if(pa==='separated'||pa==='separes'){db.eltern='getrennt';}else if(pa){db.eltern='anderes';}
+  var pa=norm(s.parents);if(/together|ensemble|zusammen|zesummen|maries|married|verheiratet/.test(pa)){db.eltern='zusammen';}else if(/separ|divorc|getrennt|geschieden/.test(pa)){db.eltern='getrennt';}else if(pa){db.eltern='anderes';}
   var sc=jaNein(norm(s.scas)==='yes'?'ja':s.scas);if(sc){db.scas=sc;}
   var tu=[];liste(s.tutelle).forEach(function(x){tutelleDe(x).forEach(function(y){if(tu.indexOf(y)<0){tu.push(y);}});});if(tu.length){db.tutelle=tu;}
   var mf=liste(s.mesures_famille).map(function(x){return norm(x)==='other'?'andere':x;});if(mf.length){db.massnahmenFamilie=mf;}
-  db.herkunft={quelle:'CDSE Stats',id:t('id'),angelegt:iso(s.created_at),geaendert:iso(s.updated_at),importiert:heute()};
-  return {person:person,fiche:fiche,db:db,warnungen:w};
+  /* ELDiB-Stufen (CDSE Stats ab 0.5 oder Excel) – gelten nur, solange im Dossier keine ELDiB-Einschätzung ist */
+  var el=dbWert('eldibStufen',{datum:s.eldib_date,verhalten:s.eldib_v,kommunikation:s.eldib_k,sozialisation:s.eldib_soz,kognition:s.eldib_kog});if(el){db.eldibStufen=el;}
+  else if(['eldib_v','eldib_k','eldib_soz','eldib_kog'].some(function(k){return t(k);})){w.push('ELDiB-Stufen außerhalb 0–5 nicht übernommen');}
+  if(t('remarque')){db.notiz=t('remarque');}
+  db.herkunft={quelle:e.quelle||'CDSE Stats',id:t('id'),angelegt:iso(s.created_at),geaendert:iso(s.updated_at),importiert:heute()};
+  var sa=stelleAusText(t('stelle'));
+  return {person:person,fiche:fiche,db:db,warnungen:w,stelle:sa};
+}
+/* Stelle aus einer Angabe wie „ISA“, „Annexe“, „CLAPA“, „Diagnostique“ (Spalte „Stelle“ einer Excel-Tabelle) */
+function stelleAusText(v){
+  var n=norm(v);if(!n){return '';}
+  var t=teams().filter(function(x){return norm(x.name)===n||x.id===n;})[0];if(t){return t.id;}
+  if(/annexe|junglinster/.test(n)){return 'annexe';}if(/\bcst\b|socio/.test(n)){return 'cst';}
+  if(/\bcp\b|\bcdp\b|clapa|participation/.test(n)){return 'cp';}if(/\bisa\b|ambulatoire/.test(n)){return 'isa';}if(/diagnos/.test(n)){return 'diagnostique';}
+  return '';
 }
 function matNorm(m){return txt(m).replace(/\D/g,'');}
 function abgleich(m){
   var p=m.person, mat=matNorm(p.matricule), hid=m.db.herkunft&&m.db.herkunft.id, x=null;
-  if(hid){x=zust.daten.filter(function(y){var h=(y.d.db||{}).herkunft;return h&&h.id&&h.id===hid;})[0];if(x){return {x:x,art:'schon aus CDSE Stats übernommen'};}}
+  if(hid){x=zust.daten.filter(function(y){var h=(y.d.db||{}).herkunft;return h&&h.id&&h.id===hid;})[0];if(x){return {x:x,art:'schon aus '+(/Tabelle/.test((x.d.db.herkunft||{}).quelle||'')?'dieser Tabelle':'CDSE Stats')+' übernommen'};}}
   if(mat.length>=8){x=zust.daten.filter(function(y){return matNorm((y.d.person||{}).matricule)===mat;})[0];if(x){return {x:x,art:'gleiche Matricule'};}}
   var nn=norm(p.nachname)+'|'+norm(p.vorname), gb=p.geburtsdatum||'';
   var kand=zust.daten.filter(function(y){var q=y.d.person||{};return norm(q.nachname)+'|'+norm(q.vorname)===nn;});
@@ -1528,14 +2105,17 @@ function abgleich(m){
     if(passend){return {x:passend,art:'gleicher Name und Geburtsdatum'};}
     if(kand.some(function(y){return iso((y.d.person||{}).geburtsdatum)===gb;})){return {x:null,art:'',hinweis:'gleicher Name und Geburtsdatum, aber andere Matricule'};}
   }
+  /* weder Geburtsdatum noch Matricule: nur dann dasselbe Dossier, wenn es genau eines mit diesem Namen und ebenfalls ohne beides gibt */
+  else if(!mat){var ohne=kand.filter(function(y){var q=y.d.person||{};return !iso(q.geburtsdatum)&&!matNorm(q.matricule);});if(ohne.length===1){return {x:ohne[0],art:'gleicher Name, beide ohne Geburtsdatum und Matricule'};}}
   return {x:null,art:'',hinweis:kand.length?'gleicher Name, Geburtsdatum fehlt oder weicht ab':''};
 }
 function stelleFuerImport(m){
   var id=imp.einst.stelle;
+  if(id==='auto'&&m.stelle){id=m.stelle;}   /* Spalte „Stelle“ der Tabelle */
   if(id==='auto'){var c=m.fiche.cdse||{};id=c.cst?'cst':(c.cdp?'cp':(c.annexe?'annexe':((c.isa&&!(c.isa.bis&&c.isa.bis<heute()))?'isa':'diagnostique')));}
   return teams().some(function(t){return t.id===id;})?id:((teams()[0]||{}).id||'diagnostique');
 }
-var PERSON_NAMEN={nachname:'Nachname',vorname:'Vorname',matricule:'Matricule',geschlecht:'Geschlecht',geburtsdatum:'Geburtsdatum',schule:'Schule'};
+var PERSON_NAMEN={nachname:'Nachname',vorname:'Vorname',matricule:'Matricule',geschlecht:'Geschlecht',geburtsdatum:'Geburtsdatum',schule:'Schule',klasse:'Klasse'};
 /* „Vorhandene ergänzen“: nur leere Felder füllen – Fiche-Abschnitte werden vollständig weitergegeben */
 function ergaenzung(d,m){
   var o={anzahl:0,person:null,fiche:null,db:null,felder:[]}, p=d.person||{}, f=d.fiche||{}, mf=m.fiche;
@@ -1544,6 +2124,9 @@ function ergaenzung(d,m){
   if(mf.mfiles&&!txt(f.mfiles)){nf().mfiles=mf.mfiles;o.felder.push('Dossier M-Files');o.anzahl++;}
   if(mf.ersteSprache&&!txt(f.ersteSprache)){nf().ersteSprache=mf.ersteSprache;o.felder.push('Erstsprache');o.anzahl++;}
   if(mf.schule&&mf.schule.name&&!txt((f.schule||{}).name)){nf().schule=Object.assign({},f.schule||{},{name:mf.schule.name});o.felder.push('Schule (Fiche)');o.anzahl++;}
+  if(mf.schule&&mf.schule.klasse&&!txt((f.schule||{}).klasse)){nf().schule=Object.assign({},f.schule||{},nf().schule||{},{klasse:mf.schule.klasse});o.felder.push('Klasse (Fiche)');o.anzahl++;}
+  if(mf.nationalitaet&&!txt(f.nationalitaet)){nf().nationalitaet=mf.nationalitaet;o.felder.push('Nationalität');o.anzahl++;}
+  if(mf.geburtsort&&!txt(f.geburtsort)){nf().geburtsort=mf.geburtsort;o.felder.push('Geburtsort');o.anzahl++;}
   if(mf.ef&&mf.ef.dr&&!txt((f.ef||{}).dr)){nf().ef=Object.assign({},f.ef||{},{dr:mf.ef.dr});o.felder.push('Direction régionale');o.anzahl++;}
   if(mf.cdse){
     var c=kopie(f.cdse||{}), neu=false;
@@ -1566,23 +2149,28 @@ function ergaenzung(d,m){
   if(o.anzahl&&!db.herkunft){(o.db=o.db||{}).herkunft=m.db.herkunft;}
   return o;
 }
+/* Woher kommt der Import? „CDSE Stats“ oder „Excel-Tabelle“ / „CSV-Tabelle“ (für Protokoll und Herkunft) */
+function quelleName(){return imp&&imp.tabelle?imp.art:'CDSE Stats';}
 function importStarten(datei){
-  imp={datei:datei.name,art:'',roh:[],unbekannt:[],einst:{modus:'neu',stelle:'auto',cg:'cgPro',dr:{}},vorschau:null,laeuft:false,ergebnis:null,fehler:''};
+  imp={datei:datei.name,art:'',roh:[],unbekannt:[],tabelle:null,einst:{modus:'neu',stelle:'auto',cg:'cgPro',dr:{}},vorschau:null,laeuft:false,ergebnis:null,fehler:''};
   importSeite();
   importLesen(datei).then(function(r){
     imp.art=r.art;imp.roh=r.roh;imp.unbekannt=r.unbekannt;
-    if(!r.roh.length){throw new Error('In der Datei stehen keine Fälle.');}
-    eindeutig(r.roh.map(function(s){return txt(s.dir);})).forEach(function(a){imp.einst.dr[a]=drImport(a);});
+    if(r.tabelle){imp.tabelle=r.tabelle;imp.einst.quelle=r.art+' ('+datei.name+')';tabelleVorbereiten();}
+    else{
+      if(!r.roh.length){throw new Error('In der Datei stehen keine Fälle.');}
+      eindeutig(r.roh.map(function(s){return txt(s.dir);})).forEach(function(a){imp.einst.dr[a]=drImport(a);});
+    }
     return T.alleDossiers(true).then(function(l){zust.daten=l.map(function(d){return {d:d,r:datensatz(d)};});});
   }).then(function(){vorschauBerechnen();importSeite();},function(e){imp.fehler=fehlerText(e);importSeite();});
 }
 function vorschauBerechnen(){
   var gesehen={};
   imp.vorschau=imp.roh.map(function(s,i){
-    var m=abbilden(s,imp.einst), p=m.person, z={i:i,m:m,status:'',grund:'',x:null,stelle:'',erg:null};
+    var m=abbilden(s,imp.einst), p=m.person, z={i:i,m:m,status:'',grund:'',x:null,stelle:'',erg:null,zeile:s.__zeile||0};
     if(!p.nachname&&!p.vorname){z.status='aus';z.grund='ohne Namen – wird nicht übernommen';return z;}
     var sch=matNorm(p.matricule).length>=8?'m'+matNorm(p.matricule):'n'+norm(p.nachname)+'|'+norm(p.vorname)+'|'+(p.geburtsdatum||'');
-    if(gesehen[sch]!=null){z.status='aus';z.grund='doppelt in der Datei (wie Zeile '+(gesehen[sch]+1)+')';return z;}
+    if(gesehen[sch]!=null){z.status='aus';z.grund='doppelt in der Datei (wie Zeile '+(imp.roh[gesehen[sch]].__zeile||gesehen[sch]+1)+')';return z;}
     gesehen[sch]=i;
     var ab=abgleich(m);
     if(ab.x){z.status='vorhanden';z.x=ab.x;z.grund=ab.art;if(imp.einst.modus==='ergaenzen'){z.erg=ergaenzung(ab.x.d,m);}}
@@ -1595,8 +2183,10 @@ function zuordnungTabelle(){
     ZUORDNUNG.map(function(z){return '<tr><td data-label="CDSE Stats"><code>'+esc(z[0])+'</code></td><td data-label="Dossier">'+esc(z[1])+'</td><td data-label="Hinweis"'+(z[2]?'':' class="leer"')+'>'+esc(z[2]||'—')+'</td></tr>';}).join('')+'</tbody></table></div>';
 }
 function importSeite(){
-  var h=H.karte('<h2>Aus CDSE Stats übernehmen</h2><p>Übernimmt Fälle aus der bisherigen App „CDSE Stats“ in die Schülerdossiers. Erkannt werden der JSON-Export (Liste der Fälle), die Sync-Datei <code>cdse.json</code> und der CSV-Export. Vorher zeigt eine Vorschau, was neu angelegt wird und was es schon gibt – abgeglichen über die Matricule, sonst über Name und Geburtsdatum.</p>'+
-    '<div class="ar-knopfreihe"><label class="btn primary db-dateiwahl">'+svg('hoch')+'Datei wählen …<input type="file" id="db-datei" accept=".json,.csv,application/json,text/csv" aria-label="Datei aus CDSE Stats wählen"'+(imp&&imp.laeuft?' disabled':'')+'></label>'+
+  var h=H.karte('<h2>Daten übernehmen: Excel-Tabelle oder CDSE Stats</h2><p>Übernimmt Schüler in die Dossiers – aus einer <b>Excel-Tabelle</b> (.xlsx oder .csv, eine Zeile je Schüler) oder aus der bisherigen App „CDSE Stats“ (JSON-Export, Sync-Datei <code>cdse.json</code>, CSV-Export). Bei einer Tabelle schlägt der Hub vor, welche Spalte wohin gehört; das lässt sich in der Vorschau ändern. Vorher zeigt die Vorschau, was neu angelegt wird und was es schon gibt – abgeglichen über die Matricule, sonst über Name und Geburtsdatum.</p>'+
+    '<p class="ar-klein">Die Datei wird nur hier im Browser gelesen – nichts wird hochgeladen, keine KI.</p>'+
+    '<div class="ar-knopfreihe"><label class="btn primary db-dateiwahl">'+svg('hoch')+'Datei wählen …<input type="file" id="db-datei" accept=".xlsx,.xlsm,.csv,.json,application/json,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" aria-label="Excel-Tabelle oder Datei aus CDSE Stats wählen"'+(imp&&imp.laeuft?' disabled':'')+'></label>'+
+      '<button class="btn" type="button" data-db="import-vorlage" data-fokus="import-vorlage">'+svg('runter')+'Leere Excel-Vorlage</button>'+
       (imp&&!imp.laeuft&&(imp.vorschau||imp.fehler||imp.ergebnis)?'<button class="btn" type="button" data-db="import-weg" data-fokus="import-weg">'+svg('x')+'Verwerfen</button>':'')+'</div>'+
     '<details class="db-zuordnung"><summary>Welche Angabe aus CDSE Stats landet wo im Dossier?</summary>'+zuordnungTabelle()+'</details>');
   if(imp&&imp.fehler){h+=H.hinweis(esc(imp.fehler));}
@@ -1604,6 +2194,25 @@ function importSeite(){
   else if(imp&&imp.vorschau){h+=vorschauHtml();}
   else if(imp){h+=H.laedt('Lese '+imp.datei+' …');}
   inhalt(h);
+}
+/* Excel/CSV-Tabelle: welche Spalte wird welche Angabe? (Vorschlag, änderbar) */
+function zielSelect(i,wert){
+  var gruppen=[];ZIELE.forEach(function(z){if(gruppen.indexOf(z[2])<0){gruppen.push(z[2]);}});
+  return '<select data-db-imp="spalte" data-sp="'+i+'" data-fokus="imp-sp-'+i+'" aria-label="Angabe im Dossier für Spalte '+spaltenName(i)+'"><option value="">– nicht übernehmen –</option>'+
+    gruppen.map(function(g){return '<optgroup label="'+esc(g)+'">'+ZIELE.filter(function(z){return z[2]===g;}).map(function(z){return '<option value="'+z[0]+'"'+(z[0]===wert?' selected':'')+'>'+esc(z[1])+'</option>';}).join('')+'</optgroup>';}).join('')+'</select>';
+}
+function spaltenHtml(){
+  var tb=imp.tabelle, b=tb.blaetter[tb.blatt]||tb.blaetter[0], map=tb.map||[];
+  var namen=map.some(function(k){return k==='nom'||k==='prenom'||k==='nom_prenom';}), n=map.filter(Boolean).length;
+  return '<h3>Spalten zuordnen</h3><p class="ar-klein">Der Vorschlag ist geraten – bitte prüfen. <b>'+n+' von '+b.kopf.length+'</b> Spalten werden übernommen; „nicht übernehmen“ lässt eine Spalte weg. Mehrere Maßnahmen, Diagnosen oder Kompetenzzentren in einer Zelle mit „;“ trennen.</p>'+
+    (tb.blaetter.length>1?'<label class="ar-feld db-blattwahl"><span>Tabellenblatt</span><select data-db-imp="blatt" data-fokus="imp-blatt">'+tb.blaetter.map(function(x,i){return '<option value="'+i+'"'+(i===tb.blatt?' selected':'')+'>'+esc(x.name)+' ('+x.zeilen.length+(x.zeilen.length===1?' Zeile':' Zeilen')+')</option>';}).join('')+'</select></label>':'')+
+    (namen?'':H.hinweis('Bitte die Spalten für <b>Nachname</b> und <b>Vorname</b> zuordnen (oder „Name und Vorname in einer Spalte“) – ohne Namen wird nichts übernommen.'))+
+    '<div class="db-tabrahmen"><table class="db-tab db-spzutab"><thead><tr><th scope="col">Spalte</th><th scope="col">Beispiele aus der Tabelle</th><th scope="col">Angabe im Dossier</th></tr></thead><tbody>'+
+    b.kopf.map(function(k,i){
+      var bsp=[];b.zeilen.some(function(z){var t=zelleAnzeige(z[i]);if(t&&bsp.indexOf(t)<0){bsp.push(t);}return bsp.length>=3;});
+      return '<tr'+(map[i]?'':' class="db-sp-aus"')+'><td data-label="Spalte"><b>'+esc(k||'(ohne Überschrift)')+'</b><small>Spalte '+spaltenName(i)+'</small></td><td data-label="Beispiele"'+(bsp.length?'':' class="leer"')+'>'+esc(bsp.map(function(x){return kuerzen(x,40);}).join(' · ')||'—')+'</td><td data-label="Angabe im Dossier">'+zielSelect(i,map[i])+'</td></tr>';
+    }).join('')+'</tbody></table></div>'+
+    (tb.probleme.length?H.hinweis('Nicht lesbar und deshalb leer gelassen: '+esc(tb.probleme.slice(0,6).join(' · '))+(tb.probleme.length>6?' … (insgesamt '+tb.probleme.length+')':''),'info'):'');
 }
 function radioHtml(name,wert,titel,text,akt){return '<label class="ar-haken db-radio"><input type="radio" name="imp-'+name+'" value="'+wert+'" data-db-imp="'+name+'"'+(akt===wert?' checked':'')+'><span><b>'+esc(titel)+'</b><small>'+esc(text)+'</small></span></label>';}
 function vorschauHtml(){
@@ -1613,16 +2222,17 @@ function vorschauHtml(){
   v.forEach(function(z){z.m.warnungen.forEach(function(w){if(warn.indexOf(w)<0){warn.push(w);}});});
   var h='<section class="ar-karte db-vorschau"><div class="ar-kartenkopf"><h2>Vorschau</h2><span class="ar-leise">'+esc(imp.datei)+' · '+esc(imp.art)+' · '+v.length+(v.length===1?' Datensatz':' Datensätze')+'</span></div>'+
     '<div class="db-kpis db-kpis-klein">'+kpi('imp-neu',String(n.neu),'neu','werden angelegt')+kpi('imp-vorhanden',String(n.vorhanden),'schon vorhanden',e.modus==='ergaenzen'?ergz+' davon werden ergänzt':'bleiben, wie sie sind')+kpi('imp-aus',String(n.aus),'nicht übernommen','doppelt oder ohne Namen')+'</div>'+
+    (imp.tabelle?spaltenHtml():'')+
     (imp.unbekannt.length?H.hinweis('Diese Spalten der CSV kennt der Import nicht und lässt sie weg: '+esc(imp.unbekannt.join(', ')),'info'):'')+
     '<fieldset class="db-wahl"><legend>Vorhandene Dossiers</legend>'+radioHtml('modus','neu','Nur neue Dossiers anlegen','Vorhandene bleiben, wie sie sind.',e.modus)+radioHtml('modus','ergaenzen','Vorhandene ergänzen','Nur leere Felder werden gefüllt – nichts wird überschrieben.',e.modus)+'</fieldset>'+
     '<div class="ar-raster2">'+
       '<label class="ar-feld"><span>Stelle für neue Dossiers</span><select data-db-imp="stelle" data-fokus="imp-stelle"><option value="auto"'+(e.stelle==='auto'?' selected':'')+'>automatisch aus der Maßnahme</option>'+teams().map(function(t){return '<option value="'+esc(t.id)+'"'+(e.stelle===t.id?' selected':'')+'>'+esc(t.name)+'</option>';}).join('')+'</select></label>'+
-      '<label class="ar-feld"><span>„C&amp;G“ aus CDSE Stats eintragen als</span><select data-db-imp="cg" data-fokus="imp-cg"><option value="cgPro"'+(e.cg==='cgPro'?' selected':'')+'>Conseil et guidance des professionnel·le·s</option><option value="cgEltern"'+(e.cg==='cgEltern'?' selected':'')+'>Conseil et guidance parents</option></select></label>'+
-    '</div><p class="ar-klein">Automatisch: CST, Classe de participation oder Annexe, wenn dort eine Beschulung steht; sonst ISA bei laufender ISA; sonst Diagnostique.</p>'+
-    (altDr.length?'<h3>Directions zuordnen</h3><p class="ar-klein">CDSE Stats nutzte eine ältere DIR-Liste. Eindeutige Namen sind schon zugeordnet; bei den übrigen bitte die passende Direction der Fiche wählen – sonst bleibt das Feld leer.</p><div class="db-drwahl">'+
+      '<label class="ar-feld"><span>„C&amp;G“ ohne Angabe „für wen“ eintragen als</span><select data-db-imp="cg" data-fokus="imp-cg"><option value="cgPro"'+(e.cg==='cgPro'?' selected':'')+'>Conseil et guidance des professionnel·le·s</option><option value="cgEltern"'+(e.cg==='cgEltern'?' selected':'')+'>Conseil et guidance parents</option></select></label>'+
+    '</div><p class="ar-klein">Automatisch: '+(imp.tabelle?'die Spalte „Stelle“, wenn es sie gibt; sonst ':'')+'CST, Classe de participation oder Annexe, wenn dort eine Beschulung steht; sonst ISA bei laufender ISA; sonst Diagnostique.</p>'+
+    (altDr.length?'<h3>Directions zuordnen</h3><p class="ar-klein">'+(imp.tabelle?'Nummern und Orte („5“, „DR 05“, „Sanem“) sind schon zugeordnet':'CDSE Stats nutzte eine ältere DIR-Liste. Eindeutige Namen sind schon zugeordnet')+'; bei den übrigen bitte die passende Direction der Fiche wählen – sonst bleibt das Feld leer.</p><div class="db-drwahl">'+
       altDr.map(function(a,i){return '<label class="ar-feld"><span>'+esc(a)+'</span><select data-db-imp="dr" data-alt="'+esc(a)+'" data-fokus="imp-dr-'+i+'"><option value="">– nicht übernehmen –</option>'+DR.map(function(d){return '<option'+(e.dr[a]===d?' selected':'')+'>'+esc(d)+'</option>';}).join('')+'</select></label>';}).join('')+'</div>':'')+
     (warn.length?H.hinweis('Beim Lesen aufgefallen: '+esc(warn.slice(0,8).join(' · '))+(warn.length>8?' …':''),'info'):'')+
-    '<p class="ar-klein">Bei neuen Dossiers wirst du als fallverantwortlich eingetragen (später änderbar). Jede Änderung steht im Protokoll des Dossiers („Import aus CDSE Stats“).</p>'+
+    '<p class="ar-klein">Bei neuen Dossiers wirst du als fallverantwortlich eingetragen (später änderbar). Jede Änderung steht im Protokoll des Dossiers („Import aus '+esc(quelleName())+'“).</p>'+
     '<div class="db-tabrahmen"><table class="db-tab db-imptab"><thead><tr><th scope="col">Name</th><th scope="col">Geburtsdatum</th><th scope="col">Matricule</th><th scope="col">Was passiert</th></tr></thead><tbody>'+
       v.slice(0,300).map(function(z){
         var p=z.m.person, was;
@@ -1649,7 +2259,7 @@ function importAusfuehren(){
     return eineZeile(z).then(function(a){erg[a]++;},function(e){erg.fehler.push(H.schuelerName(z.m.person)+': '+fehlerText(e));}).then(schritt);
   }
   schritt().then(function(){
-    protokollieren({art:'import',format:'CDSE Stats',anzahl:erg.angelegt+erg.ergaenzt,text:'„'+imp.datei+'“: '+erg.angelegt+' angelegt, '+erg.ergaenzt+' ergänzt, '+(erg.uebersprungen+erg.unveraendert)+' unverändert'+(erg.fehler.length?', '+erg.fehler.length+' Fehler':'')});
+    protokollieren({art:'import',format:quelleName(),anzahl:erg.angelegt+erg.ergaenzt,text:'„'+imp.datei+'“: '+erg.angelegt+' angelegt, '+erg.ergaenzt+' ergänzt, '+(erg.uebersprungen+erg.unveraendert)+' unverändert'+(erg.fehler.length?', '+erg.fehler.length+' Fehler':'')});
     return laden(true);
   }).then(function(){imp.laeuft=false;imp.ergebnis=erg;if(zust.seite==='import'){importSeite();var b=$q('.db-imp-ergebnis h2');if(b){b.setAttribute('tabindex','-1');b.focus();}}},
     function(e){imp.laeuft=false;imp.ergebnis=erg;erg.fehler.push(fehlerText(e));if(zust.seite==='import'){importSeite();}});
@@ -1660,17 +2270,17 @@ function eineZeile(z){
     return T.neuesDossier(z.m.person,{stelle:z.stelle}).then(function(d){
       var p=Promise.resolve(d);
       if(Object.keys(z.m.fiche).length){
-        var fiche=Object.assign({},z.m.fiche,{quelle:{datei:'CDSE Stats ('+imp.datei+')',gelesen:new Date().toISOString(),von:(K.ich()||{}).id||''}});
-        p=p.then(function(){return T.ops.fiche(d.id,{fiche:fiche},'Import aus CDSE Stats: '+ficheText(z.m.fiche));});
+        var fiche=Object.assign({},z.m.fiche,{quelle:{datei:quelleName()+' ('+imp.datei+')',gelesen:new Date().toISOString(),von:(K.ich()||{}).id||''}});
+        p=p.then(function(){return T.ops.fiche(d.id,{fiche:fiche},'Import aus '+quelleName()+': '+ficheText(z.m.fiche));});
       }
-      return p.then(function(){return T.ops.datenbank(d.id,z.m.db,'Import aus CDSE Stats: Datenbank-Angaben');}).then(function(){return 'angelegt';});
+      return p.then(function(){return T.ops.datenbank(d.id,z.m.db,'Import aus '+quelleName()+': Datenbank-Angaben');}).then(function(){return 'angelegt';});
     });
   }
   return T.dossier(z.x.d.id,true).then(function(d){
     var f=ergaenzung(d,z.m);if(!f.anzahl){return 'unveraendert';}
     var p=Promise.resolve(), txtF=f.felder.filter(function(x){return !DB_WERTE_TEXT[x];});
-    if(f.person||f.fiche){p=p.then(function(){var w={};if(f.person){w.person=f.person;}if(f.fiche){w.fiche=f.fiche;}return T.ops.fiche(d.id,w,'Aus CDSE Stats ergänzt: '+txtF.join(', '));});}
-    if(f.db){p=p.then(function(){return T.ops.datenbank(d.id,f.db,'Aus CDSE Stats ergänzt: '+Object.keys(f.db).filter(function(k){return k!=='herkunft';}).map(function(k){return DB_NAMEN[k]||k;}).join(', '));});}
+    if(f.person||f.fiche){p=p.then(function(){var w={};if(f.person){w.person=f.person;}if(f.fiche){w.fiche=f.fiche;}return T.ops.fiche(d.id,w,'Aus '+quelleName()+' ergänzt: '+txtF.join(', '));});}
+    if(f.db){p=p.then(function(){return T.ops.datenbank(d.id,f.db,'Aus '+quelleName()+' ergänzt: '+Object.keys(f.db).filter(function(k){return k!=='herkunft';}).map(function(k){return DB_NAMEN[k]||k;}).join(', '));});}
     return p.then(function(){return 'ergaenzt';});
   });
 }
@@ -1690,7 +2300,10 @@ function ereignisse(el){
   el.addEventListener('click',function(ev){
     var t=ev.target;
     var dr=t.closest&&t.closest('[data-db-drill]');
-    if(dr){try{tab.filter=[].concat(JSON.parse(dr.getAttribute('data-db-drill')));}catch(x){tab.filter=[];}tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.mehr=0;return;}
+    if(dr){
+      try{var dj=JSON.parse(dr.getAttribute('data-db-drill'));if(Array.isArray(dj)||dj.feld){tab.filter=[].concat(dj);tab.oder=[];}else{tab.filter=[].concat(dj.und||[]);tab.oder=[].concat(dj.oder||[]);}}catch(x){tab.filter=[];tab.oder=[];}
+      tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.mehr=0;return;
+    }
     var b=t.closest&&t.closest('[data-db],[data-db-f],[data-db-sort],[data-db-blatt],[data-db-beispiel],[data-db-vorlage],[data-db-gespeichert],[data-db-prot]');
     if(!b){var tr=t.closest&&t.closest('tr.db-zeile');if(tr&&!t.closest('a,button,input,select,textarea')){blattOeffnen(tr.getAttribute('data-id'),tr.querySelector('.db-name'));}return;}
     if(b.hasAttribute('data-db-f')){var art=b.getAttribute('data-db-f'), w=b.getAttribute('data-wert');if(art==='status'){gf.status=w;}else{gf.stelle=w;}tab.mehr=0;neuZeichnen();return;}
@@ -1708,19 +2321,21 @@ function ereignisse(el){
       case 'export':exportDialog();break;
       case 'mehr':tab.mehr+=200;tabTeilNeu();break;
       case 'tf-weg':tab.filter.splice(i,1);tabTeilNeu();break;
-      case 'tf-alle-weg':tab.filter=[];tabTeilNeu();break;
-      case 'tab-leeren':tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.filter=[];tabelleSeite();break;
+      case 'tf-oder-weg':tab.oder=[];tabTeilNeu();break;
+      case 'tf-alle-weg':tab.filter=[];tab.oder=[];tabTeilNeu();break;
+      case 'tab-leeren':tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.filter=[];tab.oder=[];tabelleSeite();break;
       case 'fz-plus':abf.a.filter.push({feld:'geschlecht',op:'ist',wert:''});bauNeu();var s=$q('[data-fokus="fz-'+(abf.a.filter.length-1)+'-feld"]');if(s){s.focus();}break;
       case 'fz-weg':abf.a.filter.splice(i,1);bauNeu();var p=$q('[data-fokus="fz-plus"]');if(p){p.focus();}break;
       case 'abfrage-neu':abf={a:neueAbfrage(),frage:'',verstanden:null};abfragenSeite();break;
       case 'abfrage-speichern':speichernDialog();break;
-      case 'abfrage-tabelle':tab.filter=kopie(abf.a.filter.filter(vollstaendig));tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.mehr=0;location.hash='#/datenbank/tabelle';break;
+      case 'abfrage-tabelle':var dbas=drillBasis(abf.a);tab.filter=kopie(dbas.und);tab.oder=kopie(dbas.oder);tab.q='';tab.schnell={geschlecht:'',cycle:'',direction:'',massnahme:''};tab.mehr=0;location.hash='#/datenbank/tabelle';break;
       case 'gespeichert-weg':
         var gid=b.getAttribute('data-id'), gg=gespeicherte().filter(function(x){return x.id===gid;})[0];if(!gg){break;}
         H.dialog('Abfrage löschen','<p>„'+esc(gg.name)+'“ wirklich löschen?</p>',[{text:'Abbrechen',wert:''},{text:'Löschen',wert:'ok',primaer:true,gefahr:true}]).then(function(r){
           if(r.aktion!=='ok'){return;}gespeicherteSchreiben(gespeicherte().filter(function(x){return x.id!==gid;}));var vv=$q('#db-vorlagen');if(vv){vv.innerHTML=vorlagenHtml();}H.toast('Abfrage gelöscht');});
         break;
       case 'import-weg':imp=null;importSeite();break;
+      case 'import-vorlage':importVorlage();break;
       case 'import-los':importAusfuehren();break;
     }
   });
@@ -1732,19 +2347,36 @@ function ereignisse(el){
       var a=abf.a, k=t.getAttribute('data-db-bau');
       if(k==='fn'){a.kennzahl.fn=t.value;if(t.value!=='anzahl'&&!(feldVon(a.kennzahl.feld)||{}).typ){a.kennzahl.feld='alter';}}
       else if(k==='feld'){a.kennzahl.feld=t.value;}
-      else{a.gruppe=t.value;}
+      else if(k==='verknuepfung'){a.verknuepfung=t.value==='oder'?'oder':'und';}
+      else if(k==='gruppe2'){a.gruppe2=t.value;}
+      else{a.gruppe=t.value;if(!a.gruppe||a.gruppe2===a.gruppe){a.gruppe2='';}}
       bauNeu();return;
+    }
+    if(t.hasAttribute('data-db-fw')){
+      var wi=t.getAttribute('data-i'), wf=abf.a.filter[+wi];if(!wf){return;}
+      wf.werte=Array.prototype.map.call(zust.el.querySelectorAll('input[data-db-fw][data-i="'+wi+'"]'),function(c){return c.checked?c.value:'';}).filter(Boolean);
+      ergebnisNeu();return;
     }
     if(t.hasAttribute('data-db-fz')){
       var fl=abf.a.filter[+t.getAttribute('data-i')], wo=t.getAttribute('data-db-fz');if(!fl){return;}
-      if(wo==='feld'){fl.feld=t.value;fl.op=(opsFuer(feldVon(t.value))[0]||['ist'])[0];fl.wert='';fl.wert2='';bauNeu();}
-      else if(wo==='op'){fl.op=t.value;if(!brauchtWert(fl.op)){fl.wert='';fl.wert2='';}if(fl.op==='imSchuljahr'&&!/^\d{4}\/\d{2}$/.test(fl.wert||'')){fl.wert='';}if(fl.op!=='zwischen'){fl.wert2='';}bauNeu();}
+      if(wo==='feld'){fl.feld=t.value;fl.op=(opsFuer(feldVon(t.value))[0]||['ist'])[0];fl.wert='';fl.wert2='';delete fl.werte;bauNeu();}
+      else if(wo==='op'){
+        var vorher=fl.op;fl.op=t.value;
+        /* Wechsel zwischen einem Wert und mehreren Werten: den gewählten Wert mitnehmen */
+        if(mehrfach(fl.op)&&!mehrfach(vorher)){fl.werte=txt(fl.wert)&&vorher!=='enthaeltText'?[fl.wert]:[];fl.wert='';}
+        else if(!mehrfach(fl.op)&&mehrfach(vorher)){fl.wert=werteVon(fl)[0]||'';delete fl.werte;}
+        if(!brauchtWert(fl.op)){fl.wert='';fl.wert2='';delete fl.werte;}
+        if(fl.op==='imSchuljahr'&&!/^\d{4}\/\d{2}$/.test(fl.wert||'')){fl.wert='';}if(fl.op!=='zwischen'){fl.wert2='';}bauNeu();
+      }
       else{fl[wo]=t.value;ergebnisNeu();}
       return;
     }
     if(t.hasAttribute('data-db-imp')&&imp&&!imp.laeuft){
       var ik=t.getAttribute('data-db-imp');
-      if(ik==='dr'){imp.einst.dr[t.getAttribute('data-alt')]=t.value;}else{imp.einst[ik]=t.value;}
+      if(ik==='dr'){imp.einst.dr[t.getAttribute('data-alt')]=t.value;}
+      else if(ik==='spalte'&&imp.tabelle){imp.tabelle.map[+t.getAttribute('data-sp')]=t.value;tabelleVorbereiten();}
+      else if(ik==='blatt'&&imp.tabelle){imp.tabelle.blatt=+t.value||0;imp.tabelle.map=null;tabelleVorbereiten();}
+      else{imp.einst[ik]=t.value;}
       fokusMerken();vorschauBerechnen();importSeite();fokusZurueck();
       if(ik==='modus'){var r=$q('input[data-db-imp="modus"][value="'+t.value+'"]');if(r){r.focus();}}
       return;
@@ -1768,6 +2400,7 @@ return {seite:seite, felder:FELDER, datensatz:datensatz,
   /* Verbindung zum Reiter „Fiche“ im Dossier */
   ficheKarte:ficheKarte, bearbeiten:bearbeiten, zeigen:zeigen,
   /* für Tests und andere Module: Abfragen ohne Oberfläche */
-  abfrage:function(rows,a){return ausfuehren(rows,abfrageNorm(a));}, frage:frageVerstehen, satz:function(a){return satz(abfrageNorm(a));},
+  abfrage:function(rows,a){return ausfuehren(rows,abfrageNorm(a));}, frage:frageVerstehen, satz:function(a){return satz(abfrageNorm(a));}, norm:abfrageNorm,
+  kompetenzzentren:ccListe, spaltenRaten:zuordnungRaten,
   cdseStats:{abbilden:function(s,e){return abbilden(s,Object.assign({dr:{},cg:'cgPro'},e||{}));}, drImport:drImport}};
 })();

@@ -214,7 +214,11 @@ const STATS = [
   const sch = await balken('schule');
   check('Diagramm Schulen: École Brill vorne (2)', sch[0][0] === 'École Brill' && sch[0][1] === 2 && sch.length === 7, sch);
   check('Hinweis: 1 von 8 Dossiers ohne Fiche', (await text('#db-inhalt')).includes('1 von 8'));
-  check('Diagramme sind eigenes SVG (keine Bibliothek)', (await page.$$('.db-dg svg.db-svg')).length === 8 && await page.evaluate(() => !window.Chart && !document.querySelector('script[src*="cdn"]')));
+  check('Diagramme sind eigenes SVG (keine Bibliothek)', (await page.$$('.db-dg svg.db-svg')).length === 9 && await page.evaluate(() => !window.Chart && !document.querySelector('script[src*="cdn"]')));
+  const dauerB = Object.fromEntries(await balken('dauer'));
+  const isaMittel = await page.evaluate(async () => { const l = (await CDSE_TEAM.alleDossiers()).map(d => CDSE_DATENBANK.datensatz(d).isaDauer).filter(v => typeof v === 'number'); return l.reduce((a, b) => a + b, 0) / l.length; });
+  check('Diagramm „Durchschnittliche Dauer je Maßnahme“: DS, ISA, C&G, Annexe, CST, CdP – ISA = Mittel der ISA-Dauern', Object.keys(dauerB).sort().join() === ['Annexe', 'C&G', 'CdP', 'CST', 'DS', 'ISA'].sort().join() && Math.abs(dauerB.ISA - isaMittel) < 1e-9, [dauerB, isaMittel]);
+  check('Ohne ELDiB-Stufen kein ELDiB-Diagramm', !(await page.$('.db-dg[data-dg="eldib"]')));
   await bild('db1-uebersicht.png');
   let q = await querScroll();
   check('1280 px: Übersicht ohne waagrechtes Scrollen', ohneQuer(q), q);
@@ -287,6 +291,7 @@ const STATS = [
   check('Seitenblatt zeigt Werte aus Fiche und Datenbank (' + erw.length + ' Stichproben)', erw.every(w => blatt.includes(w)), erw.filter(w => !blatt.includes(w)));
   check('Maßnahmen im Detail: DS beendet, ISA laufend mit Dauer', await page.isVisible('dialog.db-blatt .db-mliste li.beendet:has-text("Diagnostic spécialisé")') && await page.isVisible('dialog.db-blatt .db-mliste li.laufend:has-text("ISA")') && /ISA[\s\S]*Monat/.test(await text('dialog.db-blatt .db-mliste li.laufend')));
   check('Migration „ja“ (Ankunftsdatum), SCAS „ja“ (steht bei den Intervenants)', /Migrationskontext\s*ja/.test(blatt) && /SCAS\s*ja/.test(blatt));
+  check('ISA = „Intervention spécialisée ambulatoire (ISA)“; Variablen nur zu Maßnahmen, die es gibt (kein „Atelier: welches“, keine CST-Gruppe)', blatt.includes('Intervention spécialisée ambulatoire (ISA)') && blatt.includes('ISA: Beginn') && blatt.includes('DS: Dauer (Monate)') && !blatt.includes('Atelier: welches') && !blatt.includes('CST: Gruppe'));
   check('Seitenblatt: Fokus im Dialog, Escape schließt', await page.evaluate(() => document.activeElement && !!document.activeElement.closest('dialog.db-blatt')));
   await page.keyboard.press('Escape'); await warte(200);
   check('Nach Escape: Blatt zu, Fokus zurück in der Tabelle', !(await page.$('dialog.db-blatt')) && await page.evaluate(() => !!document.activeElement.closest('.db-tab')));
@@ -416,6 +421,72 @@ const STATS = [
   q = await querScroll();
   check('1280 px: Abfragen ohne waagrechtes Scrollen', ohneQuer(q), q);
 
+  console.log('16b) Mehrere Variablen: „eines von“, „oder“, Kreuztabelle, ältere gespeicherte Abfragen');
+  const rowsF = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers()).map(d => CDSE_DATENBANK.datensatz(d)));
+  const ab = a => page.evaluate(([r, q]) => { const x = CDSE_DATENBANK.abfrage(r, q); return { n: x.n, kreuz: x.kreuz && x.kreuz.zeilen.map(z => [z.key, Object.fromEntries(Object.entries(z.zellen).map(([k, c]) => [k, c.n]))]) }; }, [rowsF, a]);
+  const treffer = () => page.getAttribute('[data-db-treffer]', 'data-db-treffer');
+  const istEines = f => laufende(f).some(m => m === 'ISA' || m === 'CST');
+  await page.click('[data-db="abfrage-neu"]'); await warte(150);
+  await page.selectOption('[data-db-bau="gruppe"]', ''); await warte(100);
+  await page.click('[data-db="fz-plus"]'); await warte(100);
+  await page.selectOption('[data-db-fz="feld"][data-i="0"]', 'massnahmen'); await warte(100);
+  await page.selectOption('[data-db-fz="op"][data-i="0"]', 'enthaeltEines'); await warte(100);
+  await page.check('input[data-db-fw][data-i="0"][value="ISA"]'); await warte(100);
+  await page.check('input[data-db-fw][data-i="0"][value="CST"]'); await warte(150);
+  const nEines = FALL.filter(istEines).length;
+  check('Baukasten: „enthält eines von“ mit Kästchen (ISA, CST) → ' + nEines, await treffer() === String(nEines) && (await text('#db-satz')).includes('mit ISA oder CST'), [await treffer(), await text('#db-satz')]);
+  await page.click('[data-db="fz-plus"]'); await warte(100);
+  await page.selectOption('[data-db-fz="wert"][data-i="1"]', 'Mädchen'); await warte(150);
+  const nUnd = FALL.filter(f => f.person.geschlecht === 'w' && istEines(f)).length;
+  check('Zwei Filter mit „und“: Mädchen mit ISA oder CST → ' + nUnd, await treffer() === String(nUnd) && await page.isVisible('.db-verbinder'), await treffer());
+  await page.selectOption('[data-db-bau="verknuepfung"]', 'oder'); await warte(150);
+  const oderFaelle = FALL.filter(f => f.person.geschlecht === 'w' || istEines(f));
+  check('Verknüpfung „oder“: mindestens ein Filter trifft zu → ' + oderFaelle.length, await treffer() === String(oderFaelle.length) && (await text('#db-satz')).includes('mindestens eine Bedingung'), [await treffer(), await text('#db-satz')]);
+  await page.selectOption('[data-db-bau="gruppe"]', 'geschlecht'); await warte(150);
+  await page.selectOption('[data-db-bau="gruppe2"]', 'cycle'); await warte(200);
+  check('Zweite Gruppierung → Kreuztabelle Geschlecht × Cycle', await page.isVisible('#db-ergebnis table[data-db-kreuz]') && (await text('#db-satz')).includes('gruppiert nach Geschlecht und Cycle'), await text('#db-satz'));
+  const kKopf = await page.$$eval('#db-ergebnis table[data-db-kreuz] thead th', l => l.map(x => x.textContent.trim()));
+  const kZeilen = await page.$$eval('#db-ergebnis table[data-db-kreuz] tbody tr', l => l.map(tr => [tr.getAttribute('data-gruppe'), [...tr.querySelectorAll('td')].map(td => td.firstChild ? (td.querySelector('a') ? td.querySelector('a').firstChild.textContent : td.textContent).trim() : '')]));
+  const erwJ = zaehle(oderFaelle.filter(f => f.person.geschlecht === 'm').map(f => f.cycle)), zJ = (kZeilen.find(z => z[0] === 'Junge') || [null, []])[1];
+  check('Kreuztabelle: Zeile „Junge“ stimmt je Cycle ' + JSON.stringify(erwJ), Object.keys(erwJ).every(c => zJ[kKopf.indexOf(c) - 1] === String(erwJ[c])), [kKopf, kZeilen]);
+  await bild('db3b-kreuztabelle.png');
+  const zelle = await page.$('#db-ergebnis table[data-db-kreuz] tbody td a'), zellWert = (await zelle.textContent()).trim();
+  await zelle.click(); await page.waitForSelector('.db-tab', { timeout: 10000 }); await warte(200);
+  check('Klick in die Kreuztabelle → Tabelle mit genau diesen Dossiers (Oder-Filter als eigener Chip)', String((await page.$$('.db-tab tbody tr')).length) === zellWert && await page.isVisible('.db-fchip-oder'), [zellWert, await text('.db-aktivfilter')]);
+  await page.click('[data-db="tf-alle-weg"]'); await warte(100);
+  await db('abfragen'); await page.waitForSelector('#db-bau');
+  const r1 = await ab({ filter: [{ feld: 'cycle', op: 'einesVon', werte: ['C3', 'C4'] }] });
+  check('API: Cycle „ist eines von“ C3, C4', r1.n === FALL.filter(f => ['C3', 'C4'].includes(f.cycle)).length, r1);
+  const r2 = await ab({ filter: [{ feld: 'direction', op: 'keinesVon', werte: ['06 Esch/Alzette'] }] });
+  check('API: Direction „ist keines von“ 06 (Dossiers ohne Angabe zählen mit)', r2.n === FALL.filter(f => !(f.fiche && f.fiche.ef && f.fiche.ef.dr === '06 Esch/Alzette')).length, r2);
+  const r3 = await ab({ filter: [{ feld: 'massnahmenAlle', op: 'enthaeltAlle', werte: ['DS', 'ISA'] }] });
+  check('API: „enthält alle von“ DS und ISA → nur Tom', r3.n === 1, r3);
+  const r4 = await ab({ filter: [], gruppe: 'stelle', gruppe2: 'geschlecht' });
+  const isaZ = (r4.kreuz.find(z => z[0] === 'ISA') || [])[1] || {};
+  check('API: Kreuztabelle Stelle × Geschlecht (ISA: 1 Junge, 2 Mädchen)', isaZ.Junge === 1 && isaZ['Mädchen'] === 2, r4.kreuz);
+  const altA = await page.evaluate(() => CDSE_DATENBANK.norm({ filter: [{ feld: 'autreCc', op: 'enthaelt', wert: 'Logopédie' }, { feld: 'massnahmen', op: 'ist', wert: 'ISA' }], gruppe: 'stelle' }));
+  check('Ältere gespeicherte Abfragen bleiben gültig: Freitext-CC → „CL“, „ist“ bei Listen → „enthält“, und/oder ergänzt', altA.filter[0].op === 'enthaelt' && altA.filter[0].wert === 'CL' && altA.filter[1].op === 'enthaelt' && altA.verknuepfung === 'und' && altA.gruppe2 === '', altA);
+  const ccT = await page.evaluate(() => [CDSE_DATENBANK.kompetenzzentren('Centre de Logopédie'), CDSE_DATENBANK.kompetenzzentren('CL und CDI'), CDSE_DATENBANK.kompetenzzentren('Centre pour enfants et jeunes à haut potentiel; Service Test (fictif)'), CDSE_DATENBANK.kompetenzzentren(['CTSA — Centre …', 'cda'])]);
+  check('Andere Kompetenzzentren aus Freitext erkannt (Logopédie → CL, „CL und CDI“, haut potentiel → CEJHP, Unbekanntes bleibt Text)', JSON.stringify(ccT) === JSON.stringify([['CL'], ['CDI', 'CL'], ['CEJHP', 'Service Test (fictif)'], ['CTSA', 'CDA']]), ccT);
+  v = await frage('Wie viele Mädchen mit ISA oder Atelier nach Cycle?');
+  const f5 = FALL.filter(f => f.person.geschlecht === 'w' && laufende(f).some(m => m === 'ISA' || m === 'Atelier'));
+  check('Frage „… mit ISA oder Atelier …“ → „enthält eines von“ (' + f5.length + ')', v.includes('Anzahl der Mädchen mit ISA oder Atelier, gruppiert nach Cycle.') && await treffer() === String(f5.length), v);
+  v = await frage('Anzahl nach Direction und Maßnahme');
+  check('Frage „nach Direction und Maßnahme“ → Kreuztabelle', v.includes('gruppiert nach Direction régionale und Laufende Maßnahmen') && await page.isVisible('#db-ergebnis table[data-db-kreuz]'), v);
+  v = await frage('Wie viele Schüler in DR 06 oder 12?');
+  const f6 = FALL.filter(f => f.fiche && f.fiche.ef && ['06 Esch/Alzette', '12 Mersch'].includes(f.fiche.ef.dr));
+  check('Frage „in DR 06 oder 12“ → Direction „ist eines von“ (' + f6.length + ')', v.includes('in den DR 06 Esch/Alzette oder 12 Mersch') && await treffer() === String(f6.length), v);
+  v = await frage('Mittlere Dauer der Ateliers nach Atelier');
+  check('Frage „Mittlere Dauer der Ateliers nach Atelier“ → Mittelwert „Atelier: Dauer“, gruppiert nach „Atelier: welches“', v.includes('Durchschnitt von „Atelier: Dauer (Monate)“') && v.includes('gruppiert nach Atelier: welches'), v);
+  await page.click('[data-db-vorlage="massnahmenDr"]'); await warte(200);
+  check('Vorlage „Laufende Maßnahmen je Direction“ = Kreuztabelle', await page.isVisible('#db-ergebnis table[data-db-kreuz]') && (await text('#db-satz')).includes('gruppiert nach Direction régionale und Laufende Maßnahmen'));
+  await page.click('[data-db-vorlage="oder"]'); await warte(200);
+  const nOder = FALL.filter(f => laufende(f).includes('ISA') || (f.db && f.db.scas === 'ja') || (f.fiche && (f.fiche.intervenants || []).some(i => /scas/i.test(i.institution)) && !(f.db && f.db.scas === 'nein'))).length;
+  check('Vorlage „Mit ISA oder mit SCAS“ (oder) → ' + nOder, await treffer() === String(nOder), await treffer());
+  check('Vorlagen nach Bereichen (4 Überschriften)', (await page.$$('.db-vorlagen-b')).length === 4);
+  q = await querScroll();
+  check('1280 px: Abfragen mit Kreuztabelle ohne waagrechtes Scrollen', ohneQuer(q), q);
+
   console.log('17) Import aus CDSE Stats');
   await db('import');
   await page.setInputFiles('#db-datei', { name: 'cdse-backup-2026-09-01.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(STATS, null, 2)) });
@@ -442,14 +513,14 @@ const STATS = [
   check('Zweiter Durchlauf: nichts mehr neu (schon übernommen)', await kpi('imp-neu') === '0' && (await text('.db-imptab')).includes('schon aus CDSE Stats übernommen'));
   await page.check('input[data-db-imp="modus"][value="ergaenzen"]'); await warte(200);
   const vtab2 = await text('.db-imptab');
-  check('Modus „ergänzen“: Tom bekommt Kompetenzzentrum und vorherige Schule, Luca Direction und Erstsprache', /MUSTER Tom[\s\S]*wird ergänzt:[^\n]*anderes Kompetenzzentrum/.test(vtab2) && /vorherige Schule/.test(vtab2) && /FIKTIV Luca[\s\S]*Direction régionale/.test(vtab2), vtab2.slice(0, 600));
+  check('Modus „ergänzen“: Tom bekommt Kompetenzzentrum und vorherige Schule, Luca Direction und Erstsprache', /MUSTER Tom[\s\S]*wird ergänzt:[^\n]*andere Kompetenzzentren/.test(vtab2) && /vorherige Schule/.test(vtab2) && /FIKTIV Luca[\s\S]*Direction régionale/.test(vtab2), vtab2.slice(0, 600));
   await page.selectOption('select[data-db-imp="dr"][data-alt="DIR Capellen"]', '02 Mamer'); await warte(100);
   await page.click('[data-db="import-los"]');
   await page.waitForSelector('.db-imp-ergebnis', { timeout: 60000 });
   check('Import „ergänzen“: 2 ergänzt, 0 angelegt', await kpi('imp-ergaenzt') === '2' && await kpi('imp-angelegt') === '0', await text('.db-imp-ergebnis'));
   const nach2 = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => ({ name: d.person.vorname, r: CDSE_DATENBANK.datensatz(d), schule: d.person.schule })));
   const tom2 = nach2.find(x => x.name === 'Tom'), luca2 = nach2.find(x => x.name === 'Luca');
-  check('Ergänzen überschreibt nichts: Tom behält IQ 104 und École Brill, bekommt Centre de Logopédie', tom2.r.iq === 104 && tom2.r.schule === 'École Brill' && tom2.r.autreCc === 'Centre de Logopédie' && tom2.r.vorherigeSchule === 'École Neudorf', tom2.r);
+  check('Ergänzen überschreibt nichts: Tom behält IQ 104 und École Brill, bekommt „Centre de Logopédie“ (als CL erkannt)', tom2.r.iq === 104 && tom2.r.schule === 'École Brill' && JSON.stringify(tom2.r.autreCc) === '["CL"]' && tom2.r.vorherigeSchule === 'École Neudorf', tom2.r);
   check('Luca: Direction 01, Erstsprache LU, Eltern zusammen', luca2.r.direction === '01, Luxembourg' && luca2.r.sprache === 'LU' && luca2.r.eltern === 'zusammen', luca2.r);
   const CSV = '\uFEFF' + ['ID;National ID;M-File No.;Last name;First name;Sex;Date of birth;DIR;School;Diagnoses;First language;Guardianship by;Age;Created at;Updated at',
     'stats-0100;2014031000012;MF-1001;Muster;Tom;M;2014-03-10;DIR Esch-sur-Alzette;École Brill;F90.0 — ADHD;PT;Mother;12;2024-11-02T09:00:00.000Z;2024-11-02T09:00:00.000Z',
@@ -482,13 +553,52 @@ const STATS = [
   check('0.5: Atelier mit „welches“ und Beginn, CST-Gruppe Moveo, Annexe mit Daten, CdP-Region Pétange', c05.atelier && c05.atelier.standort === 'Demo atelier A' && c05.atelier.von === '2025-02-01' &&
     c05.cst && c05.cst.standort === 'Moveo' && c05.cst.bis === '2025-07-15' && c05.annexe && c05.annexe.von === '2023-09-15' && c05.cdp && c05.cdp.standort === '03 Pétange', c05);
   check('0.5: C&G „Parents“ → C&G Eltern (nicht Fachkräfte), Rééducation mit Typ', c05.cgEltern && !c05.cgPro && c05.reeducation && c05.reeducation.standort === 'Demo rééducation B', Object.keys(c05));
-  check('0.5: andere CC als Liste → Text, Sprache „Other“ → albanais, keine Warnung', neu05.db.autreCc === 'CDI — Centre pour le développement intellectuel; CL — Centre de logopédie' && neu05.fiche.ersteSprache === 'albanais' && neu05.warnungen.length === 0, [neu05.db.autreCc, neu05.fiche.ersteSprache, neu05.warnungen]);
+  check('0.5: andere CC als Liste → Kürzel „CDI; CL“, Sprache „Other“ → albanais, ELDiB-Stufe V 3, keine Warnung', neu05.db.autreCc === 'CDI; CL' && neu05.fiche.ersteSprache === 'albanais' && neu05.db.eldibStufen && neu05.db.eldibStufen.verhalten === 3 && neu05.warnungen.length === 0, [neu05.db.autreCc, neu05.fiche.ersteSprache, neu05.db.eldibStufen, neu05.warnungen]);
+
+  console.log('17c) Import aus einer Excel-Tabelle (.xlsx): Spalten zuordnen, Vorschau, Import, Ergänzen');
+  await db('import');
+  const XLSX = path.join(__dirname, 'daten', 'import-test.xlsx');
+  await page.setInputFiles('#db-datei', XLSX);
+  await page.waitForSelector('.db-vorschau .db-spzutab', { timeout: 20000 });
+  const Z = Object.fromEntries(await page.$$eval('.db-spzutab tbody tr', l => l.map(tr => [tr.querySelector('td b').textContent, tr.querySelector('select').value])));
+  check('Excel: Kopfzeile unter der Titelzeile gefunden, Spalten geraten (Nom et prénom, Date de naissance, DR, Mesures, CC, ELDiB V …)', Z['Nom et prénom'] === 'nom_prenom' && Z['Date de naissance'] === 'date_naissance' && Z.Sexe === 'sexe' && Z.DR === 'dir' && Z.Classe === 'classe' &&
+    Z.Mesures === 'mesures' && Z['Début ISA'] === 'debut_isa' && Z.Atelier === 'atelier_type' && Z['Début atelier'] === 'debut_atelier' && Z['Groupe CST'] === 'cst_groupe' && Z.CC === 'autres_cc' && Z.QI === 'iq' &&
+    Z.ELDiB === 'eldib_date' && Z['ELDiB V'] === 'eldib_v' && Z['ELDiB K'] === 'eldib_k' && Z.Remarques === 'remarque' && Z.Stelle === 'stelle' && Z['Couleur préférée'] === '', Z);
+  check('Excel: zwei Tabellenblätter zur Wahl, das erste ist gewählt', (await page.$$eval('select[data-db-imp="blatt"] option', l => l.length)) === 2 && await page.inputValue('select[data-db-imp="blatt"]') === '0');
+  check('Excel: Vorschau 3 neu, 1 vorhanden (Tom über die Matricule), 1 ohne Namen', await kpi('imp-neu') === '3' && await kpi('imp-vorhanden') === '1' && await kpi('imp-aus') === '1', [await kpi('imp-neu'), await kpi('imp-vorhanden'), await kpi('imp-aus')]);
+  check('Excel: unmögliches Datum wird mit Zeilennummer gemeldet (Zeile 7: „31.02.2015“)', (await text('.db-vorschau')).includes('Zeile 7: „31.02.2015“ ist kein Datum'), (await text('.db-vorschau')).slice(0, 400));
+  check('Excel: Beispiele aus der Tabelle, Excel-Datum als Datum (15.06.2016)', (await text('.db-spzutab')).includes('15.06.2016') && (await text('.db-spzutab')).includes('MUSTER Tom'));
+  await page.selectOption('select[data-db-imp="spalte"][data-sp="17"]', ''); await warte(200);
+  check('Zuordnung änderbar: „Remarques“ auf „nicht übernehmen“ → Zeile grau, Vorschau neu', await page.inputValue('select[data-db-imp="spalte"][data-sp="17"]') === '' && await page.isVisible('.db-spzutab tr.db-sp-aus:has-text("Remarques")') && await kpi('imp-neu') === '3');
+  await page.selectOption('select[data-db-imp="spalte"][data-sp="17"]', 'remarque'); await warte(200);
+  await bild('db4b-excel-zuordnung.png');
+  await page.click('[data-db="import-los"]');
+  await page.waitForSelector('.db-imp-ergebnis', { timeout: 60000 });
+  check('Excel-Import: 3 Dossiers angelegt', await kpi('imp-angelegt') === '3', await text('.db-imp-ergebnis'));
+  const nachXl = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => ({ vor: d.person.vorname, nach: d.person.nachname, stelle: d.stelle, r: CDSE_DATENBANK.datensatz(d), v: d.verlauf.map(x => x.t), herkunft: (d.db || {}).herkunft || {} })));
+  const nina = nachXl.find(x => x.vor === 'Nina'), jana = nachXl.find(x => x.vor === 'Jana'), maxx = nachXl.find(x => x.vor === 'Max');
+  check('Nina: Name geteilt, Mädchen, Excel-Datum, Klasse C3.2 → Cycle C3, „DR 05“ → 05 Sanem', nina && nina.nach === 'BEISPIEL' && nina.r.geschlecht === 'Mädchen' && nina.r.geburtsdatum === '2016-06-15' && nina.r.klasse === 'C3.2' && nina.r.cycle === 'C3' && nina.r.direction === '05 Sanem', nina && nina.r);
+  check('Nina: „C&G parents, Rééducation“ → C&G für Eltern + Rééducation; CC „CDI; Centre de logopédie“ → CDI, CL; Stelle automatisch Diagnostique', nina.r.massnahmenAlle.includes('C&G Eltern') && nina.r.massnahmenAlle.includes('Rééducation') && nina.r.cgArt === 'Eltern' && JSON.stringify(nina.r.autreCc) === '["CDI","CL"]' && nina.stelle === 'diagnostique', nina.r);
+  check('Nina: ELDiB-Stufen aus der Tabelle (V 2, K 2; mit 9 Jahren erwartet 3 → beide darunter)', nina.r.eldibHerkunft === 'Datenbank-Angabe' && nina.r.eldibVerhalten === 2 && nina.r.eldibKommunikation === 2 && nina.r.eldibErwartet === 3 && JSON.stringify(nina.r.eldibUnter) === '["Verhalten","Kommunikation"]' && nina.r.eldibDatum === '2026-03-02', nina.r);
+  check('Nina: Herkunft „Excel-Tabelle (import-test.xlsx)“, Protokoll „Import aus Excel-Tabelle“', nina.herkunft.quelle === 'Excel-Tabelle (import-test.xlsx)' && !nina.herkunft.id && nina.v.some(t => t.startsWith('Import aus Excel-Tabelle')), [nina.herkunft, nina.v]);
+  check('Jana: „Probe, Jana“ geteilt, Datum als Text (12.02.2015), „Mersch“ → 12 Mersch, CST Gruppe Passo, Stelle CST, IQ 105', jana && jana.nach === 'Probe' && jana.r.geburtsdatum === '2015-02-12' && jana.r.geschlecht === 'Mädchen' && jana.r.direction === '12 Mersch' && jana.r.cstGruppe === 'Passo' && jana.stelle === 'cst' && jana.r.iq === 105, jana && jana.r);
+  check('Max: unmögliches Datum bleibt leer, Junge, DS, Klasse C2.1', maxx && maxx.r.geburtsdatum === '' && maxx.r.geschlecht === 'Junge' && maxx.r.massnahmenAlle.join() === 'DS' && maxx.r.klasse === 'C2.1', maxx && maxx.r);
+  await page.click('[data-db="import-weg"]'); await warte(100);
+  await page.setInputFiles('#db-datei', XLSX);
+  await page.waitForSelector('.db-vorschau .db-spzutab', { timeout: 20000 });
+  check('Zweiter Durchlauf: nichts neu – 4 vorhanden (Max: gleicher Name, beide ohne Geburtsdatum)', await kpi('imp-neu') === '0' && await kpi('imp-vorhanden') === '4' && (await text('.db-imptab')).includes('beide ohne Geburtsdatum'), [await kpi('imp-neu'), await kpi('imp-vorhanden')]);
+  await page.check('input[data-db-imp="modus"][value="ergaenzen"]'); await warte(200);
+  await page.click('[data-db="import-los"]'); await page.waitForSelector('.db-imp-ergebnis', { timeout: 60000 });
+  const tom3 = (await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => ({ vor: d.person.vorname, r: CDSE_DATENBANK.datensatz(d), notiz: (d.db || {}).notiz })))).find(x => x.vor === 'Tom');
+  check('Ergänzen aus Excel: Tom bekommt das Atelier (ab 03.11.2025) und ELDiB-Stufen, behält IQ 104 und Klasse C4.1', tom3.r.atelierArt === 'Atelier Lecture (fictif)' && tom3.r.atelierBeginn === '2025-11-03' && tom3.r.eldibVerhalten === 3 && tom3.r.iq === 104 && tom3.r.klasse === 'C4.1' && tom3.notiz === 'fiktiver Testfall', tom3.r);
 
   console.log('18) Was über die Fiche ins Dossier kommt, steht sofort in der Datenbank');
   await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id, true); await CDSE_TEAM.ops.fiche(id, { fiche: { ef: Object.assign({}, d.fiche.ef, { dr: '07 Dudelange' }) } }, 'Test: Direction geändert'); }, ids.noah);
   await db('');
   const dr2 = Object.fromEntries(await balken('direction'));
-  check('Direction von Noah geändert → Diagramm zeigt 07 Dudelange, 01 Luxembourg jetzt nur Luca', dr2['07 Dudelange'] === 1 && dr2['01, Luxembourg'] === 1 && await kpi('dossiers') === '11', dr2);
+  check('Direction von Noah geändert → Diagramm zeigt 07 Dudelange, 01 Luxembourg jetzt nur Luca', dr2['07 Dudelange'] === 1 && dr2['01, Luxembourg'] === 1 && await kpi('dossiers') === '14', dr2);
+  const elB = Object.fromEntries(await balken('eldib'));
+  check('Übersicht: ELDiB-Diagramm, sobald Stufen eingetragen sind (Verhalten Ø aus Nina 2 und Tom 3, dazu „erwartet“)', Math.abs(elB.Verhalten - 2.5) < 1e-9 && elB.erwartet > 0, elB);
 
   console.log('18b) Fiche ↔ Datenbank: alle Angaben der Fiche als Variablen, Karte im Reiter „Fiche“');
   const rund = await page.evaluate(async () => {
@@ -516,6 +626,26 @@ const STATS = [
   await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await page.waitForSelector('.db-fv'); await warte(200);
   check('Datenbank-Angaben direkt aus dem Dossier: IQ gespeichert, Karte zeigt „1 eigene Angabe · IQ“', /1\s*eigene Angabe/.test(await text('.db-fv')) && (await text('.db-fv')).includes('IQ') &&
     (await page.evaluate(async id => (await CDSE_TEAM.dossier(id, true)).db.iq, ids.noah)) === 99);
+  await page.click('.db-fv [data-ar="db-angaben"]'); await page.waitForSelector('dialog.ar-dialog input[name="cc_CDI"]');
+  check('Datenbank-Angaben: sieben Kompetenzzentren zum Ankreuzen und ELDiB-Stufen', (await page.$$('dialog.ar-dialog .db-ccliste input[type=checkbox]')).length === 7 && await page.isVisible('dialog.ar-dialog select[name="el_verhalten"]'));
+  await page.check('dialog.ar-dialog input[name="cc_CDI"]'); await page.fill('dialog.ar-dialog input[name="cc_weitere"]', 'Service Test (fictif)');
+  await page.fill('dialog.ar-dialog input[name="el_datum"]', '2026-06-01'); await dialogKnopf('Speichern'); await warte(200);
+  check('ELDiB-Datum ohne Stufe wird abgelehnt', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('Stufe'));
+  await page.selectOption('dialog.ar-dialog select[name="el_verhalten"]', '2'); await page.selectOption('dialog.ar-dialog select[name="el_kognition"]', '4');
+  await dialogKnopf('Speichern');
+  await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await page.waitForSelector('.db-fv'); await warte(200);
+  const noahDb = await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id, true); return { db: d.db, r: CDSE_DATENBANK.datensatz(d), v: d.verlauf.map(x => x.t) }; }, ids.noah);
+  check('Gespeichert: CC „CDI; Service Test (fictif)“, ELDiB aus der Datenbank (V 2, KOG 4; mit 10 Jahren erwartet 4 → Verhalten darunter)', noahDb.db.autreCc === 'CDI; Service Test (fictif)' && JSON.stringify(noahDb.r.autreCc) === '["CDI","Service Test (fictif)"]' &&
+    noahDb.r.eldibHerkunft === 'Datenbank-Angabe' && noahDb.r.eldibVerhalten === 2 && noahDb.r.eldibKognition === 4 && noahDb.r.eldibErwartet === 4 && JSON.stringify(noahDb.r.eldibUnter) === '["Verhalten"]' && noahDb.v.some(t => /andere Kompetenzzentren, ELDiB-Stufen/.test(t)), noahDb);
+  const elD = await page.evaluate(() => {
+    if (typeof ELDIB_BANK === 'undefined') return null;
+    const B = ELDIB_BANK.bereiche, code = (b, st) => B[b].stufen[st].items[0].code, sel = {};
+    sel[code('verhalten', 1)] = 'e'; sel[code('verhalten', 2)] = 'e'; sel[code('kommunikation', 1)] = 'e'; sel[code('sozialisation', 1)] = 'n';
+    return CDSE_DATENBANK.datensatz({ id: 'eldib-test-1', rev: 1, person: { nachname: 'Test', vorname: 'Eldib', geburtsdatum: '2016-01-10' },
+      profil: { eldib: { einschaetzungen: [{ nr: 1, datum: '2026-09-01', sel, ziele: {}, zusatz: {}, notizen: {} }] } }, db: { eldibStufen: { datum: '2025-01-01', verhalten: 5, kommunikation: 5 } } });
+  });
+  check('ELDiB aus der Einschätzung im Dossier geht vor: V 2, K 1, SOZ 0, KOG –, erwartet 4, drei Bereiche darunter', elD && elD.eldibHerkunft === 'Einschätzung im Dossier' && elD.eldibVerhalten === 2 && elD.eldibKommunikation === 1 && elD.eldibSozialisation === 0 &&
+    elD.eldibKognition === null && elD.eldibErwartet === 4 && elD.eldibDatum === '2026-09-01' && elD.eldibMin === 0 && JSON.stringify(elD.eldibUnter) === '["Verhalten","Kommunikation","Sozialisation"]', elD);
   await page.click('.db-fv-liste button:has-text("Nationalität")'); await page.waitForSelector('dialog.ar-dialog input[name="f.nationalitaet"]');
   await page.fill('dialog.ar-dialog input[name="f.nationalitaet"]', 'française'); await dialogKnopf('Speichern');
   await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await page.waitForSelector('.db-fv'); await warte(200);

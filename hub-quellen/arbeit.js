@@ -1037,7 +1037,9 @@ function fortschritt(a,b){
 /* Kurzfassung für die Schülerliste (zwischengespeichert je Dossier-Stand) */
 function eldibKurz(d){
   var k=d.id+':'+(d.rev|0);
-  if(!(k in kurzCache)){var A=bankDa()?eldibAuswertung(d):null;kurzCache[k]=A?{ueber:A.ueber.length,ohneZiel:A.ueber.filter(function(u){return !u.istZiel;}).length,ziele:A.ziele.length}:null;}
+  if(!(k in kurzCache)){var A=bankDa()?eldibAuswertung(d):null;kurzCache[k]=A?{ueber:A.ueber.length,ohneZiel:A.ueber.filter(function(u){return !u.istZiel;}).length,ziele:A.ziele.length,
+    /* für die Datenbank: Stufe je Bereich (null = nicht eingeschätzt), Datum und erwartete Stufe */
+    datum:A.e.datum||String(A.e.gespeichert||'').slice(0,10)||'',erwartet:A.erwartet,stufen:A.bereiche.reduce(function(o,b){o[b.id]=b.bewertet?b.stufe:null;return o;},{})}:null;}
   return kurzCache[k];
 }
 /* Profil im Format des DS-Berichts (Abschnitt „Ergebnisse der Testverfahren“) */
@@ -1718,7 +1720,7 @@ var F_KLASSEN=['Précoce','C1.1','C1.2','C1.3','C2.1','C2.2','C2.3','C3.1','C3.2
   '7G','7P','7C','7I','7IEC','S1','6G','6P','6C','6I','6IEC','S2','5G','5AD','CIP','5P','5C','5I','5IEC','S3','4T','4G','1ère année DAP','1ère année CCP','4C','4I','4IEC','S4','2e année DAP','2e année CCP',
   '3T','3G','3C','3e année DAP','3e année CCP','3IEC','3I','S5','2T','2G','2C','2BI','2IEC','S6','1T','1G','1C','1BI','1IEC','S7'];
 var F_CST=['Moveo','iami','X-Track','Attivo','Switch','Twist','Kautenbach','Passo','Nobu','Klick-Klack'];
-var F_MASSN=[['diagnostic','Diagnostic spécialisé','DS'],['cgPro','Conseil et guidance des professionnel·le·s','C&G'],['cgEltern','Conseil et guidance parents','C&G'],['isa','ISA','ISA'],
+var F_MASSN=[['diagnostic','Diagnostic spécialisé','DS'],['cgPro','Conseil et guidance des professionnel·le·s','C&G'],['cgEltern','Conseil et guidance parents','C&G'],['isa','Intervention spécialisée ambulatoire (ISA)','ISA'],
   ['atelier','Atelier d’apprentissage spécifique',''],['reeducation','Rééducation',''],['annexe','Scolarisation spécialisée – Annexe Junglinster','Annexe'],['cdp','Scolarisation spécialisée – CdP','CdP'],['cst','Scolarisation spécialisée – CST','CST']];
 function ficheDa(){return !!window.CDSE_FICHE;}
 function fv(o,pfad){return String(pfad).split('.').reduce(function(x,k){return x==null?undefined:x[k];},o);}
