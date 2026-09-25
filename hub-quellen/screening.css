@@ -172,6 +172,16 @@ span.sc-kb-ziel .ic{width:16px;height:16px;}
 .sc-skala[data-art="staerke"] input[value="3"]:checked+span{background:#2F8A5B;color:#fff;}
 .sc-frage{border:0;margin:0;padding:10px 0 10px 36px;border-top:1px solid var(--line);}
 .sc-frage legend{font-size:14.5px;font-weight:600;padding:0;margin-bottom:6px;float:left;width:100%;}
+/* Vorschläge aus dem DS */
+.sc-dsnote{display:flex;align-items:flex-start;gap:10px;flex-wrap:wrap;margin:10px 0 0;padding:10px 14px;border:1px solid var(--accent-line);border-radius:10px;background:var(--surface);font-size:14px;color:var(--ink-2);line-height:1.45;}
+.sc-dsnote>.ic{width:17px;height:17px;flex:0 0 auto;color:var(--accent);margin-top:2px;}
+.sc-dsnote>span{flex:1 1 280px;min-width:0;}
+.sc-dsnote .ar-link{flex:0 0 auto;align-self:center;}
+.sc-dsnote.leise{border-style:dashed;color:var(--muted);}
+.sc-dsmarke{display:inline-block;margin-left:8px;padding:0 6px;border-radius:5px;background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-line);font-size:11px;font-weight:800;letter-spacing:.04em;line-height:17px;vertical-align:1px;cursor:help;}
+.sc-item.sc-ausds{background:linear-gradient(90deg,var(--accent-soft),transparent 55%);}
+.sc-dsinfo{display:flex;align-items:center;gap:8px;margin:10px 0 0;font-size:13.5px;color:var(--ink-2);}
+.sc-dsinfo .ic{width:16px;height:16px;flex:0 0 auto;color:#1E6B45;}
 .sc-optionen{clear:both;display:flex;flex-wrap:wrap;gap:6px;}
 .sc-optionen label{position:relative;}
 .sc-optionen input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer;}

@@ -294,6 +294,12 @@ function dsFuerText(d){
   ds.geschlecht=ds.geschlecht||(d.person&&d.person.geschlecht)||'m';
   return ds;
 }
+/* Stand des DS für Screening und Kompass: aktuelle Bewertungen (DS + spätere Einschätzungen), Auswahlfelder, Datum */
+function dsStand(d){
+  var ds=(d.profil&&d.profil.ds)||{};
+  var daten=[d.profil&&d.profil.ds?d.profil.datum:''].concat((d.einschaetzungen||[]).map(function(e){return e.datum;})).filter(Boolean).sort();
+  return {bewertungen:aktuelleBewertungen(d),chips:ds.chips||{},frei:ds.frei||{},f:ds.f||{},datum:daten.length?daten[daten.length-1]:''};
+}
 function stammFuerText(d){var p=d.person||{};return {schueler_name:(p.nachname||'')+', '+(p.vorname||''),geburtsdatum:p.geburtsdatum||'',klasse:p.klasse||'',foerderort:p.schule||''};}
 function aufEinenBlick(d){
   if(!motorDa()){return null;}
@@ -1969,5 +1975,9 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
     schuelerName:schuelerName, schuelerNameKurz:schuelerNameKurz, kopf:kopf, karte:karte, hinweis:hinweis, laedt:laedt, fehlerText:fehlerText,
     toast:toast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,
     eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;naechsterTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);},
-    aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){aktDossier=d;dossierZeichnen(d);}}};
+    aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){aktDossier=d;dossierZeichnen(d);},
+    /* für Kompass, Begleitplan und Screening: ELDiB-Auswertung, DS, passende Arbeitsblätter, Vorfall-Minuten, Eintragsarten */
+    eldibAuswertung:function(d){return bankDa()?eldibAuswertung(d):null;}, blaetterZuItem:blaetterZuItem, toolboxHref:toolboxHref,
+    itemZu:function(c){return bankDa()?itemZu(c):null;}, vorfallMinuten:vorfallMinuten, ARTEN:ARTEN,
+    dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}}};
 })();

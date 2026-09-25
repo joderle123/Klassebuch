@@ -273,6 +273,35 @@ window.CDSE_SCREENING_BOGEN = {
     { id: 'ereignis', frage: 'Gab es in letzter Zeit belastende Ereignisse (Umzug, Trennung, Krankheit, Verlust, Flucht)?', optionen: [['nein', 'nein, nicht bekannt'], ['ja', 'ja']] }
   ],
 
+  /* Vorschläge aus dem DS (ELDiB-Generator): Ist der DS ausgefüllt, sind diese Aussagen
+     im neuen Bogen schon beantwortet. Nur DS-Aussagen, die inhaltlich dasselbe meinen.
+     Umrechnung der DS-Skala (1 = trifft gar nicht zu … 7 = trifft voll zu) in die
+     Häufigkeit: 1–2 nie, 3–4 manchmal, 5–6 oft, 7 sehr oft. Positiv formulierte
+     DS-Aussagen werden für Schwierigkeiten umgedreht, für Stärken nicht.
+     Wer als Elternteil einschätzt, bekommt die Sicht der Eltern; alle anderen die Sicht
+     der Schule, die Beobachtung und das Gespräch mit dem Kind. */
+  ausDs: {
+    schule: {
+      s_konz: ['a1'], s_selbst: ['a5', 'l1'], s_sorgfalt: ['a4', 'l4'],
+      s_unruhe: ['u1'], s_impuls: ['u6'],
+      s_angst: ['g1'], s_selbstwert: ['g6', 'st6'],
+      s_rueckzug: ['s3'],
+      s_frust: ['r1', 'l3'], s_wut: ['r2'], s_ausgeglichen: ['r6'],
+      s_regeln: ['v1', 'st5'], s_verweig: ['v1'],
+      s_peers: ['m1', 'st4'], s_hilfe: ['st3']
+    },
+    beobachtung: {
+      b_konz: ['a1'], b_ablenk: ['a2'], b_start: ['l1'], b_unruhe: ['u1'], b_frust: ['r1'],
+      b_regeln: ['v1', 'st5'], b_provo: ['v3'], b_peers: ['m1'], b_isol: ['s3'], b_hilfe: ['st3']
+    },
+    kind: { k_selbstwert: ['s5'], k_freunde: ['st4'] },
+    eltern: { e_wut: ['r2'], e_rueckzug: ['s3'], e_angst: ['g1'], e_regeln: ['v1', 'st5'] },
+    /* „Wie sehr leidet das Kind selbst darunter?“ aus dem Gespräch mit dem Kind */
+    leiden: 'k_druck',
+    /* nur für den Kompass (Bereich betroffen, aber keine gleichlautende Aussage im Bogen) */
+    bereiche: { verhalten: ['s_aggr', 's_konflikt', 'b_stoer'], sozial: ['s_konflikt'], stimmung: ['k_druck'], lernen: ['s_leistung'] }
+  },
+
   /* Warnsignale: nicht gezählt – jedes „ja“ bedeutet, heute zu handeln */
   warnsignale: [
     { id: 'suizid', text: 'Spricht über den Tod, das Sterben oder darüber, nicht mehr leben zu wollen.',

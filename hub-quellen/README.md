@@ -10,7 +10,7 @@
 | `arbeit.js`, `arbeit.css` | Oberfläche: Schülerliste, Dossier (Überblick, Fiche, Entwicklung & Ziele, Einträge mit Vorfall-/Krisenprotokoll …), Einsatzplan, Team, Verwaltung |
 | `fiche.js` + `fiche/vorlage.docx` | Fiche de renseignement lesen (Upload) und ausfüllen (Download); die leere Vorlage wird beim Bauen eingebettet |
 | `datenbank.js`, `datenbank.css` | Datenbank-Bereich (nur Responsables und Verwaltung) – optional |
-| `screening.js`, `screening-bogen.js`, `screening.css` | Screening im Dossier (Beobachtungsbogen, keine Diagnose) und Übersicht aller Schüler; übernimmt auch frühere Screenings aus dem alten Klassenbuch |
+| `screening.js`, `screening-bogen.js`, `screening.css` | Screening im Dossier (Beobachtungsbogen, keine Diagnose) und Übersicht aller Schüler; übernimmt auch frühere Screenings aus dem alten Klassenbuch. Ist der DS ausgefüllt, sind gleichbedeutende Aussagen im neuen Bogen schon beantwortet (Zuordnung `ausDs` im Bogen, markiert „DS“) |
 | `kb-uebernahme.js` | Assistent auf der Schülerseite: Einträge, Wochenziele, Helfernetz und frühere Screenings aus Klassenbuch und Journal verlustfrei ins Hub-Dossier übernehmen |
 | `kb-texte.cjs` | erzeugt `apps/kb-screening-texte.js` (Wortlaut der alten Klassenbuch-Aussagen, für die Übernahme und zum Nachlesen) aus einem Galileo-Stand mit SAVOIR: `node hub-quellen/kb-texte.cjs <index.html oder SAVOIR.html>` – eingefrorener Stand, nur nötig, falls sich die alten Texte ändern |
 

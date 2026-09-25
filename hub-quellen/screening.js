@@ -120,7 +120,13 @@ function liste(d,r){
   var l=screenings(d), alt=altListe(d);
   var h='<div class="ar-karte sc-einfuehrung"><div class="ar-kartenkopf"><div><h2>Screening</h2><p class="ar-leise">Strukturierte Beobachtung: Wo braucht '+esc((d.person||{}).vorname||'das Kind')+' Unterstützung, wo liegen die Stärken, was ist der nächste Schritt? Kein Test und keine Diagnose.</p></div>'+
     (r.bearbeiten?'<button class="btn primary" type="button" data-sc="neu">'+svg('plus')+'Neues Screening</button>':'')+'</div>'+
-    (l.length?'':'<p class="sc-leer">Noch kein Screening'+(alt.length?' mit dem neuen Bogen – die früheren Beobachtungen aus dem Klassenbuch stehen weiter unten':'')+'. Ein Bogen dauert etwa zehn Minuten. Am aussagekräftigsten wird es, wenn zwei Personen das Kind unabhängig voneinander einschätzen – zum Beispiel Lehrkraft und Éducateur.</p>')+'</div>';
+    (l.length?'':'<p class="sc-leer">Noch kein Screening'+(alt.length?' mit dem neuen Bogen – die früheren Beobachtungen aus dem Klassenbuch stehen weiter unten':'')+'. Ein Bogen dauert etwa zehn Minuten. Am aussagekräftigsten wird es, wenn zwei Personen das Kind unabhängig voneinander einschätzen – zum Beispiel Lehrkraft und Éducateur.</p>')+
+    (function(){
+      if(!r.bearbeiten){return '';}
+      var v=dsVorschlag(d,rolleVorschlag(),stufeAusKlasse(d));
+      if(!v||!v.n||tageSeit(v.datum)>DS_FRISCH_TAGE){return '';}
+      return '<p class="sc-dsinfo">'+svg('check')+'<span>Aus dem DS vom '+esc(datum(v.datum))+' sind im neuen Bogen schon <b>'+v.n+' Aussagen</b> vorausgefüllt.</span></p>';
+    })()+'</div>';
   /* Warnsignale der letzten 90 Tage – auch wenn danach jemand ohne Warnsignal eingeschätzt hat */
   var grenze=grenze90();
   var warnL=l.filter(function(s){return String(s.datum)>=grenze;}).map(function(s){return {s:s,w:auswerten(s).warn};}).filter(function(x){return x.w.length;});
@@ -173,6 +179,7 @@ function detail(d,s,r){
       ((s.von===(me&&me.id)||r.weitergeben)?'<button class="btn gefahr" type="button" data-sc="loeschen" data-id="'+esc(s.id)+'">Löschen</button>':'')+'</div>'+
     '<div class="ar-karte sc-kopf"><p class="overline">Screening · '+esc(bog.titel)+'</p><h2>'+esc(H.schuelerName(d.person))+'</h2>'+
       '<p class="ar-leise">'+esc(datum(s.datum))+' · '+esc(wer(s))+' · '+esc(stufeName(s.stufe))+'</p>'+
+      (s.ausDs?'<p class="sc-klein">'+((s.ausDs.items||[]).length+(s.ausDs.auswirkung||[]).length)+' Antworten wurden unverändert aus dem DS vom '+esc(datum(s.ausDs.datum))+' übernommen.</p>':'')+
       '<p class="sc-klein">Strukturierte Beobachtung ('+esc(bog.zeitraum)+'), kein Test und keine Diagnose. Die Ampel beschreibt, wie ausgeprägt die Beobachtungen in diesem Bogen sind – sie ist nicht an einer Vergleichsgruppe genormt.</p></div>';
   if(e.warn.length){
     h+='<div class="sc-warn" role="alert"><h3>'+svg('warn')+'Warnsignale – heute handeln</h3>'+e.warn.map(function(w){return '<div class="sc-warnpunkt"><b>'+esc(w.text)+'</b><p>'+esc(w.tun)+'</p></div>';}).join('')+
@@ -218,8 +225,103 @@ function detail(d,s,r){
   return h+'</div>';
 }
 
+/* ---------- Vorschläge aus dem DS ----------
+   Ist der DS (ELDiB-Generator) ausgefüllt, sind die gleichbedeutenden Aussagen im neuen
+   Bogen schon beantwortet und mit „DS“ markiert. Wer eine Antwort ändert, nimmt sie als
+   eigene. Ein DS älter als drei Monate wird nur auf Wunsch übernommen (der Bogen fragt
+   nach den letzten vier Wochen). */
+var DS_FRISCH_TAGE=92, dsNeg=null;
+function dsNegativ(k){
+  if(!dsNeg){
+    if(typeof DS_AUFBAU==='undefined'||!DS_AUFBAU){return null;}
+    dsNeg={};Object.keys(DS_AUFBAU).forEach(function(b){((DS_AUFBAU[b]||{}).themen||[]).forEach(function(t){(t.aussagen||[]).forEach(function(a){dsNeg[a[0]]=a[1]<0;});});});
+  }
+  return dsNeg.hasOwnProperty(k)?dsNeg[k]:null;
+}
+/* 1–7 → 0–3; bei positiv formulierten Aussagen zu Schwierigkeiten umgedreht */
+function dsHaeufigkeit(r,neg,staerke){var v=(neg===!staerke)?r:8-r;return v<=2?0:(v<=4?1:(v<=6?2:3));}
+function dsText(k){var a=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.a)||{};return (a[k]&&a[k].q)||k;}
+function tageSeit(iso){if(!iso){return 1e9;}var t=new Date(String(iso).slice(0,10)+'T12:00:00').getTime();return isNaN(t)?1e9:Math.floor((Date.now()-t)/864e5);}
+function dsVorschlag(d,rolle,stufe){
+  var st=H&&H.dsStand?H.dsStand(d):null, m=B().ausDs;
+  if(!st||!m||!Object.keys(st.bewertungen||{}).length){return null;}
+  var teile=rolle==='eltern'?['eltern']:['schule','beobachtung','kind'], erlaubt={}, werte={}, quelle={};
+  alleItemIds(stufe||'GS').forEach(function(id){erlaubt[id]=1;});
+  teile.forEach(function(t){Object.keys(m[t]||{}).forEach(function(k){
+    var r=st.bewertungen[k], neg=dsNegativ(k);if(!(r>=1&&r<=7)||neg==null){return;}
+    m[t][k].forEach(function(id){if(!erlaubt[id]){return;}(werte[id]=werte[id]||[]).push(dsHaeufigkeit(r,neg,/^st/.test(id)));(quelle[id]=quelle[id]||[]).push([k,r]);});
+  });});
+  var antworten={};Object.keys(werte).forEach(function(id){var l=werte[id];antworten[id]=Math.round(l.reduce(function(a,c){return a+c;},0)/l.length);});
+  var auswirkung={}, kd=st.bewertungen[m.leiden];
+  if(kd>=1&&kd<=7){auswirkung.leiden=String(dsHaeufigkeit(kd,true,false));}
+  var ev=(st.chips.ereignisse||[]);
+  if(ev.length){
+    var namen=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.chips&&DS_TEXTE.de.chips.ereignisse)||{};
+    auswirkung.ereignis='ja';auswirkung.ereignisText='laut DS: '+ev.map(function(k){return k==='andere'?'':((namen[k]||[k])[0]);}).filter(Boolean).join(', ');
+  }
+  return {datum:st.datum,antworten:antworten,quelle:quelle,auswirkung:auswirkung,n:Object.keys(antworten).length};
+}
+/* DS-Vorschläge in den Entwurf übernehmen (erzwingen: auch bei älterem DS) – eigene Antworten bleiben */
+function dsEntfernen(e){
+  var alt=e.ds||{};
+  Object.keys(alt.items||{}).forEach(function(id){delete e.antworten[id];});
+  Object.keys(alt.auswirkung||{}).forEach(function(k){delete e.auswirkung[k];if(k==='ereignis'){delete e.auswirkung.ereignisText;}});
+  e.ds=null;e.dsAngebot=null;
+}
+function dsAnwenden(d,e,erzwingen){
+  dsEntfernen(e);
+  if(e.dsAus){return;}
+  var v=dsVorschlag(d,e.rolle,e.stufe);
+  if(!v||(!v.n&&!Object.keys(v.auswirkung).length)){return;}
+  if(!erzwingen&&tageSeit(v.datum)>DS_FRISCH_TAGE){e.dsAngebot={datum:v.datum,n:v.n};return;}
+  var items={}, ausw={};
+  Object.keys(v.antworten).forEach(function(id){if(typeof e.antworten[id]!=='number'){e.antworten[id]=v.antworten[id];items[id]=v.quelle[id];}});
+  Object.keys(v.auswirkung).forEach(function(k){
+    if(k==='ereignisText'){return;}
+    if(e.auswirkung[k]==null||e.auswirkung[k]===''){e.auswirkung[k]=v.auswirkung[k];ausw[k]=1;if(k==='ereignis'){e.auswirkung.ereignisText=v.auswirkung.ereignisText;}}
+  });
+  e.ds={datum:v.datum,items:items,auswirkung:ausw};
+}
+function dsMarke(e,id){
+  var q=e.ds&&e.ds.items&&e.ds.items[id];if(!q){return '';}
+  var SK=['','trifft gar nicht zu','','','teils/teils','','','trifft voll zu'];
+  return '<span class="sc-dsmarke" title="'+esc('Vorschlag aus dem DS: '+q.map(function(x){return '„'+dsText(x[0])+'“ ('+x[1]+(SK[x[1]]?' – '+SK[x[1]]:'')+')';}).join('; '))+'">DS</span>';
+}
+/* Für den Kompass: Bereiche, die laut DS auffällig sind (Sicht der Schule, Beobachtung, Kind) */
+function dsBereiche(d){
+  var stufe=stufeAusKlasse(d), v=dsVorschlag(d,'lehrkraft',stufe);if(!v){return null;}
+  var st=H.dsStand(d), m=B().ausDs.bereiche||{}, res={};
+  B().bereiche.forEach(function(b){
+    var werte=items(b,stufe).map(function(i){return v.antworten[i.id];}).filter(function(x){return typeof x==='number';});
+    (m[b.id]||[]).forEach(function(k){var r=st.bewertungen[k], neg=dsNegativ(k);if(r>=1&&r<=7&&neg!=null){werte.push(dsHaeufigkeit(r,neg,false));}});
+    if(werte.length<2){return;}
+    var mw=werte.reduce(function(a,c){return a+c;},0)/werte.length;
+    res[b.id]={name:b.name,wert:mw,stufe:mw>=ROT?'rot':((mw>=GELB||werte.indexOf(3)>=0)?'gelb':'gruen'),n:werte.length};
+  });
+  return {datum:v.datum,bereiche:res};
+}
+function eigeneAntworten(e){var ds=(e.ds&&e.ds.items)||{};return Object.keys(e.antworten||{}).filter(function(id){return !ds[id];}).length;}
+function dsAnzahl(e){return e.ds?Object.keys(e.ds.items||{}).length+Object.keys(e.ds.auswirkung||{}).length:0;}
+/* Eine Antwort wurde geändert: DS-Markierung weg, Hinweis oben neu zählen */
+function dsMarkeWeg(el){
+  if(el){el.classList.remove('sc-ausds');var m=el.querySelector('.sc-dsmarke');if(m){m.parentNode.removeChild(m);}}
+  var d=aktuell(), e=d&&z(d.id).entwurf, nt=document.querySelector('.sc-bogen .sc-dsnote');
+  if(e&&nt){var neu=dsHinweis(e);if(neu){nt.outerHTML=neu;}else{nt.parentNode.removeChild(nt);}}
+}
+function dsHinweis(e){
+  var n=dsAnzahl(e);
+  if(n){return '<div class="sc-dsnote" role="note">'+svg('info')+'<span><b>'+n+(n===1?' Antwort':' Antworten')+' aus dem DS vom '+esc(datum(e.ds.datum))+' vorausgefüllt</b>, markiert mit <span class="sc-dsmarke">DS</span>. Bitte kurz prüfen, ob es zu deinen eigenen Beobachtungen passt. Was du änderst, zählt als deine Antwort.</span><button class="ar-link" type="button" data-sc="ds-weg">Ohne DS-Vorschläge</button></div>';}
+  if(e.dsAngebot){return '<div class="sc-dsnote" role="note">'+svg('info')+'<span>Es gibt einen DS vom '+esc(datum(e.dsAngebot.datum))+'. Er ist älter als drei Monate, der Bogen fragt aber nach den letzten vier Wochen.</span><button class="ar-link" type="button" data-sc="ds-rein">Trotzdem daraus vorausfüllen</button></div>';}
+  if(e.dsAus){return '<div class="sc-dsnote leise" role="note"><span>Ohne Vorschläge aus dem DS.</span><button class="ar-link" type="button" data-sc="ds-rein">Doch aus dem DS vorausfüllen</button></div>';}
+  return '';
+}
+
 /* ---------- Formular ---------- */
-function neuerEntwurf(d){return {datum:heute(),stufe:stufeAusKlasse(d),rolle:rolleVorschlag(),antworten:{},auswirkung:{},warn:[],warnNotiz:'',notiz:''};}
+function neuerEntwurf(d){
+  var e={datum:heute(),stufe:stufeAusKlasse(d),rolle:rolleVorschlag(),antworten:{},auswirkung:{},warn:[],warnNotiz:'',notiz:''};
+  dsAnwenden(d,e,false);
+  return e;
+}
 function entwurfSpeichern(id){try{sessionStorage.setItem('cdse-screening-entwurf-'+id,JSON.stringify(z(id).entwurf));}catch(e){}}
 function entwurfLaden(id){try{return JSON.parse(sessionStorage.getItem('cdse-screening-entwurf-'+id)||'null');}catch(e){return null;}}
 function entwurfWeg(id){try{sessionStorage.removeItem('cdse-screening-entwurf-'+id);}catch(e){}}
@@ -236,16 +338,18 @@ function formular(d){
     '<div class="ar-raster3">'+H.feld('sc-datum','Datum',e.datum,'date')+
       H.auswahl('sc-stufe','Stufe',e.stufe,bog.stufen.map(function(s){return [s.id,s.name+' ('+s.alter+')'];}))+
       H.auswahl('sc-rolle','Ich beobachte als',e.rolle,bog.rollen)+'</div>'+
-    '<p class="sc-anleitung">Wie oft hast du das <b>'+esc(bog.zeitraum)+'</b> beobachtet? Bewerte nur, was du selbst gesehen hast – sonst „k. A.“ (kann ich nicht beurteilen). Es gibt keine richtigen oder falschen Antworten.</p></div>';
+    '<p class="sc-anleitung">Wie oft hast du das <b>'+esc(bog.zeitraum)+'</b> beobachtet? Bewerte nur, was du selbst gesehen hast – sonst „k. A.“ (kann ich nicht beurteilen). Es gibt keine richtigen oder falschen Antworten.</p>'+dsHinweis(e)+'</div>';
+  function itemHtml(i,art){n++;var m=dsMarke(e,i.id);return '<div class="sc-item'+(m?' sc-ausds':'')+'" id="sc-i-'+i.id+'"><p>'+esc(i.text)+m+'</p>'+skala(i.id,e.antworten[i.id],art)+'</div>';}
   bog.bereiche.forEach(function(b,bi){
     h+='<section class="ar-karte sc-abschnitt" id="sc-b-'+b.id+'"><h3><span class="sc-nr">'+(bi+1)+'</span>'+esc(b.name)+'</h3><p class="sc-bhinweis">'+esc(b.hinweis)+'</p>'+
-      items(b,e.stufe).map(function(i){n++;return '<div class="sc-item" id="sc-i-'+i.id+'"><p>'+esc(i.text)+'</p>'+skala(i.id,e.antworten[i.id])+'</div>';}).join('')+'</section>';
+      items(b,e.stufe).map(function(i){return itemHtml(i);}).join('')+'</section>';
   });
   h+='<section class="ar-karte sc-abschnitt staerke" id="sc-b-staerken"><h3><span class="sc-nr">'+svg('check')+'</span>'+esc(bog.staerken.name)+'</h3><p class="sc-bhinweis">'+esc(bog.staerken.hinweis)+'</p>'+
-    items(bog.staerken,e.stufe).map(function(i){n++;return '<div class="sc-item" id="sc-i-'+i.id+'"><p>'+esc(i.text)+'</p>'+skala(i.id,e.antworten[i.id],'staerke')+'</div>';}).join('')+'</section>';
+    items(bog.staerken,e.stufe).map(function(i){return itemHtml(i,'staerke');}).join('')+'</section>';
   h+='<section class="ar-karte sc-abschnitt" id="sc-auswirkung"><h3><span class="sc-nr">'+svg('ziel')+'</span>Auswirkungen im Alltag</h3><p class="sc-bhinweis">Erst die Beeinträchtigung macht aus Beobachtungen einen Handlungsbedarf.</p>'+
     bog.auswirkung.map(function(f){
-      return '<fieldset class="sc-frage" id="sc-f-'+f.id+'"><legend>'+esc(f.frage)+'</legend><div class="sc-optionen">'+f.optionen.map(function(o){
+      var aus=e.ds&&e.ds.auswirkung&&e.ds.auswirkung[f.id];
+      return '<fieldset class="sc-frage'+(aus?' sc-ausds':'')+'" id="sc-f-'+f.id+'"><legend>'+esc(f.frage)+(aus?'<span class="sc-dsmarke" title="'+esc(f.id==='leiden'?'Vorschlag aus dem DS: „'+dsText(B().ausDs.leiden)+'“ (Gespräch mit dem Kind)':'Vorschlag aus dem DS (belastende Ereignisse)')+'">DS</span>':'')+'</legend><div class="sc-optionen">'+f.optionen.map(function(o){
         return '<label><input type="radio" name="sc-a-'+f.id+'" value="'+esc(o[0])+'"'+(String(e.auswirkung[f.id])===o[0]?' checked':'')+' data-sc-auswirkung="'+f.id+'"><span>'+esc(o[1])+'</span></label>';}).join('')+'</div>'+
         (f.id==='ereignis'?'<label class="ar-feld sc-ereignis"'+(e.auswirkung.ereignis==='ja'?'':' hidden')+'><span>Welches Ereignis? (kurz)</span><input type="text" data-sc-ereignis value="'+esc(e.auswirkung.ereignisText||'')+'"></label>':'')+'</fieldset>';
     }).join('')+'</section>';
@@ -280,8 +384,14 @@ document.addEventListener('click',function(ev){
   var d=aktuell();if(!d){return;}
   var a=t.getAttribute('data-sc'), zu=z(d.id);
   if(a==='neu'){zu.entwurf=entwurfLaden(d.id)||neuerEntwurf(d);zu.modus='neu';neuZeichnen(d);window.scrollTo(0,0);return;}
+  if(a==='ds-weg'||a==='ds-rein'){
+    var ed=zu.entwurf;if(!ed){return;}
+    if(a==='ds-weg'){dsEntfernen(ed);ed.dsAus=true;}
+    else{ed.dsAus=false;dsAnwenden(d,ed,true);}
+    entwurfSpeichern(d.id);neuZeichnen(d);H.toast(a==='ds-weg'?'DS-Vorschläge entfernt':'Aus dem DS vorausgefüllt');return;
+  }
   if(a==='abbrechen'){
-    var e0=zu.entwurf, leer=!e0||(!Object.keys(e0.antworten).length&&!e0.notiz&&!e0.warn.length);
+    var e0=zu.entwurf, leer=!e0||(!eigeneAntworten(e0)&&!e0.notiz&&!e0.warn.length);
     if(!leer&&!window.confirm('Den angefangenen Bogen verwerfen?')){return;}
     entwurfWeg(d.id);zu.entwurf=null;zu.modus='liste';neuZeichnen(d);return;
   }
@@ -312,6 +422,8 @@ document.addEventListener('click',function(ev){
       return;
     }
     var eintrag={datum:e.datum||heute(),stufe:e.stufe,rolle:e.rolle,version:B().version,antworten:e.antworten,auswirkung:e.auswirkung,warn:e.warn,warnNotiz:e.warnNotiz||'',notiz:e.notiz||''};
+    /* unverändert übernommene DS-Vorschläge dokumentieren */
+    if(dsAnzahl(e)){eintrag.ausDs={datum:e.ds.datum,items:Object.keys(e.ds.items),auswirkung:Object.keys(e.ds.auswirkung)};}
     eintrag.kurz=kurz(eintrag);
     t.disabled=true;
     T.ops.screening(d.id,eintrag).then(function(neu){
@@ -324,9 +436,14 @@ document.addEventListener('click',function(ev){
 document.addEventListener('change',function(ev){
   var t=ev.target;if(!t.closest||!t.closest('#arbeit-body .sc-bogen')){return;}
   var d=aktuell();if(!d){return;}var e=z(d.id).entwurf;if(!e){return;}
-  if(t.hasAttribute('data-sc-item')){e.antworten[t.getAttribute('data-sc-item')]=parseInt(t.value,10);var it=t.closest('.sc-item');if(it){it.classList.remove('sc-fehlt');}standNeu(e);}
+  if(t.hasAttribute('data-sc-item')){
+    var iid=t.getAttribute('data-sc-item');e.antworten[iid]=parseInt(t.value,10);var it=t.closest('.sc-item');if(it){it.classList.remove('sc-fehlt');}
+    if(e.ds&&e.ds.items&&e.ds.items[iid]){delete e.ds.items[iid];dsMarkeWeg(it);}
+    standNeu(e);
+  }
   else if(t.hasAttribute('data-sc-auswirkung')){
     var k=t.getAttribute('data-sc-auswirkung');e.auswirkung[k]=t.value;var fs=t.closest('.sc-frage');if(fs){fs.classList.remove('sc-fehlt');}
+    if(e.ds&&e.ds.auswirkung&&e.ds.auswirkung[k]){delete e.ds.auswirkung[k];dsMarkeWeg(fs);}
     if(k==='ereignis'){var ef=document.querySelector('.sc-ereignis');if(ef){ef.hidden=t.value!=='ja';}}
   }
   else if(t.hasAttribute('data-sc-warn')){
@@ -334,8 +451,12 @@ document.addEventListener('change',function(ev){
     var wn=document.querySelector('.sc-warnnotiz-feld');if(wn){wn.hidden=!e.warn.length;}
   }
   else if(t.name==='sc-datum'){e.datum=t.value;}
-  else if(t.name==='sc-rolle'){e.rolle=t.value;}
-  else if(t.name==='sc-stufe'){e.stufe=t.value;entwurfSpeichern(d.id);neuZeichnen(d,'select[name="sc-stufe"]');return;}
+  else if(t.name==='sc-rolle'){
+    /* Eltern bekommen die Sicht der Eltern aus dem DS, alle anderen die der Schule */
+    var warEltern=e.rolle==='eltern';e.rolle=t.value;
+    if((t.value==='eltern')!==warEltern&&(e.ds||e.dsAngebot)){dsAnwenden(d,e,!!e.ds);entwurfSpeichern(d.id);neuZeichnen(d,'select[name="sc-rolle"]');return;}
+  }
+  else if(t.name==='sc-stufe'){e.stufe=t.value;if(e.ds||e.dsAngebot){dsAnwenden(d,e,!!e.ds);}entwurfSpeichern(d.id);neuZeichnen(d,'select[name="sc-stufe"]');return;}
   entwurfSpeichern(d.id);
 });
 document.addEventListener('input',function(ev){
@@ -712,6 +833,7 @@ document.addEventListener('click',function(ev){
 });
 
 return {tab:tab, geoeffnet:geoeffnet, uebersicht:uebersicht, leerDrucken:leerDrucken, auswerten:auswerten, kurz:kurz, letztes:letztes, items:items, stufeAusKlasse:stufeAusKlasse,
+  /* Vorschläge aus dem DS (Formular) und auffällige Bereiche laut DS (Kompass) */ dsVorschlag:dsVorschlag, dsBereiche:dsBereiche,
   /* frühere Klassenbuch-Screenings */ kbListe:kbListe, kbVorschlaege:kbVorschlaege, kbZuordnung:kbZuordnung, kbUmwandeln:kbUmwandeln, kbTexte:kbTexte,
   /* für Tests */ schwellen:{gelb:GELB,rot:ROT}};
 })();
