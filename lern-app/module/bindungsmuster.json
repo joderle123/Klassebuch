@@ -1,0 +1,514 @@
+{
+  "id": "bindungsmuster",
+  "bereich": "muster",
+  "titel": "Bindungsmuster im Alltag erkennen",
+  "untertitel": "Sicher, vermeidend, ambivalent, desorganisiert – was Kinder mitbringen und was sie von uns brauchen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die vier Bindungsmuster beschreiben und erklären, warum sie als Anpassung an frühe Beziehungserfahrungen verstanden werden.",
+    "Sie können beschreiben, wie sich diese Muster bei Schulkindern und Jugendlichen zeigen können, und kennen die Situationen, in denen Bindungsverhalten besonders sichtbar wird.",
+    "Sie können begründen, warum Bindungsmuster keine Diagnosen sind und warum Zuschreibungen aus dem Schulalltag heraus mit großer Vorsicht zu behandeln sind.",
+    "Sie können für Kinder mit unterschiedlichen Beziehungsstrategien passende Antworten im Alltag planen.",
+    "Sie wissen, wann Beobachtungen ein Anlass sind, Leitung, Fachdienste oder den Kinderschutz einzubeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Drei Kinder, eine schlechte Note",
+          "text": "Cycle 4.1, Rückgabe der Mathematikprobe. Sara (10) hat eine schlechte Note. In der Pause kommt sie zur Lehrerin, zeigt auf eine Aufgabe und fragt, wie sie es beim nächsten Mal besser machen kann. Kevin (10) hat ebenfalls eine schlechte Note. Er zerknüllt das Blatt, sagt laut „Ist mir doch egal“ und lehnt jedes Hilfsangebot ab. Emma (10) weint, klammert sich an die Lehrerin und lässt sich lange nicht beruhigen. Als die Lehrerin sich einem anderen Kind zuwendet, ruft sie: „Sie mögen mich ja eh nicht!“",
+          "fragen": [
+            "Was könnte hinter den drei unterschiedlichen Reaktionen stecken?",
+            "Welche Erklärungen gibt es außer früheren Beziehungserfahrungen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Bindung ist das emotionale Band zwischen einem Kind und den Menschen, die es schützen und versorgen. Der britische Psychiater John Bowlby beschrieb sie als biologisch angelegtes System: Fühlt sich ein Kind bedroht, krank, erschöpft oder überfordert, sucht es die Nähe einer vertrauten Person (Bowlby, 1969). In der Bindungstheorie ist diese Person dann **sicherer Hafen**, bei dem das Kind Schutz und Trost findet, und zugleich **sichere Basis**, von der aus es die Welt erkundet. Bindung und Erkundung wechseln sich ab: Wer sich sicher fühlt, kann spielen, lernen und Neues wagen.\n\nAus wiederholten Erfahrungen bildet das Kind **innere Arbeitsmodelle** – Erwartungen darüber, ob andere verfügbar sind, wenn es sie braucht, und ob es selbst Zuwendung und Hilfe verdient. Diese Erwartungen nimmt es in neue Beziehungen mit, auch in die Beziehung zu Ihnen. Deshalb begegnen Ihnen Bindungserfahrungen täglich in der Schule, obwohl Sie nicht die Eltern des Kindes sind."
+        },
+        {
+          "art": "merke",
+          "text": "Bindungsverhalten zeigt sich vor allem unter Stress: bei Angst, Überforderung, Trennung, Kränkung oder Schmerz. Wie ein Kind dann Hilfe sucht – oder gerade nicht –, kann viel über seine Erfahrungen verraten. Es verrät aber nie alles."
+        }
+      ]
+    },
+    {
+      "titel": "Die vier Muster und wie sie entstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Psychologin Mary Ainsworth entwickelte die **Fremde Situation**, ein standardisiertes Beobachtungsverfahren für Kinder im Alter von etwa einem Jahr. In einem Spielzimmer wird das Kind zweimal kurz von der Bezugsperson getrennt und trifft auf eine fremde Person. Besonders aufschlussreich ist das Wiedersehen: Wie sucht das Kind Nähe, wie lässt es sich trösten, wie schnell kehrt es zum Spiel zurück? Ainsworth und ihr Team beschrieben daraus drei Muster (Ainsworth et al., 1978). Mary Main und Judith Solomon ergänzten später ein viertes, die desorganisierte Bindung (Main & Solomon, 1990)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die vier Bindungsmuster in der frühen Kindheit",
+          "spalten": [
+            "Muster",
+            "Beim Wiedersehen",
+            "Häufige Erfahrung dahinter",
+            "Die „innere Regel“ des Kindes"
+          ],
+          "zeilen": [
+            [
+              "Sicher",
+              "zeigt Kummer offen, sucht Nähe, lässt sich rasch trösten und spielt dann weiter",
+              "Die Bezugsperson war meist feinfühlig und verlässlich erreichbar.",
+              "„Wenn es mir schlecht geht, zeige ich es – dann hilft mir jemand.“"
+            ],
+            [
+              "Unsicher-vermeidend",
+              "zeigt wenig Kummer, beachtet die Bezugsperson kaum oder wendet sich ab, spielt scheinbar unbeeindruckt weiter",
+              "Wünsche nach Nähe und Trost wurden häufig zurückgewiesen oder übergangen.",
+              "„Ich regle das allein. Wer Not zeigt, wird weggeschoben.“"
+            ],
+            [
+              "Unsicher-ambivalent",
+              "ist sehr aufgelöst, sucht Nähe und wehrt sie zugleich ärgerlich ab, lässt sich schwer beruhigen",
+              "Die Bezugsperson war unberechenbar – mal zugewandt, mal nicht erreichbar.",
+              "„Ich muss laut sein und festhalten, sonst werde ich vergessen.“"
+            ],
+            [
+              "Desorganisiert",
+              "widersprüchliches oder befremdliches Verhalten: läuft auf die Bezugsperson zu und erstarrt, wendet sich mitten in der Annäherung ab, wirkt kurz wie weggetreten",
+              "Die Bezugsperson war zugleich Quelle von Sicherheit und von Angst, etwa durch Misshandlung oder durch eigenes beängstigendes oder verängstigtes Verhalten.",
+              "Keine stimmige Regel: „Der Mensch, bei dem ich Schutz suche, macht mir Angst.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Unsichere Bindung ist keine Störung.** In Studien mit wenig belasteten Familien ist die Mehrheit der Kinder sicher gebunden, aber ein beachtlicher Teil – grob ein Viertel bis ein Drittel – zeigt eines der beiden unsicheren Muster. Diese Muster sind sinnvolle Anpassungen: Das Kind hat die Strategie gefunden, mit der es bei *seiner* Bezugsperson am ehesten Nähe und Schutz sichert. Sie erhöhen das Risiko für spätere Schwierigkeiten etwas, legen aber keinen Lebensweg fest (Grossmann & Grossmann, 2012).\n\n**Desorganisation ist ernster zu nehmen.** Hier bricht die Strategie unter Stress zusammen. Desorganisierte Bindung kommt bei Kindern, die Misshandlung oder Vernachlässigung erlebt haben, deutlich häufiger vor und gilt als wichtiger Risikofaktor für spätere psychische Probleme (Sroufe, 2005). Sie tritt aber auch in Familien ohne Misshandlung auf, zum Beispiel wenn eine Bezugsperson selbst schwer belastet ist oder eigene traumatische Erfahrungen nicht verarbeitet hat. Sie ist deshalb kein Beweis für Misshandlung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder mit unsicherer Bindung haben eine Bindungsstörung.",
+          "fakt": "Unsichere Bindungsmuster sind häufig und gehören zur normalen Bandbreite. Bindungsstörungen im Sinne von DSM-5-TR und ICD-11 – die reaktive Bindungsstörung und die Beziehungsstörung mit Enthemmung – sind selten. Sie entstehen nach schwerer Vernachlässigung oder häufig wechselnden Bezugspersonen in den ersten Lebensjahren (Zeanah & Gleason, 2015). Ob eine Bindungsstörung vorliegt, klären ausschließlich Fachleute."
+        }
+      ]
+    },
+    {
+      "titel": "Wie sich Muster bei Schulkindern und Jugendlichen zeigen können",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mit dem Alter verändert sich, wie Bindungserfahrungen sichtbar werden. Schulkinder brauchen weniger körperliche Nähe, aber weiterhin verlässliche Ansprechpersonen. Bei Jugendlichen gewinnen Freundschaften und erste Liebesbeziehungen an Gewicht, die Eltern bleiben aber als sichere Basis wichtig. Die Längsschnittforschung zeigt, dass sich frühe Muster in späteren Beziehungsstrategien wiederfinden können – aber nicht müssen (Sroufe, 2005).\n\nDie folgende Übersicht beschreibt Verhaltensweisen, die zu einem Muster *passen können*. Sie ist ein Denkwerkzeug, kein Prüfraster: Keine dieser Verhaltensweisen beweist ein bestimmtes Muster."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Mögliche Hinweise im Schulalltag",
+          "spalten": [
+            "Muster",
+            "Bei Schulkindern kann auffallen",
+            "Bei Jugendlichen kann auffallen"
+          ],
+          "zeilen": [
+            [
+              "Sicher",
+              "bittet um Hilfe, wenn es nicht weiterkommt; zeigt Freude und Ärger offen; geht nach Streit wieder auf andere zu; traut sich an Neues",
+              "kann über Gefühle und Probleme sprechen; holt sich Rat, ohne sich abhängig zu machen; verträgt Kritik einigermaßen; eher stabile Freundschaften"
+            ],
+            [
+              "Unsicher-vermeidend",
+              "wirkt sehr selbstständig und „cool“; fragt auch bei Überforderung nicht; spielt Kummer herunter („egal“); zieht sich bei Stress zurück; wehrt Trost oder Lob eher ab",
+              "betont Unabhängigkeit („Ich brauche niemanden“); spricht lieber über Sachen als über Gefühle; wirkt distanziert oder abgeklärt; nimmt Hilfsangebote kaum an"
+            ],
+            [
+              "Unsicher-ambivalent",
+              "sucht sehr viel Aufmerksamkeit und Bestätigung; reagiert heftig auf Trennungen, Vertretungen und Wechsel; ist leicht gekränkt und schwer zu beruhigen; schwankt zwischen Anklammern und Ärger",
+              "ist stark mit Beziehungen beschäftigt; erlebt Eifersucht und Zurückweisung sehr intensiv; sucht enge Bindung an einzelne Erwachsene; kann sich kaum konzentrieren, wenn eine Beziehung wackelt"
+            ],
+            [
+              "Desorganisiert",
+              "wirkt unter Stress unberechenbar, erstarrt plötzlich oder ist wie weggetreten; manche Kinder kontrollieren Erwachsene – herrisch und bestrafend oder übertrieben fürsorglich",
+              "heftige Stimmungswechsel, Momente der Abwesenheit, widersprüchliches Verhalten in engen Beziehungen; nicht selten zusammen mit Traumafolgen oder anderen psychischen Belastungen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Kontrollierendes Verhalten.** Viele Kinder, die als Kleinkinder desorganisiert gebunden waren, entwickeln bis zum Schulalter eine neue Strategie: Sie übernehmen die Kontrolle in der Beziehung. Manche tun das **bestrafend** – sie kommandieren, beschämen oder drohen Erwachsenen. Andere tun es **fürsorglich** – sie kümmern sich übermäßig um die Stimmung der Erwachsenen, trösten und beruhigen und wirken wie kleine Erwachsene. Beides ist ein Versuch, in einer als unberechenbar erlebten Welt Sicherheit herzustellen. Es ist weder bloße Frechheit noch besondere Reife."
+        },
+        {
+          "art": "liste",
+          "titel": "Wann Bindungsverhalten besonders sichtbar wird",
+          "punkte": [
+            "Trennungen und Übergänge: morgens beim Abschied, vor den Ferien, bei Klassenfahrten, beim Wechsel in einen neuen Cycle oder ins Lycée",
+            "Wiedersehen: nach Krankheit, nach den Ferien, wenn eine vertraute Person zurückkommt",
+            "Personalwechsel: Vertretungen, Elternzeit, der Abschied einer vertrauten Erzieherin",
+            "Stress und Überforderung: schwierige Aufgaben, Proben, Konflikte, Verletzungen",
+            "Kränkung und Zurückweisung: Kritik, Ausgeschlossenwerden, eine schlechte Note",
+            "Trost und Nähe: Wie reagiert das Kind, wenn Sie trösten, loben oder Hilfe anbieten?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Achten Sie nicht nur darauf, *was* ein Kind tut, sondern *wann*: bei Trennung, Wiedersehen, Stress und Trost. Dort zeigt sich am ehesten, was es von Erwachsenen erwartet."
+        }
+      ]
+    },
+    {
+      "titel": "Vorsicht vor vorschnellen Zuschreibungen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Bindungsmuster sind ein wertvolles Denkmodell, um Verhalten mit mehr Verständnis zu betrachten. Als Etikett richten sie dagegen Schaden an: Sie verengen den Blick, belasten die Zusammenarbeit mit Eltern und klingen nach einer Diagnose, die niemand gestellt hat. Für die Vorsicht gibt es gute Gründe."
+        },
+        {
+          "art": "liste",
+          "titel": "Warum sich Bindungsmuster nicht aus dem Schulalltag ablesen lassen",
+          "punkte": [
+            "Eigene Verfahren: Die Fremde Situation, Geschichtenergänzungsverfahren oder Bindungsinterviews verlangen standardisierte Abläufe und geschulte Auswertende. Alltagsbeobachtung ersetzt das nicht.",
+            "Bindung ist beziehungsspezifisch: Ein Kind kann bei der Großmutter sicher und beim Vater unsicher gebunden sein. Wie es sich Ihnen gegenüber verhält, sagt etwas über seine Erwartungen und über Ihre Beziehung – nicht zwingend über die Eltern.",
+            "Viele mögliche Ursachen: Temperament, Sprache, Kultur, ADHS, Autismus, Angst, Trauma, eine akute Krise in der Familie oder schlicht Müdigkeit können ähnlich aussehen.",
+            "Muster verändern sich: Neue, verlässliche Beziehungserfahrungen und veränderte Lebensumstände verändern innere Arbeitsmodelle – zum Guten wie zum Schlechten (Sroufe, 2005).",
+            "Kultur prägt den Ausdruck: Wie viel Nähe, Gefühlsausdruck und Selbstständigkeit in welchem Alter erwartet werden, unterscheidet sich zwischen Familien und Kulturen. Schon die Häufigkeit der Muster ist von Land zu Land verschieden."
+          ]
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussehen kann",
+          "punkte": [
+            {
+              "wie": "Ein Kind, das nie um Hilfe bittet",
+              "unterschied": "Kann zu einer vermeidenden Strategie passen – oder das Kind versteht die Unterrichtssprache noch nicht sicher, schämt sich, ist im Autismus-Spektrum oder hat erlebt, dass Nachfragen in der Klasse belächelt wird."
+            },
+            {
+              "wie": "Ein Kind, das ständig Aufmerksamkeit sucht",
+              "unterschied": "Kann zu einer ambivalenten Strategie passen – oder zu ADHS, zu Unterforderung, zu einer akuten Krise in der Familie oder zu einem sehr kontaktfreudigen Temperament."
+            },
+            {
+              "wie": "Ein Kind, das plötzlich erstarrt oder abwesend wirkt",
+              "unterschied": "Kann mit Desorganisation oder Traumafolgen zusammenhängen – aber auch mit Tagträumen, Übermüdung, Überforderung oder mit Absencen, einer Form epileptischer Anfälle. Wiederholte Abwesenheitsmomente sollten ärztlich abgeklärt werden."
+            },
+            {
+              "wie": "Ein Kind, das distanzlos auf fremde Erwachsene zugeht",
+              "unterschied": "Kann auf eine Beziehungsstörung mit Enthemmung nach früher Vernachlässigung hinweisen, aber auch mit Impulsivität oder dem Entwicklungsstand zusammenhängen. Die Einordnung ist Sache von Fachleuten; die Sicherheit des Kindes hat Vorrang."
+            }
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Yara und das vorschnelle Etikett",
+          "text": "Im Team heißt es über Yara (9): „Typisch vermeidend gebunden – zu Hause kümmert sich wohl niemand.“ Yara fragt nie um Hilfe und zieht sich in Gruppenarbeiten zurück. Eine Kollegin schlägt vor, erst einmal genauer hinzuschauen. Im Gespräch mit der Mutter, unterstützt von einer Dolmetscherin, zeigt sich: Die Familie ist vor acht Monaten aus Brasilien nach Luxemburg gezogen. Yara versteht im Unterricht noch wenig und schämt sich dafür. In ihrer alten Schule war sie offen und beliebt, zu Hause sucht sie viel Nähe. Mit Bildkarten, einer Lernpartnerin, die Portugiesisch spricht, und einem vereinbarten Handzeichen für „Ich verstehe es nicht“ beginnt Yara, sich Hilfe zu holen.",
+          "fragen": [
+            "Welche Erklärungen hatte das Team zunächst übersehen?",
+            "Wie hätte eine beschreibende Beobachtung statt der Deutung lauten können?"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie vermeiden sollten",
+          "punkte": [
+            "Bindungsbegriffe als Etikett verwenden: „Der ist unsicher-vermeidend“, „Die ist desorganisiert“.",
+            "Aus dem Verhalten in der Schule auf die Erziehung zu Hause schließen und Eltern die Schuld geben.",
+            "Bindungsmuster in Berichte schreiben, ohne dass eine fachliche Diagnostik stattgefunden hat.",
+            "Aus einem „desorganisierten“ Eindruck ohne weitere Hinweise auf Misshandlung schließen – oder umgekehrt echte Hinweise auf Gefährdung als „Bindungsthema“ abtun.",
+            "Ein Kind aufgeben, weil seine Bindung angeblich „kaputt“ sei."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beschreiben Sie, was Sie sehen, in welcher Situation, und wie das Kind auf Unterstützung reagiert: „Wenn er nicht weiterkommt, legt er den Kopf auf den Tisch und sagt ‚egal‘. Hilfe lehnt er ab, nimmt sie aber an, wenn ich mich wortlos dazusetze.“ Solche Beschreibungen helfen allen weiter – Deutungen wie „vermeidend gebunden“ nicht."
+        }
+      ]
+    },
+    {
+      "titel": "Was Kinder mit jedem Muster von uns brauchen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Pädagogische Fachkräfte ersetzen keine Eltern. Sie können aber für Kinder zu wichtigen Bezugspersonen werden, die einen Teil der Aufgaben eines sicheren Hafens und einer sicheren Basis übernehmen. Für Kinder mit belastenden Beziehungserfahrungen kann das die entscheidende Erfahrung sein, dass Erwachsene anders reagieren, als sie es erwarten. Grundlage ist **Feinfühligkeit** im Sinne von Mary Ainsworth: Signale des Kindes wahrnehmen, sie richtig deuten und prompt und angemessen darauf antworten (Ainsworth et al., 1978; Grossmann & Grossmann, 2012).\n\nKinder mit unsicheren Strategien senden dabei oft **missverständliche Signale**. Das vermeidende Kind zeigt nicht, dass es Hilfe braucht. Das ambivalente Kind zeigt so viel Not, dass Erwachsene sich überfordert zurückziehen. Das kontrollierende Kind stößt Erwachsene weg oder drängt sie in eine Rolle. Feinfühlig ist hier, auf das Bedürfnis *hinter* dem Verhalten zu antworten.\n\nDas ist schwerer, als es klingt. In der Minnesota-Längsschnittstudie reagierten Fachkräfte im Kindergarten, ohne die Vorgeschichte der Kinder zu kennen, unterschiedlich auf sie: Kinder mit vermeidender Vorgeschichte lösten häufiger Ärger und Kontrolle aus, Kinder mit ambivalenter Vorgeschichte eher Nachsicht, verbunden mit niedrigen Erwartungen (Sroufe, 2005). Ohne es zu wollen, bestätigen Erwachsene so, was das Kind ohnehin erwartet. Wer das weiß, kann bewusst anders antworten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Was hinter dem Verhalten stehen kann – und was hilft",
+          "spalten": [
+            "Wenn ein Kind …",
+            "braucht es oft …",
+            "Konkret im Alltag"
+          ],
+          "zeilen": [
+            [
+              "… nie Hilfe sucht und Gefühle herunterspielt (vermeidende Strategie)",
+              "Nähe in kleinen Dosen, die seine Selbstständigkeit respektiert",
+              "Hilfe beiläufig und über die Sache anbieten („Ich setz mich kurz dazu“); nebeneinander statt gegenüber; Gefühle vorsichtig benennen, ohne auf ein Gespräch zu drängen; Können anerkennen; verlässlich erreichbar bleiben, auch wenn das Kind abwinkt"
+            ],
+            [
+              "… viel Aufmerksamkeit fordert und sich schwer beruhigt (ambivalente Strategie)",
+              "die Erfahrung, dass Zuwendung verlässlich kommt – auch ohne laut zu werden",
+              "feste Kontaktmomente („Nach drei Aufgaben komme ich zu dir“) und Zusagen einhalten; Abwesenheiten und Wechsel früh ankündigen; Zuwendung in ruhigen Momenten, nicht erst bei Eskalation; selbstständige Versuche loben"
+            ],
+            [
+              "… unter Stress chaotisch, erstarrt oder kontrollierend reagiert (desorganisierte Strategie)",
+              "Sicherheit, Ruhe und Erwachsene, die freundlich die Führung behalten",
+              "feste Abläufe; ruhige Stimme und Körpersprache; keine Drohungen und Machtkämpfe; „Ich bin hier die Erwachsene und passe auf, dass es sicher ist“; fürsorgliche Rollen nicht annehmen; bei Abwesenheit sanft ins Hier und Jetzt zurückholen; eng im Team abstimmen"
+            ],
+            [
+              "… sich meist Hilfe holt und gern Neues erkundet (sichere Strategie)",
+              "weiterhin eine verlässliche Beziehung und Raum zum Ausprobieren",
+              "Selbstständigkeit zutrauen; ansprechbar bleiben; auch diese Kinder in Krisen aktiv begleiten"
+            ]
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was allen Kindern hilft",
+          "punkte": [
+            "Verlässlichkeit vor Intensität: lieber jeden Tag zwei Minuten echter Kontakt als seltene große Gesten.",
+            "Ankündigen, was sich ändert – besonders Abwesenheiten, Vertretungen, Abschiede und Ferien.",
+            "Nach Konflikten die Beziehung reparieren: „Gestern war es schwierig zwischen uns. Ich bin trotzdem für dich da.“",
+            "Abschiede gestalten, wenn eine Bezugsperson geht: rechtzeitig ankündigen, sich verabschieden, die Nachfolge vorstellen.",
+            "Die eigene Ruhe schützen: Ein ruhiger Erwachsener ist der wichtigste sichere Hafen – und darf sich dafür selbst Unterstützung holen."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Rafael kommandiert",
+          "text": "Rafael (8) kommandiert seine Erzieherin in der Maison Relais: „Setz dich da hin! Du redest nicht mit den anderen!“ Wenn sie Grenzen setzt, beschimpft er sie heftig. Am nächsten Morgen bringt er ihr ein Bild und fragt ängstlich, ob sie noch böse ist. Die Erzieherin nimmt das Bild an und sagt: „Danke. Ich bin nicht mehr böse. Gestern war es schwierig, und heute bin ich wieder für dich da. Wer sich wohin setzt, entscheide aber weiter ich.“ Im Team vereinbaren alle, ruhig und einheitlich auf seine Kommandos zu reagieren.",
+          "fragen": [
+            "Warum ist es wichtig, dass die Erzieherin das Bild annimmt und trotzdem die Führung behält?",
+            "Welche Beobachtungen würden Sie festhalten, und mit wem würden Sie sprechen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Zusammenarbeit und Grenzen der eigenen Rolle",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Mit Eltern sprechen.** Gespräche über Beziehung brauchen Takt. Viele Eltern von Kindern mit unsicheren Strategien tragen selbst schwere Lasten: eigene belastende Kindheitserfahrungen, Krankheit, Armut, Migration, Trennung. Vorwürfe verschließen Türen. Sprechen Sie über das, was Sie beobachten, und darüber, was dem Kind in der Schule hilft. Fragen Sie nach dem, was die Eltern kennen: „Wie reagiert er zu Hause, wenn ihm etwas schwerfällt? Was hilft ihm dann?“ Bindungsbegriffe gehören nicht in solche Gespräche.\n\n**Im Team abstimmen.** Teilen Sie Beobachtungen: Reagiert das Kind bei allen Erwachsenen gleich oder bei einzelnen anders? Gerade Kinder mit desorganisierten oder kontrollierenden Strategien lösen bei Erwachsenen starke und widersprüchliche Gefühle aus. Das ist ein Grund, sich abzustimmen und gemeinsam ruhig und vorhersehbar zu handeln – nicht, sich gegenseitig Vorwürfe zu machen.\n\n**Was Fachleute tun.** Hilfen bei Bindungsschwierigkeiten setzen meist an der Beziehung zwischen Kind und Bezugsperson an. Die britische NICE-Leitlinie für Kinder in Pflege- und Adoptivfamilien, in Heimen oder mit hohem Risiko einer Fremdunterbringung empfiehlt vor allem Angebote, die Eltern und Pflegeeltern darin stärken, die Signale des Kindes feinfühlig zu beantworten, etwa videogestützte Programme (NICE, 2015). Die Schule trägt dazu bei, indem sie verlässliche Beziehungen anbietet und eng mit Familie und Fachdiensten zusammenarbeitet."
+        },
+        {
+          "art": "weiter",
+          "text": "Ziehen Sie die Leitung (Responsable) und Fachdienste hinzu, wenn ein Kind über längere Zeit in vielen Situationen unter Stress chaotisch, erstarrt oder stark kontrollierend reagiert, wiederholt wie weggetreten wirkt, bereitwillig mit fremden Erwachsenen mitgehen würde oder wenn Beziehungsschwierigkeiten das Lernen und Zusammenleben deutlich beeinträchtigen. Die Abklärung – etwa ob eine Bindungsstörung oder Traumafolgen vorliegen – ist Aufgabe des Diagnostique-Teams des CDSE, der Kinder- und Jugendpsychiatrie oder spezialisierter Psychotherapeutinnen und Psychotherapeuten; im Lycée ist auch der SePAS Ansprechpartner."
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn ein Kind Angst vor einer Bezugsperson zeigt, von Gewalt oder Vernachlässigung erzählt oder Verletzungen hat, die nicht schlüssig erklärt werden, geht es nicht mehr um Bindungsmuster, sondern um Kinderschutz. Hören Sie ruhig zu, fragen Sie nicht weiter aus und versprechen Sie keine Geheimhaltung. Halten Sie sachlich fest, was Sie gesehen und gehört haben, und informieren Sie umgehend Ihre Leitung nach den internen Abläufen. Konfrontieren Sie die Eltern nicht selbst."
+        },
+        {
+          "art": "merke",
+          "text": "Die wichtigste Frage lautet nicht: „Welches Bindungsmuster hat dieses Kind?“, sondern: „Welche Beziehungserfahrung kann dieses Kind bei uns machen?“"
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist in der Bindungstheorie mit „sicherer Basis“ und „sicherem Hafen“ gemeint?",
+      "optionen": [
+        "Die Schule als Ort, an dem Kinder vor ihren Eltern geschützt sind",
+        "Eine Bezugsperson, von der aus das Kind die Welt erkundet und zu der es bei Angst oder Kummer zurückkehrt",
+        "Ein fester Wohnort und ein geregeltes Einkommen der Familie",
+        "Eine therapeutische Methode zur Behandlung von Bindungsstörungen"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die Bindungsperson ist sichere Basis für die Erkundung und sicherer Hafen, wenn das Kind Schutz und Trost braucht. Beides wechselt sich ab: Wer sich sicher fühlt, kann spielen und lernen. Äußere Lebensbedingungen spielen zwar eine Rolle, sind aber nicht gemeint; eine Therapiemethode ist es ebenfalls nicht."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen über unsichere Bindungsmuster treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Sie sind häufig und gehören zur normalen Bandbreite.",
+        "Sie sind Anpassungen an die Erfahrungen, die ein Kind mit seinen Bezugspersonen gemacht hat.",
+        "Sie sind psychische Störungen, die behandelt werden müssen.",
+        "Sie können sich durch neue Beziehungserfahrungen verändern.",
+        "Sie lassen sich im Unterricht zuverlässig an einzelnen Verhaltensweisen erkennen."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Unsichere Muster sind häufig, als Anpassung an frühe Erfahrungen verständlich und veränderbar. Sie sind keine Störungen – Bindungsstörungen sind etwas anderes und selten. Zuverlässig erfasst werden Bindungsmuster nur mit standardisierten Verfahren; einzelne Verhaltensweisen im Unterricht haben viele mögliche Ursachen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist für desorganisierte Bindung besonders kennzeichnend?",
+      "optionen": [
+        "Das Kind zeigt unter Stress keine stimmige Strategie, oft mit widersprüchlichem Verhalten oder kurzem Erstarren.",
+        "Das Kind ist sehr unordentlich und verliert oft seine Sachen.",
+        "Das Kind sucht beim Wiedersehen rasch Nähe und lässt sich schnell trösten.",
+        "Das Kind zeigt bei Trennungen kaum Gefühle und spielt scheinbar unbeeindruckt weiter."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Desorganisation bedeutet, dass die Bindungsstrategie unter Stress zusammenbricht – oft, weil die Bezugsperson zugleich Quelle von Schutz und von Angst war. Mit Unordnung hat der Begriff nichts zu tun. Rasche Nähe und Trost beschreiben sichere Bindung, scheinbar unbeeindrucktes Weiterspielen eher das vermeidende Muster."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Kind desorganisiertes Bindungsverhalten zu zeigen scheint, ist das ein Beweis dafür, dass es misshandelt wurde.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Desorganisierte Bindung kommt bei Kindern mit Misshandlungserfahrungen deutlich häufiger vor, aber auch in Familien ohne Misshandlung, etwa wenn Eltern selbst schwer belastet oder traumatisiert sind. Zudem lässt sie sich im Schulalltag nicht sicher erkennen. Konkrete Hinweise auf Gefährdung werden unabhängig davon immer ernst genommen und nach den internen Abläufen weitergegeben."
+    },
+    {
+      "art": "fall",
+      "fall": "Kevin (10) fragt nie um Hilfe. Bei einer schwierigen Aufgabe legt er den Kopf auf den Tisch und sagt: „Ist mir egal.“ Wenn die Lehrerin sich vor ihn stellt und fragt, was los ist, dreht er sich weg.",
+      "frage": "Welche Reaktion ist am ehesten hilfreich?",
+      "optionen": [
+        "Kevin in Ruhe lassen – er zeigt ja deutlich, dass er niemanden braucht.",
+        "Kevin auffordern, jetzt sofort zu sagen, was er fühlt.",
+        "Sich wortlos neben ihn setzen, beiläufig den ersten Schritt der Aufgabe zeigen und signalisieren, dass sie in der Nähe bleibt.",
+        "Kevin vor der Klasse loben, damit er merkt, dass er etwas kann."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Kinder mit vermeidender Strategie haben oft gelernt, Not nicht zu zeigen. Hilfe, die beiläufig und über die Sache kommt, respektiert ihre Selbstständigkeit und macht Unterstützung annehmbar. Sich zurückzuziehen bestätigt die Erwartung, allein zu sein; ein gefordertes Gefühlsgespräch überfordert, und öffentliches Lob ist vielen dieser Kinder unangenehm."
+    },
+    {
+      "art": "fall",
+      "fall": "Emma (10) fragt ihre Erzieherin in der Maison Relais mehrmals pro Stunde, ob sie sie noch mag, und reagiert heftig, wenn diese sich anderen Kindern zuwendet. In zwei Wochen beginnt der dreiwöchige Urlaub der Erzieherin.",
+      "frage": "Was ist am sinnvollsten?",
+      "optionen": [
+        "Den Urlaub erst am letzten Tag erwähnen, um Emma nicht unnötig zu beunruhigen.",
+        "Den Urlaub frühzeitig ankündigen, die Vertretung vorstellen, einen Kalender mit dem Rückkehrtag anbieten und bis dahin feste, kurze Kontaktmomente verlässlich einhalten.",
+        "Emma bis zum Urlaub möglichst wenig Aufmerksamkeit geben, damit sie sich an die Trennung gewöhnt.",
+        "Emma versprechen, ihr aus dem Urlaub jeden Tag zu schreiben."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Kinder mit ambivalenter Strategie brauchen vor allem Vorhersehbarkeit. Frühes Ankündigen, eine vorgestellte Vertretung und ein sichtbarer Rückkehrtag machen die Trennung aushaltbar, verlässliche kurze Kontakte zeigen, dass Zuwendung auch ohne Eskalation kommt. Eine überraschende Trennung oder bewusster Entzug verstärken die Angst; tägliche Nachrichten aus dem Urlaub sind weder professionell noch verlässlich einzuhalten."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Team wird über Yara (9) gesagt: „Typisch vermeidend gebunden – zu Hause kümmert sich wohl niemand.“ Yara lebt seit acht Monaten in Luxemburg, spricht noch wenig Deutsch und fragt nie um Hilfe.",
+      "frage": "Welche Reaktion ist fachlich angemessen?",
+      "optionen": [
+        "Der Einschätzung zustimmen und sie im Förderbericht festhalten.",
+        "Eine Gefährdungsmeldung machen, weil sich die Eltern offenbar nicht kümmern.",
+        "Die Eltern bitten, zu Hause mehr Nähe zu zeigen.",
+        "Andere Erklärungen wie Sprache, Scham und Eingewöhnung prüfen, beschreibend beobachten und mit den Eltern – bei Bedarf mit Dolmetschung – ins Gespräch kommen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Ein Bindungsmuster lässt sich aus dem Schulalltag nicht ablesen, und Yaras Verhalten hat naheliegende andere Erklärungen: Sprache, Scham, Eingewöhnung. Beschreibende Beobachtung und ein respektvolles Gespräch mit den Eltern helfen weiter. Ein Etikett im Bericht, eine Meldung ohne Hinweise auf Gefährdung oder Ratschläge auf Grundlage einer bloßen Vermutung schaden dem Kind und der Zusammenarbeit."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "In welchen Situationen zeigt sich Bindungsverhalten im Schulalltag besonders deutlich? (mehrere richtig)",
+      "optionen": [
+        "Beim Abschied am Morgen und beim Wiedersehen nach den Ferien",
+        "Wenn eine vertraute Erzieherin durch eine Vertretung ersetzt wird",
+        "Bei einer entspannten Lieblingsbeschäftigung ohne Anforderungen",
+        "Nach einer Kränkung oder bei Überforderung",
+        "Wenn das Kind getröstet oder gelobt wird"
+      ],
+      "richtig": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "erklaerung": "Das Bindungssystem wird vor allem bei Trennung, Wiedersehen, Stress, Kränkung und Schmerz aktiviert – dann zeigt sich, wie ein Kind Nähe sucht oder vermeidet. Auch die Reaktion auf Trost und Lob ist aufschlussreich. In entspannten Situationen ohne Belastung ist Bindungsverhalten kaum sichtbar, dort steht die Erkundung im Vordergrund."
+    },
+    {
+      "art": "fall",
+      "fall": "Lara (9) kümmert sich auffallend um die Stimmung ihrer Lehrerin: Sie fragt ständig, ob es ihr gut geht, räumt ungefragt auf, tröstet andere Kinder wie eine Erwachsene und wirkt selbst nie bedürftig. Ihre Mutter ist seit Monaten schwer krank.",
+      "frage": "Was ist die hilfreichste Reaktion?",
+      "optionen": [
+        "Lara sagen, dass sie sich nicht in alles einmischen soll.",
+        "Lara als Hilfslehrerin einsetzen, da sie so reif ist.",
+        "Nichts tun – Lara ist offensichtlich sozial sehr kompetent.",
+        "Laras Fürsorge freundlich anerkennen, ihr keine Erwachsenenaufgaben übertragen, Raum für ihre eigenen Sorgen geben und mit der Leitung besprechen, wie die Familie unterstützt werden kann."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Übertrieben fürsorgliches Verhalten kann bedeuten, dass ein Kind zu viel Verantwortung trägt, hier vermutlich wegen der Krankheit der Mutter. Lara braucht Erwachsene, die freundlich die Verantwortung übernehmen und ihr Raum für eigene Sorgen lassen. Sie als Hilfslehrerin einzusetzen, verstärkt die Rollenumkehr, ein Tadel beschämt sie, und Abwarten übersieht ihre Belastung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind kann bei seiner Großmutter sicher und bei seinem Vater unsicher gebunden sein.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Bindung ist beziehungsspezifisch: Sie entsteht aus den Erfahrungen mit einer bestimmten Person. Deshalb sagt das Verhalten eines Kindes Ihnen gegenüber etwas über seine Erwartungen und über Ihre Beziehung, aber nicht zwingend über die Beziehung zu seinen Eltern."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet Feinfühligkeit im Sinne von Mary Ainsworth?",
+      "optionen": [
+        "Besonders viel Lob und Körperkontakt geben",
+        "Dem Kind jeden Wunsch erfüllen",
+        "Signale des Kindes wahrnehmen, richtig deuten und prompt und angemessen darauf antworten",
+        "Die eigenen Gefühle vor dem Kind verbergen"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Feinfühligkeit umfasst vier Schritte: wahrnehmen, richtig deuten, prompt und angemessen reagieren. Angemessen heißt auch, Grenzen zu setzen, wenn sie nötig sind. Viel Lob oder Körperkontakt ist nicht automatisch feinfühlig, jeden Wunsch zu erfüllen ebenso wenig, und das Verbergen eigener Gefühle ist nicht gemeint."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Bindung",
+      "erklaerung": "Emotionales Band zwischen einem Kind und den Personen, die es schützen und versorgen. Das Bindungssystem wird vor allem bei Angst, Kummer und Stress aktiviert."
+    },
+    {
+      "begriff": "Innere Arbeitsmodelle",
+      "erklaerung": "Aus Beziehungserfahrungen gebildete Erwartungen: Sind andere da, wenn ich sie brauche? Verdiene ich Zuwendung? Sie prägen neue Beziehungen, sind aber veränderbar."
+    },
+    {
+      "begriff": "Sichere Basis und sicherer Hafen",
+      "erklaerung": "Zwei Aufgaben einer Bindungsperson: Ausgangspunkt für die Erkundung der Welt und Zufluchtsort bei Angst oder Kummer."
+    },
+    {
+      "begriff": "Fremde Situation",
+      "erklaerung": "Standardisiertes Beobachtungsverfahren nach Mary Ainsworth für Kinder um das erste Lebensjahr, mit zwei kurzen Trennungen von der Bezugsperson. Grundlage der Einteilung in Bindungsmuster."
+    },
+    {
+      "begriff": "Feinfühligkeit",
+      "erklaerung": "Fähigkeit einer Bezugsperson, Signale des Kindes wahrzunehmen, richtig zu deuten und prompt und angemessen darauf zu reagieren."
+    },
+    {
+      "begriff": "Desorganisierte Bindung",
+      "erklaerung": "Bindungsmuster, bei dem unter Stress keine stimmige Strategie erkennbar ist. Häufiger nach beängstigenden Beziehungserfahrungen, aber kein Beweis für Misshandlung."
+    },
+    {
+      "begriff": "Kontrollierendes Bindungsverhalten",
+      "erklaerung": "Strategie mancher Kinder mit desorganisierter Vorgeschichte: Sie übernehmen die Kontrolle in der Beziehung – herrisch-bestrafend oder übertrieben fürsorglich."
+    },
+    {
+      "begriff": "Bindungsstörung",
+      "erklaerung": "Seltene klinische Diagnose (DSM-5-TR, ICD-11) nach schwerer früher Vernachlässigung oder häufig wechselnden Bezugspersonen. Nicht gleichbedeutend mit unsicherer Bindung."
+    }
+  ],
+  "quellen": [
+    "bowlby1969",
+    "ainsworth1978",
+    "mainSolomon1990",
+    "sroufe2005",
+    "grossmann2012",
+    "zeanah2015",
+    "niceNG26",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "bindung",
+    "bindungsstoerungen",
+    "traumapaedagogik",
+    "beziehung-haltung",
+    "uebertragung",
+    "kinderschutz"
+  ],
+  "toolbox": [
+    "wer-ist-fuer-mich-da",
+    "mein-unterstuetzungsnetz",
+    "wer-hilft-mir",
+    "trost-koffer",
+    "check-in-check-out"
+  ]
+}

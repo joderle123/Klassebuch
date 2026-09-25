@@ -1,0 +1,519 @@
+{
+  "id": "elternarbeit",
+  "bereich": "handeln",
+  "titel": "Zusammenarbeit mit Eltern",
+  "untertitel": "Partnerschaftlich arbeiten, schwierige Gespräche gut führen, Konflikte klären",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können erklären, was Erziehungspartnerschaft bedeutet und warum die Verbindung zwischen Familie und Schule für die Entwicklung eines Kindes wichtig ist.",
+    "Sie können Anliegen als Beobachtungen statt als Bewertungen formulieren und ein schwieriges Elterngespräch strukturiert vorbereiten und führen.",
+    "Sie können Gespräche mit mehrsprachigen Familien so gestalten, dass beide Seiten sich verstehen – mit qualifiziertem Dolmetschen statt Kindern als Übersetzern.",
+    "Sie können Eltern in Krisen angemessen begegnen, Konflikte entschärfen und die Grenzen Ihrer Rolle wahren.",
+    "Sie wissen, wann Sie Ihre Leitung einbeziehen – insbesondere bei einem Verdacht auf Kindeswohlgefährdung."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Eltern als Partner",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Diogo, 8 Jahre, Cycle 3.1",
+          "text": "Diogos Mutter wurde im letzten Schuljahr fast jede Woche angerufen: Diogo habe geschlagen, sei weggelaufen, habe den Unterricht gestört. Zu Gesprächsterminen kommt sie inzwischen nicht mehr. Als die neue Lehrerin sie am Schultor anspricht, sagt sie scharf: „Was hat er jetzt wieder gemacht? Ich kann nichts dafür, zu Hause ist er ganz anders.“ Im Team heißt es: „Die Mutter blockt ab, mit der kann man nicht arbeiten.“",
+          "fragen": [
+            "Wie könnte Diogos Mutter die Schule im letzten Jahr erlebt haben?",
+            "Womit könnte die neue Lehrerin einen anderen Anfang machen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Kinder leben in mehreren Welten: Familie, Schule, Maison Relais, Freundeskreis, Verein. Bronfenbrenner (1979) beschreibt, dass nicht nur jede dieser Welten die Entwicklung prägt, sondern auch die Verbindungen zwischen ihnen: Unterstützende Verbindungen stärken die Entwicklungschancen eines Kindes. Wenn Familie und Schule sich informieren, einander vertrauen und am selben Strang ziehen, profitiert das Kind. Arbeiten sie gegeneinander, gerät es zwischen die Fronten.\n\n**Erziehungspartnerschaft** meint eine Zusammenarbeit auf Augenhöhe: gemeinsame Ziele, aber unterschiedliche Rollen. Eltern sind Expertinnen und Experten für ihr Kind und ihre Familie – sie kennen seine Geschichte, seine Vorlieben, seine Reaktionen zu Hause. Fachkräfte kennen das Kind in der Gruppe, beim Lernen und im Umgang mit Regeln und Gleichaltrigen. Keine Seite hat das ganze Bild.\n\n**Warum es oft schwierig ist.** Gerade Eltern von Kindern mit sozial-emotionalen Schwierigkeiten haben häufig über lange Zeit vor allem Negatives aus der Schule gehört. Viele fühlen sich beschuldigt, schämen sich oder sind erschöpft; manche haben selbst schlechte Erinnerungen an ihre Schulzeit. Hinzu kommen Sprachbarrieren, Arbeitszeiten und belastende Lebenslagen. Was wie Desinteresse oder Abwehr aussieht, ist oft Selbstschutz."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Eltern, die nicht zu Gesprächen kommen, interessieren sich nicht für ihr Kind.",
+          "fakt": "Hinter dem Fernbleiben stehen oft ganz andere Gründe: Arbeitszeiten, Sprache, Scham, schlechte Erfahrungen, Erschöpfung oder die Angst, wieder nur Vorwürfe zu hören. Wer nach den Gründen fragt und Hürden abbaut, erreicht mehr Eltern."
+        },
+        {
+          "art": "merke",
+          "text": "Gehen Sie davon aus, dass Eltern das Beste für ihr Kind wollen – auch wenn es im Moment nicht danach aussieht. Dieses gemeinsame Anliegen ist der Ausgangspunkt jeder Zusammenarbeit."
+        }
+      ]
+    },
+    {
+      "titel": "Vertrauen aufbauen, bevor es schwierig wird",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Beziehung zu Eltern entsteht nicht im Krisengespräch, sondern vorher. Wer Eltern zum ersten Mal anruft, wenn etwas passiert ist, beginnt mit einer schweren Hypothek. Deshalb lohnt es sich, früh und regelmäßig Kontakt aufzunehmen – auch und gerade mit guten Nachrichten.\n\nFür die Haltung im Kontakt nennt die Gesprächspsychologie nach Carl Rogers (1951) drei Grundhaltungen, die bis heute als Basis hilfreicher Gespräche gelten: **Empathie** (einfühlendes Verstehen), **Wertschätzung** (die Person annehmen, auch wenn man ihr Verhalten nicht gutheißt) und **Echtheit** (ehrlich und stimmig sein, statt eine Rolle zu spielen)."
+        },
+        {
+          "art": "tun",
+          "titel": "Was Vertrauen aufbaut",
+          "punkte": [
+            "Zu Beginn des Schuljahres oder der Begleitung Kontakt aufnehmen: sich vorstellen, die eigene Rolle erklären, nach den Erfahrungen der Eltern fragen.",
+            "Regelmäßig auch Gelungenes mitteilen – eine kurze Nachricht über einen guten Tag wirkt oft mehr als ein langes Gespräch.",
+            "Erreichbarkeit klar regeln: Wann und wie sind Sie erreichbar, wie schnell antworten Sie?",
+            "Termine an die Lebenslage anpassen: Arbeitszeiten, Betreuung jüngerer Geschwister, Anfahrtswege.",
+            "Transparent sein: Was wird beobachtet, was notiert, wer erhält welche Informationen?",
+            "Ein einfaches tägliches Rückmeldesystem nutzen, etwa eine Tageskarte, die das Kind mit nach Hause nimmt und die Eltern abzeichnen (Crone et al., 2010).",
+            "Zusagen einhalten – auch kleine: Rückrufe, versprochene Informationen, Termine."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wer sind „die Eltern“?** Kinder leben in sehr unterschiedlichen Familienformen: mit beiden Eltern, mit einem Elternteil, in Patchworkfamilien, bei Großeltern, in Pflegefamilien oder Wohngruppen. Klären Sie früh, wer das Sorgerecht hat, wer Ansprechperson ist und welche Informationen an wen gehen dürfen. Auch nach einer Trennung haben häufig beide Elternteile das Recht, informiert zu werden. Im Zweifel fragen Sie die Leitung – falsche Annahmen führen hier schnell zu Konflikten."
+        },
+        {
+          "art": "fall",
+          "titel": "Ein anderer Anfang",
+          "text": "Die neue Lehrerin schickt Diogos Mutter in den ersten drei Wochen zwei kurze Nachrichten, etwa: „Diogo hat heute einem neuen Mitschüler den Schulhof gezeigt.“ Dann lädt sie zu einem Kennenlerngespräch ein – ausdrücklich „nicht, weil etwas passiert ist“, und zu einer Uhrzeit nach Schichtende der Mutter. Sie beginnt mit der Frage: „Was sollte ich über Diogo wissen? Was hilft ihm, wenn es schwierig wird?“ Die Mutter erzählt, dass Diogo sich seit dem Umzug im Sommer schwertut und schlecht schläft. Die beiden vereinbaren, sich alle zwei Wochen kurz auszutauschen.",
+          "fragen": [
+            "Was hat die Lehrerin anders gemacht als im Vorjahr?",
+            "Wie hilft ihr die Information der Mutter im Unterricht?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Beobachten statt bewerten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ob ein Gespräch gelingt, entscheidet sich oft an den ersten Sätzen. Bewertungen und Etiketten („Ihr Sohn ist respektlos“, „Sie ist faul“, „Er ist hyperaktiv“) lösen fast immer Abwehr aus: Eltern fühlen sich und ihr Kind angegriffen und beginnen, sich zu verteidigen. Beschreibungen dessen, was konkret zu sehen und zu hören war, lassen sich dagegen nachvollziehen – und besprechen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Aus Bewertungen werden Beobachtungen",
+          "spalten": [
+            "Bewertung",
+            "Beobachtung"
+          ],
+          "zeilen": [
+            [
+              "„Er ist respektlos.“",
+              "„Am Dienstag hat er in der Pause zweimal ‚Halt die Klappe‘ zur Aufsichtsperson gesagt und ist weggelaufen, als sie ihn ansprach.“"
+            ],
+            [
+              "„Sie ist faul.“",
+              "„Sie hat in dieser Woche drei von fünf Hausaufgaben nicht abgegeben. Im Unterricht beginnt sie Aufgaben meist erst, wenn ich neben ihr stehe.“"
+            ],
+            [
+              "„Er ist hyperaktiv.“",
+              "„In der Stillarbeit steht er im Schnitt alle fünf Minuten auf.“"
+            ],
+            [
+              "„Sie ist total verschlossen.“",
+              "„In Gruppenarbeiten spricht sie kaum; in den Pausen steht sie meist allein am Rand.“"
+            ],
+            [
+              "„Er ist ständig aggressiv.“",
+              "„In den letzten zwei Wochen gab es vier Rangeleien, alle beim Fußball in der großen Pause.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Stärken zuerst – und ehrlich.** Beginnen Sie mit etwas, das beim Kind gelingt oder das Sie an ihm schätzen – konkret, nicht als Pflichtübung („Mir gefällt, wie sorgfältig Ana ihre Bilder gestaltet“). Das zeigt den Eltern, dass Sie ihr Kind als ganze Person sehen. Danach benennen Sie die Schwierigkeit klar: Beschönigen hilft niemandem, und Eltern spüren, wenn etwas zurückgehalten wird.\n\n**Keine Diagnosen.** Vermutungen wie „Das ist bestimmt ADHS“ oder „Er ist traumatisiert“ gehören nicht in ein Elterngespräch mit pädagogischen Fachkräften. Sie verunsichern, setzen Etiketten und können falsch sein. Wenn Sie eine Abklärung für sinnvoll halten, begründen Sie das mit Ihren Beobachtungen und mit dem Ziel, das Kind besser zu verstehen – abgestimmt mit Ihrer Leitung."
+        },
+        {
+          "art": "liste",
+          "titel": "Ein schwieriges Anliegen ansprechen – in vier Schritten",
+          "punkte": [
+            "Beobachtung: „In den letzten zwei Wochen ist Ana dreimal in Tränen ausgebrochen, als wir ein Diktat geschrieben haben.“",
+            "Wirkung oder Sorge: „Ich mache mir Sorgen, weil sie danach kaum noch mitarbeiten kann.“",
+            "Frage nach der Sicht der Eltern: „Kennen Sie das von zu Hause? Wie erklären Sie es sich?“",
+            "Gemeinsames Ziel: „Ich möchte mit Ihnen überlegen, wie wir Ana helfen können, ruhiger in solche Situationen zu gehen.“"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beobachtungen öffnen ein Gespräch, Bewertungen beenden es. Je konkreter Sie beschreiben, desto eher können Eltern zustimmen, ergänzen oder eine andere Sicht einbringen."
+        }
+      ]
+    },
+    {
+      "titel": "Schwierige Gespräche vorbereiten und führen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Manche Gespräche sind von vornherein schwer: wenn es um wiederholte Vorfälle geht, um den Vorschlag einer Abklärung, um eine Unterstützung durch das CDSE oder um eine andere Form der Beschulung. Gute Vorbereitung ist dann die halbe Arbeit. Das Arbeitsblatt „Elterngespräch vorbereiten“ aus der Toolbox führt Schritt für Schritt durch die Planung."
+        },
+        {
+          "art": "tun",
+          "titel": "Gut vorbereitet",
+          "punkte": [
+            "Das Anliegen in einem Satz: Was soll am Ende geklärt oder vereinbart sein?",
+            "Beobachtungen mit Datum, Situation und Häufigkeit sammeln – und Stärken des Kindes notieren.",
+            "Im Team absprechen: Wer lädt ein, wer leitet das Gespräch, wer schreibt mit? Bei heiklen Themen die Leitung vorher informieren.",
+            "Keine Übermacht: Einem Elternteil sollten nicht fünf Fachkräfte gegenübersitzen. Eltern dürfen eine Vertrauensperson mitbringen.",
+            "Einen ruhigen Raum und genug Zeit einplanen, Erwachsenenstühle, eine Sitzordnung auf Augenhöhe, zum Beispiel über Eck.",
+            "Bei Bedarf eine Dolmetscherin organisieren und vorab informieren."
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ablauf eines Gesprächs",
+          "spalten": [
+            "Phase",
+            "Worum es geht",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Ankommen",
+              "Begrüßen, danken, Rahmen klären: Zeit, Ziel, Vertraulichkeit",
+              "„Danke, dass Sie gekommen sind. Wir haben etwa 45 Minuten. Ich möchte mit Ihnen über Diogos Pausen sprechen.“"
+            ],
+            [
+              "Positives",
+              "Konkrete Stärken und Gelungenes",
+              "„Diogo hilft in der Klasse gern und hat im Lesen viel geschafft.“"
+            ],
+            [
+              "Anliegen",
+              "Beobachtungen und Sorge, keine Bewertungen",
+              "„In zwei Wochen gab es in der Pause vier Rangeleien, alle beim Fußball.“"
+            ],
+            [
+              "Sicht der Eltern",
+              "Fragen, zuhören, zusammenfassen",
+              "„Wie erleben Sie das? Habe ich richtig verstanden, dass …?“"
+            ],
+            [
+              "Lösungen",
+              "Ausnahmen suchen, Ideen sammeln, kleine Schritte wählen",
+              "„Wann klappt es schon besser? Was hilft zu Hause?“"
+            ],
+            [
+              "Vereinbarung",
+              "Wer tut was bis wann? Nächster Termin",
+              "„Ich übe mit ihm die Pausenkarte, Sie fragen abends nach. In vier Wochen sprechen wir wieder.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Zuhören.** Wirklich zuhören heißt, die Sicht der Eltern verstehen zu wollen, bevor man antwortet. Hilfreich ist das *reflektierende Zuhören* aus der motivierenden Gesprächsführung: Sie geben in eigenen Worten wieder, was Sie verstanden haben, einschließlich des Gefühls dahinter – „Sie haben den Eindruck, dass Diogo immer als Erster beschuldigt wird, und das ärgert Sie“ (Miller & Rollnick, 2013). Eltern fühlen sich dadurch ernst genommen, und Missverständnisse werden früh sichtbar. Ebenso wichtig: dem Reflex widerstehen, sofort Ratschläge zu geben. Ungefragte Ratschläge erzeugen oft Widerstand. Wenn Sie einen Vorschlag haben, fragen Sie zuerst, ob die Eltern ihn hören möchten.\n\n**Lösungen suchen.** Aus der lösungsorientierten Beratung stammt die Frage nach Ausnahmen (de Shazer, 1985): „Wann klappt es schon ein bisschen besser – und was ist dann anders?“ Aus derselben Tradition kommen Skalenfragen: „Auf einer Skala von 0 bis 10 – wo stehen wir heute, und woran würden Sie einen Punkt mehr erkennen?“ Kleine, erreichbare Schritte sind wirksamer als große Pläne. Halten Sie am Ende kurz schriftlich fest, wer teilgenommen hat, was vereinbart wurde und wann Sie sich wieder sprechen."
+        },
+        {
+          "art": "fall",
+          "titel": "Der Vorschlag einer Abklärung",
+          "text": "Die Klassenlehrerin und die I-EBS möchten den Eltern von Rafael (9) eine fachliche Abklärung seiner Schwierigkeiten vorschlagen, etwa durch das Diagnostique-Team des CDSE; den Weg haben sie vorher mit der Leitung abgestimmt. Sie beginnen mit Rafaels Stärken, legen ihre Beobachtungen aus sechs Wochen vor und fragen nach der Sicht der Eltern. Der Vater sagt: „Sie wollen ihn loswerden.“ Die Lehrerin antwortet: „Sie haben Sorge, dass Rafael aus der Klasse genommen wird. Unser Ziel ist, ihn besser zu verstehen, damit er hier gut lernen kann.“ Die Eltern bitten um Bedenkzeit; ein zweiter Termin wird vereinbart.",
+          "fragen": [
+            "Was hat der Lehrerin geholfen, auf den Vorwurf nicht mit Rechtfertigung zu reagieren?",
+            "Warum ist die Bedenkzeit kein Scheitern?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Vielfalt: Sprache, Kultur und Familienformen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "In Luxemburg wachsen viele Kinder mit mehreren Sprachen auf, und viele Eltern sprechen keine der Schulsprachen sicher. Ein Gespräch über Verhalten, Gefühle oder eine mögliche Abklärung verlangt aber genaues Verstehen – auf beiden Seiten. Missverständnisse entstehen dabei nicht nur durch Wörter, sondern auch durch unterschiedliche Erwartungen: an die Rolle der Lehrkraft, an Erziehung, an das, was als „normal“ oder als „Problem“ gilt, und daran, ob man mit Fremden über Familiäres spricht.\n\n**Kinder dolmetschen nicht.** Ein Kind, das für seine Eltern übersetzt, gerät in eine unmögliche Rolle: Es soll Kritik an sich selbst oder an Geschwistern weitergeben, filtert aus Loyalität oder Angst, und die Rollen in der Familie verschieben sich. Auch Bekannte der Familie sind keine neutrale Lösung, wenn es um Vertrauliches geht."
+        },
+        {
+          "art": "tun",
+          "titel": "Gut verständigen – mit und ohne Dolmetschen",
+          "punkte": [
+            "Bei wichtigen Gesprächen eine qualifizierte Dolmetscherin einsetzen; welche Möglichkeiten es gibt, weiß Ihre Leitung.",
+            "Die Dolmetscherin vorab kurz informieren: Thema, Ziel, schwierige Begriffe.",
+            "Direkt mit den Eltern sprechen, nicht über sie („Wie erleben Sie …?“ statt „Fragen Sie sie, ob …“).",
+            "Kurze Sätze, Pausen zum Übersetzen, keine Fachwörter und Abkürzungen (CDSE, ESEB, I-EBS) ohne Erklärung.",
+            "Verstehen prüfen: Eltern bitten, das Wichtigste in eigenen Worten zusammenzufassen.",
+            "Vereinbarungen zusätzlich schriftlich festhalten – einfach formuliert und bei Bedarf übersetzt."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer sich im Alltag gut verständigen kann, versteht auch ein Fachgespräch.",
+          "fakt": "Alltagssprache und Fachsprache sind verschieden. Wer am Schultor oder beim Einkaufen gut zurechtkommt, versteht Begriffe wie „Abklärung“, „Förderplan“ oder „Verhaltensbeobachtung“ nicht unbedingt – und traut sich oft nicht nachzufragen."
+        },
+        {
+          "art": "text",
+          "text": "**Kultur – fragen statt annehmen.** Kulturelle Hintergründe können erklären, warum Eltern anders auf die Schule zugehen. In manchen Bildungssystemen halten sich Eltern bewusst aus schulischen Fragen heraus, weil das als Einmischung gilt; seelische Schwierigkeiten sind in manchen Familien mit großer Scham verbunden. Gleichzeitig ist jede Familie anders. Wer eine Familie auf „ihre Kultur“ reduziert, übersieht die Menschen. Hilfreicher ist es, neugierig zu fragen: „Wie war das in der Schule, die Sie kennen? Was ist Ihnen für Ihr Kind wichtig?“"
+        },
+        {
+          "art": "fall",
+          "titel": "Yara, 10 Jahre, Cycle 4.1",
+          "text": "Yaras Eltern sind vor zwei Jahren aus Syrien nach Luxemburg gekommen. Der Vater spricht etwas Französisch, die Mutter Arabisch. Beim ersten Gespräch nickt die Mutter zu allem, stellt aber keine Frage. Beim zweiten Termin ist eine Dolmetscherin dabei. Nun erzählt die Mutter, dass Yara nachts oft aufwacht und seit der Flucht Angst hat, allein zu sein – etwas, das in der Schule niemand wusste.",
+          "fragen": [
+            "Was wäre ohne Dolmetscherin verloren gegangen?",
+            "Wie gehen Sie mit der neuen Information um – und mit wem besprechen Sie sie?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Eltern in Krisen – und wenn es Konflikte gibt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Eltern in Krisen.** Trennung, Krankheit, Arbeitslosigkeit, Geldsorgen, der Tod eines Angehörigen, eine psychische Erkrankung oder Sucht in der Familie: Viele Eltern tragen schwere Lasten. Ob eine Belastung zur Überforderung wird, hängt auch davon ab, wie Menschen die Situation bewerten und welche Möglichkeiten zur Bewältigung sie für sich sehen (Lazarus & Folkman, 1984). Wer völlig erschöpft ist, hat wenig Kraft für Hausaufgabenpläne. Das ist keine Gleichgültigkeit."
+        },
+        {
+          "art": "tun",
+          "titel": "Was Eltern in Krisen hilft",
+          "punkte": [
+            "Zuhören und anerkennen: „Das klingt nach einer sehr schweren Zeit.“",
+            "Den Blick auf das gemeinsame Anliegen richten: Was braucht das Kind jetzt in der Schule?",
+            "Anforderungen an die Familie vorübergehend anpassen – wenige, machbare Absprachen statt vieler Aufgaben.",
+            "Unterstützung anbieten, aber nicht aufdrängen. Welche Hilfen in Frage kommen, auch die Beratung für Eltern (Conseil et guidance) des CDSE, klären Sie mit Ihrer Leitung.",
+            "Die eigene Rolle klar halten: Sie sind Ansprechperson für das Kind in der Schule, nicht Therapeutin oder Therapeut der Eltern."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Konflikte.** Konflikte mit Eltern sind normal, wenn es um ein Kind geht, das beiden Seiten am Herzen liegt. Meist geht es um Vorwürfe (ungerechte Behandlung, zu wenig Unterstützung), um unterschiedliche Sichtweisen („Zu Hause ist er ganz anders“) oder um Entscheidungen, mit denen Eltern nicht einverstanden sind. Hilfreich ist, Person und Sache zu trennen: Den Ärger der Eltern können Sie anerkennen, ohne ihren Vorwürfen zuzustimmen. Nicht jede Meinungsverschiedenheit muss aufgelöst werden – manchmal genügt es, die unterschiedlichen Sichtweisen festzuhalten und sich auf den nächsten kleinen Schritt zu einigen.\n\nFühlen sich Eltern ihrem Kind gegenüber selbst ohnmächtig, etwa bei Aggression zu Hause, kann das Konzept der Neuen Autorität mit seinem Fokus auf elterliche Präsenz und Unterstützung hilfreich sein (Omer & von Schlippe, 2004)."
+        },
+        {
+          "art": "tun",
+          "titel": "Wenn ein Gespräch eskaliert",
+          "punkte": [
+            "Ruhig bleiben, langsamer und leiser sprechen, sich nicht sofort rechtfertigen.",
+            "Den Ärger benennen: „Ich merke, dass Sie sehr verärgert sind.“",
+            "Nachfragen, worum es genau geht, und das Gehörte zusammenfassen.",
+            "Fehler zugeben, wenn es welche gab – das stärkt die Glaubwürdigkeit.",
+            "Grenzen setzen, wenn es beleidigend oder bedrohlich wird: „So kann ich das Gespräch nicht weiterführen. Ich biete Ihnen einen neuen Termin gemeinsam mit der Leitung an.“",
+            "Gespräche nicht vor Kindern oder im Flur führen, sondern in einen ruhigen Raum verlegen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Konflikte verschärft",
+          "punkte": [
+            "Sich allein einem aufgebrachten Elternteil in einer unsicheren Situation stellen",
+            "Gegenvorwürfe, Ironie, Belehrungen über Erziehung",
+            "Versprechen, die Sie nicht halten können, nur um die Lage zu beruhigen",
+            "Über andere Kinder oder deren Familien sprechen",
+            "Konflikte per Nachricht oder E-Mail austragen statt im Gespräch"
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn Sie vermuten, dass ein Kind zu Hause Gewalt, Missbrauch oder Vernachlässigung erlebt, gelten andere Regeln als in der üblichen Elternarbeit: Sprechen Sie die Eltern nicht auf eigene Faust darauf an – das kann das Kind gefährden. Informieren Sie sofort Ihre Leitung und folgen Sie dem internen Kinderschutzablauf; wann und wie die Eltern einbezogen werden, wird dort fachlich abgewogen (siehe Modul „Kinderschutz“). Bei Drohungen oder Gewalt gegen Mitarbeitende holen Sie sofort Hilfe."
+        },
+        {
+          "art": "weiter",
+          "text": "Beziehen Sie Ihre Leitung ein, bevor Sie Eltern eine Abklärung, eine Unterstützung durch das CDSE oder eine andere Beschulungsform vorschlagen, wenn Eltern sich beschweren oder rechtliche Schritte ankündigen, bei Fragen zum Sorgerecht und wenn ein Konflikt sich trotz Gesprächen festfährt. Informationen über das Kind geben Sie an andere Dienste in der Regel nur mit dem Einverständnis der Eltern weiter; Ausnahmen im Kinderschutz klärt die Leitung."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet Erziehungspartnerschaft zwischen Schule und Eltern?",
+      "optionen": [
+        "Die Eltern setzen zu Hause um, was die Schule vorgibt.",
+        "Schule und Eltern bringen ihr jeweiliges Wissen über das Kind ein und verfolgen gemeinsame Ziele – bei unterschiedlichen Rollen.",
+        "Die Schule übernimmt die Erziehung, wenn die Eltern überfordert sind.",
+        "Eltern und Fachkräfte müssen in allen Fragen einer Meinung sein."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Partnerschaft heißt: Beide Seiten sind Expertinnen – die Eltern für ihr Kind und ihre Familie, die Fachkräfte für Lernen und Verhalten in der Schule. Sie verfolgen gemeinsame Ziele und behalten unterschiedliche Rollen. Einseitige Vorgaben oder das Übernehmen der Erziehung sind keine Partnerschaft, und Meinungsverschiedenheiten gehören dazu."
+    },
+    {
+      "art": "fall",
+      "fall": "Sie bereiten ein Gespräch mit dem Vater von Rui (9) vor. Eine Kollegin schlägt als Einstieg vor: „Rui ist respektlos und aggressiv.“",
+      "frage": "Welche Formulierung eignet sich für das Gespräch am besten?",
+      "optionen": [
+        "„Rui ist leider ein sehr schwieriges Kind.“",
+        "„Rui hat vermutlich ADHS, das sollten Sie abklären lassen.“",
+        "„Rui ist in der Pause immer aggressiv.“",
+        "„Am Dienstag hat Rui in der Pause zweimal einen Mitschüler geschubst, als es um den Ball ging. Wie erleben Sie das zu Hause?“"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Eine konkrete Beobachtung mit Situation und Häufigkeit lässt sich nachvollziehen, und die Frage nach der Sicht des Vaters macht ihn zum Partner. Etiketten wie „schwierig“ oder „immer aggressiv“ lösen Abwehr aus, und eine Verdachtsdiagnose steht pädagogischen Fachkräften nicht zu."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Eltern kommen nicht zu vereinbarten Gesprächen. Welche Gründe sollten Sie bedenken? (mehrere richtig)",
+      "optionen": [
+        "Arbeitszeiten, die sich mit den Terminen überschneiden",
+        "Sprachbarrieren",
+        "Eigene schlechte Erfahrungen mit Schule oder die Angst, beschuldigt zu werden",
+        "Das Kind ist den Eltern gleichgültig – davon kann man ausgehen.",
+        "Erschöpfung durch eine belastende Lebenssituation"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Arbeitszeiten, Sprache, eigene Schulerfahrungen, Scham und Erschöpfung sind häufige Hürden. Gleichgültigkeit ist eine vorschnelle Deutung, die den Kontakt weiter erschwert. Wer nach den Gründen fragt und Hürden abbaut – andere Uhrzeit, Dolmetschen, ein erstes positives Gespräch –, erreicht mehr Eltern."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Selam (7) spricht Tigrinya und nur wenig Französisch. Selams zwölfjähriger Bruder spricht gut Deutsch und bietet an, beim Gespräch über Selams Wutausbrüche zu übersetzen.",
+      "frage": "Wie gehen Sie vor?",
+      "optionen": [
+        "Sie nehmen das Angebot an – so versteht die Mutter alles, und es geht schnell.",
+        "Sie führen das Gespräch auf Französisch und sprechen besonders langsam.",
+        "Sie klären mit der Leitung, wie eine qualifizierte Dolmetscherin dazukommen kann, und bereiten das Gespräch mit ihr vor; der Bruder übersetzt nicht.",
+        "Sie verzichten auf das Gespräch und schicken einen schriftlichen Bericht nach Hause."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Kinder sollten nicht dolmetschen: Sie geraten in Loyalitätskonflikte, müssen Belastendes über ihre Geschwister übersetzen und filtern oft ungewollt. Eine qualifizierte Dolmetscherin sichert, dass die Mutter alles versteht und sich einbringen kann. Langsames Französisch reicht bei geringen Kenntnissen nicht, und ein Bericht ersetzt kein Gespräch."
+    },
+    {
+      "art": "einfach",
+      "frage": "Womit beginnt ein Elterngespräch über Schwierigkeiten am besten?",
+      "optionen": [
+        "Mit einer Begrüßung, dem Rahmen (Zeit, Ziel) und etwas Konkretem, das beim Kind gelingt oder das Sie an ihm schätzen",
+        "Mit einer vollständigen Liste aller Vorfälle, damit die Eltern den Ernst der Lage verstehen",
+        "Mit der Frage, was zu Hause schiefläuft",
+        "Mit dem Vorschlag einer Maßnahme, damit keine Zeit verloren geht"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ein klarer Rahmen gibt Sicherheit, und konkrete Stärken zeigen, dass Sie das Kind als ganze Person sehen – das öffnet für das schwierige Thema. Eine lange Vorfallliste und die Frage nach Fehlern zu Hause lösen Abwehr aus. Ein fertiger Maßnahmenvorschlag übergeht die Sicht der Eltern."
+    },
+    {
+      "art": "fall",
+      "fall": "Der Vater von Jonas (11) kommt unangemeldet in die Klasse, schimpft laut, sein Sohn werde „ständig ungerecht behandelt“, und droht mit einer Beschwerde beim Ministerium. Die Kinder schauen zu.",
+      "frage": "Was ist der beste erste Schritt?",
+      "optionen": [
+        "Sie erklären ihm sofort ausführlich, warum die Vorwürfe nicht stimmen.",
+        "Sie klären den Vorfall vor der Klasse, damit alle sehen, dass Sie korrekt gehandelt haben.",
+        "Sie entschuldigen sich für alles, damit er sich beruhigt.",
+        "Sie bitten ihn ruhig, nicht vor den Kindern zu sprechen, benennen seinen Ärger und vereinbaren – bei Bedarf mit Hilfe einer Kollegin oder der Leitung – ein Gespräch zu einem festen Termin; bei Beleidigungen oder Drohungen holen Sie Unterstützung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Zuerst geht es darum, die Lage zu beruhigen und aus der Öffentlichkeit zu holen. Den Ärger zu benennen heißt nicht, den Vorwürfen zuzustimmen; die Klärung gehört in ein vorbereitetes Gespräch mit der Leitung. Sofortige Rechtfertigung heizt an, eine Klärung vor den Kindern stellt alle bloß, und pauschale Entschuldigungen schaffen falsche Tatsachen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn Sie vermuten, dass ein Kind zu Hause geschlagen wird, sprechen Sie zuerst selbst mit den Eltern darüber, um die Partnerschaft nicht zu gefährden.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Bei einem Verdacht auf Gewalt in der Familie informieren Sie zuerst Ihre Leitung und folgen dem internen Kinderschutzablauf. Ein vorschnelles Gespräch mit den Eltern kann das Kind gefährden oder unter Druck setzen. Wann und wie die Eltern einbezogen werden, wird fachlich abgewogen."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Lina (6) erzählt im Gespräch weinend, dass sie sich gerade vom Vater getrennt hat, kaum schläft und nicht weiß, wie sie alles schaffen soll.",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Sie hören zu, zeigen Verständnis, besprechen, was Lina in der Schule jetzt hilft, und fragen, ob die Mutter Unterstützung möchte – mögliche Angebote klären Sie mit Ihrer Leitung.",
+        "Sie bieten der Mutter regelmäßige Gespräche an, um sie durch die Trennung zu begleiten.",
+        "Sie lenken schnell auf die Schulthemen zurück, weil Privates nicht in die Schule gehört.",
+        "Sie raten ihr, sich zum Wohl des Kindes wieder mit dem Vater zu versöhnen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Zuhören und Anteilnahme stärken das Vertrauen, und der Blick bleibt beim gemeinsamen Anliegen: Was braucht Lina jetzt? Weitere Hilfe vermitteln Sie über die passenden Stellen. Eine eigene Begleitung der Mutter überschreitet Ihre Rolle, schnelles Abblocken wirkt kalt, und Ratschläge zur Partnerschaft stehen Ihnen nicht zu."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Woran erkennen Sie eine gute Vereinbarung am Ende eines Elterngesprächs? (mehrere richtig)",
+      "optionen": [
+        "Sie ist konkret: Wer tut was bis wann?",
+        "Sie enthält möglichst viele Ziele auf einmal.",
+        "Es gibt einen Termin, an dem gemeinsam geprüft wird, ob sie wirkt.",
+        "Eltern und Fachkräfte haben beide Aufgaben übernommen.",
+        "Die Schule hat sie allein festgelegt und den Eltern mitgeteilt."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Gute Vereinbarungen sind konkret, beidseitig und werden nach einigen Wochen gemeinsam überprüft. Zu viele Ziele überfordern alle Beteiligten, und einseitig festgelegte Vereinbarungen werden selten mitgetragen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Die Kinderärztin eines Schülers ruft an und möchte wissen, wie es ihm in der Schule geht. Was gilt?",
+      "optionen": [
+        "Sie geben Auskunft, weil Ärztinnen ohnehin der Schweigepflicht unterliegen.",
+        "Sie geben in der Regel erst Auskunft, wenn das Einverständnis der Eltern vorliegt; im Zweifel klären Sie das mit der Leitung.",
+        "Sie lehnen jede Zusammenarbeit mit Ärztinnen grundsätzlich ab.",
+        "Sie schicken der Ärztin das vollständige Schülerdossier."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Informationen über ein Kind gehen an andere Dienste in der Regel nur mit dem Einverständnis der Eltern; Ausnahmen im Kinderschutz klärt die Leitung. Die Schweigepflicht der Ärztin ersetzt dieses Einverständnis nicht. Zusammenarbeit ist wertvoll – aber über die Eltern und datensparsam, nicht mit dem ganzen Dossier."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Kinder und Jugendliche sollten bei Gesprächen über sie grundsätzlich nie dabei sein.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Gut vorbereitet können vor allem ältere Kinder und Jugendliche oft für einen Teil des Gesprächs dabei sein; das stärkt ihre Beteiligung und die Verbindlichkeit von Vereinbarungen. Ob das sinnvoll ist, hängt von Thema, Alter und Situation ab – belastende Themen besprechen die Erwachsenen zuerst unter sich."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Erziehungspartnerschaft",
+      "erklaerung": "Zusammenarbeit von Eltern und Fachkräften auf Augenhöhe, mit gemeinsamen Zielen für das Kind und unterschiedlichen Rollen."
+    },
+    {
+      "begriff": "Mesosystem",
+      "erklaerung": "Begriff von Bronfenbrenner (1979) für die Verbindungen zwischen den Lebenswelten eines Kindes, etwa zwischen Familie und Schule."
+    },
+    {
+      "begriff": "Beschreibende Sprache",
+      "erklaerung": "Schildern, was konkret zu sehen und zu hören war – mit Situation und Häufigkeit –, statt zu bewerten oder zu deuten."
+    },
+    {
+      "begriff": "Reflektierendes Zuhören",
+      "erklaerung": "Gesprächstechnik aus der motivierenden Gesprächsführung: in eigenen Worten wiedergeben, was man verstanden hat, einschließlich des Gefühls dahinter."
+    },
+    {
+      "begriff": "Lösungsorientierung",
+      "erklaerung": "Beratungsansatz, der nach Ausnahmen, Ressourcen und kleinen nächsten Schritten fragt, statt vor allem das Problem zu analysieren (de Shazer, 1985)."
+    },
+    {
+      "begriff": "Skalenfrage",
+      "erklaerung": "Frage nach einer Einschätzung auf einer Skala von 0 bis 10, die Fortschritte und nächste kleine Schritte sichtbar macht."
+    },
+    {
+      "begriff": "Qualifiziertes Dolmetschen",
+      "erklaerung": "Übersetzung durch eine neutrale, geschulte Person, die vertraulich arbeitet – nicht durch Kinder, Geschwister oder Bekannte der Familie."
+    },
+    {
+      "begriff": "Sorgerecht",
+      "erklaerung": "Recht und Pflicht, für ein Kind zu sorgen und es zu vertreten (in Luxemburg: autorité parentale). Davon hängt ab, wer welche Informationen erhält und wer zustimmen muss."
+    },
+    {
+      "begriff": "Bewältigung (Coping)",
+      "erklaerung": "Wie Menschen mit Belastungen umgehen – durch Handeln am Problem oder durch Regulieren der eigenen Gefühle (Lazarus & Folkman, 1984)."
+    }
+  ],
+  "quellen": [
+    "bronfenbrenner1979",
+    "rogers1951",
+    "millerRollnick2013",
+    "deShazer1985",
+    "lazarusFolkman1984",
+    "crone2010",
+    "omer2004"
+  ],
+  "verwandt": [
+    "gespraechsfuehrung",
+    "beobachten-dokumentieren",
+    "kinderschutz",
+    "neue-autoritaet",
+    "inklusion-luxemburg"
+  ],
+  "toolbox": [
+    "elterngespraech-vorbereiten",
+    "loesungsorientiertes-gespraech",
+    "verhalten-zaehlen",
+    "check-in-check-out"
+  ]
+}

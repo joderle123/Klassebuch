@@ -1,0 +1,483 @@
+{
+  "id": "medikation",
+  "bereich": "handeln",
+  "titel": "Medikamente bei Kindern und Jugendlichen: Grundwissen",
+  "untertitel": "Was Psychopharmaka bewirken, welche Nebenwirkungen vorkommen – und welche Rolle die Schule hat",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die wichtigsten Gruppen von Psychopharmaka bei Kindern und Jugendlichen – Stimulanzien, Antidepressiva, Antipsychotika und Melatonin – mit ihren Einsatzgebieten und ihrer Wirkweise beschreiben.",
+    "Sie kennen häufige Nebenwirkungen und wissen, welche Beobachtungen aus der Schule für die behandelnde Ärztin wichtig sind.",
+    "Sie können Ihre Rolle klar beschreiben: beobachten und weitergeben, nicht beurteilen und nicht beraten, Datenschutz wahren.",
+    "Sie wissen, was bei der Gabe von Medikamenten in Schule oder Maison Relais zu beachten ist und woran Sie einen Notfall erkennen.",
+    "Sie können verbreitete Irrtümer über Medikamente bei Kindern sachlich richtigstellen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Grundsätze",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Leandro, 11 Jahre, Cycle 4.2",
+          "text": "Montagmorgen im Team: Die Educatrice berichtet, dass Leandro seit zwei Wochen ein neues Medikament nimmt und vormittags „wie ausgeknipst“ wirkt. Eine Kollegin meint: „Endlich ist er ruhig.“ Eine andere sagt: „Das ist doch viel zu hoch dosiert, das sollten wir den Eltern sagen.“ Die Maison Relais fragt, ob sie ihm die Mittagstablette auch dann geben darf, wenn er sie erst am Nachmittag bringt. Und im Lehrerzimmer rätseln zwei Kollegen, welches Medikament er eigentlich bekommt.",
+          "fragen": [
+            "Welche dieser Reaktionen gehören zur Rolle der Schule, welche nicht?",
+            "Was wäre eine hilfreiche, sachliche Beobachtung für die Eltern und die Ärztin?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Psychopharmaka** sind Medikamente, die auf das Gehirn wirken und Erleben, Denken und Verhalten beeinflussen. Bei Kindern und Jugendlichen werden sie seltener eingesetzt als bei Erwachsenen, im Alltag des CDSE begegnen sie Ihnen aber regelmäßig. Einige Grundsätze gelten für alle Gruppen (Gerlach et al., 2016)."
+        },
+        {
+          "art": "liste",
+          "titel": "Grundsätze für alle Medikamente",
+          "punkte": [
+            "**Teil eines Gesamtplans:** Medikamente sind fast nie die einzige Hilfe. Sie werden mit Aufklärung, Psychotherapie, Elternarbeit und Unterstützung in der Schule verbunden.",
+            "**Die Ärztin entscheidet – gemeinsam mit der Familie:** Verordnung, Dosis, Änderungen und Absetzen sind Sache der behandelnden Ärztin, meist aus der Kinder- und Jugendpsychiatrie oder der Kinderheilkunde. Eltern und, je nach Alter, das Kind oder die Jugendliche stimmen zu.",
+            "**Kinder sind keine kleinen Erwachsenen:** Körper und Gehirn wachsen und verändern sich; Medikamente wirken anders und werden anders abgebaut. Deshalb beginnt man meist niedrig, steigert langsam und kontrolliert regelmäßig. Fachleute nennen dieses schrittweise Anpassen Titration.",
+            "**Off-Label-Gebrauch ist häufig:** Viele Medikamente sind für Kinder oder für bestimmte Einsatzgebiete nicht ausdrücklich zugelassen, weil es zu wenige Studien gibt. Ihr Einsatz ist trotzdem zulässig und oft fachlich gut begründet, verlangt aber besonders sorgfältige Aufklärung und Kontrolle.",
+            "**Wirkung und Nebenwirkungen sind individuell:** Was einem Kind hilft, bewirkt bei einem anderen wenig oder stört durch Nebenwirkungen. Das braucht Geduld, Rückmeldungen und regelmäßige Überprüfung.",
+            "**Nie eigenmächtig absetzen:** Manche Medikamente dürfen nicht plötzlich abgesetzt werden. Änderungen gibt es nur in Absprache mit der Ärztin."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Über Medikamente entscheiden Ärztin und Familie. Die Schule beobachtet, beschreibt und gibt weiter – sie beurteilt nicht, ob ein Medikament oder eine Dosis richtig ist."
+        }
+      ]
+    },
+    {
+      "titel": "Stimulanzien und andere ADHS-Medikamente",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Wofür:** Stimulanzien werden vor allem bei ADHS eingesetzt. Die wichtigsten Wirkstoffe sind **Methylphenidat** (vielen als „Ritalin“ bekannt) und **Amfetamin-Präparate** wie Lisdexamfetamin. Nach einer großen Übersichtsarbeit sprechen Wirksamkeit und Verträglichkeit dafür, bei Kindern und Jugendlichen zuerst Methylphenidat einzusetzen (Cortese et al., 2018). Leitlinien empfehlen Medikamente für Schulkinder, wenn die Beeinträchtigung trotz guter Anpassungen im Umfeld deutlich bleibt (NICE, 2018).\n\n**Wirkweise:** Stimulanzien erhöhen die Verfügbarkeit der Botenstoffe Dopamin und Noradrenalin in Hirnregionen, die für Aufmerksamkeit, das Bremsen von Impulsen und die Verarbeitung von Belohnung wichtig sind. Sie „stellen nicht ruhig“, sondern verbessern bei vielen Kindern die Selbststeuerung. Anders als viele andere Psychopharmaka wirken sie schon am Tag der Einnahme. Kurz wirksame Präparate wirken nur einige Stunden, Retardpräparate deutlich länger, oft bis in den Nachmittag. Wenn die Wirkung nachlässt, kann es vorübergehend zu Gereiztheit oder Unruhe kommen; man spricht von **Rebound**.\n\n**Nicht-Stimulanzien:** Helfen Stimulanzien nicht oder werden sie nicht vertragen, kommen andere Wirkstoffe in Frage, etwa **Atomoxetin** oder **Guanfacin**. Ihre Wirkung baut sich über Wochen auf. Guanfacin kann müde machen und den Blutdruck senken und darf nicht plötzlich abgesetzt werden."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Häufige Nebenwirkungen von Stimulanzien – und was die Schule bemerken kann",
+          "spalten": [
+            "Nebenwirkung",
+            "Was in Schule oder Maison Relais auffallen kann"
+          ],
+          "zeilen": [
+            [
+              "Verminderter Appetit",
+              "isst mittags in der Kantine kaum und holt abends nach"
+            ],
+            [
+              "Einschlafprobleme",
+              "ist morgens müde"
+            ],
+            [
+              "Kopf- oder Bauchschmerzen",
+              "klagt vor allem in den ersten Wochen darüber"
+            ],
+            [
+              "Gereiztheit, Traurigkeit, Weinerlichkeit",
+              "vor allem, wenn die Wirkung am Nachmittag nachlässt"
+            ],
+            [
+              "Wirkt still, abgeflacht, „wie ausgeknipst“",
+              "kann auf eine zu hohe Dosis oder ein unpassendes Präparat hinweisen – unbedingt weitergeben"
+            ],
+            [
+              "Neue oder zunehmende Tics",
+              "weitergeben; ob ein Zusammenhang besteht, klärt die Ärztin"
+            ],
+            [
+              "Leichter Anstieg von Puls und Blutdruck, bei manchen Kindern etwas langsameres Wachstum",
+              "in der Schule nicht sichtbar; wird ärztlich regelmäßig kontrolliert"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die meisten Nebenwirkungen sind leicht, treten zu Beginn oder nach Dosisänderungen auf und lassen sich oft durch Anpassungen beheben. Die Ärztin kontrolliert regelmäßig Größe, Gewicht, Puls und Blutdruck. Beobachtungen aus der Schule sind für sie besonders wertvoll, weil Stimulanzien vor allem tagsüber wirken – also dann, wenn die Eltern das Kind nicht sehen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ritalin macht süchtig und führt später zu Drogen.",
+          "fakt": "Bei ärztlich kontrollierter Einnahme gibt es keinen Hinweis darauf, dass Stimulanzien das Suchtrisiko erhöhen. Unbehandelte ADHS ist dagegen selbst ein Risikofaktor für späteren Substanzkonsum (Faraone et al., 2021). Weil Stimulanzien aber missbraucht werden können, unterliegen sie strengen Vorschriften: Sie gehören verschlossen aufbewahrt und dürfen nie weitergegeben werden."
+        }
+      ]
+    },
+    {
+      "titel": "Antidepressiva",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Wofür:** Bei Kindern und Jugendlichen werden vor allem **selektive Serotonin-Wiederaufnahmehemmer (SSRI)** eingesetzt, etwa Fluoxetin oder Sertralin. Einsatzgebiete sind mittelgradige bis schwere Depressionen, Angststörungen und Zwangsstörungen – in der Regel zusätzlich zu einer Psychotherapie, nicht an ihrer Stelle. Für Depressionen im Jugendalter ist Fluoxetin am besten untersucht. Leitlinien empfehlen ein Antidepressivum erst nach fachärztlicher Einschätzung und in Kombination mit psychologischer Therapie (NICE, 2019).\n\n**Wirkweise:** SSRI erhöhen die Verfügbarkeit des Botenstoffs Serotonin. Sie wirken nicht sofort: Eine Besserung zeigt sich meist erst nach einigen Wochen, bis zur vollen Wirkung kann es noch länger dauern. In dieser Zeit brauchen Kind und Familie Ermutigung und Geduld.\n\n**Häufige Nebenwirkungen:** vor allem zu Beginn Übelkeit, Bauch- oder Kopfschmerzen, Schlafprobleme, innere Unruhe oder Müdigkeit. Viele davon lassen nach einigen Wochen nach. Antidepressiva machen nicht abhängig im Sinne einer Sucht. Sie sollten aber nicht plötzlich abgesetzt werden, weil sonst Absetzbeschwerden wie Schwindel, Reizbarkeit oder grippeähnliche Beschwerden auftreten können."
+        },
+        {
+          "art": "achtung",
+          "text": "Bei Kindern, Jugendlichen und jungen Erwachsenen können Antidepressiva vor allem in den ersten Wochen und nach Dosisänderungen Unruhe verstärken und bei einem kleinen Teil Suizidgedanken auslösen oder verstärken. Deshalb werden sie in dieser Zeit eng begleitet. Zugleich ist eine unbehandelte Depression selbst ein erhebliches Risiko. Wenn Sie bei einem Kind unter Antidepressiva neue Unruhe, Gereiztheit, auffällige Enthemmung oder Äußerungen über Tod und Suizid bemerken, informieren Sie noch am selben Tag Ihre Leitung und die Eltern. Äußert ein Kind Suizidgedanken, bleiben Sie bei ihm, fragen ruhig und direkt nach und folgen sofort dem internen Krisenablauf."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Antidepressiva sind Glückspillen, die die Persönlichkeit verändern.",
+          "fakt": "Antidepressiva machen nicht „glücklich“ und Gesunde nicht „high“. Bei einer Depression können sie über Wochen die Beschwerden lindern und so Kraft für Therapie und Alltag geben. Wirkt ein Kind unter der Behandlung auffallend gleichgültig oder gefühlsmäßig abgeflacht, ist das eine Nebenwirkung, die die Ärztin erfahren sollte."
+        }
+      ]
+    },
+    {
+      "titel": "Antipsychotika",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Wofür:** Antipsychotika (früher Neuroleptika genannt) werden bei Kindern und Jugendlichen bei Psychosen und bipolaren Störungen eingesetzt, bei schweren Tic-Störungen und – häufiger, als viele denken – bei schwerer, anhaltender Aggression und Reizbarkeit, etwa bei Kindern mit Autismus oder mit einer Störung der Intelligenzentwicklung. Häufig verwendete Wirkstoffe sind Risperidon, Aripiprazol oder Quetiapin. Bei Aggression sind sie kein Mittel der ersten Wahl: Leitlinien sehen sie nur für schwere Fälle vor, wenn psychosoziale Hilfen nicht ausgereicht haben, und dann möglichst kurz und regelmäßig überprüft (NICE, 2013).\n\n**Wirkweise:** Antipsychotika dämpfen vor allem die Wirkung des Botenstoffs Dopamin, die neueren Wirkstoffe zusätzlich die von Serotonin. Bei Psychosen verringern sie Wahn und Halluzinationen, bei Aggression senken sie die Erregbarkeit.\n\n**Häufige Nebenwirkungen:** Bei Kindern und Jugendlichen besonders häufig sind **Gewichtszunahme** mit gesteigertem Appetit, **Müdigkeit** und Veränderungen im Stoffwechsel, etwa bei Blutzucker und Blutfetten. Manche Wirkstoffe erhöhen das Hormon Prolaktin, was zu Brustvergrößerung oder Zyklusstörungen führen kann. Seltener sind **Bewegungsstörungen**: Steifheit, Zittern, quälende innere Unruhe mit Bewegungsdrang oder plötzliche Muskelverkrampfungen, etwa an Hals, Zunge oder Augen. Die Ärztin kontrolliert deshalb regelmäßig Gewicht und Blutwerte und je nach Wirkstoff weitere Werte."
+        },
+        {
+          "art": "text",
+          "text": "Für die Schule heißt das: Müdigkeit am Morgen, Heißhunger, Gewichtszunahme mit Hänseleien, Mühe im Sport oder eine ungewohnte Steifheit können mit dem Medikament zusammenhängen. Solche Beobachtungen gehören sachlich über die Eltern zur Ärztin. Plötzliche Verkrampfungen der Hals-, Zungen- oder Augenmuskeln sind beängstigend, aber gut behandelbar – sie brauchen rasch ärztliche Hilfe."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Antipsychotika werden eingesetzt, um schwierige Kinder ruhigzustellen.",
+          "fakt": "Ziel ist nicht, ein Kind ruhigzustellen, sondern überschießende Erregung oder psychotisches Erleben so weit zu verringern, dass es wieder lernen und an Beziehungen teilhaben kann. Starke Müdigkeit ist eine Nebenwirkung, die gemeldet werden sollte, kein Behandlungsziel."
+        }
+      ]
+    },
+    {
+      "titel": "Melatonin und weitere Medikamente",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Was es ist:** Melatonin ist ein körpereigenes Hormon, das bei Dunkelheit gebildet wird und dem Körper „Nacht“ signalisiert. Als Medikament wird es vor allem bei Einschlafproblemen eingesetzt, besonders bei Kindern mit ADHS, Autismus oder anderen Entwicklungsstörungen, bei denen Schlafprobleme häufig sind.\n\n**Wirkweise:** Melatonin ist kein klassisches Schlafmittel. Es betäubt nicht, sondern verschiebt den Zeitpunkt, zu dem der Körper auf Schlaf umschaltet. Es hilft deshalb vor allem beim Einschlafen und wirkt am besten zusammen mit guten Schlafgewohnheiten: feste Zeiten, Bildschirme aus, ein ruhiges Abendritual. Diese Maßnahmen kommen zuerst; Medikamente zum Schlafen werden erst erwogen, wenn sie allein nicht reichen (NICE, 2013).\n\n**Nebenwirkungen und offene Fragen:** Kurzfristig gilt Melatonin als gut verträglich; möglich sind Müdigkeit am Morgen, Kopfschmerzen oder Übelkeit. Über die Langzeitwirkung bei Kindern, etwa auf die Pubertätsentwicklung, ist noch wenig bekannt. Deshalb gehört auch Melatonin in ärztliche Hand – selbst wenn es in manchen Ländern frei als Nahrungsergänzungsmittel verkauft wird, dessen Gehalt nicht immer verlässlich ist.\n\nDie Schule kann beitragen, indem sie Tagesmüdigkeit beobachtet und weitergibt und mit Kindern und Eltern über gute Schlafgewohnheiten spricht."
+        },
+        {
+          "art": "liste",
+          "titel": "Weitere Medikamente, die Ihnen begegnen können",
+          "punkte": [
+            "**Stimmungsstabilisierer** wie Lithium oder Valproat bei bipolaren Störungen – selten, mit regelmäßigen Blutkontrollen.",
+            "**Beruhigungsmittel** aus der Gruppe der Benzodiazepine – nur kurzfristig in Ausnahmesituationen, weil sie abhängig machen können.",
+            "**Notfallmedikamente** bei körperlichen Erkrankungen, etwa bei Epilepsie, schweren Allergien oder Diabetes. Für sie gibt es individuelle Notfallpläne, und wer sie geben soll, wird vorher angeleitet."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Was natürlich ist, ist harmlos.",
+          "fakt": "Auch körpereigene oder pflanzliche Stoffe wie Melatonin oder Johanniskraut haben Wirkungen, Nebenwirkungen und Wechselwirkungen mit anderen Medikamenten. Sie sollten Kindern nur nach ärztlicher Rücksprache gegeben werden."
+        }
+      ]
+    },
+    {
+      "titel": "Die Rolle der Schule: beobachten, nicht beurteilen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Schule und Maison Relais sehen ein Kind viele Stunden am Tag – oft genau dann, wenn ein Medikament wirkt. Ihre Beobachtungen helfen der Ärztin, Nutzen und Nebenwirkungen einzuschätzen. Dafür braucht es eine klare Haltung: **beobachten und beschreiben, nicht beurteilen und nicht beraten.**"
+        },
+        {
+          "art": "tun",
+          "titel": "Was Sie tun können",
+          "punkte": [
+            "Sachlich und mit Zeitangabe beschreiben: „Isst seit Montag mittags fast nichts“, „Wirkt ab etwa 14 Uhr gereizt“, „Arbeitet morgens deutlich länger konzentriert als vor den Ferien“.",
+            "Positive Veränderungen ebenso festhalten wie mögliche Nebenwirkungen.",
+            "Beobachtungen an die Eltern weitergeben; direkt an die Ärztin nur mit ausdrücklichem Einverständnis der Eltern.",
+            "Medikamente in Schule oder Maison Relais nur mit schriftlicher ärztlicher Verordnung und schriftlichem Auftrag der Eltern geben, nach den internen Regeln; jede Gabe dokumentieren; Medikamente verschlossen aufbewahren.",
+            "Eine vergessene Dosis nie eigenmächtig nachgeben oder verdoppeln, sondern nach dem vereinbarten Plan handeln oder die Eltern fragen.",
+            "Diskret bleiben: Medikamente nicht vor der Klasse ansprechen und die Gabe unauffällig gestalten.",
+            "Erfolge dem Kind zuschreiben: „Du hast dich heute gut organisiert“ – nicht „Die Tablette wirkt“."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was nicht zu Ihrer Rolle gehört",
+          "punkte": [
+            "Dosis oder Präparat beurteilen („Das ist viel zu hoch dosiert“).",
+            "Eltern zu einem Medikament raten, davon abraten oder zum Absetzen ermutigen.",
+            "Bei schwierigem Verhalten fragen: „Hast du heute deine Tablette nicht genommen?“",
+            "Im Lehrerzimmer oder vor anderen Eltern über die Medikamente eines Kindes sprechen.",
+            "Kindern eigene oder frei verkäufliche Mittel geben."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Datenschutz.** Dass ein Kind Medikamente nimmt, ist eine Gesundheitsinformation und gehört zu den besonders geschützten Daten. Kennen sollten sie nur Personen, die das Kind betreuen und die Information für ihre Arbeit brauchen – etwa die Klassenlehrerin und die Person, die in der Maison Relais die Mittagstablette gibt. Fragen Sie auch das Kind oder die Jugendliche, wie sie mit dem Thema umgehen möchte; viele wollen nicht, dass Mitschüler davon erfahren.\n\n**Gespräch mit dem Kind.** Kinder machen sich eigene Gedanken: „Bin ich krank?“ – „Bin ich ohne Tablette böse?“ Hilfreich ist eine einfache, ehrliche Botschaft: Das Medikament kann helfen, sich besser zu konzentrieren oder ruhiger zu werden – die Anstrengung und die Erfolge gehören dem Kind. Wer Fortschritte sich selbst zuschreiben kann, entwickelt Vertrauen in die eigenen Möglichkeiten (Bandura, 1977).\n\n**Notfallpläne.** Für Kinder, die regelmäßig Medikamente nehmen oder bei denen ein medizinischer Notfall möglich ist, sollte es einen schriftlichen, mit Eltern und Ärztin abgestimmten Plan geben: welches Medikament, wann, wer es gibt, worauf zu achten ist und was im Notfall zu tun ist. Fragen Sie Ihre Leitung, wie das in Ihrer Einrichtung geregelt ist."
+        },
+        {
+          "art": "achtung",
+          "text": "Rufen Sie den Notruf 112 und folgen Sie dem Notfallplan, wenn ein Kind bewusstlos wird, einen Krampfanfall hat, Atemnot oder eine starke allergische Reaktion zeigt, wenn der Verdacht besteht, dass es zu viele oder fremde Tabletten genommen hat, oder bei hohem Fieber mit Muskelsteife und Verwirrtheit. Geben Sie dem Rettungsdienst die Packung oder den Namen des Medikaments mit. Plötzliche Verkrampfungen von Hals-, Zungen- oder Augenmuskeln unter Antipsychotika brauchen ebenfalls rasch ärztliche Hilfe. Äußert ein Kind Suizidgedanken, gilt der interne Krisenablauf."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit den Eltern – und bei Unsicherheit vorher mit Ihrer Leitung –, wenn Sie deutliche Veränderungen bemerken: starke Müdigkeit, eine auffällige Wesensveränderung, über längere Zeit kaum Essen, neue Tics oder Bewegungsauffälligkeiten, zunehmende Traurigkeit oder Unruhe. Fragen zur Medikation selbst beantwortet die behandelnde Ärztin."
+        }
+      ]
+    },
+    {
+      "titel": "Häufige Irrtümer – und ein Beispiel aus der Praxis",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Rund um Medikamente bei Kindern kursieren viele Überzeugungen, die Entscheidungen und Gespräche erschweren – in beide Richtungen: Manche halten Medikamente für gefährliche Drogen, andere für die Lösung aller Probleme. Das folgende Wissen hilft, in Gesprächen sachlich zu bleiben (Gerlach et al., 2016; Cortese et al., 2018)."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn das Medikament wirkt, ist die Diagnose bestätigt.",
+          "fakt": "Stimulanzien können die Aufmerksamkeit auch bei Menschen ohne ADHS verbessern. Eine Wirkung beweist also keine Diagnose, und eine fehlende Wirkung widerlegt sie nicht. Die Diagnose beruht auf einer sorgfältigen Abklärung durch Fachleute."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Mit Medikament braucht ein Kind keine pädagogische Unterstützung mehr.",
+          "fakt": "Medikamente können Beschwerden lindern, aber keine Fähigkeiten beibringen. Organisation, Lernstrategien, soziale Fertigkeiten und Vertrauen entstehen durch Erfahrung, Übung und Beziehung. Oft machen Medikamente pädagogische Unterstützung erst wirksam."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Am Wochenende und in den Ferien kann man einfach pausieren.",
+          "fakt": "Bei Stimulanzien vereinbaren manche Ärztinnen bewusst Pausen, etwa in den Ferien. Bei Antidepressiva, Antipsychotika oder Guanfacin kann plötzliches Absetzen dagegen Beschwerden auslösen. Ob und wann pausiert wird, entscheidet immer die Ärztin."
+        },
+        {
+          "art": "fall",
+          "titel": "Leandro – was die Schule weitergibt",
+          "text": "Nach der Teambesprechung schreibt die Klassenlehrerin für die Eltern auf: „Seit etwa zwei Wochen wirkt Leandro vormittags sehr still und müde; er legt oft den Kopf auf den Tisch und beteiligt sich kaum. Ab etwa 14 Uhr ist er lebhafter. Streit mit Mitschülern gab es in dieser Zeit nicht. In der Kantine isst er normal.“ Sie gibt die Notiz der Mutter mit der Bitte, sie der Ärztin zu zeigen. Für die Tablette am Mittag vereinbart die Maison Relais mit den Eltern einen schriftlichen Plan. Im Lehrerzimmer wird nicht mehr darüber gerätselt, welches Medikament Leandro nimmt.",
+          "fragen": [
+            "Warum enthält die Notiz keine Einschätzung der Dosis?",
+            "Welche Beobachtungen sind erfreulich, welche könnten auf eine Nebenwirkung hinweisen?"
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Wer entscheidet über Beginn, Dosis und Absetzen eines Medikaments?",
+      "optionen": [
+        "Die Klassenlehrerin, weil sie das Kind am meisten sieht",
+        "Das Diagnostique-Team",
+        "Die behandelnde Ärztin gemeinsam mit der Familie",
+        "Die Schulleitung"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Verordnung, Dosis, Änderungen und Absetzen sind ärztliche Entscheidungen, die gemeinsam mit den Eltern und je nach Alter mit dem Kind getroffen werden. Lehrkräfte und das Diagnostique-Team liefern wichtige Beobachtungen und Befunde, entscheiden aber nicht über Medikamente; die Leitung regelt nur die Abläufe in der Einrichtung."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Nebenwirkungen sind bei Stimulanzien häufig? (mehrere richtig)",
+      "optionen": [
+        "Verminderter Appetit",
+        "Einschlafprobleme",
+        "Starke Gewichtszunahme",
+        "Kopf- oder Bauchschmerzen",
+        "Sucht nach wenigen Wochen"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Appetitminderung, Einschlafprobleme sowie Kopf- und Bauchschmerzen gehören zu den häufigen, meist leichten Nebenwirkungen. Starke Gewichtszunahme ist eher typisch für Antipsychotika; Stimulanzien verringern eher den Appetit. Bei ärztlich kontrollierter Einnahme gibt es keinen Hinweis auf ein erhöhtes Suchtrisiko."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Streit in der Pause fragt ein Kollege Enzo (9) laut: „Hast du heute etwa deine Tablette nicht genommen?“ Mehrere Kinder hören es.",
+      "frage": "Wie bewerten Sie die Situation?",
+      "optionen": [
+        "Die Frage ist berechtigt, weil sie Enzo an seine Verantwortung erinnert.",
+        "Die Frage verletzt Enzos Privatsphäre, gibt eine Gesundheitsinformation preis und vermittelt ihm, dass sein Verhalten von einer Tablette abhängt. Besser: den Konflikt wie bei jedem Kind klären und Beobachtungen sachlich an die Eltern weitergeben.",
+        "Unproblematisch, weil die Kinder ohnehin wissen, dass Enzo Medikamente nimmt.",
+        "Man sollte die Eltern sofort anrufen, damit sie die Dosis erhöhen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Medikamente sind eine besonders geschützte Gesundheitsinformation und gehören nicht vor die Klasse. Die Frage beschämt Enzo und lehrt ihn, dass nicht er, sondern die Tablette für sein Verhalten verantwortlich ist – das untergräbt sein Vertrauen in die eigenen Möglichkeiten. Über die Dosis entscheidet die Ärztin, nicht die Schule."
+    },
+    {
+      "art": "einfach",
+      "frage": "Wann zeigt sich die Wirkung eines Antidepressivums aus der Gruppe der SSRI in der Regel?",
+      "optionen": [
+        "Innerhalb einer Stunde nach der Einnahme",
+        "Erst nach einigen Wochen regelmäßiger Einnahme",
+        "Nur an den Tagen, an denen es eingenommen wird",
+        "Bei Kindern überhaupt nicht"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "SSRI wirken nicht sofort; eine Besserung zeigt sich meist erst nach einigen Wochen, die volle Wirkung manchmal noch später. Eine schnelle, auf den Einnahmetag begrenzte Wirkung ist typisch für Stimulanzien. Bei Kindern und Jugendlichen können SSRI – vor allem zusammen mit Psychotherapie – bei Depressionen, Angst- und Zwangsstörungen helfen."
+    },
+    {
+      "art": "fall",
+      "fall": "Jana (15) nimmt seit drei Wochen ein Antidepressivum. Heute wirkt sie ungewohnt unruhig und gereizt und sagt beim Hinausgehen leise: „Ist eh egal, ob ich da bin.“",
+      "frage": "Was ist jetzt richtig?",
+      "optionen": [
+        "Abwarten – Unruhe ist in den ersten Wochen normal.",
+        "Jana raten, das Medikament abzusetzen.",
+        "Die Bemerkung übergehen, um Jana nicht zu verunsichern.",
+        "Jana ruhig ansprechen und direkt nachfragen, wie sie das meint, sie nicht allein lassen, sofort die Leitung informieren und dem Krisenablauf folgen; die Eltern werden noch am selben Tag informiert."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Neue Unruhe zusammen mit einer Äußerung, die auf Lebensmüdigkeit hindeuten kann, ist ein Warnzeichen – besonders in den ersten Wochen einer Behandlung mit Antidepressiva. Sicherheit geht vor: direkt und ruhig nachfragen, nicht allein lassen, Leitung informieren, Krisenablauf folgen. Abwarten oder Übergehen wäre gefährlich, und über das Absetzen entscheidet die Ärztin."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Nebenwirkung ist bei Antipsychotika im Kindes- und Jugendalter besonders häufig?",
+      "optionen": [
+        "Gewichtszunahme mit gesteigertem Appetit",
+        "Dauerhaft erhöhte Wachheit",
+        "Starker Gewichtsverlust",
+        "Verbesserte Ausdauer im Sport"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Gewichtszunahme mit gesteigertem Appetit gehört zu den häufigsten Nebenwirkungen, oft zusammen mit Veränderungen bei Blutzucker und Blutfetten; deshalb kontrolliert die Ärztin regelmäßig. Häufig ist außerdem Müdigkeit, nicht Wachheit. Gewichtsverlust passt eher zu Stimulanzien, und eine bessere Ausdauer ist keine typische Wirkung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn sich die Aufmerksamkeit eines Kindes unter Methylphenidat verbessert, ist damit bewiesen, dass es ADHS hat.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Stimulanzien können die Aufmerksamkeit auch bei Menschen ohne ADHS verbessern. Eine Wirkung ist deshalb kein Beweis für die Diagnose, eine fehlende Wirkung kein Gegenbeweis. Die Diagnose beruht auf einer sorgfältigen Abklärung durch Fachleute."
+    },
+    {
+      "art": "fall",
+      "fall": "In der Maison Relais bekommt Aaron (8) mittags eine Tablette. Heute wurde sie vergessen; um 15 Uhr fällt es der Educatrice auf. Eine Kollegin schlägt vor, ihm jetzt einfach zwei Tabletten zu geben, damit er „aufholt“.",
+      "frage": "Was ist richtig?",
+      "optionen": [
+        "Zwei Tabletten geben, damit die Tagesmenge stimmt.",
+        "Eine Tablette geben – besser spät als nie.",
+        "Nichts eigenmächtig nachgeben, sondern nach dem schriftlichen Plan handeln oder die Eltern fragen und das Versäumnis dokumentieren.",
+        "Aaron die Tablette mitgeben, damit er sie zu Hause nimmt."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Eine vergessene Dosis darf nie eigenmächtig nachgegeben oder verdoppelt werden: Eine späte Gabe kann etwa den Schlaf stören, eine doppelte Menge Nebenwirkungen verstärken. Maßgeblich ist der schriftlich vereinbarte Plan oder die Rücksprache mit den Eltern; das Versäumnis wird dokumentiert. Tabletten gehören zudem nicht in Kinderhand."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Rückmeldungen sind für die behandelnde Ärztin hilfreich? (mehrere richtig)",
+      "optionen": [
+        "„Isst seit Beginn der Behandlung mittags kaum etwas.“",
+        "„Arbeitet vormittags deutlich länger konzentriert als vor den Ferien.“",
+        "„Ich glaube, die Dosis ist zu hoch.“",
+        "„Wirkt ab etwa 14 Uhr gereizt und weinerlich.“",
+        "„Das Medikament passt einfach nicht zu ihm.“"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Hilfreich sind konkrete, zeitlich eingeordnete Beschreibungen – erfreuliche wie belastende. Urteile über Dosis oder Eignung des Medikaments gehören nicht in eine Beobachtung; diese Einschätzung ist Aufgabe der Ärztin, die dafür genau solche Beschreibungen braucht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was trifft auf Melatonin zu?",
+      "optionen": [
+        "Es ist ein starkes Schlafmittel, das auch bei Durchschlafproblemen sicher hilft.",
+        "Es ist ein Hormon, das dem Körper „Nacht“ signalisiert; es hilft vor allem beim Einschlafen und wirkt am besten zusammen mit guten Schlafgewohnheiten.",
+        "Weil es natürlich ist, kann man es ohne ärztliche Begleitung beliebig lange geben.",
+        "Es macht süchtig und wird bei Kindern nie eingesetzt."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Melatonin verschiebt den Zeitpunkt des Einschlafens und betäubt nicht; gute Schlafgewohnheiten kommen zuerst. Über die Langzeitwirkung bei Kindern ist noch wenig bekannt, deshalb gehört auch Melatonin in ärztliche Hand. Eine Sucht ist nicht bekannt, und bei bestimmten Schlafproblemen wird es bei Kindern durchaus eingesetzt."
+    },
+    {
+      "art": "fall",
+      "fall": "Beim Elterngespräch fragt die Mutter von Kiara (7): „Die Kinderärztin schlägt Methylphenidat vor. Was meinen Sie – sollen wir das machen?“",
+      "frage": "Wie antworten Sie am besten?",
+      "optionen": [
+        "„Ich kann Ihnen sagen, was ich in der Schule beobachte, und allgemeine Informationen geben. Die Entscheidung treffen Sie mit der Ärztin – notieren Sie Ihre Fragen für das nächste Gespräch mit ihr.“",
+        "„Auf keinen Fall, das sind Drogen.“",
+        "„Ja, unbedingt – dann wird es im Unterricht endlich ruhiger.“",
+        "„Das müssen Sie selbst wissen, dazu sage ich nichts.“"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Die Entscheidung liegt bei Familie und Ärztin. Die Schule kann sachliche Beobachtungen beitragen und die Familie ermutigen, offene Fragen mit der Ärztin zu klären. Zu- oder Abraten überschreitet die Rolle der Schule, und eine schroffe Verweigerung lässt die Mutter mit ihrer Unsicherheit allein."
+    },
+    {
+      "art": "fall",
+      "fall": "Tim (11) nimmt ein Antipsychotikum. In der Sportstunde verdrehen sich plötzlich seine Augen nach oben, der Hals verkrampft sich, er wirkt panisch, ist aber ansprechbar.",
+      "frage": "Was ist zu tun?",
+      "optionen": [
+        "Tim auffordern, sich zusammenzureißen, und die Stunde fortsetzen.",
+        "Abwarten, ob es nach der Stunde vorbei ist.",
+        "Ihm ein Schmerzmittel aus dem Erste-Hilfe-Schrank geben.",
+        "Ruhig bei Tim bleiben, sofort ärztliche Hilfe holen – nach Notfallplan über den Notruf –, die Eltern informieren und den Namen des Medikaments bereithalten."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Plötzliche Verkrampfungen von Augen-, Hals- oder Zungenmuskeln können eine akute Nebenwirkung von Antipsychotika sein. Sie sind gut behandelbar, brauchen aber rasch ärztliche Hilfe. Abwarten oder Druck helfen nicht, und Medikamente aus dem Erste-Hilfe-Schrank sind hier keine Lösung."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Psychopharmaka",
+      "erklaerung": "Medikamente, die auf das Gehirn wirken und Erleben, Denken und Verhalten beeinflussen."
+    },
+    {
+      "begriff": "Stimulanzien",
+      "erklaerung": "Medikamentengruppe, etwa Methylphenidat oder Lisdexamfetamin, die bei ADHS die Selbststeuerung verbessert und schon am Tag der Einnahme wirkt."
+    },
+    {
+      "begriff": "SSRI",
+      "erklaerung": "Selektive Serotonin-Wiederaufnahmehemmer: Antidepressiva, die bei Depressionen, Angst- und Zwangsstörungen eingesetzt werden und erst nach einigen Wochen wirken."
+    },
+    {
+      "begriff": "Antipsychotika",
+      "erklaerung": "Medikamente, die vor allem die Wirkung von Dopamin dämpfen; eingesetzt bei Psychosen, bipolaren Störungen, schweren Tics und schwerer Aggression."
+    },
+    {
+      "begriff": "Off-Label-Gebrauch",
+      "erklaerung": "Einsatz eines Medikaments außerhalb seiner offiziellen Zulassung, etwa für eine andere Altersgruppe. Zulässig, verlangt aber besonders sorgfältige Aufklärung."
+    },
+    {
+      "begriff": "Titration",
+      "erklaerung": "Schrittweises Anpassen der Dosis, bis Wirkung und Nebenwirkungen in einem guten Verhältnis stehen. Aufgabe der Ärztin."
+    },
+    {
+      "begriff": "Retardpräparat",
+      "erklaerung": "Arzneiform, die den Wirkstoff verzögert freisetzt und dadurch länger wirkt."
+    },
+    {
+      "begriff": "Rebound",
+      "erklaerung": "Vorübergehende Gereiztheit oder Unruhe, wenn die Wirkung eines Medikaments nachlässt, etwa am Nachmittag."
+    },
+    {
+      "begriff": "Absetzbeschwerden",
+      "erklaerung": "Beschwerden wie Schwindel, Reizbarkeit oder grippeähnliches Befinden, die auftreten können, wenn bestimmte Medikamente zu schnell abgesetzt werden."
+    },
+    {
+      "begriff": "Melatonin",
+      "erklaerung": "Körpereigenes Hormon, das dem Körper „Nacht“ signalisiert; als Medikament vor allem bei Einschlafproblemen eingesetzt."
+    }
+  ],
+  "quellen": [
+    "gerlach2016",
+    "cortese2018",
+    "faraone2021",
+    "niceNG87",
+    "awmfAdhs2018",
+    "niceNG134",
+    "niceCG158",
+    "niceCG170",
+    "bandura1977"
+  ],
+  "verwandt": [
+    "adhs",
+    "depression",
+    "psychose-bipolar",
+    "selbstverletzung-suizid",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "elterngespraech-vorbereiten",
+    "verhalten-zaehlen",
+    "schlaf-check"
+  ]
+}

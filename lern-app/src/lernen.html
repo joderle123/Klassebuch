@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>CDSE Lernen</title>
+<style>
+@font-face{font-family:'Inter var';src:url(data:font/woff2;base64,@@INTER@@) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Manrope var';src:url(data:font/woff2;base64,@@MANROPE@@) format('woff2');font-weight:200 800;font-display:swap}
+@@CSS@@
+</style>
+</head>
+<body>
+<a class="sr" href="#app">Zum Inhalt</a>
+<header class="kopf keindruck">
+  <div class="kopf-innen">
+    <a class="marke" href="#/" style="text-decoration:none;color:inherit" aria-label="CDSE Lernen – Übersicht">
+      <div class="marke-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9l-10 -4l-10 4l10 4l10 -4v6"/><path d="M6 10.6v5.4a6 3 0 0 0 12 0v-5.4"/></svg></div>
+      <div><b>Lernen</b><span>Fachwissen für den Alltag im CDSE</span></div>
+    </a>
+    <nav class="reiter" id="reiter" aria-label="Bereiche der Lern-App"></nav>
+    <label class="suche"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"/><path d="M21 21l-6 -6"/></svg><span class="sr">Suchen</span><input type="search" id="suche" placeholder="Suchen …" autocomplete="off"></label>
+  </div>
+</header>
+<main id="app" tabindex="-1"><div class="laden">Lernmodule werden geladen …</div></main>
+<script>
+@@QUELLEN@@
+</script>
+<script>window.LERN_STAND='@@STAND@@';window.LERN_TOOLBOX=@@TOOLBOX@@;</script>
+<script type="application/octet-stream" id="lern-daten">@@DATEN@@</script>
+<script>
+@@JS@@
+</script>
+</body>
+</html>

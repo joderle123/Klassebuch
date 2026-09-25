@@ -1,0 +1,378 @@
+{
+  "id": "sucht-medien",
+  "bereich": "stoerungen",
+  "titel": "Substanzkonsum und problematische Mediennutzung",
+  "untertitel": "Alkohol, Cannabis, Nikotin und Gaming im Jugendalter – Risiken einschätzen, motivierend ansprechen, als Schule handeln",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, warum das Jugendalter eine besonders empfindliche Phase für Substanzkonsum ist, und die wichtigsten Risiken von Alkohol, Cannabis und Nikotin beschreiben.",
+    "Sie können Probierkonsum, riskanten Konsum und Abhängigkeit unterscheiden und Warnzeichen sachlich einordnen.",
+    "Sie können ein Gespräch über Konsum in der Haltung der motivierenden Gesprächsführung beginnen.",
+    "Sie können die Merkmale der Computerspielstörung nach ICD-11 nennen und von intensivem, aber unproblematischem Spielen abgrenzen.",
+    "Sie wissen, was Schule zur Vorbeugung beitragen kann und wann Sie Fachstellen einbeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Kim, 15 Jahre, Lycée",
+          "text": "Kim war eine gute, zuverlässige Schülerin. Seit einigen Monaten kommt sie montags oft zu spät, schläft in den ersten Stunden fast ein und hat in drei Fächern ungenügende Noten. Sie hat einen neuen Freundeskreis aus älteren Jugendlichen; ihre Kleidung riecht manchmal nach Cannabis. In der Pause verschwindet sie mit anderen auf der Toilette, danach riecht es süßlich nach Vape. Als ihr Klassenlehrer sie auf die Noten anspricht, sagt sie: „Chill mal, das ist doch jetzt eh legal.“",
+          "fragen": [
+            "Welche Beobachtungen sind Tatsachen, welche Vermutungen?",
+            "Was könnte hinter Kims Veränderung noch stecken außer Konsum?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die meisten Jugendlichen probieren im Lauf ihrer Jugend Alkohol, viele auch Nikotin, manche Cannabis. Neugier, Zugehörigkeit, Grenzen austesten und das Gefühl, erwachsen zu sein, gehören zu dieser Lebensphase. Die große Mehrheit entwickelt daraus keine Abhängigkeit. Trotzdem ist das Jugendalter eine **besonders empfindliche Zeit**: Das Gehirn reift noch, Konsum trifft auf ein System im Umbau, und Rauschzustände führen zu Unfällen, Gewalt, ungeschütztem Sex und Situationen, die Jugendliche nicht mehr steuern können.\n\nKonsum lässt sich als Stufenfolge verstehen: kein Konsum – Probieren – gelegentlicher Konsum – riskanter Konsum (etwa Rauschtrinken, Konsum vor der Schule, allein oder gegen schlechte Gefühle) – schädlicher Konsum – Abhängigkeit. Nicht jede Stufe führt zur nächsten. Für die Schule entscheidend ist, früh und ohne Dramatisierung hinzuschauen.\n\nEin verwandtes Thema ist die **Mediennutzung**. Digitale Medien gehören selbstverständlich zum Alltag. Bei einem kleinen Teil der Jugendlichen gerät vor allem das Spielen außer Kontrolle; die ICD-11 beschreibt dafür die **Computerspielstörung**."
+        },
+        {
+          "art": "merke",
+          "text": "Nicht jeder Konsum ist ein Problem, aber jeder Konsum im Jugendalter hat Risiken. Ihre Aufgabe ist nicht, zu diagnostizieren oder zu ermitteln, sondern wahrzunehmen, anzusprechen und Hilfe zu vermitteln."
+        }
+      ]
+    },
+    {
+      "titel": "Das Gehirn im Umbau und die wichtigsten Substanzen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Im Jugendalter reifen Gehirnbereiche unterschiedlich schnell. Das **Belohnungssystem** reagiert früh und stark: Neues, Aufregendes und die Anerkennung Gleichaltriger fühlen sich besonders gut an. Die Bereiche im Stirnhirn, die Impulse bremsen und Folgen abwägen, reifen dagegen bis ins junge Erwachsenenalter (Casey et al., 2008). Das erklärt, warum Jugendliche Risiken in ruhigen Momenten gut einschätzen können – in der Gruppe, abends, aufgeregt oder unter dem Einfluss von Freunden aber trotzdem riskant handeln. Zugleich ist das reifende Gehirn empfindlicher für die Wirkung von Substanzen. Je früher und je regelmäßiger ein Mensch konsumiert, desto höher ist sein Risiko, später Probleme zu entwickeln."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Alkohol, Cannabis und Nikotin im Jugendalter",
+          "spalten": ["Substanz", "Besondere Risiken im Jugendalter", "Was im Schulalltag auffallen kann"],
+          "zeilen": [
+            ["Alkohol – die am häufigsten konsumierte Substanz", "Rauschtrinken mit Alkoholvergiftung, Unfällen, Gewalt, sexuellen Grenzverletzungen; ein früher Einstieg geht mit einem höheren Risiko für spätere Alkoholprobleme einher; regelmäßiger starker Konsum kann die Gehirnentwicklung beeinträchtigen.", "Müdigkeit und Kopfschmerzen nach Wochenenden, Fehlzeiten am Montag, Erzählungen über „Filmrisse“, Alkoholgeruch."],
+            ["Cannabis (Wirkstoff THC)", "Regelmäßiger Konsum hängt mit schlechterer Aufmerksamkeit, schlechterem Gedächtnis und schwächeren Schulleistungen zusammen; wer als Jugendlicher beginnt, wird häufiger abhängig; häufiger Konsum starker Sorten erhöht das Risiko für Psychosen, besonders bei entsprechender Veranlagung. Der THC-Gehalt ist heute oft viel höher als früher.", "Leistungsknick, Antriebslosigkeit, Müdigkeit, gerötete Augen, Geruch, Rückzug von früheren Interessen."],
+            ["Nikotin (Zigaretten, Vapes, Nikotinbeutel)", "Macht schnell abhängig, bei Jugendlichen oft schon nach vergleichsweise wenig Konsum. Viele Vapes enthalten viel Nikotin; Langzeitfolgen des Dampfens sind noch nicht ausreichend bekannt.", "Unruhe, Gereiztheit und Konzentrationsprobleme gegen Ende langer Stunden (Entzug), häufiges Verschwinden auf der Toilette, süßlicher Geruch."]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Vapes.** Einweg-E-Zigaretten sind bunt, riechen nach Früchten und gelten vielen Jugendlichen als harmlos. Ihr Nikotin ist oft so aufbereitet, dass es kaum im Hals kratzt – dadurch wird leicht viel davon aufgenommen. Jugendliche, die dampfen, beginnen häufiger später auch mit Zigaretten; ob das Dampfen die Ursache ist, wird in der Forschung diskutiert.\n\n**Cannabis und Gesetz.** Seit 2023 dürfen Erwachsene in Luxemburg Cannabis in engen Grenzen zu Hause anbauen und privat konsumieren. Für Minderjährige bleibt Cannabis verboten, und an den gesundheitlichen Risiken für das jugendliche Gehirn ändert die Gesetzeslage nichts. Wenn Jugendliche sagen „Das ist doch legal“, lohnt sich ein sachliches Gespräch über genau diesen Unterschied."
+        },
+        {
+          "art": "liste",
+          "titel": "Weitere Substanzen, von denen Sie hören könnten",
+          "punkte": [
+            "Lachgas, aus Ballons eingeatmet: Gefahr von Bewusstlosigkeit und Stürzen, bei häufigem Gebrauch Nervenschäden.",
+            "Synthetische Cannabinoide, teils in Vapes oder als angebliches Cannabis verkauft: viel stärker und unberechenbarer als Cannabis, immer wieder mit Notfällen.",
+            "Ecstasy (MDMA), Kokain, Amphetamine, vor allem auf Partys: Gefahr von Überhitzung, Herzproblemen und gefährlichem Mischkonsum.",
+            "Beruhigungs- oder Schmerzmittel, oft zusammen mit Alkohol: Die Wirkungen verstärken sich gegenseitig – bis zum Atemstillstand."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Cannabis ist ein Naturprodukt und deshalb harmlos.",
+          "fakt": "„Natürlich“ sagt nichts über die Wirkung aus. Für Jugendliche sind vor allem häufiger Konsum und starke Sorten riskant: für Lernen, Motivation und Stimmung, für eine Abhängigkeit und bei Veranlagung für Psychosen."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen und einordnen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Wann ist Konsum eine Störung?** DSM-5-TR (Substanzkonsumstörung) und ICD-11 (schädliches Konsummuster, Abhängigkeit) beschreiben ähnliche Merkmale: Der Konsum gerät **außer Kontrolle** – mehr, länger oder öfter als geplant, vergebliche Versuche aufzuhören, starkes Verlangen. Er bekommt **Vorrang** vor Schule, Freundschaften und Hobbys. Er wird **trotz schädlicher Folgen** fortgesetzt. Und es entstehen **körperliche Anpassungen**: Man braucht mehr für dieselbe Wirkung (Toleranz), ohne die Substanz geht es einem schlecht (Entzug). Ob eine Störung vorliegt, klären Fachleute."
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Warnzeichen – keines beweist Konsum",
+          "punkte": [
+            "Deutlicher Leistungsknick, zunehmende Fehlzeiten, Zuspätkommen vor allem nach Wochenenden",
+            "Rückzug von früheren Freunden und Interessen, neuer Freundeskreis, der gemieden wird, wenn Erwachsene nach ihm fragen",
+            "Veränderter Schlaf, Müdigkeit, starke Stimmungsschwankungen, Gereiztheit",
+            "Geldprobleme, Verkaufen von Sachen, Verschwinden von Geld",
+            "Geruch, gerötete Augen, Konsumutensilien, Erzählungen über Filmrisse",
+            "Konsum allein, vor der Schule oder „um runterzukommen“ – ein Zeichen, dass die Substanz Gefühle regulieren soll"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Viele dieser Zeichen passen auch zu anderen Belastungen. Ein Leistungsknick mit Rückzug kann ebenso auf eine **Depression**, Ängste, Mobbing oder Probleme in der Familie hinweisen, und oft kommt beides zusammen: Manche Jugendliche konsumieren, um Angst, Traurigkeit oder Erinnerungen zu dämpfen. Achten Sie deshalb auf **Veränderungen gegenüber früher** und auf das Gesamtbild, nicht auf einzelne Zeichen.\n\n**Risikofaktoren** sind ein früher Beginn, Konsum im Freundeskreis und in der Familie, unbehandelte ADHS (Faraone et al., 2021), Verhaltensprobleme, Depression, Angst und belastende oder traumatische Erfahrungen. **Schützend** wirken eine verlässliche Beziehung zu mindestens einem Erwachsenen, das Gefühl, in der Schule dazuzugehören, klare Regeln zu Hause, Hobbys und Erfolgserlebnisse."
+        },
+        {
+          "art": "achtung",
+          "text": "Akute Vergiftung: Ist ein Jugendlicher nach Alkohol oder anderen Substanzen kaum oder nicht ansprechbar, lassen Sie ihn nicht allein. Prüfen Sie die Atmung, bringen Sie ihn bei Bewusstlosigkeit mit Atmung in die stabile Seitenlage und rufen Sie den Notruf 112. Rufen Sie den Notruf auch bei Krampfanfällen, Atemproblemen, starker Verwirrtheit oder wenn unklar ist, was und wie viel genommen wurde. Kein Kaffee, keine kalte Dusche, nicht „ausschlafen lassen“. Informieren Sie danach die Leitung und die Eltern nach den internen Abläufen."
+        }
+      ]
+    },
+    {
+      "titel": "Gesprächshaltung: motivierend statt belehrend",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wer Jugendliche auf Konsum anspricht, spürt oft den Reflex, sofort zu warnen, zu belehren oder zu drohen. Miller und Rollnick (2013) nennen das den **Korrekturreflex**. Er erzeugt fast immer Gegenwehr: Wer gedrängt wird, verteidigt sein Verhalten – und überzeugt sich dabei selbst.\n\nDie **motivierende Gesprächsführung** geht davon aus, dass die meisten Menschen gegenüber einer Veränderung **ambivalent** sind: Ein Teil will etwas ändern, ein anderer nicht. Das Gespräch soll die eigenen Gründe für eine Veränderung hervorlocken, statt sie von außen vorzugeben. Die Grundhaltung ist partnerschaftlich, annehmend und mitfühlend; sie lockt die Gründe und Ideen des Gegenübers hervor, statt sie vorzugeben. Sie verlangt nicht, Konsum gutzuheißen – aber den Menschen ernst zu nehmen, der konsumiert.\n\nMiller und Rollnick beschreiben vier Schritte: eine tragfähige Beziehung herstellen, gemeinsam ein Thema finden, die eigenen Veränderungsgründe hervorlocken und erst dann – wenn der Jugendliche so weit ist – gemeinsam planen."
+        },
+        {
+          "art": "tun",
+          "titel": "Gesprächstechniken, die helfen",
+          "punkte": [
+            "Offene Fragen: „Wie ist das für dich mit dem Kiffen?“ – „Was gefällt dir daran, und was stört dich vielleicht?“",
+            "Würdigen: „Du hast heute ehrlich mit mir geredet, das ist nicht selbstverständlich.“",
+            "Zuhören und spiegeln, auch die Ambivalenz: „Einerseits entspannt dich das, andererseits ärgern dich die schlechten Noten.“",
+            "Zusammenfassen und Veränderungsäußerungen aufgreifen: „Du hast gesagt, du willst das Jahr schaffen. Wie passt das Kiffen unter der Woche dazu?“",
+            "Skalenfragen: „Wie wichtig ist es dir von 0 bis 10, etwas zu ändern? Warum eine 4 und nicht eine 2?“",
+            "Mit Erlaubnis informieren: „Darf ich dir sagen, was ich über Cannabis und Lernen weiß?“",
+            "Konkrete Beobachtungen statt Vorwürfe: „Du warst diesen Monat viermal montags nicht da“ statt „Du kiffst doch am Wochenende“."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Gespräche meist beendet",
+          "punkte": [
+            "Moralpredigten, Horrorgeschichten, Drohungen",
+            "Verhören und Beweise sammeln („Gib zu, dass …“)",
+            "Etiketten wie „Kiffer“ oder „Alkoholiker“",
+            "Vollständige Verschwiegenheit versprechen, die Sie nicht halten dürfen",
+            "Das Gespräch vor anderen führen"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Vertraulichkeit.** Sagen Sie von Anfang an ehrlich, was Sie für sich behalten können und wann Sie andere einbeziehen müssen – etwa bei Gefahr für Leben und Gesundheit, bei Hinweisen auf Ausnutzung oder Handel mit Drogen. Wie das Einbeziehen von Eltern und Leitung genau abläuft, regeln die internen Abläufe Ihrer Einrichtung. Jugendliche vertrauen eher Erwachsenen, die transparent sind, als solchen, die alles versprechen."
+        },
+        {
+          "art": "fall",
+          "titel": "Das Gespräch mit Kim",
+          "text": "Der Klassenlehrer bittet Kim nach der Stunde zu sich. „Mir ist aufgefallen, dass du diesen Monat dreimal montags gefehlt hast und in Mathe eingeschlafen bist. Ich mache mir Sorgen. Wie geht es dir?“ Kim zuckt mit den Schultern. Er wartet. Schließlich erzählt sie, dass sie zu Hause viel Streit hat und am Wochenende mit den Freunden „abschalten“ will. Er fasst zusammen: „Das Kiffen hilft dir, den Stress zu Hause auszuhalten – und gleichzeitig macht dir der Absturz in der Schule Sorgen.“ Kim nickt. Er fragt, ob sie mit der Psychologin des SePAS sprechen würde, und erklärt ihr offen, was er weitergibt und was nicht.",
+          "fragen": [
+            "Welche Techniken der motivierenden Gesprächsführung erkennen Sie?",
+            "Warum spricht der Lehrer das Kiffen nicht als Erstes an?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Problematische Mediennutzung und Computerspielstörung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Stunden am Bildschirm sind für sich noch keine Störung. Jugendliche spielen, schauen Videos und halten Kontakt über soziale Medien; das gehört zu ihrer Lebenswelt. Die ICD-11 beschreibt die **Computerspielstörung** (englisch „gaming disorder“) als anhaltendes Spielverhalten mit drei Kennzeichen: **verminderte Kontrolle** über Beginn, Dauer und Ende des Spielens; **zunehmender Vorrang** des Spielens vor anderen Interessen und Pflichten; **Weiterspielen oder Steigerung trotz negativer Folgen**. Dazu kommt eine deutliche Beeinträchtigung in Familie, Schule oder Freundschaften, in der Regel über mindestens zwölf Monate. Im DSM-5-TR steht sie nur in einem gesonderten Teil mit Störungsbildern, die weiter erforscht werden sollen.\n\nBetroffen ist nur ein kleiner Teil der Jugendlichen, die viel spielen. Häufig bestehen zugleich andere Schwierigkeiten: Einsamkeit, soziale Ängste, Depression oder ADHS. Das Spiel ist dann oft Flucht und Trost zugleich – ein Ort, an dem man erfolgreich ist und dazugehört. Manche Spiele verstärken das durch Belohnungen, die nie enden, und durch glücksspielähnliche Elemente wie kostenpflichtige Überraschungskisten."
+        },
+        {
+          "art": "text",
+          "text": "**Soziale Medien.** Ob soziale Medien selbst psychische Probleme verursachen, ist in der Forschung umstritten. Im Durchschnitt sind die gefundenen Zusammenhänge eher klein; für einzelne Jugendliche können die Folgen aber erheblich sein – etwa durch nächtliche Nutzung, die Schlaf verdrängt, durch ständiges Vergleichen oder durch Cybermobbing. Hilfreicher als die bloße Frage nach der Zeit ist die Frage: **Was verdrängt die Nutzung, und wie geht es dem Jugendlichen damit?**"
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Intensiv oder problematisch?",
+          "punkte": [
+            { "wie": "Begeistertes Spielen", "unterschied": "Viel Zeit, aber Schule, Schlaf, Freundschaften und andere Hobbys laufen weiter; das Spiel kann unterbrochen werden, ohne dass es eskaliert." },
+            { "wie": "Problematische Nutzung", "unterschied": "Schlaf wird regelmäßig verkürzt, Pflichten leiden, Konflikte um das Aufhören nehmen zu – aber der Jugendliche kann mit Unterstützung gegensteuern." },
+            { "wie": "Computerspielstörung", "unterschied": "Kontrolle über längere Zeit verloren, Spielen hat Vorrang vor fast allem, deutliche Folgen wie Schulabsentismus, Rückzug oder aggressive Ausbrüche beim Unterbrechen." },
+            { "wie": "Spielen als Zeichen einer anderen Not", "unterschied": "Rückzug ins Spiel bei Mobbing, Depression oder sozialer Angst: Hier muss die eigentliche Not mitbehandelt werden." }
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Interesse zeigen: „Was spielst du? Was gefällt dir daran?“ – wer die Welt des Jugendlichen kennt, wird eher gehört.",
+            "Den Blick auf Schlaf, Schule, Freundschaften und Bewegung richten, nicht nur auf Minuten.",
+            "Eltern ermutigen, gemeinsam mit dem Jugendlichen klare Vereinbarungen zu treffen (Zeiten, Geräte nachts außerhalb des Zimmers) statt plötzlicher Totalverbote.",
+            "Alternativen stärken, in denen der Jugendliche Erfolg und Zugehörigkeit erlebt.",
+            "Bei Rückzug, Fehlzeiten oder Niedergeschlagenheit nach der Not hinter dem Spielen fragen."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Was Schule tun kann",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Vorbeugen.** Reine Information und Abschreckung mit Schockbildern oder drastischen Geschichten wirken kaum und können Neugier sogar wecken. Wirksamer sind interaktive Angebote, die Lebenskompetenzen stärken: Nein-Sagen unter Gruppendruck, Umgang mit Stress und Gefühlen, realistische Vorstellungen darüber, wie viele Gleichaltrige tatsächlich konsumieren – meist weniger, als Jugendliche glauben. Programme zum sozial-emotionalen Lernen verbessern nachweislich Verhalten und Schulleistungen (Durlak et al., 2011). Der vielleicht stärkste Schutz ist ein Schulklima, in dem sich Jugendliche gesehen fühlen und zu mindestens einem Erwachsenen Vertrauen haben.\n\n**Regeln und Hilfe verbinden.** Klare Regeln zu Konsum und Handys auf dem Schulgelände sind sinnvoll. Wer sie bricht, sollte aber nicht nur eine Sanktion, sondern auch ein Gesprächsangebot bekommen. Ein Ausschluss ohne Hilfe verliert Jugendliche gerade dann, wenn sie Halt brauchen.\n\n**Mit Eltern sprechen.** Viele Eltern reagieren auf einen Hinweis mit Panik, Scham oder Abwehr. Schildern Sie Beobachtungen aus der Schule, keine Vermutungen, und betonen Sie die gemeinsame Sorge. Sie können Eltern ermutigen, mit ihrem Kind im Gespräch zu bleiben statt nur zu kontrollieren oder zu drohen, klare Regeln zu vereinbaren und ohne Beziehungsabbruch daran festzuhalten, Minderjährigen auf Feiern keinen Alkohol zu geben, das eigene Vorbild zu bedenken und sich selbst beraten zu lassen – Suchtberatungsstellen beraten auch Eltern."
+        },
+        {
+          "art": "liste",
+          "titel": "Wenn Jugendliche trotzdem konsumieren: Botschaften, die schützen",
+          "punkte": [
+            "Nie allein konsumieren und aufeinander aufpassen.",
+            "Nicht mischen – vor allem nicht Alkohol mit Medikamenten oder anderen Drogen.",
+            "Nicht fahren und nicht bei jemandem mitfahren, der konsumiert hat.",
+            "Im Notfall sofort 112 rufen: Hilfe holen ist wichtiger als die Angst vor Ärger.",
+            "Nicht vor Schule, Prüfungen oder Sport konsumieren."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Konkret im Alltag",
+          "punkte": [
+            "Veränderungen sachlich dokumentieren (Fehlzeiten, Leistungen, Verhalten) und im Team teilen.",
+            "Früh ansprechen, unter vier Augen, mit Sorge statt Verdacht.",
+            "Den SePAS, die Schulpsychologin oder das Unterstützungsteam einbeziehen und dem Jugendlichen den Weg dorthin erleichtern, etwa durch eine Begleitung zum ersten Termin.",
+            "Eltern als Verbündete gewinnen: Beobachtungen schildern, nicht anklagen; auf Beratungsstellen hinweisen.",
+            "Mit Fachstellen der Suchtprävention und Jugendsuchtberatung zusammenarbeiten, etwa für Workshops oder Beratung; in Luxemburg gehören dazu das nationale Präventionszentrum CNAPA und für Mediennutzung BEE SECURE."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Enzo, 13 Jahre, 7e",
+          "text": "Enzo ist vor einem Jahr umgezogen und hat in der neuen Schule kaum Anschluss gefunden. Er spielt jeden Abend online bis nach Mitternacht, oft bis zwei Uhr. Montags fehlt er häufig, den Fußballverein hat er aufgegeben. Als die Eltern das WLAN abschalten, schlägt er gegen die Tür. In der Schule wirkt er müde und traurig. Die Tutorin spricht ihn auf seine Müdigkeit an und fragt nach seinem Spiel. Enzo erzählt begeistert von seinem Team – „die einzigen, die mich verstehen“.",
+          "fragen": [
+            "Welche Merkmale einer Computerspielstörung erkennen Sie, welche Hinweise auf eine andere Not?",
+            "Welche nächsten Schritte würden Sie mit den Eltern und dem SePAS besprechen?"
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Beziehen Sie den SePAS, die Schulpsychologin oder das Diagnostique-Team und die Leitung ein, wenn Konsum oder Mediennutzung zu deutlichen Folgen führt (Leistungsknick, Fehlzeiten, Rückzug, Konflikte), wenn ein Jugendlicher allein oder zur Bewältigung von Gefühlen konsumiert oder wenn Sie Hinweise auf Depression, Selbstverletzung oder Suizidgedanken haben. Sofort handeln – nach den internen Abläufen und gegebenenfalls über den Notruf 112 – müssen Sie bei akuter Vergiftung, bei Hinweisen auf Ausnutzung Minderjähriger, etwa wenn Jugendliche für Drogen „arbeiten“, und bei Gefahr für Leben und Gesundheit."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Warum handeln Jugendliche in Gruppen oft riskanter, obwohl sie Risiken eigentlich gut einschätzen können?",
+      "optionen": [
+        "Weil Jugendliche Risiken grundsätzlich nicht erkennen können",
+        "Weil riskantes Verhalten im Jugendalter immer auf Probleme in der Familie zurückgeht",
+        "Weil das Belohnungssystem früh und stark reagiert, während die Selbststeuerung im Stirnhirn noch reift – besonders unter dem Einfluss Gleichaltriger",
+        "Weil das Gehirn mit zwölf Jahren ausgereift ist und nur die Hormone stören"
+      ],
+      "richtig": [2],
+      "erklaerung": "Im Jugendalter reift das Belohnungssystem früher als die bremsenden Bereiche im Stirnhirn. In ruhigen Momenten schätzen Jugendliche Risiken durchaus realistisch ein, in aufregenden Gruppensituationen gewinnt die Belohnung. Die Hirnreifung dauert bis ins junge Erwachsenenalter, und riskantes Verhalten hat viele Ursachen, nicht nur familiäre."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Kennzeichen beschreibt die ICD-11 für die Computerspielstörung? (mehrere richtig)",
+      "optionen": [
+        "Verminderte Kontrolle über Beginn, Dauer und Ende des Spielens",
+        "Eine tägliche Spielzeit von mehr als drei Stunden",
+        "Spielen hat zunehmend Vorrang vor anderen Interessen und Pflichten",
+        "Weiterspielen trotz negativer Folgen",
+        "Das Spielen von Spielen mit Gewaltinhalten"
+      ],
+      "richtig": [0, 2, 3],
+      "erklaerung": "Die ICD-11 nennt Kontrollverlust, zunehmenden Vorrang des Spielens und Weiterspielen trotz negativer Folgen, dazu eine deutliche Beeinträchtigung. Eine bestimmte Stundenzahl ist kein Kriterium. Auch die Art des Spiels, etwa Gewaltinhalte, gehört nicht zu den Kennzeichen der Störung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Abschreckung mit Schockbildern und drastischen Geschichten ist die wirksamste Form der Suchtprävention in der Schule.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Reine Abschreckung und Information wirken kaum und können Neugier wecken. Wirksamer sind interaktive Programme, die Lebenskompetenzen stärken, realistische Normen vermitteln und ein Schulklima fördern, in dem Jugendliche sich zugehörig fühlen."
+    },
+    {
+      "art": "fall",
+      "fall": "Tom (15) war ein guter Schüler. Seit einigen Wochen kommt er oft müde, riecht manchmal nach Cannabis, und seine Noten sind stark gefallen. Eine Kollegin schlägt vor, ihn vor der Klasse darauf anzusprechen, „damit die anderen es auch mitbekommen“.",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Tom vor der Klasse zur Rede stellen, damit es eine abschreckende Wirkung hat.",
+        "Tom unter vier Augen ansprechen: konkrete Beobachtungen schildern, Sorge ausdrücken, offen fragen und zuhören – und transparent machen, wen Sie einbeziehen.",
+        "Sofort die Polizei informieren.",
+        "Nichts sagen, weil Konsum Privatsache ist."
+      ],
+      "richtig": [1],
+      "erklaerung": "Ein vertrauliches Gespräch mit konkreten Beobachtungen und echter Sorge öffnet am ehesten die Tür. Bloßstellen vor der Klasse beschämt und beendet das Vertrauen. Die Polizei ist bei einer Vermutung auf Eigenkonsum nicht der erste Schritt, und Schweigen lässt Tom mit dem Leistungsknick und seinen möglichen Ursachen allein."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Frage entspricht am ehesten der motivierenden Gesprächsführung?",
+      "optionen": [
+        "„Weißt du eigentlich, dass du dir damit deine Zukunft ruinierst?“",
+        "„Wenn du nicht aufhörst, rufe ich deine Eltern an.“",
+        "„Warum bist du so unvernünftig?“",
+        "„Was gefällt dir am Kiffen – und was stört dich vielleicht daran?“"
+      ],
+      "richtig": [3],
+      "erklaerung": "Eine offene Frage nach beiden Seiten lädt dazu ein, die eigene Ambivalenz auszusprechen – der Kern der motivierenden Gesprächsführung. Warnungen, Drohungen und Warum-Fragen mit Vorwurf lösen den Korrekturreflex aus und führen meist zu Rechtfertigung und Gegenwehr."
+    },
+    {
+      "art": "fall",
+      "fall": "Auf einer Klassenfahrt finden Sie Leo (16) nachts im Zimmer. Er hat viel Alkohol getrunken, sich erbrochen und reagiert kaum, als Sie ihn ansprechen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Bei ihm bleiben, die Atmung prüfen, ihn bei Bewusstlosigkeit mit Atmung in die stabile Seitenlage bringen und den Notruf 112 wählen; danach die Leitung und die Eltern informieren.",
+        "Ihn ins Bett legen, damit er seinen Rausch ausschläft, und morgen mit ihm reden.",
+        "Ihm Kaffee geben und ihn kalt duschen, damit er wieder zu sich kommt.",
+        "Zuerst herausfinden, wer ihm den Alkohol gegeben hat."
+      ],
+      "richtig": [0],
+      "erklaerung": "Ein kaum ansprechbarer Jugendlicher nach starkem Alkoholkonsum ist ein Notfall: Es drohen Ersticken an Erbrochenem und Atemstillstand. Er darf nicht allein gelassen werden, und der Notruf ist nötig. Kaffee und kalte Duschen helfen nicht, und die Frage nach der Herkunft des Alkohols kommt später."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Faktoren erhöhen das Risiko, dass aus Probierkonsum ein problematischer Konsum wird? (mehrere richtig)",
+      "optionen": [
+        "Ein früher Beginn des Konsums",
+        "Unbehandelte ADHS oder eine Depression",
+        "Konsum, um mit Stress oder schlechten Gefühlen fertigzuwerden",
+        "Eine verlässliche Beziehung zu einem Erwachsenen",
+        "Ein Freundeskreis, in dem regelmäßig konsumiert wird"
+      ],
+      "richtig": [0, 1, 2, 4],
+      "erklaerung": "Früher Beginn, psychische Belastungen wie ADHS oder Depression, Konsum zur Gefühlsregulation und ein konsumierender Freundeskreis sind bekannte Risikofaktoren. Eine verlässliche Beziehung zu einem Erwachsenen gehört dagegen zu den wichtigsten Schutzfaktoren."
+    },
+    {
+      "art": "fall",
+      "fall": "Enzo (13) spielt seit Monaten jeden Abend bis nach Mitternacht, fehlt montags oft und hat seinen Sportverein aufgegeben. Als die Eltern das WLAN abschalten, wird er aggressiv. Seit einem Umzug hat er kaum Freunde und wirkt in der Schule traurig.",
+      "frage": "Welche Einschätzung und welcher Schritt passen am besten?",
+      "optionen": [
+        "Enzo ist ein typischer Gamer; das Verhalten ist in dem Alter normal.",
+        "Den Eltern raten, ihm alle Geräte dauerhaft wegzunehmen.",
+        "Die Merkmale einer möglichen Computerspielstörung ernst nehmen, zugleich nach Einsamkeit und Stimmung fragen und mit Eltern und SePAS eine fachliche Einschätzung anregen.",
+        "Ihm verbieten, in der Schule über Spiele zu reden."
+      ],
+      "richtig": [2],
+      "erklaerung": "Kontrollverlust, Vorrang des Spielens und deutliche Folgen sprechen für eine problematische Nutzung; Einsamkeit und Traurigkeit deuten auf eine Not dahinter, die mitbehandelt werden muss. Ein plötzliches Totalverbot eskaliert oft und lässt die Ursache unberührt. Verharmlosen oder Gesprächsverbote verschenken die Chance, mit Enzo in Kontakt zu kommen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Jugendlicher viele Stunden am Tag spielt, reicht das für die Diagnose einer Computerspielstörung aus.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Entscheidend sind Kontrollverlust, Vorrang vor anderen Lebensbereichen, Weiterspielen trotz Folgen und eine deutliche Beeinträchtigung – in der Regel über längere Zeit. Viel Spielzeit allein kann auch begeistertes, unproblematisches Spielen sein."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was trifft auf Vapes (E-Zigaretten) bei Jugendlichen zu?",
+      "optionen": [
+        "Viele enthalten Nikotin, das schnell abhängig machen kann; Entzug kann sich im Unterricht als Unruhe, Gereiztheit und Konzentrationsprobleme zeigen.",
+        "Sie enthalten nur aromatisierten Wasserdampf und sind unbedenklich.",
+        "Wer dampft, raucht nachweislich nie Zigaretten.",
+        "Nikotin wirkt bei Jugendlichen schwächer als bei Erwachsenen."
+      ],
+      "richtig": [0],
+      "erklaerung": "Viele Vapes enthalten viel Nikotin; Jugendliche entwickeln oft schnell eine Abhängigkeit, und Entzugserscheinungen zeigen sich auch in der Schule. Vapes enthalten weit mehr als Wasserdampf, dampfende Jugendliche beginnen eher häufiger mit Zigaretten, und Jugendliche sind für Nikotin eher empfindlicher als Erwachsene."
+    },
+    {
+      "art": "fall",
+      "fall": "Sara (16) sagt im Gespräch mit ihrer Educatrice: „Ich trink halt am Wochenende, das machen alle. Aber letztes Mal wusste ich nicht mehr, wie ich nach Hause gekommen bin. Das war schon krass.“",
+      "frage": "Welche Antwort passt am besten zur motivierenden Gesprächsführung?",
+      "optionen": [
+        "„Siehst du, du bist schon auf dem Weg in eine Sucht.“",
+        "„Einerseits gehört Trinken für dich zum Wochenende dazu, andererseits hat dich der Filmriss erschreckt.“",
+        "„Das machen ganz sicher nicht alle.“",
+        "„Du musst sofort aufhören zu trinken.“"
+      ],
+      "richtig": [1],
+      "erklaerung": "Die Antwort spiegelt beide Seiten von Saras Ambivalenz und greift ihre eigene Sorge auf – so kann sie weiter über Veränderung nachdenken. Etikettieren, Widersprechen und Anweisungen lösen dagegen eher Rechtfertigung aus und verschließen das Gespräch."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Unbehandelte ADHS ist ein Risikofaktor für späteren problematischen Substanzkonsum.",
+      "richtig": [0],
+      "erklaerung": "Richtig. Impulsivität, Suche nach schneller Belohnung und viele Misserfolgserfahrungen erhöhen das Risiko. Eine ärztlich kontrollierte ADHS-Behandlung erhöht das Suchtrisiko dagegen nach heutigem Wissen nicht."
+    }
+  ],
+  "glossar": [
+    { "begriff": "Substanzkonsumstörung", "erklaerung": "Begriff des DSM-5-TR für problematischen Konsum mit Kontrollverlust, Vernachlässigung anderer Lebensbereiche, Konsum trotz Schäden und gegebenenfalls Toleranz und Entzug; leicht, mittel oder schwer." },
+    { "begriff": "Schädliches Konsummuster", "erklaerung": "Begriff der ICD-11 für Konsum, der bereits zu körperlichen oder seelischen Schäden oder zu Schäden für andere geführt hat, ohne dass eine Abhängigkeit vorliegt." },
+    { "begriff": "Abhängigkeit", "erklaerung": "Starker Drang zum Konsum mit verminderter Kontrolle, Vorrang vor anderen Lebensbereichen und oft körperlicher Gewöhnung (Toleranz, Entzug)." },
+    { "begriff": "Rauschtrinken", "erklaerung": "Trinken großer Mengen Alkohol bei einer Gelegenheit mit dem Ziel oder der Folge eines Rausches; bei Jugendlichen besonders riskant." },
+    { "begriff": "Toleranz und Entzug", "erklaerung": "Toleranz: Für dieselbe Wirkung wird mehr gebraucht. Entzug: Ohne die Substanz treten unangenehme körperliche oder seelische Beschwerden auf." },
+    { "begriff": "THC", "erklaerung": "Tetrahydrocannabinol, der berauschende Hauptwirkstoff von Cannabis. Sein Gehalt ist heute oft deutlich höher als früher." },
+    { "begriff": "Motivierende Gesprächsführung", "erklaerung": "Gesprächsansatz nach Miller und Rollnick, der Ambivalenz ernst nimmt und die eigenen Gründe eines Menschen für eine Veränderung hervorlockt, statt zu belehren." },
+    { "begriff": "Ambivalenz", "erklaerung": "Gleichzeitiges Wollen und Nicht-Wollen einer Veränderung. Normal und der Ausgangspunkt jeder Veränderung." },
+    { "begriff": "Korrekturreflex", "erklaerung": "Der Impuls von Helfenden, sofort zu warnen, zu belehren oder Lösungen vorzugeben. Er erzeugt meist Gegenwehr." },
+    { "begriff": "Computerspielstörung", "erklaerung": "Diagnose der ICD-11: anhaltendes Spielverhalten mit Kontrollverlust, Vorrang vor anderen Lebensbereichen und Weiterspielen trotz negativer Folgen, mit deutlicher Beeinträchtigung." }
+  ],
+  "quellen": ["dsm5tr", "icd11", "casey2008", "millerRollnick2013", "faraone2021", "durlak2011", "fegert2012", "rutter2015"],
+  "verwandt": ["gespraechsfuehrung", "risiko-schutz", "adhs", "depression", "psychose-bipolar", "elternarbeit"],
+  "toolbox": ["mein-handy-und-ich", "medien-tagebuch", "nein-unter-druck", "gut-schlafen", "stress-werkzeugkoffer"]
+}

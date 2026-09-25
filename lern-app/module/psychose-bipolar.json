@@ -1,0 +1,411 @@
+{
+  "id": "psychose-bipolar",
+  "bereich": "stoerungen",
+  "titel": "Seltene, aber wichtige: Psychose und bipolare Störung",
+  "untertitel": "Frühzeichen erkennen, jugendtypisches Verhalten und Drogenfolgen abgrenzen, in Krisen richtig handeln, die Rückkehr in die Schule begleiten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Kernmerkmale einer Psychose (Wahn, Halluzinationen, Denkstörungen, Negativsymptome) beschreiben und typische Frühzeichen im Schulalltag erkennen.",
+    "Sie können psychotische Symptome von jugendtypischen Phänomenen, Trauerreaktionen und kulturell geteilten Überzeugungen abgrenzen und wissen, welche Rolle Drogen und körperliche Ursachen spielen.",
+    "Sie können in einer akuten Situation ruhig und sicher handeln und wissen, wann Sie sofort weitervermitteln oder den Notruf wählen.",
+    "Sie können eine bipolare Störung von ADHS und dauerhafter Reizbarkeit unterscheiden und die Risiken manischer und depressiver Phasen einschätzen.",
+    "Sie können die Rückkehr einer Schülerin oder eines Schülers nach einer psychischen Erkrankung gemeinsam mit Familie und Fachleuten planen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "David, 16 Jahre, Lycée",
+          "text": "David war ein ruhiger, guter Schüler und spielte Fußball im Verein. Seit etwa einem halben Jahr zieht er sich zurück, hat den Verein aufgegeben und sitzt in den Pausen allein. Seine Noten sind in fast allen Fächern eingebrochen. In einem Aufsatz springt er von einem Gedanken zum nächsten; manche Sätze ergeben keinen Sinn. Seiner Tutorin sagt er leise, die anderen würden über ihn reden und ihm über das Handy Botschaften schicken. Er wirkt ungepflegt und übermüdet. Die Eltern meinen: „Das ist die Pubertät – oder er kifft.“",
+          "fragen": [
+            "Welche Beobachtungen gehen über das hinaus, was in der Pubertät üblich ist?",
+            "Warum wäre es riskant, einfach abzuwarten?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Psychosen und bipolare Störungen sind im Kindes- und Jugendalter **selten**. Die meisten Mitarbeitenden erleben sie nur wenige Male in ihrer Laufbahn. Trotzdem gehören sie in dieses Fundament, aus drei Gründen: Sie beginnen häufig im Jugendalter, also in der Schulzeit. Früh erkannt und behandelt, verlaufen sie meist deutlich besser. Und Pädagoginnen und Pädagogen gehören oft zu den Ersten, denen eine Veränderung auffällt.\n\nEine **Psychose** ist ein Zustand, in dem das Erleben der Wirklichkeit verändert ist: Betroffene hören zum Beispiel Stimmen, die andere nicht hören, oder sind fest von Dingen überzeugt, die nicht zutreffen. Bei einer **bipolaren Störung** wechseln Phasen gedrückter Stimmung mit Phasen, in denen Stimmung, Antrieb und Selbstbild weit über das normale Maß steigen. Beide Erkrankungen sind behandelbar; viele Jugendliche kehren nach einer Erkrankung in die Schule zurück und schließen sie ab."
+        },
+        {
+          "art": "merke",
+          "text": "Ihre Aufgabe ist nicht, eine Psychose oder bipolare Störung zu erkennen oder auszuschließen. Ihre Aufgabe ist, deutliche Veränderungen ernst zu nehmen, sachlich zu beschreiben und rasch weiterzuleiten – im Zweifel lieber einmal zu früh als zu spät."
+        }
+      ]
+    },
+    {
+      "titel": "Psychose erkennen: Frühzeichen und Symptome",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Erste Psychosen beginnen meist zwischen der späten Jugend und dem frühen Erwachsenenalter; vor der Pubertät sind sie sehr selten. Weniger als 1 von 100 Menschen erkrankt im Lauf des Lebens an einer Schizophrenie, der bekanntesten psychotischen Störung; psychotische Episoden insgesamt sind etwas häufiger. Das DSM-5-TR unterscheidet fünf Gruppen von Symptomen; die ICD-11 beschreibt sie ähnlich."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Symptome einer Psychose in Alltagssprache",
+          "spalten": ["Symptom", "Was es bedeutet", "Wie es sich zeigen kann"],
+          "zeilen": [
+            ["Wahn", "Feste Überzeugungen, die nicht der Wirklichkeit entsprechen und sich durch Gegenbeweise nicht ändern lassen", "„Die Lehrer lesen über Kameras meine Gedanken.“ – „Ich werde vergiftet.“ – „Das Radio sendet Botschaften nur für mich.“"],
+            ["Halluzinationen", "Wahrnehmungen ohne äußeren Reiz, am häufigsten Stimmen", "Wirkt, als lausche er etwas, antwortet ins Leere, hält sich die Ohren zu, wirkt plötzlich verängstigt"],
+            ["Denk- und Sprachstörungen", "Das Denken ist zerfahren oder bricht ab", "Springt zwischen Themen, Sätze passen nicht zusammen, verliert mitten im Satz den Faden, erfindet Wörter"],
+            ["Desorganisiertes Verhalten", "Handeln ist ungeordnet oder unpassend", "Unpassende Kleidung, lacht ohne Anlass, ungewöhnliche Bewegungen, starke Unruhe oder Erstarren"],
+            ["Negativsymptome", "Etwas geht verloren", "Antrieb, Freude, Mimik und Sprache werden weniger; Rückzug; Körperpflege wird vernachlässigt – oft als Faulheit missverstanden"]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Die Frühphase.** Einer ersten Psychose gehen oft Monate, manchmal Jahre voraus, in denen sich ein Jugendlicher schleichend verändert. Fachleute sprechen vom **Prodrom** oder von einer Hochrisikophase. Die Zeichen sind unspezifisch – sie passen auch zu Depression, Angst oder Drogenkonsum. Aufmerksamkeit verdienen sie vor allem, wenn mehrere zusammenkommen und eine deutliche Veränderung gegenüber früher darstellen. Nur ein Teil der Jugendlichen mit solchen Frühzeichen entwickelt später tatsächlich eine Psychose; viele entwickeln andere Probleme oder erholen sich. Gerade deshalb lohnt eine frühe fachliche Einschätzung: Sie klärt, was dahintersteckt, und verkürzt im Ernstfall die Zeit bis zur Behandlung. Je kürzer diese Zeit ist, desto günstiger verläuft eine Psychose meist."
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Frühzeichen – besonders, wenn mehrere zusammenkommen",
+          "punkte": [
+            "Rückzug von Freunden, Familie und Hobbys",
+            "Deutlicher Leistungsknick, der sich nicht durch äußere Umstände erklären lässt",
+            "Konzentrations- und Gedächtnisprobleme, Denken wirkt verlangsamt oder sprunghaft",
+            "Schlafstörungen, Tag-Nacht-Umkehr",
+            "Zunehmendes Misstrauen, das Gefühl, beobachtet oder über einen geredet zu werden",
+            "Ungewöhnliche Wahrnehmungen: Geräusche, Flüstern, Schatten, Dinge wirken verändert oder „unwirklich“",
+            "Neue, schwer nachvollziehbare Ideen oder starke Beschäftigung mit ungewöhnlichen Themen",
+            "Vernachlässigung der Körperpflege, Gereiztheit, Angst, gedrückte Stimmung"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Ursachen.** Fachleute erklären Psychosen mit dem **Vulnerabilitäts-Stress-Modell**: Eine erhöhte Verletzlichkeit – durch Erbanlagen, Besonderheiten der Hirnentwicklung oder frühe Belastungen – trifft auf Auslöser wie starken Stress, Schlafmangel oder Drogen. Psychosen kommen in manchen Familien gehäuft vor. Häufiger Konsum von Cannabis, besonders von starken Sorten und mit frühem Beginn, erhöht das Risiko deutlich (Fegert et al., 2012; Thapar et al., 2015). Erziehung verursacht keine Psychose."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: Was ist jugendtypisch, was nicht?",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Einzelne ungewöhnliche Erlebnisse sind bei Kindern und Jugendlichen gar nicht so selten: In Befragungen berichten nicht wenige, schon einmal eine Stimme gehört zu haben, die ihren Namen rief, oder etwas gesehen zu haben, das nicht da war. Meist sind solche Erlebnisse vorübergehend und harmlos. Bedeutsam werden sie, wenn sie **häufiger werden, Angst machen, das Handeln bestimmen** oder mit einem **Rückzug und Leistungsabfall** einhergehen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht",
+          "punkte": [
+            { "wie": "Fantasie und magisches Denken bei jüngeren Kindern", "unterschied": "Ein unsichtbarer Freund mit vier Jahren oder die Angst vor Monstern gehören zur normalen Entwicklung. Das Kind kann meist zwischen Spiel und Wirklichkeit unterscheiden." },
+            { "wie": "Wahrnehmungen beim Einschlafen und Aufwachen", "unterschied": "Kurze Bilder oder Geräusche im Halbschlaf sind häufig und kein Krankheitszeichen." },
+            { "wie": "Trauer", "unterschied": "Viele Trauernde spüren die verstorbene Person, hören oder sehen sie kurz. Das ist Teil der Trauer, solange der Alltag nicht zusammenbricht." },
+            { "wie": "Kulturell oder religiös geteilte Überzeugungen", "unterschied": "Vorstellungen, die in der Familie oder Gemeinschaft geteilt werden – etwa über Geister, den bösen Blick oder Gebetserlebnisse –, sind kein Wahn. Fragen Sie nach, wie das Umfeld die Überzeugung sieht." },
+            { "wie": "Jugendliche Weltbilder", "unterschied": "Interesse an Verschwörungserzählungen, Esoterik, ungewöhnlicher Kleidung oder Subkulturen ist für sich kein Krankheitszeichen. Aufmerksam werden sollten Sie bei starrer, persönlicher Bedrohung („Man will mich töten“) und Veränderung des ganzen Verhaltens." },
+            { "wie": "Trauma und Dissoziation", "unterschied": "Nach schweren Erlebnissen kommen sich aufdrängende Erinnerungen, Flashbacks, Gefühle der Unwirklichkeit und manchmal auch Stimmen vor. Die Einordnung gehört in fachliche Hände." },
+            { "wie": "Zwangsgedanken und Autismus", "unterschied": "Zwangsgedanken werden meist als eigene, übertriebene oder unsinnige Gedanken erkannt. Wörtliches Verstehen und Spezialinteressen bei Autismus sind keine Denkstörung." }
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Drogen.** Cannabis, besonders starke Sorten und synthetische Cannabinoide, Amphetamine, Kokain und Halluzinogene können psychotische Zustände auslösen – während des Rausches oder danach. Solche Zustände klingen oft ab, wenn der Konsum endet. Ein beträchtlicher Teil der Jugendlichen mit einer drogenbedingten Psychose entwickelt aber später eine anhaltende psychotische Störung. „Das kommt nur von den Drogen“ ist deshalb kein Grund zur Entwarnung, sondern ein Grund für fachliche Begleitung.\n\n**Körperliche Ursachen.** Auch Entzündungen des Gehirns, Epilepsie, hohes Fieber, Stoffwechsel- und Hormonstörungen oder Medikamente können Symptome wie bei einer Psychose hervorrufen. Deshalb gehört zu jeder ersten psychotischen Episode eine gründliche ärztliche Untersuchung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Schizophrenie bedeutet, eine gespaltene Persönlichkeit zu haben.",
+          "fakt": "Nein. Bei einer Schizophrenie ist das Erleben der Wirklichkeit verändert, die Person bleibt eine Person. Die Vorstellung „mehrerer Persönlichkeiten“ beschreibt eine ganz andere, dissoziative Störung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Menschen mit Psychosen sind gefährlich.",
+          "fakt": "Die allermeisten Menschen mit einer Psychose sind nicht gewalttätig; sie werden sogar häufiger selbst Opfer von Gewalt. Das Risiko für Selbstverletzung und Suizid ist dagegen deutlich erhöht und verdient besondere Aufmerksamkeit."
+        }
+      ]
+    },
+    {
+      "titel": "Akute Situationen und schnelle Weiterleitung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine akute Psychose kann sich zeigen als große Angst oder Misstrauen, Reden mit Stimmen, zerfahrene Sprache, starke Unruhe, Erstarren oder ungewöhnliches, unberechenbares Verhalten. Für den Jugendlichen ist das Erleben real und oft schrecklich. Ihr Ziel ist nicht, ihn zu überzeugen, sondern **Sicherheit herzustellen, zu beruhigen und Hilfe zu holen**."
+        },
+        {
+          "art": "tun",
+          "titel": "Was in der akuten Situation hilft",
+          "punkte": [
+            "Ruhig und langsam sprechen, kurze, klare Sätze, eine Frage nach der anderen.",
+            "Reize verringern: ein ruhiger Raum, wenige Menschen, kein Publikum.",
+            "Abstand halten, nicht unerwartet berühren, dem Jugendlichen einen Ausweg lassen.",
+            "Gefühle anerkennen, ohne den Inhalt zu bestätigen: „Ich höre die Stimmen nicht, aber ich glaube dir, dass du sie hörst und dass sie dir Angst machen.“",
+            "Konkret fragen, was jetzt helfen würde, und einfache Wahlmöglichkeiten anbieten.",
+            "Den Jugendlichen bei Gefahr nicht allein lassen; eine zweite Kollegin dazuholen.",
+            "Die Leitung informieren und die Eltern noch am selben Tag einbeziehen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was die Lage verschärft",
+          "punkte": [
+            "Über den Wahninhalt diskutieren oder ihn „wegbeweisen“ wollen.",
+            "So tun, als stimme man zu („Ja, die Kameras sind da“).",
+            "Drohen, laut werden, festhalten ohne akute Gefahr.",
+            "Lachen, Spott oder das Geschehen vor der Klasse kommentieren.",
+            "Den Jugendlichen allein nach Hause schicken."
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Rufen Sie sofort den Notruf 112, wenn akute Gefahr für den Jugendlichen oder andere besteht (etwa Suizidäußerungen, Stimmen, die zu Gewalt auffordern, massive Unruhe), wenn er stark verwirrt, nicht ansprechbar ist oder der Verdacht auf eine Vergiftung besteht. Sprechen Sie Suizidgedanken direkt an – danach zu fragen, bringt niemanden auf die Idee. Folgen Sie den internen Krisenabläufen Ihrer Einrichtung."
+        },
+        {
+          "art": "weiter",
+          "text": "Auch ohne akute Gefahr gilt bei Verdacht auf beginnende Psychose oder Manie: nicht abwarten. Sprechen Sie mit der Leitung, der Psychologin oder dem SePAS bzw. dem Diagnostique-Team und informieren Sie zeitnah die Eltern. Empfehlen Sie eine rasche Abklärung in der Kinder- und Jugendpsychiatrie; bei starker Verschlechterung ist die psychiatrische Notaufnahme zuständig. Geben Sie konkrete, datierte Beobachtungen weiter – etwa „seit März vier Fachnoten ungenügend, sitzt seit Wochen allein, sagt, die Mitschüler schicken ihm Botschaften“."
+        },
+        {
+          "art": "fall",
+          "titel": "Was Davids Tutorin tut",
+          "text": "Die Tutorin nimmt David beiseite: „Du wirkst seit einiger Zeit sehr angespannt, und du hast mir erzählt, dass du Botschaften bekommst. Das klingt, als ob dich das sehr belastet.“ David nickt und sagt, er schlafe kaum noch. Sie diskutiert nicht über die Botschaften, fragt aber ruhig, ob er schon einmal daran gedacht habe, sich etwas anzutun – er verneint. Noch am selben Tag spricht sie mit der Leitung und dem SePAS. Die Eltern werden angerufen und gebeten, einen kurzfristigen Termin in der Kinder- und Jugendpsychiatrie zu vereinbaren. Die Tutorin notiert ihre Beobachtungen mit Datum.",
+          "fragen": [
+            "Warum fragt die Tutorin nach Suizidgedanken?",
+            "Was hätte sich geändert, wenn David die Frage bejaht hätte?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Bipolare Störung im Jugendalter",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Bei einer **bipolaren Störung** wechseln sich depressive Phasen mit **manischen** oder abgeschwächten, **hypomanischen** Phasen ab. Dazwischen liegen oft Zeiten mit ausgeglichener Stimmung. Nach DSM-5-TR dauert eine manische Phase mindestens eine Woche (bei Klinikaufnahme auch kürzer), eine hypomanische mindestens vier Tage – jeweils fast den ganzen Tag, fast jeden Tag. Die ICD-11 beschreibt dies ähnlich. Etwa 1 bis 2 von 100 Menschen erkranken im Lauf ihres Lebens. Die Störung beginnt häufig in der Jugend oder im jungen Erwachsenenalter, bei Kindern vor der Pubertät ist sie selten. Oft ist die erste Episode eine Depression – die bipolare Natur zeigt sich erst später. Eine bipolare Störung bei Eltern oder Geschwistern ist ein wichtiger Hinweis."
+        },
+        {
+          "art": "liste",
+          "titel": "Zeichen einer manischen Phase – eine deutliche Veränderung gegenüber sonst",
+          "punkte": [
+            "Gehobene, überdrehte oder sehr gereizte Stimmung",
+            "Stark vermindertes Schlafbedürfnis: fühlt sich nach drei Stunden Schlaf ausgeruht",
+            "Übersteigertes Selbstbild bis zu Größenideen („Ich werde der nächste Präsident“)",
+            "Redet ununterbrochen, springt von Idee zu Idee, ist kaum zu unterbrechen",
+            "Starke Ablenkbarkeit, viele angefangene Projekte, rastlose Aktivität",
+            "Riskantes Verhalten: Geld ausgeben, sexuelle Risiken, gefährliches Fahren, Streit mit Autoritäten"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Episode statt Dauerzustand.** Um die Jahrtausendwende wurde in den USA bei sehr vielen Kindern mit dauerhafter Reizbarkeit und Wutausbrüchen eine bipolare Störung diagnostiziert. Die Forschung zeigte später, dass sich diese Kinder meist anders entwickeln: eher zu Depressionen und Ängsten als zu einer bipolaren Störung. Seit dem DSM-5 gibt es für sie eine eigene Diagnose, die **disruptive Affektregulationsstörung**. Für den Alltag heißt das: Eine bipolare Störung zeigt sich in **abgrenzbaren Phasen**, die sich deutlich vom üblichen Wesen des Jugendlichen unterscheiden. Dauerhafte Reizbarkeit, Unruhe oder Impulsivität seit der frühen Kindheit sprechen eher für ADHS, oppositionelles Verhalten oder Schwierigkeiten der Emotionsregulation."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht",
+          "punkte": [
+            { "wie": "ADHS", "unterschied": "Unruhe, Ablenkbarkeit und Impulsivität bestehen dauerhaft seit der Kindheit, ohne abgrenzbare Phasen und ohne vermindertes Schlafbedürfnis." },
+            { "wie": "Verliebtsein, Erfolg, Partywochenende", "unterschied": "Gute Laune mit Anlass, die weder das Urteilsvermögen außer Kraft setzt noch den Schlaf über Tage auf wenige Stunden verkürzt." },
+            { "wie": "Drogen und Medikamente", "unterschied": "Amphetamine, Kokain oder missbräuchlich eingenommene Stimulanzien können manieähnliche Zustände hervorrufen; bei entsprechender Veranlagung können auch Antidepressiva eine Manie auslösen." },
+            { "wie": "Rasche Stimmungswechsel bei Beziehungsstress", "unterschied": "Wechsel innerhalb von Stunden, ausgelöst durch Kränkung oder Streit, passen eher zu Schwierigkeiten der Emotionsregulation als zu bipolaren Episoden." }
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Risiken.** In manischen Phasen gefährden Jugendliche sich durch riskantes Verhalten, Schulden, sexuelle Grenzverletzungen oder Konflikte mit dem Gesetz. Depressive und gemischte Phasen, in denen Antrieb und Verzweiflung zusammenkommen, gehen mit einem deutlich erhöhten Suizidrisiko einher. Häufig kommen Substanzkonsum und Ängste dazu. Das Modul zu Selbstverletzung und Suizidalität beschreibt, wie Sie Suizidgedanken ansprechen."
+        },
+        {
+          "art": "fall",
+          "titel": "Jana, 17 Jahre, Lycée",
+          "text": "Jana hatte im Winter eine schwere depressive Phase und war wochenlang kaum in der Schule. Seit zehn Tagen ist sie wie ausgewechselt: Sie schläft nach eigenen Worten „drei Stunden, mehr braucht ein Genie nicht“, redet im Unterricht ununterbrochen, unterbricht Lehrkräfte und will mit ihrem Ersparten eine Modefirma gründen. Wird sie gebremst, wird sie laut und beleidigend. Ihr Klassenlehrer beschreibt die Veränderung sachlich der Leitung und dem SePAS; noch am selben Tag werden die Eltern informiert und um eine rasche psychiatrische Vorstellung gebeten.",
+          "fragen": [
+            "Welche Beobachtungen sprechen für eine manische Phase und nicht für gute Laune?",
+            "Warum ist die frühere depressive Phase eine wichtige Information?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Rückkehr in die Schule",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Psychosen und bipolare Störungen werden von der **Kinder- und Jugendpsychiatrie** behandelt, bei akuter Gefahr auch stationär. Die Behandlung verbindet Medikamente, Psychotherapie, Aufklärung von Jugendlichen und Familie und Unterstützung im Alltag (Fegert et al., 2012; Thapar et al., 2015).\n\n**Medikamente.** Bei Psychosen verringern **Antipsychotika** Wahn, Halluzinationen und Unruhe. Häufige Nebenwirkungen sind Müdigkeit, verlangsamtes Denken, Appetit- und Gewichtszunahme sowie Bewegungsstörungen wie innere Unruhe oder Steifigkeit. Bei bipolaren Störungen werden **Stimmungsstabilisierer** wie Lithium oder bestimmte Antipsychotika eingesetzt. Bei Lithium werden die Blutspiegel regelmäßig kontrolliert; starker Flüssigkeitsverlust durch Hitze, Sport, Erbrechen oder Durchfall kann den Spiegel gefährlich erhöhen. Über Beginn, Dosis und Absetzen entscheidet ausschließlich die Ärztin, der Arzt.\n\n**Psychotherapie und Familie.** Psychotherapie hilft, mit Symptomen umzugehen, Warnzeichen eines Rückfalls früh zu erkennen und das Leben wieder aufzubauen. Ein ruhiges, vorhersehbares und wenig kritisches Umfeld in der Familie senkt nachweislich das Rückfallrisiko; dieselbe Haltung hilft auch in der Schule. Ein regelmäßiger Schlaf-Wach-Rhythmus schützt besonders bei bipolaren Störungen."
+        },
+        {
+          "art": "text",
+          "text": "**Die Rückkehr in die Schule.** Nach einer Erkrankung sind Konzentration, Gedächtnis und Belastbarkeit oft noch über Monate eingeschränkt – durch die Erkrankung selbst, durch Negativsymptome und durch Nebenwirkungen. Was wie Faulheit aussieht, ist oft Erschöpfung. Gleichzeitig ist die Schule ein wichtiger Ort der Normalität und Zugehörigkeit. Eine gut geplante Rückkehr ist deshalb ein Teil der Behandlung."
+        },
+        {
+          "art": "tun",
+          "titel": "Was die Rückkehr erleichtert",
+          "punkte": [
+            "Ein Rückkehrgespräch vor dem ersten Schultag: Jugendlicher, Eltern, Leitung, Tutorin, SePAS und – mit schriftlichem Einverständnis – die behandelnde Klinik.",
+            "Stufenweise Rückkehr: zunächst wenige Stunden oder Fächer, dann schrittweise mehr.",
+            "Eine feste Ansprechperson und ein Rückzugsort für Pausen.",
+            "Anpassungen bei Prüfungen und Abgaben (mehr Zeit, Prioritäten, verschobene Termine); klären Sie mögliche aménagements raisonnables mit der Leitung.",
+            "Mit dem Jugendlichen vereinbaren, was die Klasse erfahren soll – die Diagnose gehört ihm, nicht der Schule.",
+            "Die persönlichen Frühwarnzeichen kennen (etwa weniger Schlaf, Rückzug, Misstrauen) und vereinbaren, wer bei welchen Zeichen wen informiert.",
+            "Bei Lithium Trinken jederzeit ermöglichen; bei Erbrechen, Durchfall, starkem Zittern oder Verwirrtheit sofort die Eltern informieren und ärztlichen Rat einholen.",
+            "Normal behandeln, mit realistischen Erwartungen – weder schonen noch überfordern."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Mia, 15 Jahre, nach sechs Wochen Klinik",
+          "text": "Mia hatte eine erste psychotische Episode und war sechs Wochen in der Kinder- und Jugendpsychiatrie. Beim Rückkehrgespräch vereinbaren alle, dass sie zwei Wochen lang nur vormittags kommt und die Proben der nächsten Wochen verschoben werden. Mia möchte, dass die Klasse nur erfährt, sie sei „länger krank gewesen“. Ihre Ansprechperson ist die Tutorin; im SePAS gibt es einen ruhigen Raum für Pausen. Mia ist durch ihr Medikament morgens sehr müde. Nach sechs Wochen ist sie wieder ganztags da. Als sie im Frühjahr kaum noch schläft und misstrauisch wirkt, informiert die Tutorin wie vereinbart die Eltern.",
+          "fragen": [
+            "Welche Elemente des Plans schützen Mia vor Überforderung, welche vor Stigmatisierung?",
+            "Warum war es wichtig, die Frühwarnzeichen vorher zu vereinbaren?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Datenschutz und Würde: Diagnose und Behandlung sind vertraulich. Geben Sie nur weiter, was für die Unterstützung nötig ist und wozu der Jugendliche oder die Eltern eingewilligt haben – und unterbinden Sie Gerüchte in der Klasse."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist mit „Wahn“ gemeint?",
+      "optionen": [
+        "Eine starke Angst vor bestimmten Situationen, etwa vor Spinnen",
+        "Eine feste Überzeugung, die nicht der Wirklichkeit entspricht und sich durch Gegenbeweise nicht ändern lässt",
+        "Eine religiöse Überzeugung, die in der Familie oder Gemeinschaft geteilt wird",
+        "Das Hören einer Stimme, obwohl niemand spricht"
+      ],
+      "richtig": [1],
+      "erklaerung": "Ein Wahn ist eine unkorrigierbare, nicht zutreffende Überzeugung, oft mit persönlicher Bedeutung wie Verfolgung oder Beeinflussung. Eine Phobie ist eine Angststörung, geteilte religiöse oder kulturelle Überzeugungen sind kein Wahn, und eine Stimme ohne Sprecher zu hören, ist eine Halluzination."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können Frühzeichen einer beginnenden Psychose sein? (mehrere richtig)",
+      "optionen": [
+        "Rückzug von Freunden und ein deutlicher Leistungsknick über Monate",
+        "Zunehmendes Misstrauen, das Gefühl, beobachtet oder über einen geredet zu werden",
+        "Flüstern oder Geräusche hören, wenn niemand da ist",
+        "Ein unsichtbarer Freund bei einem vierjährigen Kind",
+        "Sprunghaftes Denken, Sätze, die nicht zusammenpassen"
+      ],
+      "richtig": [0, 1, 2, 4],
+      "erklaerung": "Rückzug mit Leistungsknick, Misstrauen, ungewöhnliche Wahrnehmungen und beginnende Denkstörungen sind typische Frühzeichen, besonders wenn mehrere zusammenkommen. Ein unsichtbarer Freund gehört bei Vorschulkindern zur normalen Fantasieentwicklung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Menschen mit einer Psychose sind in der Regel gewalttätig.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Die allermeisten Menschen mit einer Psychose sind nicht gewalttätig und werden sogar häufiger selbst Opfer von Gewalt. Deutlich erhöht ist dagegen das Risiko für Selbstverletzung und Suizid."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Schüler (16) sagt Ihnen verängstigt, die Lehrkräfte würden über Kameras seine Gedanken lesen. Er schläft seit Wochen kaum, wirkt gehetzt und hat sich zurückgezogen. Suizidgedanken verneint er auf Nachfrage.",
+      "frage": "Was ist das beste Vorgehen?",
+      "optionen": [
+        "Ihm mit Argumenten beweisen, dass es keine Kameras gibt.",
+        "Ihm raten, mit dem Kiffen aufzuhören, dann gehe das von allein weg.",
+        "Ruhig bleiben, seine Angst anerkennen, ohne den Inhalt zu bestätigen oder zu widerlegen, die Leitung einbeziehen und noch am selben Tag mit den Eltern eine kinder- und jugendpsychiatrische Abklärung anstoßen.",
+        "Bis zum nächsten Elterngespräch abwarten und ihn weiter beobachten."
+      ],
+      "richtig": [2],
+      "erklaerung": "Das Bild passt zu einer möglichen beginnenden Psychose; Beruhigung, Anerkennung der Angst und rasche Weiterleitung sind jetzt richtig. Diskussionen über den Wahninhalt verschärfen die Lage. Ob Drogen eine Rolle spielen, klären Fachleute – ein Rat zum Aufhören ersetzt keine Abklärung. Abwarten verlängert die Zeit bis zur Behandlung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum gehört zu einer ersten psychotischen Episode immer auch eine gründliche körperliche Untersuchung?",
+      "optionen": [
+        "Weil auch Entzündungen des Gehirns, Epilepsie, Stoffwechselstörungen, Medikamente oder Drogen psychotische Zustände auslösen können",
+        "Weil Psychosen immer eine körperliche Ursache haben",
+        "Weil Jugendliche nur mit einem ärztlichen Attest wieder in die Schule dürfen",
+        "Weil Medikamente sonst nicht wirken"
+      ],
+      "richtig": [0],
+      "erklaerung": "Verschiedene körperliche Erkrankungen und Substanzen können Symptome wie bei einer Psychose hervorrufen und brauchen eine eigene Behandlung. Das heißt nicht, dass jede Psychose körperlich verursacht ist. Mit Attesten oder der Wirksamkeit von Medikamenten hat die Untersuchung nichts zu tun."
+    },
+    {
+      "art": "fall",
+      "fall": "Am Montag nach einem Festival wirkt Sarah (17) verwirrt und sehr ängstlich. Sie sieht „Schatten“, die sie verfolgen, und erzählt, sie habe am Wochenende „etwas Neues“ geraucht.",
+      "frage": "Was ist richtig?",
+      "optionen": [
+        "Das ist nur ein Drogenrausch; sie soll nach Hause gehen und ausschlafen.",
+        "Sie allein in einen ruhigen Raum setzen, bis es vorbei ist.",
+        "Vor der Klasse die Gefahren von Drogen besprechen, solange das Beispiel frisch ist.",
+        "Die Situation als Notfall behandeln: bei ihr bleiben, bei starker Verwirrtheit, Angst oder körperlichen Beschwerden den Notruf 112 wählen, sonst eine sofortige ärztliche Abklärung veranlassen, Leitung und Eltern informieren."
+      ],
+      "richtig": [3],
+      "erklaerung": "Ein psychotischer Zustand nach unbekannten Substanzen ist ein medizinischer Notfall: Es können Vergiftung, gefährliches Verhalten oder der Beginn einer anhaltenden Psychose dahinterstecken. Sarah allein zu lassen oder nach Hause zu schicken, ist gefährlich. Ihren Fall vor der Klasse als Beispiel zu nutzen, verletzt ihre Würde."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welches Merkmal spricht am ehesten für eine bipolare Störung und gegen ADHS oder dauerhafte Reizbarkeit?",
+      "optionen": [
+        "Das Kind ist seit dem Kindergarten unruhig und impulsiv.",
+        "Die Stimmung verändert sich in abgrenzbaren Phasen von Tagen bis Wochen, die sich deutlich vom sonstigen Wesen unterscheiden, mit stark vermindertem Schlafbedürfnis.",
+        "Der Jugendliche hat häufig Wutausbrüche, wenn ihm etwas verboten wird.",
+        "Der Jugendliche ist nach Streit mit der Freundin für einige Stunden verzweifelt."
+      ],
+      "richtig": [1],
+      "erklaerung": "Kennzeichen der bipolaren Störung sind Episoden – deutliche Veränderungen über Tage, oft mit kaum Schlafbedürfnis. Dauerhafte Unruhe seit der frühen Kindheit passt eher zu ADHS, häufige Wutausbrüche zu Schwierigkeiten der Emotionsregulation, und kurze Stimmungseinbrüche nach Streit sind keine bipolaren Episoden."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen passen zu einer manischen Phase? (mehrere richtig)",
+      "optionen": [
+        "Schläft seit Tagen nur drei Stunden pro Nacht und fühlt sich trotzdem voller Energie.",
+        "Redet ununterbrochen und springt von Idee zu Idee.",
+        "Ist seit der Grundschule impulsiv und unruhig.",
+        "Hält sich für auserwählt, plant riesige Projekte und gibt viel Geld aus.",
+        "Ist am Sonntag nach einer Party müde und schlecht gelaunt."
+      ],
+      "richtig": [0, 1, 3],
+      "erklaerung": "Vermindertes Schlafbedürfnis, Rededrang mit Ideenflucht und Größenideen mit riskantem Verhalten sind typische Zeichen einer Manie – als Veränderung gegenüber sonst. Dauerhafte Impulsivität seit der Grundschule spricht eher für ADHS, Müdigkeit nach einer Party ist normal."
+    },
+    {
+      "art": "fall",
+      "fall": "Mia (15) kommt nach sechs Wochen in der Kinder- und Jugendpsychiatrie wegen einer ersten Psychose zurück. Mitschülerinnen fragen neugierig, was los war. Mia ist morgens sehr müde.",
+      "frage": "Was ist am sinnvollsten?",
+      "optionen": [
+        "Der Klasse die Diagnose erklären, damit alle Bescheid wissen und Rücksicht nehmen.",
+        "Mia vom ersten Tag an voll belasten, damit sie nichts verpasst.",
+        "Mit Mia, den Eltern und – mit Einverständnis – der Klinik einen Rückkehrplan vereinbaren: stufenweise Rückkehr, Ansprechperson, Anpassungen bei Proben, und mit Mia klären, was die Klasse erfahren soll.",
+        "Mia von Ausflügen und Gruppenarbeiten fernhalten, damit sie sich nicht aufregt."
+      ],
+      "richtig": [2],
+      "erklaerung": "Eine geplante, stufenweise Rückkehr mit Ansprechperson und Anpassungen schützt vor Überforderung; Mia entscheidet, was über ihre Erkrankung gesagt wird. Die Diagnose ohne ihr Einverständnis offenzulegen, verletzt Vertraulichkeit und fördert Stigmatisierung. Volle Belastung überfordert, Ausschluss von Gemeinschaft isoliert."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Jugendlicher nach einer Psychose langsamer arbeitet und müde wirkt, zeigt das vor allem fehlende Motivation.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Nebenwirkungen der Medikamente, Negativsymptome und Nachwirkungen der Erkrankung auf Konzentration und Gedächtnis können über Monate bestehen. Hilfreich sind angepasste Anforderungen und Geduld – nicht Vorwürfe."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Schüler mit bipolarer Störung nimmt Lithium. Am Sporttag ist es sehr heiß. Am Nachmittag hat er sich erbrochen, zittert stark und wirkt benommen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Ihn aus der Sonne holen, nicht weiter belasten und sofort die Eltern informieren und ärztlichen Rat einholen – bei deutlicher Benommenheit den Notruf 112 wählen.",
+        "Ihn nach einer Pause weitermachen lassen; Zittern kommt bei Hitze vor.",
+        "Ihm raten, die nächste Tablette wegzulassen.",
+        "Ihm raten, eine zusätzliche Tablette zu nehmen, damit es ihm besser geht."
+      ],
+      "richtig": [0],
+      "erklaerung": "Flüssigkeitsverlust durch Hitze und Erbrechen kann den Lithiumspiegel gefährlich erhöhen; starkes Zittern und Benommenheit sind Warnzeichen. Das gehört sofort in ärztliche Hände. Weitermachen lassen ist gefährlich, und über die Einnahme entscheidet nie die Schule, sondern die Ärztin."
+    },
+    {
+      "art": "fall",
+      "fall": "Leila (14) erzählt, dass sie seit dem Tod ihrer Großmutter vor zwei Monaten manchmal abends deren Stimme hört, die ihr Mut zuspricht. Sie ist traurig, geht aber zur Schule, trifft Freundinnen und schläft normal.",
+      "frage": "Wie schätzen Sie das ein?",
+      "optionen": [
+        "Es ist ein Frühzeichen einer Psychose; sofort den Notruf wählen.",
+        "Leila sollte das niemandem erzählen, damit sie nicht für verrückt gehalten wird.",
+        "Stimmenhören beweist, dass Leila eine psychiatrische Behandlung braucht.",
+        "Solche Erlebnisse kommen in der Trauer häufig vor. Zuhören, die Trauer begleiten und aufmerksam bleiben, ob sich Alltag, Schlaf oder Stimmung deutlich verschlechtern."
+      ],
+      "richtig": [3],
+      "erklaerung": "Die verstorbene Person zu hören oder zu spüren, ist in der Trauer häufig und nicht krankhaft, solange der Alltag gelingt. Ein Notruf wäre überzogen, und eine Behandlungsbedürftigkeit lässt sich daraus nicht ableiten. Schweigen zu raten, isoliert Leila; Offenheit und Aufmerksamkeit sind der richtige Weg."
+    }
+  ],
+  "glossar": [
+    { "begriff": "Psychose", "erklaerung": "Zustand, in dem das Erleben der Wirklichkeit deutlich verändert ist, etwa durch Wahn, Halluzinationen oder Denkstörungen." },
+    { "begriff": "Wahn", "erklaerung": "Feste, nicht zutreffende Überzeugung, die sich durch Gegenbeweise nicht ändern lässt und nicht kulturell geteilt wird." },
+    { "begriff": "Halluzination", "erklaerung": "Wahrnehmung ohne äußeren Reiz, zum Beispiel das Hören von Stimmen, die sonst niemand hört." },
+    { "begriff": "Denkstörung", "erklaerung": "Störung des Gedankenablaufs: Das Denken ist zerfahren, springt oder bricht ab; die Sprache wird schwer verständlich." },
+    { "begriff": "Negativsymptome", "erklaerung": "Verlust von Antrieb, Freude, Gefühlsausdruck und sozialem Interesse bei Psychosen; oft mit Faulheit verwechselt." },
+    { "begriff": "Prodrom", "erklaerung": "Frühphase vor einer ersten Psychose mit unspezifischen Veränderungen wie Rückzug, Leistungsknick und ungewöhnlichen Wahrnehmungen." },
+    { "begriff": "Vulnerabilitäts-Stress-Modell", "erklaerung": "Erklärungsmodell: Eine erhöhte Verletzlichkeit (Anlage, Entwicklung) führt zusammen mit Belastungen oder Drogen zum Ausbruch einer Erkrankung." },
+    { "begriff": "Manie und Hypomanie", "erklaerung": "Phasen mit gehobener oder gereizter Stimmung, gesteigertem Antrieb und vermindertem Schlafbedürfnis; die Hypomanie ist die abgeschwächte Form." },
+    { "begriff": "Bipolare Störung", "erklaerung": "Erkrankung mit wechselnden manischen oder hypomanischen und meist auch depressiven Phasen." },
+    { "begriff": "Antipsychotika und Stimmungsstabilisierer", "erklaerung": "Medikamente gegen psychotische Symptome bzw. zur Vorbeugung neuer Stimmungsphasen (z. B. Lithium). Verordnung und Kontrolle durch die Ärztin." }
+  ],
+  "quellen": ["dsm5tr", "icd11", "fegert2012", "rutter2015"],
+  "verwandt": ["sucht-medien", "depression", "selbstverletzung-suizid", "deeskalation", "medikation", "trauma"],
+  "toolbox": ["neustart", "gut-schlafen", "mein-unterstuetzungsnetz", "sicherheitsplan", "nachgespraech-krise"]
+}

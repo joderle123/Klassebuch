@@ -132,6 +132,17 @@ window.CDSE_APPS = [
     stichworte: 'isa material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf'
   },
 
+  {
+    id: 'lernen',
+    name: 'Lernen',
+    beschreibung: 'Fachwissen für den Alltag: Lernmodule zu Entwicklung, Störungsbildern, Persönlichkeit und wirksamem Handeln – mit Fallbeispielen, Quiz und Lernkartei. Der Lernstand ist privat.',
+    symbol: 'wissen',
+    farbe: '#2E3A9C',
+    bereich: 'Wissen & Lernen',
+    datei: 'apps/lernen.html',
+    stichworte: 'lernen fortbildung weiterbildung wissen grundlagen modul quiz lernkartei glossar adhs autismus trauma angst depression bindung deeskalation eltern kinderschutz'
+  },
+
   /* ---------- Vorübergehend ausgeblendet: zum Einblenden die Kommentarzeichen
                 am Anfang und am Ende dieses Blocks entfernen ----------
   {

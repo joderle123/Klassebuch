@@ -32,7 +32,7 @@ const ROOT='file:///home/user/Klassebuch/', SHOT=process.argv[2];
 
   console.log('\n[1] Übersicht Annexe');
   let names=await p.$$eval('.tile[data-href] h3',h=>h.map(x=>x.textContent));
-  ok(names.join('|')==='Klassenbuch|ELDiB-Generator|Toolbox','Kacheln: '+names.join(', '));
+  ok(names.join('|')==='Klassenbuch|ELDiB-Generator|Toolbox|Lernen','Kacheln: '+names.join(', '));
   const stands=await p.$$eval('.tile-stand',s=>s.map(x=>x.textContent));
   // Erwartung aus apps/versionen.js (ändert sich mit jedem update-apps)
   const erwartetStand=await p.evaluate(()=>['klassenbuch','eldib','toolbox'].map(id=>{const v=(window.CDSE_APP_VERSIONEN||{})[id];const d=v&&(v.datum||v.stand);return d?'Stand '+d.split('-').reverse().join('.'):'';}).join('|'));
@@ -75,7 +75,7 @@ const ROOT='file:///home/user/Klassebuch/', SHOT=process.argv[2];
   console.log('\n[5] Diagnostique');
   await konto('Ben Beispiel','diagnostique','Kaffee mit Milch 7');
   names=await p.$$eval('.tile[data-href] h3',h=>h.map(x=>x.textContent));
-  ok(names.join('|')==='Journal|Befundbericht|ELDiB-Generator|Toolbox','Kacheln: '+names.join(', '));
+  ok(names.join('|')==='Journal|Befundbericht|ELDiB-Generator|Toolbox|Lernen','Kacheln: '+names.join(', '));
   const [jTab]=await Promise.all([ctx.waitForEvent('page'),p.click('.tile[data-tabtile="journal"] .tile-open')]);
   await jTab.waitForLoadState('load'); await jTab.waitForTimeout(3000);
   ok(/apps\/journal\.html$/.test(jTab.url()),'Journal im eigenen Tab');

@@ -1,0 +1,540 @@
+{
+  "id": "etep",
+  "bereich": "handeln",
+  "titel": "ETEP und ELDiB in der Praxis",
+  "untertitel": "Sozial-emotionale Entwicklung einschätzen, Förderziele ableiten und stufengerecht handeln",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Grundidee der Entwicklungstherapie/Entwicklungspädagogik (ETEP) erklären und begründen, warum Förderung an der Entwicklungsstufe ansetzt.",
+    "Sie kennen die fünf Stufen und die vier Entwicklungsbereiche der ELDiB und können Beispiel-Items einordnen.",
+    "Sie können eine ELDiB-Einschätzung im Team sorgfältig durchführen: beobachten, zuverlässig einschätzen, Unterschiede besprechen.",
+    "Sie können aus einer Einschätzung wenige passende Förderziele ableiten und als Ich-Ziele formulieren.",
+    "Sie können Ihre Rolle als Erwachsener an die Entwicklungsstufe des Kindes im jeweiligen Bereich anpassen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Leandro, 10 Jahre, Cycle 3.2",
+          "text": "Leandro rechnet sicher im Zahlenraum bis 1 000 und liest altersgerecht. Im Morgenkreis aber hält er es kaum aus, bis er an der Reihe ist: Er ruft dazwischen, und wenn ein anderes Kind drankommt, schiebt er seinen Stuhl weg. Verliert er beim Spiel, wirft er die Karten auf den Boden. Lob beantwortet er mit Albernheiten. Die Klassenlehrerin hat mit ihm schon viele Gespräche über Fairness und Rücksicht geführt. Leandro kann die Regeln fehlerfrei aufsagen – im nächsten Spiel geht es trotzdem wieder schief.",
+          "fragen": [
+            "Welche Fähigkeiten hat Leandro schon, welche noch nicht?",
+            "Warum helfen die vielen Gespräche über Fairness bisher wenig?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die **Entwicklungstherapie/Entwicklungspädagogik (ETEP)** geht auf die amerikanische Sonderpädagogin Mary M. Wood zurück. Sie entwickelte das Konzept ab den 1970er-Jahren als *Developmental Therapy* und erweiterte es später zu *Developmental Therapy – Developmental Teaching* (Wood, 1996). Marita Bergsson und Heide Luckfiel haben es für den deutschsprachigen Raum übertragen (Bergsson & Luckfiel, 1998). Im CDSE wird die zugehörige Einschätzung, die **ELDiB**, genutzt, um die sozial-emotionale Entwicklung eines Kindes zu beschreiben und daraus Ziele für den individuellen Förderplan abzuleiten.\n\nDie Grundidee: Sozial-emotionale Fähigkeiten entwickeln sich – wie Sprache oder Motorik – in einer typischen Reihenfolge. Ein Kind muss erst warten können, bevor es sich in einer Gruppe abwechseln kann; es muss erst eigene Erfahrungen beschreiben können, bevor es die Gefühle anderer in Worte fasst. Viele Verhaltensprobleme lassen sich so als **Entwicklungslücke** verstehen: Das Kind ist zehn Jahre alt, aber einzelne sozial-emotionale Fähigkeiten entsprechen einer früheren Entwicklungsstufe. Förderung setzt deshalb nicht am Alter an, sondern dort, wo das Kind tatsächlich steht, und plant den **nächsten Schritt**.\n\nETEP beruht auf wenigen Grundsätzen: an Stärken ansetzen statt an Defiziten, der Entwicklungsreihenfolge folgen, für Freude und Erfolg sorgen und Lernerfahrungen so gestalten, dass sie für das Kind bedeutsam sind. Fähigkeiten werden positiv beschrieben – als Kompetenz, die ein Kind zeigt, nicht als Störung, die es hat."
+        },
+        {
+          "art": "merke",
+          "text": "ETEP fragt nicht: „Was stimmt mit diesem Kind nicht?“, sondern: „Was kann es schon – und was ist der nächste Entwicklungsschritt?“"
+        }
+      ]
+    },
+    {
+      "titel": "Fünf Stufen, vier Bereiche",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "ETEP beschreibt die sozial-emotionale Entwicklung in **vier Bereichen** und **fünf Stufen**. Die vier Bereiche sind:\n\n**Verhalten:** Wie steuert das Kind sein eigenes Verhalten – vom Reagieren auf einfache Reize bis zur Selbstverantwortung?\n\n**Kommunikation:** Wie nutzt es Sprache – vom Äußern von Bedürfnissen bis zum Pflegen von Beziehungen?\n\n**Sozialisation:** Wie gestaltet es Beziehungen zu Erwachsenen und Gleichaltrigen – vom ersten Vertrauen bis zu dauerhaften Freundschaften?\n\n**Kognition:** Wie denkt und lernt es – von Wahrnehmung und Motorik über schulische Fähigkeiten bis zum Lösen von Problemen durch Nachdenken?\n\nDie ELDiB – der **Entwicklungstherapeutische/entwicklungspädagogische Lernziel-Diagnose-Bogen** – übersetzt dieses Modell in 171 Items: 33 im Bereich Verhalten, 35 in der Kommunikation, 41 in der Sozialisation und 62 in der Kognition. Jedes Item beschreibt eine beobachtbare Fähigkeit und hat einen Code aus Bereich und Nummer, zum Beispiel V-10 für das zehnte Item im Bereich Verhalten. Die Items sind nach Stufen und in einer Entwicklungsreihenfolge geordnet."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die fünf Stufen mit Beispiel-Items",
+          "spalten": [
+            "Stufe",
+            "Name",
+            "Grobe Orientierung",
+            "Beispiele aus der ELDiB"
+          ],
+          "zeilen": [
+            [
+              "I",
+              "Mit Freude auf die Umwelt reagieren",
+              "frühe Kindheit",
+              "Reagiert auf eigenen Namen (SOZ-3); Zeigt Wiedererkennen von Routineabläufen (V-8)"
+            ],
+            [
+              "II",
+              "Erfolgreich auf die Umwelt reagieren",
+              "Kleinkind- und Kindergartenalter",
+              "Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen (V-10); Teilt mit anderen (SOZ-16)"
+            ],
+            [
+              "III",
+              "Erwerben von Fähigkeiten zur erfolgreichen Teilnahme in Gruppen",
+              "erste Grundschuljahre",
+              "Nennt Gründe für Verhaltenserwartungen (V-17); Teilt und wechselt sich ab (SOZ-19)"
+            ],
+            [
+              "IV",
+              "Sich einbringen in Gruppenprozesse",
+              "spätere Grundschuljahre",
+              "Reagiert auf Provokationen kontrolliert (V-26); Drückt eigene Gefühle aus (K-26)"
+            ],
+            [
+              "V",
+              "Anwenden von individuellen und gruppenbezogenen Fähigkeiten in neuen Situationen",
+              "Jugendalter",
+              "Löst Probleme durch Einsicht und Analyse (V-33); Pflegt positive Beziehungen (K-35)"
+            ]
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ziele je Stufe: Verhalten und Sozialisation",
+          "spalten": [
+            "Stufe",
+            "Verhalten",
+            "Sozialisation"
+          ],
+          "zeilen": [
+            [
+              "I",
+              "Den eigenen körperlichen Fähigkeiten vertrauen",
+              "Einem Erwachsenen genügend vertrauen, um auf ihn zu reagieren"
+            ],
+            [
+              "II",
+              "Erfolgreich an Routineabläufen und Aktivitäten teilnehmen",
+              "Sich erfolgreich an Aktivitäten beteiligen"
+            ],
+            [
+              "III",
+              "Erworbene Fähigkeiten anwenden, um innerhalb einer Gruppe das eigene Verhalten erfolgreich zu steuern",
+              "Gruppenaktivitäten als befriedigend erleben"
+            ],
+            [
+              "IV",
+              "Persönliche Fähigkeiten einsetzen, um zum Gruppenerfolg beizutragen",
+              "Nimmt von sich aus und erfolgreich als Gruppenmitglied an Aktivitäten teil"
+            ],
+            [
+              "V",
+              "Realen Lebenserfahrungen mit konstruktivem Verhalten begegnen",
+              "Beginnt und pflegt selbständig dauerhafte und tragfähige Beziehungen mit anderen"
+            ]
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ziele je Stufe: Kommunikation und Kognition",
+          "spalten": [
+            "Stufe",
+            "Kommunikation",
+            "Kognition"
+          ],
+          "zeilen": [
+            [
+              "I",
+              "Gebraucht Wörter, um Bedürfnisse zu befriedigen",
+              "Auf die Umgebung reagieren mit gezielten Körperbewegungen und elementaren mentalen Verarbeitungsprozessen"
+            ],
+            [
+              "II",
+              "Gebraucht Wörter, um andere in konstruktiver Weise zu beeinflussen",
+              "Beteiligung an Aktivitäten, die Fähigkeiten der Selbsthilfe, motorischen Koordination, Sprache sowie mentale Prozesse erfordern"
+            ],
+            [
+              "III",
+              "Gebraucht Wörter, um sich auf konstruktive Weise innerhalb einer Gruppe zu äußern",
+              "Beteiligt sich erfolgreich in einer Lerngruppe und setzt dabei grundlegende Lernkompetenzen ein"
+            ],
+            [
+              "IV",
+              "Verwendet Wörter, um Verständnis von Gefühlen und Verhaltensweisen von sich und anderen zu zeigen",
+              "Gebraucht kognitive und schulische Fähigkeiten, um sich erfolgreich an sozialen Gruppenerfahrungen zu beteiligen"
+            ],
+            [
+              "V",
+              "Verwendet Wörter, um Beziehungen auszubauen und zu pflegen",
+              "Setzt erfolgreich kognitive Fähigkeiten zur Bereicherung persönlicher Erfahrungen ein"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Ein Kind steht nicht auf einer einzigen Stufe.** Eingeschätzt wird jeder Bereich getrennt, und die Ergebnisse unterscheiden sich oft deutlich. Leandro aus dem Eingangsbeispiel lernt in der Kognition auf dem Niveau seiner Altersgruppe; im Verhalten und in der Sozialisation arbeitet er dagegen an Zielen der Stufe II. Genau dieses Profil erklärt, warum Gespräche über Fairness – eine Methode späterer Stufen – bei ihm verpuffen.\n\nDie Altersangaben in der Tabelle sind nur eine grobe Orientierung an der typischen Entwicklung, keine Norm. Die Stufen beschreiben Entwicklungsschritte, keine Klassenstufen: Ein Jugendlicher im Lycée kann in einem Bereich an Zielen der Stufe III arbeiten, ohne dass das etwas über seine Intelligenz aussagt."
+        }
+      ]
+    },
+    {
+      "titel": "Die ELDiB: sorgfältig einschätzen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die ELDiB ist **kein Test**, den ein Kind in einer Sitzung bearbeitet, sondern eine **Einschätzung auf der Grundlage von Alltagsbeobachtungen**. Die Erwachsenen, die das Kind gut kennen, beurteilen, welche der beschriebenen Fähigkeiten es im Alltag zeigt. Das hat Vorteile: Die Einschätzung bildet das wirkliche Verhalten in der Klasse, in der Pause und in der Maison Relais ab, und sie beschreibt Fähigkeiten so konkret, dass sich daraus unmittelbar Ziele ableiten lassen. Sie hat aber auch eine Grenze: Sie ist nur so gut wie die Beobachtungen, auf denen sie beruht.\n\nFür jedes Item wird entschieden, ob das Kind die Fähigkeit schon sicher zeigt, ob sie das nächste Lernziel ist oder ob sie noch außer Reichweite liegt. Im ELDiB-Werkzeug des CDSE heißen diese Markierungen **„Erreicht“**, **„Ziel“** und **„Nicht erreicht“**. Eingeschätzt wird der Reihe nach, Bereich für Bereich. Stufen, die ein Kind sicher beherrscht, sind schnell bearbeitet; genau hinschauen muss man dort, wo die ersten Lücken auftauchen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Markierungen am Beispiel V-10 („Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen“)",
+          "spalten": [
+            "Markierung",
+            "Bedeutung",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Erreicht",
+              "Das Kind zeigt die Fähigkeit zuverlässig – in verschiedenen Situationen, mit verschiedenen Personen, nicht nur an guten Tagen.",
+              "Das Kind wartet im Morgenkreis, beim Mittagessen und im Sport, ohne dass ein Erwachsener es festhält oder neben ihm sitzen muss."
+            ],
+            [
+              "Ziel",
+              "Das Kind ist bereit, an der Fähigkeit zu arbeiten: Es zeigt sie manchmal, mit Unterstützung oder nur in manchen Situationen.",
+              "Im Einzelkontakt wartet es, in der Gruppe nur, wenn der Educateur ihm die Hand auf die Schulter legt."
+            ],
+            [
+              "Nicht erreicht",
+              "Die Fähigkeit liegt noch außer Reichweite, weil frühere Schritte fehlen.",
+              "Schon V-8 („Zeigt Wiedererkennen von Routineabläufen“) ist noch nicht erreicht; Warten ist daher noch kein sinnvolles Ziel."
+            ]
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "So gelingt eine zuverlässige Einschätzung",
+          "punkte": [
+            "Im Team einschätzen: mindestens zwei, besser drei Personen, die das Kind in unterschiedlichen Situationen erleben (Klasse, Pause, Maison Relais, Einzelförderung). Eltern und – bei älteren Kindern und Jugendlichen – die Schülerin oder der Schüler selbst tragen wertvolle Sichtweisen bei.",
+            "Beobachten statt erinnern: vor der Einschätzung gezielt beobachten und Beispiele notieren, statt aus dem Gedächtnis zu urteilen.",
+            "„Erreicht“ nur, wenn die Fähigkeit zuverlässig und in verschiedenen Situationen gezeigt wird – ein einzelner guter Tag reicht nicht.",
+            "Einschätzen, was das Kind zeigt, nicht was es angeblich „eigentlich könnte“.",
+            "Unterschiedliche Einschätzungen besprechen statt mitteln: Wartet ein Kind im Einzelkontakt, in der Klasse aber nicht, ist die Fähigkeit noch nicht gefestigt – und genau das ist eine wichtige Information.",
+            "Die Einschätzung in regelmäßigen Abständen wiederholen, etwa einmal pro Trimester oder Semester, damit Fortschritte sichtbar werden."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Die ELDiB ist ein pädagogisches Einschätzungsinstrument, keine Diagnose im medizinischen Sinn. Sie ergänzt psychologische, ärztliche und schulische Abklärungen, ersetzt sie aber nicht."
+        }
+      ]
+    },
+    {
+      "titel": "Von der Einschätzung zum Förderziel",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Aus der Einschätzung ergeben sich die Förderziele fast von selbst: Es sind die **nächsten noch nicht gefestigten Items** in der Entwicklungsreihenfolge – die Fähigkeiten, die direkt auf dem aufbauen, was das Kind schon kann. Ziele, die weiter oben liegen, überfordern und führen zu Misserfolg. Das ELDiB-Werkzeug des CDSE unterstützt diese Logik: Ein Item lässt sich dort nicht als Ziel festlegen, solange ein früheres Item desselben Bereichs als „nicht erreicht“ markiert ist, und je Bereich sind höchstens vier Ziele möglich.\n\n**Weniger ist mehr.** Wählen Sie wenige Ziele, an denen alle Beteiligten tatsächlich arbeiten. Oft ist es sinnvoll, bei Verhalten und Sozialisation anzusetzen, weil diese Bereiche die Teilnahme an Unterricht und Gruppe tragen. Entscheidend ist aber, wo das Kind im Alltag am stärksten eingeschränkt ist.\n\n**Ich-Ziele.** Ziele werden aus der Sicht des Kindes formuliert: positiv, konkret und beobachtbar. Die ELDiB bietet zu jedem Item Zielformulierungen an, zum Beispiel zu V-10: „Ich melde mich und warte, bis ich drankomme.“ Oder zu K-16: „Wenn ich wütend bin, sage ich, was mich stört, ohne zu verletzen.“ Solche Sätze kann das Kind verstehen, sich merken und selbst überprüfen. Im CDSE fließen die ausgewählten Ziele mit ihren Ich-Formulierungen in den individuellen Förderplan, den **PEI** (*Plan éducatif individualisé*)."
+        },
+        {
+          "art": "liste",
+          "titel": "Vom Ziel in den Alltag – fünf Fragen",
+          "punkte": [
+            "In welchen Situationen des Tages kann das Kind das Ziel üben?",
+            "Welche Unterstützung braucht es dabei – und wie wird sie nach und nach verringert?",
+            "Woran erkennen alle Beteiligten, dass das Ziel erreicht ist?",
+            "Wie erfährt das Kind von seinen Fortschritten: Rückmeldung, Zielkarte, kurzes Gespräch?",
+            "Wie werden Eltern, Maison Relais und andere Beteiligte einbezogen?"
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Leandros Ziele",
+          "text": "Das Team – Klassenlehrerin, Educateur und eine Kollegin des CDSE – schätzt Leandro gemeinsam ein. Im Bereich Verhalten zeigt er die Fähigkeiten der Stufe I und die meisten der Stufe II sicher. Nicht gefestigt sind V-10 („Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen“) und V-14 („Akzeptiert Lob oder Erfolg ohne unangemessenes Verhalten“); beide werden Ziele. In der Sozialisation wählt das Team SOZ-14 („Wartet ohne Hilfe“) und SOZ-17 („Beteiligt sich an interaktivem Spiel“). Im Morgenkreis bekommt Leandro einen festen Platz neben dem Educateur, eine Sprechkarte und eine sofortige Anerkennung, wenn er gewartet hat. Spiele übt er zunächst in kurzen Runden mit einem Erwachsenen, in denen Gewinnen und Verlieren sich abwechseln; danach wird benannt, was gut gelungen ist. Nach einem Trimester wird neu eingeschätzt.",
+          "fragen": [
+            "Warum wählt das Team kein Ziel der Stufe IV wie V-26 („Reagiert auf Provokationen kontrolliert“)?",
+            "Welche Unterstützung bekommt Leandro, und wie könnte sie später verringert werden?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Stufengerecht handeln: die Rolle der Erwachsenen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein Kernsatz von ETEP lautet: Nicht nur die Ziele, auch das Verhalten der Erwachsenen richtet sich nach der Entwicklungsstufe. Wood (1996) beschreibt für jede Stufe, welche Rolle Erwachsene einnehmen, welche Aktivitäten und Materialien passen und wie viel Struktur ein Kind braucht. Vereinfacht gilt: Je früher die Stufe, desto mehr Struktur, Nähe und unmittelbare Rückmeldung geben die Erwachsenen. Je weiter die Entwicklung fortschreitet, desto mehr treten sie zurück und überlassen der Gruppe und dem Kind selbst Verantwortung."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die Rolle der Erwachsenen je Stufe (vereinfacht nach Wood, 1996)",
+          "spalten": [
+            "Stufe",
+            "Was das Kind vor allem braucht",
+            "Rolle der Erwachsenen",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "I",
+              "Sicherheit, Wohlbefinden, angenehme Sinneserfahrungen, Vertrauen in einen Erwachsenen",
+              "versorgen, Interesse wecken, für Wohlbefinden sorgen",
+              "einfache, sich wiederholende Abläufe; sehr kurze Aktivitäten; Erwachsene handeln vor allem, statt viel zu sprechen"
+            ],
+            [
+              "II",
+              "Erfolg erleben, verlässliche Routinen, einfache und klare Erwartungen",
+              "motivieren, Erfolg sichern, Struktur geben",
+              "feste Tagesabläufe, klare Anweisungen, sofortiges konkretes Lob, Aufgaben, die sicher gelingen; die Erwachsenen halten die Regeln"
+            ],
+            [
+              "III",
+              "Regeln verstehen und in der Gruppe anwenden, Anerkennung für gelungenes Verhalten",
+              "ermutigen, die Gruppe leiten, Regeln erklären und begründen",
+              "Regeln gemeinsam besprechen, Gründe nennen, Verhaltensalternativen im Rollenspiel üben, kurze Reflexionsrunden"
+            ],
+            [
+              "IV",
+              "dazugehören, sich in die Gruppe einbringen, Gefühle und Verhalten verstehen",
+              "Gruppenprozesse begleiten, beraten, Verantwortung übertragen",
+              "Klassenrat, Gruppenprojekte, Konflikte unter Gleichaltrigen moderiert lösen, über Gefühle und Beweggründe sprechen"
+            ],
+            [
+              "V",
+              "Fähigkeiten in neuen, realen Situationen anwenden, eigene Werte und Identität entwickeln",
+              "beraten, Vertrauensperson und Vorbild sein",
+              "echte Verantwortung (Ämter, Praktika), Gespräche über Werte und Zukunft, eigene Ziele setzen und überprüfen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wenn Methode und Stufe nicht zusammenpassen.** Viele gut gemeinte Maßnahmen scheitern, weil sie eine spätere Stufe voraussetzen. Ein langes Gespräch darüber, wie sich der Mitschüler gefühlt hat, verlangt Fähigkeiten wie K-21 („Erkennt Gefühle anderer“, Stufe III) oder K-29 („Beschreibt Ursache-Wirkung“, Stufe IV). Ein Kind, das im Verhalten an Zielen der Stufe II arbeitet, braucht dagegen klare Abläufe, eine kurze Rückmeldung und die Erfahrung, dass etwas gelingt. Umgekehrt fühlen sich Jugendliche, die an Zielen der Stufen IV oder V arbeiten, durch kleinschrittige Belohnungssysteme und enge Kontrolle leicht bevormundet – sie brauchen Beteiligung und Verantwortung.\n\n**Hinter die Oberfläche schauen.** ETEP unterscheidet zwischen dem sichtbaren Verhalten und dem, was es antreibt. Wood (1996) beschreibt typische Ängste, die im Lauf der Entwicklung nacheinander in den Vordergrund treten: die Angst, verlassen zu werden, die Angst, nicht zu genügen, Schuldgefühle, innere Konflikte zwischen eigenen Wünschen und den Erwartungen anderer und schließlich Fragen der eigenen Identität. Dasselbe Wegrennen kann bei einem Kind Angst vor dem Versagen ausdrücken, bei einem anderen die Angst, von der Gruppe abgelehnt zu werden. Wer das Motiv versteht, wählt passendere Hilfen."
+        },
+        {
+          "art": "lassen",
+          "titel": "Typische Fehler im Umgang mit ETEP und ELDiB",
+          "punkte": [
+            "Ein Kind auf eine Stufe festlegen („ein Stufe-II-Kind“) – die Einschätzung gilt je Bereich und nur für den Moment.",
+            "Zu optimistisch einschätzen, um dem Kind Mut zu machen, oder zu streng, weil es gerade eine schwierige Woche hatte.",
+            "Zu viele Ziele auf einmal, sodass im Alltag keines wirklich verfolgt wird.",
+            "Ziele, die im Förderplan stehen, aber im Unterricht nicht vorkommen.",
+            "Einmal einschätzen und dann nie wieder – so bleiben Fortschritte unsichtbar.",
+            "Die Einschätzung ohne die Menschen vornehmen, die das Kind am besten kennen."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Fortschritte überprüfen und zusammenarbeiten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die ELDiB entfaltet ihren Nutzen erst in der Wiederholung. Wird sie in regelmäßigen Abständen erneut ausgefüllt, zeigt sich, welche Ziele erreicht wurden und wo die Entwicklung stockt. Erreichte Ziele werden gewürdigt – möglichst gemeinsam mit dem Kind („Weißt du noch, wie schwer dir das Warten im Herbst gefallen ist?“) –, und die nächsten Items rücken als Ziele nach. Das ELDiB-Werkzeug des CDSE stellt die zuletzt erreichten Items je Bereich in einem eigenen Dokument, dem Complément, zusammen; so werden Fortschritte auch für Eltern und andere Fachleute sichtbar.\n\n**Wenn ein Ziel nicht erreicht wird**, lohnt sich eine gemeinsame Prüfung, bevor man es einfach weiterträgt: War das Ziel wirklich der nächste Schritt, oder lag es zu hoch? Wurde im Alltag tatsächlich daran gearbeitet? War die Unterstützung passend und ausreichend? Gibt es Belastungen, die die Entwicklung gerade bremsen – eine Trennung der Eltern, ein Umzug, ein Klassenwechsel? Manchmal zeigt sich dabei auch, dass eine weitere Abklärung nötig ist."
+        },
+        {
+          "art": "tun",
+          "titel": "Eltern und Kind einbeziehen",
+          "punkte": [
+            "Die Ergebnisse den Eltern in Alltagssprache erklären und mit den Stärken beginnen: Was kann das Kind schon?",
+            "Die Ziele mit dem Kind besprechen – als Ich-Sätze, die es versteht und sich merken kann; bei jüngeren Kindern mit Bildern.",
+            "Gemeinsam überlegen, wie die Ziele zu Hause und in der Maison Relais unterstützt werden können.",
+            "Fortschritte sichtbar machen: eine Zielkarte, eine Zieltreppe, ein kurzer Wochenrückblick."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Die ELDiB beschreibt Entwicklungsstände; Ursachen klärt sie nicht. Sprechen Sie mit der Leitung und dem Diagnostique-Team des CDSE, wenn ein Kind in mehreren Bereichen weit hinter seiner Altersgruppe liegt, wenn es Fähigkeiten verliert, die es schon sicher hatte, wenn trotz passender Förderung über längere Zeit keine Fortschritte sichtbar werden oder wenn Sie Hinweise auf Belastungen wie Gewalt, Vernachlässigung, eine psychische Erkrankung oder eine Entwicklungsstörung haben. Dann braucht es eine fachliche Abklärung – psychologisch, ärztlich oder kinder- und jugendpsychiatrisch."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist der Grundgedanke von ETEP?",
+      "optionen": [
+        "Förderung richtet sich nach dem Lebensalter und dem Lehrplan der Klasse.",
+        "Förderung setzt an der tatsächlichen Entwicklungsstufe an und plant den nächsten Schritt.",
+        "Verhaltensprobleme werden vor allem durch Strafen und Belohnungen verändert.",
+        "Förderung beginnt erst, wenn eine medizinische Diagnose vorliegt."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "ETEP versteht sozial-emotionale Fähigkeiten als Entwicklungsschritte in einer typischen Reihenfolge. Gefördert wird dort, wo das Kind steht, nicht dort, wo es nach seinem Alter stehen sollte. Verstärkung kann Teil der Förderung sein, ist aber nicht der Grundgedanke, und eine medizinische Diagnose ist keine Voraussetzung."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zur ELDiB treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Sie beruht auf Beobachtungen im Alltag.",
+        "Sie ersetzt eine psychologische oder ärztliche Diagnostik.",
+        "Ihre Items sind in einer Entwicklungsreihenfolge geordnet.",
+        "Sie wird am besten von mehreren Personen ausgefüllt, die das Kind in verschiedenen Situationen erleben.",
+        "Ein Item gilt als erreicht, sobald das Kind die Fähigkeit einmal gezeigt hat."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Die ELDiB ist eine Einschätzung auf der Grundlage von Alltagsbeobachtungen, nach Entwicklungsschritten geordnet, und sie gewinnt durch mehrere Blickwinkel an Genauigkeit. Eine fachliche Diagnostik ergänzt sie, ersetzt sie aber nicht. „Erreicht“ heißt: zuverlässig und in verschiedenen Situationen – ein einzelnes Mal reicht nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "In der Einschätzung von Mira (11) sind im Bereich Verhalten die Stufe I und V-9 erreicht. V-10 („Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen“) zeigt sie nur im Einzelkontakt, V-11 („Beteiligt sich verbal und physisch an Aktivitäten im Sitzen“) nur manchmal.",
+      "frage": "Welche Items kommen als Förderziele am ehesten infrage?",
+      "optionen": [
+        "V-26 („Reagiert auf Provokationen kontrolliert“), weil Mira schon elf Jahre alt ist",
+        "V-33 („Löst Probleme durch Einsicht und Analyse“), damit sie über ihr Verhalten nachdenkt",
+        "Keine, weil Mira für ihr Alter zu weit zurückliegt",
+        "V-10 und V-11, also die nächsten noch nicht gefestigten Items"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Förderziele sind die nächsten Schritte direkt über dem Erreichten – hier V-10 und V-11. Ziele der Stufen IV oder V würden Mira überfordern, weil ihnen die Voraussetzungen fehlen. Das Alter allein bestimmt die Ziele nicht, und ein Entwicklungsrückstand ist gerade ein Grund für gezielte Förderung, nicht gegen sie."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Formulierung entspricht am besten einem Ich-Ziel im Sinne der ELDiB?",
+      "optionen": [
+        "„Ich melde mich und warte, bis ich drankomme.“",
+        "„Er soll im Unterricht nicht mehr hereinrufen.“",
+        "„Ich bin ab jetzt immer lieb zu allen.“",
+        "„Ich versuche, weniger Probleme zu machen.“"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ein gutes Ich-Ziel ist aus Sicht des Kindes formuliert, positiv, konkret und beobachtbar. „Er soll nicht hereinrufen“ ist eine Fremdbeschreibung und sagt nur, was nicht sein soll. „Immer lieb“ und „weniger Probleme“ sind zu allgemein: Weder das Kind noch die Erwachsenen können erkennen, wann das Ziel erreicht ist."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind, das im Bereich Kognition Items der Stufe IV erreicht, befindet sich auch in den Bereichen Verhalten und Sozialisation auf Stufe IV.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Jeder Bereich wird getrennt eingeschätzt, und die Profile sind oft sehr unterschiedlich. Gerade Kinder mit sozial-emotionalem Förderbedarf arbeiten in der Kognition häufig an späteren Stufen als im Verhalten oder in der Sozialisation."
+    },
+    {
+      "art": "fall",
+      "fall": "Jonas (12) arbeitet im Bereich Verhalten an Zielen der Stufe II. Nach jedem Konflikt führt seine Lehrerin ein langes Gespräch mit ihm darüber, wie sich die anderen Kinder gefühlt haben.",
+      "frage": "Was passt besser zu seiner Entwicklungsstufe?",
+      "optionen": [
+        "Die Gespräche so lange verlängern, bis Jonas echte Einsicht zeigt.",
+        "Klare Routinen, kurze Anweisungen und sofortige positive Rückmeldung, wenn ihm etwas gelingt.",
+        "Ihm mehr Verantwortung in Gruppenprojekten übertragen, damit er an der Aufgabe wächst.",
+        "Die Gespräche durch schriftliche Reflexionsbögen nach jedem Konflikt ersetzen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Auf Stufe II brauchen Kinder vor allem Struktur und die Erfahrung, dass etwas gelingt; die Erwachsenen motivieren und sichern Erfolg. Lange Gespräche über die Gefühle anderer und schriftliche Reflexion setzen Fähigkeiten späterer Stufen voraus. Eigenverantwortung in Gruppenprojekten ist ein typisches Angebot der Stufe IV und würde Jonas überfordern."
+    },
+    {
+      "art": "fall",
+      "fall": "Bei der Einschätzung von SOZ-17 („Beteiligt sich an interaktivem Spiel“) sagt die Kollegin aus der Einzelförderung: „Das kann er sicher.“ Die Klassenlehrerin sagt: „In der Pause klappt das nie.“",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Der Kollegin aus der Einzelförderung folgen, weil sie das Kind am intensivsten erlebt.",
+        "Das Item als „Erreicht“ markieren, weil das Kind die Fähigkeit grundsätzlich besitzt.",
+        "Die Unterschiede besprechen und das Item als „Ziel“ markieren, mit Blick auf die Situationen, in denen es noch nicht gelingt.",
+        "Das Item auslassen, weil sich die Einschätzungen widersprechen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "„Erreicht“ heißt: zuverlässig, in verschiedenen Situationen und mit verschiedenen Personen. Gelingt das Spiel nur im geschützten Einzelkontakt, ist die Fähigkeit noch nicht gefestigt – ein typisches Ziel. Der Unterschied zwischen den Situationen ist eine wertvolle Information für die Förderung; einer Person einfach zu folgen oder das Item auszulassen, verschenkt sie."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Rolle übernehmen Erwachsene typischerweise bei Kindern, die an Zielen der Stufe IV arbeiten?",
+      "optionen": [
+        "Sie versorgen das Kind und sorgen vor allem für körperliches Wohlbefinden.",
+        "Sie geben jede Handlung vor und belohnen jeden kleinen Schritt sofort.",
+        "Sie ziehen sich ganz zurück, weil das Kind keine Begleitung mehr braucht.",
+        "Sie begleiten Gruppenprozesse, beraten und übertragen Verantwortung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Auf Stufe IV wird die Gruppe wichtiger; die Erwachsenen moderieren, beraten und übertragen Verantwortung. Versorgen passt zu Stufe I, enge Anleitung mit sofortiger Belohnung jedes Schritts eher zu Stufe II. Ganz zurückziehen sollten sich Erwachsene auch später nicht – als Beraterinnen und Vorbilder bleiben sie wichtig."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Vorgehensweisen mindern den Nutzen der ELDiB? (mehrere richtig)",
+      "optionen": [
+        "Sehr viele Ziele gleichzeitig festlegen",
+        "Die Einschätzung regelmäßig wiederholen",
+        "Ein Kind dauerhaft als „Stufe-II-Kind“ bezeichnen",
+        "Ziele in den Förderplan schreiben, die im Unterricht nicht vorkommen",
+        "Erreichte Ziele gemeinsam mit dem Kind würdigen"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Zu viele Ziele verwässern die Förderung, Etiketten übersehen, dass die Stufe je Bereich gilt und sich verändert, und Ziele, die nur auf dem Papier stehen, bewirken nichts. Regelmäßige Wiederholung und das Würdigen von Fortschritten gehören dagegen zu einer guten Praxis."
+    },
+    {
+      "art": "fall",
+      "fall": "Seit zwei Trimestern steht bei Kim (9) dasselbe Ziel im Förderplan: SOZ-18 („Kooperiert mit anderen Kindern“). Fortschritte sind nicht zu erkennen.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Im Team prüfen, ob das Ziel passte, ob im Alltag daran gearbeitet wurde und ob Belastungen vorliegen.",
+        "Das Ziel unverändert weiterführen, weil sozial-emotionale Entwicklung eben viel Zeit braucht.",
+        "Das Ziel streichen und stattdessen ein Ziel der Stufe IV wählen, damit Kim mehr gefordert wird.",
+        "Kim deutlich sagen, dass sie sich mehr anstrengen muss, weil es sonst Konsequenzen gibt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Wird ein Ziel über längere Zeit nicht erreicht, braucht es eine gemeinsame Prüfung: Vielleicht lag es zu hoch, vielleicht fehlten Übung oder passende Unterstützung im Alltag, vielleicht bremsen Belastungen die Entwicklung. Unverändert weiterzumachen, übergeht diese Fragen. Ein höheres Ziel würde die Lücke vergrößern, und Druck schafft keine fehlenden Entwicklungsvoraussetzungen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die ELDiB beschreibt Fähigkeiten positiv – als Kompetenzen, die ein Kind zeigt, nicht als Störungen, die es hat.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Die Items beschreiben beobachtbare Fähigkeiten in einer Entwicklungsreihenfolge. Dieser Blick auf das, was ein Kind schon kann, erleichtert es, den nächsten Schritt zu planen, und macht Fortschritte sichtbar."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "ETEP",
+      "erklaerung": "Entwicklungstherapie/Entwicklungspädagogik: von Mary M. Wood entwickelter und von Bergsson und Luckfiel für den deutschsprachigen Raum übertragener Ansatz, der Förderung an der sozial-emotionalen Entwicklungsstufe ausrichtet."
+    },
+    {
+      "begriff": "ELDiB",
+      "erklaerung": "Entwicklungstherapeutischer/entwicklungspädagogischer Lernziel-Diagnose-Bogen: Einschätzung der sozial-emotionalen Entwicklung mit 171 Items in vier Bereichen und fünf Stufen."
+    },
+    {
+      "begriff": "Entwicklungsbereich",
+      "erklaerung": "Einer der vier Bereiche der ELDiB: Verhalten, Kommunikation, Sozialisation, Kognition. Jeder Bereich wird getrennt eingeschätzt."
+    },
+    {
+      "begriff": "Entwicklungsstufe",
+      "erklaerung": "Abschnitt der sozial-emotionalen Entwicklung mit typischen Fähigkeiten und Zielen. ETEP unterscheidet fünf Stufen, von „Mit Freude auf die Umwelt reagieren“ bis „Anwenden von individuellen und gruppenbezogenen Fähigkeiten in neuen Situationen“."
+    },
+    {
+      "begriff": "Item",
+      "erklaerung": "Einzelne, beobachtbar beschriebene Fähigkeit in der ELDiB mit einem Code aus Bereich und Nummer, zum Beispiel V-10 „Wartet ohne körperliche Steuerungshilfe durch den Erwachsenen“."
+    },
+    {
+      "begriff": "Ich-Ziel",
+      "erklaerung": "Förderziel aus Sicht des Kindes, positiv, konkret und beobachtbar formuliert, etwa „Ich melde mich und warte, bis ich drankomme.“"
+    },
+    {
+      "begriff": "PEI",
+      "erklaerung": "Plan éducatif individualisé – der individuelle Förderplan. Im CDSE enthält er unter anderem die ausgewählten ELDiB-Ziele mit ihren Ich-Formulierungen."
+    },
+    {
+      "begriff": "Stufengerechtes Handeln",
+      "erklaerung": "Anpassung von Zielen, Methoden und Rolle der Erwachsenen an die Entwicklungsstufe, an der ein Kind im jeweiligen Bereich arbeitet."
+    }
+  ],
+  "quellen": [
+    "wood1996",
+    "bergsson1998"
+  ],
+  "verwandt": [
+    "entwicklung-0-18",
+    "beobachten-dokumentieren",
+    "verstaerkung",
+    "beziehung-haltung",
+    "inklusion-luxemburg"
+  ],
+  "toolbox": [
+    "mein-kleines-ziel",
+    "ziel-treppe",
+    "verhalten-zaehlen",
+    "das-kann-ich-schon"
+  ]
+}

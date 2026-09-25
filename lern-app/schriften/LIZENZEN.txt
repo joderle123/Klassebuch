@@ -1,0 +1,7 @@
+Schriften der Lern-App (auf Latein-Zeichen reduziert, als woff2 eingebettet):
+
+- Inter – Copyright (c) 2016 The Inter Project Authors. SIL Open Font License 1.1
+- Manrope – Copyright (c) 2018 The Manrope Project Authors. SIL Open Font License 1.1
+
+Lizenztext: https://openfontlicense.org
+Symbole: Tabler Icons – MIT License – Copyright (c) 2020-2024 Paweł Kuna

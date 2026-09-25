@@ -1,0 +1,487 @@
+{
+  "id": "verstaerkung",
+  "bereich": "handeln",
+  "titel": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne",
+  "untertitel": "Erwünschtes Verhalten aufbauen, Punktepläne und Check-in/Check-out wirksam einsetzen, Konsequenzen statt Strafen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Grundprinzipien des Lernens am Erfolg erklären und Verhalten mit dem ABC-Schema (Auslöser – Verhalten – Konsequenz) untersuchen.",
+    "Sie können erwünschtes Verhalten positiv und beobachtbar beschreiben und wirksam bestärken.",
+    "Sie können einen Punkteplan und ein Check-in/Check-out mit Kind, Team und Eltern aufbauen, auswerten und ausschleichen.",
+    "Sie können logische Konsequenzen von Strafen unterscheiden und fair einsetzen.",
+    "Sie kennen typische Fehler bei Verstärkerplänen und wissen, wann weitere Unterstützung nötig ist."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Lernen am Erfolg",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Dilan, 8 Jahre, Cycle 2.2",
+          "text": "Sobald eine Schreibaufgabe kommt, beginnt Dilan zu kippeln, macht Geräusche und wirft schließlich sein Heft auf den Boden. Die Lehrerin schickt ihn dann zum Beruhigen auf den Flur. Nach einigen Wochen passiert das fast jeden Tag – und immer bei Schreibaufgaben. Beim Rechnen und im Sport arbeitet Dilan gut mit.",
+          "fragen": [
+            "Was „lernt“ Dilan in dieser Situation?",
+            "Was könnte die Lehrerin verändern?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Verhalten, auf das etwas Angenehmes folgt oder durch das etwas Unangenehmes aufhört, wird häufiger. Verhalten, das sich nicht lohnt, wird seltener. Dieses **Lernen am Erfolg** (operantes Lernen) hat B. F. Skinner (1953) systematisch beschrieben. Es gilt für alle Menschen – und es wirkt, ob wir es bewusst einsetzen oder nicht.\n\nDilans Beispiel zeigt das: Er lernt, dass Stören ihm die Schreibaufgabe erspart. Der Flur ist aus Sicht der Lehrerin eine Konsequenz, aus Dilans Sicht aber ein Gewinn, weil die unangenehme Aufgabe endet. Fachleute sprechen von **negativer Verstärkung** – „negativ“, weil etwas wegfällt, „Verstärkung“, weil das Verhalten häufiger wird. Mit Strafe hat der Begriff nichts zu tun."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Grundbegriffe",
+          "spalten": [
+            "Begriff",
+            "Was geschieht",
+            "Wirkung",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Positive Verstärkung",
+              "Etwas Angenehmes folgt auf das Verhalten.",
+              "Das Verhalten wird häufiger.",
+              "Nach dem Melden: ein Lächeln und „Danke, dass du gewartet hast“."
+            ],
+            [
+              "Negative Verstärkung",
+              "Durch das Verhalten fällt etwas Unangenehmes weg.",
+              "Das Verhalten wird häufiger.",
+              "Wer stört, muss die Schreibaufgabe nicht machen."
+            ],
+            [
+              "Bestrafung",
+              "Etwas Unangenehmes folgt, oder etwas Angenehmes wird entzogen.",
+              "Das Verhalten wird meist nur kurzfristig seltener.",
+              "Tadel, Entzug einer Vergünstigung."
+            ],
+            [
+              "Löschung",
+              "Die bisherige Verstärkung bleibt aus.",
+              "Das Verhalten wird – oft nach einem kurzen Anstieg – seltener.",
+              "Hereinrufen bekommt keine Aufmerksamkeit mehr, Melden umso mehr."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Das ABC des Verhaltens.** Ein einfaches Schema hilft, Verhalten zu verstehen. Es stammt aus dem Englischen (*Antecedent, Behavior, Consequence*) und bedeutet: **Auslöser** – was geht voraus? **Verhalten** – was genau tut das Kind? **Konsequenz** – was folgt darauf? Kazdin (2008) betont, dass sich Verhalten an allen drei Stellen beeinflussen lässt: über gute Auslöser (klare Anweisungen, passende Aufgaben, Erinnerungen), über das Üben des Verhaltens und über die Konsequenzen. Veränderungen bei den Auslösern wirken oft schneller als jede Konsequenz.\n\nHinter wiederholtem Problemverhalten steht meist eine **Funktion**: Das Kind bekommt Aufmerksamkeit, entgeht einer Anforderung, erhält etwas, das es möchte, oder reguliert ein inneres Erleben wie Anspannung oder Reizüberflutung. Wer die Funktion kennt, kann einen angemesseneren Weg zum selben Ziel anbieten. Dilan könnte zum Beispiel eine Pausenkarte nutzen oder um Hilfe bitten, und die Schreibaufgabe wird in kleine Schritte geteilt."
+        },
+        {
+          "art": "merke",
+          "text": "Fragen Sie bei wiederkehrendem Problemverhalten nicht nur „Wie stoppe ich das?“, sondern: „Was bringt dieses Verhalten dem Kind – und wie kann es dasselbe auf einem besseren Weg erreichen?“"
+        }
+      ]
+    },
+    {
+      "titel": "Erwünschtes Verhalten beschreiben und bestärken",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der wirksamste Hebel ist fast immer, erwünschtes Verhalten häufiger zu machen – nicht, unerwünschtes zu bestrafen. Kazdin (2008) spricht vom **positiven Gegenteil**: Für jedes Problemverhalten wird das Verhalten bestimmt, das an seine Stelle treten soll, und dieses wird gezielt aufgebaut. Statt „nicht hereinrufen“ heißt das Ziel „sich melden und warten“, statt „nicht schlagen“ heißt es „bei Ärger Stopp sagen und Hilfe holen“.\n\nDas Ziel muss so beschrieben sein, dass jede Beobachterin erkennen kann, ob es eingetreten ist. „Sich besser benehmen“ oder „respektvoll sein“ sind zu ungenau. „Beginnt innerhalb von zwei Minuten mit der Aufgabe“ oder „Sagt Stopp, wenn ihn jemand ärgert“ sind konkret."
+        },
+        {
+          "art": "tun",
+          "titel": "So wirkt Bestärkung",
+          "punkte": [
+            "**Beschreibend:** sagen, was genau gelungen ist („Du hast sofort angefangen und die ersten drei Aufgaben allein gelöst“) statt nur „Super“.",
+            "**Sofort:** besonders beim Aufbau eines neuen Verhaltens unmittelbar danach, nicht erst am Ende der Woche.",
+            "**Anfangs häufig, später seltener:** Neues Verhalten wird möglichst jedes Mal bestärkt, gefestigtes nur noch ab und zu. Unregelmäßig bestärktes Verhalten erweist sich als besonders beständig (Skinner, 1953).",
+            "**Auf Anstrengung und Vorgehen bezogen:** „Du hast nicht aufgegeben“ statt „Du bist so schlau“.",
+            "**Passend zur Person:** Manche Kinder, vor allem Jugendliche, mögen kein Lob vor der Klasse – dann helfen ein leises Wort, ein Zeichen oder eine Notiz.",
+            "**Echt:** Übertriebenes oder unverdientes Lob verliert schnell seinen Wert."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**In kleinen Schritten aufbauen.** Viele Kinder können das Zielverhalten noch nicht vollständig. Dann wird schon ein Schritt in die richtige Richtung bestärkt – etwa zehn Minuten ruhiges Arbeiten, später fünfzehn, später die ganze Stillarbeit. Diese schrittweise Annäherung heißt **Verhaltensformung**.\n\n**Was verstärkt, entscheidet das Kind.** Neben Aufmerksamkeit und Lob wirken Tätigkeiten besonders gut: ein Helferdienst, ein Spiel, fünf Minuten für ein Lieblingsthema, als Erster an die Reihe kommen. Materielle Verstärker wie Aufkleber sind bei jüngeren Kindern und zu Beginn eines Plans nützlich, sollten aber nicht im Mittelpunkt stehen. Ein einfaches Mittel ist das **Zuerst-dann-Prinzip**: „Zuerst die vier Rechnungen, dann darfst du die Pflanzen gießen.“"
+        },
+        {
+          "art": "mythos",
+          "mythos": "Belohnungen zerstören die innere Motivation.",
+          "fakt": "Nur teilweise richtig. Materielle Belohnungen für Tätigkeiten, die ein Kind ohnehin gern tut, können die Freude daran mindern. Für Verhalten, das einem Kind schwerfällt, ist Verstärkung dagegen oft der Einstieg, und beschreibendes Lob stärkt eher das Gefühl, etwas zu können. Pläne werden deshalb von Anfang an so angelegt, dass äußere Belohnungen später wieder wegfallen können."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Es ist unfair, wenn ein Kind Punkte bekommt und die anderen nicht.",
+          "fakt": "Fair heißt, dass jedes Kind die Unterstützung bekommt, die es braucht – so wie nur das Kind eine Brille bekommt, das schlecht sieht. Die meisten Mitschülerinnen und Mitschüler verstehen das, wenn man es offen erklärt („Jeder übt gerade etwas anderes“). Manchmal lohnt sich auch ein Plan für die ganze Klasse."
+        }
+      ]
+    },
+    {
+      "titel": "Punktepläne",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein **Punkteplan** (auch Token-System) macht Bestärkung sichtbar und verlässlich: Das Kind erhält für ein vereinbartes Verhalten sofort einen Punkt, Stempel oder Aufkleber und kann eine bestimmte Anzahl später gegen eine vereinbarte Belohnung eintauschen. Punktepläne sind ein fester Bestandteil verhaltenstherapeutischer Programme für Familie und Schule, etwa des Therapieprogramms THOP für Kinder mit hyperkinetischem und oppositionellem Problemverhalten (Döpfner et al., 2019), und werden in Elternprogrammen wie dem von Kazdin (2008) genutzt. Sie wirken aber nur, wenn sie sorgfältig aufgebaut sind."
+        },
+        {
+          "art": "liste",
+          "titel": "Einen Punkteplan aufbauen – Schritt für Schritt",
+          "punkte": [
+            "**Ein bis drei Ziele** auswählen, positiv und beobachtbar formuliert („Ich melde mich, bevor ich spreche“).",
+            "**Die Ausgangslage erfassen:** einige Tage lang zählen, wie oft das Verhalten schon gelingt. Das zeigt, welches Ziel erreichbar ist.",
+            "**Das Kriterium so setzen, dass Erfolg wahrscheinlich ist:** knapp über dem, was das Kind jetzt schon schafft, und in kurzen Zeitabschnitten – pro Stunde statt pro Tag.",
+            "**Belohnungen gemeinsam mit dem Kind auswählen:** kleine, schnell erreichbare und größere für mehr Punkte. Ein Belohnungsmenü mit mehreren Möglichkeiten erhält die Motivation.",
+            "**Regeln klären:** Wer vergibt die Punkte, wann, und wie werden sie festgehalten? Alle Beteiligten handeln gleich.",
+            "**Den Plan mit dem Kind besprechen** – als gemeinsames Vorhaben, nicht als Drohung – und bei Bedarf die Eltern einbeziehen.",
+            "**Punkte sofort vergeben** und dabei beschreibend loben.",
+            "**Nach zwei bis drei Wochen auswerten** und anpassen.",
+            "**Ausschleichen:** Kriterien langsam erhöhen, Abstände verlängern, das Kind sich zunehmend selbst einschätzen lassen – bis der Plan nicht mehr gebraucht wird."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Punkte nicht wieder abziehen.** Punktabzüge (Verstärkerentzug) können wirken, bergen aber gerade bei Kindern mit geringer Frustrationstoleranz ein großes Risiko: Wer schon am Vormittag „im Minus“ ist, hat keinen Grund mehr, sich anzustrengen, und der Plan kippt in einen Machtkampf. Beginnen Sie deshalb mit einem Plan, in dem Punkte nur verdient und nicht verloren werden können.\n\n**Pläne für die ganze Klasse.** Auch Gruppenpläne können wirksam sein, etwa wenn die Klasse gemeinsam Punkte für ruhige Übergänge sammelt. Dabei darf kein einzelnes Kind zum Grund werden, dass die Gruppe ihre Belohnung verliert – das erzeugt Druck und Ausgrenzung."
+        }
+      ]
+    },
+    {
+      "titel": "Check-in/Check-out",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Check-in/Check-out** wurde in den USA als Kern des *Behavior Education Program* beschrieben (Crone et al., 2010). Es richtet sich an Schülerinnen und Schüler, denen die allgemeinen Klassenregeln nicht genügen, die aber noch keine sehr intensive Einzelhilfe brauchen. Der Kern: tägliche kurze Kontakte mit einer festen Ansprechperson und eine Tageskarte mit wenigen Zielen, auf der nach jeder Stunde Rückmeldung gegeben wird."
+        },
+        {
+          "art": "liste",
+          "titel": "So läuft ein Tag mit Check-in/Check-out",
+          "punkte": [
+            "**Morgens (Check-in):** Das Kind trifft kurz seine Ansprechperson – zum Beispiel einen Educateur, eine I-EBS oder eine Lehrkraft, zu der es einen guten Kontakt hat. Freundliche Begrüßung, kurzer Blick auf Material und Stimmung, die Tageskarte wird ausgegeben, die Ziele werden erinnert.",
+            "**Im Lauf des Tages:** Nach jeder Stunde trägt die Lehrkraft für jedes Ziel eine kurze Einschätzung ein (zum Beispiel 0, 1 oder 2 Punkte) und gibt ein Wort Rückmeldung.",
+            "**Nachmittags (Check-out):** Punkte zusammenzählen, mit dem Tagesziel vergleichen, Gelungenes würdigen, bei Bedarf eine kleine Belohnung. Ein schwieriger Tag wird ohne Vorwürfe besprochen: „Was machen wir morgen anders?“",
+            "**Zu Hause:** Die Eltern sehen die Karte, würdigen Erfolge und unterschreiben. Strafen für schwierige Tage gehören nicht dazu.",
+            "**Im Team:** Die Punkte werden regelmäßig, etwa alle zwei Wochen, ausgewertet. Läuft es gut, übernimmt das Kind schrittweise die Selbsteinschätzung, bis der Plan endet; läuft es nicht, wird er angepasst oder eine intensivere Hilfe geplant."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Check-in/Check-out wirkt vor allem über die tägliche positive Zuwendung und die häufige, vorhersehbare Rückmeldung. Es eignet sich besonders für Kinder, die auf die Aufmerksamkeit Erwachsener gut ansprechen. Dient ein Verhalten vor allem dazu, Aufgaben zu entgehen, braucht der Plan Anpassungen, etwa passendere Aufgaben oder eine erlaubte Pause auf Anfrage. Die Ziele auf der Karte greifen am besten die allgemeinen Regeln der Schule auf, sind positiv formuliert und gelten für alle Stunden, zum Beispiel: „Ich bin bereit“, „Ich arbeite mit“, „Ich gehe respektvoll mit anderen um“."
+        },
+        {
+          "art": "fall",
+          "titel": "Ana, 12 Jahre, 7e im Lycée",
+          "text": "Ana kommt oft zu spät, vergisst Material und gerät mit mehreren Lehrkräften aneinander. Mit ihrem Tutor vereinbart sie ein Check-in/Check-out. Jeden Morgen treffen sie sich fünf Minuten vor der ersten Stunde, am Nachmittag zählen sie die Punkte der Tageskarte zusammen. An den ersten Tagen erreicht Ana ihr Tagesziel selten; der Tutor würdigt trotzdem jede gute Stunde. Nach vier Wochen erreicht sie das Ziel an den meisten Tagen. Nun schätzt Ana sich nach jeder Stunde zuerst selbst ein und vergleicht ihre Einschätzung mit der der Lehrkraft.",
+          "fragen": [
+            "Welche Elemente machen Check-in/Check-out für Ana wirksam?",
+            "Woran würden Sie erkennen, dass der Plan beendet werden kann?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Konsequenzen statt Strafen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Konsequenzen gehören zur Erziehung: Kinder sollen erfahren, dass ihr Verhalten Folgen hat. Entscheidend ist, welche Art von Folge. **Strafen** im alltäglichen Sinn – Bloßstellen, willkürliche Entzüge, harte Maßnahmen ohne Bezug zum Verhalten – unterdrücken Verhalten oft nur kurzfristig und nur in Anwesenheit der strafenden Person. Sie lehren nicht, was stattdessen zu tun ist, belasten die Beziehung und können Wut, Angst oder Vermeidung auslösen (Skinner, 1953; Kazdin, 2008).\n\n**Logische Konsequenzen** hängen dagegen erkennbar mit dem Verhalten zusammen. Sie sind angemessen und respektvoll, vorher bekannt und bieten einen Weg, den Schaden wiedergutzumachen. Wer den Boden beschmiert, putzt ihn; wer die Arbeitszeit vertrödelt, holt die Aufgabe in einer Lernzeit nach; wer ein Spielgerät gefährlich benutzt, setzt mit diesem Gerät aus und bekommt beim nächsten Mal eine neue Chance."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Strafe oder logische Konsequenz?",
+          "spalten": [
+            "Situation",
+            "Strafe",
+            "Logische Konsequenz"
+          ],
+          "zeilen": [
+            [
+              "Ein Kind kritzelt auf den Tisch.",
+              "Kein Ausflug am Freitag.",
+              "Es reinigt den Tisch nach der Stunde, ohne Zuschauer."
+            ],
+            [
+              "Ein Jugendlicher beleidigt eine Mitschülerin.",
+              "Eine Seite Strafarbeit.",
+              "Ein Gespräch über die Wirkung seiner Worte und eine Wiedergutmachung, die die Mitschülerin annehmen kann."
+            ],
+            [
+              "Ein Kind trödelt in der Arbeitszeit.",
+              "Eine Woche Pausenverbot.",
+              "Die Aufgabe wird in der nächsten Lernzeit fertiggestellt."
+            ],
+            [
+              "Ein Kind wirft im Sport den Ball gezielt nach anderen.",
+              "Vor der Klasse lächerlich machen.",
+              "Es setzt für den Rest des Spiels aus und beginnt in der nächsten Stunde neu."
+            ]
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Wenn Sie Konsequenzen einsetzen",
+          "punkte": [
+            "Vorher ankündigen, was passiert – dann ist die Konsequenz vorhersehbar und nicht willkürlich.",
+            "Ruhig und ohne Vorwurf umsetzen, möglichst unter vier Augen.",
+            "Verlässlichkeit ist wichtiger als Härte: Eine kleine Konsequenz, die immer folgt, wirkt mehr als eine große, die selten folgt.",
+            "Jede Konsequenz mit einer neuen Chance verbinden: Danach beginnt es wieder bei null.",
+            "Das positive Gegenteil weiter bestärken – Konsequenzen allein bauen kein neues Verhalten auf."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Gezieltes Nichtbeachten.** Harmloses Verhalten, das vor allem Aufmerksamkeit bringt – Grimassen, leises Kommentieren –, lässt sich oft verringern, indem man es übergeht und das erwünschte Verhalten umso deutlicher beachtet. Rechnen Sie damit, dass das Verhalten zunächst stärker wird, bevor es abnimmt: Das Kind prüft, ob sich der alte Weg nicht doch noch lohnt. Für gefährliches oder verletzendes Verhalten ist Nichtbeachten nicht geeignet.\n\n**Auszeit.** Eine kurze Auszeit kann einem Kind helfen, sich zu beruhigen – an einem ruhigen Ort in der Klasse oder in Sichtweite, beaufsichtigt, kurz und ohne Beschämung. Eine Auszeit ist keine Isolation: Kinder werden nicht eingeschlossen und nicht allein gelassen."
+        },
+        {
+          "art": "merke",
+          "text": "Grundbedürfnisse sind nie Belohnung oder Strafe: Essen und Trinken, Toilettengänge, medizinische Versorgung und der Kontakt zu den Eltern werden weder entzogen noch „verdient“. Auch die ganze Pause zu streichen, ist keine geeignete Konsequenz – gerade Kinder mit Verhaltensschwierigkeiten brauchen Bewegung."
+        }
+      ]
+    },
+    {
+      "titel": "Typische Fehler und Auswertung",
+      "bloecke": [
+        {
+          "art": "lassen",
+          "titel": "Häufige Fehler bei Verstärkerplänen",
+          "punkte": [
+            "Zu hohe Ziele: „ein ganzer Tag ohne Störung“ für ein Kind, das heute mehrmals pro Stunde hereinruft – es erlebt nur Misserfolg und gibt auf.",
+            "Zu späte Belohnung: Punkte, die erst am Freitag zählen, sind für jüngere oder impulsive Kinder zu weit weg.",
+            "Zu viele oder unklare Ziele („Benimm dich“).",
+            "Uneinheitliche Anwendung: Jede Lehrkraft vergibt Punkte anders, manche vergessen es.",
+            "Der Plan als Drohung: „Wenn du so weitermachst, bekommst du heute keinen Punkt.“",
+            "Punkte abziehen oder frühere Erfolge entwerten.",
+            "Belohnungen, die das Kind nicht interessieren – oder so große, dass sich nichts mehr steigern lässt.",
+            "Öffentliche Ranglisten mit allen Namen: Sie beschämen gerade die Kinder, die Unterstützung am nötigsten haben.",
+            "Den Plan abrupt beenden, statt ihn auszuschleichen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Auswerten statt vermuten.** Ob ein Plan wirkt, zeigen Daten, nicht das Gefühl nach einem schlechten Tag. Vergleichen Sie die Ausgangslage mit den Punkten oder Beobachtungen nach zwei bis vier Wochen; eine einfache Linie auf Papier genügt. Fragen Sie das Kind: „Was hat dir geholfen? Was war schwer?“ Danach gibt es vier Möglichkeiten: weitermachen, anpassen (Ziel, Kriterium, Belohnung, Ablauf), ausschleichen – oder, wenn trotz sorgfältiger Umsetzung keine Veränderung eintritt, mehr Unterstützung holen."
+        },
+        {
+          "art": "fall",
+          "titel": "Rayan, 9 Jahre, Cycle 3.1",
+          "text": "Rayans Lehrerin führt einen Punkteplan ein: Für jeden Tag ohne Hereinrufen gibt es einen Punkt, bei fünf Punkten am Freitag eine Belohnung. Nach zwei Wochen hat Rayan keinen einzigen Punkt, ruft häufiger herein als vorher und sagt: „Ist mir doch egal.“ Das Team zählt eine Woche lang nach: Rayan ruft etwa sechsmal pro Stunde herein. Der neue Plan: Ziel „Ich melde mich und warte“, bewertet pro Stunde; einen Punkt gibt es, wenn er sich meistens meldet und höchstens dreimal hereinruft; nach vier Punkten folgt am selben Tag eine kleine Belohnung, die er aus einem Menü wählt. Nach drei Wochen ruft Rayan im Schnitt noch zweimal pro Stunde herein. Die Grenze wird auf zweimal gesenkt.",
+          "fragen": [
+            "Welche Fehler enthielt der erste Plan?",
+            "Wie ginge es weiter, wenn Rayan das neue Kriterium sicher erreicht?"
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung bei der Leitung und beim zuständigen CDSE-Team, wenn ein sorgfältig umgesetzter Plan nach mehreren Wochen keine Wirkung zeigt, wenn das Verhalten gefährlich ist oder sich verschlimmert oder wenn Sie vermuten, dass mehr dahintersteckt – etwa eine Lernstörung, ADHS, Angst, eine Belastung zu Hause oder Folgen belastender Erlebnisse. Dann braucht es eine genauere Analyse der Funktion des Verhaltens und gegebenenfalls eine fachliche Abklärung."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet negative Verstärkung?",
+      "optionen": [
+        "Ein Verhalten wird bestraft und dadurch seltener.",
+        "Etwas Unangenehmes fällt weg, und das Verhalten wird dadurch häufiger.",
+        "Ein Verhalten wird nicht mehr beachtet und verschwindet dadurch.",
+        "Einem Kind werden Punkte abgezogen, wenn es stört."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Negative Verstärkung heißt: Etwas Unangenehmes endet – etwa eine Aufgabe –, und deshalb tritt das Verhalten häufiger auf. Mit Strafe hat der Begriff nichts zu tun. Nichtbeachten ist Löschung, Punktabzug eine Form der Bestrafung (Verstärkerentzug)."
+    },
+    {
+      "art": "fall",
+      "fall": "Immer wenn Schreibaufgaben kommen, stört Ilyas (8) so lange, bis er vor die Tür geschickt wird. Seitdem kommt das fast täglich vor.",
+      "frage": "Was ist die beste Erklärung und Reaktion?",
+      "optionen": [
+        "Ilyas will Aufmerksamkeit; man sollte sein Stören konsequent übergehen.",
+        "Der Flur ist zu angenehm; man sollte ihn stattdessen zur Direktion schicken.",
+        "Das Stören beendet die unangenehme Aufgabe; hilfreich sind kleinere Schreibschritte, eine erlaubte Pause auf Anfrage und Lob fürs Beginnen.",
+        "Ilyas ist bequem; er sollte die Aufgabe zusätzlich als Hausaufgabe erledigen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Das Muster spricht für negative Verstärkung: Das Stören lohnt sich, weil die Schreibaufgabe endet. Hilfreich ist, die Aufgabe bewältigbar zu machen, einen angemessenen Weg zur Pause anzubieten und das Beginnen zu bestärken. Übergehen trifft die Funktion nicht, die Direktion würde die Aufgabe ebenfalls beenden, und „bequem“ erklärt das Muster nicht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Rückmeldung bestärkt das erwünschte Verhalten am wirksamsten?",
+      "optionen": [
+        "„Super!“",
+        "„Na also, geht doch – warum nicht immer so?“",
+        "„Du bist ein richtig kluges Mädchen.“",
+        "„Du hast sofort angefangen und die ersten drei Aufgaben allein gelöst.“"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Beschreibendes Lob sagt dem Kind genau, was gelungen ist, und macht es wahrscheinlicher, dass es das wiederholt. „Super“ ist zu unspezifisch, der Vorwurf in „warum nicht immer so?“ entwertet den Erfolg, und Lob für Eigenschaften hilft beim nächsten schwierigen Schritt weniger als Lob für Anstrengung und Vorgehen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Merkmale gehören zu einem gut aufgebauten Punkteplan? (mehrere richtig)",
+      "optionen": [
+        "Ein bis drei positiv formulierte, beobachtbare Ziele",
+        "Ein Kriterium, das das Kind mit etwas Anstrengung erreichen kann",
+        "Punktabzug bei jedem Fehlverhalten, damit der Plan ernst genommen wird",
+        "Belohnungen, die gemeinsam mit dem Kind ausgewählt werden",
+        "Eine Rangliste aller Kinder an der Tafel"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Wenige klare Ziele, ein erreichbares Kriterium und Belohnungen, die das Kind wirklich interessieren, machen einen Plan wirksam. Punktabzüge führen schnell zu Frust und Machtkämpfen, und öffentliche Ranglisten beschämen gerade die Kinder, die Unterstützung brauchen."
+    },
+    {
+      "art": "fall",
+      "fall": "Für Nora (7) gilt ein Plan: „Eine ganze Woche ohne Streit, dann gibt es am Freitag einen Kinobesuch.“ Nach drei Wochen hat sie es nie geschafft und sagt, der Plan sei „doof“.",
+      "frage": "Was ist die beste Anpassung?",
+      "optionen": [
+        "Kürzere Zeitabschnitte, zum Beispiel pro Pause, ein positiv formuliertes Ziel und kleine, schnelle Belohnungen.",
+        "Den Kinobesuch durch eine noch größere und attraktivere Belohnung am Wochenende ersetzen.",
+        "Den Plan beenden, weil Nora offensichtlich nicht ausreichend motiviert ist.",
+        "Den Plan beibehalten und zusätzlich für jeden Streit eine Strafe einführen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Eine ganze Woche ist für eine Siebenjährige viel zu lang, und „ohne Streit“ sagt nur, was nicht sein soll. Kurze Zeitabschnitte, ein positiv beschriebenes Ziel („Ich sage Stopp und hole Hilfe“) und schnelle Belohnungen machen Erfolg möglich. Eine größere Belohnung ändert nichts an der Unerreichbarkeit, Strafen oder Aufgeben verstärken den Frust."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn man ein Verhalten, das Aufmerksamkeit bringt, konsequent nicht mehr beachtet, wird es in der Regel sofort seltener.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Häufig wird das Verhalten zunächst stärker, weil das Kind prüft, ob sich der alte Weg nicht doch noch lohnt. Wer in dieser Phase nachgibt, verstärkt es sogar. Gezieltes Nichtbeachten eignet sich nur für harmloses Verhalten und wirkt am besten zusammen mit viel Aufmerksamkeit für das erwünschte Verhalten."
+    },
+    {
+      "art": "fall",
+      "fall": "Beim Check-out zeigt Ana (12) ihre Tageskarte. Sie hat ihr Tagesziel knapp verfehlt, weil die dritte Stunde schlecht lief.",
+      "frage": "Wie reagiert die Ansprechperson am besten?",
+      "optionen": [
+        "Sie kündigt an, die Eltern über den schlechten Tag zu informieren, damit es zu Hause Konsequenzen gibt.",
+        "Sie würdigt die guten Stunden, fragt ohne Vorwurf nach der dritten Stunde und überlegt mit Ana, was morgen hilft.",
+        "Sie erklärt, dass es heute keine Rückmeldung gibt, weil Ana das Ziel nicht erreicht hat.",
+        "Sie setzt das Tagesziel für morgen höher, damit Ana sich mehr anstrengt."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Check-in/Check-out wirkt über positive, vorhersehbare Zuwendung – auch an schwierigen Tagen. Gelungenes wird gewürdigt, Schwieriges ohne Vorwurf besprochen und ein Plan für morgen gemacht. Strafen zu Hause, eine verweigerte Rückmeldung oder ein höheres Ziel nach einem Misserfolg untergraben das Programm."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Maßnahme ist eine logische Konsequenz?",
+      "optionen": [
+        "Ein Kind, das auf den Tisch gekritzelt hat, darf nicht mit auf den Ausflug.",
+        "Ein Kind, das in der Arbeitszeit getrödelt hat, schreibt eine Seite Strafarbeit.",
+        "Ein Kind, das auf den Tisch gekritzelt hat, reinigt ihn nach der Stunde.",
+        "Ein Kind, das einen Mitschüler beleidigt hat, wird vor der Klasse zurechtgewiesen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Eine logische Konsequenz hängt erkennbar mit dem Verhalten zusammen, ist angemessen und behebt den Schaden. Ausflugsverbot und Strafarbeit haben keinen Bezug zum Verhalten, und Zurechtweisen vor der Klasse beschämt, statt Verantwortung und Wiedergutmachung zu ermöglichen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was darf in einem Verstärkerplan weder als Belohnung verdient noch als Strafe entzogen werden? (mehrere richtig)",
+      "optionen": [
+        "Essen und Trinken",
+        "Toilettengänge",
+        "Fünf Minuten Zusatzzeit am Computer",
+        "Kontakt zu den Eltern",
+        "Ein Helferdienst wie das Austeilen von Material"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Grundbedürfnisse wie Essen, Trinken, Toilettengänge und der Kontakt zu den Eltern sind nie Teil eines Belohnungs- oder Strafsystems. Zusatzzeit am Computer oder ein beliebter Helferdienst sind dagegen typische, angemessene Verstärker."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Punkteplan läuft seit sechs Wochen erfolgreich: Marco (10) erreicht sein Ziel an fast allen Tagen.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Den Plan sofort beenden, weil das Ziel erreicht ist.",
+        "Den Plan unverändert weiterführen, damit der Erfolg nicht gefährdet wird.",
+        "Neue, zusätzliche Ziele aufnehmen und alle Belohnungen beibehalten.",
+        "Den Plan ausschleichen: Abstände verlängern, Selbsteinschätzung aufbauen, weiter beschreibend loben."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Ein Plan ist ein Gerüst auf Zeit. Wird er schrittweise ausgeschlichen, bleibt das Verhalten eher erhalten, und das Lob bleibt auch ohne Punkte bestehen. Ein abruptes Ende gefährdet den Erfolg, ein unveränderter Plan verpasst den Übergang zur Selbststeuerung, und immer neue Ziele machen den Plan zur Dauereinrichtung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Belohnungen zerstören grundsätzlich die innere Motivation von Kindern.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Materielle Belohnungen für Tätigkeiten, die ein Kind ohnehin gern tut, können die Freude daran mindern. Für Verhalten, das einem Kind schwerfällt, ist Verstärkung aber oft der Einstieg – vor allem, wenn sie mit beschreibendem Lob verbunden ist und später ausgeschlichen wird."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Positive Verstärkung",
+      "erklaerung": "Auf ein Verhalten folgt etwas Angenehmes; das Verhalten tritt dadurch häufiger auf."
+    },
+    {
+      "begriff": "Negative Verstärkung",
+      "erklaerung": "Durch ein Verhalten endet etwas Unangenehmes; das Verhalten tritt dadurch häufiger auf. Nicht zu verwechseln mit Strafe."
+    },
+    {
+      "begriff": "Löschung",
+      "erklaerung": "Ein bisher verstärktes Verhalten wird nicht mehr verstärkt und nimmt – oft nach einem kurzen Anstieg – ab."
+    },
+    {
+      "begriff": "Positives Gegenteil",
+      "erklaerung": "Das erwünschte Verhalten, das an die Stelle eines Problemverhaltens treten soll und gezielt aufgebaut wird (Kazdin, 2008)."
+    },
+    {
+      "begriff": "Verhaltensformung",
+      "erklaerung": "Schrittweiser Aufbau eines Verhaltens, indem schon Annäherungen an das Ziel bestärkt werden."
+    },
+    {
+      "begriff": "Punkteplan (Token-System)",
+      "erklaerung": "Plan, bei dem ein Kind für vereinbartes Verhalten sofort Punkte erhält und diese später gegen Belohnungen eintauscht."
+    },
+    {
+      "begriff": "Check-in/Check-out",
+      "erklaerung": "Tägliche kurze Treffen mit einer festen Ansprechperson am Morgen und am Nachmittag, verbunden mit einer Tageskarte, auf der nach jeder Stunde Rückmeldung gegeben wird (Crone et al., 2010)."
+    },
+    {
+      "begriff": "Logische Konsequenz",
+      "erklaerung": "Folge, die erkennbar mit dem Verhalten zusammenhängt, angemessen und respektvoll ist, vorher bekannt ist und Wiedergutmachung ermöglicht."
+    },
+    {
+      "begriff": "Funktion des Verhaltens",
+      "erklaerung": "Der Zweck, den ein Verhalten für das Kind erfüllt, zum Beispiel Aufmerksamkeit bekommen oder einer Anforderung entgehen."
+    },
+    {
+      "begriff": "Ausschleichen",
+      "erklaerung": "Schrittweises Zurücknehmen einer Unterstützung, etwa eines Punkteplans, bis das Verhalten ohne sie gelingt."
+    }
+  ],
+  "quellen": [
+    "skinner1953",
+    "kazdin2008",
+    "crone2010",
+    "doepfner2019"
+  ],
+  "verwandt": [
+    "lernen-verhalten",
+    "adhs",
+    "oppositionell-aggressiv",
+    "etep",
+    "neue-autoritaet",
+    "beobachten-dokumentieren"
+  ],
+  "toolbox": [
+    "punkteplan",
+    "check-in-check-out",
+    "belohnungs-menue",
+    "verhalten-zaehlen",
+    "zuerst-dann"
+  ]
+}

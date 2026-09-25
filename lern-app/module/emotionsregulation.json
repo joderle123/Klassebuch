@@ -1,0 +1,563 @@
+{
+  "id": "emotionsregulation",
+  "bereich": "grundlagen",
+  "titel": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen",
+  "untertitel": "Entwicklung, Prozessmodell, Ko-Regulation und das Fenster der Toleranz – für den Schulalltag",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können erklären, was Emotionsregulation ist – und warum sie nicht dasselbe ist, wie Gefühle zu unterdrücken.",
+    "Sie können beschreiben, wie sich Emotionsregulation von der Ko-Regulation im Säuglingsalter bis zur Selbstregulation im Jugendalter entwickelt.",
+    "Sie können die fünf Ansatzpunkte des Prozessmodells nach Gross auf Situationen im Schulalltag anwenden.",
+    "Sie können mit dem Modell des Toleranzfensters Über- und Untererregung erkennen und passend reagieren.",
+    "Sie können vor, während und nach einer Gefühlskrise gezielt unterstützen und wissen, wann Sie weitere Hilfe holen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Gefühle und ihre Regulation",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Enzo, 7 Jahre, Cycle 2.2",
+          "text": "Enzo verliert beim Klassenspiel zum dritten Mal. Er wirft das Spielbrett vom Tisch, schreit „Ihr betrügt alle!“ und tritt gegen einen Stuhl. Die Lehrerin ruft: „Enzo, beruhig dich sofort!“ Enzo schreit noch lauter. Eine halbe Stunde später sitzt er still in der Leseecke und sagt leise, dass er immer verliert.",
+          "fragen": [
+            "Was hätte Enzo in dem Moment gebraucht?",
+            "Wann wäre ein guter Zeitpunkt, mit ihm über das Verlieren zu sprechen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Gefühle – Fachleute sprechen von **Emotionen** – sind schnelle Reaktionen auf Ereignisse, die für uns bedeutsam sind. Sie umfassen mehrere Ebenen: ein inneres Erleben („Ich bin wütend“), körperliche Veränderungen wie Herzklopfen und Anspannung, Gedanken und Bewertungen („Das ist unfair“), einen Ausdruck in Gesicht, Stimme und Haltung sowie einen Handlungsimpuls: zuschlagen, weglaufen, sich verstecken. Gefühle sind nützlich. Angst schützt vor Gefahr, Wut hilft, sich gegen Unrecht zu wehren, Traurigkeit ruft Trost herbei.\n\n**Emotionsregulation** meint alle Vorgänge, mit denen Menschen beeinflussen, welche Gefühle sie haben, wann sie sie haben und wie sie sie erleben und ausdrücken (Gross, 1998). Das kann bewusst geschehen – etwa wenn eine Jugendliche vor einem Referat tief durchatmet – oder ganz automatisch, etwa wenn ein Kind bei einer gruseligen Filmszene wegschaut. Regulation heißt nicht nur beruhigen: Sich vor einer schweren Aufgabe Mut zu machen oder Trauer zuzulassen, gehört ebenso dazu."
+        },
+        {
+          "art": "merke",
+          "text": "Emotionsregulation bedeutet nicht, Gefühle abzustellen. Ziel ist, trotz starker Gefühle handlungsfähig zu bleiben. Alle Gefühle sind erlaubt – nicht jedes Verhalten."
+        },
+        {
+          "art": "text",
+          "text": "Die Fähigkeit, Gefühle zu regulieren, hängt eng mit Lernen, Freundschaften und psychischer Gesundheit zusammen. Wer von Ärger oder Angst überflutet wird, kann nicht zuhören, nicht nachdenken und keine Aufgabe bearbeiten. Viele Schwierigkeiten, mit denen Kinder und Jugendliche zum CDSE kommen – Wutausbrüche, Rückzug, Ängste, Schulvermeidung –, gehen mit Problemen der Emotionsregulation einher. Die gute Nachricht: Emotionsregulation ist lernbar, und Erwachsene haben dabei eine Schlüsselrolle."
+        }
+      ]
+    },
+    {
+      "titel": "Wie sich Emotionsregulation entwickelt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kein Kind kommt mit der Fähigkeit zur Welt, seine Gefühle selbst zu regulieren. Ein Säugling ist darauf angewiesen, dass Erwachsene ihn beruhigen: ihn aufnehmen, wiegen, mit ruhiger Stimme sprechen, füttern. Diese Beruhigung durch eine andere Person nennt man **Ko-Regulation**. Aus unzähligen Erfahrungen, in denen ein aufgewühlter Zustand mithilfe eines zugewandten Erwachsenen wieder ruhig wird, lernt das Kind nach und nach, sich selbst zu beruhigen. **Selbstregulation wächst aus Ko-Regulation** – nicht aus der Aufforderung, sich zusammenzureißen (Schneider & Lindenberger, 2018)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Entwicklung der Emotionsregulation",
+          "spalten": [
+            "Alter",
+            "Was typisch ist",
+            "Was Erwachsene beitragen"
+          ],
+          "zeilen": [
+            [
+              "0–2 Jahre",
+              "Beruhigung fast nur von außen; erste eigene Strategien wie Wegschauen oder Daumenlutschen. Um den ersten Geburtstag schaut das Kind in unsicheren Situationen zur Bezugsperson, um an ihrer Reaktion abzulesen, ob Gefahr droht.",
+              "Trösten, halten, Rhythmus und Vorhersehbarkeit; ruhige Stimme; Gefühle benennen."
+            ],
+            [
+              "2–5 Jahre",
+              "Heftige Gefühle und Wutanfälle; zunehmend Worte für Gefühle; einfache Strategien wie Hilfe holen, sich ablenken, ein Kuscheltier.",
+              "Gefühle benennen und anerkennen, klare Grenzen, einfache Strategien vormachen und gemeinsam üben."
+            ],
+            [
+              "6–12 Jahre",
+              "Mehr innere Strategien: sich gut zureden, umdenken, Probleme lösen; Gefühle verbergen, wenn es die Situation verlangt; gemischte Gefühle verstehen.",
+              "Strategien besprechen und üben, bei Überforderung weiterhin Ko-Regulation, Nachbesprechungen in ruhigen Momenten."
+            ],
+            [
+              "12–18 Jahre",
+              "Gefühle werden intensiver, Stimmungen schwanken stärker; mehr Strategien, aber in aufgeladenen Situationen und unter Gleichaltrigen mehr Mühe; Grübeln kann zunehmen.",
+              "Verfügbar bleiben, Autonomie respektieren, Strategien gemeinsam aushandeln statt verordnen; ruhige Präsenz statt vieler Worte."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Unterschiede zwischen Kindern sind groß. Manche reagieren von Geburt an intensiver und brauchen länger, um sich zu beruhigen – das gehört zu ihrem **Temperament** (Thomas & Chess, 1977). Auch Entwicklungsbesonderheiten wie ADHS oder Autismus, chronischer Stress und belastende Erfahrungen beeinflussen, wie gut Regulation gelingt. Kinder, die in ihren ersten Lebensjahren wenig verlässliche Ko-Regulation erlebt haben, holen diesen Schritt oft erst später nach – mit Erwachsenen, die ihn ihnen ermöglichen. Im Jugendalter kommt der Umbau des Gehirns hinzu: Die Systeme für Gefühle und Belohnung reagieren besonders stark, die Steuerung reift langsamer (Casey et al., 2008)."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein Kind, das sich im Wutanfall nicht beruhigt, will nur seinen Willen durchsetzen.",
+          "fakt": "Manche Ausbrüche dienen tatsächlich dazu, etwas zu erreichen. Viele Kinder sind im Wutanfall aber schlicht überflutet und können sich in diesem Moment nicht allein beruhigen. Beides verlangt unterschiedliche Antworten – und in beiden Fällen gilt: erst Ruhe, dann Gespräch."
+        }
+      ]
+    },
+    {
+      "titel": "Das Prozessmodell: wo Regulation ansetzen kann",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Psychologe James Gross (1998) beschreibt, dass Gefühle in einer Abfolge entstehen: Eine **Situation** tritt ein, wir richten unsere **Aufmerksamkeit** darauf, **bewerten** sie – und daraus folgt eine **Gefühlsreaktion** in Körper, Ausdruck und Verhalten. An jeder Stelle dieser Abfolge kann Regulation ansetzen. Daraus ergeben sich fünf Gruppen von Strategien. Die ersten vier wirken, bevor sich die Gefühlsreaktion voll entfaltet hat; die fünfte beeinflusst die bereits entstandene Reaktion."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Fünf Ansatzpunkte – mit Beispielen aus der Schule",
+          "spalten": [
+            "Ansatzpunkt",
+            "Was gemeint ist",
+            "Beispiel im Schulalltag"
+          ],
+          "zeilen": [
+            [
+              "1. Situation auswählen",
+              "Situationen aufsuchen oder meiden, die bestimmte Gefühle auslösen",
+              "Ein Kind sitzt nicht neben dem Mitschüler, mit dem es ständig Streit gibt; eine kurze Pause vor der schwierigen Stunde."
+            ],
+            [
+              "2. Situation verändern",
+              "Die Situation so gestalten, dass sie weniger belastet",
+              "Eine lange Aufgabe in Etappen teilen; Kopfhörer gegen Lärm; Übergänge ankündigen."
+            ],
+            [
+              "3. Aufmerksamkeit lenken",
+              "Den Blick auf etwas anderes richten",
+              "Sich mit einer Aufgabe ablenken, Gegenstände im Raum zählen, sich auf den eigenen Atem konzentrieren."
+            ],
+            [
+              "4. Neu bewerten",
+              "Die Bedeutung der Situation anders einschätzen",
+              "„Er hat mich nicht absichtlich angerempelt, es war eng.“ – „Ein Fehler zeigt mir, was ich noch üben kann.“"
+            ],
+            [
+              "5. Reaktion beeinflussen",
+              "Auf die bereits entstandene Gefühlsreaktion einwirken",
+              "Lange ausatmen, sich bewegen, einen Knetball drücken, Wasser trinken – oder den Gefühlsausdruck unterdrücken."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Nicht jede Strategie wirkt gleich. Wer den Ausdruck eines Gefühls nur **unterdrückt**, fühlt meist kaum weniger, ist aber körperlich angespannter; das **Neubewerten** einer Situation verringert dagegen oft auch das Gefühl selbst (Gross, 1998). Das heißt nicht, dass Unterdrücken immer falsch ist – in einer Prüfung nicht loszuweinen, kann sinnvoll sein. Problematisch wird es, wenn es die einzige Strategie ist.\n\nAuch Vermeiden ist zweischneidig. Kurzfristig entlastet es; langfristig kann es Ängste verstärken, weil das Kind nie erlebt, dass es die Situation bewältigen kann. Gute Regulation heißt deshalb vor allem: **mehrere Strategien kennen und passend einsetzen**. Kinder lernen das, wenn Erwachsene Strategien vormachen, benennen und mit ihnen üben."
+        },
+        {
+          "art": "merke",
+          "text": "Viele Gefühlskrisen im Unterricht lassen sich früh im Prozess verhindern – durch eine gut überlegte Sitzordnung, passende Aufgaben und angekündigte Übergänge. Das ist oft wirksamer als jede Intervention auf dem Höhepunkt."
+        },
+        {
+          "art": "fall",
+          "titel": "Sofia, 12 Jahre, Cycle 4.2",
+          "text": "Sofia hat große Angst vor dem Vorlesen. Kommt sie dran, wird ihr heiß, die Stimme zittert; einmal ist sie aus dem Raum gelaufen. Die Lehrerin plant mit ihr gemeinsam: Sofia darf den Text am Vortag zu Hause üben (Situation verändern). Sie liest zuerst nur zwei Sätze in der Kleingruppe statt vor der ganzen Klasse (Situation auswählen). Beim Lesen folgt sie der Zeile mit dem Finger (Aufmerksamkeit lenken) und sagt sich: „Aufgeregt sein heißt nicht, dass ich es nicht kann“ (neu bewerten). Vorher atmet sie dreimal lang aus (Reaktion beeinflussen). Nach einigen Wochen liest sie einen kurzen Abschnitt vor der ganzen Klasse.",
+          "fragen": [
+            "Warum ist es sinnvoll, dass Sofia das Vorlesen nicht ganz vermeidet?",
+            "Welche dieser Schritte könnten Sie bei einem Kind in Ihrer Gruppe ausprobieren?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Ko-Regulation und das Fenster der Toleranz",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Psychiater Daniel Siegel (1999) beschrieb das **Fenster der Toleranz**: einen Bereich mittlerer Erregung, in dem ein Mensch Gefühle spüren und trotzdem klar denken, zuhören und lernen kann. Innerhalb dieses Fensters sind auch Ärger, Aufregung oder Traurigkeit aushaltbar. Steigt die Erregung zu stark, gerät ein Mensch in **Übererregung**: Das Nervensystem schaltet auf Kampf oder Flucht. Sinkt sie zu stark ab, kommt es zur **Untererregung**: Der Mensch wirkt abwesend, starr, wie abgeschaltet.\n\nDas Fenster ist nicht bei allen gleich breit und nicht an jedem Tag gleich. Schlafmangel, Hunger, Schmerzen, chronischer Stress und belastende Erfahrungen machen es schmaler; dann reicht schon ein kleiner Anlass, um herauszufallen. Sichere Beziehungen, Übung in ruhigen Momenten und ein vorhersehbarer Alltag können es mit der Zeit erweitern. Das Toleranzfenster ist ein anschauliches Arbeitsmodell aus der klinischen Praxis, kein exakt messbarer Zustand im Gehirn. Für den pädagogischen Alltag hat es sich aber als sehr hilfreich erwiesen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Zustände – und was jeweils hilft",
+          "spalten": [
+            "Zustand",
+            "Woran Sie es erkennen",
+            "Was hilft"
+          ],
+          "zeilen": [
+            [
+              "Übererregung",
+              "Schreien, Schlagen, Weglaufen, Zittern, schneller Atem, Panik; das Kind hört kaum noch zu.",
+              "Sicherheit herstellen, wenige ruhige Worte, Abstand oder Nähe anbieten, Reize verringern, Bewegung ermöglichen; keine Diskussion."
+            ],
+            [
+              "Im Toleranzfenster",
+              "Das Kind kann Gefühle zeigen und dennoch zuhören, nachdenken und sprechen.",
+              "Lernen, Gespräche, Nachbesprechungen, Strategien üben."
+            ],
+            [
+              "Untererregung",
+              "Leerer Blick, Erstarren, sehr leise oder stumm, wirkt müde oder „nicht da“, reagiert verzögert.",
+              "Anforderungen senken, ruhig ansprechen, sanft in den Moment zurückholen: etwas trinken, sich bewegen, einen Gegenstand im Raum beschreiben lassen."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Ko-Regulation im Schulalltag.** Unter starker Erregung arbeiten die Denk- und Steuerungsfunktionen des Gehirns deutlich schlechter. Erklärungen, Ermahnungen und Fragen nach dem Warum erreichen das Kind dann kaum. Was es braucht, ist ein Erwachsener, der selbst ruhig bleibt und ihm seine Ruhe gewissermaßen leiht. Das gelingt über Tonfall, Tempo, Körperhaltung und Nähe mehr als über Worte. Voraussetzung ist, dass Sie selbst in Ihrem Fenster bleiben: Wer mitschreit, reguliert nicht, sondern steigert die Erregung. Hilfreich ist eine einfache Reihenfolge: **erst beruhigen, dann Beziehung herstellen, dann besprechen**.\n\nAchten Sie auch auf Kinder, die still aus ihrem Fenster fallen. Untererregte Kinder stören nicht und werden deshalb leicht übersehen oder für desinteressiert gehalten."
+        },
+        {
+          "art": "merke",
+          "text": "Ihr eigener Zustand ist Ihr wichtigstes Werkzeug. Ein ruhiger Erwachsener kann ein aufgewühltes Kind beruhigen – ein aufgewühlter Erwachsener kaum."
+        },
+        {
+          "art": "fall",
+          "titel": "Nora, 15 Jahre, Lycée",
+          "text": "Nora wird im Mathematikunterricht vor der Klasse kritisiert, weil sie ihre Hausaufgaben nicht hat. Sie antwortet nicht, starrt auf den Tisch, ihr Gesicht wirkt leer. Der Lehrer wird lauter: „Ich rede mit dir!“ Nora reagiert gar nicht mehr. Die Klassenlehrerin erzählt ihm später, dass Nora in solchen Momenten „abschaltet“. Der Lehrer vereinbart mit Nora ein Zeichen, wenn sie eine Minute braucht, und spricht Themen wie fehlende Hausaufgaben künftig unter vier Augen an.",
+          "fragen": [
+            "Welcher Zustand im Modell des Toleranzfensters passt zu Noras Reaktion?",
+            "Warum hat das lautere Ansprechen nicht geholfen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: vor, während und nach der Krise",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Für die Praxis ist es hilfreich, drei Zeitpunkte zu unterscheiden. **Vorher** – in ruhigen Zeiten – wird vorgebeugt und geübt. **Während** einer Gefühlskrise geht es um Sicherheit und Beruhigung, nicht um Lernen. **Danach**, wenn das Kind wieder in seinem Fenster ist, kann gemeinsam nachgedacht werden."
+        },
+        {
+          "art": "tun",
+          "titel": "Vorher: vorbeugen und üben",
+          "punkte": [
+            "Vorhersehbarkeit schaffen: Tagesablauf sichtbar machen, Übergänge und Änderungen ankündigen.",
+            "Gefühle zum Thema machen: Wörter für Gefühle einführen, Bilder und Skalen wie ein Gefühlsthermometer nutzen.",
+            "Beruhigungsstrategien regelmäßig üben, wenn alle ruhig sind – etwa eine kurze Atemübung zu Beginn der Stunde. In der Krise gelingt nur, was vorher geübt wurde.",
+            "Mit einzelnen Kindern einen persönlichen Plan vereinbaren: Frühwarnzeichen, hilfreiche Strategien, ein Ort zum Runterkommen, ein Zeichen für die Lehrkraft.",
+            "Auslöser kennen und, wo möglich, verringern: Hunger, Lärm, Überforderung, bestimmte Situationen."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Während: ko-regulieren",
+          "punkte": [
+            "Selbst ruhig werden: ausatmen, langsamer sprechen, die Stimme senken.",
+            "Wenige, einfache Worte: „Ich bin da. Du bist sicher. Wir schaffen das.“",
+            "Das Gefühl benennen und anerkennen, ohne das Verhalten gutzuheißen: „Du bist richtig wütend, weil du verloren hast.“",
+            "Sicherheit herstellen: gefährliche Gegenstände wegnehmen, Zuschauer wegschicken, bei Bedarf Unterstützung rufen.",
+            "Beruhigende Wahlmöglichkeiten anbieten: „Möchtest du in die Ruheecke oder hier mit mir sitzen?“"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Danach: nachbesprechen und lernen",
+          "punkte": [
+            "Erst sprechen, wenn das Kind wirklich ruhig ist – manchmal erst nach Stunden oder am nächsten Tag.",
+            "Gemeinsam rekonstruieren: Was ist passiert? Was hast du gefühlt? Was hat geholfen?",
+            "Wiedergutmachung ermöglichen, statt Schuld zuzuweisen.",
+            "Den Plan für das nächste Mal gemeinsam anpassen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "„Beruhig dich!“ oder „Reiß dich zusammen!“ – das Kind würde, wenn es könnte.",
+            "Lange Erklärungen, Diskussionen oder Moralpredigten auf dem Höhepunkt.",
+            "Drohen, Anschreien, Ironie oder Bloßstellen vor der Klasse.",
+            "Gefühle kleinreden: „Ist doch nicht so schlimm.“",
+            "Isolation als Strafe. Eine Auszeit hilft nur, wenn sie der Beruhigung dient, kurz ist und das Kind dabei im Blick bleibt.",
+            "Sofortige Entschuldigungen erzwingen."
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Gefühle begleiten – so kann es klingen",
+          "spalten": [
+            "Statt …",
+            "Besser …"
+          ],
+          "zeilen": [
+            [
+              "„Hör auf zu heulen, das ist doch nichts.“",
+              "„Das hat richtig wehgetan. Ich bleibe bei dir, bis es besser ist.“"
+            ],
+            [
+              "„Beruhig dich endlich!“",
+              "„Ich sehe, wie wütend du bist. Atme mit mir aus.“"
+            ],
+            [
+              "„Warum hast du das gemacht?“ – auf dem Höhepunkt",
+              "„Wir reden später darüber. Jetzt sorgen wir erst einmal dafür, dass du wieder ruhig wirst.“"
+            ],
+            [
+              "„Du brauchst doch keine Angst zu haben.“",
+              "„Das fühlt sich gerade unheimlich an. Was könnte dir jetzt helfen?“"
+            ],
+            [
+              "„Mit dir rede ich heute nicht mehr.“",
+              "„Ich lasse nicht zu, dass du schlägst. Und ich bin weiter für dich da.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Die ganze Klasse einbeziehen.** Emotionsregulation ist nicht nur ein Thema für einzelne Kinder. Schulische Programme zum sozial-emotionalen Lernen, die Gefühle, Selbstregulation und soziale Fähigkeiten regelmäßig im Unterricht behandeln, verbessern nachweislich soziale und emotionale Fähigkeiten, das Verhalten und sogar die Schulleistungen (Durlak et al., 2011). Schon kleine, regelmäßige Rituale – eine Gefühlsrunde am Morgen, eine gemeinsame Atemübung vor der Probe – geben allen Kindern Worte und Werkzeuge."
+        }
+      ]
+    },
+    {
+      "titel": "Wenn es nicht reicht: Grenzen und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Alle Kinder geraten manchmal aus ihrem Fenster. Bei manchen geschieht das aber so oft, so heftig oder so lang, dass Lernen und Beziehungen dauerhaft leiden. Dahinter können sehr unterschiedliche Ursachen stehen. Die Einordnung ist Aufgabe von Fachleuten; Ihre genauen Beobachtungen sind dafür eine wichtige Grundlage."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was hinter anhaltenden Regulationsschwierigkeiten stehen kann",
+          "punkte": [
+            {
+              "wie": "ADHS",
+              "unterschied": "Heftige, schnelle Reaktionen auf Frustration, die sich oft rasch wieder legen; dazu Unaufmerksamkeit und Impulsivität in vielen Situationen."
+            },
+            {
+              "wie": "Angst",
+              "unterschied": "Ausbrüche oder Erstarren vor allem in angstauslösenden Situationen, etwa vor Proben, beim Vorlesen oder bei Trennungen."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Anhaltende Traurigkeit, Rückzug oder Gereiztheit über Wochen. Bei Kindern und Jugendlichen zeigt sich eine Depression oft eher als Reizbarkeit."
+            },
+            {
+              "wie": "Trauma",
+              "unterschied": "Heftige Reaktionen auf bestimmte Auslöser, Schreckhaftigkeit, plötzliches Abschalten; das Toleranzfenster ist häufig sehr schmal."
+            },
+            {
+              "wie": "Autismus",
+              "unterschied": "Zusammenbrüche bei Reizüberflutung, unerwarteten Veränderungen oder sozialer Überforderung, von außen oft schwer vorherzusehen."
+            },
+            {
+              "wie": "Anhaltende Reizbarkeit mit häufigen Wutausbrüchen",
+              "unterschied": "Das DSM-5-TR beschreibt dafür die disruptive Affektregulationsstörung: sehr häufige, heftige Wutausbrüche und eine dauerhaft gereizte Stimmung dazwischen, über mindestens ein Jahr. Die ICD-11 ordnet dieses Bild der Störung mit oppositionellem Trotzverhalten mit chronischer Reizbarkeit zu."
+            }
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Manche Kinder und Jugendliche versuchen, unerträgliche Gefühle zu regulieren, indem sie sich selbst verletzen, oder äußern Gedanken, nicht mehr leben zu wollen. Nehmen Sie solche Hinweise immer ernst. Sprechen Sie das Kind ruhig und direkt an, lassen Sie es in einer akuten Krise nicht allein und informieren Sie umgehend die Leitung. Folgen Sie den internen Abläufen für Krisen."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn Gefühlsausbrüche oder Rückzug über Wochen häufig und heftig bleiben, trotz guter Unterstützung nicht abnehmen, das Kind oder andere gefährden oder das Kind stark leidet. Beschreiben Sie Ihre Beobachtungen konkret: wie oft, wie lange, in welchen Situationen, was geholfen hat. Besprechen Sie das weitere Vorgehen mit der Leitung und den Eltern; eine Abklärung kann das Diagnostique-Team des CDSE oder die Kinder- und Jugendpsychiatrie übernehmen."
+        },
+        {
+          "art": "merke",
+          "text": "Das Toleranzfenster gilt auch für Erwachsene. Wer täglich mit heftigen Gefühlsausbrüchen arbeitet, braucht selbst Ko-Regulation: kollegialen Austausch, Supervision und echte Pausen."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche Beschreibung trifft Emotionsregulation am besten?",
+      "optionen": [
+        "Gefühle möglichst nicht zu zeigen",
+        "Unangenehme Gefühle so schnell wie möglich loszuwerden",
+        "Zu beeinflussen, welche Gefühle man hat, wann man sie hat und wie man sie erlebt und ausdrückt",
+        "Eine angeborene Fähigkeit, die sich kaum verändern lässt"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Emotionsregulation umfasst alle Vorgänge, mit denen Menschen beeinflussen, welche Gefühle sie haben, wann und wie sie sie erleben und ausdrücken (Gross, 1998). Sie ist mehr als Nicht-Zeigen oder Loswerden – dazu gehört auch, sich Mut zu machen oder Trauer zuzulassen. Und sie ist lernbar, vor allem durch Ko-Regulation mit Erwachsenen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen setzen früh im Prozessmodell an – bevor sich die Gefühlsreaktion voll entfaltet hat? (mehrere richtig)",
+      "optionen": [
+        "Eine lange Aufgabe in kleine Etappen teilen",
+        "Einen Knetball drücken, wenn die Wut schon da ist",
+        "Eine Änderung im Tagesablauf am Morgen ankündigen",
+        "Ein Kind nicht neben seinen ständigen Streitpartner setzen",
+        "In der Prüfung die Tränen unterdrücken"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Aufgaben aufteilen und Änderungen ankündigen verändern die Situation, eine überlegte Sitzordnung wählt sie aus – beides wirkt, bevor ein starkes Gefühl entsteht. Den Knetball zu drücken oder Tränen zu unterdrücken, setzt dagegen erst an der bereits entstandenen Reaktion an. Beides kann sinnvoll sein, kommt aber später im Prozess."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wer den Ausdruck eines Gefühls unterdrückt, fühlt es meist auch deutlich weniger.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Unterdrücken verringert vor allem den sichtbaren Ausdruck; das innere Erleben bleibt weitgehend bestehen, und die körperliche Anspannung steigt eher (Gross, 1998). Das Neubewerten einer Situation verringert dagegen oft auch das Gefühl selbst."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem verlorenen Fußballspiel in der Pause schreit Diego (8), tritt gegen den Ball und weint. Auf Ihre Fragen reagiert er nicht.",
+      "frage": "Was ist der beste erste Schritt?",
+      "optionen": [
+        "Ihm sofort erklären, dass Verlieren zum Spiel gehört und er sich wie ein schlechter Verlierer benimmt.",
+        "Ruhig in seiner Nähe bleiben, wenige Worte sprechen, sein Gefühl benennen und für Sicherheit sorgen; das Gespräch später führen.",
+        "Ihn für den Rest der Woche vom Fußballspielen ausschließen.",
+        "Ihn auffordern, sich sofort bei der anderen Mannschaft zu entschuldigen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Diego ist übererregt und erreicht Erklärungen gerade nicht. Zuerst braucht er Ko-Regulation: einen ruhigen Erwachsenen, wenige Worte und Sicherheit. Belehrungen, Strafen oder erzwungene Entschuldigungen auf dem Höhepunkt steigern die Erregung meist; das Nachdenken über das Verlieren gehört in einen ruhigen Moment danach."
+    },
+    {
+      "art": "fall",
+      "fall": "In der Turnhalle fällt unerwartet eine Bank mit lautem Knall um. Jonas (11) erstarrt, wird blass, reagiert nicht auf Ansprache und wirkt wie abwesend.",
+      "frage": "Wie ist Jonas’ Zustand am ehesten einzuordnen, und was hilft?",
+      "optionen": [
+        "Er ist vermutlich untererregt: ruhig ansprechen, Anforderungen senken, ihn sanft in den Moment zurückholen und in seiner Nähe bleiben.",
+        "Er ist trotzig: darauf bestehen, dass er sofort antwortet.",
+        "Er langweilt sich: ihm eine anspruchsvollere Aufgabe geben.",
+        "Er ist übererregt: ihn allein in einen anderen Raum schicken."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Erstarren, Blässe und fehlende Reaktion sprechen für Untererregung nach einem Schreck. Hilfreich sind ein ruhiger Erwachsener, gesenkte Anforderungen und sanfte Orientierung im Hier und Jetzt. Druck verstärkt den Zustand, eine schwerere Aufgabe überfordert, und ein Kind in diesem Zustand sollte nicht allein gelassen werden."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was erweitert das Toleranzfenster eines Kindes mit der Zeit am ehesten?",
+      "optionen": [
+        "Häufige Ermahnungen, sich zusammenzureißen",
+        "Möglichst viele belastende Situationen, damit es sich abhärtet",
+        "Verlässliche Beziehungen, ausreichender Schlaf und das Üben von Strategien in ruhigen Momenten",
+        "Das Kind in Krisen allein zu lassen, damit es selbstständig wird"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Sichere Beziehungen, ausreichend Schlaf, ein vorhersehbarer Alltag und geübte Strategien machen das Fenster breiter. Ermahnungen setzen eine Fähigkeit voraus, die das Kind erst lernen muss. Dauerbelastung macht das Fenster eher schmaler, und Selbstregulation entsteht aus Ko-Regulation, nicht aus Alleinsein."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum ist Ihr eigener Zustand in der Gefühlskrise eines Kindes so wichtig?",
+      "optionen": [
+        "Weil ein aufgewühltes Kind sich an einem ruhigen Erwachsenen regulieren kann (Ko-Regulation).",
+        "Weil Kinder sonst merken, dass Sie unsicher sind, und das ausnutzen.",
+        "Weil ruhige Erwachsene Strafen besser durchsetzen können.",
+        "Er ist nicht entscheidend – wichtig sind vor allem die richtigen Worte."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Kinder leihen sich in der Krise gewissermaßen die Ruhe eines Erwachsenen – über Tonfall, Tempo und Körperhaltung mehr als über Worte. Ein aufgewühlter Erwachsener steigert die Erregung eher. Es geht dabei nicht um Durchsetzung oder Taktik, sondern um Beruhigung als Voraussetzung für alles Weitere."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Kollegin möchte in ihrer Klasse im Cycle 3 eine Atemübung einführen, die den Kindern bei Wut helfen soll.",
+      "frage": "Wie sollte die Übung vor allem eingesetzt werden?",
+      "optionen": [
+        "Nur wenn ein Kind gerade wütend ist – dann wirkt sie am besten.",
+        "Einmal ausführlich erklären; danach beherrschen die Kinder sie.",
+        "Nur mit den Kindern, die häufig Wutanfälle haben.",
+        "Regelmäßig in ruhigen Momenten mit der ganzen Klasse, damit sie in der Krise abrufbar ist."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "In einer Krise gelingt nur, was vorher oft geübt wurde. Regelmäßiges Üben in ruhigen Momenten macht die Übung vertraut und für alle Kinder nutzbar, ohne einzelne bloßzustellen. Eine einmalige Erklärung reicht nicht, und ein Kind auf dem Höhepunkt der Wut kann eine neue Technik kaum lernen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zur Entwicklung der Emotionsregulation treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Säuglinge sind fast vollständig auf Ko-Regulation durch Erwachsene angewiesen.",
+        "Wutanfälle sind bei Zwei- bis Dreijährigen häufig.",
+        "Jugendliche brauchen keine Unterstützung durch Erwachsene mehr.",
+        "Schulkinder verstehen zunehmend, dass man zwei Gefühle zugleich haben kann.",
+        "Die Fähigkeit zur Selbstregulation ist mit sechs Jahren abgeschlossen."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Säuglinge brauchen Beruhigung von außen, Wutanfälle gehören ins Kleinkindalter, und Schulkinder lernen, gemischte Gefühle zu verstehen. Jugendliche brauchen weiterhin verlässliche Erwachsene – nur in anderer Form, mit mehr Mitsprache. Selbstregulation entwickelt sich bis ins junge Erwachsenenalter weiter."
+    },
+    {
+      "art": "fall",
+      "fall": "Tim (9) hat seit Monaten mehrmals pro Woche heftige Wutausbrüche, auch zu Hause, und ist dazwischen fast immer gereizt. Tagesplan, Ruheecke und ein persönlicher Plan haben kaum etwas verändert.",
+      "frage": "Was ist der nächste sinnvolle Schritt?",
+      "optionen": [
+        "Den Eltern mitteilen, dass Tim eine disruptive Affektregulationsstörung hat.",
+        "Mit der Leitung sprechen, Beobachtungen zusammenstellen und den Eltern eine fachliche Abklärung vorschlagen.",
+        "Die Unterstützung beenden, weil sie nichts bringt.",
+        "Strengere Strafen einführen, bis sich das Verhalten bessert."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die Schwierigkeiten sind anhaltend, heftig, zeigen sich in mehreren Lebensbereichen und sprechen trotz guter Unterstützung kaum an. Jetzt ist eine fachliche Abklärung angezeigt, vorbereitet mit konkreten Beobachtungen und abgestimmt mit der Leitung. Eine Diagnose stellen pädagogische Fachkräfte nicht; die Unterstützung sollte bis dahin weiterlaufen, und härtere Strafen verschärfen das Problem eher."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Eine Auszeit kann hilfreich sein, wenn sie der Beruhigung dient, kurz ist und das Kind dabei im Blick bleibt.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Eine kurze Auszeit an einem ruhigen Ort kann beim Runterkommen helfen. Als Strafe, zur Beschämung oder als Isolation eingesetzt, verschärft sie dagegen oft die Not des Kindes und belastet die Beziehung."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Emotion",
+      "erklaerung": "Schnelle Reaktion auf ein bedeutsames Ereignis mit mehreren Ebenen: Erleben, Körper, Gedanken, Ausdruck und Handlungsimpuls."
+    },
+    {
+      "begriff": "Emotionsregulation",
+      "erklaerung": "Alle Vorgänge, mit denen Menschen beeinflussen, welche Gefühle sie haben, wann sie sie haben und wie sie sie erleben und ausdrücken."
+    },
+    {
+      "begriff": "Ko-Regulation",
+      "erklaerung": "Beruhigung und Unterstützung der Gefühlsregulation durch eine andere Person, etwa einen ruhigen Erwachsenen. Grundlage für die spätere Selbstregulation."
+    },
+    {
+      "begriff": "Selbstregulation",
+      "erklaerung": "Die Fähigkeit, eigene Gefühle, Aufmerksamkeit und Verhalten ohne Hilfe von außen zu steuern. Entwickelt sich bis ins junge Erwachsenenalter."
+    },
+    {
+      "begriff": "Prozessmodell der Emotionsregulation",
+      "erklaerung": "Modell von James Gross mit fünf Ansatzpunkten: Situation auswählen, Situation verändern, Aufmerksamkeit lenken, neu bewerten, Reaktion beeinflussen."
+    },
+    {
+      "begriff": "Neubewertung",
+      "erklaerung": "Eine Situation gedanklich anders einordnen, sodass sich ihre gefühlsmäßige Bedeutung verändert – etwa ein Anrempeln als Versehen statt als Angriff."
+    },
+    {
+      "begriff": "Fenster der Toleranz",
+      "erklaerung": "Arbeitsmodell nach Daniel Siegel: Bereich mittlerer Erregung, in dem ein Mensch Gefühle spüren und trotzdem denken, zuhören und lernen kann."
+    },
+    {
+      "begriff": "Über- und Untererregung",
+      "erklaerung": "Zustände außerhalb des Toleranzfensters: Übererregung mit Kampf- oder Fluchtreaktionen, Untererregung mit Erstarren, Abwesenheit und Abschalten."
+    },
+    {
+      "begriff": "Sozial-emotionales Lernen",
+      "erklaerung": "Gezielte Förderung von Gefühlswissen, Selbstregulation und sozialen Fähigkeiten, etwa durch regelmäßige Programme im Unterricht."
+    }
+  ],
+  "quellen": [
+    "gross1998",
+    "siegel1999",
+    "schneiderLindenberger2018",
+    "casey2008",
+    "thomasChess1977",
+    "durlak2011",
+    "petermann2013",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "stress-gehirn",
+    "deeskalation",
+    "bindung",
+    "entwicklung-0-18",
+    "traumapaedagogik",
+    "abwehr-coping",
+    "selbstverletzung-suizid",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "wut-thermometer",
+    "ballon-atmen",
+    "ruhig-werden-drei-uebungen",
+    "gefuehle-genau-benennen",
+    "ruhe-ecke"
+  ]
+}

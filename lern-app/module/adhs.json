@@ -1,0 +1,453 @@
+{
+  "id": "adhs",
+  "bereich": "stoerungen",
+  "titel": "ADHS",
+  "untertitel": "Aufmerksamkeit, Unruhe, Impulsivität – verstehen und im Alltag begleiten",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können die drei Kernbereiche von ADHS beschreiben und von alterstypischem Verhalten unterscheiden.",
+    "Sie können erklären, warum ADHS vor allem eine Störung der Selbststeuerung ist – und kein Erziehungsproblem.",
+    "Sie kennen Situationen, die ähnlich aussehen (Angst, Trauma, Überforderung, Sprache), und wissen, warum die Abklärung Fachleuten vorbehalten ist.",
+    "Sie können fünf wirksame Unterstützungen für den Unterricht planen und umsetzen.",
+    "Sie wissen, wann und wie Sie Eltern und Fachleute einbeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Noah, 9 Jahre, Cycle 3.2",
+          "text": "Noah ist nach fünf Minuten Stillarbeit wieder auf den Beinen: Er spitzt einen Stift, der schon spitz ist, wirft dabei das Mäppchen seiner Nachbarin herunter und ruft eine Antwort in die Klasse, bevor die Frage fertig gestellt ist. Seine Hausaufgaben liegen oft zu Hause, obwohl er sie gemacht hat. Die Lehrerin ist erschöpft und denkt: „Wenn er wollte, könnte er.“ Denn beim Lego-Bauen in der Maison Relais sitzt Noah eine Stunde lang konzentriert.",
+          "fragen": [
+            "Welche Beobachtungen passen zu ADHS, welche scheinen zu widersprechen?",
+            "Was würde Ihnen helfen, Noahs Verhalten besser einzuordnen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung (ADHS) gehört zu den häufigsten psychischen Störungen im Kindes- und Jugendalter. Weltweit sind etwa 5 von 100 Kindern und Jugendlichen betroffen, Jungen in Studien aus der Allgemeinbevölkerung etwa zwei- bis dreimal so oft wie Mädchen (Faraone et al., 2021). Bei Mädchen wird ADHS häufiger übersehen, weil bei ihnen oft die Unaufmerksamkeit im Vordergrund steht und sie weniger stören.\n\nADHS zeigt sich in drei Bereichen: **Unaufmerksamkeit**, **Hyperaktivität** (motorische Unruhe) und **Impulsivität**. Alle Kinder sind manchmal unkonzentriert, zappelig oder vorschnell. Bei ADHS sind diese Verhaltensweisen aber deutlich stärker ausgeprägt als bei Gleichaltrigen, sie bestehen seit längerer Zeit, zeigen sich in mehreren Lebensbereichen und beeinträchtigen das Lernen, die Beziehungen oder das Selbstwertgefühl."
+        },
+        {
+          "art": "merke",
+          "text": "ADHS ist keine Frage des Wollens. Das Kind weiß oft genau, was erwartet wird – es gelingt ihm nur nicht zuverlässig, sein Verhalten danach auszurichten. Besonders schwer fällt das bei Aufgaben, die langweilig, lang oder ohne sofortige Rückmeldung sind."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: wie ADHS im Alltag aussieht",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Die drei Kernbereiche im Schulalltag",
+          "spalten": [
+            "Bereich",
+            "Typische Beobachtungen"
+          ],
+          "zeilen": [
+            [
+              "Unaufmerksamkeit",
+              "Flüchtigkeitsfehler, verliert beim Arbeiten den Faden, scheint nicht zuzuhören, bringt Aufgaben nicht zu Ende, schlechte Organisation, verliert Material, lässt sich leicht ablenken, vergisst Alltägliches"
+            ],
+            [
+              "Hyperaktivität",
+              "zappelt, steht auf, wenn Sitzen erwartet wird, rennt oder klettert unpassend (bei Jugendlichen eher innere Unruhe), kann nicht leise spielen, redet sehr viel"
+            ],
+            [
+              "Impulsivität",
+              "platzt mit Antworten heraus, kann schwer warten, bis er oder sie an der Reihe ist, unterbricht und stört andere, handelt ohne nachzudenken"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Klassifikationssysteme (DSM-5-TR, ICD-11) verlangen für eine Diagnose unter anderem, dass viele dieser Merkmale **mindestens sechs Monate** bestehen, **vor dem zwölften Lebensjahr** begonnen haben, in **mindestens zwei Lebensbereichen** auftreten (zum Beispiel Schule und Familie) und zu einer **deutlichen Beeinträchtigung** führen. Je nachdem, welcher Bereich überwiegt, spricht man vom vorwiegend unaufmerksamen, vorwiegend hyperaktiv-impulsiven oder kombinierten Erscheinungsbild.\n\nDas Bild verändert sich mit dem Alter. Im Kindergarten fällt vor allem die Unruhe auf, in der Grundschule die Mühe mit Stillarbeit und Regeln. Bei Jugendlichen nimmt die sichtbare Hyperaktivität meist ab; es bleiben innere Unruhe, Unorganisiertheit, Aufschieben, riskantes Verhalten und Konflikte."
+        },
+        {
+          "art": "liste",
+          "titel": "Hinweise, die man leicht übersieht",
+          "punkte": [
+            "Ein ruhiges Kind, das „träumt“, ständig den Anschluss verliert und dessen Hefte voller angefangener Aufgaben sind (vorwiegend unaufmerksames Bild – häufiger bei Mädchen).",
+            "Starke Schwankungen: an guten Tagen gelingt vieles, an anderen fast nichts.",
+            "Hyperfokus: stundenlange Konzentration auf Dinge, die sofort belohnen (Bildschirm, Lego). Das widerspricht ADHS nicht, sondern passt zur veränderten Belohnungsverarbeitung.",
+            "Große emotionale Reaktionen auf kleine Frustrationen – viele Kinder mit ADHS haben auch Mühe, Gefühle zu regulieren."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen und Verlauf",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "ADHS entsteht aus einem Zusammenspiel von Veranlagung und Umwelt. Zwillings- und Familienstudien zeigen, dass die Erblichkeit hoch ist; beteiligt sind sehr viele Gene mit jeweils kleinem Effekt. Dazu kommen Risiken wie Frühgeburt, niedriges Geburtsgewicht oder Alkohol und Nikotin in der Schwangerschaft (Faraone et al., 2021).\n\nIm Kern geht es um die **Selbststeuerung**. Die sogenannten **exekutiven Funktionen** – Arbeitsgedächtnis, Hemmung spontaner Impulse, flexibles Umschalten, Planen – arbeiten weniger zuverlässig. Außerdem reagieren Menschen mit ADHS stärker auf sofortige und schwächer auf spätere Belohnungen (Barkley, 2015). Deshalb gelingt Konzentration beim Videospiel und scheitert bei der Rechenaufgabe, deren Nutzen erst in Wochen sichtbar wird.\n\nErziehung verursacht ADHS nicht. Sie beeinflusst aber, wie stark die Schwierigkeiten sich auswirken: Ein vorhersehbares, zugewandtes Umfeld mit klaren Regeln mildert die Folgen; ständige Kritik und Konflikte verstärken sie."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Zucker, Handys oder zu wenig Strenge machen Kinder hyperaktiv.",
+          "fakt": "Für Zucker gibt es keinen belastbaren Zusammenhang. Bildschirmzeit und Erziehung verursachen keine ADHS, können aber Symptome verstärken oder abschwächen. Die Hauptursachen sind biologisch."
+        },
+        {
+          "art": "text",
+          "text": "**Gefühle und ADHS.** Viele Kinder und Jugendliche mit ADHS reagieren sehr heftig auf Frustration, Kränkung oder Langeweile und beruhigen sich langsamer. Fachleute sprechen von Schwierigkeiten der Emotionsregulation. Für den Alltag heißt das: Ein Wutausbruch nach einer kleinen Kritik ist oft kein Machtkampf, sondern Überflutung. Hilfreich sind ein ruhiger Ton, ein Ort zum Runterkommen und das Gespräch erst danach – wenn das Kind wieder denken kann. Solche Strategien zur Beruhigung lassen sich in ruhigen Momenten üben."
+        },
+        {
+          "art": "text",
+          "text": "**Begleitprobleme sind die Regel, nicht die Ausnahme.** Viele Kinder mit ADHS haben zusätzlich oppositionelles Verhalten, Lernstörungen (Lesen, Rechtschreibung, Rechnen), Ängste, Tics oder Schlafprobleme. Durch die vielen negativen Rückmeldungen leidet oft das Selbstwertgefühl.\n\n**Verlauf:** Bei vielen bleiben Schwierigkeiten bis ins Jugend- und Erwachsenenalter bestehen, meist in abgeschwächter oder veränderter Form. Ohne Unterstützung steigen Risiken wie Schulabbruch, Unfälle und später Suchtprobleme – mit guter Begleitung verlaufen viele Lebenswege gut."
+        },
+        {
+          "art": "mythos",
+          "mythos": "ADHS wächst sich aus.",
+          "fakt": "Die sichtbare Unruhe nimmt mit dem Alter oft ab. Unaufmerksamkeit, Unorganisiertheit und Impulsivität bleiben aber bei vielen bis ins Erwachsenenalter bestehen."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Unruhe und Unaufmerksamkeit sind Symptome, keine Diagnose. Hinter demselben Verhalten können ganz unterschiedliche Ursachen stecken. Deshalb ist die Abklärung Sache von Fachleuten (Kinderärztin, Kinder- und Jugendpsychiatrie, Psychologinnen, Diagnostique des CDSE). Pädagogische Fachkräfte leisten dabei einen wichtigen Beitrag: genaue, sachliche Beobachtungen aus der Schule."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Andere mögliche Erklärungen",
+          "punkte": [
+            {
+              "wie": "Angst oder Sorgen",
+              "unterschied": "Das Kind ist unruhig und abgelenkt, weil es grübelt oder sich fürchtet; die Unruhe ist situationsabhängig (vor Proben, nach Streit zu Hause)."
+            },
+            {
+              "wie": "Trauma und Belastung",
+              "unterschied": "Übererregung, Schreckhaftigkeit und Konzentrationsprobleme nach belastenden Erlebnissen; Beginn oft zeitlich mit einem Ereignis verbunden."
+            },
+            {
+              "wie": "Überforderung oder Unterforderung",
+              "unterschied": "Unruhe vor allem bei zu schweren oder zu leichten Aufgaben; bei passendem Niveau arbeitet das Kind konzentriert."
+            },
+            {
+              "wie": "Sprache und Mehrsprachigkeit",
+              "unterschied": "Ein Kind, das die Unterrichtssprache noch nicht sicher versteht, wirkt schnell „abwesend“. Es folgt aber gut, wenn Anweisungen gezeigt oder in der Erstsprache gegeben werden."
+            },
+            {
+              "wie": "Lernstörung",
+              "unterschied": "Die Aufmerksamkeit bricht vor allem beim Lesen, Schreiben oder Rechnen ein, weil diese Aufgaben extrem anstrengend sind."
+            },
+            {
+              "wie": "Schlafmangel, Hör- oder Sehprobleme",
+              "unterschied": "Einfach zu prüfen und oft übersehen: Wie viel schläft das Kind? Wann war der letzte Hör- und Sehtest?"
+            },
+            {
+              "wie": "Relatives Alter",
+              "unterschied": "Die jüngsten Kinder einer Klasse werden häufiger als unaufmerksam eingeschätzt. Vergleichen Sie mit der tatsächlichen Altersgruppe."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beschreiben statt deuten: „Steht in der Stillarbeit im Schnitt alle vier Minuten auf“ hilft der Abklärung mehr als „Er ist hyperaktiv“."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: was im Unterricht hilft",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Für den Schulalltag gilt: Die Umgebung muss einen Teil der Selbststeuerung übernehmen, die dem Kind (noch) schwerfällt. Wirksam sind Strukturen, die **Aufmerksamkeit von außen lenken** und **Rückmeldung sofort** geben. Verhaltensorientierte Maßnahmen in der Klasse gehören laut Leitlinien zu den wichtigsten Bausteinen der Behandlung (NICE, 2018; AWMF, 2018)."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Feste Abläufe und sichtbare Pläne: Tagesplan an der Tafel, Checkliste auf dem Tisch.",
+            "Kurze, klare Anweisungen – eine nach der anderen, mit Blickkontakt; bei längeren Aufgaben schriftlich oder als Bild.",
+            "Aufgaben in kleine Etappen teilen, mit Zwischenkontrolle („Zeig mir die ersten drei Rechnungen“).",
+            "Sofortiges, konkretes Lob für erwünschtes Verhalten („Du hast angefangen, ohne dass ich erinnern musste“) – deutlich häufiger als Korrekturen.",
+            "Ein Sitzplatz nahe der Lehrperson und weg von Tür und Fenster; ein ruhiges Gegenüber.",
+            "Erlaubte Bewegung: Material austeilen, kurze Bewegungspausen, Sitzkissen oder ein Knetball.",
+            "Zeit sichtbar machen (Sanduhr, Timer), Übergänge ankündigen.",
+            "Selbstbeobachtung und Tageskarte (Check-in/Check-out) mit wenigen, klaren Zielen – gemeinsam mit den Eltern."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Die Pause streichen: Gerade diese Kinder brauchen Bewegung.",
+            "Lange Moralpredigten, Ironie, Bloßstellen vor der Klasse.",
+            "„Reiß dich zusammen“ – das Kind kann es in diesem Moment nicht.",
+            "Strafen für Symptome (Vergessen, Zappeln) statt Unterstützung beim Organisieren.",
+            "Nur auf Fehler reagieren: Das Kind hört sonst am Tag fast nur Kritik."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Prüfungen und Nachteilsausgleich.** Viele Schülerinnen und Schüler mit ADHS können mehr, als sie in einer Prüfung zeigen. Hilfreich sind ein ruhiger Platz, Aufgaben einzeln statt als ganzer Bogen, klare Zeitangaben mit Zwischenständen und bei Bedarf mehr Zeit. In Luxemburg sind solche Anpassungen als „aménagements raisonnables“ möglich; die Entscheidung liegt bei der zuständigen Kommission. Besprechen Sie Bedarf und Weg mit der Leitung.\n\n**Selbstwert schützen.** Kinder mit ADHS hören am Tag sehr viel Kritik. Planen Sie bewusst deutlich mehr positive als korrigierende Rückmeldungen ein – eine häufig genutzte Faustregel ist vier zu eins – und geben Sie dem Kind Aufgaben, in denen es glänzen kann."
+        },
+        {
+          "art": "fall",
+          "titel": "Noahs neue Woche",
+          "text": "Die Lehrerin vereinbart mit Noah und seinen Eltern zwei Ziele: „Ich melde mich, bevor ich rede“ und „Ich packe meine Hausaufgaben nach dem Plan ein“. Auf seiner Tageskarte gibt es nach jeder Stunde ein kurzes Zeichen. Noah darf als „Materialchef“ Hefte austeilen. Nach drei Wochen ruft er deutlich seltener herein; das Heft kommt an vier von fünf Tagen mit.",
+          "fragen": [
+            "Was genau hat hier gewirkt?",
+            "Wie würden Sie das Vorgehen anpassen, wenn es nach drei Wochen keine Veränderung gäbe?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "ADHS bei Jugendlichen und bei Mädchen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Im Jugendalter verändert sich das Bild. Die sichtbare Unruhe tritt zurück, dafür wachsen die Anforderungen an Selbstorganisation: mehrere Fächer, Lehrkräfte, Termine und Hausaufgaben über die Woche. Jugendliche mit ADHS verlieren dabei leicht den Überblick, schieben auf, kommen zu spät oder verpassen Abgaben. Impulsivität zeigt sich jetzt eher als riskantes Verhalten, etwa im Straßenverkehr, beim Umgang mit Geld, in sozialen Medien oder beim ersten Kontakt mit Alkohol und Drogen.\n\nViele Jugendliche haben bis dahin sehr viel Kritik gehört. Manche ziehen sich zurück oder sagen, Schule sei ihnen egal. Dahinter steht oft die Erfahrung, es trotz Anstrengung nicht zu schaffen. Hilfreich sind jetzt Unterstützung beim Planen (Wochenplan, Erinnerungen im Handy, feste Lernzeiten), Beteiligung an Entscheidungen und Ansprechpersonen, die nicht aufgeben."
+        },
+        {
+          "art": "text",
+          "text": "**Mädchen** werden seltener und später abgeklärt. Bei ihnen steht häufiger die Unaufmerksamkeit im Vordergrund: Sie träumen, verlieren den Faden, wirken verplant, stören aber wenig. Manche gleichen die Schwierigkeiten lange mit viel Fleiß aus – bis die Anforderungen steigen. Nicht selten fallen sie erst durch Ängste, Niedergeschlagenheit oder Erschöpfung auf. Achten Sie deshalb auch auf stille Kinder, deren Leistungen stark schwanken oder die trotz großer Mühe wenig schaffen."
+        },
+        {
+          "art": "liste",
+          "titel": "Worauf Sie bei Jugendlichen achten können",
+          "punkte": [
+            "Häufig fehlende Materialien und verpasste Abgaben trotz guter Fähigkeiten",
+            "Starkes Aufschieben, alles „auf den letzten Drücker“",
+            "Ärger mit Lehrkräften wegen Zuspätkommen oder Hereinreden",
+            "Riskante Entscheidungen, Unfälle, Konflikte in sozialen Medien",
+            "Aussagen wie „Ich bin halt dumm“ oder „Mir ist alles egal“"
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Ben, 15 Jahre, Lycée",
+          "text": "Ben war in der Grundschule „der Zappelige“. Im Lycée sitzt er ruhig, aber er vergisst Abgaben, lernt erst in der Nacht vor Proben und hat in drei Fächern ungenügende Noten. Seinem Tutor sagt er: „Ich bin einfach zu faul.“ Gemeinsam richten sie einen Wochenplan im Handy ein, mit Erinnerungen am Vortag jeder Abgabe und zwei festen Lernzeiten nach der Schule. Nach einem Monat hat Ben zum ersten Mal alle Hausaufgaben eines Fachs abgegeben.",
+          "fragen": [
+            "Welche Rolle spielt Bens Satz „Ich bin zu faul“ für die Unterstützung?",
+            "Wer könnte Ben außerdem helfen, dranzubleiben?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Zusammenarbeit",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Behandlung von ADHS ist **multimodal**: Aufklärung von Kind und Eltern, Elterntraining, Unterstützung in der Schule und – je nach Alter und Schweregrad – Medikamente. Für Schulkinder empfehlen die Leitlinien Medikamente dann, wenn die Beeinträchtigung trotz guter Anpassungen im Umfeld deutlich bleibt; die Entscheidung trifft die Ärztin oder der Arzt gemeinsam mit der Familie (NICE, 2018).\n\n**Stimulanzien** (zum Beispiel Methylphenidat) verbessern die Kernsymptome bei vielen Kindern kurzfristig deutlich (Cortese et al., 2018). Häufige Nebenwirkungen sind Appetitminderung und Einschlafprobleme. Medikamente ersetzen keine pädagogische Unterstützung – sie machen sie oft erst wirksam. Für die Schule wichtig: Beobachtungen zur Wirkung (Konzentration, Stimmung, Appetit in der Kantine) sind für die behandelnde Ärztin wertvoll, aber immer über die Eltern und mit deren Einverständnis."
+        },
+        {
+          "art": "mythos",
+          "mythos": "ADHS-Medikamente machen süchtig und führen später zu Drogen.",
+          "fakt": "Bei ärztlich kontrollierter Behandlung gibt es keinen Hinweis darauf, dass Stimulanzien das Suchtrisiko erhöhen. Unbehandelte ADHS ist dagegen ein Risikofaktor für späteren Substanzkonsum."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie die Eltern an, wenn die Schwierigkeiten über Wochen bestehen, trotz Anpassungen im Unterricht deutlich bleiben und das Lernen oder die Beziehungen beeinträchtigen. Legen Sie dafür Beobachtungen vor, nicht Vermutungen. Eine Abklärung erfolgt über die Kinderärztin, die Kinder- und Jugendpsychiatrie oder das Diagnostique-Team des CDSE. Sprechen Sie vorher mit der zuständigen Leitung (Responsable)."
+        },
+        {
+          "art": "tun",
+          "titel": "Gute Zusammenarbeit mit Eltern",
+          "punkte": [
+            "Mit Stärken beginnen: Was gelingt dem Kind, was mögen Sie an ihm?",
+            "Konkrete Beobachtungen und Beispiele statt Etiketten („Er ist ADHS“).",
+            "Gemeinsame, wenige Ziele und ein einfaches Rückmeldesystem (Tageskarte).",
+            "Nach 4–6 Wochen gemeinsam auswerten und anpassen."
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche Beschreibung trifft den Kern von ADHS am besten?",
+      "optionen": [
+        "Eine Folge inkonsequenter Erziehung",
+        "Eine Form der Hochbegabung, bei der das Kind unterfordert ist",
+        "Ein vorübergehendes Entwicklungsphänomen ohne Folgen",
+        "Eine Störung der Selbststeuerung mit starker biologischer Grundlage"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "ADHS beruht vor allem auf Veranlagung und einer veränderten Selbststeuerung (exekutive Funktionen, Belohnungsverarbeitung). Erziehung verursacht ADHS nicht, beeinflusst aber, wie sehr sich die Schwierigkeiten auswirken. Unterforderung kann ähnlich aussehen, erklärt ADHS aber nicht, und viele Betroffene haben auch als Erwachsene noch Schwierigkeiten."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Punkte gehören zu den Voraussetzungen für eine ADHS-Diagnose? (mehrere richtig)",
+      "optionen": [
+        "Die Merkmale bestehen seit mindestens sechs Monaten.",
+        "Die Merkmale zeigen sich in mindestens zwei Lebensbereichen.",
+        "Das Kind muss motorisch unruhig sein.",
+        "Die Merkmale führen zu einer deutlichen Beeinträchtigung.",
+        "Ein auffälliger Intelligenztest ist nötig."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Dauer (mindestens sechs Monate), mehrere Lebensbereiche und deutliche Beeinträchtigung gehören zu den Kriterien, dazu der Beginn vor dem zwölften Lebensjahr. Motorische Unruhe ist nicht zwingend – beim vorwiegend unaufmerksamen Bild fehlt sie oft. Ein Intelligenztest kann bei der Abklärung helfen, ist aber keine Voraussetzung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Kind sich stundenlang auf ein Videospiel konzentrieren kann, spricht das gegen ADHS.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Aufgaben mit sofortiger, ständiger Belohnung gelingen Kindern mit ADHS oft gut, manchmal mit „Hyperfokus“. Schwierig sind Aufgaben, deren Nutzen später kommt oder die wenig anregend sind – genau das ist typisch für die veränderte Belohnungsverarbeitung."
+    },
+    {
+      "art": "fall",
+      "fall": "Inês (8) ist seit einem halben Jahr in Luxemburg und spricht zu Hause Portugiesisch. Im Unterricht auf Deutsch wirkt sie oft abwesend, beginnt Aufgaben nicht und schaut aus dem Fenster. Wenn die Lehrerin ihr die Aufgabe zeigt und auf Französisch erklärt, arbeitet sie zügig.",
+      "frage": "Was ist die beste Einschätzung?",
+      "optionen": [
+        "Das Muster spricht klar für ADHS vom unaufmerksamen Typ.",
+        "Inês ist unmotiviert; mit strengeren Regeln wird es besser.",
+        "Die Unaufmerksamkeit lässt sich gut durch Sprachbarrieren erklären; zuerst das sprachliche Verstehen sichern und weiter beobachten.",
+        "Eine medikamentöse Behandlung sollte angeregt werden."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Inês arbeitet konzentriert, sobald sie die Aufgabe versteht. Das spricht für eine Sprachbarriere, nicht für ADHS. Sinnvoll sind sprachliche Unterstützung und weitere Beobachtung. Eine Diagnose oder Medikamente zu vermuten, wäre voreilig, Strenge löst das Verständnisproblem nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Luca (10) ruft ständig herein. Die Lehrerin hat ihm deshalb schon dreimal diese Woche die große Pause gestrichen. Seitdem ist er am Nachmittag noch unruhiger.",
+      "frage": "Welche Veränderung ist am sinnvollsten?",
+      "optionen": [
+        "Die Pause behalten, ein konkretes Ziel vereinbaren („Ich melde mich“) und erwünschtes Verhalten sofort und häufig bestärken.",
+        "Die Pause weiter streichen, bis er sich bessert.",
+        "Luca vor der Klasse auf sein Verhalten ansprechen, damit alle es sehen.",
+        "Nichts tun – das Verhalten wird sich von selbst geben."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Bewegung ist für Kinder mit ADHS wichtig; das Streichen der Pause verstärkt die Unruhe. Wirksam sind klare, positive Ziele und sofortige Rückmeldung, wenn es gelingt. Bloßstellen schadet der Beziehung und dem Selbstwert, Abwarten ändert am Muster nichts."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Anweisung ist für ein Kind mit ADHS am hilfreichsten?",
+      "optionen": [
+        "„Pack jetzt alles ein, räum deinen Platz auf, hol dein Heft aus dem Fach und dann schreib die Aufgabe von der Tafel ab.“",
+        "„Konzentrier dich endlich!“",
+        "Mit Blickkontakt: „Hol bitte dein Heft.“ – und nach dem Ausführen der nächste Schritt.",
+        "„Du weißt doch, was jetzt zu tun ist.“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Kurze, einzelne Anweisungen mit Blickkontakt entlasten das Arbeitsgedächtnis. Eine Kette von vier Aufträgen überfordert, allgemeine Appelle („Konzentrier dich“) sagen nicht, was konkret zu tun ist, und die Annahme „Du weißt doch“ übersieht, dass es genau am Umsetzen hapert."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Erklärungen sollten Sie bedenken, bevor Sie Unaufmerksamkeit als Hinweis auf ADHS deuten? (mehrere richtig)",
+      "optionen": [
+        "Angst oder Sorgen",
+        "Schlafmangel",
+        "Hörprobleme",
+        "Die Tatsache, dass das Kind das jüngste der Klasse ist",
+        "Die Lieblingsfarbe des Kindes"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "erklaerung": "Angst, Schlafmangel, Hör- oder Sehprobleme und das relative Alter können wie ADHS aussehen oder die Einschätzung verzerren. Deshalb braucht es eine sorgfältige fachliche Abklärung mit Informationen aus mehreren Quellen."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Elterngespräch erzählt die Mutter von Mia (9), dass Mia seit zwei Wochen Methylphenidat nimmt. Sie fragt Sie, ob Ihnen etwas auffällt.",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Ich beurteile, ob das Medikament richtig dosiert ist.",
+        "Ich rate der Mutter, das Medikament abzusetzen, weil Mia am Mittag wenig isst.",
+        "Ich halte mich raus, weil Medikamente nicht meine Sache sind.",
+        "Ich notiere sachliche Beobachtungen (Konzentration, Stimmung, Essen in der Kantine) und gebe sie an die Mutter weiter – für die behandelnde Ärztin."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Beobachtungen aus der Schule sind für die Ärztin wertvoll und laufen über die Eltern. Über Dosierung oder Absetzen entscheidet ausschließlich die Ärztin. Sich ganz herauszuhalten, verschenkt wichtige Informationen; Appetitminderung ist eine bekannte Nebenwirkung, die die Ärztin kennen sollte."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Verhaltensorientierte Maßnahmen im Unterricht gehören laut Leitlinien zu den wichtigen Bausteinen der ADHS-Behandlung.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Leitlinien (NICE, AWMF) sehen eine multimodale Behandlung vor, in der Anpassungen und verhaltensorientierte Maßnahmen in der Schule einen festen Platz haben – mit und ohne Medikamente."
+    },
+    {
+      "art": "fall",
+      "fall": "Sie beobachten bei Tiago (7) seit Schulbeginn starke Unruhe und Impulsivität. Sie haben einen Tagesplan, kurze Anweisungen und eine Tageskarte eingeführt. Nach sechs Wochen ist kaum eine Veränderung zu sehen; Tiago wird von anderen Kindern gemieden.",
+      "frage": "Was ist der nächste sinnvolle Schritt?",
+      "optionen": [
+        "Den Eltern mitteilen, dass Tiago ADHS hat.",
+        "Die Maßnahmen beenden, weil sie nichts bringen.",
+        "Mit der Leitung sprechen, Beobachtungen zusammenstellen und den Eltern eine fachliche Abklärung vorschlagen.",
+        "Tiago in eine andere Klasse setzen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Schwierigkeiten sind anhaltend, trotz Anpassungen deutlich und beeinträchtigen die Beziehungen. Jetzt ist eine fachliche Abklärung sinnvoll – vorbereitet mit sachlichen Beobachtungen und abgestimmt mit der Leitung. Eine Diagnose stellen pädagogische Fachkräfte nicht; die Maßnahmen sollten bis zur Abklärung weiterlaufen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Exekutive Funktionen",
+      "erklaerung": "Geistige Steuerungsfähigkeiten wie Arbeitsgedächtnis, Hemmung von Impulsen, Planen und flexibles Umschalten. Sie reifen bis ins junge Erwachsenenalter."
+    },
+    {
+      "begriff": "Impulsivität",
+      "erklaerung": "Handeln ohne vorheriges Nachdenken, Schwierigkeiten zu warten oder spontane Reaktionen zurückzuhalten."
+    },
+    {
+      "begriff": "Multimodale Behandlung",
+      "erklaerung": "Kombination mehrerer Bausteine: Aufklärung, Elterntraining, schulische Maßnahmen und bei Bedarf Medikamente."
+    },
+    {
+      "begriff": "Stimulanzien",
+      "erklaerung": "Medikamentengruppe (z. B. Methylphenidat), die bei ADHS die Kernsymptome häufig deutlich verringert. Verordnung und Kontrolle durch die Ärztin."
+    },
+    {
+      "begriff": "Komorbidität",
+      "erklaerung": "Das gleichzeitige Vorliegen mehrerer Störungen, z. B. ADHS und eine Lese-Rechtschreibstörung."
+    },
+    {
+      "begriff": "Relatives Alter",
+      "erklaerung": "Die Stellung eines Kindes im Altersgefüge der Klasse. Die jüngsten Kinder werden häufiger als unaufmerksam oder unruhig eingeschätzt."
+    },
+    {
+      "begriff": "Hyperfokus",
+      "erklaerung": "Sehr lange, intensive Konzentration auf eine stark belohnende Tätigkeit, die bei ADHS vorkommen kann."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "faraone2021",
+    "niceNG87",
+    "awmfAdhs2018",
+    "barkley2015",
+    "cortese2018",
+    "doepfner2019"
+  ],
+  "verwandt": [
+    "oppositionell-aggressiv",
+    "lernstoerungen",
+    "verstaerkung"
+  ],
+  "toolbox": [
+    "bin-ich-bei-der-sache",
+    "stopp-denken-handeln",
+    "ich-sage-mir-selbst",
+    "check-in-check-out"
+  ]
+}

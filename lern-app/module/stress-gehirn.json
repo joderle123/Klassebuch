@@ -1,0 +1,517 @@
+{
+  "id": "stress-gehirn",
+  "bereich": "grundlagen",
+  "titel": "Stress, Gehirn und Verhalten",
+  "untertitel": "Was im Körper geschieht, wenn Kinder unter Druck geraten – und was sie wieder zur Ruhe bringt",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, wie die Stressreaktion in Körper und Gehirn abläuft und welche Rolle Bewertung, Vorhersehbarkeit und Kontrolle dabei spielen.",
+    "Sie können Kampf, Flucht und Erstarren im Schulalltag erkennen und von absichtlichem Fehlverhalten unterscheiden.",
+    "Sie können beschreiben, wie chronischer Stress Körper, Lernen und Verhalten beeinträchtigt – und warum diese Folgen nicht endgültig sind.",
+    "Sie können beruhigende Maßnahmen für akute Stressmomente und für den Alltag planen: Beziehung, Vorhersehbarkeit, Schlaf, Bewegung und Körperübungen.",
+    "Sie können populäre Vereinfachungen über das Gehirn von gesichertem Wissen unterscheiden."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: was Stress ist",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Samira, 12 Jahre, Cycle 4.2",
+          "text": "Samira hat für die Mathematikprobe gut geübt; zu Hause konnte sie alle Aufgaben lösen. Als die Lehrerin die Blätter austeilt, wird ihr heiß, das Herz rast, im Kopf ist es „leer“. Sie starrt auf die erste Aufgabe und bringt keinen Gedanken zu Ende. Auf dem Heimweg fallen ihr alle Lösungswege wieder ein. Die Lehrerin sagt später: „Du hast wohl doch nicht genug gelernt.“",
+          "fragen": [
+            "Was könnte während der Probe in Samiras Körper geschehen sein?",
+            "Welche Rückmeldung hätte ihr mehr geholfen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Stress ist keine Krankheit, sondern eine lebenswichtige Anpassungsreaktion. Wenn wir eine Situation als Herausforderung oder Bedrohung erleben, stellt der Körper in Sekunden Energie bereit: Das Herz schlägt schneller, die Muskeln spannen sich an, die Aufmerksamkeit richtet sich auf die Gefahr. Fachleute unterscheiden den **Stressor**, also die auslösende Situation, und die **Stressreaktion**, also das, was in Körper und Verhalten geschieht.\n\nOb eine Situation Stress auslöst, hängt nicht nur von der Situation selbst ab, sondern davon, wie ein Mensch sie **bewertet**. Nach Lazarus und Folkman (1984) prüfen wir – oft blitzschnell und ohne es zu bemerken – zwei Fragen: Ist das bedrohlich für mich? Und: Habe ich, was ich brauche, um damit fertigzuwerden? Stress entsteht, wenn die Anforderungen die eigenen Möglichkeiten zu übersteigen scheinen. Deshalb ist dieselbe Probe für ein Kind eine Herausforderung und für ein anderes eine Bedrohung.\n\nBesonders belastend sind Situationen, die **unvorhersehbar** sind, in denen man **keine Kontrolle** hat oder in denen man fürchtet, vor anderen **bewertet und bloßgestellt** zu werden. Für die Schule ist das eine wichtige Botschaft: Vorhersehbarkeit, kleine Wahlmöglichkeiten und ein Klima, in dem Fehler nicht beschämen, senken Stress – lange bevor ein Kind „ausrastet“."
+        },
+        {
+          "art": "text",
+          "text": "**Nicht jeder Stress schadet.** Kurzer, bewältigbarer Stress gehört zum Lernen dazu: das Kribbeln vor dem Referat, die Anspannung beim Wettlauf. Wenn danach Erholung folgt und das Kind erlebt „Ich habe es geschafft“, stärkt das sogar. In der Entwicklungsforschung unterscheidet man häufig drei Formen: **positiven Stress** (kurz und bewältigbar), **tolerierbaren Stress** (schwer, etwa eine Trennung oder ein Todesfall, aber abgefedert durch verlässliche Erwachsene) und **toxischen Stress** (stark, häufig oder lang anhaltend, ohne ausreichenden Schutz durch Bezugspersonen). Entscheidend ist also nicht allein die Stärke der Belastung, sondern auch, ob ein Kind damit allein bleibt."
+        },
+        {
+          "art": "merke",
+          "text": "Stress ist die Antwort des Körpers auf eine Situation, die als bedrohlich oder überfordernd erlebt wird. Was ein Kind als bedrohlich erlebt, hängt von seiner Bewertung, seinen Erfahrungen und seinen Möglichkeiten ab – nicht davon, wie die Situation für Erwachsene aussieht."
+        }
+      ]
+    },
+    {
+      "titel": "Die Stressreaktion in Körper und Gehirn",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Stressreaktion läuft über zwei Wege, die sich ergänzen.\n\n**Der schnelle Weg** führt über das sympathische Nervensystem zum Nebennierenmark. Innerhalb von Sekunden werden Adrenalin und Noradrenalin ausgeschüttet. Herz und Atmung beschleunigen sich, der Blutdruck steigt, die Muskeln werden stärker durchblutet, die Verdauung wird gedrosselt. Der Körper ist bereit zu kämpfen oder zu fliehen. Das erklärt auch Bauchweh, Übelkeit und einen trockenen Mund vor Proben.\n\n**Der langsamere Weg** ist die hormonelle Stressachse vom Hypothalamus über die Hirnanhangdrüse zur Nebennierenrinde, abgekürzt **HPA-Achse**. Sie setzt das Hormon **Cortisol** frei. Cortisol stellt Energie bereit und wirkt auf Stoffwechsel, Immunsystem und Gehirn. Sein Spiegel erreicht erst nach etwa 20 bis 30 Minuten den Höhepunkt. Normalerweise bremst Cortisol über eine Rückmeldung an das Gehirn die Stressreaktion wieder ab, wenn die Gefahr vorbei ist (McEwen, 1998).\n\nFür den Alltag heißt das: Auch wenn ein Kind nach einem Ausbruch äußerlich ruhig wirkt, ist sein Körper oft noch eine ganze Weile in Alarmbereitschaft. Eine neue Kleinigkeit kann dann schnell einen zweiten Ausbruch auslösen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Beteiligte Hirnregionen – vereinfacht",
+          "spalten": [
+            "Region",
+            "Aufgabe",
+            "Unter starkem Stress"
+          ],
+          "zeilen": [
+            [
+              "Amygdala (Mandelkern)",
+              "Bewertet sehr schnell, ob etwas gefährlich ist, und stößt die Alarmreaktion an",
+              "Reagiert empfindlicher; neutrale Reize werden eher als Bedrohung gedeutet"
+            ],
+            [
+              "Hippocampus",
+              "Wichtig für Lernen, Gedächtnis und die Einordnung von Erlebnissen; hilft, die Stressreaktion zu beenden",
+              "Abrufen von Gelerntem fällt schwerer; bei lang anhaltendem Stress können sich Verbindungen zwischen Nervenzellen zurückbilden (vor allem aus Tierstudien bekannt)"
+            ],
+            [
+              "Präfrontaler Kortex (vorderes Stirnhirn)",
+              "Planen, Impulse bremsen, Arbeitsgedächtnis, Gefühle regulieren, die Perspektive wechseln",
+              "Arbeitet deutlich schlechter; eingeübte, schnelle Reaktionen und Gewohnheiten setzen sich durch"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Diese Aufteilung ist eine Vereinfachung: Das Gehirn arbeitet in Netzwerken, und keine Region ist allein für Angst oder Vernunft zuständig. Einen wichtigen Punkt trifft das Bild aber: **Unter starkem Stress stehen genau die Fähigkeiten nur eingeschränkt zur Verfügung, die in der Schule am meisten verlangt werden** – nachdenken, abwägen, sich erinnern, zuhören, sich an Regeln halten.\n\nBei Jugendlichen kommt etwas hinzu. Die Systeme für Gefühle und Belohnung reagieren in der Pubertät besonders stark, während die Steuerungsfähigkeiten des Stirnhirns noch bis ins junge Erwachsenenalter reifen (Casey et al., 2008). In ruhigen Momenten können Jugendliche oft sehr vernünftig abwägen. In aufgeladenen Situationen – vor Gleichaltrigen, unter Druck, nach einer Kränkung – setzen sich Gefühle leichter durch."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Unter Stress übernimmt das „Reptiliengehirn“ die Kontrolle.",
+          "fakt": "Die Vorstellung eines dreigeteilten Gehirns aus Reptilien-, Säugetier- und Menschenteil gilt in der Hirnforschung als überholt. Richtig ist: Unter starkem Stress verschiebt sich das Gleichgewicht zwischen schnellen, automatischen Reaktionen und bewusster Steuerung. Bildhafte Modelle können Kindern helfen, ihr Erleben zu verstehen – sie bleiben aber Vereinfachungen."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Kind im Alarmzustand kann nur eingeschränkt denken, zuhören und sich erinnern. Das ist keine Ausrede, sondern Biologie – und der Grund, warum Beruhigung vor Belehrung kommt."
+        }
+      ]
+    },
+    {
+      "titel": "Kampf, Flucht, Erstarren: Stress im Klassenzimmer",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wenn die Alarmreaktion anspringt, stehen im Wesentlichen drei Programme zur Verfügung: **kämpfen**, **fliehen** oder **erstarren**. Welches abläuft, entscheidet ein Kind nicht bewusst. Es hängt von der Situation ab, vom Temperament und davon, was das Kind in früheren bedrohlichen Situationen erlebt hat. Erstarren tritt häufig auf, wenn eine Situation überwältigend wirkt und weder Kampf noch Flucht möglich erscheinen.\n\nIm Schulalltag sehen diese Reaktionen anders aus als in der Natur – und werden deshalb leicht missverstanden."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wie Stressreaktionen im Unterricht aussehen können",
+          "spalten": [
+            "Reaktion",
+            "Was man sieht",
+            "Wie es oft gedeutet wird"
+          ],
+          "zeilen": [
+            [
+              "Kampf",
+              "Schreien, Beleidigen, Drohen, Gegenstände werfen, Schlagen, Diskutieren um jeden Preis, Provozieren",
+              "„Er will mich herausfordern.“ – „Sie ist respektlos.“"
+            ],
+            [
+              "Flucht",
+              "Aus dem Raum laufen, sich ständig zur Toilette melden, Kapuze über den Kopf, Rückzug ins Handy, Kopf auf den Tisch, Faxen, um einer Aufgabe auszuweichen, Fehlzeiten",
+              "„Er hat keine Lust.“ – „Sie drückt sich.“"
+            ],
+            [
+              "Erstarren",
+              "Stumm, starrer Blick, keine Reaktion auf Ansprache, „Blackout“ in der Probe, wirkt abwesend oder wie weggetreten",
+              "„Sie ist bockig.“ – „Er ignoriert mich.“ – „Sie hat nicht gelernt.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Auch Bauchschmerzen, Übelkeit, Kopfschmerzen, häufiger Harndrang oder plötzliche Müdigkeit können Zeichen von Stress sein – besonders bei jüngeren Kindern, die ihre Gefühle noch schwer in Worte fassen. Solche Beschwerden sind echt, auch wenn keine körperliche Krankheit dahintersteht. Wiederkehrende Beschwerden sollten trotzdem ärztlich abgeklärt werden.\n\n**Erstarren wird am häufigsten übersehen.** Ein Kind, das laut wird, bekommt Aufmerksamkeit. Ein Kind, das innerlich abschaltet, stört niemanden – und bleibt mit seiner Not allein. Bei Kindern mit belastenden oder traumatischen Erfahrungen kann dieses Abschalten sehr ausgeprägt sein: Sie wirken abwesend, verträumt oder gleichgültig, während sie innerlich überflutet sind."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Stressreaktion oder etwas anderes?",
+          "punkte": [
+            {
+              "wie": "Gezieltes, geplantes Verhalten",
+              "unterschied": "Fachleute unterscheiden reaktive Aggression (aus der Erregung heraus) von gezielter Aggression, mit der jemand kühl etwas erreichen will. Eine Stressreaktion wirkt überschießend, unüberlegt und oft auch für das Kind selbst überraschend; gezieltes Verhalten ist ruhig, geplant und beobachtet genau die Wirkung auf andere."
+            },
+            {
+              "wie": "Müdigkeit oder Langeweile",
+              "unterschied": "Ein Kind, das abwesend wirkt, kann auch übermüdet oder unterfordert sein. Für Erstarren spricht ein plötzlicher Wechsel in einer bestimmten Situation, etwa beim Aufrufen, zusammen mit Zeichen von Anspannung."
+            },
+            {
+              "wie": "Kurze Abwesenheiten wie „ausgeknipst“",
+              "unterschied": "Wiederholte Abwesenheiten von wenigen Sekunden mit starrem Blick, nach denen das Kind einfach weitermacht und sich an nichts erinnert, können auf eine Form der Epilepsie hinweisen (Absencen). Das gehört über die Eltern ärztlich abgeklärt."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Fragen Sie sich bei heftigem oder befremdlichem Verhalten: Ist dieses Kind gerade in Gefahr – oder fühlt es sich so? Die Antwort verändert, was hilft."
+        }
+      ]
+    },
+    {
+      "titel": "Wenn Stress nicht aufhört: chronischer Stress",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Stressreaktion ist für kurze Einsätze gebaut. Der Neurowissenschaftler Bruce McEwen beschreibt das mit zwei Begriffen (McEwen, 1998). **Allostase** bedeutet: Der Körper bleibt stabil, indem er sich ständig anpasst – Herzschlag, Hormone und Energie werden laufend an die Anforderungen angeglichen. Dieselben Botenstoffe, die kurzfristig schützen, schaden aber, wenn sie zu oft, zu lange oder unausgewogen im Einsatz sind. Die Abnutzung, die dann entsteht, nennt McEwen **allostatische Last**."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Muster der Überlastung nach McEwen (1998)",
+          "spalten": [
+            "Muster",
+            "Was geschieht",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Zu häufig",
+              "Viele Stressreaktionen kurz hintereinander, ohne Zeit zur Erholung",
+              "Ein Kind erlebt täglich Streit zu Hause, Hänseleien auf dem Schulweg und Misserfolge in der Klasse."
+            ],
+            [
+              "Keine Gewöhnung",
+              "Der Körper reagiert auf eine vertraute Anforderung jedes Mal wieder mit voller Stärke",
+              "Eine Jugendliche erlebt jede Präsentation so bedrohlich wie die erste, obwohl sie schon viele geschafft hat."
+            ],
+            [
+              "Kein Abschalten",
+              "Die Stressreaktion klingt nach dem Ende der Belastung nicht ab",
+              "Ein Kind grübelt abends noch lange über einen Konflikt und kann nicht einschlafen."
+            ],
+            [
+              "Zu schwache Antwort",
+              "Ein Stresssystem reagiert zu wenig; andere Systeme, etwa Entzündungsreaktionen, schießen dann über",
+              "Im Schulalltag kaum direkt sichtbar. Es zeigt: Nicht nur zu viel, auch zu wenig Stressreaktion ist ungünstig."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Folgen für Körper und Psyche.** Anhaltender Stress zeigt sich häufig in Schlafproblemen, Reizbarkeit, Erschöpfung, Konzentrations- und Gedächtnisschwierigkeiten sowie wiederkehrenden Kopf- oder Bauchschmerzen. Er schwächt die Abwehr gegen Infekte und erhöht das Risiko für Ängste und Depressionen. Bei Kindern, die über lange Zeit Gewalt, Vernachlässigung oder Missbrauch erleben, finden sich außerdem Veränderungen in der Regulation der Stresshormone und in der Entwicklung des Gehirns (Glaser, 2000).\n\n**Das Gehirn bleibt formbar.** Die Forschung zeigt auch die andere Seite: Viele stressbedingte Veränderungen sind zumindest teilweise umkehrbar, wenn die Belastung nachlässt (McEwen, 1998). Sicherheit, verlässliche Beziehungen und Unterstützung können viel ausgleichen. Frühe Belastung ist ein Risiko, kein Urteil."
+        },
+        {
+          "art": "fall",
+          "titel": "Luan, 9 Jahre, Cycle 3.1",
+          "text": "Luan zuckt zusammen, wenn eine Tür knallt, und beobachtet ständig, was um ihn herum geschieht. Morgens ist er oft erschöpft, klagt über Bauchweh und verliert bei kleinen Anlässen die Beherrschung. Wenn ihn jemand im Gang anrempelt, schlägt er sofort zurück. Seine Lehrerin weiß, dass es zu Hause seit Monaten heftigen Streit gibt.",
+          "fragen": [
+            "Welche Anzeichen passen zu chronischem Stress?",
+            "Was kann die Schule tun, auch wenn sie die Situation zu Hause nicht ändern kann?",
+            "Ab wann ist hier auch eine Frage des Kinderschutzes berührt?"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Stress zerstört das Gehirn von Kindern dauerhaft.",
+          "fakt": "Schwerer, anhaltender Stress kann die Entwicklung von Gehirn und Stressregulation beeinträchtigen. Das Gehirn bleibt aber ein Leben lang veränderbar, im Kindes- und Jugendalter besonders. Sichere Beziehungen und verlässliche Umgebungen können viel ausgleichen – deshalb zählt jeder gute Tag in der Schule."
+        }
+      ]
+    },
+    {
+      "titel": "Stress, Lernen und Verhalten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Leichte Anspannung kann die Aufmerksamkeit schärfen. Starker Stress dagegen beeinträchtigt genau die Vorgänge, von denen schulisches Lernen lebt."
+        },
+        {
+          "art": "liste",
+          "titel": "Was starker Stress beim Lernen verändert",
+          "punkte": [
+            "**Arbeitsgedächtnis:** Informationen kurz behalten und damit arbeiten, etwa beim Kopfrechnen oder bei einer längeren Anweisung, gelingt deutlich schlechter.",
+            "**Abrufen:** Gelerntes ist gespeichert, kommt aber nicht heraus. Das typische „Blackout“ in der Probe ist ein Abrufproblem und kein Beweis für fehlendes Lernen.",
+            "**Aufmerksamkeit:** Sie verengt sich auf mögliche Gefahren. Wer die Tür, die Mitschüler oder die Stimmung der Lehrkraft beobachtet, hat für die Aufgabe wenig frei.",
+            "**Flexibles Denken:** Unter Stress greifen Menschen eher auf eingeübte Muster zurück und probieren weniger Neues aus.",
+            "**Einprägen:** Gefühlsgeladene Momente prägen sich besonders fest ein – leider auch Beschämung. Wer vor der Klasse bloßgestellt wurde, verbindet das Fach oft noch lange mit diesem Gefühl."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Das Toleranzfenster.** Ein in der Praxis verbreitetes Modell stammt von dem Psychiater Daniel Siegel (1999). Jeder Mensch hat ein „Fenster“ der Erregung, in dem er sich gut steuern, denken und lernen kann. Oberhalb liegt die **Übererregung**: Unruhe, Wut, Panik, Kampf oder Flucht. Unterhalb liegt die **Untererregung**: Abschalten, Leere, Erstarren. Bei Kindern mit viel Belastung ist das Fenster oft schmal, schon kleine Anlässe bringen sie hinaus. Das Modell ist eine anschauliche Beschreibung und keine Messgröße. Es macht aber das Ziel pädagogischer Arbeit sichtbar: Kinder in ihr Fenster zurückbegleiten und es mit der Zeit verbreitern.\n\n**Verhalten unter Dauerstress.** Chronisch belastete Kinder reagieren schneller, heftiger und länger. Manche deuten neutrale Signale – einen Blick, ein Anrempeln im Gang, eine knappe Anweisung – eher als feindselig und schlagen „zurück“, bevor sie nachgedacht haben. Andere ziehen sich zurück oder versuchen, jede Situation zu kontrollieren. Aus Sicht des Kindes ist das oft eine sinnvolle Anpassung: Wo Gefahr droht, ist ständige Wachsamkeit nützlich. In der Schule wird sie zum Problem – und verdient Verständnis, ohne dass Grenzen wegfallen."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Blackout ist kein Beweis für Faulheit, und ein Wutausbruch nach einer Kleinigkeit ist oft kein Machtkampf. Beides kann heißen: Dieses Kind war gerade außerhalb seines Toleranzfensters."
+        }
+      ]
+    },
+    {
+      "titel": "Was beruhigt: im akuten Moment und im Alltag",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Beruhigung geschieht bei Kindern zuerst über Beziehung. Jüngere Kinder können sich noch kaum allein regulieren; sie „leihen“ sich die Ruhe der Erwachsenen. Fachleute nennen das **Ko-Regulation**. Die Nähe einer vertrauten, ruhigen Person dämpft die Stressreaktion nachweislich, bei Kindern besonders deutlich. Umgekehrt steckt Stress an: Ein Erwachsener, der laut wird und droht, heizt die Alarmreaktion weiter an.\n\nFür den akuten Moment gilt deshalb eine einfache Reihenfolge: **erst beruhigen, dann Beziehung herstellen, dann reden.** Solange ein Kind im Alarmzustand ist, erreichen es Erklärungen, Warum-Fragen und Konsequenzen kaum."
+        },
+        {
+          "art": "tun",
+          "titel": "Im akuten Stressmoment",
+          "punkte": [
+            "Selbst ruhig werden: langsam ausatmen, die Stimme senken, langsamer sprechen, eher seitlich als frontal stehen, Abstand lassen.",
+            "Wenige, kurze, freundliche Sätze: „Ich sehe, dass es gerade zu viel ist. Du kannst dort drüben durchatmen.“",
+            "Einen Ausweg anbieten: einen ruhigen Platz, einen Botengang, ein Glas Wasser, eine vereinbarte Pausenkarte.",
+            "Zuschauer verringern: die Klasse beschäftigen, das Kind nicht vor anderen zur Rede stellen.",
+            "Zeit geben – der Körper bleibt noch eine Weile in Alarmbereitschaft, auch wenn das Kind schon ruhig wirkt.",
+            "Erst danach, mit Abstand, gemeinsam besprechen, was geschehen ist und was beim nächsten Mal helfen kann."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was die Alarmreaktion verstärkt",
+          "punkte": [
+            "Lautes Schimpfen, Drohen, Ultimaten.",
+            "Das Kind ohne Not anfassen oder ihm den Weg versperren.",
+            "Blickkontakt erzwingen („Schau mich an, wenn ich mit dir rede!“).",
+            "Warum-Fragen und Moralpredigten, solange das Kind nicht denken kann.",
+            "Bloßstellen vor der Klasse, Ironie, Vergleiche mit anderen."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Im Alltag vorbeugen",
+          "punkte": [
+            "**Vorhersehbarkeit:** feste Abläufe, sichtbare Tagespläne, angekündigte Übergänge und Veränderungen („Morgen haben wir eine Vertretung“).",
+            "**Kontrolle:** kleine Wahlmöglichkeiten, etwa bei der Reihenfolge der Aufgaben oder beim Arbeitsplatz, und ein vereinbartes Pausensignal.",
+            "**Beziehung:** ein Erwachsener, der das Kind morgens begrüßt, ihm etwas zutraut und nach Konflikten wieder auf es zugeht.",
+            "**Schlaf:** Übermüdete Kinder und Jugendliche sind reizbarer, weniger belastbar und unkonzentrierter; im Schlaf wird zudem Gelerntes gefestigt. Fragen Sie nach, wenn ein Kind ständig müde ist – oft stecken Bildschirme am Abend, Sorgen oder unruhige Verhältnisse dahinter.",
+            "**Bewegung:** Körperliche Aktivität baut Anspannung ab und verbessert Stimmung und Schlaf. Bewegungspausen und eine Pause, die nicht als Strafe gestrichen wird, sind auch Stressvorbeugung.",
+            "**Körperübungen:** Langsames Ausatmen oder Muskeln an- und entspannen können beim Beruhigen helfen. Sie wirken am besten, wenn sie in ruhigen Momenten regelmäßig geübt werden – im Alarmzustand lernt niemand eine neue Technik."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Samiras nächste Probe",
+          "text": "Die Lehrerin spricht mit Samira über den Blackout, diesmal ohne Vorwurf. Gemeinsam vereinbaren sie: Samira beginnt mit der leichtesten Aufgabe, atmet vor dem Start dreimal langsam aus und darf bei Leere im Kopf kurz aufstehen und Wasser trinken. Im Unterricht üben sie Aufgaben unter leichtem Zeitdruck, damit sich die Situation vertrauter anfühlt. In der nächsten Probe stockt Samira bei Aufgabe drei, atmet durch und findet den Faden wieder.",
+          "fragen": [
+            "Welche Elemente senken die Bedrohung, welche stärken Samiras Gefühl von Kontrolle?",
+            "Wann wäre es sinnvoll, weitere Hilfe hinzuzuziehen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Auch Erwachsene haben ein Toleranzfenster.** Wer selbst unter Druck steht, reagiert schneller gereizt und deutet Verhalten eher als Angriff. Die eigene Ruhe ist deshalb kein Luxus, sondern ein Arbeitsmittel. Kurze Pausen, kollegialer Austausch nach schwierigen Situationen und realistische Erwartungen an sich selbst schützen auch die Kinder."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn ein Kind über Wochen erschöpft, ängstlich oder gereizt ist, häufig über körperliche Beschwerden klagt, nicht mehr zur Schule kommen will, Panikattacken hat oder sich zunehmend zurückzieht. Sprechen Sie mit Ihrer Leitung und bei Bedarf mit dem Diagnostique-Team oder dem SePAS; wiederkehrende körperliche Beschwerden gehören über die Eltern ärztlich abgeklärt. Wenn Sie vermuten, dass ein Kind zu Hause Gewalt erlebt oder miterlebt, gelten die internen Kinderschutzabläufe."
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn ein Kind oder Jugendlicher sagt, nicht mehr leben zu wollen, oder sich selbst verletzt, hat Sicherheit Vorrang: das Kind nicht allein lassen, ruhig und direkt nachfragen, sofort die Leitung informieren und dem internen Krisenablauf folgen."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Wovon hängt es nach Lazarus und Folkman vor allem ab, ob eine Situation Stress auslöst?",
+      "optionen": [
+        "Allein davon, wie schwierig die Situation objektiv ist",
+        "Davon, wie die Person die Situation und ihre eigenen Möglichkeiten zur Bewältigung bewertet",
+        "Vom Cortisolspiegel am Morgen",
+        "Davon, ob Erwachsene die Situation für belastend halten"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Stress entsteht aus der Bewertung: Ist das bedrohlich – und habe ich, was ich brauche, um damit fertigzuwerden? Deshalb kann dieselbe Probe für ein Kind eine Herausforderung und für ein anderes eine Bedrohung sein. Die objektive Schwierigkeit oder die Sicht der Erwachsenen allein erklärt das nicht, und Cortisol ist Teil der Reaktion, nicht ihr Auslöser."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was geschieht bei der schnellen Stressreaktion im Körper? (mehrere richtig)",
+      "optionen": [
+        "Das Herz schlägt schneller.",
+        "Die Verdauung wird gedrosselt.",
+        "Das Arbeitsgedächtnis wird leistungsfähiger.",
+        "Die Muskeln werden stärker durchblutet.",
+        "Der Körper entspannt sich, damit das Kind besser nachdenken kann."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Adrenalin und Noradrenalin bereiten den Körper auf Kampf oder Flucht vor: schnellerer Herzschlag, stärker durchblutete Muskeln, gedrosselte Verdauung – daher auch Bauchweh oder Übelkeit vor Proben. Das Arbeitsgedächtnis arbeitet unter starkem Stress schlechter, nicht besser, und Entspannung gehört nicht zur Alarmreaktion."
+    },
+    {
+      "art": "fall",
+      "fall": "Während einer Gruppenarbeit wird Emil (8) ausgelacht. Er wird rot, schreit „Halt die Klappe!“ und wirft sein Heft auf den Boden. Die Lehrerin möchte sofort klären, warum er so reagiert hat.",
+      "frage": "Was ist jetzt am hilfreichsten?",
+      "optionen": [
+        "Emil vor der Klasse erklären lassen, warum er geschrien hat.",
+        "Ihm sofort eine Strafarbeit geben, damit die Klasse sieht, dass so etwas Folgen hat.",
+        "Ruhig und knapp reagieren, Emil einen Moment Abstand anbieten und das Gespräch führen, wenn er sich beruhigt hat.",
+        "Ihn auffordern, sich sofort zu entschuldigen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Emil ist im Alarmzustand; Nachdenken, Erklären und eine echte Entschuldigung gelingen erst, wenn er sich beruhigt hat. Ein ruhiger Ton und Abstand beenden die Eskalation am schnellsten. Rechtfertigung vor der Klasse, sofortige Strafen oder erzwungene Entschuldigungen erhöhen die Bedrohung. Das Auslachen gehört später ebenfalls besprochen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind, das in einer belastenden Situation verstummt und auf Ansprache nicht reagiert, verweigert sich bewusst.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch – jedenfalls nicht zwingend. Erstarren ist eine der drei Grundformen der Stressreaktion und wird nicht bewusst gewählt. Es wird leicht als Trotz missverstanden. Hilfreich sind Ruhe, Zeit und wenig Druck statt der Forderung, sofort zu antworten."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt der Begriff „allostatische Last“ (McEwen, 1998)?",
+      "optionen": [
+        "Die Energie, die ein Kind für eine einzelne Probe braucht",
+        "Einen angeborenen Mangel an Stresshormonen",
+        "Einen Wert, den man bei belasteten Kindern mit einem Speicheltest bestimmen sollte",
+        "Die Abnutzung des Körpers, wenn Stressreaktionen zu oft, zu lange oder unausgewogen ablaufen"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Allostatische Last meint die Abnutzung, die entsteht, wenn die an sich schützenden Stressreaktionen zu häufig, zu lange oder unausgewogen aktiviert werden. Sie ist weder ein angeborener Mangel noch eine Größe für eine einzelne Situation. Hormonmessungen im Speichel werden in der Forschung genutzt, sind aber kein Werkzeug für die Schule."
+    },
+    {
+      "art": "fall",
+      "fall": "Lina (14) hat vor jeder Präsentation starkes Herzklopfen und Übelkeit, obwohl sie schon viele Präsentationen gut gemeistert hat. Ihre Lehrerin überlegt, sie künftig von allen Präsentationen zu befreien.",
+      "frage": "Was ist die beste Überlegung?",
+      "optionen": [
+        "Befreien ist richtig, denn Stress schadet immer.",
+        "Lina öfter unangekündigt präsentieren lassen, damit sie sich daran gewöhnt.",
+        "Die Beschwerden übergehen, da ihre Noten ja gut sind.",
+        "Die Belastung ernst nehmen und schrittweise Erleichterungen vereinbaren, etwa zuerst vor einer kleinen Gruppe, ohne ganz auszuweichen; bei anhaltend starker Angst weitere Hilfe anregen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Dauerhaftes Vermeiden entlastet kurzfristig, hält die Angst aber aufrecht. Hilfreich sind bewältigbare Schritte mit Unterstützung. Unangekündigte Präsentationen verstärken den Kontrollverlust, und Übergehen lässt Lina mit ihrer Belastung allein. Bleibt die Angst stark, ist eine fachliche Abklärung sinnvoll."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen über Stress und Lernen stimmen? (mehrere richtig)",
+      "optionen": [
+        "Unter starkem Stress fällt es schwerer, Gelerntes abzurufen.",
+        "Ein Blackout in der Probe beweist, dass das Kind nicht gelernt hat.",
+        "Beschämende Erlebnisse prägen sich oft besonders fest ein.",
+        "Unter starkem Stress arbeitet das Arbeitsgedächtnis schlechter.",
+        "Starker Stress fördert flexibles, kreatives Denken."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Starker Stress beeinträchtigt Abruf und Arbeitsgedächtnis, während gefühlsgeladene Erlebnisse – auch Beschämung – sich besonders fest einprägen. Ein Blackout ist ein Abrufproblem und kein Beweis für fehlendes Lernen. Flexibles Denken leidet unter Stress eher; Menschen greifen dann auf eingeübte Muster zurück."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage über das Toleranzfenster (Siegel, 1999) trifft zu?",
+      "optionen": [
+        "Es ist ein anschauliches Modell: Im Fenster kann ein Mensch denken und lernen, darüber liegt Übererregung, darunter Untererregung.",
+        "Es ist eine Hirnregion, die man im MRT messen kann.",
+        "Es beschreibt, wie lange ein Kind höchstens still sitzen kann.",
+        "Es gilt nur für Kinder mit einer Traumadiagnose."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Das Toleranzfenster ist ein Modell aus der Praxis, keine messbare Hirnstruktur. Es beschreibt den Erregungsbereich, in dem Steuerung und Lernen gelingen; darüber drohen Kampf und Flucht, darunter Abschalten und Erstarren. Es gilt für alle Menschen – bei belasteten Kindern ist das Fenster nur oft schmaler."
+    },
+    {
+      "art": "fall",
+      "fall": "Jonas (10) ist seit Wochen morgens erschöpft, gereizt und kann sich kaum konzentrieren. Im Gespräch erzählt er, dass er abends im Bett noch lange Videos schaut, weil er „sonst nicht einschlafen kann“.",
+      "frage": "Was ist ein sinnvoller erster Schritt?",
+      "optionen": [
+        "Die Eltern ansprechen, gemeinsam auf Schlafzeiten und Bildschirme am Abend schauen und nachfragen, was Jonas am Einschlafen hindert.",
+        "Jonas eine Strafarbeit geben, wenn er im Unterricht müde ist.",
+        "Den Eltern empfehlen, Jonas ein Schlafmittel zu geben.",
+        "Nichts tun, da Schlaf Privatsache der Familie ist."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Schlafmangel macht reizbar und senkt Konzentration und Belastbarkeit – ein wichtiger und oft veränderbarer Einfluss. Sinnvoll ist ein gemeinsamer Blick mit den Eltern, auch auf mögliche Sorgen hinter den Einschlafproblemen. Strafen ändern nichts an der Ursache, und Medikamente zu empfehlen ist nicht Aufgabe der Schule."
+    },
+    {
+      "art": "fall",
+      "fall": "Seit einigen Wochen erschrickt Mariana (7) heftig bei lauten Geräuschen, ist schnell den Tränen nahe und klagt jeden Morgen über Bauchweh. Die Mutter erwähnt beiläufig, dass der Vater „manchmal ausrastet“.",
+      "frage": "Was ist jetzt angemessen?",
+      "optionen": [
+        "Mariana im Unterricht fragen, was der Vater genau macht.",
+        "Die Beobachtungen sachlich notieren und zeitnah mit der Leitung besprechen, um nach den internen Kinderschutzabläufen vorzugehen.",
+        "Abwarten, ob es von selbst besser wird.",
+        "Den Vater beim nächsten Abholen auf sein Verhalten ansprechen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die Anzeichen passen zu anhaltendem Stress, und die Bemerkung der Mutter kann auf Gewalt in der Familie hinweisen. Dann gelten die internen Kinderschutzabläufe: Beobachtungen sachlich festhalten und das Vorgehen mit der Leitung abstimmen. Das Kind auszufragen oder den Vater zu konfrontieren, kann Mariana gefährden; Abwarten ist bei diesen Hinweisen nicht verantwortbar."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die Vorstellung, dass unter Stress das „Reptiliengehirn“ die Kontrolle übernimmt, entspricht dem heutigen Stand der Hirnforschung.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Das Modell eines dreigeteilten Gehirns aus Reptilien-, Säugetier- und Menschenteil gilt als überholt. Richtig ist, dass sich unter starkem Stress das Gleichgewicht zwischen schnellen, automatischen Reaktionen und bewusster Steuerung verschiebt. Bildhafte Modelle können helfen, bleiben aber Vereinfachungen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Stressor",
+      "erklaerung": "Situation oder Ereignis, das eine Stressreaktion auslöst, etwa eine Probe, ein Konflikt oder Lärm."
+    },
+    {
+      "begriff": "Bewertung (Appraisal)",
+      "erklaerung": "Die oft blitzschnelle Einschätzung, ob eine Situation bedrohlich ist und ob die eigenen Möglichkeiten zur Bewältigung ausreichen (Lazarus & Folkman, 1984)."
+    },
+    {
+      "begriff": "Cortisol",
+      "erklaerung": "Stresshormon aus der Nebennierenrinde. Es stellt Energie bereit, wirkt auf Immunsystem und Gehirn und hilft, die Stressreaktion wieder zu beenden."
+    },
+    {
+      "begriff": "HPA-Achse",
+      "erklaerung": "Hormonelle Stressachse vom Hypothalamus über die Hirnanhangdrüse (Hypophyse) zur Nebennierenrinde; sie führt zur Ausschüttung von Cortisol."
+    },
+    {
+      "begriff": "Amygdala",
+      "erklaerung": "Mandelkernförmige Hirnregion, die an der schnellen Bewertung von Gefahren und am Anstoßen der Alarmreaktion beteiligt ist."
+    },
+    {
+      "begriff": "Präfrontaler Kortex",
+      "erklaerung": "Vorderer Teil des Stirnhirns; wichtig für Planen, Impulskontrolle, Arbeitsgedächtnis und Gefühlsregulation. Er reift bis ins junge Erwachsenenalter."
+    },
+    {
+      "begriff": "Allostatische Last",
+      "erklaerung": "Abnutzung des Körpers durch zu häufige, zu lange oder unausgewogene Stressreaktionen (McEwen, 1998)."
+    },
+    {
+      "begriff": "Toleranzfenster",
+      "erklaerung": "Modell für den Erregungsbereich, in dem ein Mensch sich steuern, denken und lernen kann; darüber liegt Übererregung, darunter Untererregung (Siegel, 1999)."
+    },
+    {
+      "begriff": "Ko-Regulation",
+      "erklaerung": "Beruhigung eines Kindes durch die ruhige, zugewandte Anwesenheit einer vertrauten Person. Aus ihr entwickelt sich nach und nach die Fähigkeit, sich selbst zu beruhigen."
+    }
+  ],
+  "quellen": [
+    "mcewen1998",
+    "lazarusFolkman1984",
+    "casey2008",
+    "glaser2000",
+    "siegel1999",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "emotionsregulation",
+    "trauma",
+    "angst",
+    "deeskalation",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "stress-werkzeugkoffer",
+    "ballon-atmen",
+    "energie-batterie",
+    "gut-schlafen",
+    "pruefungsangst"
+  ]
+}

@@ -1,0 +1,520 @@
+{
+  "id": "zwang-tics",
+  "bereich": "stoerungen",
+  "titel": "Zwänge und Tics",
+  "untertitel": "Zwangsstörung, Tics und Tourette-Syndrom – verstehen, gelassen reagieren, gut zusammenarbeiten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können Zwangsgedanken, Zwangshandlungen und Tics beschreiben und voneinander unterscheiden.",
+    "Sie können normale kindliche Rituale und vorübergehende Tics von einer behandlungsbedürftigen Störung abgrenzen.",
+    "Sie können erklären, warum Rituale und Rückversicherung Zwänge verstärken und warum Tics keine Absicht sind.",
+    "Sie können im Unterricht angemessen reagieren: Tics nicht unterdrücken lassen, bei Zwängen nicht mitmachen, Mobbing unterbinden.",
+    "Sie kennen die wirksamen Behandlungen und wissen, wie die Schule mit Eltern und Fachleuten zusammenarbeitet."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Sophie, 12 Jahre, und Tom, 9 Jahre",
+          "text": "Sophie braucht für jede Abschrift doppelt so lange wie die anderen. Sie radiert Buchstaben so oft aus, bis Löcher im Papier entstehen, und fragt die Lehrerin mehrmals pro Stunde: „Ist das wirklich richtig so?“ Ihre Hände sind rau und rissig, Türklinken öffnet sie mit dem Ärmel. Tom blinzelt seit einem halben Jahr heftig, zuckt mit der Schulter und räuspert sich; vor Proben wird es deutlich mehr. Ein Mitschüler hat angefangen, das Räuspern nachzumachen. Tom sagt: „Ich kann nichts dafür, es kommt einfach.“",
+          "fragen": [
+            "Was treibt Sophies Verhalten an, was Toms?",
+            "Welche Reaktionen der Erwachsenen könnten es jeweils verschlimmern?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Zwänge und Tics haben auf den ersten Blick viel gemeinsam: Beides sind Wiederholungen, die sich schwer stoppen lassen und von außen oft merkwürdig wirken. Dahinter stehen aber unterschiedliche Vorgänge.\n\nBei einer **Zwangsstörung** drängen sich Gedanken, Bilder oder Impulse auf, die Angst, Ekel oder starkes Unbehagen auslösen – die **Zwangsgedanken**. Um dieses Gefühl loszuwerden oder ein befürchtetes Unglück abzuwenden, führt das Kind **Zwangshandlungen** aus: waschen, kontrollieren, ordnen, wiederholen, nachfragen. Die Erleichterung hält nur kurz an.\n\n**Tics** sind plötzliche, schnelle, sich wiederholende Bewegungen oder Laute, die nicht rhythmisch ablaufen. Sie verfolgen keinen Zweck und werden nicht von Angst angetrieben, sondern oft von einem körperlichen Drang, der sich wie ein Kribbeln oder eine Spannung anfühlt. Beim **Tourette-Syndrom** bestehen mehrere Bewegungstics und mindestens ein vokaler Tic seit mehr als einem Jahr.\n\nBeide Störungen beginnen meist in Kindheit oder Jugend und treten auffallend oft gemeinsam auf (Leckman & Cohen, 1999). DSM-5-TR ordnet die Zwangsstörung einer eigenen Gruppe der Zwangsstörungen und verwandten Störungen zu, die Ticstörungen dagegen den neuronalen Entwicklungsstörungen. Die ICD-11 führt die Ticstörungen bei den Krankheiten des Nervensystems und verweist zugleich im Kapitel der psychischen Störungen auf sie."
+        },
+        {
+          "art": "merke",
+          "text": "Zwänge sind keine Marotten und Tics keine Unart. Beides entsteht nicht aus bösem Willen oder durch Erziehungsfehler – und für beides gibt es wirksame Behandlungen."
+        }
+      ]
+    },
+    {
+      "titel": "Zwangsstörung: erkennen und verstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Kinder haben Rituale: Das Kuscheltier muss an seinem Platz liegen, die Gutenachtgeschichte immer gleich enden, auf dem Gehweg werden die Fugen nicht betreten. Solche Rituale sind besonders im Kleinkind- und frühen Grundschulalter häufig und ein normaler Teil der Entwicklung. Sie machen eher Freude, lassen sich verändern und kosten wenig Zeit.\n\nEine **Zwangsstörung** liegt vor, wenn Zwangsgedanken oder Zwangshandlungen viel Zeit kosten – als Anhaltspunkt nennt DSM-5-TR mehr als eine Stunde am Tag –, deutlich belasten oder den Alltag beeinträchtigen. Jugendliche erkennen meist, dass ihre Befürchtungen übertrieben sind, und schämen sich dafür. Jüngere Kinder können das oft noch nicht einschätzen oder nicht in Worte fassen. Viele verbergen ihre Zwänge lange, gerade in der Schule; zu Hause sind sie oft deutlich stärker.\n\nSchätzungen gehen davon aus, dass etwa 1 bis 3 von 100 Kindern und Jugendlichen eine Zwangsstörung haben. Ein erster Häufigkeitsgipfel des Beginns liegt in der späten Kindheit und frühen Jugend. In der Kindheit sind Jungen etwas häufiger betroffen, später gleicht sich das Verhältnis an."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Häufige Zwänge und wie sie in der Schule auffallen",
+          "spalten": [
+            "Thema",
+            "Zwangsgedanke (Beispiel)",
+            "Was Sie beobachten können"
+          ],
+          "zeilen": [
+            [
+              "Schmutz und Ansteckung",
+              "„An der Klinke sind Keime, ich werde krank oder mache andere krank.“",
+              "meidet Klinken, Toiletten und gemeinsames Material, wäscht sich sehr oft die Hände, raue oder rissige Haut"
+            ],
+            [
+              "Unglück und Verantwortung",
+              "„Wenn ich nicht nachschaue, passiert meiner Familie etwas – und ich bin schuld.“",
+              "kontrolliert Schultasche, Heft oder Fenster immer wieder, kommt deshalb zu spät"
+            ],
+            [
+              "Ordnung und „genau richtig“",
+              "„Es fühlt sich falsch an, solange es nicht exakt stimmt.“",
+              "richtet Gegenstände aus, schreibt Buchstaben neu, radiert, bis Löcher entstehen, liest Sätze mehrmals"
+            ],
+            [
+              "Zweifel und Rückversicherung",
+              "„Vielleicht habe ich einen Fehler gemacht.“",
+              "stellt dieselbe Frage immer wieder („Bist du sicher?“), braucht ständig Bestätigung"
+            ],
+            [
+              "Verbotene Gedanken",
+              "sich aufdrängende aggressive, sexuelle oder religiöse Gedanken, die das Kind erschrecken",
+              "wirkt gequält und angespannt, betet oder zählt heimlich, meidet bestimmte Menschen oder Gegenstände"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Gerade die „verbotenen“ Gedanken sind für Kinder besonders quälend, weil sie ihren eigenen Werten widersprechen. Oft trauen sie sich lange nicht, davon zu erzählen.\n\n**Warum Zwänge sich festsetzen.** Der Zwangsgedanke löst Angst oder Unbehagen aus. Die Zwangshandlung bringt kurzfristig Erleichterung – und genau diese Erleichterung verstärkt sie. Das Kind erlebt nie, dass die Angst auch ohne Ritual von selbst abklingen würde und dass das befürchtete Unglück nicht eintritt. So werden die Gedanken häufiger und die Rituale länger.\n\nEin wichtiger Teil dieses Kreislaufs sind die Menschen im Umfeld. Eltern, Geschwister und auch Lehrkräfte werden oft in die Zwänge hineingezogen: Sie beantworten immer wieder dieselbe Frage, öffnen Türen, kontrollieren mit oder vermeiden Auslöser. Fachleute sprechen von **Akkommodation**, also Anpassung an den Zwang. Sie geschieht aus Mitgefühl und entlastet im Moment, hält den Zwang aber langfristig aufrecht (March & Mulle, 1998).\n\nZu den Ursachen tragen biologische Faktoren bei: Zwangsstörungen häufen sich in Familien, und bestimmte Regelkreise im Gehirn, die Handlungen steuern und beenden, arbeiten anders. Belastungen und Stress können Zwänge verstärken. Durch Erziehung entsteht eine Zwangsstörung nicht."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Zwang ist einfach übertriebene Ordnungsliebe oder Perfektionismus.",
+          "fakt": "Ordnungsliebe macht Freude und lässt sich flexibel handhaben. Eine Zwangsstörung quält: Die Gedanken sind unerwünscht und machen Angst, die Rituale kosten viel Zeit, und das Kind würde sie oft gern loswerden."
+        }
+      ]
+    },
+    {
+      "titel": "Tics und Tourette-Syndrom: erkennen und verstehen",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Arten von Tics",
+          "spalten": [
+            "Art",
+            "Einfach",
+            "Komplex"
+          ],
+          "zeilen": [
+            [
+              "Motorisch",
+              "Augenblinzeln, Grimassieren, Naserümpfen, Kopfrucken, Schulterzucken",
+              "Hüpfen, Berühren von Gegenständen oder Menschen, Drehen, Nachahmen von Bewegungen anderer"
+            ],
+            [
+              "Vokal",
+              "Räuspern, Schniefen, Hüsteln, Grunzen, Quieken",
+              "Silben, Wörter oder Sätze, Wiederholen eigener oder fremder Wörter, selten obszöne Wörter"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Tics beginnen meist zwischen vier und sechs Jahren, oft mit einfachen Tics im Gesicht wie Blinzeln. Am stärksten sind sie meist im Alter von etwa zehn bis zwölf Jahren; bei vielen nehmen sie im Jugendalter deutlich ab (DSM-5-TR). Vorübergehende Tics, die nach einigen Wochen oder Monaten wieder verschwinden, sind im Grundschulalter häufig. Das Tourette-Syndrom ist seltener: Es betrifft nach Schätzungen weniger als 1 von 100 Schulkindern, Jungen deutlich häufiger als Mädchen.\n\nTypisch ist, dass Tics **kommen und gehen**: Sie wechseln ihre Form und schwanken in ihrer Stärke über Tage, Wochen und Monate. Stress, Aufregung, Vorfreude und Müdigkeit verstärken sie; bei konzentrierter, fesselnder Tätigkeit – beim Fußball, beim Musizieren, im Gespräch über ein Lieblingsthema – werden sie oft weniger. Viele Kinder, besonders ältere, spüren vor dem Tic ein **Vorgefühl**: ein Kribbeln, einen Druck oder eine Spannung, die erst nachlässt, wenn der Tic ausgeführt ist (Leckman & Cohen, 1999).\n\nTics lassen sich oft für kurze Zeit unterdrücken. Das kostet aber viel Kraft und Aufmerksamkeit, die dann für das Lernen fehlt, und die innere Spannung steigt. Manche Kinder berichten, dass sich die Tics danach umso stärker zeigen, etwa zu Hause nach der Schule. Dass ein Kind seine Tics zeitweise zurückhalten kann, heißt also nicht, dass es sie absichtlich macht.\n\nDie Ursachen sind vor allem biologisch: Ticstörungen sind stark erblich, und Regelkreise tief im Gehirn, die Bewegungen auswählen und hemmen, arbeiten anders. Häufig kommen **ADHS** und **Zwangssymptome** hinzu, außerdem Ängste, Wutausbrüche oder Lernprobleme. Diese Begleitprobleme beeinträchtigen oft stärker als die Tics selbst (Leckman & Cohen, 1999)."
+        },
+        {
+          "art": "liste",
+          "titel": "Ticstörungen nach DSM-5-TR (Beginn vor dem 18. Lebensjahr)",
+          "punkte": [
+            "Vorläufige Ticstörung: motorische und/oder vokale Tics seit weniger als einem Jahr",
+            "Chronische motorische oder vokale Ticstörung: nur eine der beiden Arten, seit mehr als einem Jahr",
+            "Tourette-Syndrom: mehrere motorische und mindestens ein vokaler Tic, nicht unbedingt gleichzeitig, seit mehr als einem Jahr"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Tourette-Syndrom heißt, dass man ständig Schimpfwörter ruft.",
+          "fakt": "Nur eine Minderheit der Menschen mit Tourette-Syndrom stößt unwillkürlich obszöne Wörter aus (Koprolalie). Die häufigsten Tics sind Blinzeln, Grimassieren, Kopf- und Schulterbewegungen, Räuspern und Schniefen."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wiederholtes Verhalten hat viele mögliche Ursachen. Die Unterscheidung treffen Kinderärztin, Neuropädiatrie oder Kinder- und Jugendpsychiatrie. Für Ihre Beobachtung hilft vor allem eine Frage: **Wozu** dient die Wiederholung aus Sicht des Kindes – und was geht ihr voraus?"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Zwangshandlung oder Tic?",
+          "spalten": [
+            "Merkmal",
+            "Zwangshandlung",
+            "Tic"
+          ],
+          "zeilen": [
+            [
+              "Was geht voraus?",
+              "ein Gedanke, eine Befürchtung, Angst oder Ekel",
+              "ein körperliches Vorgefühl oder gar nichts Bemerkbares"
+            ],
+            [
+              "Wozu?",
+              "soll Angst senken oder ein Unglück verhindern",
+              "kein Zweck; der Drang wird losgelassen"
+            ],
+            [
+              "Ablauf",
+              "oft nach festen Regeln, „bis es sich richtig anfühlt“",
+              "plötzlich, kurz, meist gleichförmig"
+            ],
+            [
+              "Beispiel",
+              "nach dem Berühren der Klinke lange Hände waschen",
+              "Augenblinzeln, Schulterzucken, Räuspern"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Grenze ist nicht immer scharf: Gerade Kinder mit Tourette-Syndrom haben manchmal Handlungen, die „genau richtig“ sein müssen, etwa etwas so lange berühren, bis es sich stimmig anfühlt. Solche Mischformen einzuordnen, ist Aufgabe der Fachleute."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Weitere Abgrenzungen",
+          "punkte": [
+            {
+              "wie": "Normale Rituale und Vorlieben",
+              "unterschied": "Rituale im Kleinkind- und frühen Grundschulalter und Freude an Ordnung sind normal. Sie lassen sich verändern, belasten nicht und kosten wenig Zeit."
+            },
+            {
+              "wie": "Ängste und Sorgen",
+              "unterschied": "Bei Angststörungen kreisen die Gedanken meist um reale Alltagsthemen wie Noten oder Gesundheit. Handlungen, die nach festen Regeln ablaufen müssen, sprechen eher für einen Zwang. Beides kann gemeinsam vorkommen."
+            },
+            {
+              "wie": "Autismus",
+              "unterschied": "Wiederholtes Verhalten und feste Routinen werden bei Autismus meist als angenehm oder beruhigend erlebt, nicht als aufgedrängt und unsinnig. Autismus und Zwangsstörung können aber auch gemeinsam vorliegen."
+            },
+            {
+              "wie": "Stereotypien",
+              "unterschied": "Rhythmische, länger andauernde Bewegungen wie Handflattern oder Schaukeln, oft seit dem Kleinkindalter, meist bei Aufregung oder Vertiefung und ohne Vorgefühl. Häufig bei Autismus oder Entwicklungsstörungen."
+            },
+            {
+              "wie": "Allergie, Erkältung, Sehprobleme",
+              "unterschied": "Schniefen, Räuspern oder Blinzeln werden anfangs oft für eine Allergie oder Erkältung gehalten – und umgekehrt. Eine ärztliche Untersuchung klärt das."
+            },
+            {
+              "wie": "Unruhe bei ADHS",
+              "unterschied": "Zappeln und Herumrutschen sind wechselnd und ungerichtet; Tics sind gleichförmige, wiederkehrende Bewegungen oder Laute. Beides kommt häufig gemeinsam vor."
+            },
+            {
+              "wie": "Plötzlich beginnende, sehr komplexe ticartige Bewegungen bei Jugendlichen",
+              "unterschied": "Seit einigen Jahren beobachten Fachleute solche Bilder gehäuft, teils im Zusammenhang mit Videos in sozialen Medien. Sie sind nicht vorgetäuscht, unterscheiden sich aber vom Tourette-Syndrom und brauchen eine eigene fachliche Abklärung."
+            },
+            {
+              "wie": "Essstörung",
+              "unterschied": "Rituale rund um Essen, Kalorien, Gewicht und Bewegung sprechen eher für eine Essstörung (siehe Modul „Essstörungen“)."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beginnen Zwänge oder Tics sehr plötzlich und heftig, sollte das immer zeitnah ärztlich abgeklärt werden."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: gelassen bleiben, nicht mitmachen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Für den Schulalltag gelten zwei Grundsätze, die auf den ersten Blick widersprüchlich wirken. Bei **Tics**: nicht dagegen ankämpfen lassen. Das Kind soll seine Tics nicht unterdrücken müssen; gelassene Akzeptanz senkt den Stress, und weniger Stress bedeutet meist weniger Tics. Bei **Zwängen**: freundlich bleiben, aber nicht mitmachen. Wer bei Ritualen hilft oder immer wieder rückversichert, stärkt den Zwang. Zugleich ist es nicht Ihre Aufgabe, Rituale zu verbieten oder zu unterbrechen – der Abbau geschieht schrittweise und geplant in der Therapie."
+        },
+        {
+          "art": "tun",
+          "titel": "Bei Tics hilft",
+          "punkte": [
+            "Tics übergehen: nicht kommentieren, nicht ermahnen, kein fragender Blick – einfach weitermachen.",
+            "Mit dem Kind und den Eltern besprechen, was hilft, und gemeinsam entscheiden, ob und wie die Klasse informiert wird. Manche Kinder erklären ihre Tics gern selbst.",
+            "Nachmachen, Auslachen und Mobbing sofort und klar unterbinden.",
+            "Eine vereinbarte kurze Pause außerhalb des Raumes ermöglichen, wenn der Drang sehr stark ist.",
+            "Den Sitzplatz mit dem Kind aussuchen; viele sitzen lieber am Rand oder hinten, wo weniger Blicke auf sie gerichtet sind.",
+            "Bei Prüfungen und Vorträgen an Anpassungen denken: ruhiger Einzelraum, mehr Zeit, Vortrag in kleiner Runde. In Luxemburg sind solche Anpassungen als „aménagements raisonnables“ möglich; die Entscheidung liegt bei der zuständigen Kommission.",
+            "Stress senken und Stärken betonen."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Bei Zwängen hilft",
+          "punkte": [
+            "Über die Eltern erfahren, was in der Therapie vereinbart ist, und dieselben Regeln anwenden.",
+            "Rückversicherungsfragen einmal ruhig beantworten und danach freundlich auf die Absprache verweisen („Das hast du schon gefragt. Ich glaube, das fragt gerade der Zwang.“) – so, wie es vereinbart ist.",
+            "Nicht bei Ritualen mitmachen, aber auch nicht schimpfen: ruhig bleiben und den Unterricht weiterführen.",
+            "Vorübergehende Erleichterungen wie mehr Zeit oder mündlich statt schriftlich mit den Fachleuten abstimmen und schrittweise wieder abbauen.",
+            "Mut anerkennen: Jeder Schritt gegen den Zwang ist anstrengend.",
+            "„Gut genug“ vorleben: Fehler und Korrekturen im Heft sind erlaubt."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was schadet",
+          "punkte": [
+            "„Hör auf damit!“, „Reiß dich zusammen!“ oder „Denk einfach nicht dran!“",
+            "Das Kind auffordern, Tics zu unterdrücken, damit andere nicht gestört werden.",
+            "Tics oder Zwänge nachmachen, belächeln oder vor der Klasse zum Thema machen.",
+            "Tics bestrafen – oder Verspätungen, die durch Zwänge entstehen, ohne nach der Ursache zu fragen.",
+            "Ständig Rückversicherung geben oder Rituale übernehmen („Ich kontrolliere dein Heft noch einmal für dich.“).",
+            "Rituale eigenmächtig verbieten oder mit Druck unterbrechen.",
+            "Sauberkeit und Perfektion übermäßig betonen („Das geht noch ordentlicher.“)."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Tom und Sophie ein halbes Jahr später",
+          "text": "Toms Lehrerin hat mit ihm und seinen Eltern vereinbart, dass niemand seine Tics kommentiert. Tom hat der Klasse mit Unterstützung seiner Mutter selbst erklärt, was Tics sind; das Nachmachen hat aufgehört. Bei Proben sitzt er am Rand und darf kurz hinausgehen. Die Tics sind nicht verschwunden, aber Tom meldet sich wieder im Unterricht. Sophie macht eine Verhaltenstherapie. Ihre Therapeutin, die Eltern und die Klassenlehrerin haben vereinbart, dass Sophie pro Stunde eine Rückversicherungsfrage stellen darf. Die Lehrerin antwortet ruhig und erkennt es an, wenn Sophie ohne Nachfrage weiterarbeitet. Nach einigen Wochen radiert Sophie weniger, und ihre Abschriften werden fertig.",
+          "fragen": [
+            "Warum reagieren die Erwachsenen bei Tom und bei Sophie so unterschiedlich?",
+            "Was wäre geschehen, wenn die Lehrerin Sophies Fragen weiter unbegrenzt beantwortet hätte?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Zusammenarbeit",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Zwangsstörung.** Die Behandlung der ersten Wahl ist eine **kognitive Verhaltenstherapie mit Exposition und Reaktionsverhinderung** (March & Mulle, 1998). Das Kind lernt zunächst, den Zwang als „Störenfried“ zu sehen, der nicht zu ihm gehört – manche geben ihm sogar einen Namen. Gemeinsam wird eine Stufenleiter angstauslösender Situationen erstellt. Schritt für Schritt stellt sich das Kind diesen Situationen, ohne das Ritual auszuführen, und erlebt: Die Angst steigt, erreicht einen Höhepunkt und lässt dann von selbst nach. Die Eltern werden einbezogen, damit sie aus den Ritualen aussteigen können. Bei mittelschweren und schweren Verläufen kann zusätzlich ein Medikament aus der Gruppe der selektiven Serotonin-Wiederaufnahmehemmer (SSRI) helfen; verordnet und überwacht wird es ärztlich (Gerlach et al., 2016). Besonders zu Beginn achten Ärztinnen und Ärzte auf Unruhe und Stimmungsveränderungen. Beobachtungen der Schule sind hier wertvoll und laufen über die Eltern.\n\n**Tics.** Oft genügt eine gute Aufklärung von Kind, Familie und Schule; bei vielen Kindern werden die Tics mit der Zeit schwächer. Beeinträchtigen die Tics deutlich, ist eine **Verhaltenstherapie** wirksam: Beim Habit Reversal Training lernt das Kind, das Vorgefühl früh wahrzunehmen und eine unauffällige Gegenbewegung auszuführen, die den Tic erschwert. Bei starker Beeinträchtigung, etwa durch Schmerzen oder Ausgrenzung, kommen Medikamente infrage; sie werden in der Kinder- und Jugendpsychiatrie oder Neuropädiatrie ausgewählt und überwacht (Gerlach et al., 2016). Eine begleitende ADHS oder Zwangsstörung wird jeweils eigens behandelt."
+        },
+        {
+          "art": "tun",
+          "titel": "Gute Zusammenarbeit",
+          "punkte": [
+            "Mit Einverständnis der Eltern Kontakt zu den behandelnden Fachleuten halten.",
+            "Absprachen schriftlich festhalten: Wie reagieren wir auf Rituale, Fragen, Tics? Welche Anpassungen gelten und wie lange?",
+            "Beobachtungen sachlich weitergeben: wann, wie oft, in welchen Situationen.",
+            "Erfolge zurückmelden – auch kleine."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und regen Sie über die Eltern eine fachliche Abklärung an (Kinderärztin, Kinder- und Jugendpsychiatrie, Diagnostique), wenn Zwänge viel Zeit kosten, das Kind belasten oder am Lernen hindern, wenn ein Kind wegen Zwängen oder Tics die Schule meidet, wenn Tics Schmerzen verursachen oder zu Ausgrenzung führen oder wenn Zwänge oder Tics sehr plötzlich und heftig beginnen. Wirkt ein Kind verzweifelt oder äußert es Gedanken, nicht mehr leben zu wollen, handeln Sie sofort (siehe Modul „Selbstverletzung und Suizidalität“)."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was unterscheidet eine Zwangshandlung am deutlichsten von einem Tic?",
+      "optionen": [
+        "Eine Zwangshandlung soll eine Befürchtung abwenden oder Angst senken; ein Tic folgt einem körperlichen Drang ohne solchen Zweck.",
+        "Tics sind immer absichtlich, Zwangshandlungen nie.",
+        "Zwangshandlungen kommen nur bei Erwachsenen vor, Tics nur bei Kindern.",
+        "Tics sind immer Laute, Zwangshandlungen immer Bewegungen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Zwangshandlungen sind auf ein Ziel gerichtet: Sie sollen Angst oder Unbehagen senken oder ein befürchtetes Unglück verhindern. Tics haben keinen solchen Zweck; ihnen geht oft ein körperliches Vorgefühl voraus. Beides ist nicht absichtlich, beides kommt schon bei Kindern vor, und beide können sich als Bewegung oder Laut zeigen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können im Unterricht Hinweise auf eine Zwangsstörung sein? (mehrere richtig)",
+      "optionen": [
+        "Radiert Buchstaben so oft neu, bis Löcher im Papier entstehen",
+        "Fragt immer wieder dasselbe, obwohl die Antwort klar war („Bist du sicher?“)",
+        "Meidet Türklinken und gemeinsames Material, die Hände sind vom Waschen rissig",
+        "Blinzelt seit einigen Wochen häufig und räuspert sich",
+        "Sortiert gern seine Stifte nach Farben und freut sich daran"
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Wiederholtes Korrigieren, Rückversicherung sowie Vermeiden und Waschen aus Angst vor Keimen sind typische Zwänge. Blinzeln und Räuspern ohne Befürchtung dahinter passen eher zu Tics. Freude am Sortieren ist eine normale Vorliebe, solange sie flexibel bleibt und nicht belastet."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die meisten Menschen mit Tourette-Syndrom rufen unwillkürlich Schimpfwörter.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Unwillkürliche obszöne Wörter (Koprolalie) kommen nur bei einer Minderheit vor. Häufiger sind einfache Tics wie Blinzeln, Grimassieren, Schulterzucken, Räuspern oder Schniefen. Das verbreitete Bild aus den Medien führt dazu, dass das Tourette-Syndrom bei vielen Kindern lange nicht erkannt wird."
+    },
+    {
+      "art": "fall",
+      "fall": "Tom (9) blinzelt seit Monaten heftig, zuckt mit der Schulter und räuspert sich häufig; vor Proben nehmen die Tics zu. Ein Kollege meint: „Sag ihm doch, er soll sich zusammenreißen – beim Fußball ging es ja auch ohne.“",
+      "frage": "Was ist die beste Reaktion?",
+      "optionen": [
+        "Tom bei jedem Tic freundlich ermahnen, damit er lernt, sich zu kontrollieren.",
+        "Die Tics gelassen übergehen, nicht kommentieren, Stress vor Proben verringern und mit Tom und seinen Eltern besprechen, was ihm hilft.",
+        "Tom bitten, die Tics im Unterricht zu unterdrücken, wenn andere sich gestört fühlen.",
+        "Tom vor der Klasse fragen, warum er das immer macht."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Tics sind unwillkürlich. Dass sie bei fesselnden Tätigkeiten wie Fußball seltener werden, ist typisch und kein Beweis für Absicht. Ermahnen und Unterdrücken erhöhen Anspannung und Stress – und damit oft die Tics – und kosten Konzentration. Bloßstellen vor der Klasse schadet zusätzlich; hilfreich sind Gelassenheit, weniger Stress und Absprachen mit Kind und Eltern."
+    },
+    {
+      "art": "fall",
+      "fall": "Sophie (12) fragt Sie in jeder Stunde mehrmals angespannt: „Habe ich das richtig abgeschrieben? Sind Sie sicher?“ Ihre Therapeutin hat mit Sophie und den Eltern vereinbart, Rückversicherungsfragen schrittweise zu begrenzen.",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Jede Frage geduldig und ausführlich beantworten, damit Sophie sich beruhigt.",
+        "Sophie sagen, sie solle mit dem Unsinn aufhören.",
+        "Die vereinbarte Regel anwenden: einmal ruhig antworten, danach freundlich auf die Absprache verweisen und Sophie ermutigen weiterzuarbeiten.",
+        "Ihr Heft selbst kontrollieren und abzeichnen, damit sie sicher sein kann."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Jede zusätzliche Rückversicherung und jede Kontrolle durch Erwachsene entlastet kurz, hält den Zwang aber aufrecht. Die abgestimmte Regel unterstützt die Therapie: freundlich, klar und für Sophie vorhersehbar. Abwertende Bemerkungen verstärken Scham und Angst und helfen ihr nicht, aus dem Kreislauf auszusteigen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum werden Zwänge durch Rituale und Rückversicherung auf Dauer stärker?",
+      "optionen": [
+        "Weil Kinder mit Zwängen über die Rituale Aufmerksamkeit suchen.",
+        "Weil die Rituale die eigentliche Ursache der Zwangsstörung sind.",
+        "Weil jede Rückversicherung die Angst sofort steigert.",
+        "Weil das Ritual kurzfristig erleichtert und dadurch verstärkt wird – und das Kind nie erlebt, dass die Angst auch ohne Ritual abklingt."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Die schnelle Erleichterung nach dem Ritual belohnt es. Zugleich verhindert das Ritual die Erfahrung, dass die Angst von selbst nachlässt und das Befürchtete nicht eintritt. Rückversicherung wirkt im Moment beruhigend, nicht angststeigernd; die Ursachen liegen vor allem in biologischen Faktoren, und es geht nicht um Aufmerksamkeit."
+    },
+    {
+      "art": "fall",
+      "fall": "Lina (11) hat ein Tourette-Syndrom. Seit Kurzem machen zwei Mitschüler ihre Laute nach, und Lina möchte nicht mehr in die Pause gehen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Das Nachmachen sofort und klar unterbinden, mit Lina und ihren Eltern besprechen, ob und wie die Klasse informiert werden soll, und die Pausenaufsicht einbeziehen.",
+        "Die Klasse ohne Rücksprache sofort ausführlich über Linas Diagnose informieren.",
+        "Lina raten, ihre Tics in der Pause besser zu unterdrücken.",
+        "Abwarten – Kinder regeln solche Dinge unter sich."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Nachmachen ist Mobbing und muss sofort gestoppt werden. Ob und wie die Klasse aufgeklärt wird, entscheiden Lina und ihre Eltern mit – eine Information ohne Rücksprache verletzt ihre Privatsphäre. Unterdrücken kostet Kraft und erhöht den Stress, und Abwarten lässt Lina mit dem Problem allein."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen über Tics treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Tics schwanken in Art und Stärke über Wochen und Monate.",
+        "Viele Kinder spüren vor einem Tic einen Drang, der danach nachlässt.",
+        "Stress und Aufregung können Tics verstärken.",
+        "Wer Tics kurz unterdrücken kann, macht sie absichtlich.",
+        "Tics entstehen durch Fehler in der Erziehung."
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Schwankender Verlauf, ein Vorgefühl und die Verstärkung durch Stress sind typisch für Tics. Kurzes Unterdrücken ist mit großer Anstrengung möglich und beweist keine Absicht. Die Ursachen sind vor allem biologisch; Erziehung verursacht keine Tics, kann aber über Stress beeinflussen, wie stark sie sich zeigen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Kognitive Verhaltenstherapie mit Exposition und Reaktionsverhinderung gilt als Behandlung der ersten Wahl bei Zwangsstörungen im Kindes- und Jugendalter.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Das Kind stellt sich schrittweise angstauslösenden Situationen, ohne das Ritual auszuführen, und die Familie wird einbezogen (March & Mulle, 1998). Bei schwereren Verläufen kann zusätzlich ein Medikament aus der Gruppe der SSRI ärztlich verordnet werden."
+    },
+    {
+      "art": "fall",
+      "fall": "Emil (10) braucht seit einigen Wochen morgens eine halbe Stunde, bis seine Schultasche „richtig“ gepackt ist, und kommt oft zu spät. In der Klasse öffnet und schließt er Türen dreimal. Eine Kollegin öffnet ihm die Tür inzwischen selbst dreimal, „damit es schneller geht“.",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Emil die Rituale ab sofort verbieten und Verspätungen bestrafen.",
+        "Abwarten – das ist nur eine Phase.",
+        "Beobachtungen sachlich festhalten, im Team vereinbaren, nicht bei den Ritualen mitzumachen, die Eltern ansprechen und über die Leitung eine fachliche Abklärung anregen.",
+        "Emil die Tür künftig immer dreimal öffnen, damit er weniger Stress hat."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Rituale kosten viel Zeit, belasten Emil und beeinträchtigen den Schulalltag – das spricht für eine fachliche Abklärung. Das gut gemeinte Mitmachen der Kollegin entlastet kurzfristig, verstärkt den Zwang aber. Verbote und Strafen erhöhen die Angst, ohne den Kreislauf zu durchbrechen, und Abwarten verzögert wirksame Hilfe."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Beobachtung spricht eher für eine Stereotypie als für einen Tic?",
+      "optionen": [
+        "Ein plötzliches, kurzes Augenblinzeln, dem ein Kribbeln vorausgeht",
+        "Ein rhythmisches, länger andauerndes Handflattern, das seit dem Kleinkindalter besteht und vor allem bei Aufregung oder Freude auftritt",
+        "Ein Räuspern, das bei Stress zunimmt und sich über Wochen verändert",
+        "Eine kurze Kopfbewegung, die das Kind für einige Sekunden zurückhalten kann"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Stereotypien sind rhythmisch, dauern länger, beginnen oft früh und treten häufig bei Aufregung oder Vertiefung auf – typisch etwa bei Autismus. Plötzliche, kurze Bewegungen oder Laute mit Vorgefühl, schwankendem Verlauf und kurzer Unterdrückbarkeit sind dagegen Kennzeichen von Tics."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Zwangsgedanken",
+      "erklaerung": "Sich aufdrängende, unerwünschte Gedanken, Bilder oder Impulse, die Angst, Ekel oder starkes Unbehagen auslösen."
+    },
+    {
+      "begriff": "Zwangshandlungen",
+      "erklaerung": "Wiederholte Handlungen oder gedankliche Rituale, mit denen Angst gesenkt oder ein befürchtetes Ereignis verhindert werden soll."
+    },
+    {
+      "begriff": "Exposition mit Reaktionsverhinderung",
+      "erklaerung": "Kern der Verhaltenstherapie bei Zwängen: sich schrittweise angstauslösenden Situationen stellen, ohne das Ritual auszuführen, bis die Angst von selbst nachlässt."
+    },
+    {
+      "begriff": "Akkommodation",
+      "erklaerung": "Anpassung des Umfelds an den Zwang, etwa ständige Rückversicherung, Mitmachen bei Ritualen oder Vermeiden von Auslösern. Entlastet kurzfristig, hält den Zwang langfristig aufrecht."
+    },
+    {
+      "begriff": "Tic",
+      "erklaerung": "Plötzliche, schnelle, sich wiederholende, nicht rhythmische Bewegung (motorischer Tic) oder Lautäußerung (vokaler Tic)."
+    },
+    {
+      "begriff": "Vorgefühl",
+      "erklaerung": "Unangenehmes Gefühl vor einem Tic, etwa ein Kribbeln, ein Druck oder eine Spannung, das nach dem Tic nachlässt. Fachbegriff: prämonitorischer Drang."
+    },
+    {
+      "begriff": "Tourette-Syndrom",
+      "erklaerung": "Ticstörung mit mehreren motorischen und mindestens einem vokalen Tic, die seit mehr als einem Jahr besteht und vor dem 18. Lebensjahr begonnen hat."
+    },
+    {
+      "begriff": "Koprolalie",
+      "erklaerung": "Unwillkürliches Ausstoßen obszöner oder beleidigender Wörter. Kommt nur bei einer Minderheit der Menschen mit Tourette-Syndrom vor."
+    },
+    {
+      "begriff": "Stereotypie",
+      "erklaerung": "Rhythmische, oft länger andauernde Bewegung wie Handflattern oder Schaukeln, meist ohne Vorgefühl; häufig bei Autismus oder Entwicklungsstörungen."
+    },
+    {
+      "begriff": "Habit Reversal Training",
+      "erklaerung": "Verhaltenstherapeutische Methode bei Tics: Das Kind lernt, das Vorgefühl wahrzunehmen und eine Gegenbewegung auszuführen, die den Tic erschwert."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "marchMulle1998",
+    "leckmanCohen1999",
+    "gerlach2016",
+    "schneiderMargraf2019",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "angst",
+    "adhs",
+    "autismus",
+    "medikation",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "mut-leiter",
+    "angst-verstehen",
+    "signalkarten",
+    "ich-brauche-eine-pause",
+    "stress-werkzeugkoffer"
+  ]
+}

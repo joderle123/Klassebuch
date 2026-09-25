@@ -1,0 +1,576 @@
+{
+  "id": "lernen-verhalten",
+  "bereich": "grundlagen",
+  "titel": "Wie Verhalten entsteht und sich verändert",
+  "untertitel": "Lernpsychologie für den Alltag: Konditionierung, Modelllernen, Funktion von Verhalten und Selbstwirksamkeit",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können klassische und operante Konditionierung sowie Modelllernen an Beispielen aus dem Schulalltag erklären.",
+    "Sie können positive und negative Verstärkung, Löschung und Bestrafung unterscheiden und kennen die Nebenwirkungen von Strafen.",
+    "Sie können eine Situation mit dem ABC-Modell sachlich beschreiben: Auslöser – Verhalten – Folge.",
+    "Sie können Vermutungen zur Funktion eines Verhaltens bilden (Aufmerksamkeit, Vermeidung, Gegenstand, Sinnesreiz) und daraus passende Unterstützung ableiten.",
+    "Sie können erklären, wie Selbstwirksamkeit entsteht, und sie im Alltag gezielt stärken."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Verhalten ist gelernt – und veränderbar",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Yanis, 10 Jahre, Cycle 4.1",
+          "text": "Sobald im Mathematikunterricht die Arbeitsblätter ausgeteilt werden, beginnt Yanis zu stören: Er macht Geräusche, kommentiert laut und wirft schließlich sein Heft durch den Raum. Die Lehrerin schickt ihn dann zum Nachdenken vor die Tür. Seit Wochen passiert das fast täglich – und inzwischen immer früher, oft schon bei der ersten Aufgabe. Im Team sagt die Lehrerin: „Die Strafe wirkt überhaupt nicht.“",
+          "fragen": [
+            "Was erlebt Yanis unmittelbar nach seinem Verhalten?",
+            "Warum könnte das Hinausschicken das Stören sogar verstärken?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Lernpsychologie untersucht, wie Verhalten durch Erfahrung entsteht und sich verändert. Ihre Grundgedanken gehören zu den am besten belegten Erkenntnissen der Psychologie und bilden die Grundlage vieler wirksamer Programme für Schule und Familie (Petermann, 2013; Schneider & Margraf, 2019). Der Kern ist einfach: **Verhalten wird durch das beeinflusst, was vorher geschieht und was danach folgt.** Das gilt für erwünschtes wie für problematisches Verhalten, für Kinder wie für Erwachsene.\n\nDiese Sicht ist entlastend. Sie fragt nicht „Was stimmt mit diesem Kind nicht?“, sondern „Unter welchen Bedingungen tritt das Verhalten auf, und was hält es aufrecht?“ – und Bedingungen lassen sich verändern. Wichtig ist zugleich, was die Lernpsychologie nicht behauptet: Sie leugnet weder Anlage noch Temperament, Gefühle oder Beziehungen. Ein Kind mit ADHS oder nach belastenden Erfahrungen lernt nach denselben Gesetzmäßigkeiten, aber mit anderen Voraussetzungen."
+        },
+        {
+          "art": "text",
+          "text": "Vier Bausteine sind für den Alltag besonders wichtig: das Lernen durch Verknüpfung (**klassische Konditionierung**), das Lernen durch Konsequenzen (**operante Konditionierung**), das Lernen durch Beobachtung (**Modelllernen**) und die Überzeugung, etwas bewirken zu können (**Selbstwirksamkeit**). Vieles davon läuft ohne bewusste Absicht ab. Ein Kind, das stört, „berechnet“ in der Regel nicht, was ihm das bringt – es hat gelernt, dass es funktioniert."
+        },
+        {
+          "art": "merke",
+          "text": "Verhalten, das immer wieder auftritt, lohnt sich für das Kind auf irgendeine Weise – auch wenn es von außen unsinnig oder selbstschädigend wirkt. Wer versteht, was ein Verhalten aufrechterhält, kann gezielt ansetzen."
+        }
+      ]
+    },
+    {
+      "titel": "Klassische Konditionierung: wenn Situationen Gefühle auslösen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der russische Physiologe Iwan Pawlow bemerkte um 1900 bei Versuchen zur Verdauung, dass Hunde nicht erst beim Futter Speichel absonderten, sondern schon bei Reizen, die regelmäßig vor der Fütterung auftraten – etwa beim Anblick der Person, die das Futter brachte. Später genügte ein Ton, der oft genug zusammen mit dem Futter erklungen war. Man spricht von **klassischer Konditionierung**: Ein zunächst neutraler Reiz wird durch wiederholte Kopplung mit einem Reiz, der von sich aus eine Reaktion auslöst, selbst zum Auslöser dieser Reaktion.\n\nFür den Schulalltag ist das wichtiger, als es klingt, denn auf diese Weise werden vor allem **Gefühle und körperliche Reaktionen** gelernt. Ein Kind, das an der Tafel bloßgestellt wurde, kann Angst, Herzklopfen und Bauchweh entwickeln – bald nicht nur an der Tafel, sondern schon beim Anblick des Mathehefts, beim Betreten des Raumes oder beim Gedanken an die Schule."
+        },
+        {
+          "art": "liste",
+          "titel": "Wichtige Begriffe – an Beispielen",
+          "punkte": [
+            "**Generalisierung:** Die gelernte Reaktion breitet sich auf ähnliche Situationen aus – von einer Lehrerin auf alle Lehrkräfte, von Mathematik auf alle Proben.",
+            "**Unterscheidung:** Das Kind lernt, ähnliche Situationen auseinanderzuhalten – etwa dass die neue Lehrerin anders reagiert als die frühere.",
+            "**Löschung:** Tritt der Auslöser wiederholt auf, ohne dass etwas Schlimmes folgt, wird die Reaktion schwächer. Darauf beruht die schrittweise Konfrontation bei Ängsten.",
+            "**Gegenkonditionierung:** Angenehme Erfahrungen in der gefürchteten Situation – ein freundlicher Empfang, kleine Erfolge – schwächen die Angst zusätzlich."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Daraus folgt eine wichtige Einsicht: **Gelernte Angst lässt sich nicht wegreden.** Ein Kind, dessen Körper beim Betreten des Klassenzimmers Alarm schlägt, kann sich nicht einfach entscheiden, keine Angst zu haben. Was hilft, sind neue Erfahrungen: dieselbe Situation, aber diesmal sicher und machbar – in kleinen Schritten, mit Unterstützung, immer wieder.\n\nDas Prinzip wirkt auch in die andere Richtung. Ein freundliches Begrüßungsritual, ein vertrauter Platz und ein Klassenraum, in dem niemand bloßgestellt wird, verknüpfen Schule mit Sicherheit."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Hat ein Kind Angst vor einer Situation, sollte man sie ihm einfach ersparen.",
+          "fakt": "Vermeiden bringt kurzfristig Erleichterung, verhindert aber neue, gute Erfahrungen – die Angst bleibt oder wächst. Besser sind kleine, machbare Schritte in die gefürchtete Situation, mit Unterstützung und im Tempo des Kindes."
+        }
+      ]
+    },
+    {
+      "titel": "Operante Konditionierung: Lernen durch Konsequenzen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der amerikanische Psychologe B. F. Skinner (1953) untersuchte, wie Verhalten durch seine **Konsequenzen** geformt wird. Folgt auf ein Verhalten etwas, das für die Person angenehm ist, oder endet dadurch etwas Unangenehmes, tritt das Verhalten künftig häufiger auf. Das nennt man **Verstärkung**. Folgt etwas Unangenehmes oder fällt etwas Angenehmes weg, wird das Verhalten seltener – das ist **Bestrafung** im lernpsychologischen Sinn. „Positiv“ und „negativ“ haben dabei nichts mit gut oder schlecht zu tun: Positiv heißt, dass etwas hinzukommt, negativ, dass etwas wegfällt."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Arten von Konsequenzen",
+          "spalten": [
+            "Art",
+            "Was geschieht",
+            "Wirkung",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Positive Verstärkung",
+              "Etwas Angenehmes kommt hinzu",
+              "Verhalten wird häufiger",
+              "Lob, Aufmerksamkeit, ein Punkt auf dem Punkteplan – oder das Lachen der Mitschüler"
+            ],
+            [
+              "Negative Verstärkung",
+              "Etwas Unangenehmes fällt weg",
+              "Verhalten wird häufiger",
+              "Das Kind stört und muss die schwere Aufgabe nicht mehr machen; die Lehrkraft schreit, und die Klasse wird kurz still"
+            ],
+            [
+              "Positive Bestrafung",
+              "Etwas Unangenehmes kommt hinzu",
+              "Verhalten wird seltener",
+              "Tadel, Strafarbeit, Nachsitzen"
+            ],
+            [
+              "Negative Bestrafung",
+              "Etwas Angenehmes fällt weg",
+              "Verhalten wird seltener",
+              "Punkte gehen verloren, das Handy wird eingesammelt, das Kind setzt beim Spiel eine Runde aus"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was ein Verstärker ist, entscheidet die Wirkung – nicht die Absicht.** Eine Ermahnung ist als Strafe gedacht. Für ein Kind, das sonst kaum beachtet wird, kann sie aber Zuwendung bedeuten und das Verhalten verstärken. Auch das Hinausschicken ist als Strafe gedacht. Für Yanis aus dem Fallbeispiel heißt es aber: Die gefürchtete Aufgabe fällt weg – eine negative Verstärkung. Kein Wunder, dass er immer früher stört. Ob eine Konsequenz verstärkt oder bestraft, zeigt sich allein daran, was danach mit dem Verhalten geschieht.\n\nWeitere Regeln sind gut belegt. Konsequenzen wirken umso stärker, je **unmittelbarer** sie folgen. Neues Verhalten wird am schnellsten gelernt, wenn es anfangs **jedes Mal** verstärkt wird; dauerhaft stabil wird es, wenn die Verstärkung später nur noch **gelegentlich** kommt. Genau das macht auch Problemverhalten so hartnäckig: Führt Quengeln oder Diskutieren nur ab und zu zum Erfolg, wird es besonders ausdauernd. Und komplexes Verhalten lernt man in kleinen Schritten, die jeweils verstärkt werden – man nennt das **Verhaltensformung**."
+        },
+        {
+          "art": "text",
+          "text": "**Löschung** bedeutet, dass ein Verhalten nicht mehr verstärkt wird – etwa wenn Clownereien, die auf Aufmerksamkeit zielen, keine Reaktion mehr finden. Das Verhalten wird dann seltener, aber meist nicht sofort: Oft wird es zuerst **stärker**, weil das Kind ausprobiert, ob es mit mehr Einsatz doch noch klappt. Wer in dieser Phase nachgibt, bringt dem Kind bei, dass sich Durchhalten lohnt. Löschung funktioniert zudem nur, wenn man die verstärkende Folge wirklich kontrollieren kann; lachen die Mitschüler weiter, hilft das Übergehen durch die Lehrkraft wenig. Gefährliches Verhalten darf nie einfach übergangen werden."
+        },
+        {
+          "art": "merke",
+          "text": "Achten Sie auf die Wirkung, nicht auf die Absicht: Ein Verhalten, das häufiger wird, wird verstärkt – auch wenn Sie die Folge als Strafe gemeint haben."
+        },
+        {
+          "art": "liste",
+          "titel": "Warum Strafen allein selten helfen",
+          "punkte": [
+            "Sie zeigen, was das Kind nicht tun soll, aber nicht, was es stattdessen tun kann.",
+            "Ihre Wirkung hält oft nur an, solange die strafende Person anwesend ist.",
+            "Sie belasten die Beziehung und können Angst vor der Person oder der Schule auslösen – ein Fall von klassischer Konditionierung.",
+            "Sie liefern ein Modell: Wer Macht hat, setzt sich durch.",
+            "Sie laden zur Eskalation ein: Die Strafen werden härter, das Kind wehrt sich stärker.",
+            "Sie entlasten den Strafenden kurzfristig und werden deshalb leicht immer häufiger eingesetzt."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Das heißt nicht, dass es keine Grenzen und Folgen geben soll. Klare, vorher bekannte und verhältnismäßige Konsequenzen haben ihren Platz – am besten solche, die mit dem Verhalten zusammenhängen, etwa eine Wiedergutmachung. Entscheidend ist das Verhältnis: Wirksame Programme stärken vor allem das erwünschte Verhalten. Alan Kazdin (2008) empfiehlt, zu jedem Problemverhalten das **positive Gegenteil** zu bestimmen – das Verhalten, das man stattdessen sehen möchte – und dieses gezielt, häufig und konkret zu verstärken: nicht „nicht reinrufen“, sondern „sich melden und warten“."
+        },
+        {
+          "art": "tun",
+          "titel": "Verstärkung wirksam einsetzen",
+          "punkte": [
+            "Das positive Gegenteil festlegen und dem Kind klar sagen, was erwartet wird.",
+            "Erwünschtes Verhalten sofort und konkret benennen: „Du hast dich gemeldet und gewartet – danke.“",
+            "Anfangs sehr häufig verstärken, später seltener.",
+            "Verstärker mit dem Kind gemeinsam auswählen; was wirklich zählt, ist bei jedem Kind anders.",
+            "Deutlich mehr anerkennende als korrigierende Rückmeldungen geben."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Modelllernen: Lernen durch Beobachtung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Menschen lernen nicht nur aus eigenen Erfahrungen, sondern auch, indem sie andere beobachten. In bekannten Experimenten der 1960er-Jahre zeigte der Psychologe Albert Bandura, dass Kinder aggressives Verhalten gegenüber einer Puppe nachahmten, das sie zuvor bei einem Erwachsenen gesehen hatten. Sahen sie, dass das Modell dafür bestraft wurde, ahmten sie es seltener nach. Man spricht von **Modelllernen** oder Beobachtungslernen.\n\nOb ein Verhalten übernommen wird, hängt von mehreren Bedingungen ab: Das Kind muss das Modell **aufmerksam** beobachten, sich das Gesehene **merken**, es selbst **ausführen können** und einen **Anreiz** haben, es zu zeigen. Besonders gern nachgeahmt werden Modelle, die dem Kind ähnlich sind, die es bewundert oder die Erfolg haben. Sieht ein Kind, dass ein anderes für ein Verhalten belohnt wird, wirkt das fast wie eine eigene Verstärkung."
+        },
+        {
+          "art": "text",
+          "text": "**Erwachsene sind Modelle – ständig.** Kinder lernen weniger aus dem, was Erwachsene sagen, als aus dem, was sie tun. Eine Lehrkraft, die bei Ärger laut und abwertend wird, lehrt genau das, auch wenn sie gleichzeitig „Wir schreien hier nicht“ fordert. Umgekehrt ist jeder ruhig gelöste Konflikt eine kleine Lektion in Selbstregulation – besonders für Kinder, die zu Hause wenig günstige Modelle erleben. Auch Gleichaltrige sind starke Modelle: Bringt Stören in einer Klasse Anerkennung, lernen es andere mit."
+        },
+        {
+          "art": "tun",
+          "titel": "Modelllernen gezielt nutzen",
+          "punkte": [
+            "Laut denken: Zeigen Sie, wie Sie selbst mit Ärger, Fehlern oder schwierigen Aufgaben umgehen („Ich merke, ich werde ungeduldig. Ich atme kurz durch und fange noch mal an.“).",
+            "Erwünschtes Verhalten bei Mitschülern sichtbar anerkennen – ohne Vergleich mit dem Kind, das es noch nicht kann.",
+            "Ähnliche Modelle nutzen: Ein Kind, das etwas gerade erst gelernt hat, ist oft ein besseres Vorbild als das beste der Klasse.",
+            "Neues Verhalten erst vormachen, dann im Rollenspiel üben, dann im Alltag daran erinnern.",
+            "Beobachten, welches Verhalten in der Klasse Ansehen bringt – und das Klassenklima entsprechend gestalten."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Das ABC-Modell und die Funktion von Verhalten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Um zu verstehen, was ein Verhalten aufrechterhält, hat sich das **ABC-Modell** bewährt. Es beschreibt eine Situation in drei Schritten.\n\n**A – Auslöser:** Was geschieht unmittelbar vorher? Wo, wann, mit wem, bei welcher Anforderung? Dazu gehören auch entferntere Bedingungen wie Müdigkeit, Hunger, ein Streit am Morgen oder ein nachlassendes Medikament.\n\n**B – Verhalten:** Was genau tut das Kind? Beobachtbar und so konkret beschrieben, dass zwei Personen dasselbe darunter verstehen würden.\n\n**C – Folge:** Was geschieht unmittelbar danach? Wie reagieren Erwachsene und Mitschüler, was fällt weg, was kommt hinzu?"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ein ABC-Protokoll – Beispiel Yanis",
+          "spalten": [
+            "A – Auslöser",
+            "B – Verhalten",
+            "C – Folge"
+          ],
+          "zeilen": [
+            [
+              "Mo, Mathematik: Arbeitsblatt mit zwölf Textaufgaben wird ausgeteilt",
+              "Macht Geräusche, sagt laut: „Das ist voll dumm.“",
+              "Lehrerin ermahnt ihn, Mitschüler lachen, Aufgabe noch nicht begonnen"
+            ],
+            [
+              "Mi, Mathematik: Aufforderung, mit Aufgabe 1 anzufangen",
+              "Wirft sein Heft durch den Raum",
+              "Wird vor die Tür geschickt, die Aufgabe bleibt liegen"
+            ],
+            [
+              "Do, Kunst: freies Zeichnen",
+              "Arbeitet 30 Minuten ruhig",
+              "Lehrerin lobt sein Bild"
+            ],
+            [
+              "Fr, Mathematik in Partnerarbeit: Partner liest die Aufgaben vor",
+              "Arbeitet mit, fragt zweimal nach",
+              "Bekommt Hilfe, löst die Aufgabe"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Schon wenige Einträge zeigen ein Muster: Yanis stört vor allem bei schriftlichen Aufgaben mit viel Text, und das Stören endet damit, dass die Aufgabe wegfällt. Wird ihm vorgelesen, arbeitet er mit. Eine naheliegende Vermutung: Das Verhalten dient dazu, einer Aufgabe zu entkommen, die ihn überfordert – vielleicht wegen Schwierigkeiten beim Lesen. Diese Vermutung lässt sich prüfen."
+        },
+        {
+          "art": "merke",
+          "text": "Beschreiben statt bewerten: „Wirft das Heft, nachdem die Aufgabe ausgeteilt wurde“ ist eine Beobachtung. „Er ist aggressiv“ oder „Er will mich provozieren“ sind Deutungen – und verhindern oft, dass man das Muster erkennt."
+        },
+        {
+          "art": "text",
+          "text": "**Die Funktion von Verhalten.** Aus der angewandten Verhaltensanalyse stammt die Erkenntnis, dass problematisches Verhalten meist einen erkennbaren Zweck erfüllt. In der Schule sind vier Funktionen besonders häufig (Crone et al., 2010). Die Leitfrage lautet deshalb nicht nur „Was tut das Kind?“, sondern: **„Was bringt ihm das Verhalten?“**"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier häufige Funktionen – und passende Unterstützung",
+          "spalten": [
+            "Funktion",
+            "Beispiele",
+            "Mögliche Unterstützung"
+          ],
+          "zeilen": [
+            [
+              "Aufmerksamkeit bekommen – von Erwachsenen oder Mitschülern",
+              "Clownerei, Reinrufen, Provokationen, auf die immer jemand reagiert",
+              "Viel Aufmerksamkeit für erwünschtes Verhalten, unaufgefordert und regelmäßig; beim Problemverhalten wenig Bühne; einen erlaubten Weg zeigen, Aufmerksamkeit zu holen"
+            ],
+            [
+              "Etwas vermeiden oder beenden – Aufgabe, Anforderung, Person, Lärm",
+              "Stören bei schweren Aufgaben, Arbeitsverweigerung, Weglaufen",
+              "Anforderung anpassen, Hilfe anbieten, Aufgaben teilen; eine Pausenkarte einführen; Hinausschicken vermeiden, wenn es die Aufgabe beendet"
+            ],
+            [
+              "Etwas bekommen – Gegenstand oder Tätigkeit",
+              "Wegnehmen, Drängeln, Wutanfall, wenn die Tabletzeit endet",
+              "Klare Abläufe nach dem Muster „zuerst – dann“, Warten üben, angemessenes Bitten lehren und verstärken"
+            ],
+            [
+              "Sinnesreiz oder Entlastung – das Verhalten selbst fühlt sich gut an oder mindert Unbehagen",
+              "Schaukeln, Summen, Kauen auf Gegenständen, Nägelkauen",
+              "Erlaubte Alternativen mit ähnlichem Reiz (Knetball, Bewegung, Kauhilfe), Reize in der Umgebung anpassen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Aus der vermuteten Funktion ergeben sich drei Ansatzpunkte. Erstens die **Auslöser verändern**, damit das Verhalten gar nicht erst nötig wird. Zweitens ein **Ersatzverhalten** lehren, das denselben Zweck erfüllt, aber akzeptabel ist – eine Pausenkarte statt Heftwerfen, sich melden statt Reinrufen. Drittens die **Folgen verändern**: Das Problemverhalten soll sich nicht mehr lohnen, das Ersatzverhalten dagegen schneller und leichter zum Ziel führen. Eine Maßnahme, die nicht zur Funktion passt, kann das Problem verschärfen – wie das Hinausschicken bei Yanis.\n\nEine Funktion ist immer eine **Vermutung**. Dasselbe Verhalten kann bei zwei Kindern ganz unterschiedliche Funktionen haben, bei einem Kind auch mehrere zugleich. Prüfen Sie Ihre Vermutung, indem Sie etwas verändern und beobachten, was geschieht."
+        },
+        {
+          "art": "fall",
+          "titel": "Yanis – drei Wochen später",
+          "text": "Das Team vermutet, dass Yanis Aufgaben mit viel Text vermeidet, und regt über die Leitung eine Abklärung seiner Lesefähigkeiten an. Bis dahin bekommt er die Aufgaben in kleineren Portionen, sein Partner liest ihm die Textaufgaben vor, und er darf mit einer Karte um eine Pause von zwei Minuten bitten – danach geht es mit derselben Aufgabe weiter. Für jede bearbeitete Etappe gibt es einen Punkt auf seinem Plan. Hinausgeschickt wird er nicht mehr. Nach drei Wochen wirft Yanis das Heft nicht mehr; die Pausenkarte nutzt er anfangs oft, dann seltener.",
+          "fragen": [
+            "Welche der drei Ansatzpunkte erkennen Sie?",
+            "Warum geht es nach der Pause mit derselben Aufgabe weiter?"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Typische Fallen",
+          "punkte": [
+            "Aufmerksamkeit fast nur bei Problemverhalten geben.",
+            "Bei Vermeidungsverhalten die Aufgabe erlassen – durch Hinausschicken, Wegnehmen der Aufgabe oder Nachgeben.",
+            "Nach langem Quengeln doch nachgeben: Gelegentlicher Erfolg macht das Verhalten besonders hartnäckig.",
+            "Eine Maßnahme nach der ersten Verschlechterung aufgeben, bevor sie wirken konnte."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn ein Verhalten das Kind oder andere gefährdet, trotz gut geplanter und über mehrere Wochen verlässlich umgesetzter Maßnahmen nicht abnimmt oder wenn Sie eine Lern- oder Entwicklungsstörung dahinter vermuten. Eine systematische funktionale Verhaltensanalyse und ein gemeinsamer Förderplan entstehen am besten im Team mit Fachleuten des CDSE; sprechen Sie dazu mit Ihrer Leitung."
+        }
+      ]
+    },
+    {
+      "titel": "Selbstwirksamkeit: „Ich kann das schaffen“",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Albert Bandura (1977) beschrieb die **Selbstwirksamkeit** als die Überzeugung eines Menschen, eine bestimmte Handlung erfolgreich ausführen zu können. Sie ist nicht dasselbe wie der Selbstwert – wie wertvoll ich mich fühle – und nicht dasselbe wie das tatsächliche Können. Aber sie entscheidet mit darüber, ob ein Kind eine Aufgabe überhaupt anfängt, wie viel Mühe es investiert, wie lange es bei Schwierigkeiten durchhält und wie es mit Misserfolgen umgeht. Ein Kind mit geringer Selbstwirksamkeit sagt „Das kann ich eh nicht“ und fängt gar nicht erst an. So entgehen ihm genau die Erfahrungen, die seine Überzeugung ändern könnten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Quellen der Selbstwirksamkeit",
+          "spalten": [
+            "Quelle",
+            "Was gemeint ist",
+            "Im Schulalltag"
+          ],
+          "zeilen": [
+            [
+              "Eigene Erfolgserlebnisse",
+              "Die stärkste Quelle: selbst erleben, dass man etwas durch eigene Anstrengung geschafft hat",
+              "Aufgaben so wählen, dass Erfolg mit Anstrengung möglich ist; Fortschritte sichtbar machen"
+            ],
+            [
+              "Stellvertretende Erfahrung",
+              "Sehen, dass jemand Ähnliches schafft",
+              "Ein Mitschüler, der die Aufgabe gerade erst gelernt hat, zeigt seinen Lösungsweg"
+            ],
+            [
+              "Ermutigung durch andere",
+              "Glaubwürdige Menschen trauen einem etwas zu",
+              "„Das ist schwer, und ich glaube, den ersten Schritt schaffst du.“ – wirksam nur, wenn es realistisch ist"
+            ],
+            [
+              "Körperliche und gefühlsmäßige Signale",
+              "Wie man Aufregung und Anspannung deutet",
+              "Aufregung als normal erklären: „Herzklopfen zeigt, dass es dir wichtig ist.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wenn Kinder aufgeben.** Kinder, die lange erlebt haben, dass ihre Anstrengungen nichts bewirken, geben irgendwann auf. Man spricht von **erlernter Hilflosigkeit**. Viele Kinder und Jugendliche mit sozial-emotionalem Förderbedarf haben eine lange Geschichte von Misserfolgen, Kritik und Ausschluss hinter sich. Ihr „Ist mir egal“ ist oft ein Schutz vor der nächsten Enttäuschung. Hier braucht es Geduld: viele kleine, echte Erfolgserlebnisse – und Erwachsene, die Fortschritte bemerken und benennen."
+        },
+        {
+          "art": "tun",
+          "titel": "Selbstwirksamkeit stärken",
+          "punkte": [
+            "Aufgaben in erreichbare Schritte teilen: schwer genug, dass der Erfolg zählt, leicht genug, dass er möglich ist.",
+            "Fortschritte sichtbar machen und mit dem Kind selbst vergleichen, nicht mit anderen: „Letzte Woche drei Aufgaben, heute fünf.“",
+            "Anstrengung und Vorgehen zurückmelden („Du hast eine neue Strategie ausprobiert“), nicht nur Ergebnis oder Begabung („Du bist so schlau“).",
+            "Das Wort „noch“ nutzen: „Das kannst du noch nicht.“",
+            "Fehler als Teil des Lernens behandeln – und eigene Fehler offen zeigen.",
+            "Wahlmöglichkeiten und Verantwortung geben: Wer mitentscheidet, erlebt sich als wirksam."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Lena, 13 Jahre, Lycée",
+          "text": "Lena sagt bei jeder neuen Aufgabe „Kann ich nicht“ und legt den Stift weg. In Französisch hat sie seit Jahren schlechte Noten. Ihre Lehrerin schlägt vor, drei Wochen lang jeden Tag nur fünf neue Vokabeln zu lernen, und trägt die Ergebnisse der kurzen Tests gemeinsam mit Lena in eine Kurve ein. Die Kurve zeigt nach oben. Lena sagt: „Vokabeln kann ich jetzt. Grammatik aber nicht.“ Die Lehrerin antwortet: „Grammatik noch nicht.“",
+          "fragen": [
+            "Welche Quellen der Selbstwirksamkeit nutzt die Lehrerin?",
+            "Wie könnte der nächste Schritt aussehen?"
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist mit „negativer Verstärkung“ gemeint?",
+      "optionen": [
+        "Eine Strafe, die für das Kind unangenehm ist",
+        "Ein Lob, das nicht ernst gemeint ist",
+        "Nach dem Verhalten fällt etwas Unangenehmes weg, und das Verhalten wird dadurch häufiger.",
+        "Etwas Angenehmes wird entzogen, damit das Verhalten seltener wird."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Negative Verstärkung bedeutet: Etwas Unangenehmes endet – und das Verhalten, das dazu geführt hat, wird häufiger. Sie wird oft mit Strafe verwechselt, ist aber das Gegenteil, denn Strafe soll Verhalten seltener machen. Das Entziehen von etwas Angenehmem ist eine negative Bestrafung."
+    },
+    {
+      "art": "fall",
+      "fall": "Luis (11) macht im Unterricht häufig Witze und Geräusche. Die Klasse lacht, der Lehrer ermahnt ihn jedes Mal. Seit der Lehrer ihn konsequent übergeht, macht Luis noch mehr Geräusche – und die Klasse lacht weiter.",
+      "frage": "Was ist die beste Einschätzung?",
+      "optionen": [
+        "Das Übergehen wirkt nicht; der Lehrer sollte wieder jedes Mal ermahnen.",
+        "Luis braucht eine harte Strafe, damit die Klasse ein Zeichen sieht.",
+        "Luis ist vermutlich hyperaktiv; das Verhalten hat mit der Situation nichts zu tun.",
+        "Das Verhalten wird vermutlich vor allem durch das Lachen der Mitschüler verstärkt. Übergehen allein reicht nicht – die Klasse einbeziehen und Luis einen erlaubten Weg zu Anerkennung geben."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Luis bekommt Aufmerksamkeit von den Mitschülern; solange sie lachen, wird das Verhalten weiter verstärkt, und die Zunahme kann zudem ein vorübergehender Anstieg bei beginnender Löschung sein. Hilfreich ist, die Klasse einzubeziehen und Luis Anerkennung für erwünschtes Verhalten zu verschaffen, etwa durch eine Aufgabe mit Ansehen. Wieder zu ermahnen, gibt ihm erneut Bühne; eine harte Strafe ändert nichts an der Funktion; eine Diagnose aus einer einzelnen Situation abzuleiten, ist nicht möglich."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Nebenwirkungen können Strafen haben, wenn sie die wichtigste Strategie sind? (mehrere richtig)",
+      "optionen": [
+        "Das Kind lernt nicht, was es stattdessen tun soll.",
+        "Die Wirkung hält oft nur an, solange die strafende Person anwesend ist.",
+        "Die Beziehung zur Lehrkraft wird gestärkt.",
+        "Strafen können Angst vor der Person oder der Schule auslösen.",
+        "Strafen machen Verstärkung von erwünschtem Verhalten überflüssig."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Strafen zeigen kein Alternativverhalten, wirken oft nur in Anwesenheit der strafenden Person und können über klassische Konditionierung Angst auslösen. Sie belasten die Beziehung, statt sie zu stärken. Wirksame Programme setzen vor allem auf die Verstärkung erwünschten Verhaltens – Strafen ersetzen sie nicht."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wird ein Verhalten nicht mehr verstärkt, nimmt es in der Regel sofort ab.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Bei beginnender Löschung wird ein Verhalten oft zunächst stärker, weil das Kind ausprobiert, ob es mit mehr Einsatz doch noch klappt. Wer in dieser Phase nachgibt, verstärkt gerade das hartnäckigere Verhalten."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welches Beispiel beschreibt am ehesten klassische Konditionierung?",
+      "optionen": [
+        "Ein Kind bekommt Bauchweh, sobald es das Mathematikheft sieht, nachdem es mehrmals an der Tafel bloßgestellt wurde.",
+        "Ein Kind meldet sich häufiger, seit es dafür gelobt wird.",
+        "Ein Kind ahmt die Sprüche eines beliebten Mitschülers nach.",
+        "Ein Kind arbeitet mit, weil es Punkte für eine Belohnung sammelt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Bei der klassischen Konditionierung wird ein neutraler Reiz – hier das Heft – durch Kopplung mit einem belastenden Erlebnis selbst zum Auslöser einer Gefühls- und Körperreaktion. Lob und Punkte wirken als Konsequenzen, also operant. Das Nachahmen eines Mitschülers ist Modelllernen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Beschreibung eignet sich für das „B“ – das Verhalten – in einem ABC-Protokoll?",
+      "optionen": [
+        "Er ist aggressiv.",
+        "Sie will mich provozieren.",
+        "Er wirft sein Heft auf den Boden und sagt laut: „Mach ich nicht.“",
+        "Sie hat heute einen schlechten Tag."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Im ABC-Protokoll wird Verhalten beobachtbar und konkret beschrieben, sodass andere sich die Situation genau vorstellen können. „Aggressiv“ ist ein Urteil, „provozieren“ eine Vermutung über die Absicht, und „ein schlechter Tag“ beschreibt gar kein Verhalten. Deutungen gehören – als Vermutungen gekennzeichnet – in die spätere Auswertung."
+    },
+    {
+      "art": "fall",
+      "fall": "Amélie (7) summt und schaukelt mit dem Oberkörper, vor allem in der lauten Kantine und bei Gruppenarbeiten. Ermahnungen ändern nichts. Im ruhigen Leseraum tritt das Verhalten kaum auf.",
+      "frage": "Welche Vermutung und welche Unterstützung liegen am nächsten?",
+      "optionen": [
+        "Amélie will Aufmerksamkeit; das Summen sollte konsequent übergangen werden.",
+        "Das Verhalten hilft ihr vermutlich, mit Reizüberflutung umzugehen: Reize verringern (ruhiger Platz, Gehörschutz), erlaubte Alternativen anbieten und bei anhaltenden Auffälligkeiten mit der Leitung über eine Abklärung sprechen.",
+        "Amélie ist ungezogen; sie sollte zur Strafe allein essen.",
+        "Das Verhalten dient nur dazu, Gruppenarbeit zu vermeiden; sie sollte künftig nie mehr in Gruppen arbeiten."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Das Verhalten tritt vor allem in lauten, reizreichen Situationen auf und kaum in ruhigen – das spricht für eine entlastende Funktion bei Reizüberflutung. Hilfreich sind weniger Reize und erlaubte Alternativen; halten die Auffälligkeiten an, gehört das in eine fachliche Abklärung. Übergehen geht an der Funktion vorbei, Strafen belasten zusätzlich, und ein völliger Verzicht auf Gruppenarbeit nähme ihr wichtige Lerngelegenheiten."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Quellen der Selbstwirksamkeit beschreibt Albert Bandura? (mehrere richtig)",
+      "optionen": [
+        "Eigene Erfolgserlebnisse",
+        "Beobachten, wie ähnliche Personen etwas schaffen",
+        "Ermutigung durch glaubwürdige andere",
+        "Häufiges Vergleichen mit den Besten der Klasse",
+        "Die Deutung körperlicher Signale wie Aufregung"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Bandura (1977) nennt eigene Erfolgserlebnisse als stärkste Quelle, dazu stellvertretende Erfahrungen, Ermutigung und die Deutung körperlicher und gefühlsmäßiger Zustände. Der Vergleich mit den Besten schwächt die Selbstwirksamkeit eher – hilfreich sind Modelle, die dem Kind ähnlich sind."
+    },
+    {
+      "art": "fall",
+      "fall": "Jonathan (13) sagt bei neuen Aufgaben sofort „Kann ich eh nicht“ und schiebt das Blatt weg. In Mathematik hat er seit Jahren schlechte Noten.",
+      "frage": "Welches Vorgehen stärkt seine Selbstwirksamkeit am ehesten?",
+      "optionen": [
+        "„Du bist doch schlau – streng dich einfach an.“",
+        "Ihm ohne Erklärung leichtere Aufgaben geben und auf Rückmeldungen verzichten.",
+        "Ihn vor der Klasse mit einem Mitschüler vergleichen, der die Aufgabe schon kann.",
+        "Mit ihm eine kleine, erreichbare Etappe vereinbaren, den Erfolg gemeinsam sichtbar machen und Anstrengung und Vorgehen konkret zurückmelden."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Eigene, sichtbar gemachte Erfolgserlebnisse sind die stärkste Quelle der Selbstwirksamkeit, und konkrete Rückmeldungen zu Anstrengung und Vorgehen zeigen, wie der Erfolg zustande kam. Allgemeine Appelle überzeugen ein entmutigtes Kind kaum, Aufgaben ohne Rückmeldung machen den Fortschritt unsichtbar, und öffentliche Vergleiche beschämen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Lehrkräfte wirken als Modelle – auch durch die Art, wie sie selbst mit Ärger umgehen.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Kinder lernen stark durch Beobachtung. Wie Erwachsene mit Ärger, Fehlern und Konflikten umgehen, prägt das Verhalten der Kinder oft mehr als jede Regel oder Ermahnung."
+    },
+    {
+      "art": "fall",
+      "fall": "Wenn die Tabletzeit in der Maison Relais endet, wirft sich Nils (6) auf den Boden und schreit. Die Betreuerin gibt ihm dann meist noch fünf Minuten.",
+      "frage": "Was ist der beste Ansatz?",
+      "optionen": [
+        "Das Ende vorher ankündigen und sichtbar machen (etwa mit einer Sanduhr), eine feste Zuerst-dann-Abfolge einführen, nicht mehr nachgeben – und ruhiges Abgeben sofort anerkennen.",
+        "Weiter nachgeben, weil er sich dann schneller beruhigt.",
+        "Das Tablet ganz streichen, bis er sich nie mehr aufregt.",
+        "Ihm beim nächsten Mal ohne Erklärung gar kein Tablet mehr geben."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Das Schreien führt zu mehr Tabletzeit und wird dadurch verstärkt – gerade weil es meist, aber nicht immer klappt. Hilfreich sind ein vorhersehbarer Übergang, kein Nachgeben mehr und sofortige Anerkennung für ruhiges Abgeben; anfangs kann das Schreien noch zunehmen. Totale oder unerklärte Verbote lehren kein neues Verhalten und belasten die Beziehung."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Klassische Konditionierung",
+      "erklaerung": "Lernen durch Verknüpfung: Ein neutraler Reiz löst nach wiederholter Kopplung mit einem bedeutsamen Reiz selbst eine Reaktion aus, etwa Angst beim Anblick des Mathehefts."
+    },
+    {
+      "begriff": "Operante Konditionierung",
+      "erklaerung": "Lernen durch Konsequenzen: Verhalten wird häufiger oder seltener, je nachdem, was darauf folgt."
+    },
+    {
+      "begriff": "Verstärkung",
+      "erklaerung": "Konsequenz, die ein Verhalten häufiger macht. Positiv: Etwas Angenehmes kommt hinzu. Negativ: Etwas Unangenehmes fällt weg."
+    },
+    {
+      "begriff": "Bestrafung",
+      "erklaerung": "Konsequenz, die ein Verhalten seltener macht: Etwas Unangenehmes kommt hinzu oder etwas Angenehmes fällt weg."
+    },
+    {
+      "begriff": "Löschung",
+      "erklaerung": "Ein zuvor verstärktes Verhalten wird nicht mehr verstärkt und nimmt dadurch ab – oft nach einem vorübergehenden Anstieg."
+    },
+    {
+      "begriff": "Modelllernen",
+      "erklaerung": "Lernen durch Beobachtung anderer Menschen. Besonders wirksam sind Modelle, die dem Kind ähnlich sind, die es bewundert oder die Erfolg haben."
+    },
+    {
+      "begriff": "ABC-Modell",
+      "erklaerung": "Beschreibung einer Situation in drei Schritten: A – Auslöser, B – Verhalten, C – Folge. Grundlage, um Muster zu erkennen."
+    },
+    {
+      "begriff": "Funktion von Verhalten",
+      "erklaerung": "Der Zweck, den ein Verhalten für die Person erfüllt, etwa Aufmerksamkeit bekommen, etwas vermeiden, etwas bekommen oder einen Sinnesreiz erleben."
+    },
+    {
+      "begriff": "Ersatzverhalten",
+      "erklaerung": "Akzeptables Verhalten, das denselben Zweck erfüllt wie das Problemverhalten, etwa eine Pausenkarte statt Heftwerfen."
+    },
+    {
+      "begriff": "Selbstwirksamkeit",
+      "erklaerung": "Die Überzeugung, eine bestimmte Handlung erfolgreich ausführen zu können. Sie beeinflusst, ob man etwas anfängt, sich anstrengt und dranbleibt."
+    }
+  ],
+  "quellen": [
+    "skinner1953",
+    "bandura1977",
+    "kazdin2008",
+    "crone2010",
+    "petermann2013",
+    "schneiderMargraf2019",
+    "nolting2002"
+  ],
+  "verwandt": [
+    "verstaerkung",
+    "beobachten-dokumentieren",
+    "oppositionell-aggressiv",
+    "deeskalation",
+    "angst",
+    "schulvermeidung",
+    "neue-autoritaet",
+    "biopsychosozial"
+  ],
+  "toolbox": [
+    "abc-beobachtung",
+    "verhalten-zaehlen",
+    "belohnungs-menue",
+    "ich-brauche-eine-pause",
+    "noch-nicht"
+  ]
+}

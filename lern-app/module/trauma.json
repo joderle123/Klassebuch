@@ -1,0 +1,548 @@
+{
+  "id": "trauma",
+  "bereich": "stoerungen",
+  "titel": "Trauma und Traumafolgen",
+  "untertitel": "Was belastende Erlebnisse bei Kindern auslösen – und wie der Schulalltag Sicherheit geben kann",
+  "dauer": 50,
+  "lernziele": [
+    "Sie können erklären, was ein potenziell traumatisches Ereignis ist, und einmalige (Typ I) von wiederholten Traumata (Typ II) unterscheiden.",
+    "Sie erkennen typische Traumafolgen bei Kindern und Jugendlichen – Wiedererleben, Vermeidung, Übererregung und Dissoziation – und können mögliche Trigger im Schulalltag benennen.",
+    "Sie können mit dem Modell des Toleranzfensters erklären, warum ein Kind unter Stress nicht „vernünftig“ reagieren kann, und kennen die Begriffe Entwicklungstrauma und belastende Kindheitserfahrungen.",
+    "Sie können den Alltag so gestalten, dass er Sicherheit gibt, und vermeiden Reaktionen, die retraumatisieren können.",
+    "Sie wissen, wie Sie reagieren, wenn ein Kind von Gewalt erzählt, und wann Sie Fachleute einbeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Leandro, 9 Jahre, Cycle 3.2",
+          "text": "Leandro sitzt ruhig über seinem Rechenheft, als hinter ihm ein Stuhl umkippt. Er springt auf, stößt seinen Tisch weg und schreit einen Mitschüler an. Die Lehrerin geht schnell auf ihn zu und ruft: „Setz dich sofort hin!“ Leandro rennt aus dem Raum. Eine Stunde später sitzt er auf einer Bank im Schulhof, starrt vor sich hin und reagiert kaum, als man ihn anspricht. Aus den Unterlagen weiß das Team, dass Leandro jahrelang Gewalt zwischen seinen Eltern miterlebt hat. Seit einem Jahr lebt er mit seiner Mutter in einer eigenen Wohnung.",
+          "fragen": [
+            "Was könnte in Leandro vorgegangen sein, als der Stuhl umfiel?",
+            "Wie hätte die Lehrerin anders reagieren können – und warum?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Ein **Trauma** (griechisch für „Wunde“) ist eine seelische Verletzung durch ein Ereignis, das die Bewältigungsmöglichkeiten eines Menschen übersteigt. Die Klassifikationssysteme beschreiben solche Ereignisse als Konfrontation mit tatsächlichem oder drohendem Tod, schwerer Verletzung oder sexueller Gewalt – selbst erlebt, bei anderen miterlebt oder als Nachricht, dass einer nahestehenden Person Gewalt oder ein schwerer Unfall zugestoßen ist (DSM-5-TR). Für Kinder zählt besonders, was ihren Bezugspersonen geschieht: Ein Kind, das mit ansieht, wie seine Mutter geschlagen wird, ist selbst betroffen.\n\nFachleute sprechen genauer von einem **potenziell traumatischen Ereignis**. Ob daraus eine dauerhafte Verletzung wird, hängt nicht nur vom Ereignis ab, sondern auch vom Alter, von früheren Erfahrungen und ganz besonders davon, ob das Kind danach Schutz, Trost und Verlässlichkeit erlebt. Viele Kinder zeigen nach einem schlimmen Erlebnis einige Tage oder Wochen lang starke Reaktionen: Sie schlafen schlecht, sind ängstlich, anhänglich oder gereizt. Das ist zunächst eine normale Reaktion auf ein außergewöhnliches Ereignis und klingt bei den meisten mit Unterstützung wieder ab. Bei einem Teil der Kinder bleiben die Beschwerden bestehen – dann spricht man von **Traumafolgestörungen**.\n\nFür die Praxis hilfreich ist die Unterscheidung zwischen einmaligen und wiederholten Traumata. Wiederholte, von Menschen verursachte Gewalt – besonders durch die eigenen Bezugspersonen – hat im Durchschnitt schwerere und vielschichtigere Folgen als ein Unfall oder eine Naturkatastrophe. Das Kind erlebt dann, dass gerade die Menschen, die es schützen sollten, zur Gefahr werden."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Typ-I- und Typ-II-Trauma",
+          "spalten": [
+            "Merkmal",
+            "Typ-I-Trauma",
+            "Typ-II-Trauma"
+          ],
+          "zeilen": [
+            [
+              "Art des Ereignisses",
+              "einmalig, plötzlich, unerwartet",
+              "wiederholt oder lang andauernd, meist von Menschen verursacht"
+            ],
+            [
+              "Beispiele",
+              "Verkehrsunfall, Brand, Überfall, Naturkatastrophe, Unfalltod eines nahen Menschen",
+              "Misshandlung, sexueller Missbrauch, schwere Vernachlässigung, miterlebte häusliche Gewalt, Krieg und Verfolgung"
+            ],
+            [
+              "Häufige Reaktionen",
+              "Angst, Wiedererleben und Vermeidung rund um das Ereignis",
+              "zusätzlich Abschalten und Dissoziation, Misstrauen, Scham, Schwierigkeiten mit Gefühlen und Beziehungen"
+            ]
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Nicht das Ereignis allein entscheidet über die Folgen, sondern auch, was danach geschieht. Ein Kind, das Schutz, Trost und verlässliche Erwachsene erlebt, kann Schlimmes besser verarbeiten. Genau hier können Fachkräfte in der Schule viel bewirken."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: wie sich Traumafolgen zeigen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Kinder und Jugendliche erleben bis zum Erwachsenenalter mindestens ein potenziell traumatisches Ereignis. Nur ein Teil von ihnen entwickelt eine Traumafolgestörung, nach Gewalt durch Menschen deutlich häufiger als nach Unfällen. Unter Kindern mit sozial-emotionalem Förderbedarf und unter Kindern, die in Pflegefamilien oder Heimen leben, sind belastende Vorerfahrungen deutlich häufiger als im Durchschnitt.\n\n**Posttraumatische Belastungsstörung (PTBS).** Die bekannteste Traumafolgestörung ist die PTBS. DSM-5-TR beschreibt vier Bereiche: das ungewollte **Wiedererleben** des Ereignisses, die **Vermeidung** von allem, was daran erinnert, **negative Veränderungen von Gedanken und Stimmung** sowie eine anhaltende **Übererregung**. Die Beschwerden müssen länger als einen Monat bestehen und deutlich belasten oder beeinträchtigen. Für Kinder bis sechs Jahre gelten eigene, altersgerechte Kriterien. Die ICD-11 fasst die PTBS enger: Wiedererleben im Hier und Jetzt, Vermeidung und ein anhaltendes Gefühl aktueller Bedrohung.\n\nDie ICD-11 kennt außerdem die **komplexe PTBS**. Sie kann nach lang andauernden oder wiederholten Traumata entstehen, denen man kaum entkommen konnte, etwa nach wiederholter Misshandlung oder sexuellem Missbrauch in der Kindheit. Zu den Kernsymptomen der PTBS kommen dann tiefgreifende Schwierigkeiten, Gefühle zu regulieren, ein anhaltend negatives Selbstbild mit Scham, Schuld oder dem Gefühl, wertlos zu sein, und Schwierigkeiten, Beziehungen einzugehen und zu halten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "PTBS bei Kindern und Jugendlichen im Alltag",
+          "spalten": [
+            "Bereich",
+            "Jüngere Kinder",
+            "Schulkinder und Jugendliche"
+          ],
+          "zeilen": [
+            [
+              "Wiedererleben",
+              "spielen das Erlebte immer wieder nach, Albträume (oft ohne erkennbaren Inhalt), plötzliche Angst ohne sichtbaren Anlass",
+              "sich aufdrängende Bilder und Gedanken, Albträume, Flashbacks (das Gefühl, das Ereignis geschehe gerade wieder), starke Körperreaktionen bei Erinnerungen"
+            ],
+            [
+              "Vermeidung",
+              "meiden bestimmte Orte, Menschen oder Spiele, klammern sich an Bezugspersonen",
+              "weichen Gesprächen, Themen und Orten aus, ziehen sich zurück, „Ich will nicht darüber reden“, manchmal Schulvermeidung"
+            ],
+            [
+              "Gedanken und Stimmung",
+              "weniger Spielfreude, Rückzug, Verlust schon gelernter Fähigkeiten (z. B. wieder einnässen)",
+              "Schuld- und Schamgefühle („Es war meine Schuld“), Misstrauen, Gefühl, anders zu sein, Freudlosigkeit, düstere Erwartungen an die Zukunft"
+            ],
+            [
+              "Übererregung",
+              "Schlafprobleme, Schreckhaftigkeit, Wutausbrüche",
+              "Reizbarkeit, Konzentrationsprobleme, ständige Wachsamkeit, Schreckhaftigkeit, bei Jugendlichen auch riskantes oder selbstschädigendes Verhalten"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Übererregung und Dissoziation.** Im Schulalltag begegnen Ihnen Traumafolgen vor allem in zwei Formen. Bei **Übererregung** ist das innere Alarmsystem ständig auf „Gefahr“ gestellt. Das Kind ist angespannt und schreckhaft, beobachtet genau, wer den Raum betritt, und reagiert auf kleine Anlässe mit Kampf (Schreien, Schlagen, Drohen) oder Flucht (Weglaufen, Verstecken). Von außen wirkt das wie Aggression oder Provokation, von innen ist es Angst.\n\nWenn weder Kampf noch Flucht möglich scheinen, kann das Nervensystem „abschalten“. Diese **Dissoziation** ist ursprünglich ein Schutz: Sie macht Unerträgliches aushaltbar, indem Wahrnehmungen, Gefühle und Erinnerungen voneinander getrennt werden. Das Kind wirkt dann wie weggetreten, starrt ins Leere, reagiert verzögert, spürt seinen Körper kaum oder weiß später nicht mehr, was geschah. Im Unterricht wird Dissoziation leicht als Träumen, Desinteresse oder stiller Trotz missverstanden.\n\n**Trigger** sind Reize, die – oft unbewusst – an das Trauma erinnern und die frühere Alarmreaktion auslösen, als wäre die Gefahr wieder da. Das Kind reagiert dann auf die Vergangenheit, nicht auf die Gegenwart. Häufig weiß es selbst nicht, warum es gerade so heftig reagiert."
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Trigger im Schulalltag",
+          "punkte": [
+            "Laute Stimmen, Schreien, Streit, Türenknallen, plötzliche Geräusche wie ein Probealarm",
+            "Berührungen, besonders unerwartet oder von hinten; jemand kommt sehr nah oder versperrt den Ausgang",
+            "Erlebte Ohnmacht: festgehalten werden, eingeschlossen sein, keine Wahl haben, bloßgestellt werden",
+            "Sinneseindrücke, die an eine Person oder einen Ort erinnern: ein Geruch, ein Tonfall, eine Geste, ein Kleidungsstück",
+            "Themen im Unterricht (Familie, Krieg, Tod, Körper, Sexualität) und Aufgaben wie „Bring ein Babyfoto mit“",
+            "Umkleiden, Duschen, ärztliche Untersuchungen in der Schule",
+            "Jahrestage, Feiertage, Besuchskontakte mit Angehörigen, der Wechsel von Bezugspersonen"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Ein Kind, das getriggert ist, kann in diesem Moment nicht nachdenken, abwägen oder lernen. Zuerst braucht es Sicherheit. Das Gespräch über das Verhalten folgt später, wenn es wieder ansprechbar ist."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: was Trauma in Körper und Entwicklung verändert",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Bei Gefahr schaltet der Körper blitzschnell auf Überleben. Das Herz schlägt schneller, die Muskeln spannen sich an, Stresshormone wie Adrenalin und Cortisol werden ausgeschüttet. Die Aufmerksamkeit richtet sich ganz auf die Bedrohung; überlegtes Denken, Planen und Sprache treten in den Hintergrund. Das ist sinnvoll, wenn es ums Überleben geht.\n\nErlebt ein Kind solche Gefahr immer wieder – vor allem durch Menschen, die es eigentlich schützen sollten –, stellt sich das Stresssystem dauerhaft empfindlicher ein. Das Kind reagiert schneller und stärker auf mögliche Gefahren und braucht länger, um sich zu beruhigen. Anhaltender Stress belastet auf Dauer Körper und Gehirn (McEwen, 1998), und Misshandlung und Vernachlässigung können die Entwicklung der Stressregulation nachhaltig beeinflussen (Glaser, 2000). Das Gehirn bleibt aber lernfähig: Neue, sichere Beziehungserfahrungen können viel verändern.\n\nEin hilfreiches Bild ist das **Toleranzfenster** (Siegel, 1999). Innerhalb dieses Fensters ist ein Mensch ansprechbar: Er kann denken, lernen und auch unangenehme Gefühle aushalten. Oberhalb liegt die Übererregung, unterhalb die Untererregung mit Erstarren und Abschalten. Bei traumatisierten Kindern ist das Fenster oft schmal – schon kleine Belastungen bringen sie heraus. Pädagogische Arbeit hat hier zwei Ziele: dem Kind helfen, ins Fenster zurückzufinden, und das Fenster über die Zeit behutsam zu weiten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Zustände – drei Antworten",
+          "spalten": [
+            "Zustand",
+            "Was Sie beobachten",
+            "Was in diesem Moment hilft"
+          ],
+          "zeilen": [
+            [
+              "Übererregung (oberhalb des Fensters)",
+              "Schreien, Schlagen, Weglaufen, schneller Atem, Tunnelblick, für Argumente nicht erreichbar",
+              "Ruhig und langsam sprechen, wenige Worte, Abstand halten, Ausweg offen lassen, Zuschauer reduzieren, nicht diskutieren"
+            ],
+            [
+              "Im Toleranzfenster",
+              "Ansprechbar, kann zuhören, nachdenken, Fehler aushalten",
+              "Lernen, üben, nachbesprechen, Beruhigungsstrategien einüben"
+            ],
+            [
+              "Untererregung (unterhalb des Fensters)",
+              "Leerer Blick, keine oder verzögerte Reaktion, wirkt „weg“, schlaffe Haltung, sehr leise",
+              "Beim Namen ansprechen, Orientierung geben (Ort, Zeit, Person), Sinne ansprechen: etwas Kühles in die Hand, aufstehen, ein Glas Wasser"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Entwicklungstrauma.** Beginnen Gewalt, Vernachlässigung oder Missbrauch früh und dauern sie lange an, reichen die Folgen oft über die klassischen PTBS-Symptome hinaus. Der Psychiater Bessel van der Kolk hat dafür den Begriff **Entwicklungstrauma** vorgeschlagen (van der Kolk, 2005). Gemeint ist, dass frühe, chronische Traumatisierung durch Bezugspersonen fast alle Entwicklungsbereiche betrifft: die Regulation von Gefühlen und Körperzuständen, Aufmerksamkeit und Verhalten, das Selbstbild und das Vertrauen in andere Menschen. Viele dieser Kinder erfüllen nicht alle Kriterien einer PTBS. Sie erhalten stattdessen oft mehrere Diagnosen nebeneinander, etwa ADHS, eine oppositionelle Störung oder eine Angststörung, die jeweils nur einen Teil des Bildes erfassen.\n\nDas Entwicklungstrauma ist **keine offizielle Diagnose** in DSM-5-TR oder ICD-11. Der Begriff hilft aber, das Verhalten vieler Kinder zu verstehen: Ihr Misstrauen, ihre heftigen Reaktionen und ihr Bedürfnis nach Kontrolle waren einmal sinnvolle Anpassungen an eine gefährliche Umgebung."
+        },
+        {
+          "art": "liste",
+          "titel": "Was frühe, wiederholte Traumatisierung verändern kann",
+          "punkte": [
+            "Gefühle: schnelle, heftige Reaktionen und große Mühe, sich wieder zu beruhigen",
+            "Körper: Schlafprobleme, Bauch- oder Kopfschmerzen; Hunger, Müdigkeit oder Schmerz werden kaum wahrgenommen",
+            "Selbstbild: „Ich bin schlecht“, „Ich bin schuld“, tiefe Scham",
+            "Beziehungen: Misstrauen gegenüber Erwachsenen, Testen von Beziehungen, Wechsel zwischen Anklammern und Zurückstoßen",
+            "Lernen: Die ständige Wachsamkeit bindet Kraft, die für Konzentration und Gedächtnis fehlt",
+            "Verhalten: Kontrolle über Situationen und andere suchen, Machtkämpfe – aus dem Bedürfnis nach Sicherheit heraus"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Belastende Kindheitserfahrungen.** Die amerikanische ACE-Studie (Adverse Childhood Experiences) befragte mehr als 9 000 Erwachsene rückblickend nach Belastungen in ihrer Kindheit: seelische, körperliche und sexuelle Gewalt, Gewalt gegen die Mutter sowie Sucht, psychische Erkrankung oder Inhaftierung eines Haushaltsmitglieds (Felitti et al., 1998). Mehr als die Hälfte berichtete mindestens eine solche Erfahrung, ein Viertel zwei oder mehr. Je mehr verschiedene Belastungen jemand erlebt hatte, desto höher war im Durchschnitt das Risiko für spätere Gesundheitsprobleme – von Depression, Suizidversuchen und Sucht bis zu Herz- und Lungenerkrankungen.\n\nDie Studie beschreibt Zusammenhänge in großen Gruppen, keine Schicksale. Sie sagt nicht voraus, wie sich ein einzelnes Kind entwickelt. Viele Menschen mit belastender Kindheit führen ein gutes Leben. Schutzfaktoren wie eine verlässliche Bezugsperson, eigene Stärken, Erfolgserlebnisse und ein unterstützendes Umfeld machen einen großen Unterschied (Rutter, 2012) – und Schule kann viele davon bieten."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Was ein Kind als Baby oder Kleinkind erlebt hat, hat keine Folgen, weil es sich nicht daran erinnert.",
+          "fakt": "Auch Erfahrungen, an die keine bewusste Erinnerung besteht, prägen das Stresssystem, die Erwartungen an Beziehungen und das Verhalten (Glaser, 2000; van der Kolk, 2005). Kleine Kinder sind besonders verletzlich, weil sie ganz vom Schutz ihrer Bezugspersonen abhängen."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Traumafolgen haben kein eindeutiges Erkennungszeichen. Dasselbe Verhalten kann viele Ursachen haben, und Trauma zeigt sich bei jedem Kind anders. Zudem treten Traumafolgen oft zusammen mit anderen Schwierigkeiten auf. Die Einschätzung gehört deshalb in die Hände von Fachleuten mit Erfahrung in Traumadiagnostik. Ihre Aufgabe als pädagogische Fachkraft ist es, genau zu beobachten, sachlich zu beschreiben und traumasensibel zu handeln – dafür müssen Sie nicht wissen, was dem Kind im Einzelnen geschehen ist."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Andere mögliche Erklärungen",
+          "punkte": [
+            {
+              "wie": "ADHS",
+              "unterschied": "Unruhe, Konzentrationsprobleme und Impulsivität gibt es bei beidem. Bei Traumafolgen hängen sie oft mit Wachsamkeit und Auslösereizen zusammen, schwanken stark mit dem Gefühl von Sicherheit und haben manchmal einen erkennbaren Beginn. ADHS zeigt sich meist seit der frühen Kindheit gleichmäßiger in allen Lebensbereichen. Beides kann auch gemeinsam vorliegen."
+            },
+            {
+              "wie": "Oppositionelles oder aggressives Verhalten",
+              "unterschied": "Ein traumabedingter Ausbruch folgt oft einem Reiz wie Nähe, Lautstärke oder Kontrollverlust und wirkt eher panisch als geplant. Danach ist das Kind häufig erschöpft oder beschämt oder erinnert sich nur lückenhaft."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Rückzug, Freudlosigkeit und ein negatives Selbstbild gibt es bei beidem. Für Traumafolgen sprechen zusätzlich Wiedererleben, Vermeidung von Erinnerungen und Schreckhaftigkeit. Eine Depression kann auch Folge eines Traumas sein."
+            },
+            {
+              "wie": "Tagträumen oder kurze Abwesenheiten",
+              "unterschied": "Ein träumendes Kind lässt sich leicht zurückholen. Ein dissoziierendes Kind reagiert verzögert und hat manchmal Erinnerungslücken. Kurze, wiederholte Abwesenheiten können auch neurologische Ursachen haben, etwa Absencen bei Epilepsie – das muss ärztlich abgeklärt werden."
+            },
+            {
+              "wie": "Bindungsstörung",
+              "unterschied": "Frühe Vernachlässigung und viele Beziehungsabbrüche prägen vor allem, wie ein Kind Beziehungen gestaltet. Beides überschneidet sich häufig und wird gemeinsam abgeklärt."
+            },
+            {
+              "wie": "Psychotisches Erleben",
+              "unterschied": "Manche traumatisierten Kinder berichten, Stimmen zu hören oder Dinge zu sehen, die mit dem Erlebten zusammenhängen können. Solche Berichte brauchen immer eine zeitnahe fachärztliche Abklärung; die Unterscheidung können nur Fachleute treffen."
+            },
+            {
+              "wie": "Flucht, Kultur und Sprache",
+              "unterschied": "Belastung zeigt sich je nach Herkunft auch über Körperbeschwerden wie Kopf- oder Bauchschmerzen. Schweigen kann an der neuen Sprache, an kulturellen Regeln oder an Belastung liegen. Für Gespräche mit Eltern möglichst professionelle Dolmetscherinnen oder Dolmetscher einsetzen, nicht Geschwister."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Fragen Sie weniger „Was stimmt mit diesem Kind nicht?“ und mehr „Was hat dieses Kind erlebt – und was braucht es jetzt, um sich sicher zu fühlen?“"
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Sicherheit im Alltag geben",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die wichtigste Botschaft an ein traumatisiertes Kind lautet: **Hier bist du sicher.** Dieses Gefühl entsteht nicht durch Worte, sondern durch wiederholte Erfahrung – durch Erwachsene, die berechenbar, ruhig und zugewandt bleiben, auch wenn das Kind es ihnen schwer macht. Die Schule ist keine Therapie. Sie kann aber ein Ort sein, an dem ein Kind jeden Tag erlebt, dass Erwachsene schützen statt bedrohen und dass Fehler nicht zu Demütigung führen. Diese Gegenerfahrung ist eine wichtige Grundlage für jede weitere Hilfe.\n\nTraumasensibel handeln heißt nicht, auf Regeln zu verzichten. Klare, vorhersehbare Strukturen geben Sicherheit. Grenzen werden ruhig gesetzt, ohne Drohung und ohne Bloßstellung, und nach einem Konflikt wird die Beziehung aktiv wiederhergestellt."
+        },
+        {
+          "art": "tun",
+          "titel": "Was im Alltag hilft",
+          "punkte": [
+            "Vorhersehbarkeit: fester Tagesablauf, sichtbarer Plan; Veränderungen wie Vertretungen, Ausflüge oder Probealarme rechtzeitig ankündigen – dem Kind wenn möglich vorher persönlich.",
+            "Eine feste Bezugsperson, die das Kind gut kennt und in schwierigen Momenten ansprechbar ist.",
+            "Ruhige Stimme, langsame Bewegungen, von vorne ansprechen, Abstand respektieren; Nähe und Berührung ankündigen oder erfragen.",
+            "Wahlmöglichkeiten anbieten („Möchtest du am Fenster oder an der Wand sitzen?“) – erlebte Kontrolle ist ein Gegengewicht zur Ohnmacht.",
+            "Einen Sitzplatz mit Blick zur Tür und ohne Durchgangsverkehr im Rücken ermöglichen.",
+            "Einen sicheren Rückzugsort und ein Pausensignal vereinbaren, das ohne Worte funktioniert.",
+            "Beruhigung zuerst, Gespräch später: in der Situation wenige Worte; nachbesprechen, wenn das Kind wieder im Toleranzfenster ist.",
+            "Beruhigungsstrategien in ruhigen Zeiten üben (Atmen, Bewegung, ein Gegenstand zum Festhalten) – unter Stress ist nur abrufbar, was vorher geübt wurde.",
+            "Stärken sehen und aussprechen, Erfolgserlebnisse bewusst ermöglichen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was schaden oder retraumatisieren kann",
+          "punkte": [
+            "Anschreien, Drohen, sich über das Kind beugen, es in eine Ecke drängen.",
+            "Festhalten, Einschließen oder Isolieren: Solche Maßnahmen können frühere Ohnmacht wiederholen. Ein Kind einzuschließen, kommt nie infrage; Festhalten nur als letztes Mittel bei unmittelbarer Gefahr – und nur im Rahmen der internen Regeln.",
+            "Das Kind drängen, über Erlebtes zu sprechen, oder im Stuhlkreis nach belastenden Erfahrungen fragen.",
+            "Bloßstellen, Beschämen, Strafen vor der Gruppe.",
+            "Beziehungsentzug als Strafe („Mit dir rede ich heute nicht mehr“).",
+            "Die Vorgeschichte im Kollegium weitererzählen oder Etiketten wie „das Traumakind“ verwenden.",
+            "Selbst therapeutisch am Trauma arbeiten, etwa Erinnerungen hervorholen – das gehört in eine Therapie."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein Kind muss über sein Trauma sprechen – je früher und ausführlicher, desto besser.",
+          "fakt": "Reden zu erzwingen hilft nicht und kann zusätzlich belasten. Hilfreich ist, ein Gespräch anzubieten und dem Kind die Entscheidung zu lassen. Die gezielte Verarbeitung der Erinnerungen gehört in eine traumafokussierte Therapie."
+        },
+        {
+          "art": "fall",
+          "titel": "Leandros neuer Plan",
+          "text": "Das Team schaut sich die Situationen an, in denen Leandro „explodiert“: plötzlicher Lärm, jemand kommt ihm schnell nahe, laute Ansagen. Leandro bekommt einen Platz mit dem Rücken zur Wand und Blick zur Tür. Laute Aktivitäten werden vorher angekündigt. Mit einer grünen Karte darf er jederzeit in die Leseecke gehen. Wenn er doch hochfährt, geht die Lehrerin nicht auf ihn zu, sondern bleibt seitlich in einigem Abstand stehen und sagt ruhig: „Du bist sicher. Ich bleibe hier.“ Über den Vorfall wird erst gesprochen, wenn er sich beruhigt hat – ohne Vorwurf und mit der Frage, was ihm geholfen hat. Nach sechs Wochen sind die Ausbrüche seltener und kürzer, und Leandro nutzt die Karte von sich aus.",
+          "fragen": [
+            "Welche Elemente geben Leandro Sicherheit, welche geben ihm Kontrolle?",
+            "Was würden Sie tun, wenn er die Karte in den ersten Wochen nicht nutzt?"
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "**Wenn ein Kind von Gewalt, Missbrauch oder Vernachlässigung erzählt** oder Sie einen begründeten Verdacht haben: ruhig zuhören, dem Kind glauben und ihm für sein Vertrauen danken. Nicht nachbohren und keine Suggestivfragen stellen. Keine Geheimhaltung versprechen, sondern ehrlich sagen, dass Sie Hilfe holen. Die Worte des Kindes möglichst wörtlich notieren und noch am selben Tag die Leitung informieren; das weitere Vorgehen folgt den internen Kinderschutzabläufen. Mögliche Täterinnen oder Täter niemals selbst konfrontieren. Bei akuter Gefahr: Notruf 112 oder Polizei 113."
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung, Hilfe und Selbstschutz",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nach einem belastenden Ereignis brauchen die meisten Kinder zuerst keine Therapie, sondern Sicherheit, verlässliche Bezugspersonen, verständliche Informationen und einen möglichst normalen Alltag. Die NICE-Leitlinie empfiehlt in den ersten Wochen bei leichteren Beschwerden **aktives Beobachten**: Das Kind wird unterstützt, die Beschwerden werden im Blick behalten und nach etwa einem Monat erneut eingeschätzt (NICE, 2018). Nicht empfohlen wird ein sogenanntes **Debriefing**, bei dem Betroffene kurz nach dem Ereignis in einer einmaligen Sitzung das Erlebte ausführlich schildern sollen – es beugt einer PTBS nicht vor.\n\nHalten die Beschwerden an oder sind sie stark, ist eine **traumafokussierte kognitive Verhaltenstherapie** die Behandlung der ersten Wahl; Eltern oder andere Bezugspersonen werden einbezogen. Bei Kindern ab etwa sieben Jahren und Jugendlichen kann auch **EMDR** infrage kommen, wenn die erste Behandlung nicht hilft oder nicht angenommen wird. Medikamente werden zur Behandlung der PTBS bei Kindern und Jugendlichen nicht empfohlen (NICE, 2018). Voraussetzung für eine traumafokussierte Behandlung ist in der Regel, dass das Kind aktuell sicher ist: Solange Gewalt andauert, steht der Schutz an erster Stelle."
+        },
+        {
+          "art": "tun",
+          "titel": "Was die Schule beitragen kann",
+          "punkte": [
+            "Beobachtungen sachlich festhalten: Situation, möglicher Auslöser, Reaktion, was geholfen hat.",
+            "Mit Einverständnis der Eltern oder Sorgeberechtigten Informationen mit den behandelnden Fachleuten austauschen.",
+            "Beruhigungsstrategien, die das Kind in der Therapie lernt, im Schulalltag unterstützen und mit ihm üben.",
+            "Stabilität sichern: Wechsel von Bezugspersonen, Klassen oder Schulen nach Möglichkeit vermeiden oder gut vorbereiten.",
+            "Auf Belastungsspitzen vorbereitet sein, etwa vor Gerichtsterminen, Besuchskontakten oder Jahrestagen."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und holen Sie fachliche Unterstützung (Diagnostique, psychologischer Dienst, Kinderärztin, Kinder- und Jugendpsychiatrie), wenn Belastungsreaktionen länger als etwa einen Monat deutlich bestehen oder zunehmen, wenn ein Kind häufig dissoziiert oder wenn Lernen und Beziehungen stark leiden. Sofort handeln Sie, wenn ein Kind sich selbst verletzt oder Suizidgedanken äußert (siehe Modul „Selbstverletzung und Suizidalität“) oder wenn Hinweise bestehen, dass es aktuell nicht sicher ist – dann gelten die internen Kinderschutzabläufe."
+        },
+        {
+          "art": "text",
+          "text": "**Sich selbst schützen.** Wer mit traumatisierten Kindern arbeitet, hört Belastendes und erlebt heftige Situationen. Erschöpfung, Gereiztheit, sich aufdrängende Bilder, Schlafprobleme oder das Gefühl, ständig auf der Hut zu sein, können Zeichen einer **sekundären Traumatisierung** oder Mitgefühlserschöpfung sein (Figley, 1995). Das ist kein Zeichen von Schwäche, sondern ein bekanntes Berufsrisiko. Hilfreich sind kollegiale Beratung, Supervision, klare Rollen und Absprachen im Team – und die Entlastung: Sie müssen das Trauma nicht heilen. Ihre Aufgabe ist es, ein verlässlicher Teil eines sicheren Alltags zu sein."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche Beschreibung passt zu einem Typ-II-Trauma?",
+      "optionen": [
+        "Ein einmaliges, plötzliches Ereignis wie ein Verkehrsunfall oder ein Brand",
+        "Ein Ereignis, das erst Jahre später Beschwerden verursacht",
+        "Wiederholte oder lang andauernde, meist von Menschen verursachte Belastung, etwa Misshandlung oder miterlebte häusliche Gewalt",
+        "Jedes Erlebnis, das ein Kind als unangenehm empfindet, etwa eine schlechte Note"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Typ-II-Traumata sind wiederholt oder lang andauernd und meist von Menschen verursacht, oft von Bezugspersonen; ihre Folgen sind im Durchschnitt vielschichtiger. Einmalige, plötzliche Ereignisse sind Typ-I-Traumata. Wann Beschwerden auftreten, bestimmt den Typ nicht, und alltägliche Enttäuschungen sind belastend, aber keine Traumata im fachlichen Sinn."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen über Traumafolgen bei Kindern treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Jüngere Kinder spielen belastende Erlebnisse manchmal immer wieder nach.",
+        "Es gibt ein bestimmtes Verhalten, an dem man ein Trauma sicher erkennt.",
+        "Dissoziation kann im Unterricht wie Tagträumen oder Desinteresse aussehen.",
+        "Ein Wutausbruch kann eine Kampfreaktion auf einen Auslösereiz sein.",
+        "Die meisten Kinder, die ein schlimmes Ereignis erleben, entwickeln eine PTBS."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Posttraumatisches Spiel, Dissoziation und Kampfreaktionen auf Trigger sind typische Traumafolgen. Ein sicheres Erkennungszeichen gibt es nicht – dasselbe Verhalten kann viele Ursachen haben. Die meisten Kinder erholen sich nach einem belastenden Ereignis, besonders wenn sie Schutz und Unterstützung erleben; nur ein Teil entwickelt eine PTBS."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Das Entwicklungstrauma ist eine offizielle Diagnose in DSM-5-TR und ICD-11.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Van der Kolk (2005) hat diese Diagnose vorgeschlagen, sie wurde aber in keines der beiden Systeme aufgenommen. Der Begriff hilft dennoch, die breiten Folgen früher, chronischer Traumatisierung zu verstehen. Die komplexe PTBS der ICD-11 deckt einen Teil davon ab."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt das Toleranzfenster?",
+      "optionen": [
+        "Den Erregungsbereich, in dem ein Mensch ansprechbar ist, nachdenken und lernen kann",
+        "Die Zeit, die ein Kind höchstens still sitzen kann",
+        "Das Maß an Regelverstößen, das man einem belasteten Kind nachsehen sollte",
+        "Einen Test, mit dem Fachleute Traumafolgen feststellen"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Das Toleranzfenster (Siegel, 1999) beschreibt den Zustand, in dem ein Mensch Gefühle aushalten, nachdenken und lernen kann. Darüber liegt die Übererregung, darunter das Erstarren und Abschalten. Es ist ein Erklärungsmodell – kein Test und keine Aussage über Sitzzeiten oder Nachsicht bei Regeln."
+    },
+    {
+      "art": "fall",
+      "fall": "Während einer Gruppenarbeit sitzt Maëlle (11) plötzlich regungslos da, starrt auf den Tisch und reagiert nicht, als ihre Mitschülerin sie anspricht. Kurz vorher haben zwei Jungen am Nebentisch laut gestritten.",
+      "frage": "Was tun Sie zuerst?",
+      "optionen": [
+        "Sie laut und bestimmt auffordern, sich wieder an der Gruppenarbeit zu beteiligen.",
+        "Sich ruhig seitlich zu ihr setzen, sie beim Namen ansprechen, Orientierung geben („Du bist in der Schule, ich bin Frau K.“) und ihr etwas Kühles zum Anfassen oder ein Glas Wasser anbieten.",
+        "Sie in Ruhe lassen – das geht von selbst vorbei, und Aufmerksamkeit würde es nur verstärken.",
+        "Sie sofort fragen, woran sie gerade denkt und was ihr früher passiert ist."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Maëlle wirkt wie abgeschaltet – möglicherweise eine Dissoziation nach einem Auslösereiz. Ruhige Ansprache, Orientierung im Hier und Jetzt und Sinnesreize helfen ihr zurückzufinden. Lautes Auffordern kann wie eine weitere Bedrohung wirken, Ignorieren lässt sie allein, und Fragen nach der Vergangenheit überfordern in diesem Moment. Wiederholen sich solche Episoden, werden sie dokumentiert und fachlich abgeklärt."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einer Ermahnung wirft Leon (8) seinen Stuhl um und schreit. Er steht mit dem Rücken zur Wand, atmet schnell, die Fäuste sind geballt. Die anderen Kinder schauen gebannt zu.",
+      "frage": "Welche Reaktion ist jetzt am sinnvollsten?",
+      "optionen": [
+        "Nah an ihn herantreten und ihn festhalten, damit er merkt, dass so etwas nicht geht.",
+        "Ihm sofort und ausführlich erklären, welche Konsequenzen sein Verhalten haben wird.",
+        "Ihn vor der Klasse zur Rede stellen, damit alle sehen, dass Regeln gelten.",
+        "Abstand halten, ruhig und mit wenigen Worten sprechen, einen Ausweg offen lassen, die anderen Kinder beschäftigen oder hinausbringen und das Gespräch später führen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Leon ist in Übererregung und für Argumente gerade nicht erreichbar. Abstand, eine ruhige Stimme, ein offener Ausweg und weniger Publikum helfen ihm, sich zu beruhigen; über Konsequenzen und Wiedergutmachung spricht man danach. Festhalten ohne unmittelbare Gefahr, lange Erklärungen und Bloßstellen erhöhen die Bedrohung und lassen die Situation leicht eskalieren."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was zeigt die ACE-Studie (Felitti et al., 1998)?",
+      "optionen": [
+        "Jedes Kind mit belastenden Kindheitserfahrungen wird als erwachsener Mensch krank.",
+        "Belastende Kindheitserfahrungen sind selten und betreffen nur wenige Familien.",
+        "Je mehr verschiedene belastende Kindheitserfahrungen Menschen berichteten, desto höher war im Durchschnitt ihr Risiko für spätere Gesundheitsprobleme.",
+        "Mit einem ACE-Punktwert lässt sich die Zukunft eines einzelnen Kindes zuverlässig vorhersagen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Studie fand eine abgestufte Beziehung: Mehr Arten von Belastung gingen im Durchschnitt mit einem höheren Gesundheitsrisiko einher. Belastungen waren häufig – mehr als die Hälfte der Befragten berichtete mindestens eine. Die Ergebnisse gelten für große Gruppen und sagen nichts Sicheres über ein einzelnes Kind voraus; Schutzfaktoren machen einen großen Unterschied."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach dem Sportunterricht sagt Nadia (9) leise zu Ihnen: „Wenn ich zu Hause etwas falsch mache, schlägt mich der Freund von Mama mit dem Gürtel. Aber du darfst es niemandem sagen.“",
+      "frage": "Wie reagieren Sie?",
+      "optionen": [
+        "Ruhig zuhören, ihr glauben und danken, nicht nachbohren, ehrlich sagen, dass Sie Hilfe holen werden, ihre Worte notieren und noch am selben Tag die Leitung informieren.",
+        "Versprechen, es niemandem zu erzählen, damit sie Ihnen weiter vertraut.",
+        "Genau nachfragen, wie oft, wann und womit es passiert, damit Sie sichere Beweise haben.",
+        "Die Mutter noch am Nachmittag anrufen, damit sie ihren Freund zur Rede stellt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Nadia braucht jetzt Glauben, Ruhe und Schutz. Ein Geheimhaltungsversprechen könnten Sie nicht halten, ohne Nadia im Stich zu lassen. Ausführliches Nachfragen ist Aufgabe von Fachleuten und kann spätere Aussagen beeinflussen. Ein eigenmächtiger Anruf zu Hause kann Nadia zusätzlich gefährden – das weitere Vorgehen folgt den internen Kinderschutzabläufen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen können bei einem traumatisierten Kind retraumatisierend wirken? (mehrere richtig)",
+      "optionen": [
+        "Es zur Strafe allein in einem Raum einschließen",
+        "Veränderungen im Tagesablauf rechtzeitig ankündigen",
+        "Laut werden und sich dabei über das Kind beugen",
+        "Ihm Wahlmöglichkeiten geben, etwa beim Sitzplatz",
+        "Es im Stuhlkreis bitten, von seinem schlimmsten Erlebnis zu erzählen"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Einschließen, bedrohliche Körpersprache und erzwungenes Erzählen können Gefühle von Ohnmacht und Gefahr wiederbeleben. Ankündigungen und Wahlmöglichkeiten wirken in die andere Richtung: Sie machen den Alltag vorhersehbar und geben dem Kind ein Stück Kontrolle zurück."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Nach einem schweren Unfall auf dem Schulweg sollten alle betroffenen Kinder möglichst bald in einer einmaligen Sitzung das Erlebte ausführlich schildern, um einer PTBS vorzubeugen.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Ein solches Debriefing beugt einer PTBS nicht vor und wird von der NICE-Leitlinie nicht empfohlen. Hilfreich sind Sicherheit, verständliche Informationen, ein möglichst normaler Alltag, Gesprächsangebote ohne Zwang und aufmerksames Beobachten, ob Beschwerden anhalten."
+    },
+    {
+      "art": "fall",
+      "fall": "Seit einem Wohnungsbrand vor drei Monaten schläft Jana (12) schlecht, schreckt bei Sirenen heftig zusammen, macht große Umwege, um nicht an dem Haus vorbeizugehen, und kann sich kaum konzentrieren. Ihre Noten sind stark abgefallen.",
+      "frage": "Was ist der nächste sinnvolle Schritt?",
+      "optionen": [
+        "Abwarten – solche Reaktionen legen sich immer von selbst.",
+        "Mit der Leitung sprechen, Beobachtungen zusammenstellen und den Eltern eine fachliche Abklärung vorschlagen.",
+        "Mit Jana jeden Tag gemeinsam am Haus vorbeigehen, damit sie sich an den Anblick gewöhnt.",
+        "Den Eltern raten, beim Hausarzt nach einem Beruhigungsmittel zu fragen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die Beschwerden bestehen seit mehr als einem Monat und beeinträchtigen Jana deutlich – das spricht für eine fachliche Abklärung, ob eine PTBS vorliegt. Eine traumafokussierte Therapie wäre dann die Behandlung der ersten Wahl. Konfrontationsübungen auf eigene Faust gehören nicht in die Schule, Medikamente werden zur Behandlung einer PTBS bei Kindern nicht empfohlen, und Abwarten würde Jana wirksame Hilfe vorenthalten."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Um traumasensibel handeln zu können, müssen pädagogische Fachkräfte genau wissen, was dem Kind passiert ist.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Sicherheit, Vorhersehbarkeit, ruhige Reaktionen und verlässliche Beziehungen helfen jedem Kind – auch ohne Kenntnis der Vorgeschichte. Nachforschen oder Ausfragen kann dagegen belasten. Wichtig ist, Beobachtungen festzuhalten und bei Hinweisen auf eine Gefährdung die internen Abläufe einzuhalten."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Potenziell traumatisches Ereignis",
+      "erklaerung": "Ereignis mit tatsächlicher oder drohender Lebensgefahr, schwerer Verletzung oder sexueller Gewalt, selbst erlebt oder miterlebt. Ob daraus eine Traumafolgestörung entsteht, hängt auch vom Kind und von der Unterstützung danach ab."
+    },
+    {
+      "begriff": "Typ-I- und Typ-II-Trauma",
+      "erklaerung": "Typ I: einmaliges, plötzliches Ereignis (Unfall, Überfall). Typ II: wiederholte oder lang andauernde, meist von Menschen verursachte Belastung (Misshandlung, häusliche Gewalt)."
+    },
+    {
+      "begriff": "Posttraumatische Belastungsstörung (PTBS)",
+      "erklaerung": "Traumafolgestörung mit Wiedererleben, Vermeidung und anhaltender Übererregung; nach DSM-5-TR zusätzlich negative Veränderungen von Gedanken und Stimmung. Die Beschwerden bestehen länger als einen Monat."
+    },
+    {
+      "begriff": "Komplexe PTBS",
+      "erklaerung": "Diagnose der ICD-11 nach lang andauernden Traumata, denen man kaum entkommen konnte: PTBS-Symptome plus anhaltende Schwierigkeiten mit Gefühlsregulation, Selbstbild und Beziehungen."
+    },
+    {
+      "begriff": "Entwicklungstrauma",
+      "erklaerung": "Von van der Kolk vorgeschlagener, nicht offiziell anerkannter Begriff für die breiten Entwicklungsfolgen früher, chronischer Traumatisierung durch Bezugspersonen."
+    },
+    {
+      "begriff": "Dissoziation",
+      "erklaerung": "Schutzreaktion, bei der Wahrnehmung, Gefühle, Körpererleben und Erinnerung auseinanderfallen. Das Kind wirkt „weg“, reagiert verzögert und erinnert sich manchmal nur lückenhaft."
+    },
+    {
+      "begriff": "Trigger",
+      "erklaerung": "Reiz, der an ein Trauma erinnert und die frühere Alarmreaktion auslöst – oft ohne dass das Kind den Zusammenhang bemerkt."
+    },
+    {
+      "begriff": "Toleranzfenster",
+      "erklaerung": "Erregungsbereich, in dem ein Mensch ansprechbar ist, nachdenken und lernen kann (Siegel, 1999). Darüber liegt die Übererregung, darunter Erstarren und Abschalten."
+    },
+    {
+      "begriff": "Belastende Kindheitserfahrungen (ACE)",
+      "erklaerung": "Adverse Childhood Experiences, etwa Misshandlung, Missbrauch, häusliche Gewalt, Sucht oder psychische Erkrankung im Haushalt. Je mehr verschiedene Belastungen, desto höher im Durchschnitt das spätere Gesundheitsrisiko."
+    },
+    {
+      "begriff": "Sekundäre Traumatisierung",
+      "erklaerung": "Belastungsreaktionen bei Helfenden, die durch die Arbeit mit traumatisierten Menschen entstehen, etwa Erschöpfung, sich aufdrängende Bilder oder Gereiztheit."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "niceNG116",
+    "vanDerKolk2005",
+    "felitti1998",
+    "mcewen1998",
+    "glaser2000",
+    "siegel1999",
+    "rutter2012",
+    "figley1995",
+    "vanDerKolk2014",
+    "perry2006"
+  ],
+  "verwandt": [
+    "traumapaedagogik",
+    "kinderschutz",
+    "stress-gehirn",
+    "bindungsstoerungen",
+    "deeskalation",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "meine-ruhe-insel",
+    "ruhig-werden-drei-uebungen",
+    "signalkarten",
+    "ich-brauche-eine-pause",
+    "wer-ist-fuer-mich-da"
+  ]
+}

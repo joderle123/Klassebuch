@@ -1,0 +1,577 @@
+{
+  "id": "selbstfuersorge",
+  "bereich": "handeln",
+  "titel": "Selbstfürsorge und Grenzen im helfenden Beruf",
+  "untertitel": "Belastung erkennen, Grenzen wahren, Unterstützung im Team nutzen",
+  "dauer": 35,
+  "lernziele": [
+    "Sie können die drei Kernmerkmale von Burnout beschreiben und erklären, welche Arbeitsbedingungen dazu beitragen.",
+    "Sie können Mitgefühlserschöpfung und sekundäre Traumatisierung von Burnout unterscheiden.",
+    "Sie erkennen frühe Warnzeichen von Überlastung bei sich und anderen und wissen, wann Sie Unterstützung holen.",
+    "Sie kennen Schutzfaktoren im Team – Supervision, Intervision, Nachbesprechung – und können eine kollegiale Beratung nutzen.",
+    "Sie können eigene Grenzen setzen und mit dem Gefühl, nicht genug zu wissen, konstruktiv umgehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Claire, Educatrice, seit neun Jahren im CDSE",
+          "text": "Claire hat ihre Arbeit immer geliebt. Seit dem Herbst begleitet sie drei Kinder mit häufigen Wutausbrüchen; eines hat sie im Februar gebissen. Sie schläft schlecht, denkt schon am Sonntagnachmittag an den Montag und merkt, dass sie über Eltern zynischer spricht als früher: „Die ändern sich eh nicht.“ Nach den Osterferien fühlt sie sich so müde wie vorher. Einer Kollegin sagt sie: „Vielleicht bin ich einfach nicht mehr gut genug für diesen Job.“",
+          "fragen": [
+            "Welche Anzeichen von Überlastung erkennen Sie?",
+            "Was davon hat mit Claire zu tun – und was mit ihren Arbeitsbedingungen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Wer mit Kindern und Jugendlichen mit sozial-emotionalen Schwierigkeiten arbeitet, arbeitet mit sich selbst als Werkzeug. Beziehung, Geduld, Ruhe in der Krise und Einfühlung sind die wichtigsten Instrumente – und sie verbrauchen Kraft. Dazu kommen besondere Belastungen: verbale und körperliche Angriffe, Geschichten von Gewalt und Vernachlässigung, Fortschritte, die lange auf sich warten lassen, viele Beteiligte mit unterschiedlichen Erwartungen.\n\nStress an sich ist nicht schädlich; kurzfristig macht er wach und leistungsfähig. Problematisch wird er, wenn er dauerhaft anhält und die Erholung nicht mehr ausreicht – dann belastet er Körper und Psyche (McEwen, 1998). Ob eine Situation als Stress erlebt wird, hängt auch davon ab, wie wir sie bewerten und welche Möglichkeiten wir sehen, sie zu bewältigen (Lazarus & Folkman, 1984). Deshalb erleben zwei Menschen dieselbe Klasse sehr unterschiedlich."
+        },
+        {
+          "art": "merke",
+          "text": "Selbstfürsorge ist keine Privatsache und kein Luxus, sondern Teil professioneller Arbeit. Sie liegt auch nicht allein bei Ihnen: Arbeitsbedingungen, Team und Leitung tragen Verantwortung mit."
+        }
+      ]
+    },
+    {
+      "titel": "Burnout verstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Begriff **Burnout** wird im Alltag für vieles verwendet. Fachlich beschreiben Maslach und Leiter (2016) Burnout als Reaktion auf anhaltende Belastungen im Beruf, besonders in der Arbeit mit Menschen. Es zeigt sich in drei Bereichen:"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Kernmerkmale von Burnout",
+          "spalten": [
+            "Merkmal",
+            "Wie es sich anfühlen kann"
+          ],
+          "zeilen": [
+            [
+              "Erschöpfung",
+              "„Ich bin leer.“ Müdigkeit, die sich durch Schlaf und Wochenende nicht mehr erholt."
+            ],
+            [
+              "Distanz und Zynismus",
+              "„Die sind eh nicht zu retten.“ Innerer Rückzug von der Arbeit und den Menschen, Gleichgültigkeit oder Sarkasmus."
+            ],
+            [
+              "Verringertes Wirksamkeitserleben",
+              "„Egal, was ich mache, es bringt nichts.“ Das Gefühl, nichts zu bewirken und nicht mehr gut zu sein."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die ICD-11 beschreibt Burnout mit denselben drei Merkmalen – ausdrücklich als Folge von chronischem Stress am Arbeitsplatz, der nicht erfolgreich bewältigt wurde. Burnout gilt dort nicht als Krankheit, sondern als berufsbezogenes Phänomen, das die Gesundheit beeinflussen kann.\n\n**Nicht nur eine Frage der Person.** Maslach und Leiter (2016) betonen, dass Burnout vor allem aus einem anhaltenden Missverhältnis zwischen Person und Arbeitssituation entsteht. Sie nennen sechs Bereiche des Arbeitslebens, in denen ein solches Missverhältnis entstehen kann."
+        },
+        {
+          "art": "liste",
+          "titel": "Sechs Bereiche des Arbeitslebens",
+          "punkte": [
+            "Arbeitsmenge: Passt die Menge der Aufgaben zur verfügbaren Zeit und Kraft?",
+            "Kontrolle: Habe ich Einfluss darauf, wie ich meine Arbeit gestalte?",
+            "Anerkennung: Wird meine Arbeit gesehen und gewürdigt?",
+            "Gemeinschaft: Erlebe ich Unterstützung und gute Beziehungen im Team?",
+            "Fairness: Werden Entscheidungen gerecht und nachvollziehbar getroffen?",
+            "Werte: Passt das, was ich tun soll, zu dem, was mir wichtig ist?"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Burnout ist persönliches Versagen – wer belastbar genug ist, brennt nicht aus.",
+          "fakt": "Burnout entsteht vor allem aus einem dauerhaften Missverhältnis zwischen Person und Arbeitsbedingungen (Maslach & Leiter, 2016). Deshalb braucht es neben persönlichen Strategien auch gemeinsame Lösungen im Team und in der Organisation."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Burnout oder Depression?",
+          "punkte": [
+            {
+              "wie": "Burnout",
+              "unterschied": "Bezieht sich auf die Arbeit. Erschöpfung und Zynismus betreffen vor allem den Beruf; in anderen Lebensbereichen gibt es noch Freude."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Betrifft das ganze Leben: anhaltend gedrückte Stimmung, Verlust von Interesse und Freude auch außerhalb der Arbeit, oft Schuldgefühle und Hoffnungslosigkeit. Eine Depression ist eine behandelbare Erkrankung und gehört in ärztliche oder psychotherapeutische Hände. Die Grenze ist fließend: Anhaltendes Burnout kann in eine Depression übergehen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Mitgefühlserschöpfung und sekundäre Traumatisierung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "In der Arbeit mit belasteten Kindern kommt eine zweite Gefahr hinzu. Wer immer wieder von Gewalt, Missbrauch oder Vernachlässigung hört, Krisen miterlebt und mitfühlt, kann selbst Belastungssymptome entwickeln. Figley (1995) beschreibt dies als **Mitgefühlserschöpfung** (englisch *compassion fatigue*) oder **sekundären traumatischen Stress**: Die Belastung entsteht nicht durch eigenes Erleben, sondern durch das Mitfühlen mit dem Leid anderer. Die Anzeichen können denen einer Traumafolgestörung ähneln. Anders als Burnout, das sich meist langsam entwickelt, kann Mitgefühlserschöpfung auch plötzlich auftreten – etwa nach einem besonders belastenden Fall."
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Anzeichen",
+          "punkte": [
+            "Bilder oder Gedanken an die Geschichte eines Kindes drängen sich auf, auch in der Freizeit",
+            "Schlafprobleme, Albträume, ständige Anspannung, Schreckhaftigkeit",
+            "Vermeiden bestimmter Kinder, Themen oder Akten",
+            "Gefühllosigkeit – oder das Gegenteil: Tränen, Wut, heftige Reaktionen auf Kleinigkeiten",
+            "Ein verändertes Weltbild: überall Gefahr sehen, niemandem mehr trauen, die eigenen Kinder übermäßig schützen"
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Burnout und Mitgefühlserschöpfung im Vergleich",
+          "spalten": [
+            "Merkmal",
+            "Burnout",
+            "Mitgefühlserschöpfung"
+          ],
+          "zeilen": [
+            [
+              "Ursache",
+              "Anhaltende Überlastung durch die Arbeitsbedingungen",
+              "Mitfühlen mit dem Leid und den Traumata anderer"
+            ],
+            [
+              "Beginn",
+              "Meist schleichend über Monate",
+              "Kann auch plötzlich auftreten"
+            ],
+            [
+              "Typisch",
+              "Erschöpfung, Zynismus, Gefühl der Wirkungslosigkeit",
+              "Sich aufdrängende Bilder, Übererregung, Vermeiden"
+            ],
+            [
+              "Was hilft",
+              "Arbeitsbedingungen verändern, Erholung, Unterstützung",
+              "Entlastende Gespräche, Supervision, belastende Details dosieren, Erholung"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wenn Kinder in uns etwas auslösen.** Kinder bringen ihre Beziehungserfahrungen mit und wiederholen sie mit den Erwachsenen: Ein Kind, das Ablehnung erwartet, provoziert so lange, bis es abgelehnt wird; ein anderes weckt in uns den Wunsch, es zu retten. Solche Gefühle sind kein Zeichen mangelnder Professionalität, sondern wichtige Informationen – vorausgesetzt, man bemerkt und bespricht sie. Genau dafür gibt es Supervision."
+        },
+        {
+          "art": "tun",
+          "titel": "Belastendes dosieren",
+          "punkte": [
+            "In Teambesprechungen nur die Einzelheiten einer Gewaltgeschichte teilen, die für die Arbeit nötig sind.",
+            "Nach belastenden Ereignissen kurz nachbesprechen: Was ist passiert, wie geht es uns, was brauchen wir?",
+            "Den Arbeitstag bewusst abschließen: Notizen fertig machen, Tasche packen, ein Stück zu Fuß gehen.",
+            "Akten und Notizen im Dienst lassen – auch aus Gründen des Datenschutzes."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Warnzeichen erkennen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Überlastung entwickelt sich meist schleichend, und Betroffene bemerken sie oft als Letzte. Hilfreich sind ein ehrlicher Blick auf sich selbst in regelmäßigen Abständen – und Kolleginnen und Kollegen, die nachfragen dürfen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die Belastungsampel",
+          "spalten": [
+            "Stufe",
+            "Typische Anzeichen",
+            "Was jetzt hilft"
+          ],
+          "zeilen": [
+            [
+              "Grün: gesunde Anspannung",
+              "Anstrengende Tage, aber Erholung am Abend und am Wochenende; die Freude an der Arbeit bleibt",
+              "Gewohnheiten pflegen, die guttun; Erfolge bewusst wahrnehmen"
+            ],
+            [
+              "Gelb: Warnzeichen",
+              "Erholung reicht nicht mehr, Gereiztheit, Grübeln über die Arbeit, erste zynische Gedanken, Schlafprobleme, häufigere Infekte",
+              "Belastung ansprechen – im Team, bei der Leitung, in der Supervision; Prioritäten setzen; Erholung fest einplanen"
+            ],
+            [
+              "Rot: Überlastung",
+              "Anhaltende Erschöpfung über Wochen, Gefühl der Sinnlosigkeit, Rückzug, deutlich mehr Alkohol oder Medikamente, Hoffnungslosigkeit",
+              "Ärztliche oder psychotherapeutische Hilfe holen; mit der Leitung über Entlastung sprechen"
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Frühe Warnzeichen, die man leicht übersieht",
+          "punkte": [
+            "Sie sprechen über Kinder oder Eltern häufiger abwertend oder sarkastisch als früher.",
+            "Sie arbeiten länger, schaffen aber weniger.",
+            "Kleinigkeiten bringen Sie aus der Fassung – im Beruf oder zu Hause.",
+            "Sie meiden bestimmte Kinder, Gespräche oder Aufgaben.",
+            "Hobbys und Freundschaften kommen seit Monaten zu kurz.",
+            "Sie brauchen immer mehr Kaffee, Alkohol oder Bildschirmzeit, um „runterzukommen“."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie sich Unterstützung, wenn Warnzeichen über Wochen anhalten, wenn Sie sich trotz Urlaub nicht erholen oder wenn Schlafstörungen, Niedergeschlagenheit oder körperliche Beschwerden zunehmen. Erste Ansprechpersonen sind Ihre Hausärztin oder Ihr Hausarzt und – für die Arbeitssituation – Ihre Leitung. Welche Unterstützungsangebote es für Mitarbeitende gibt, erfahren Sie dort."
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn Sie an sich Hoffnungslosigkeit bemerken oder Gedanken, nicht mehr leben zu wollen, warten Sie nicht ab: Sprechen Sie mit Ihrer Hausärztin, einer Psychotherapeutin oder einem Menschen, dem Sie vertrauen. In einer akuten Krise wählen Sie den Notruf 112."
+        }
+      ]
+    },
+    {
+      "titel": "Schutz im Team: Supervision und Intervision",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der wirksamste Schutz ist nicht die einzelne Entspannungsübung, sondern ein gutes Arbeitsumfeld. Maslach und Leiter (2016) empfehlen, bei den Arbeitsbedingungen anzusetzen und persönliche Strategien damit zu verbinden. In der Arbeit mit belasteten Kindern gelten verschiedene Formen der gemeinsamen Reflexion als wichtige Bausteine."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Formen der Reflexion",
+          "spalten": [
+            "Form",
+            "Wer",
+            "Wozu"
+          ],
+          "zeilen": [
+            [
+              "Supervision",
+              "Eine externe, dafür ausgebildete Person mit einem Team oder einer Einzelperson",
+              "Fälle, eigene Gefühle und Reaktionen, Rollen und Zusammenarbeit reflektieren"
+            ],
+            [
+              "Intervision (kollegiale Beratung)",
+              "Kolleginnen und Kollegen untereinander, nach festem Ablauf",
+              "Einen konkreten Fall aus mehreren Blickwinkeln betrachten und Ideen sammeln"
+            ],
+            [
+              "Nachbesprechung",
+              "Die Beteiligten nach einem belastenden Ereignis, zeitnah und kurz",
+              "Ordnen, was passiert ist, entlasten, nächste Schritte klären"
+            ],
+            [
+              "Fallbesprechung",
+              "Das Team, oft mit Leitung und Fachdiensten",
+              "Ziele, Maßnahmen und Zuständigkeiten für ein Kind abstimmen"
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Ablauf einer kollegialen Beratung (etwa 45 Minuten)",
+          "punkte": [
+            "Rollen verteilen: Eine Person bringt den Fall ein, eine moderiert, die anderen beraten.",
+            "Den Fall schildern (etwa zehn Minuten) und die Frage formulieren: „Was möchte ich heute für mich klären?“",
+            "Verständnisfragen der Beratenden – noch keine Ratschläge.",
+            "Hypothesen und Ideen sammeln, während die fallgebende Person nur zuhört.",
+            "Die fallgebende Person sagt, was sie mitnimmt und was sie als Nächstes ausprobiert.",
+            "Kurzer Abschluss: Wie ging es allen mit der Beratung?"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was Teams schützt",
+          "punkte": [
+            "Klare Rollen und Zuständigkeiten: Wer entscheidet was?",
+            "Niemand bleibt in einer Krise allein: Vereinbaren Sie, wer wann dazukommt.",
+            "Rückendeckung durch die Leitung, besonders nach Angriffen oder Beschwerden.",
+            "Eine Kultur, in der Fehler und Unsicherheit besprochen werden dürfen.",
+            "Erfolge – auch kleine – gemeinsam sehen und würdigen.",
+            "Realistische Ziele: Veränderung braucht bei schwer belasteten Kindern Zeit."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Ein Team findet aus der Ohnmacht",
+          "text": "In der Teamsitzung einer Classe de participation geht es seit Wochen um Kevin (12), der Mitschüler bedroht und Erwachsene beschimpft. Jede Sitzung endet mit „Da kann man nichts machen.“ Die Lehrerin schlägt eine kollegiale Beratung vor. In der Hypothesenrunde fällt auf, dass die Ausbrüche fast immer montags auftreten und dass Kevin mit einem bestimmten Educateur gut zurechtkommt. Das Team vereinbart einen ruhigeren Montagmorgen mit diesem Educateur und will in vier Wochen auswerten. Mehrere Kolleginnen sagen danach, sie fühlten sich zum ersten Mal seit Langem nicht mehr ohnmächtig.",
+          "fragen": [
+            "Was hat die kollegiale Beratung für das Team verändert – unabhängig vom Ergebnis bei Kevin?",
+            "Wo gibt es in Ihrem Alltag Raum für eine solche Beratung?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Eigene Grenzen – und das Gefühl, nicht genug zu wissen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Grenzen setzen.** Wer helfen will, neigt dazu, immer noch mehr zu geben: länger bleiben, am Wochenende Nachrichten beantworten, Aufgaben übernehmen, die eigentlich andere erledigen müssten. Kurzfristig fühlt sich das richtig an, auf Dauer zehrt es aus. Lazarus und Folkman (1984) unterscheiden zwei Wege der Bewältigung: am Problem etwas verändern oder mit den eigenen Gefühlen gut umgehen. Welcher passt, hängt davon ab, ob sich eine Situation verändern lässt. Die Lebensgeschichte eines Kindes können Sie nicht ändern – den heutigen Schultag schon."
+        },
+        {
+          "art": "tun",
+          "titel": "Gesunde Grenzen im Alltag",
+          "punkte": [
+            "Erreichbarkeit festlegen und mitteilen – für Eltern, aber auch im Team.",
+            "„Nein“ oder „Nicht jetzt“ sagen und Aufgaben zurückgeben, die nicht zu Ihrer Rolle gehören.",
+            "Pausen wirklich als Pausen nutzen, wenigstens einige Minuten ohne Kinder und Bildschirm.",
+            "Rituale für den Übergang vom Beruf ins Private: ein Spaziergang, Musik, Umziehen.",
+            "Verantwortung klar sehen: Sie sind für Ihren Teil der Arbeit verantwortlich – nicht für das ganze Leben eines Kindes."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**„Eigentlich weiß ich zu wenig.“** Viele Mitarbeitende im CDSE haben keine klinische Ausbildung und begegnen trotzdem täglich Trauma, ADHS, Angst oder Krisen. Das Gefühl, nicht genug zu wissen und irgendwann „aufzufliegen“, ist verbreitet. In der Psychologie wird es als **Hochstapler-Phänomen** (englisch *impostor phenomenon*) beschrieben: Menschen, die ihre Arbeit gut machen, schreiben Erfolge dem Glück, dem Fleiß oder den Umständen zu und halten Fehler für Beweise ihres Ungenügens. Es ist keine Krankheit, und auch sehr erfahrene Fachleute kennen es.\n\nHilfreich ist es, zwei Dinge auseinanderzuhalten: **echte Wissenslücken** und das **Gefühl von Unzulänglichkeit**. Wissenslücken sind normal und lassen sich füllen – durch Fortbildung, Lesen, Fragen, Hospitation. Das Gefühl dagegen verschwindet oft nicht einfach durch mehr Wissen; es wird kleiner, wenn man die eigene Kompetenz realistisch sieht."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Was pädagogische Fachkräfte einbringen",
+          "spalten": [
+            "Ihre Expertise",
+            "Warum sie unverzichtbar ist"
+          ],
+          "zeilen": [
+            [
+              "Genaue Alltagsbeobachtung",
+              "Diagnostik und Therapie brauchen Informationen darüber, wie sich ein Kind in der Gruppe, beim Lernen und in Konflikten verhält."
+            ],
+            [
+              "Beziehung",
+              "Verlässliche Beziehungen im Alltag gehören zu den wichtigsten Schutzfaktoren für belastete Kinder."
+            ],
+            [
+              "Struktur und Pädagogik",
+              "Vorhersehbarkeit, klare Regeln und passende Aufgaben wirken jeden Tag, nicht nur eine Stunde pro Woche."
+            ],
+            [
+              "Kenntnis des Umfelds",
+              "Sie kennen die Klasse, die Schule und oft die Familie – das hilft, Empfehlungen umzusetzen."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Selbstwirksamkeit aufbauen.** Bandura (1977) beschreibt vier Quellen, aus denen die Überzeugung wächst, eine Aufgabe bewältigen zu können: eigene Erfolgserlebnisse, das Beobachten anderer, die Ähnliches meistern, ermutigende Rückmeldungen und die Deutung der eigenen körperlichen Anspannung. Übertragen auf den Beruf: Halten Sie fest, was gelungen ist. Schauen Sie erfahrenen Kolleginnen über die Schulter. Bitten Sie um konkrete Rückmeldungen. Und deuten Sie Herzklopfen vor einem schwierigen Gespräch nicht als Beweis, dass Sie es nicht können, sondern als normale Anspannung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Echte Profis wissen immer sofort, was zu tun ist.",
+          "fakt": "Professionell ist, wer die Grenzen des eigenen Wissens kennt, Unsicherheit ausspricht und sich Rat holt. „Das weiß ich nicht, ich kläre es“ ist ein Zeichen von Kompetenz, nicht von Schwäche."
+        },
+        {
+          "art": "fall",
+          "titel": "Julie, Educatrice",
+          "text": "Julie arbeitet seit sechs Jahren im CDSE. In einer Fallbesprechung sitzen eine Psychologin und ein Kinder- und Jugendpsychiater. Julie hat beobachtet, dass Mateo (8) vor allem in offenen Situationen ausrastet – in der Pause, beim Umziehen, beim Wechsel zwischen Räumen –, im strukturierten Unterricht dagegen kaum. Sie sagt nichts: „Was weiß ich schon?“ Nach der Sitzung erzählt sie es der Psychologin im Flur. Diese sagt: „Das ist genau die Information, die mir gefehlt hat.“",
+          "fragen": [
+            "Was hat Julie davon abgehalten, ihre Beobachtung einzubringen?",
+            "Wie könnte sie sich auf die nächste Fallbesprechung vorbereiten?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Niemand weiß alles – auch nicht die Klinikerinnen und Kliniker im Raum. Ihre Aufgabe ist nicht, Diagnosen zu stellen, sondern genau zu beobachten, Beziehung zu gestalten, pädagogisch zu handeln und sich Rat zu holen. Das ist eine eigene, anspruchsvolle Expertise."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche drei Kernmerkmale beschreiben Burnout nach Maslach und Leiter?",
+      "optionen": [
+        "Erschöpfung, Distanz oder Zynismus gegenüber der Arbeit, verringertes Wirksamkeitserleben",
+        "Traurigkeit, Appetitverlust, Interessenverlust in allen Lebensbereichen",
+        "Überstunden, häufige Krankmeldungen, Kündigungswunsch",
+        "Wut, Ungeduld, Konflikte im Team"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Burnout zeigt sich in Erschöpfung, innerer Distanz bis hin zu Zynismus und dem Gefühl, nichts mehr zu bewirken. Traurigkeit und Interessenverlust in allen Lebensbereichen sprechen eher für eine Depression. Überstunden, Krankmeldungen oder Konflikte können Folgen oder Begleiterscheinungen sein, beschreiben Burnout aber nicht."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Burnout ist in der ICD-11 als eigene psychische Erkrankung eingeordnet.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die ICD-11 beschreibt Burnout als berufsbezogenes Phänomen infolge von chronischem, nicht bewältigtem Stress am Arbeitsplatz – nicht als Krankheit. Ernst zu nehmen ist es trotzdem: Es kann die Gesundheit beeinträchtigen und in behandlungsbedürftige Erkrankungen wie eine Depression übergehen."
+    },
+    {
+      "art": "fall",
+      "fall": "Marc unterrichtet in einer Classe de participation. Seit Wochen denkt er schon am Sonntagmittag an die Schule, schläft schlecht und sagt über einen Schüler: „Bei dem ist eh alles zu spät.“ In den Ferien erholt er sich kaum.",
+      "frage": "Was ist die beste Einschätzung?",
+      "optionen": [
+        "Normaler Stress; mehr Disziplin und längere Arbeitszeiten helfen.",
+        "Deutliche Warnzeichen einer Überlastung: ernst nehmen, mit der Leitung oder in der Supervision über Belastung und Bedingungen sprechen, Erholung einplanen – bei anhaltenden Beschwerden ärztliche Hilfe holen.",
+        "Eine Depression, die sofort mit Medikamenten behandelt werden muss.",
+        "Ein Zeichen, dass er für den Beruf nicht geeignet ist."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Grübeln in der Freizeit, Schlafprobleme, Zynismus und fehlende Erholung sind typische Warnzeichen. Jetzt ist der richtige Zeitpunkt, Belastung und Bedingungen anzusprechen und gegenzusteuern. Mehr Arbeit verschärft die Lage, eine Diagnose kann nur eine Fachperson stellen, und Überlastung sagt nichts über die Eignung für den Beruf aus."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Arbeitsbedingungen erhöhen nach Maslach und Leiter das Risiko für Burnout? (mehrere richtig)",
+      "optionen": [
+        "Dauerhaft zu viele Aufgaben für die verfügbare Zeit",
+        "Wenig Einfluss darauf, wie man die eigene Arbeit gestaltet",
+        "Ein Team, in dem man sich gegenseitig unterstützt",
+        "Fehlende Anerkennung für die geleistete Arbeit",
+        "Nachvollziehbare, faire Entscheidungen der Leitung"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Arbeitsmenge, Kontrolle und Anerkennung gehören zu den sechs Bereichen, in denen ein Missverhältnis Burnout begünstigt. Gemeinschaft im Team und Fairness sind ebenfalls solche Bereiche – in ihrer positiven Form schützen sie."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was trifft auf Mitgefühlserschöpfung (sekundären traumatischen Stress) zu?",
+      "optionen": [
+        "Sie betrifft nur Therapeutinnen und Therapeuten, nicht pädagogische Fachkräfte.",
+        "Sie ist immer die Folge eigener belastender Kindheitserfahrungen.",
+        "Sie entsteht durch das Mitfühlen mit dem Leid anderer, kann Anzeichen wie sich aufdrängende Bilder oder Übererregung einschließen und auch plötzlich auftreten.",
+        "Sie tritt erst nach vielen Jahren im Beruf auf."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Figley (1995) beschreibt Mitgefühlserschöpfung als Folge des Mitfühlens mit traumatisierten oder leidenden Menschen; die Anzeichen können Traumafolgen ähneln. Betroffen sein kann jede helfende Person, auch in der Schule, und zwar schon früh und manchmal plötzlich. Eigene Vorerfahrungen können das Risiko erhöhen, sind aber keine Voraussetzung."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einer Fallbesprechung, in der Einzelheiten der Misshandlung eines Kindes geschildert wurden, sieht Sandra abends immer wieder Bilder davon vor sich und schläft schlecht.",
+      "frage": "Was hilft ihr am ehesten?",
+      "optionen": [
+        "Es niemandem erzählen, um nicht als schwach zu gelten.",
+        "Sich künftig von allen belasteten Kindern fernhalten.",
+        "Mehr Einzelheiten über den Fall lesen, um die Bilder zu verarbeiten.",
+        "Die Reaktion als bekannte Folge dieser Arbeit einordnen, mit einer Kollegin, der Leitung oder in der Supervision darüber sprechen und auf Erholung achten; halten die Beschwerden an, fachliche Hilfe suchen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Sich aufdrängende Bilder nach belastenden Informationen sind eine bekannte Reaktion. Entlastende Gespräche, Supervision und Erholung helfen, sie einzuordnen; halten sie an, ist fachliche Hilfe sinnvoll. Schweigen verstärkt die Belastung, völliger Rückzug ist keine Lösung, und weitere Einzelheiten erhöhen die Belastung eher."
+    },
+    {
+      "art": "fall",
+      "fall": "In Ihrem Team wird über einen Schüler nur noch geklagt; jede Besprechung endet mit „Da kann man nichts machen.“",
+      "frage": "Welcher Schritt ist am hilfreichsten?",
+      "optionen": [
+        "Eine kollegiale Beratung vorschlagen: den Fall strukturiert schildern, Fragen klären, Hypothesen und Ideen sammeln, die fallgebende Person wählt aus.",
+        "Darauf drängen, den Schüler möglichst schnell in eine andere Einrichtung zu schicken.",
+        "Das Thema aus den Besprechungen streichen.",
+        "Die Klagen weiterlaufen lassen – Dampf ablassen ist Psychohygiene."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Eine strukturierte kollegiale Beratung holt das Team aus der Ohnmacht: Sie eröffnet neue Blickwinkel und führt zu einem konkreten nächsten Schritt. Das Kind wegzuschicken verschiebt das Problem, Schweigen löst es nicht, und reines Klagen verstärkt auf Dauer Zynismus und Hilflosigkeit."
+    },
+    {
+      "art": "fall",
+      "fall": "Paulo ist Lehrer ohne sonderpädagogische Ausbildung. In einer Besprechung mit dem Diagnostique-Team traut er sich nicht zu sagen, dass ein Schüler nur in Vertretungsstunden ausrastet: „Was weiß ich schon?“",
+      "frage": "Welche Sichtweise ist am hilfreichsten?",
+      "optionen": [
+        "Ohne klinische Ausbildung sollte er sich in solchen Runden zurückhalten.",
+        "Er sollte erst etwas sagen, wenn er eine Fortbildung in Diagnostik gemacht hat.",
+        "Seine genaue Alltagsbeobachtung ist eine Expertise, die das Diagnostique-Team braucht; seine Unsicherheit darf er aussprechen.",
+        "Er sollte seine Beobachtung wie eine Diagnose formulieren, damit sie ernst genommen wird."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Beobachtungen aus dem Alltag sind für Diagnostik und Förderplanung unverzichtbar – gerade solche Muster zeigen sich in Tests nicht. Zurückhaltung verschenkt wichtige Informationen, und auf eine Fortbildung zu warten, ist unnötig. Diagnosen stellen pädagogische Fachkräfte nicht; Beobachtungen genau zu beschreiben, ist ihre Stärke."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Das Gefühl, eine Hochstaplerin oder ein Hochstapler zu sein, ist ein verlässlicher Hinweis darauf, dass man tatsächlich zu wenig kann.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Das Hochstapler-Gefühl ist eine verzerrte Selbstbewertung und kommt auch bei sehr kompetenten Menschen vor. Echte Wissenslücken gibt es trotzdem – sie lassen sich benennen und gezielt füllen, etwa durch Fortbildung, Hospitation und Fragen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Eine Mutter schreibt Ihnen regelmäßig spätabends und am Wochenende und erwartet sofort eine Antwort. Was ist am sinnvollsten?",
+      "optionen": [
+        "Immer sofort antworten, damit die Beziehung nicht leidet.",
+        "Ab sofort nicht mehr antworten, ohne etwas zu erklären.",
+        "Die Nummer wechseln und den Kontakt abbrechen.",
+        "Freundlich feste Zeiten vereinbaren, in denen Sie erreichbar sind, sagen, an wen sie sich in dringenden Fällen wenden kann, und das mit der Leitung abstimmen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Klare, freundlich vermittelte Erreichbarkeit schützt Sie und macht die Zusammenarbeit verlässlich. Ständige Erreichbarkeit führt auf Dauer zur Erschöpfung, und kommentarloses Schweigen oder ein Kontaktabbruch beschädigen die Beziehung zur Familie."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Wege stärken nach Bandura die berufliche Selbstwirksamkeit? (mehrere richtig)",
+      "optionen": [
+        "Eigene Erfolgserlebnisse bewusst festhalten",
+        "Erfahrenen Kolleginnen bei der Arbeit zusehen",
+        "Konkrete, ermutigende Rückmeldungen einholen",
+        "Fehler und Unsicherheiten verbergen",
+        "Sich ständig mit den Erfolgreichsten vergleichen"
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Eigene Erfolge, gute Vorbilder und ermutigende Rückmeldungen gehören zu den Quellen der Selbstwirksamkeit, die Bandura (1977) beschreibt. Verbergen verhindert Unterstützung und Lernen, und ständige Vergleiche mit den Besten nähren eher das Gefühl, nicht zu genügen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Burnout",
+      "erklaerung": "Berufsbezogener Zustand nach chronischem, nicht bewältigtem Arbeitsstress mit Erschöpfung, innerer Distanz oder Zynismus und verringertem Wirksamkeitserleben (Maslach & Leiter, 2016; ICD-11)."
+    },
+    {
+      "begriff": "Zynismus (Distanzierung)",
+      "erklaerung": "Innerer Rückzug von der Arbeit und den Menschen, oft als Selbstschutz; zeigt sich in Gleichgültigkeit, Abwertung oder Sarkasmus."
+    },
+    {
+      "begriff": "Mitgefühlserschöpfung",
+      "erklaerung": "Belastung von Helfenden durch das Mitfühlen mit dem Leid anderer (englisch compassion fatigue); kann auch plötzlich entstehen (Figley, 1995)."
+    },
+    {
+      "begriff": "Sekundärer traumatischer Stress",
+      "erklaerung": "Traumaähnliche Belastungsreaktionen – etwa sich aufdrängende Bilder, Übererregung, Vermeiden –, die durch die Beschäftigung mit den Traumata anderer entstehen."
+    },
+    {
+      "begriff": "Supervision",
+      "erklaerung": "Beratung durch eine externe, dafür ausgebildete Person, in der Fälle, eigene Reaktionen, Rollen und Zusammenarbeit reflektiert werden."
+    },
+    {
+      "begriff": "Intervision (kollegiale Beratung)",
+      "erklaerung": "Strukturierte Beratung unter Kolleginnen und Kollegen nach festem Ablauf, ohne externe Leitung."
+    },
+    {
+      "begriff": "Hochstapler-Phänomen",
+      "erklaerung": "Das anhaltende Gefühl, trotz nachweisbarer Leistung nicht kompetent zu sein und irgendwann „aufzufliegen“. Keine Krankheit, sondern eine verzerrte Selbstbewertung."
+    },
+    {
+      "begriff": "Selbstwirksamkeit",
+      "erklaerung": "Die Überzeugung, eine Aufgabe durch eigenes Handeln bewältigen zu können; wächst durch Erfolgserlebnisse, Vorbilder und Rückmeldungen (Bandura, 1977)."
+    },
+    {
+      "begriff": "Psychohygiene",
+      "erklaerung": "Alles, was die seelische Gesundheit im Beruf schützt: Pausen, Austausch, Abgrenzung, Reflexion und Erholung."
+    }
+  ],
+  "quellen": [
+    "maslach2016",
+    "figley1995",
+    "icd11",
+    "lazarusFolkman1984",
+    "mcewen1998",
+    "bandura1977"
+  ],
+  "verwandt": [
+    "stress-gehirn",
+    "traumapaedagogik",
+    "uebertragung",
+    "abwehr-coping",
+    "beziehung-haltung"
+  ],
+  "toolbox": []
+}

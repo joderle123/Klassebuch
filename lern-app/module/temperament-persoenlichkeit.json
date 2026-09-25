@@ -1,0 +1,591 @@
+{
+  "id": "temperament-persoenlichkeit",
+  "bereich": "muster",
+  "titel": "Temperament und Persönlichkeit",
+  "untertitel": "Warum Kinder so verschieden sind – und was gute Passung im Schulalltag bedeutet",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, was Temperament ist, und die drei Temperamentsmuster nach Thomas und Chess im Schulalltag wiedererkennen.",
+    "Sie können das Konzept der Passung (goodness of fit) auf ein Kind anwenden und daraus konkrete Anpassungen ableiten.",
+    "Sie können die fünf großen Persönlichkeitsdimensionen (Big Five) beschreiben und einschätzen, wie stabil Persönlichkeit im Kindes- und Jugendalter ist.",
+    "Sie können Ihr eigenes Temperament als Teil der Passung mitdenken und Etiketten wie „schwieriges Kind“ durch genaue Beschreibungen ersetzen.",
+    "Sie erkennen, wann ein ausgeprägtes Temperament ein Hinweis auf zusätzlichen Unterstützungsbedarf sein kann, und wissen, wen Sie dann einbeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Drei Kinder, ein Montagmorgen",
+          "text": "Montag, 8 Uhr, Cycle 2.2: Lena kommt strahlend herein, begrüßt die neue Praktikantin mit Handschlag und sitzt als Erste am Platz. Jonas bleibt an der Tür stehen, als er die fremde Frau sieht, hält sich an den Riemen seines Schulranzens fest und beobachtet erst einmal. Mehmet stürmt als Letzter herein, sieht, dass die Tische umgestellt wurden, und wirft seine Mappe wütend auf den Boden. Die Lehrerin kennt alle drei Familien als zugewandt und bemüht. Trotzdem erlebt sie jeden Morgen drei ganz verschiedene Kinder.",
+          "fragen": [
+            "Was sagt das Verhalten der drei Kinder über ihre Erziehung aus – und was nicht?",
+            "Was bräuchte jedes der drei Kinder, um gut in den Tag zu starten?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Kinder unterscheiden sich vom ersten Lebenstag an. Manche Säuglinge schlafen und trinken in einem verlässlichen Rhythmus, andere nicht. Manche schauen bei einem lauten Geräusch nur kurz auf, andere schreien heftig. Diese früh sichtbaren, biologisch mitbedingten Unterschiede in der Art, wie ein Mensch auf seine Umwelt reagiert, nennt man **Temperament**. Es beschreibt nicht, *was* ein Kind tut, sondern *wie*: wie aktiv, wie intensiv, wie anpassungsfähig, mit welcher Grundstimmung und wie gut es sich selbst steuern kann.\n\n**Persönlichkeit** ist der weitere Begriff. Gemeint ist die für einen Menschen typische, relativ beständige Art zu denken, zu fühlen und zu handeln – einschließlich Gewohnheiten, Interessen, Werten und Selbstbild. Temperament ist gewissermaßen die Grundausstattung. Im Zusammenspiel mit Beziehungen, Erfahrungen und Kultur entwickelt sich daraus über Kindheit und Jugend hinweg die Persönlichkeit.\n\nFür den pädagogischen Alltag ist dieses Wissen aus zwei Gründen wichtig. Es hilft, Verhalten nicht vorschnell der Erziehung oder bösem Willen zuzuschreiben. Und es zeigt, dass nicht jedes Kind dasselbe braucht, um dasselbe Ziel zu erreichen."
+        },
+        {
+          "art": "merke",
+          "text": "Temperament beschreibt, *wie* ein Kind reagiert – nicht, wie gut es erzogen ist. Es ist Ausgangspunkt, nicht Schicksal: Wie sich ein Kind entwickelt, hängt wesentlich davon ab, wie seine Umgebung auf sein Temperament eingeht."
+        }
+      ]
+    },
+    {
+      "titel": "Temperament: neun Merkmale, drei Muster",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das Psychiater-Ehepaar Alexander Thomas und Stella Chess begann 1956 in New York eine der ersten großen Längsschnittstudien zum Temperament, die New York Longitudinal Study. Sie begleiteten Kinder vom Säuglingsalter bis ins Erwachsenenalter und stützten sich auf ausführliche Elterninterviews, später auch auf Beobachtungen und Gespräche mit Lehrkräften. Daraus beschrieben sie neun Temperamentsmerkmale (Thomas & Chess, 1977)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die neun Temperamentsmerkmale",
+          "spalten": [
+            "Merkmal",
+            "Worum es geht",
+            "So kann es im Schulalltag aussehen"
+          ],
+          "zeilen": [
+            [
+              "Aktivität",
+              "Wie viel und wie lebhaft sich das Kind bewegt",
+              "rutscht ständig auf dem Stuhl und sucht Bewegung – oder sitzt lange ruhig"
+            ],
+            [
+              "Regelmäßigkeit",
+              "Wie vorhersehbar Hunger, Müdigkeit und Schlaf sind",
+              "ist jeden Tag zur gleichen Zeit hungrig und müde – oder mal hellwach, mal erschöpft"
+            ],
+            [
+              "Annäherung oder Rückzug",
+              "Erste Reaktion auf Neues: Menschen, Orte, Aufgaben, Speisen",
+              "geht sofort auf die neue Praktikantin zu – oder beobachtet erst aus sicherer Entfernung"
+            ],
+            [
+              "Anpassungsfähigkeit",
+              "Wie schnell sich das Kind auf Veränderungen einstellt",
+              "nimmt einen geänderten Stundenplan gelassen hin – oder braucht Tage dafür"
+            ],
+            [
+              "Reaktionsintensität",
+              "Wie stark Gefühle nach außen gezeigt werden",
+              "jubelt und schimpft laut – oder freut und ärgert sich eher leise"
+            ],
+            [
+              "Reizschwelle",
+              "Wie empfindlich das Kind auf Geräusche, Licht, Gerüche oder Kleidung reagiert",
+              "hält sich in der lauten Kantine die Ohren zu – oder bemerkt den Lärm kaum"
+            ],
+            [
+              "Grundstimmung",
+              "Ob das Kind überwiegend heiter-freundlich oder eher ernst-missmutig ist",
+              "lacht viel – oder wirkt oft unzufrieden, ohne dass etwas passiert ist"
+            ],
+            [
+              "Ablenkbarkeit",
+              "Wie leicht äußere Reize die Aufmerksamkeit abziehen",
+              "schaut bei jedem Geräusch auf dem Flur hoch – oder arbeitet unbeirrt weiter"
+            ],
+            [
+              "Ausdauer",
+              "Wie lange das Kind bei einer Sache bleibt, auch wenn es schwierig wird",
+              "gibt bei der ersten Hürde auf – oder bleibt dran, manchmal bis zur Sturheit"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Bestimmte Kombinationen dieser Merkmale traten häufig gemeinsam auf. Thomas und Chess fassten sie zu drei Temperamentsmustern zusammen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Temperamentsmuster",
+          "spalten": [
+            "Muster",
+            "Typische Merkmale",
+            "Was dem Kind hilft"
+          ],
+          "zeilen": [
+            [
+              "Einfach",
+              "regelmäßiger Rhythmus, geht offen auf Neues zu, passt sich rasch an, meist gute Stimmung, gemäßigte Reaktionen",
+              "Wird leicht übersehen, weil es wenig fordert. Braucht trotzdem Aufmerksamkeit, Anerkennung und echte Herausforderungen."
+            ],
+            [
+              "Schwierig (heute oft: intensiv)",
+              "unregelmäßiger Rhythmus, Rückzug bei Neuem, passt sich langsam an, heftige und häufiger negative Reaktionen",
+              "Vorhersehbare Abläufe, früh angekündigte Veränderungen, Geduld und Erwachsene, die ruhig bleiben, wenn das Kind es nicht kann"
+            ],
+            [
+              "Langsam auftauend",
+              "anfangs zurückhaltend bei Neuem, eher leise und verhaltene Reaktionen, passt sich bei wiederholtem Kontakt gut an",
+              "Zeit zum Beobachten, kein Drängen, schrittweise Annäherung, wiederholte Gelegenheiten mit vertrauten Personen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "In der Stichprobe der Studie ließen sich etwa 40 von 100 Kindern als „einfach“ beschreiben, etwa 10 von 100 als „schwierig“ und etwa 15 von 100 als „langsam auftauend“. Gut ein Drittel passte in keines der drei Muster (Thomas & Chess, 1977). Die Muster sind also grobe Orientierungen, keine Schubladen.\n\nDie Bezeichnung „schwierig“ war schon bei Thomas und Chess kein Urteil über das Kind. Schwierig ist ein solches Temperament vor allem für die Erwachsenen, die damit umgehen – und für das Kind selbst, wenn seine Umgebung nicht zu ihm passt. Heute sprechen viele Fachleute lieber von einem **intensiven** oder **anspruchsvollen** Temperament.\n\nDie neuere Forschung fasst Temperament meist in wenigen großen Bereichen zusammen: wie stark ein Kind mit negativen Gefühlen wie Angst, Ärger oder Traurigkeit reagiert, wie sehr es auf Neues und Anregung zugeht und wie gut es sich selbst steuern kann, etwa die Aufmerksamkeit halten oder einen Impuls bremsen. Diese Fähigkeit zur Selbststeuerung reift über die ganze Kindheit und Jugend hinweg."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein schüchternes Kind muss man nur ins kalte Wasser werfen, dann legt sich das.",
+          "fakt": "Drängen verstärkt bei langsam auftauenden Kindern meist den Rückzug. Hilfreich ist schrittweise Ermutigung: vorbereiten, zuschauen lassen, kleine machbare Schritte, Anerkennung für jeden Versuch. Ganz vermeiden sollte man neue Situationen aber auch nicht – sonst fehlt dem Kind die Erfahrung, dass Neues gut ausgehen kann."
+        }
+      ]
+    },
+    {
+      "titel": "Passung: wenn Kind und Umgebung zusammenpassen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der wohl wichtigste Beitrag von Thomas und Chess ist das Konzept der **Passung** (englisch *goodness of fit*). Es besagt: Ein Kind entwickelt sich dann gut, wenn die Erwartungen und Anforderungen seiner Umgebung zu seinem Temperament und seinen Fähigkeiten passen. Passen sie dauerhaft nicht zusammen, entstehen Stress, Konflikte und mit der Zeit auch Verhaltensprobleme (Thomas & Chess, 1977).\n\nIn der New Yorker Studie entwickelten Kinder mit „schwierigem“ Temperament häufiger Verhaltensprobleme als andere – aber keineswegs alle. Ob es so kam, hing wesentlich davon ab, wie Eltern und später Lehrkräfte auf das Kind eingingen: Geduld, Beständigkeit und eine gelassene Haltung, die das Verhalten nicht als persönlichen Angriff versteht, wirkten schützend. Umgekehrt kann auch ein „einfaches“ Kind Probleme entwickeln, wenn es dauerhaft Anforderungen ausgesetzt ist, die nicht zu ihm passen.\n\nPassung heißt nicht, dass sich alles nach dem Kind richtet. Gemeint ist, Anforderungen so zu gestalten, dass das Kind sie mit seinem Temperament erreichen kann – und es gleichzeitig behutsam darin zu unterstützen, sich weiterzuentwickeln. Das Ziel bleibt, der Weg wird angepasst."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Passung im Klassenzimmer",
+          "spalten": [
+            "Temperament",
+            "Typische Stolperstelle",
+            "Bessere Passung"
+          ],
+          "zeilen": [
+            [
+              "Sehr aktiv",
+              "lange Sitzphasen, Regenpause im Klassenraum",
+              "Bewegung einplanen: Material holen lassen, im Stehen arbeiten, kurze Bewegungspausen"
+            ],
+            [
+              "Langsam auftauend",
+              "spontan vor der Klasse sprechen, Vertretungslehrkraft, erster Tag der Klassenfahrt",
+              "ankündigen, zuerst zuschauen lassen, in kleiner Runde vorbereiten, vertraute Person in der Nähe"
+            ],
+            [
+              "Intensiv, wenig anpassungsfähig",
+              "unangekündigte Planänderungen, laute und ungeordnete Übergänge",
+              "Tagesplan sichtbar machen, Änderungen früh ankündigen, feste Rituale für den Wechsel"
+            ],
+            [
+              "Niedrige Reizschwelle",
+              "Lärm in der Kantine, grelles Licht, Gruppenarbeit mit vielen Stimmen",
+              "ruhiger Platz, Rückzugsmöglichkeit, Gehörschutz erlauben, kleinere Gruppen"
+            ],
+            [
+              "Unregelmäßiger Rhythmus",
+              "Hunger oder Müdigkeit zu „unpassenden“ Zeiten",
+              "Snack erlauben, anspruchsvolle Aufgaben in gute Tageszeiten legen, mit den Eltern über Schlaf sprechen"
+            ],
+            [
+              "Wenig ausdauernd, leicht ablenkbar",
+              "lange Arbeitsphasen ohne Rückmeldung",
+              "Aufgaben in Etappen, Zwischenkontrollen, reizarmer Platz"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Sie sind Teil der Passung.** Auch Erwachsene haben ein Temperament. Eine ruhige, eher zurückhaltende Lehrerin erlebt ein lautes, intensives Kind womöglich als anstrengender als ihr lebhafter Kollege. Ein sehr strukturierter Erzieher ärgert sich eher über ein Kind, das nie zur gleichen Zeit müde oder hungrig ist. Eine gesellige, schnelle Lehrkraft übersieht dagegen leicht das stille Kind, das Zeit zum Auftauen braucht. Solche Reaktionen sind menschlich. Hilfreich ist, sie zu kennen: „Dieses Kind strengt *mich* besonders an“ ist eine andere Aussage als „Dieses Kind ist schwierig“ – und sie eröffnet andere Lösungen, etwa den Austausch mit einer Kollegin, der dasselbe Kind leichter fällt."
+        },
+        {
+          "art": "fall",
+          "titel": "Jonas und die Vertretungsstunde",
+          "text": "Jonas (7) weint, wenn eine Vertretungslehrerin kommt, und macht an diesen Tagen nicht mit. Nach dem dritten Mal bespricht die Klassenlehrerin die Situation im Team. Vertretungen werden nun, wenn möglich, am Vortag angekündigt, mit Namen und Foto am Tagesplan. Jonas darf in den ersten zehn Minuten neben seinem Freund sitzen und zuschauen, bevor er mitarbeitet. Nach einigen Wochen begrüßt er eine bekannte Vertretungslehrerin von sich aus.",
+          "fragen": [
+            "Welche Temperamentsmerkmale stehen bei Jonas im Vordergrund?",
+            "Woran würden Sie merken, dass mehr dahintersteckt als Temperament – etwa eine Angst, die fachliche Unterstützung braucht?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Die Passungsfrage lautet nicht: „Was stimmt mit diesem Kind nicht?“, sondern: „Welche Anforderung passt gerade nicht zu diesem Kind – und was können wir verändern, damit es das Ziel trotzdem erreicht?“"
+        }
+      ]
+    },
+    {
+      "titel": "Persönlichkeit: die Big Five und ihre Stabilität",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Aus dem Temperament entwickelt sich im Lauf von Kindheit und Jugend die Persönlichkeit. Das am besten untersuchte Beschreibungsmodell sind die **Big Five**, die fünf großen Persönlichkeitsdimensionen (McCrae & John, 1992). Sie beruhen auf der Beobachtung, dass sich die vielen Eigenschaftswörter, mit denen Menschen einander beschreiben, zu fünf großen Bereichen bündeln lassen. Jede Dimension ist ein Kontinuum: Die meisten Menschen liegen im mittleren Bereich, und jede Ausprägung hat je nach Situation Stärken und Schwierigkeiten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die Big Five",
+          "spalten": [
+            "Dimension",
+            "Hohe Ausprägung",
+            "Niedrige Ausprägung",
+            "Im Schulalltag"
+          ],
+          "zeilen": [
+            [
+              "Offenheit für Erfahrungen",
+              "neugierig, fantasievoll, interessiert an Neuem",
+              "bevorzugt Vertrautes, praktisch, eher traditionell",
+              "stellt viele Fragen und liebt Projekte – oder fühlt sich mit klaren, bekannten Aufgaben wohler"
+            ],
+            [
+              "Gewissenhaftigkeit",
+              "ordentlich, zuverlässig, ausdauernd, planvoll",
+              "spontan, weniger ordentlich, lässt sich leichter ablenken",
+              "Hausaufgaben pünktlich und sauber – oder vergessen und in letzter Minute"
+            ],
+            [
+              "Extraversion",
+              "gesellig, gesprächig, aktiv, sucht Anregung",
+              "zurückhaltend, ruhig, braucht Zeit für sich (introvertiert)",
+              "blüht in Gruppenarbeit auf – oder arbeitet lieber allein und ist nach viel Gruppe erschöpft"
+            ],
+            [
+              "Verträglichkeit",
+              "hilfsbereit, kooperativ, nachgiebig",
+              "kritisch, wettbewerbsorientiert, eigensinnig",
+              "vermittelt bei Streit – oder vertritt hartnäckig die eigene Position"
+            ],
+            [
+              "Neurotizismus (Gegenpol: emotionale Stabilität)",
+              "leicht besorgt, kränkbar, schnell gestresst",
+              "gelassen, emotional stabil",
+              "grübelt tagelang über eine Note – oder nimmt Rückschläge gelassen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Ähnliche Dimensionen lassen sich schon bei Schulkindern beschreiben. Viele Forschende sehen Temperamentsmerkmale als deren frühe Vorläufer: Aus starker negativer Emotionalität kann sich eher Neurotizismus entwickeln, aus Aufgeschlossenheit und Aktivität eher Extraversion, aus guter Selbststeuerung eher Gewissenhaftigkeit. Manche Ausprägungen haben erkennbare Folgen: Gewissenhaftigkeit hängt mit besseren Schulleistungen zusammen, ein hoher Neurotizismus mit einem höheren Risiko für Ängste und Niedergeschlagenheit. Das sind Zusammenhänge über viele Menschen hinweg, keine Vorhersagen für ein einzelnes Kind."
+        },
+        {
+          "art": "liste",
+          "titel": "Wie stabil ist Persönlichkeit?",
+          "punkte": [
+            "Die Stabilität nimmt mit dem Alter zu. Aus den Eigenschaften eines Kindes lässt sich nur mäßig vorhersagen, wie es als Erwachsener sein wird; im Erwachsenenalter sind die Unterschiede zwischen Menschen deutlich beständiger. McCrae und John (1992) betonten diese hohe Stabilität bei Erwachsenen.",
+            "Menschen verändern sich trotzdem ein Leben lang. Im Durchschnitt werden sie mit dem Erwachsenwerden gewissenhafter, verträglicher und emotional stabiler.",
+            "Es gibt Hinweise, dass in der frühen Jugend Gewissenhaftigkeit und Verträglichkeit bei vielen vorübergehend abnehmen. Wer mit 13-Jährigen arbeitet, kennt das: Ordnung und Umgänglichkeit leiden. Meist ist das eine Phase, kein neuer Dauerzustand.",
+            "Einschneidende Erfahrungen, neue Rollen und stabile Beziehungen können Persönlichkeit über die Zeit verändern – in beide Richtungen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Anlage und Umwelt.** Zwillingsstudien zeigen, dass Persönlichkeitsunterschiede zwischen Menschen zu einem beträchtlichen Teil – grob geschätzt zur Hälfte – genetisch mitbedingt sind. Das heißt nicht, dass Persönlichkeit festgelegt ist. Gene beeinflussen Wahrscheinlichkeiten; wie sich eine Anlage zeigt, hängt von Beziehungen, Erfahrungen und Gelegenheiten ab. Aufschlussreich ist ein weiterer Befund: Geschwister aus derselben Familie sind sich in ihrer Persönlichkeit oft wenig ähnlich. Jedes Kind erlebt „dieselbe“ Familie anders – und ruft mit seinem Temperament auch andere Reaktionen hervor als seine Geschwister."
+        },
+        {
+          "art": "merke",
+          "text": "Persönlichkeit ist im Kindes- und Jugendalter noch in Bewegung. Sätze wie „So ist er eben, das ändert sich nie“ sind fachlich falsch – und sie nehmen dem Kind Entwicklungsmöglichkeiten."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: mit unterschiedlichen Kindern umgehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wer Temperament und Persönlichkeit kennt, kann Verhalten gelassener einordnen und gezielter reagieren. Drei Grundsätze helfen.\n\n**Beschreiben statt etikettieren.** „Mehmet reagiert auf unangekündigte Veränderungen mit starkem Ärger und braucht etwa zehn Minuten, um sich zu beruhigen“ hilft mehr als „Mehmet ist schwierig“. Etiketten verfestigen sich, prägen den Blick anderer Erwachsener und werden vom Kind ins Selbstbild übernommen.\n\n**Die Umgebung anpassen und das Kind fördern.** Temperament ist ein Ausgangspunkt, keine Entschuldigung. Ein langsam auftauendes Kind soll trotzdem lernen, vor der Klasse zu sprechen – mit Vorbereitung und in Schritten. Ein intensives Kind soll lernen, mit Ärger umzugehen – mit Unterstützung und Übung in ruhigen Momenten.\n\n**Die Stärken im Temperament sehen.** Jedes Temperament hat zwei Seiten. Das intensive Kind ist oft begeisterungsfähig und setzt sich leidenschaftlich für andere ein. Das vorsichtige Kind ist häufig sorgfältig und aufmerksam. Das sehr aktive Kind hat Energie für Projekte, das hartnäckige bleibt an schwierigen Aufgaben dran."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Beobachten, wann es gut läuft und wo es hakt: Tageszeit, Art der Aufgabe, Lautstärke, Übergänge, Personen.",
+            "Übergänge und Veränderungen ankündigen – am besten sichtbar und mit einem festen Ritual für den Wechsel.",
+            "Langsam auftauenden Kindern Zeit geben: zuerst zuschauen lassen, Neues vorbesprechen, mit einer vertrauten Person beginnen.",
+            "Sehr aktiven Kindern erlaubte Bewegung anbieten, statt Stillsitzen zum Dauerziel zu machen.",
+            "Intensiven Kindern mit ruhiger Stimme und wenigen Worten begegnen, nach einem Ausbruch Zeit zum Runterkommen geben und erst danach besprechen, was passiert ist.",
+            "Empfindlichen Kindern Rückzugsorte und reizärmere Plätze ermöglichen.",
+            "Stille, zurückhaltende Kinder aktiv wahrnehmen: Sie stören nicht, brauchen aber genauso Zuwendung.",
+            "Mit dem Kind altersgerecht und wertschätzend über sein Temperament sprechen: „Du brauchst am Anfang ein bisschen Zeit – und dann legst du richtig los.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Kinder vergleichen: „Warum kannst du nicht so ruhig sein wie Lena?“",
+            "Zurückhaltende Kinder vor der Klasse drängen oder bloßstellen: „Jetzt sag doch endlich was!“",
+            "Auf intensive Reaktionen mit gleicher Intensität antworten – Lautstärke gegen Lautstärke.",
+            "Etiketten im Team weitergeben („Pass auf, der ist schwierig“), bevor eine neue Kollegin das Kind überhaupt kennt.",
+            "Das Temperament zur Ausrede machen („Sie ist halt so“) und deshalb auf Förderung verzichten."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Mit Eltern über Temperament sprechen.** Viele Eltern eines intensiven oder sehr zurückhaltenden Kindes haben schon viel Kritik gehört und fühlen sich schuldig. Das Konzept Temperament kann entlasten: Ihr Kind ist nicht wegen einer „falschen“ Erziehung so intensiv. Gleichzeitig zeigt die Passungsidee, dass Familie und Schule viel bewirken können. Fragen Sie nach Erfahrungen: „Was hilft Ihrem Kind zu Hause, wenn sich etwas ändert?“ Eltern kennen ihr Kind am längsten und haben oft wertvolle Strategien.\n\nDenken Sie dabei an kulturelle Unterschiede. Ob Zurückhaltung gegenüber Erwachsenen als Schüchternheit oder als Höflichkeit gilt, ob lautes Temperament als lebendig oder als unerzogen erlebt wird, ist von Familie zu Familie und von Herkunft zu Herkunft verschieden. In mehrsprachigen Klassen lohnt es sich, nachzufragen, statt eigene Maßstäbe vorauszusetzen."
+        },
+        {
+          "art": "fall",
+          "titel": "Mehmet und die umgestellten Tische",
+          "text": "Nach dem Wutausbruch wegen der umgestellten Tische beobachtet die Lehrerin Mehmet (7) zwei Wochen lang genauer. Heftig reagiert er vor allem bei unerwarteten Änderungen und morgens, wenn es laut ist. Sie führt ein kurzes Morgenritual ein, kündigt Änderungen am Vortag an und vereinbart mit Mehmet einen Platz in der Leseecke, an den er gehen darf, wenn er merkt, dass die Wut kommt. Die Eltern berichten, dass es zu Hause genauso ist; gemeinsam üben sie mit einem Wut-Thermometer. Die Ausbrüche werden seltener und kürzer, ganz verschwinden sie nicht.",
+          "fragen": [
+            "Was genau hat hier die Passung verbessert?",
+            "Welche Fähigkeiten soll Mehmet trotz der Anpassungen weiter üben?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Temperament oder mehr? Grenzen erkennen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Temperamentsmerkmale sind normale Unterschiede zwischen Menschen. Manche Ausprägungen gehen aber mit einem erhöhten Risiko für spätere Schwierigkeiten einher. Kinder, die schon als Kleinkinder auf Unbekanntes sehr gehemmt und ängstlich reagieren (Fachbegriff: **Verhaltenshemmung**), entwickeln später häufiger Angststörungen (Beesdo et al., 2009). Kinder mit sehr starker negativer Emotionalität und wenig Selbststeuerung haben ein höheres Risiko für aggressives und oppositionelles Verhalten.\n\nRisiko heißt nicht Schicksal. Viele Kinder mit solchen Merkmalen entwickeln keine Störung, und eine gute Passung sowie verlässliche Beziehungen können Risiken deutlich abmildern. Ihre Aufgabe ist nicht, eine Störung festzustellen. Sie ist, genau hinzuschauen, die Umgebung anzupassen und zu bemerken, wann das nicht mehr reicht."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Temperament oder etwas anderes?",
+          "punkte": [
+            {
+              "wie": "Zurückhaltung bei Neuem",
+              "unterschied": "Ein langsam auftauendes Kind wird mit Zeit und Vertrautheit lockerer. Bei sozialer Angst oder selektivem Mutismus taut es auch nach Wochen nicht auf, vermeidet stark, leidet deutlich oder spricht in bestimmten Situationen gar nicht."
+            },
+            {
+              "wie": "Viel Bewegung und Ablenkbarkeit",
+              "unterschied": "Bei ADHS sind die Schwierigkeiten deutlich stärker als bei Gleichaltrigen, bestehen seit langem in mehreren Lebensbereichen und beeinträchtigen Lernen und Beziehungen."
+            },
+            {
+              "wie": "Heftige, schnelle Wut",
+              "unterschied": "Bei oppositionellem Verhalten kommen anhaltende Gereiztheit, häufige Machtkämpfe und Trotz gegenüber Erwachsenen hinzu. Beginnt die Wut plötzlich, etwa nach einer Trennung oder einem belastenden Ereignis, spricht das eher für eine Belastungsreaktion."
+            },
+            {
+              "wie": "Hohe Empfindlichkeit für Reize",
+              "unterschied": "Bei Autismus kommen dauerhafte Besonderheiten in Kommunikation und sozialem Miteinander sowie sehr feste Interessen und Routinen hinzu."
+            },
+            {
+              "wie": "Ernste, gedrückte Stimmung",
+              "unterschied": "Temperament ist von klein auf sichtbar. Ein Kind, das früher fröhlich war und seit Wochen traurig, gereizt oder lustlos ist, zeigt eine Veränderung – das spricht eher für eine Depression oder Belastung."
+            },
+            {
+              "wie": "Stilles, abwartendes Verhalten nach einem Neuanfang",
+              "unterschied": "Kinder, die neu in Luxemburg sind oder die Unterrichtssprache noch lernen, sind oft still und abwartend. Das ist meist eine verständliche Anpassung an die neue Situation und sagt noch wenig über ihr Temperament aus."
+            }
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "„Hochsensibel“ ist eine Diagnose, die erklärt, warum ein Kind so empfindlich ist.",
+          "fakt": "Hochsensibilität ist keine Diagnose in DSM-5-TR oder ICD-11, sondern ein populäres Konzept für eine hohe Empfindsamkeit gegenüber Reizen und Stimmungen; die Forschung dazu ist noch jung. Nehmen Sie die Empfindlichkeit des Kindes ernst und gestalten Sie die Umgebung entsprechend. Bei starkem Leidensdruck sollten Fachleute auch andere Erklärungen wie Angst, Autismus oder Belastungen prüfen."
+        },
+        {
+          "art": "merke",
+          "text": "Temperament zeigt sich meist von klein auf und in vielen Situationen. Eine deutliche Veränderung, starkes Leiden oder eine Beeinträchtigung in mehreren Lebensbereichen sprechen dafür, dass mehr dahintersteckt."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn ein Kind trotz guter Anpassungen über Wochen stark leidet, sich deutlich verändert hat oder in Schule, Familie und Freizeit erheblich beeinträchtigt ist. Besprechen Sie Ihre Beobachtungen zuerst mit der Leitung (Responsable) und im Team. Eine fachliche Abklärung kann über das Diagnostique-Team des CDSE, die Kinderärztin oder die Kinder- und Jugendpsychiatrie erfolgen. Sprechen Sie mit den Eltern über konkrete Beobachtungen – nicht über Vermutungen oder Diagnosen."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt der Begriff Temperament am besten?",
+      "optionen": [
+        "Die Werte und Überzeugungen, die ein Kind in seiner Familie gelernt hat",
+        "Früh sichtbare, biologisch mitbedingte Unterschiede darin, wie ein Kind auf seine Umwelt reagiert",
+        "Eine psychische Störung, die sich in heftigen Gefühlsausbrüchen zeigt",
+        "Das Ergebnis einer strengen oder nachgiebigen Erziehung"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Temperament beschreibt das *Wie* des Verhaltens – Aktivität, Intensität, Anpassungsfähigkeit, Stimmung, Selbststeuerung – und ist früh sichtbar und biologisch mitbedingt. Werte und Überzeugungen gehören zur weiteren Persönlichkeit. Temperament ist keine Störung und nicht das Ergebnis von Erziehung, auch wenn Erziehung beeinflusst, wie es sich auswirkt."
+    },
+    {
+      "art": "fall",
+      "fall": "Anna (6) steht bei jedem Ausflug und jeder neuen Aktivität zuerst am Rand und schaut zu. Nach etwa einer Viertelstunde macht sie mit und hat sichtlich Spaß. Eine Kollegin schlägt vor, Anna solle künftig immer als Erste mitmachen, „damit sie ihre Schüchternheit ablegt“.",
+      "frage": "Wie schätzen Sie die Situation am besten ein?",
+      "optionen": [
+        "Anna zeigt ein langsam auftauendes Temperament; sie sollte Zeit zum Beobachten bekommen und behutsam ermutigt werden.",
+        "Anna hat eine Angststörung und muss dringend abgeklärt werden.",
+        "Die Kollegin hat recht: Wer Anna drängt, hilft ihr, die Schüchternheit zu überwinden.",
+        "Anna sollte an neuen Aktivitäten gar nicht mehr teilnehmen müssen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Anna taut nach kurzer Zeit auf und hat Freude – typisch für ein langsam auftauendes Temperament. Bei einer Angststörung stünden starkes Vermeiden und Leiden über lange Zeit im Vordergrund. Drängen verstärkt bei solchen Kindern eher den Rückzug; neue Situationen ganz zu vermeiden, nähme Anna aber die Erfahrung, dass Neues gut ausgehen kann."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zum Konzept der Passung (goodness of fit) treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Entwicklung verläuft günstiger, wenn die Anforderungen der Umgebung zum Temperament des Kindes passen.",
+        "Passung bedeutet, dass die Schule einem Kind mit intensivem Temperament alle Anforderungen erlässt.",
+        "Auch das Temperament der Erwachsenen ist Teil der Passung.",
+        "Ein „schwieriges“ Temperament führt zwangsläufig zu Verhaltensproblemen.",
+        "Das Ziel kann gleich bleiben, während der Weg dorthin an das Kind angepasst wird."
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Passung beschreibt das Zusammenspiel von Kind und Umgebung – dazu gehören auch die Erwachsenen mit ihrem eigenen Temperament. Es geht nicht darum, Anforderungen zu streichen, sondern den Weg zum Ziel anzupassen. In der New Yorker Längsschnittstudie entwickelten Kinder mit schwierigem Temperament zwar häufiger Probleme, aber keineswegs alle; entscheidend war die Passung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die Temperamentsmuster „einfach“, „schwierig“ und „langsam auftauend“ sind Diagnosen aus dem DSM-5-TR und der ICD-11.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die drei Muster nach Thomas und Chess beschreiben normale Unterschiede zwischen Kindern, keine Störungen. Gut ein Drittel der Kinder in ihrer Studie passte in keines der Muster. Sie helfen, Verhalten einzuordnen, ersetzen aber keine fachliche Abklärung, wenn ein Kind stark leidet."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was sagt die Forschung zur Stabilität der Persönlichkeit?",
+      "optionen": [
+        "Persönlichkeit steht mit etwa sechs Jahren fest und verändert sich danach kaum noch.",
+        "Persönlichkeit verändert sich zufällig; frühere Eigenschaften sagen nichts über spätere aus.",
+        "Die Stabilität nimmt mit dem Alter zu; trotzdem verändern sich Menschen ein Leben lang, im Durchschnitt in Richtung größerer Verlässlichkeit und Gelassenheit.",
+        "Nur die Intelligenz ist stabil, Persönlichkeitsmerkmale schwanken von Tag zu Tag."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Persönlichkeit ist zugleich beständig und veränderlich: Im Kindesalter lässt sich die spätere Persönlichkeit nur mäßig vorhersagen, im Erwachsenenalter ist sie deutlich stabiler. Trotzdem verändern sich Menschen weiter, im Durchschnitt werden sie gewissenhafter, verträglicher und emotional stabiler. Sie steht also weder früh fest, noch schwankt sie beliebig."
+    },
+    {
+      "art": "fall",
+      "fall": "Mehmet (7) reagiert auf jede unangekündigte Änderung mit heftiger Wut. Sein Lehrer ist selbst eher ruhig und zurückhaltend. Im Team sagt er: „Der Junge ist einfach schwierig, da kann man nichts machen.“",
+      "frage": "Welche Reaktion aus dem Team ist fachlich am hilfreichsten?",
+      "optionen": [
+        "„Stimmt, am Temperament lässt sich nichts ändern – wir sollten ihn möglichst in Ruhe lassen.“",
+        "„Er braucht strengere Strafen, damit er lernt, sich zu beherrschen.“",
+        "„Wahrscheinlich hat er ADHS – die Eltern sollten nach Medikamenten fragen.“",
+        "„Schauen wir, wann es gut läuft. Vielleicht helfen angekündigte Änderungen und ein festes Übergangsritual. Und es ist verständlich, dass seine Intensität gerade dich besonders anstrengt.“"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Der Blick auf die Passung führt zu konkreten Veränderungen: Änderungen ankündigen, Übergänge strukturieren, beobachten, wann es gelingt. Dass ein ruhiger Erwachsener ein intensives Kind als besonders anstrengend erlebt, gehört dazu und darf ausgesprochen werden. Resignation hilft dem Kind nicht, Strafen für Temperamentsreaktionen verschärfen meist die Konflikte, und Diagnosen zu vermuten oder Medikamente anzuregen, ist nicht Aufgabe pädagogischer Fachkräfte."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen sprechen eher dafür, dass hinter dem Verhalten mehr steckt als Temperament? (mehrere richtig)",
+      "optionen": [
+        "Ein bisher fröhliches Kind ist seit einigen Wochen gedrückt und zieht sich zurück.",
+        "Ein Kind braucht bei neuen Situationen etwas Zeit, macht dann aber gern mit.",
+        "Ein Kind leidet trotz guter Anpassungen über Wochen stark.",
+        "Die Schwierigkeiten zeigen sich in Schule, Familie und Freizeit und beeinträchtigen deutlich.",
+        "Ein Kind ist lebhaft und bewegt sich gern, kann sich mit Bewegungspausen aber gut konzentrieren."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Eine deutliche Veränderung, anhaltendes Leiden trotz Anpassungen und Beeinträchtigungen in mehreren Lebensbereichen sind Gründe, genauer hinzuschauen und Unterstützung zu holen. Langsames Auftauen mit anschließender Freude und Lebhaftigkeit, die sich mit einfachen Anpassungen gut auffangen lässt, liegen im Bereich normaler Temperamentsunterschiede."
+    },
+    {
+      "art": "fall",
+      "fall": "Frau Weber ist neu an der Schule. Beim ersten Teamtreffen sagt ein Kollege über Leonie (10): „Pass bei der auf, die ist extrem empfindlich und bockig.“",
+      "frage": "Wie reagiert Frau Weber am besten?",
+      "optionen": [
+        "Sie übernimmt die Einschätzung, damit sie vorbereitet ist.",
+        "Sie fragt nach konkreten Situationen: Wann reagiert Leonie empfindlich, was hilft ihr, wann läuft es gut?",
+        "Sie meidet Leonie in den ersten Wochen, um Konflikte zu vermeiden.",
+        "Sie spricht Leonie gleich darauf an, dass sie von ihrer Empfindlichkeit gehört hat."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Konkrete Beschreibungen von Situationen und hilfreichen Strategien sind nützlich, Etiketten dagegen prägen den Blick, bevor man das Kind kennt. Wer nach Situationen fragt, kann Passung gestalten. Das Etikett zu übernehmen, Leonie zu meiden oder sie gleich damit zu konfrontieren, belastet die Beziehung von Anfang an."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn Persönlichkeitsunterschiede zu einem beträchtlichen Teil genetisch mitbedingt sind, können Schule und Familie daran kaum etwas ändern.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Genetisch mitbedingt heißt nicht unveränderlich: Gene beeinflussen Wahrscheinlichkeiten, und wie sich eine Anlage zeigt, hängt stark von Beziehungen und Erfahrungen ab. Gerade im Kindes- und Jugendalter ist Persönlichkeit noch in Bewegung, und eine gute Passung kann Risiken deutlich abmildern."
+    },
+    {
+      "art": "fall",
+      "fall": "Diogo (13) war in der Grundschule ordentlich und zuverlässig. Seit einem halben Jahr vergisst er Hausaufgaben, ist launisch und diskutiert viel. Mit seinen Freunden ist er gut gelaunt, er schläft normal, seine Noten sind nur leicht gesunken. Die Eltern sind beunruhigt: „Er ist nicht mehr er selbst.“",
+      "frage": "Welche Einschätzung passt am besten?",
+      "optionen": [
+        "Diogos Persönlichkeit hat sich dauerhaft zum Negativen verändert.",
+        "Das Muster spricht eindeutig für eine Depression.",
+        "Ein vorübergehender Rückgang von Ordnung und Umgänglichkeit ist in der frühen Jugend häufig; unterstützen, weiter beobachten und aufmerksam bleiben, falls Leiden oder Rückzug hinzukommen.",
+        "Nur strenge Regeln können verhindern, dass sich sein Charakter verschlechtert."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "In der frühen Jugend nehmen Gewissenhaftigkeit und Verträglichkeit bei vielen vorübergehend ab – meist eine Phase, keine dauerhafte Veränderung. Diogo wirkt nicht niedergeschlagen, schläft normal und hat Freunde, was gegen eine Depression spricht; aufmerksam zu bleiben ist trotzdem sinnvoll. Strenge allein wird der Entwicklungsphase nicht gerecht, Unterstützung beim Organisieren hilft eher."
+    },
+    {
+      "art": "einfach",
+      "frage": "Eine Schülerin arbeitet allein sehr konzentriert, meldet sich selten und wirkt nach einem Vormittag voller Gruppenarbeit erschöpft. Im Einzelgespräch ist sie offen und freundlich. Was ist die naheliegendste Erklärung?",
+      "optionen": [
+        "Sie ist sozial ängstlich und braucht eine Therapie.",
+        "Sie ist unmotiviert und sollte stärker gefordert werden.",
+        "Sie lehnt ihre Mitschülerinnen ab.",
+        "Sie ist eher introvertiert: Viel Gruppenarbeit kostet sie Energie, Einzelarbeit liegt ihr."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Das Bild passt zu einer eher introvertierten Persönlichkeit – einer normalen Ausprägung der Dimension Extraversion, keiner Störung. Soziale Angst würde sich eher in Furcht vor Bewertung und Vermeiden zeigen; fehlende Motivation oder Ablehnung passen nicht zu ihrer konzentrierten Arbeit und ihrer Offenheit im Gespräch. Hilfreich ist eine Mischung aus Gruppen- und Einzelarbeit."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Temperament",
+      "erklaerung": "Früh sichtbare, biologisch mitbedingte Unterschiede darin, wie ein Mensch auf seine Umwelt reagiert: Aktivität, Intensität, Anpassungsfähigkeit, Grundstimmung, Selbststeuerung."
+    },
+    {
+      "begriff": "Persönlichkeit",
+      "erklaerung": "Die für einen Menschen typische, relativ beständige Art zu denken, zu fühlen und zu handeln. Sie entwickelt sich aus dem Temperament im Zusammenspiel mit Beziehungen und Erfahrungen."
+    },
+    {
+      "begriff": "Passung (goodness of fit)",
+      "erklaerung": "Übereinstimmung zwischen dem Temperament eines Kindes und den Erwartungen und Anforderungen seiner Umgebung. Gute Passung begünstigt eine gesunde Entwicklung."
+    },
+    {
+      "begriff": "Langsam auftauendes Temperament",
+      "erklaerung": "Temperamentsmuster (englisch slow to warm up): anfangs zurückhaltend bei Neuem, eher leise Reaktionen, passt sich mit Zeit und ohne Drängen gut an."
+    },
+    {
+      "begriff": "Big Five",
+      "erklaerung": "Das am besten untersuchte Modell der Persönlichkeit mit fünf Dimensionen: Offenheit für Erfahrungen, Gewissenhaftigkeit, Extraversion, Verträglichkeit und Neurotizismus."
+    },
+    {
+      "begriff": "Neurotizismus",
+      "erklaerung": "Big-Five-Dimension für die Neigung zu negativen Gefühlen wie Sorge, Ärger oder Kränkbarkeit; der Gegenpol ist emotionale Stabilität. Eine Persönlichkeitseigenschaft, kein Krankheitsbegriff."
+    },
+    {
+      "begriff": "Verhaltenshemmung",
+      "erklaerung": "Temperamentsmerkmal: ausgeprägte Zurückhaltung und Vorsicht gegenüber Unbekanntem von klein auf. Erhöht das Risiko für spätere Angststörungen, ohne sie vorherzubestimmen."
+    },
+    {
+      "begriff": "Längsschnittstudie",
+      "erklaerung": "Studie, die dieselben Menschen über lange Zeit begleitet und wiederholt untersucht – etwa die New Yorker Längsschnittstudie von Thomas und Chess."
+    }
+  ],
+  "quellen": [
+    "thomasChess1977",
+    "mccraeJohn1992",
+    "beesdo2009",
+    "schneiderLindenberger2018",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "entwicklung-0-18",
+    "bindungsmuster",
+    "angst",
+    "adhs",
+    "beziehung-haltung"
+  ],
+  "toolbox": [
+    "mein-staerkenprofil",
+    "wut-thermometer",
+    "energie-batterie",
+    "neue-klasse",
+    "tagesplan-bildkarten"
+  ]
+}

@@ -1,0 +1,522 @@
+{
+  "id": "deeskalation",
+  "bereich": "handeln",
+  "titel": "Deeskalation und Krisenintervention",
+  "untertitel": "Eskalationen früh erkennen, in der Krise Sicherheit geben und danach die Beziehung wiederherstellen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Phasen einer Eskalation beschreiben und erkennen, in welcher Phase sich ein Kind gerade befindet.",
+    "Sie können Haltung, Stimme, Sprache und Körpersprache so einsetzen, dass Spannung sinkt statt steigt.",
+    "Sie können in einer akuten Krise die Sicherheit aller in den Vordergrund stellen und wissen, wann Sie sofort Hilfe holen.",
+    "Sie können nach einer Krise ein Nachgespräch führen, eine Wiedergutmachung anbahnen und den Vorfall sachlich dokumentieren.",
+    "Sie können aus dokumentierten Vorfällen Muster erkennen und im Team vorbeugende Maßnahmen planen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Dylan, 11 Jahre, Cycle 4.1",
+          "text": "Mathematik, dritte Stunde. Dylan kommt mit gesenktem Kopf aus der Pause, lässt die Tasche fallen und legt den Kopf auf den Tisch. Die Lehrerin fordert ihn auf, das Heft herauszuholen. Er murmelt etwas. Sie wiederholt die Aufforderung lauter, vor der ganzen Klasse. Dylan springt auf, der Stuhl kippt um, er schreit: „Lass mich in Ruhe!“ Die Lehrerin geht auf ihn zu: „So redest du nicht mit mir. Heb sofort den Stuhl auf, oder du gehst zur Direktion.“ Dylan tritt gegen den Tisch und rennt aus dem Raum. Später stellt sich heraus: In der Pause hatten ihn ältere Schüler vor allen anderen ausgelacht.",
+          "fragen": [
+            "An welchen Stellen hätte die Situation eine andere Richtung nehmen können?",
+            "Was hat Dylan aus der Pause mitgebracht – und was hätte er in der Klasse gebraucht?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Eine Eskalation entsteht selten aus dem Nichts. Meist baut sich Spannung über Minuten oder Stunden auf, oft ausgelöst durch etwas, das Erwachsene nicht sehen: Streit auf dem Schulweg, eine Kränkung in der Pause, Hunger, Schlafmangel, eine Aufgabe, die das Kind überfordert. Dann genügt ein kleiner Anlass – eine Aufforderung, ein Blick, ein Nein –, und das Verhalten kippt.\n\n**Deeskalation** heißt, Spannung abzubauen, bevor sie zur Krise wird, und in der Krise dafür zu sorgen, dass niemand zu Schaden kommt. **Krisenintervention** meint das Handeln in der akuten Situation und unmittelbar danach. In beiden Fällen geht es nicht darum, einen Machtkampf zu gewinnen. Die Ziele sind: Sicherheit für alle, Beruhigung, Schutz der Würde des Kindes und der Beziehung – und später das gemeinsame Lernen aus dem Vorfall.\n\nIn Dylans Fall haben sich zwei Kräfte gegenseitig hochgeschaukelt: ein Kind, das bereits in hoher Anspannung war, und eine Erwachsene, die sich vor der Klasse herausgefordert fühlte. Das ist menschlich und passiert erfahrenen Fachkräften ebenso. Deeskalation lässt sich aber lernen – vor allem das frühe Erkennen und die eigene Ruhe."
+        },
+        {
+          "art": "merke",
+          "text": "In der Krise wird nicht erzogen, sondern gesichert und beruhigt. Das Gespräch über Ursachen, Regeln und Wiedergutmachung folgt später – wenn das Kind wieder denken kann."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Wie eine Eskalation verläuft",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Warum hilft Reden im Höhepunkt einer Krise so wenig? Unter starkem Stress schaltet der Körper auf Alarm: Herzschlag und Atmung beschleunigen sich, die Muskeln spannen sich an, die Wahrnehmung verengt sich auf die vermeintliche Gefahr. Was wir für ein Gespräch brauchen – zuhören, abwägen, Folgen bedenken –, steht in diesem Zustand nur noch eingeschränkt zur Verfügung; ältere, schnellere Alarmsysteme des Gehirns übernehmen die Steuerung (Perry & Szalavitz, 2006).\n\nDaniel Siegel (1999) hat dafür das Bild des **Toleranzfensters** geprägt. Innerhalb dieses Fensters kann ein Mensch starke Gefühle spüren und trotzdem nachdenken. Wird die Erregung zu groß, fällt er heraus: entweder in **Übererregung** (Wut, Panik, Angriff, Flucht) oder in **Untererregung** (Erstarren, Abschalten, innere Leere). Viele Kinder mit belastenden Erfahrungen, aber auch manche Kinder mit ADHS oder Autismus haben ein schmaleres Fenster. Sie geraten schneller hinaus und brauchen länger, um zurückzufinden."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Phasen einer Eskalation",
+          "spalten": [
+            "Phase",
+            "Woran Sie es erkennen",
+            "Was jetzt hilft"
+          ],
+          "zeilen": [
+            [
+              "Ruhe",
+              "Das Kind arbeitet mit, ist ansprechbar, reagiert auf Humor und Absprachen.",
+              "Beziehung pflegen, Erfolge ermöglichen, Frühwarnzeichen und Beruhigungsstrategien gemeinsam besprechen und üben."
+            ],
+            [
+              "Auslöser und Anspannung",
+              "Unruhe, Rückzug oder Gereiztheit: Trommeln, Kopf auf dem Tisch, Murmeln, Arbeit wird nicht begonnen, der Blick wird starr.",
+              "Früh und leise reagieren: Nähe ohne Druck, Hilfe anbieten, Aufgabe erleichtern, Pause oder Ortswechsel ermöglichen."
+            ],
+            [
+              "Zuspitzung",
+              "Lauter werden, Diskutieren, Provozieren, Beleidigen, Türen knallen, Gegenstände werfen, Drohen.",
+              "Kurz und ruhig sprechen, nicht über Schuld diskutieren, Wahlmöglichkeiten anbieten, Zuschauer verringern, Abstand halten."
+            ],
+            [
+              "Höhepunkt (Krise)",
+              "Kontrollverlust: Schreien, Schlagen, Treten, Zerstören, Weglaufen – oder völliges Erstarren.",
+              "Sicherheit aller herstellen, Raum geben, Hilfe holen, möglichst wenig sprechen."
+            ],
+            [
+              "Abklingen",
+              "Die Erregung sinkt; das Kind wirkt erschöpft, verwirrt, weint oder zieht sich zurück. Die Krise kann jederzeit wieder aufflammen.",
+              "Ruhe lassen, einfache Angebote (Wasser, ruhiger Ort), keine Vorwürfe, noch keine Aufarbeitung."
+            ],
+            [
+              "Erholung und Nachbereitung",
+              "Das Kind ist wieder ansprechbar und kann über das Geschehene nachdenken.",
+              "Nachgespräch, Wiedergutmachung, Plan für das nächste Mal, Dokumentation."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Phasen sind ein Modell, kein Fahrplan. Manche Kinder durchlaufen sie in Sekunden, andere über eine ganze Stunde; manchmal scheint ein Kind direkt in den Höhepunkt zu springen. Je besser Sie die **Frühwarnzeichen** eines bestimmten Kindes kennen, desto früher können Sie handeln – und desto seltener kommt es zum Höhepunkt. Aufschlussreich sind auch die Umstände: Zu welchen Zeiten, in welchen Fächern, bei welchen Aufgaben, bei welchen Übergängen und mit welchen Personen häufen sich Eskalationen?"
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Nicht jede Krise ist Wut",
+          "punkte": [
+            {
+              "wie": "Erstarren und Abschalten",
+              "unterschied": "Das Kind reagiert nicht, starrt ins Leere, wirkt „weggetreten“. Das kann eine Stressreaktion nach belastenden Erfahrungen sein (Dissoziation), keine Verweigerung. Ruhig mit Namen ansprechen, orientieren („Du bist in der Schule, ich bin Frau Weber“), Berührungen nur ankündigen."
+            },
+            {
+              "wie": "Überlastung bei Autismus",
+              "unterschied": "Der Zusammenbruch entsteht aus zu vielen Reizen, Unvorhergesehenem oder zu vielen Anforderungen – er ist kein Mittel, um etwas durchzusetzen. Hilfreich: Reize verringern, wenig sprechen, keine Forderungen, einen ruhigen Rückzugsort ermöglichen."
+            },
+            {
+              "wie": "Panik",
+              "unterschied": "Schnelles Atmen, Zittern, Weinen, Fluchtdrang, Angst, die Kontrolle zu verlieren. Ruhig bleiben, langsam mitatmen, das Kind nicht allein lassen, für eine sichere, reizarme Umgebung sorgen."
+            },
+            {
+              "wie": "Körperliche Ursachen",
+              "unterschied": "Unterzuckerung bei Diabetes, ein epileptischer Anfall, Schmerzen oder Rauschmittel können wie Verwirrtheit oder Aggression aussehen. Kennen Sie die Notfallpläne der Kinder Ihrer Gruppe; im Zweifel medizinische Hilfe holen."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Vorbeugen und früh eingreifen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die meisten Krisen lassen sich nicht im Höhepunkt, sondern nur davor beeinflussen. Nolting (2002) beschreibt auf der Grundlage der Unterrichtsforschung, dass Lehrkräfte Störungen vor allem durch ihre Unterrichtsführung vorbeugen: Sie behalten die ganze Klasse im Blick, sorgen für klare Abläufe und fließende Übergänge und reagieren auf kleine Störungen früh und möglichst unauffällig – mit einem Blick, einer Geste, einem Schritt auf das Kind zu, bevor sie das Wort ergreifen. Je leiser und persönlicher die erste Reaktion ausfällt, desto geringer ist die Gefahr, dass ein Kind vor Publikum „nicht mehr zurückkann“.\n\nFür einzelne Kinder mit häufigen Krisen reicht das nicht aus. Hier hilft ein genauer Blick auf die **Auslöser**: Manche Kinder geraten bei schriftlichen Aufgaben in Not, andere bei Wartezeiten, bei Vertretungsstunden, bei Kritik vor anderen oder nach Wochenenden mit Belastungen zu Hause. Wer die Auslöser kennt, kann Anforderungen anpassen, Übergänge vorbereiten und schwierige Momente begleiten."
+        },
+        {
+          "art": "tun",
+          "titel": "Früh eingreifen, wenn die Anspannung steigt",
+          "punkte": [
+            "Hingehen statt rufen: sich ruhig neben das Kind stellen und leise nachfragen („Ist etwas passiert? Brauchst du Hilfe?“).",
+            "Die Anforderung vorübergehend verringern: die erste Aufgabe gemeinsam lösen, weniger Aufgaben, eine andere Reihenfolge.",
+            "Einen Ortswechsel oder eine Aufgabe mit Bewegung anbieten: etwas ins Sekretariat bringen, Material holen.",
+            "Auf vereinbarte Signale achten und sie ernst nehmen: Pausenkarte, Handzeichen, ein fester Platz zum Durchatmen.",
+            "Grundbedürfnisse prüfen: Hat das Kind gegessen und geschlafen? Ist es krank? Ist gerade etwas vorgefallen?",
+            "Verbindung herstellen: ein persönliches Wort, Interesse an dem, was das Kind beschäftigt, Humor, der niemanden verletzt."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Im Ruhigen üben, was in der Krise helfen soll.** Wer bereits unter Spannung steht, lernt nichts Neues mehr. Strategien zur Selbstberuhigung – bewusst langsam atmen, bis zehn zählen, eine Pausenkarte zeigen, die eigene Anspannung auf einem Wutthermometer einschätzen – werden in ruhigen Momenten eingeführt und immer wieder geübt. Trainingsprogramme für Kinder mit aggressivem Verhalten, etwa das von Petermann und Petermann (2012), setzen genau hier an: Die Kinder lernen, ihre Anspannung früh wahrzunehmen, soziale Situationen genauer zu deuten und andere Handlungsmöglichkeiten zu erproben."
+        },
+        {
+          "art": "merke",
+          "text": "Deeskalation beginnt lange vor der Krise: mit Beziehung, verlässlichen Abläufen, passenden Anforderungen und Strategien, die das Kind im Ruhigen geübt hat."
+        }
+      ]
+    },
+    {
+      "titel": "Haltung, Körpersprache und Sprache in der Krise",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das wichtigste Werkzeug in einer Eskalation sind Sie selbst. Kinder in hoher Erregung orientieren sich stark an der Verfassung der Erwachsenen: Hektik, eine laute Stimme und eine drohende Haltung steigern ihre Alarmbereitschaft, Ruhe und Klarheit senken sie. Man spricht von **Ko-Regulation**: Ein Erwachsener, der ruhig bleibt, hilft dem Kind, seine Erregung zu senken, bevor es das allein kann.\n\nDas ist leichter gesagt als getan. Auch Erwachsene geraten unter Stress; Beleidigungen, Angst um andere Kinder oder das Gefühl, vor der Klasse das Gesicht zu verlieren, lösen eigene Alarmreaktionen aus. Hilfreich sind kurze innere Sätze, die Sie sich vorher zurechtlegen: „Das ist nicht gegen mich persönlich gerichtet.“ – „Ich muss jetzt nicht gewinnen.“ – „Erst Sicherheit, dann alles andere.“ Omer und von Schlippe (2004) betonen: Erwachsene können das Verhalten eines Kindes nicht direkt kontrollieren, wohl aber ihr eigenes. Wer sich selbst steuert, bleibt handlungsfähig."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Körpersprache und Stimme",
+          "spalten": [
+            "Statt …",
+            "… besser"
+          ],
+          "zeilen": [
+            [
+              "Frontal und nah vor dem Kind stehen, sich über es beugen",
+              "Seitlich versetzt stehen, mit deutlichem Abstand (mehr als eine Armlänge), eher auf Augenhöhe"
+            ],
+            [
+              "Zeigefinger, verschränkte Arme, Hände in den Hüften",
+              "Hände sichtbar und locker, ruhige, langsame Bewegungen"
+            ],
+            [
+              "Laute, schnelle, hohe Stimme",
+              "Normale bis leise Lautstärke, tiefer und langsamer sprechen, Pausen lassen"
+            ],
+            [
+              "Blickkontakt erzwingen („Schau mich an!“)",
+              "Blickkontakt anbieten, nicht erzwingen"
+            ],
+            [
+              "Den Weg zur Tür versperren, das Kind einkreisen",
+              "Ausgänge frei lassen – für das Kind und für Sie selbst"
+            ],
+            [
+              "Plötzlich anfassen, am Arm wegziehen",
+              "Berührungen vermeiden, solange keine akute Gefahr besteht; eigene Bewegungen ankündigen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "In der Phase der Anspannung und Zuspitzung ist **Sprache** noch ein wirksames Werkzeug – wenn sie kurz, ruhig und freundlich-bestimmt ist. Einige Elemente haben sich bewährt:\n\n**Das Gefühl benennen, ohne zu bewerten:** „Du bist gerade richtig wütend.“ Das Kind fühlt sich gesehen und kann sein Erleben besser einordnen. Deutungen wie „Du willst doch nur Aufmerksamkeit“ verschärfen die Lage.\n\n**Sagen, was jetzt geschehen soll – positiv und knapp:** „Leg den Stift bitte hin“ statt „Hör auf damit“. Eine Botschaft, ein Satz.\n\n**Wahlmöglichkeiten anbieten:** „Du kannst dich in die Ruheecke setzen oder mit mir kurz auf den Flur gehen.“ Beide Möglichkeiten müssen für Sie annehmbar sein. Die Wahl gibt dem Kind ein Stück Kontrolle zurück – und einen Ausweg ohne Gesichtsverlust.\n\n**Zeit geben und ruhig wiederholen:** Nach einer Aufforderung einige Sekunden warten, sich eventuell kurz abwenden. Wenn das Kind diskutiert, dieselbe kurze Botschaft freundlich wiederholen, statt auf jedes Argument einzugehen.\n\n**Einen späteren Zeitpunkt ankündigen:** „Darüber sprechen wir, wenn es dir besser geht.“ Das ist kein Nachgeben, sondern ein bewusster Aufschub."
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eine Eskalation anheizt",
+          "punkte": [
+            "Drohungen und Ultimaten („Wenn du nicht sofort …, dann …“) – sie lassen nur die Wahl zwischen Unterwerfung und Gesichtsverlust.",
+            "Diskussionen darüber, wer angefangen hat oder wer recht hat.",
+            "Ironie, Sarkasmus, Bloßstellen vor der Klasse.",
+            "„Beruhig dich!“ – das wirkt wie ein Befehl, den das Kind in diesem Moment nicht erfüllen kann.",
+            "Mehrere Erwachsene, die gleichzeitig auf das Kind einreden.",
+            "Moralpredigten und Fragen nach dem Warum."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Maya, 15 Jahre, Lycée",
+          "text": "Im Französischunterricht schreibt Maya unter dem Tisch Nachrichten. Der Lehrer bittet sie, das Handy wegzulegen. Maya: „Ganz ruhig, ich schreib nur meiner Mutter.“ Einige lachen. Der Lehrer spürt Ärger aufsteigen. Statt vor allen das Handy einzufordern, geht er ruhig zu ihrem Tisch und sagt leise: „Leg es bitte weg. Wenn mit deiner Mutter etwas Dringendes ist, sag es mir nach der Stunde, dann finden wir eine Lösung.“ Dann wendet er sich wieder der Klasse zu. Nach einer halben Minute steckt Maya das Handy ein. Nach der Stunde spricht er zwei Minuten mit ihr unter vier Augen über die Regel und über ihren Ton.",
+          "fragen": [
+            "Welche Elemente der Deeskalation erkennen Sie?",
+            "Warum ist das kurze Gespräch nach der Stunde wichtig – und warum erst dann?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Je höher die Erregung des Kindes, desto weniger Worte, desto langsamer die Bewegungen, desto größer der Abstand."
+        }
+      ]
+    },
+    {
+      "titel": "Sicherheit geht vor: Raum geben und Hilfe holen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kippt eine Situation in den Höhepunkt, verschiebt sich die Aufgabe: Jetzt geht es um **Sicherheit** – für das Kind in der Krise, für die anderen Kinder und für Sie selbst. Erklären, Klären und Konsequenzen haben in diesem Moment keinen Platz.\n\nOft ist der wirksamste Schritt, **Raum zu geben**: den Abstand vergrößern, das Kind nicht bedrängen, gefährliche Gegenstände wenn möglich unauffällig entfernen, Zuschauer wegbringen. Ein Publikum verschärft fast jede Krise, besonders bei Jugendlichen, die vor Gleichaltrigen nicht nachgeben können. Häufig ist es einfacher und sicherer, die Klasse aus dem Raum zu führen, als das Kind in der Krise hinauszubringen.\n\n**Ihre eigene Sicherheit zählt.** Wenn Sie bedroht oder angegriffen werden, dürfen und sollen Sie Abstand nehmen, sich zurückziehen und Hilfe holen. Das ist kein Versagen. Niemand muss eine Krise allein lösen – und niemand sollte es versuchen."
+        },
+        {
+          "art": "tun",
+          "titel": "Einen Krisenplan vorher absprechen",
+          "punkte": [
+            "Ein vereinbartes Signal, mit dem Sie Hilfe rufen – zum Beispiel ein Kind, das mit einer roten Karte ins Nachbarzimmer oder ins Sekretariat geht.",
+            "Wer kommt, wenn Hilfe gebraucht wird? Wer übernimmt die Klasse, wer bleibt beim Kind?",
+            "Wohin geht die Klasse, wenn sie den Raum verlassen muss?",
+            "Ein ruhiger Ort, an den sich ein Kind zurückziehen kann, ohne dass dies als Strafe gilt – nie abgeschlossen, nie ohne Aufsicht.",
+            "Für Kinder mit wiederholten Krisen ein schriftlicher, individueller Krisenplan: Frühwarnzeichen, was hilft, was schadet, Ansprechpersonen, Notfallkontakte – abgestimmt mit Eltern und Fachleuten.",
+            "Die Abläufe im Team besprechen und auffrischen, damit im Ernstfall jeder weiß, was zu tun ist."
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Körperliches Eingreifen ist nur als letztes Mittel vertretbar: bei unmittelbarer Gefahr für das Kind selbst oder für andere, wenn nichts anderes mehr hilft. Dann gilt: so kurz und so sanft wie möglich, möglichst zu zweit, im Rahmen der Regeln Ihrer Einrichtung und idealerweise nach einer Schulung. Üben Sie nie Druck auf Hals, Brust oder Rücken aus und halten Sie ein Kind nie in Bauchlage fest – das kann lebensgefährlich sein. Jedes Festhalten wird anschließend der Leitung gemeldet, dokumentiert und mit den Eltern besprochen."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie **sofort** Hilfe – Kolleginnen und Kollegen, die Leitung, wenn nötig den Notruf 112 (Polizei 113) –, wenn jemand verletzt ist oder ernsthaft verletzt zu werden droht, wenn Waffen oder gefährliche Gegenstände im Spiel sind, wenn ein Kind sich selbst verletzt oder davon spricht, nicht mehr leben zu wollen (das Kind dann nicht allein lassen), bei einem medizinischen Notfall oder wenn Sie die Lage allein nicht mehr sicher halten können. Sprechen Sie **zeitnah** mit der Leitung und dem zuständigen CDSE-Team, wenn Krisen sich häufen oder heftiger werden, wenn ein Kind in der Krise etwas äußert, das auf Gewalt oder Vernachlässigung hindeutet, oder wenn Sie selbst an Ihre Grenzen kommen. Für Meldungen gelten die internen Abläufe Ihrer Einrichtung."
+        }
+      ]
+    },
+    {
+      "titel": "Nach der Krise: Nachgespräch, Wiedergutmachung, Dokumentation",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nach dem Höhepunkt ist ein Kind häufig erschöpft, beschämt oder traurig. Manche weinen, andere wirken abwesend oder tun so, als sei nichts gewesen. In dieser Phase kann die Erregung schnell wieder aufflammen. Deshalb gilt zuerst: Ruhe, etwas zu trinken, eine einfache, vertraute Tätigkeit. Vorwürfe und Aufarbeitung haben Zeit.\n\nDas **Nachgespräch** findet statt, wenn das Kind wieder ganz ansprechbar ist – oft einige Stunden später oder am nächsten Tag, aber nicht erst nach einer Woche. Führen Sie es in ruhiger Umgebung, ohne Zeitdruck und ohne Zuschauer. Ziel ist kein Geständnis, sondern gemeinsames Verstehen und ein Plan für das nächste Mal."
+        },
+        {
+          "art": "liste",
+          "titel": "Ein Nachgespräch in fünf Schritten",
+          "punkte": [
+            "**Beziehung zeigen:** „Ich bin froh, dass es dir besser geht. Ich möchte mit dir verstehen, was passiert ist.“",
+            "**Rekonstruieren:** Was war vorher? Was hast du gedacht, gefühlt, im Körper gespürt? Wann hast du gemerkt, dass es zu viel wird?",
+            "**Folgen betrachten:** Was hat dein Verhalten gebracht, was hat es gekostet – für dich und für andere?",
+            "**Wiedergutmachung:** Wer wurde verletzt oder geschädigt? Was könntest du tun, damit es wieder gut wird?",
+            "**Plan für das nächste Mal:** Woran merkst du früh, dass es kritisch wird? Was kannst du dann tun – und was sollen die Erwachsenen dann tun?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wiedergutmachung statt Strafe.** Eine Wiedergutmachung fragt: Welcher Schaden ist entstanden, und wie lässt er sich ausgleichen? Das kann eine Entschuldigung sein, aber auch eine Tat: das umgeworfene Regal mit einräumen, dem verletzten Mitschüler eine Karte schreiben, beim Reparieren helfen. Wichtig ist, dass das Kind an der Idee beteiligt ist und sie ohne Demütigung umsetzen kann; eine erzwungene Entschuldigung vor der Klasse bewirkt meist das Gegenteil. Omer und von Schlippe (2004) sehen in der Wiedergutmachung einen Weg, Verantwortung zu übernehmen, ohne dass die Beziehung zerbricht.\n\n**Die Klasse nicht vergessen.** Auch die anderen Kinder haben die Krise miterlebt; manche hatten Angst. Ein kurzes, ruhiges Wort an die Gruppe hilft („Das war für alle schwierig. Tom geht es jetzt besser, und wir Erwachsenen kümmern uns darum.“) – ohne Einzelheiten über das Kind preiszugeben."
+        },
+        {
+          "art": "tun",
+          "titel": "Sachlich dokumentieren",
+          "punkte": [
+            "Zeitnah schreiben, möglichst am selben Tag.",
+            "Vorher: Ort, Zeit, Tätigkeit, Auslöser, Frühwarnzeichen.",
+            "Verhalten: Was genau hat das Kind getan und gesagt? Beschreiben, nicht deuten – „warf den Stuhl in Richtung Fenster“ statt „rastete völlig aus“.",
+            "Reaktionen: Was haben die Erwachsenen getan, und wie hat das Kind darauf reagiert?",
+            "Folgen: Verletzungen, Schäden, wer wann informiert wurde (Leitung, Eltern).",
+            "Nach mehreren Vorfällen gemeinsam im Team auswerten: Gibt es Muster bei Zeiten, Fächern, Übergängen oder Personen? Daraus entstehen die wirksamsten vorbeugenden Maßnahmen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Auch Erwachsene brauchen eine Nachbesprechung.** Krisen gehen an den Beteiligten nicht spurlos vorbei. Angst, Ärger, Scham oder Zweifel („Hätte ich das verhindern können?“) sind normale Reaktionen. Eine kurze Besprechung im Team – Was ist passiert? Wie geht es uns? Was lernen wir daraus? – entlastet und verbessert das Vorgehen beim nächsten Mal. Wenn Sie eine Krise länger beschäftigt, nutzen Sie Supervision oder sprechen Sie mit der Leitung."
+        },
+        {
+          "art": "fall",
+          "titel": "Dylan, am nächsten Morgen",
+          "text": "Die Lehrerin und eine Kollegin aus dem ISA-Team des CDSE setzen sich mit Dylan zusammen. Er erzählt von der Pause. Auf einem Wutthermometer zeichnen sie gemeinsam nach, wie seine Anspannung gestiegen ist. Dylan sagt, als er den Kopf auf den Tisch legte, habe er „nur Ruhe gewollt“. Sie vereinbaren: Wenn er den Kopf auf den Tisch legt, fragt die Lehrerin leise, ob er seine Pausenkarte nutzen möchte. Dylan schlägt selbst vor, den beschädigten Tisch mit dem Hausmeister zu reparieren. Die Lehrerin informiert außerdem die Pausenaufsicht und kümmert sich um den Vorfall mit den älteren Schülern.",
+          "fragen": [
+            "Welche Teile dieses Nachgesprächs sind für die Vorbeugung besonders wichtig?",
+            "Warum gehört der Vorfall in der Pause ebenfalls zur Nachbereitung?"
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Warum helfen Erklärungen und Argumente im Höhepunkt einer Krise kaum?",
+      "optionen": [
+        "Weil das Kind in diesem Moment absichtlich nicht zuhören will.",
+        "Weil unter starker Erregung das Nachdenken und Abwägen stark eingeschränkt ist.",
+        "Weil Kinder Erklärungen grundsätzlich erst im Jugendalter verstehen.",
+        "Weil Erwachsene in Krisen meist zu leise und zu langsam sprechen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Im Höhepunkt ist das Kind außerhalb seines Toleranzfensters: Der Körper ist im Alarmzustand, Zuhören und Abwägen gelingen kaum. Das ist keine böse Absicht. Auch jüngere Kinder verstehen Erklärungen – aber erst, wenn sie wieder ruhig sind. Lauter und schneller zu sprechen, würde die Erregung eher steigern."
+    },
+    {
+      "art": "fall",
+      "fall": "Lea (9) sitzt seit der Pause mit verschränkten Armen da, trommelt mit dem Fuß und murmelt vor sich hin. Die Aufgabe hat sie nicht begonnen.",
+      "frage": "Was ist jetzt am hilfreichsten?",
+      "optionen": [
+        "Vor der Klasse deutlich ankündigen, dass sie die Aufgabe sonst in der Pause nachholt.",
+        "Abwarten, bis sie von selbst beginnt, und die Situation nicht ansprechen.",
+        "Leise zu ihr gehen, nachfragen und Hilfe beim ersten Schritt oder eine kurze Pause anbieten.",
+        "Die Eltern anrufen und bitten, Lea früher abzuholen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Lea zeigt Frühwarnzeichen der Anspannung. Jetzt lässt sich die Situation am leichtesten beeinflussen: leise, persönlich, mit einem Hilfsangebot. Eine Ankündigung vor der Klasse erhöht den Druck, bloßes Abwarten verschenkt die Chance, früh zu helfen, und ein Anruf bei den Eltern ist für diese Lage viel zu weitgehend."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Verhaltensweisen der Erwachsenen tragen in einer angespannten Situation zur Deeskalation bei? (mehrere richtig)",
+      "optionen": [
+        "Seitlich versetzt und mit deutlichem Abstand stehen",
+        "Langsam, ruhig und in kurzen Sätzen sprechen",
+        "Den Weg zur Tür versperren, damit das Kind nicht wegläuft",
+        "Zwei annehmbare Wahlmöglichkeiten anbieten",
+        "Mit erhobenem Zeigefinger klarstellen, wer bestimmt"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Abstand, eine seitliche Position, ruhige kurze Sätze und echte Wahlmöglichkeiten senken die Alarmbereitschaft und lassen dem Kind einen Ausweg. Ein versperrter Ausgang und drohende Gesten wirken dagegen wie ein Angriff und erhöhen die Gefahr, dass das Kind sich wehrt."
+    },
+    {
+      "art": "fall",
+      "fall": "Karim (14) wird wegen seines Handys angesprochen. Vor der Klasse sagt er zur Lehrerin: „Sie haben mir gar nichts zu sagen!“ Einige Mitschüler lachen.",
+      "frage": "Welche Reaktion ist am sinnvollsten?",
+      "optionen": [
+        "Ruhig sagen: „So lasse ich nicht mit mir reden. Wir klären das nach der Stunde.“ – und weiterunterrichten.",
+        "Sofort das Handy einfordern und die Direktion holen, falls er es nicht abgibt.",
+        "Ihm vor der Klasse ausführlich erklären, warum sein Verhalten respektlos ist.",
+        "So tun, als hätte man nichts gehört, und das Thema nicht mehr ansprechen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Diese Antwort setzt eine klare Grenze, vermeidet aber einen Machtkampf vor Publikum und kündigt ein späteres Gespräch an. Forderungen mit Drohung und Belehrungen vor der Klasse lassen Karim kaum einen Ausweg ohne Gesichtsverlust. Das Verhalten ganz zu übergehen, wäre ebenfalls falsch: Die Grenze muss später geklärt werden."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind, das in einer belastenden Situation plötzlich erstarrt, ins Leere starrt und nicht mehr reagiert, verweigert in der Regel absichtlich die Mitarbeit.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Erstarren und Abschalten können eine Stressreaktion sein, zum Beispiel nach belastenden Erfahrungen (Dissoziation). Das Kind ist dann außerhalb seines Toleranzfensters und kaum erreichbar. Hilfreich sind eine ruhige Ansprache mit Namen, Orientierung und Geduld – kein Druck."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem heftigen Wutausbruch sitzt Tom (8) erschöpft und weinend in der Ruheecke. Eine Kollegin möchte sofort mit ihm besprechen, was er falsch gemacht hat, und die Konsequenzen festlegen.",
+      "frage": "Was ist jetzt fachlich am besten?",
+      "optionen": [
+        "Sofort das Gespräch führen, solange die Erinnerung noch frisch ist.",
+        "Tom allein im Raum lassen, bis er bereit ist, sich zu entschuldigen.",
+        "Die Eltern bitten, das Gespräch am Abend zu Hause zu führen.",
+        "Tom zur Ruhe kommen lassen, etwas zu trinken anbieten und das Nachgespräch später führen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Beim Abklingen kann die Erregung schnell wieder aufflammen; Tom braucht zuerst Ruhe und Sicherheit. Das Nachgespräch gehört in die Erholungsphase, am selben oder am nächsten Tag. Ein Kind allein zu lassen, bis es sich entschuldigt, beschämt es und ist unsicher; das Gespräch an die Eltern abzugeben, verschenkt die Chance, in der Schule gemeinsam zu lernen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was kennzeichnet eine Wiedergutmachung im Unterschied zu einer Strafe?",
+      "optionen": [
+        "Sie gleicht den Schaden aus; das Kind ist an der Idee beteiligt und behält seine Würde.",
+        "Sie wird von den Erwachsenen allein festgelegt und möglichst streng bemessen.",
+        "Sie besteht immer aus einer Entschuldigung vor der ganzen Klasse.",
+        "Sie ersetzt das Nachgespräch, weil damit alles erledigt ist."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Wiedergutmachung richtet den Blick auf den Schaden und seine Reparatur. Sie wirkt am besten, wenn das Kind mitentscheidet und dabei seine Würde behält. Eine erzwungene öffentliche Entschuldigung demütigt eher, und die Wiedergutmachung ist Teil des Nachgesprächs, nicht dessen Ersatz."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Vorfall in der Kantine sollen Sie eine kurze Notiz schreiben, die später im Team ausgewertet wird.",
+      "frage": "Welcher Eintrag ist am hilfreichsten?",
+      "optionen": [
+        "„Jan war heute wieder total aggressiv und völlig außer Kontrolle, wie so oft in der Kantine.“",
+        "„12.15 Uhr, Kantine: Nach einem Nein zum zweiten Nachtisch schob Jan sein Tablett vom Tisch und schrie einen Mitschüler an; im Ruheraum nach zehn Minuten ruhig.“",
+        "„Jan hat offensichtlich ein Problem mit Autoritäten, vermutlich wegen der schwierigen Lage zu Hause.“",
+        "„Die Kantine war heute wie immer laut und schwierig, sonst gab es keine Besonderheiten.“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Der zweite Eintrag nennt Zeit, Ort, Auslöser, beobachtbares Verhalten und was geholfen hat. So lassen sich später Muster erkennen. Die anderen Einträge werten („total aggressiv“), deuten ohne Grundlage („wegen der Situation zu Hause“) oder enthalten keine verwertbare Information."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "In welchen Situationen holen Sie sofort Hilfe, notfalls über den Notruf? (mehrere richtig)",
+      "optionen": [
+        "Ein Jugendlicher bedroht einen Mitschüler mit einem Messer.",
+        "Ein Kind verweigert eine Aufgabe und schimpft leise vor sich hin.",
+        "Ein Kind sagt während einer Krise, es wolle nicht mehr leben.",
+        "Ein Kind mit Diabetes wirkt plötzlich verwirrt und gereizt.",
+        "Ein Kind diskutiert lautstark über eine Note."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Waffen, Äußerungen über Suizid und mögliche medizinische Notfälle wie eine Unterzuckerung verlangen sofortige Hilfe; ein Kind, das nicht mehr leben will, wird nicht allein gelassen. Leises Schimpfen oder eine laute Diskussion über eine Note sind Anlässe für Deeskalation im Alltag, nicht für den Notruf."
+    },
+    {
+      "art": "fall",
+      "fall": "Samuel (10) gerät fast jede Woche in eine heftige Krise, meist montags in der ersten Stunde oder nach Vertretungsstunden. Die Krisen dauern zunehmend länger.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Samuel bei jeder Krise sofort von den Eltern abholen lassen, damit die Klasse Ruhe hat.",
+        "Die Konsequenzen schrittweise verschärfen, bis die Krisen deutlich seltener werden.",
+        "Abwarten, weil solche Phasen bei Kindern in diesem Alter meist von selbst vorbeigehen.",
+        "Mit Leitung und CDSE-Team die Dokumentation auswerten und mit Samuel und den Eltern einen Plan erarbeiten."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Die Krisen häufen sich, werden länger und folgen einem Muster (Montag, Vertretung). Das ist ein klarer Anlass, Unterstützung zu holen und aus der Dokumentation vorbeugende Maßnahmen abzuleiten – etwa einen ruhigen Wochenstart oder eine Vorbereitung auf Vertretungen. Abholen lassen und härtere Strafen ändern die Auslöser nicht; Abwarten lässt Samuel und die Klasse mit dem Problem allein."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Nach einer Krise sollten auch die beteiligten Erwachsenen Gelegenheit haben, das Erlebte im Team zu besprechen.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Angst, Ärger oder Selbstzweifel nach einer Krise sind normal. Eine kurze Nachbesprechung im Team entlastet, hilft beim Verarbeiten und verbessert das Vorgehen beim nächsten Mal."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage über körperliches Eingreifen trifft zu?",
+      "optionen": [
+        "Es ist eine übliche Maßnahme, wenn ein Kind eine Anweisung wiederholt nicht befolgt.",
+        "Es ist auch dann untersagt, wenn ein Kind ein anderes ernsthaft zu verletzen droht.",
+        "Es ist nur bei unmittelbarer Gefahr als letztes Mittel vertretbar und wird immer gemeldet und dokumentiert.",
+        "Es ist sinnvoll, ein Kind so lange festzuhalten, bis es sich entschuldigen kann."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Festhalten ist nur als letztes Mittel bei unmittelbarer Gefahr vertretbar – so kurz und sanft wie möglich, nie in Bauchlage oder mit Druck auf Hals, Brust oder Rücken, im Rahmen der Regeln der Einrichtung. Es ist keine Erziehungsmaßnahme und kein Mittel, eine Entschuldigung zu erzwingen. Droht ein Kind ein anderes ernsthaft zu verletzen, gehört der Schutz der Beteiligten zur Aufsichtspflicht."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Deeskalation",
+      "erklaerung": "Alle Maßnahmen, die Spannung und Erregung verringern, bevor oder während eine Situation eskaliert – mit dem Ziel, Schaden zu verhindern und die Beziehung zu erhalten."
+    },
+    {
+      "begriff": "Krisenintervention",
+      "erklaerung": "Handeln in einer akuten Krise und unmittelbar danach: Sicherheit herstellen, beruhigen, Hilfe holen, nachbereiten."
+    },
+    {
+      "begriff": "Toleranzfenster",
+      "erklaerung": "Bereich der inneren Erregung, in dem ein Mensch Gefühle spüren und zugleich klar denken kann. Bei zu hoher oder zu niedriger Erregung ist das Denken eingeschränkt (Siegel, 1999)."
+    },
+    {
+      "begriff": "Ko-Regulation",
+      "erklaerung": "Beruhigung mithilfe einer anderen Person: Ein ruhiger, zugewandter Erwachsener hilft dem Kind, seine Erregung zu senken, bevor es das selbst kann."
+    },
+    {
+      "begriff": "Frühwarnzeichen",
+      "erklaerung": "Individuelle Anzeichen steigender Anspannung, etwa Trommeln, Rückzug, starrer Blick oder Murmeln. Wer sie kennt, kann früh eingreifen."
+    },
+    {
+      "begriff": "Dissoziation",
+      "erklaerung": "Stressreaktion, bei der ein Mensch innerlich „abschaltet“: Er wirkt abwesend, erstarrt oder ist nicht erreichbar. Häufig nach belastenden Erfahrungen."
+    },
+    {
+      "begriff": "Nachgespräch",
+      "erklaerung": "Gespräch nach einer Krise, wenn das Kind wieder ruhig ist: das Geschehen verstehen, Wiedergutmachung besprechen, einen Plan für das nächste Mal vereinbaren."
+    },
+    {
+      "begriff": "Wiedergutmachung",
+      "erklaerung": "Handlung, mit der ein Kind einen verursachten Schaden ausgleicht. Anders als eine Strafe stärkt sie Verantwortung und Beziehung."
+    },
+    {
+      "begriff": "Krisenplan",
+      "erklaerung": "Schriftliche Absprache für eine Klasse oder ein einzelnes Kind: Frühwarnzeichen, hilfreiche Reaktionen, Zuständigkeiten, Rückzugsort, Notfallkontakte."
+    }
+  ],
+  "quellen": [
+    "omer2004",
+    "nolting2002",
+    "petermann2012",
+    "siegel1999",
+    "perry2006"
+  ],
+  "verwandt": [
+    "neue-autoritaet",
+    "stress-gehirn",
+    "emotionsregulation",
+    "oppositionell-aggressiv",
+    "traumapaedagogik",
+    "beobachten-dokumentieren"
+  ],
+  "toolbox": [
+    "nachgespraech-krise",
+    "wut-thermometer",
+    "ich-brauche-eine-pause",
+    "was-ist-passiert",
+    "abc-beobachtung"
+  ]
+}

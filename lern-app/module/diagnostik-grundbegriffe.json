@@ -1,0 +1,540 @@
+{
+  "id": "diagnostik-grundbegriffe",
+  "bereich": "grundlagen",
+  "titel": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose",
+  "untertitel": "Was diagnostische Verfahren leisten, wo ihre Grenzen liegen und welche Rolle Sie dabei haben",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können Beobachtung, Screening, Fragebogen, Test und Diagnose voneinander unterscheiden und wissen, was jedes Verfahren leisten kann und was nicht.",
+    "Sie können erklären, wie Diagnosen nach DSM-5-TR und ICD-11 zustande kommen und warum ein auffälliger Fragebogenwert noch keine Diagnose ist.",
+    "Sie können die Gütekriterien Objektivität, Reliabilität, Validität, Normierung und Fairness in eigenen Worten erklären.",
+    "Sie können begründen, warum Diagnostik mehrere Blickwinkel braucht, und einen Lehrerfragebogen sorgfältig ausfüllen.",
+    "Sie kennen Ihre Rolle im diagnostischen Prozess und die ethischen Fragen rund um Etikettierung, Einwilligung und Datenschutz."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: was Diagnostik ist – und was nicht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Yanis, 8 Jahre, Cycle 3.1",
+          "text": "Die Klassenlehrerin von Yanis bekommt vom Diagnostique-Team einen mehrseitigen Fragebogen mit Aussagen über sein Verhalten. Sie zögert: Wenn sie bei „ist unruhig“ und „kann sich nicht lange konzentrieren“ das höchste Kästchen ankreuzt – hat Yanis dann ADHS? Gleichzeitig fragt die Mutter, ob man nicht „einfach einen Test machen“ könne, damit man endlich wisse, was mit ihm los sei.",
+          "fragen": [
+            "Was erwartet die Mutter von einem Test – und was kann ein Test tatsächlich leisten?",
+            "Welche Verantwortung trägt die Lehrerin beim Ausfüllen des Fragebogens?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Im Alltag wird „Diagnose“ oft mit „Test“ gleichgesetzt, als gäbe es für seelische Schwierigkeiten eine Art Blutprobe. Die gibt es nicht. **Psychologische Diagnostik** ist das planvolle Sammeln und Zusammenführen von Informationen, um eine Frage zu beantworten und eine Entscheidung vorzubereiten: Warum fällt diesem Kind das Lesen so schwer? Braucht es besondere Unterstützung? Liegt eine Störung vor, die behandelt werden sollte?\n\nAm Anfang steht deshalb immer eine **Fragestellung**. Sie bestimmt, welche Verfahren sinnvoll sind. Am Ende steht keine einzelne Zahl, sondern eine fachliche Einschätzung, die viele Informationen gewichtet: Vorgeschichte, Beobachtungen, Gespräche, Fragebögen, Tests – und das, was das Kind selbst sagt.\n\nFür die Schule besonders wichtig ist die **Förderdiagnostik**. Sie fragt nicht nur „Was hat das Kind?“, sondern vor allem: Was kann es schon? Was braucht es als Nächstes? Und woran erkennen wir, ob die Hilfe wirkt?"
+        },
+        {
+          "art": "merke",
+          "text": "Keine einzelne Zahl und kein einzelner Test ergibt eine Diagnose. Eine Diagnose ist eine fachliche Schlussfolgerung aus vielen Informationen – gezogen von Fachleuten, die dafür ausgebildet sind."
+        }
+      ]
+    },
+    {
+      "titel": "Die Werkzeuge: von der Beobachtung zur Diagnose",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Diagnostische Werkzeuge im Überblick",
+          "spalten": [
+            "Verfahren",
+            "Was es ist",
+            "Was es leistet",
+            "Was es nicht leistet"
+          ],
+          "zeilen": [
+            [
+              "Beobachtung",
+              "Planvolles Hinsehen und Festhalten von Verhalten in bestimmten Situationen, frei oder mit Beobachtungsbogen",
+              "Zeigt, wann, wo, wie oft und in welchem Zusammenhang ein Verhalten auftritt",
+              "Erklärt nicht, warum; hängt von Situation und Beobachterin ab"
+            ],
+            [
+              "Anamnese und Gespräch",
+              "Fragen zu Entwicklung, Vorgeschichte und aktueller Lage – an Eltern, Kind und Lehrkräfte",
+              "Liefert den Zusammenhang: seit wann, unter welchen Umständen, was schon versucht wurde",
+              "Erinnerungen und Sichtweisen sind subjektiv und können sich widersprechen"
+            ],
+            [
+              "Screening",
+              "Kurzes Suchverfahren, oft ein knapper Fragebogen wie der SDQ",
+              "Findet schnell Kinder, bei denen eine genauere Abklärung sinnvoll ist",
+              "Stellt keine Diagnose; schlägt bewusst auch bei Kindern an, bei denen sich später nichts bestätigt"
+            ],
+            [
+              "Fragebogen (Fremd- und Selbsturteil)",
+              "Standardisierte Einschätzung durch Eltern, Lehrkräfte oder das Kind selbst, etwa CBCL, TRF, YSR oder DISYPS-III",
+              "Vergleicht die Einschätzung mit einer großen Vergleichsgruppe und macht Sichtweisen vergleichbar",
+              "Erfasst Einschätzungen, nicht das Verhalten selbst; sagt nichts über Ursachen"
+            ],
+            [
+              "Test",
+              "Standardisierte Aufgaben unter festgelegten Bedingungen, etwa ein Intelligenztest wie der WISC-V",
+              "Misst eine Leistung vergleichbar und mit bekannter Genauigkeit",
+              "Ist eine Momentaufnahme; das Ergebnis hängt auch von Tagesform, Motivation und Sprache ab"
+            ],
+            [
+              "Diagnose",
+              "Fachliche Schlussfolgerung aus allen Informationen nach den Kriterien von DSM-5-TR oder ICD-11",
+              "Ordnet Schwierigkeiten einem bekannten Muster zu und öffnet den Zugang zu Behandlung und Hilfen",
+              "Beschreibt ein Muster, nicht den ganzen Menschen; sagt allein noch nicht, was im Alltag hilft"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Beobachtung: beschreiben, nicht deuten.** Auch Beobachtung ist ein diagnostisches Werkzeug – wenn sie planvoll geschieht. Eine systematische Beobachtung legt vorher fest, *was* beobachtet wird (etwa das Verlassen des Platzes), *wann* (etwa in drei Stillarbeitsphasen pro Woche) und *wie* es festgehalten wird (Strichliste oder ABC-Protokoll: Auslöser – Verhalten – Folge). Sie trennt die Beschreibung („Tom wirft das Heft auf den Boden, nachdem er aufgerufen wurde“) von der Deutung („Tom will provozieren“). Deutungen sind erlaubt, gehören aber als Vermutung gekennzeichnet."
+        },
+        {
+          "art": "liste",
+          "titel": "So läuft eine gute Abklärung meist ab",
+          "punkte": [
+            "Anlass und Fragestellung klären: Was genau soll beantwortet werden, und wer braucht die Antwort wofür?",
+            "Das Einverständnis der Eltern einholen und das Kind altersgerecht informieren.",
+            "Informationen aus mehreren Quellen und Situationen sammeln: Gespräche, Vorgeschichte, Beobachtung, Fragebögen, Tests.",
+            "Andere Erklärungen prüfen: Hören, Sehen, Sprache, körperliche Erkrankungen, Belastungen, Über- oder Unterforderung.",
+            "Alles zusammenführen und bewerten, gegebenenfalls eine Diagnose stellen.",
+            "Ergebnisse verständlich zurückmelden und Empfehlungen ableiten.",
+            "Den Verlauf prüfen: Wirkt die Unterstützung? Stimmt die Einschätzung noch?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Warum ein Screening „zu viele“ Kinder findet.** Ein Screening soll möglichst niemanden übersehen, der Hilfe braucht. Deshalb ist die Grenze meist so gesetzt, dass auch Kinder auffallen, bei denen sich in der genaueren Abklärung nichts bestätigt. Man spricht dann von **falsch positiven** Ergebnissen. Umgekehrt kann auch ein unauffälliges Screening ein Problem übersehen (**falsch negativ**), etwa bei stillen, sehr angepassten Kindern.\n\nWie gut ein Verfahren betroffene Kinder erkennt, heißt **Sensitivität**; wie gut es nicht betroffene Kinder als unauffällig einordnet, heißt **Spezifität**. Beides lässt sich nicht gleichzeitig beliebig steigern: Wer niemanden übersehen will, nimmt mehr Fehlalarme in Kauf. Ein Screeningergebnis ist deshalb ein Anlass, genauer hinzusehen – nicht mehr und nicht weniger."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein auffälliger Fragebogen bedeutet, dass das Kind die Störung hat.",
+          "fakt": "Fragebögen erfassen, wie Erwachsene oder das Kind selbst Verhalten einschätzen, und vergleichen diese Einschätzung mit einer Vergleichsgruppe. Ein Wert im auffälligen Bereich zeigt: Hier lohnt sich eine genauere Abklärung. Ob eine Störung vorliegt, klären Fachleute mit Gespräch, Vorgeschichte, Beobachtung und dem Ausschluss anderer Erklärungen."
+        }
+      ]
+    },
+    {
+      "titel": "Klassifikation: DSM-5-TR und ICD-11",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Damit Fachleute weltweit dasselbe meinen, wenn sie von einer Störung sprechen, gibt es zwei **Klassifikationssysteme**. Das **DSM-5-TR** der Amerikanischen Psychiatrischen Vereinigung (APA, 2022) beschreibt ausschließlich psychische Störungen. Die **ICD-11** der Weltgesundheitsorganisation (WHO, 2019) umfasst alle Krankheiten; psychische Störungen und Entwicklungsstörungen stehen in einem eigenen Kapitel. Die ICD-11 gilt seit 2022. In vielen Berichten finden Sie aber noch Codes der Vorgängerversion ICD-10 (bei einer Form der ADHS etwa F90.0), in neueren Berichten Codes der ICD-11 (für ADHS 6A05). Berichte in Luxemburg nutzen häufig beide Systeme. Auswendig kennen müssen Sie die Codes nicht – wichtig ist, zu verstehen, was dahintersteht."
+        },
+        {
+          "art": "liste",
+          "titel": "Was eine Diagnose in der Regel voraussetzt",
+          "punkte": [
+            "Bestimmte Merkmale (Symptome) in ausreichender Zahl und Stärke.",
+            "Eine Mindestdauer, bei ADHS zum Beispiel sechs Monate.",
+            "Wo verlangt, einen Beginn in einem bestimmten Alter.",
+            "Eine deutliche Beeinträchtigung im Alltag – in Schule, Familie oder Freundschaften – oder deutliches Leiden.",
+            "Den Ausschluss anderer Erklärungen, etwa einer körperlichen Erkrankung, einer anderen Störung oder normaler Entwicklungsschwankungen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Kategorien und fließende Übergänge.** Diagnosen sind Kategorien: Eine Störung liegt vor oder nicht. Die meisten Merkmale verteilen sich aber fließend. Alle Kinder sind manchmal unaufmerksam, ängstlich oder wütend – manche mehr, manche weniger. Wo die Grenze zur Störung liegt, ist eine fachlich begründete Festlegung, keine Naturtatsache. Beide Systeme ergänzen die Kategorien deshalb zunehmend um Schweregrade und Ausprägungen. Für die Förderung ist oft wichtiger, wie stark und in welchen Situationen ein Kind beeinträchtigt ist, als ob es knapp über oder unter einer Grenze liegt.\n\nEine Diagnose beantwortet auch nicht alle Fragen des Alltags. Zwei Kinder mit derselben Diagnose können ganz unterschiedliche Stärken, Belastungen und Bedürfnisse haben. Die WHO hat deshalb mit der **ICF** eine ergänzende Klassifikation geschaffen. Sie beschreibt, wie ein Mensch im Alltag zurechtkommt und teilhaben kann, und lenkt den Blick auf die Umgebung, die Teilhabe erleichtert oder erschwert – für die Förderplanung ein besonders hilfreicher Blickwinkel."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Begriffe, die leicht verwechselt werden",
+          "punkte": [
+            {
+              "wie": "Auffälligkeit",
+              "unterschied": "Beschreibung eines Verhaltens, das von der Erwartung abweicht. Sie kann vorübergehend und situationsabhängig sein und ist noch keine Störung."
+            },
+            {
+              "wie": "Verdachtsdiagnose",
+              "unterschied": "Vorläufige Annahme einer Fachperson, die noch geprüft wird. Sie gehört nicht als Tatsache in Mitteilungen oder Schülerakten."
+            },
+            {
+              "wie": "Diagnose",
+              "unterschied": "Fachlich begründete Einschätzung nach den Kriterien eines Klassifikationssystems, gestellt von dafür qualifizierten Fachleuten wie Ärztinnen oder Psychologen."
+            },
+            {
+              "wie": "Förderbedarf",
+              "unterschied": "Pädagogische Feststellung, dass ein Kind besondere Unterstützung braucht. Er kann mit oder ohne Diagnose bestehen."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Eine Diagnose ist ein Werkzeug der Verständigung: Sie fasst ein Muster zusammen und öffnet Türen zu Hilfen. Den Blick auf das einzelne Kind ersetzt sie nicht."
+        }
+      ]
+    },
+    {
+      "titel": "Gütekriterien: woran man ein gutes Verfahren erkennt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ob ein Test oder Fragebogen brauchbar ist, lässt sich an **Gütekriterien** prüfen. Die internationalen Standards für pädagogische und psychologische Tests (AERA, APA & NCME, 2014) nennen drei Grundpfeiler: Validität, Reliabilität und Fairness. Im deutschsprachigen Raum spricht man klassisch von Objektivität, Reliabilität und Validität; hinzu kommen gute Normen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die wichtigsten Gütekriterien",
+          "spalten": [
+            "Kriterium",
+            "Leitfrage",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Objektivität",
+              "Kommt dasselbe Ergebnis heraus, egal wer das Verfahren durchführt, auswertet und deutet?",
+              "Genaue Vorgaben, was gesagt werden darf; Auswertung nach Schablone statt nach Gefühl"
+            ],
+            [
+              "Reliabilität (Zuverlässigkeit)",
+              "Wie genau misst das Verfahren? Käme bei einer Wiederholung ungefähr dasselbe heraus?",
+              "Ein reliabler Test schwankt wenig – trotzdem hat jedes Ergebnis einen Messfehler"
+            ],
+            [
+              "Validität (Gültigkeit)",
+              "Misst das Verfahren, was es messen soll – und sind die Schlüsse daraus gerechtfertigt?",
+              "Ein Rechentest mit langen Textaufgaben misst bei einem Kind, das die Sprache noch lernt, auch das Leseverständnis"
+            ],
+            [
+              "Normierung",
+              "Mit wem wird das Kind verglichen? Ist die Vergleichsgruppe groß, passend und aktuell?",
+              "Altersnormen aus einer großen, repräsentativen Stichprobe; veraltete Normen können Ergebnisse verzerren"
+            ],
+            [
+              "Fairness",
+              "Hat jedes Kind die gleiche Chance zu zeigen, was es kann?",
+              "Sprache, Vertrautheit mit den Aufgaben, Seh-, Hör- oder motorische Einschränkungen berücksichtigen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Zwei Punkte sind für die Praxis besonders wichtig.\n\n**Validität ist keine Eigenschaft des Tests allein.** Nach den heutigen Standards bezieht sie sich auf die Deutung eines Ergebnisses für einen bestimmten Zweck (AERA, APA & NCME, 2014). Ein Intelligenztest kann bei einem Kind, das in seiner Erstsprache getestet wird, gute Aussagen erlauben – und bei einem Kind, das die Testsprache erst seit einem Jahr lernt, deutlich weniger. Die Frage lautet also immer: Darf man *bei diesem Kind* *diesen* Schluss ziehen?\n\n**Jede Messung hat einen Messfehler.** Auch sehr gute Tests messen nicht exakt. Seriöse Berichte geben deshalb einen Vertrauensbereich an (mehr dazu im Modul „Testergebnisse lesen“). Ein Wert knapp über oder unter einer Grenze ist kein sicherer Beleg für „auffällig“ oder „unauffällig“.\n\n**Mehrsprachigkeit und Normen.** Viele Verfahren wurden in Deutschland, Frankreich oder den USA entwickelt und dort normiert. Für Kinder in Luxemburg, die mit mehreren Sprachen aufwachsen und oft in ihrer zweiten oder dritten Sprache getestet werden, passen diese Normen nicht immer genau. Sprachfreie Aufgaben helfen, sind aber nicht kulturfrei. Gute Diagnostik berücksichtigt das durch die Wahl der Testsprache, sprachfreie Verfahren, Angaben zur Sprachbiografie und eine vorsichtige Deutung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein standardisierter Test ist objektiv und damit unfehlbar.",
+          "fakt": "Standardisierung macht Ergebnisse vergleichbar, aber nicht fehlerfrei. Jedes Ergebnis enthält einen Messfehler, hängt von Tagesform, Motivation und Sprache ab und muss im Zusammenhang mit allen anderen Informationen gedeutet werden."
+        }
+      ]
+    },
+    {
+      "titel": "Mehrere Blickwinkel: Informanten und die Grenzen von Fragebögen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein Kind verhält sich nicht überall gleich. Zu Hause, in der Klasse, in der Maison Relais und im Sportverein erlebt es unterschiedliche Anforderungen und Beziehungen – und jede erwachsene Person sieht nur einen Ausschnitt. Deshalb gilt in der Diagnostik das **Mehrinformanten-Prinzip**: Informationen werden von mehreren Personen und aus mehreren Situationen eingeholt, meist von Eltern, Lehrkräften und, ab einem gewissen Alter, vom Kind oder Jugendlichen selbst. Viele Fragebögen gibt es deshalb in Parallelfassungen, etwa für Eltern (CBCL), Lehrkräfte (TRF) und Jugendliche (YSR).\n\nDie Einschätzungen stimmen in der Forschung meist nur mäßig überein. Das ist kein Fehler, sondern eine Information: Vielleicht zeigt sich die Unruhe nur in großen Gruppen, vielleicht erlebt das Kind zu Hause mehr Halt, vielleicht legt die Lehrkraft einen anderen Maßstab an. Ängste und Traurigkeit schildern Kinder und Jugendliche oft deutlicher, als Erwachsene sie bemerken. Störendes Verhalten beschreiben dagegen Erwachsene häufig zuverlässiger als das Kind selbst."
+        },
+        {
+          "art": "liste",
+          "titel": "Grenzen von Fragebögen",
+          "punkte": [
+            "**Einschätzung statt Verhalten:** Die Antwort hängt davon ab, was die ausfüllende Person beobachtet hat, wie sie es deutet und womit sie vergleicht.",
+            "**Antworttendenzen:** Manche kreuzen eher die Mitte an, manche urteilen eher streng oder mild. Ein schwieriger Tag, ein guter Gesamteindruck oder eigene Erschöpfung färben das Urteil.",
+            "**Sprache und Kultur:** Aussagen können missverstanden werden, besonders wenn Eltern den Bogen nicht in ihrer Erstsprache ausfüllen. Was als auffällig gilt, ist auch kulturell geprägt.",
+            "**Symptome, keine Ursachen:** Ein hoher Wert bei Aufmerksamkeitsproblemen kann zu ADHS passen, aber ebenso zu Angst, Trauma, Schlafmangel, Sprachschwierigkeiten oder Überforderung.",
+            "**Momentaufnahme:** Der Bogen fragt nach einem bestimmten Zeitraum. Was davor oder danach geschah, erfasst er nicht.",
+            "**Erwünschte Antworten:** Jugendliche und Eltern antworten manchmal so, wie sie glauben, dass es erwartet wird – aus Scham, aus Angst vor Folgen oder aus Loyalität."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Einen Lehrerfragebogen gut ausfüllen",
+          "punkte": [
+            "Den angegebenen Zeitraum beachten, zum Beispiel die letzten zwei Monate, und nur bewerten, was Sie selbst beobachtet haben.",
+            "Jede Aussage einzeln beantworten – nicht nach dem Gesamteindruck oder einer vermuteten Diagnose.",
+            "Mit Gleichaltrigen vergleichen, nicht mit dem ruhigsten Kind der Klasse.",
+            "Wenn mehrere Kolleginnen das Kind gut kennen, füllt jede einen eigenen Bogen aus; so bleiben die Blickwinkel getrennt.",
+            "Freitextfelder nutzen: Beispiele, Situationen, Stärken, Veränderungen im Verlauf.",
+            "Unsicherheit vermerken („kann ich nicht beurteilen“), statt zu raten."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Yanis – drei Blickwinkel",
+          "text": "Im Lehrerbogen liegen Yanis’ Werte für Aufmerksamkeitsprobleme im auffälligen Bereich. Im Elternbogen ist fast alles unauffällig. Für einen Selbstbeurteilungsbogen ist Yanis noch zu jung; im Gespräch mit der Diagnostikerin erzählt er aber, dass er in der Klasse oft nicht versteht, was er tun soll, und dass zwei Jungen ihn auslachen, wenn er vorliest. Zu Hause spricht die Familie Französisch und Kabylisch.",
+          "fragen": [
+            "Welche Erklärungen gibt es für die unterschiedlichen Einschätzungen?",
+            "Welche Informationen würden Sie als Nächstes sammeln?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Ihre Rolle und die Ethik der Diagnostik",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Pädagogische Fachkräfte stellen keine Diagnosen – aber ohne sie ist gute Diagnostik kaum möglich. Sie erleben das Kind täglich: in der Gruppe, bei Anforderungen, in Konflikten und in guten Momenten. Ihr Beitrag besteht darin, genau zu beobachten, sachlich zu beschreiben und Veränderungen über die Zeit festzuhalten. Auch die Umsetzung der Empfehlungen und die Rückmeldung, ob sie wirken, liegen oft bei Ihnen."
+        },
+        {
+          "art": "tun",
+          "titel": "Ihr Beitrag zur Diagnostik",
+          "punkte": [
+            "Konkret, zeitnah und mit Situation beschreiben: „Verlässt in der Stillarbeit zwei- bis dreimal pro Stunde den Platz“ statt „ist hyperaktiv“.",
+            "Fragebögen sorgfältig und ehrlich ausfüllen.",
+            "Stärken festhalten: Wann gelingt es? Was kann das Kind gut?",
+            "Informationen nur mit Einverständnis der Eltern und über die vorgesehenen Wege weitergeben.",
+            "Empfehlungen umsetzen und nach einigen Wochen zurückmelden, was sich verändert hat."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was nicht zu Ihrer Rolle gehört",
+          "punkte": [
+            "Diagnosen stellen oder andeuten („Das ist doch eindeutig ADHS“).",
+            "Eltern zu Medikamenten raten oder davon abraten.",
+            "Testaufgaben mit Kindern üben oder Testmaterial kopieren – das macht spätere Ergebnisse unbrauchbar.",
+            "Verdachtsdiagnosen in Mitteilungen, Akten oder Gespräche im Kollegium tragen.",
+            "Tests durchführen, für die eine besondere Ausbildung vorgeschrieben ist."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Die Ethik der Etikettierung.** Eine Diagnose kann entlasten und Türen öffnen. Viele Familien erleben es als Erleichterung, endlich zu verstehen, was los ist; Kinder hören, dass sie nicht „dumm“ oder „böse“ sind. Eine Diagnose kann den Zugang zu Behandlung, Nachteilsausgleich und Unterstützung eröffnen.\n\nSie birgt aber auch Risiken. Ein Etikett kann Erwartungen senken („Mit seiner Diagnose schafft er das sowieso nicht“), alles erklären sollen („Das ist eben sein ADHS“) und andere Ursachen verdecken. Es kann zu Ausgrenzung führen oder zum Selbstbild werden („Ich bin halt so“). Sprechen Sie deshalb von einem Kind *mit* einer Diagnose, nicht von „dem ADHS-Kind“. Und prüfen Sie immer wieder, ob die Einschätzung noch passt: Kinder entwickeln sich, und Diagnosen beschreiben einen Zeitpunkt."
+        },
+        {
+          "art": "liste",
+          "titel": "Grundsätze im Umgang mit diagnostischen Informationen",
+          "punkte": [
+            "**Einwilligung:** Diagnostik findet in der Regel nur mit dem Einverständnis der Sorgeberechtigten statt. Das Kind wird altersgerecht informiert und nach seiner Sicht gefragt.",
+            "**Datenschutz:** Gesundheitsdaten gehören nach der europäischen Datenschutz-Grundverordnung zu den besonders geschützten Daten. Sie gehen nur an Personen, die sie für ihre Arbeit mit dem Kind brauchen, und nur auf den vorgesehenen Wegen.",
+            "**Zweckbindung:** Ein Bericht wird für eine bestimmte Frage erstellt. Er gehört nicht in jede Akte und nicht in jedes Gespräch.",
+            "**Verständlichkeit:** Eltern und Kinder haben ein Recht darauf, Ergebnisse so erklärt zu bekommen, dass sie sie verstehen.",
+            "**Vorläufigkeit:** Ergebnisse beschreiben einen Zeitpunkt. Bei neuen Entwicklungen oder nach längerer Zeit braucht es eine neue Einschätzung."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Wenden Sie sich an Ihre Leitung (Responsable) und an das Diagnostique-Team, wenn Schwierigkeiten über Wochen anhalten, trotz Anpassungen deutlich bleiben oder wenn Sie unsicher sind, wie ein Befund zu verstehen ist. Fragen Sie nach, statt zu vermuten. Bei Hinweisen auf eine Gefährdung des Kindes warten Sie nicht auf eine Diagnostik – dann gelten die internen Kinderschutzabläufe."
+        },
+        {
+          "art": "merke",
+          "text": "Ihre Beobachtungen sind ein wichtiger Baustein der Diagnostik. Ihre Aufgabe ist es, genau zu beschreiben – nicht, das Ergebnis vorwegzunehmen."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist ein Screening?",
+      "optionen": [
+        "Ein kurzes Suchverfahren, das Hinweise gibt, bei wem eine genauere Abklärung sinnvoll ist",
+        "Eine ausführliche Untersuchung, an deren Ende eine Diagnose steht",
+        "Ein Intelligenztest mit Altersnormen",
+        "Eine Beobachtung im Unterricht über mehrere Wochen"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ein Screening ist kurz und soll möglichst niemanden übersehen, der Hilfe braucht. Es stellt keine Diagnose und schlägt bewusst auch bei Kindern an, bei denen sich später nichts bestätigt. Ausführliche Abklärungen, Intelligenztests und längere Beobachtungen gehören zu späteren Schritten."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Liegt ein Wert im Lehrerfragebogen im auffälligen Bereich, hat das Kind die entsprechende Störung.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Fragebögen erfassen Einschätzungen und vergleichen sie mit einer Vergleichsgruppe. Ein auffälliger Wert ist ein Anlass für eine genauere Abklärung. Ob eine Störung vorliegt, beurteilen Fachleute auf Grundlage vieler Informationen und nach Ausschluss anderer Erklärungen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was setzt eine Diagnose nach DSM-5-TR oder ICD-11 in der Regel voraus? (mehrere richtig)",
+      "optionen": [
+        "Merkmale in ausreichender Zahl und Stärke",
+        "Eine deutliche Beeinträchtigung im Alltag oder deutliches Leiden",
+        "Ein auffälliges Ergebnis in einem einzigen Fragebogen",
+        "Den Ausschluss anderer Erklärungen",
+        "Die Zustimmung der Klassenlehrerin"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Diagnosen beruhen auf Kriterien: bestimmte Merkmale, meist eine Mindestdauer, deutliche Beeinträchtigung oder Leiden und der Ausschluss anderer Erklärungen. Ein einzelner Fragebogen reicht nie aus. Die Klassenlehrerin liefert wertvolle Beobachtungen, entscheidet aber nicht über die Diagnose."
+    },
+    {
+      "art": "einfach",
+      "frage": "Ein Test liefert bei zwei Messungen im Abstand von zwei Wochen sehr unterschiedliche Ergebnisse, obwohl sich beim Kind nichts verändert hat. Welches Gütekriterium ist vor allem betroffen?",
+      "optionen": [
+        "Objektivität",
+        "Normierung",
+        "Reliabilität (Zuverlässigkeit)",
+        "Fairness"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Reliabilität beschreibt, wie genau und stabil ein Verfahren misst. Große Schwankungen ohne echte Veränderung sprechen für eine geringe Zuverlässigkeit. Objektivität betrifft die Unabhängigkeit von der durchführenden Person, Normierung die Vergleichsgruppe und Fairness die gleichen Chancen für alle Kinder."
+    },
+    {
+      "art": "fall",
+      "fall": "Diego (9) ist vor einem Jahr aus Brasilien nach Luxemburg gekommen und lernt Deutsch und Französisch. In einem Intelligenztest auf Deutsch liegt sein Wert für Sprachverständnis weit unter dem Durchschnitt, bei den sprachfreien Aufgaben im Durchschnitt.",
+      "frage": "Welche Deutung ist am angemessensten?",
+      "optionen": [
+        "Diego hat eine allgemeine intellektuelle Beeinträchtigung.",
+        "Der sprachliche Wert ist wenig aussagekräftig, weil Diego in einer Sprache getestet wurde, die er erst lernt; die Normen passen für ihn nur eingeschränkt.",
+        "Der Test ist grundsätzlich schlecht und sollte nie verwendet werden.",
+        "Diego sollte die Klasse wiederholen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Validität hängt davon ab, ob ein Schluss für dieses Kind gerechtfertigt ist. Bei einem Kind, das die Testsprache erst lernt, misst ein sprachlicher Test vor allem den Stand im Deutschen, nicht seine Denkfähigkeit. Die sprachfreien Ergebnisse sprechen gegen eine allgemeine Beeinträchtigung. Der Test ist nicht grundsätzlich schlecht, und eine Klassenwiederholung folgt daraus nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Elternfragebogen von Chiara (12) ist fast alles unauffällig. Im Lehrerbogen liegen Unruhe und Konzentrationsprobleme im auffälligen Bereich. Im Selbstbeurteilungsbogen gibt Chiara an, oft traurig zu sein und schlecht zu schlafen.",
+      "frage": "Wie sind diese Unterschiede am besten zu verstehen?",
+      "optionen": [
+        "Einer der Bögen muss falsch ausgefüllt sein; man sollte nur den Lehrerbogen verwenden.",
+        "Man sollte den Durchschnitt aller drei Bögen bilden.",
+        "Chiara übertreibt; Selbstauskünfte von Jugendlichen sind unzuverlässig.",
+        "Die Unterschiede sind eine wichtige Information: Jede Person sieht einen anderen Ausschnitt, und innere Belastungen schildern Jugendliche oft selbst am deutlichsten. Fachleute führen die Sichtweisen zusammen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Mäßige Übereinstimmung zwischen Eltern, Lehrkräften und Jugendlichen ist die Regel. Unterschiede zeigen, dass sich ein Kind in verschiedenen Situationen verschieden verhält und dass Traurigkeit oder Schlafprobleme von außen oft übersehen werden. Einen Bogen zu verwerfen, Durchschnitte zu bilden oder die Selbstauskunft abzutun, verschenkt genau diese Information."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage über Validität trifft zu?",
+      "optionen": [
+        "Validität bedeutet, dass ein Test bei jeder Wiederholung dasselbe Ergebnis liefert.",
+        "Ein Test ist entweder für alle Kinder valide oder für keines.",
+        "Validität betrifft die Frage, ob die Schlüsse aus einem Ergebnis für diesen Zweck und dieses Kind gerechtfertigt sind.",
+        "Validität bedeutet, dass ein Verlag den Test geprüft und veröffentlicht hat."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Validität fragt, ob ein Verfahren misst, was es messen soll, und ob die gezogenen Schlüsse für einen bestimmten Zweck und eine bestimmte Person gerechtfertigt sind. Gleichbleibende Ergebnisse beschreiben die Reliabilität. Ein Test kann für ein Kind aussagekräftig sein und für ein anderes kaum, etwa wegen der Testsprache; die Veröffentlichung durch einen Verlag sagt darüber nichts."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Kollegin schlägt vor, mit Timo (8) vor seiner Testung beim Diagnostique die Aufgaben eines Intelligenztests zu üben, die sie in einer Fortbildung gesehen hat – „damit er besser abschneidet“.",
+      "frage": "Wie bewerten Sie den Vorschlag?",
+      "optionen": [
+        "Gute Idee – so kann Timo zeigen, was er wirklich kann.",
+        "Nicht sinnvoll: Geübte Testaufgaben machen das Ergebnis unbrauchbar, weil der Vergleich mit Kindern ohne Übung nicht mehr stimmt. Besser ist es, Timo allgemein zu erklären, was ihn erwartet.",
+        "Sinnvoll, wenn die Eltern zustimmen.",
+        "Unproblematisch, solange nur die leichten Aufgaben geübt werden."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Normwerte setzen voraus, dass das Kind die Aufgaben so unvorbereitet löst wie die Vergleichsgruppe. Geübte Aufgaben verfälschen das Ergebnis – auch mit Zustimmung der Eltern und auch bei leichten Aufgaben – und können dazu führen, dass Timo nötige Hilfe nicht bekommt. Hilfreich ist, ihm zu erklären, was ihn erwartet, und ihm die Angst zu nehmen."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Kollegin schreibt in eine Mitteilung an die Maison Relais: „Leon (7) ist ADHS-verdächtig, bitte streng sein.“ Eine Abklärung hat nicht stattgefunden.",
+      "frage": "Was ist daran vor allem problematisch?",
+      "optionen": [
+        "Eine unbestätigte Vermutung wird wie eine Tatsache weitergegeben, ohne Einverständnis der Eltern und mit einer Empfehlung, die Leon eher schadet. Besser wäre der Austausch konkreter Beobachtungen über die vorgesehenen Wege.",
+        "Nichts – die Maison Relais sollte vorgewarnt sein.",
+        "Nur das Wort „streng“ ist unglücklich gewählt.",
+        "Die Mitteilung hätte zusätzlich an die Eltern der Klasse gehen sollen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Verdachtsdiagnosen gehören nicht in Mitteilungen: Sie etikettieren ein Kind ohne Grundlage, verletzen den Datenschutz und prägen die Erwartungen anderer. Hilfreich ist der Austausch konkreter Beobachtungen und bewährter Hilfen – mit Einverständnis der Eltern. Strenge ist zudem keine sinnvolle Antwort auf mögliche ADHS-Symptome."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen beschreiben Grenzen von Fragebögen? (mehrere richtig)",
+      "optionen": [
+        "Sie erfassen Einschätzungen, nicht das Verhalten selbst.",
+        "Ein hoher Wert bei Aufmerksamkeitsproblemen kann auch durch Angst, Schlafmangel oder Sprachschwierigkeiten entstehen.",
+        "Sie sind wertlos und sollten nicht eingesetzt werden.",
+        "Die Erschöpfung der ausfüllenden Person kann das Urteil färben.",
+        "Sie liefern sichere Aussagen über die Ursache eines Verhaltens."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Fragebögen sind nützlich, weil sie Sichtweisen vergleichbar machen. Sie erfassen aber Einschätzungen, die von Situation, Maßstab und Befinden der ausfüllenden Person abhängen, und sie beschreiben Symptome, keine Ursachen. Wertlos sind sie deshalb nicht – sie müssen nur im Zusammenhang gedeutet werden."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einer Abklärung erhält Samuel (10) die Diagnose einer Lese-Rechtschreibstörung. Ein Kollege sagt: „Dann brauchen wir beim Schreiben ja nichts mehr von ihm zu erwarten.“",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Zustimmen – die Diagnose erklärt seine Schwierigkeiten vollständig.",
+        "Die Diagnose übergehen, um Samuel nicht zu etikettieren.",
+        "Den Kollegen bitten, die Diagnose nicht mehr zu erwähnen.",
+        "Darauf hinweisen, dass die Diagnose Samuels Schwierigkeiten erklärt, aber keine niedrigen Erwartungen rechtfertigt: Er braucht gezielte Förderung, passende Anpassungen und die Erwartung, dass er Fortschritte macht."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Eine Diagnose soll Hilfe ermöglichen, nicht Erwartungen senken. Kinder mit einer Lese-Rechtschreibstörung machen mit gezielter Förderung Fortschritte, und Anpassungen wie mehr Zeit gleichen Nachteile aus. Die Diagnose zu übergehen oder zu verschweigen, verschenkt ihren Nutzen; sie als Erklärung für alles zu nehmen, schadet Samuel."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Diagnostik",
+      "erklaerung": "Planvolles Sammeln und Zusammenführen von Informationen, um eine Fragestellung zu beantworten und Entscheidungen vorzubereiten."
+    },
+    {
+      "begriff": "Anamnese",
+      "erklaerung": "Erhebung der Vorgeschichte: Entwicklung, Gesundheit, familiäre und schulische Situation, bisherige Hilfen."
+    },
+    {
+      "begriff": "Screening",
+      "erklaerung": "Kurzes Suchverfahren, das Hinweise gibt, bei wem eine genauere Abklärung sinnvoll ist. Kein Diagnoseinstrument."
+    },
+    {
+      "begriff": "Klassifikationssystem",
+      "erklaerung": "Verbindliches Verzeichnis von Störungen und ihren Kriterien, zum Beispiel DSM-5-TR und ICD-11."
+    },
+    {
+      "begriff": "Objektivität",
+      "erklaerung": "Unabhängigkeit eines Ergebnisses von der Person, die das Verfahren durchführt, auswertet und deutet."
+    },
+    {
+      "begriff": "Reliabilität",
+      "erklaerung": "Zuverlässigkeit oder Messgenauigkeit eines Verfahrens: Wie stark schwankt das Ergebnis bei wiederholter Messung?"
+    },
+    {
+      "begriff": "Validität",
+      "erklaerung": "Gültigkeit: ob ein Verfahren misst, was es messen soll, und ob die Schlüsse aus dem Ergebnis für den jeweiligen Zweck gerechtfertigt sind."
+    },
+    {
+      "begriff": "Normierung",
+      "erklaerung": "Vergleich eines Ergebnisses mit einer großen, repräsentativen Gruppe, meist Gleichaltriger."
+    },
+    {
+      "begriff": "Sensitivität und Spezifität",
+      "erklaerung": "Wie gut ein Verfahren betroffene Kinder erkennt (Sensitivität) und nicht betroffene als unauffällig einordnet (Spezifität)."
+    },
+    {
+      "begriff": "Mehrinformanten-Prinzip",
+      "erklaerung": "Grundsatz, Informationen von mehreren Personen und aus mehreren Situationen einzuholen, etwa von Eltern, Lehrkräften und dem Kind selbst."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "aeraStandards2014",
+    "petermann2013",
+    "fegert2012",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "testwerte-lesen",
+    "beobachten-dokumentieren",
+    "biopsychosozial",
+    "inklusion-luxemburg",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "abc-beobachtung",
+    "verhalten-zaehlen",
+    "elterngespraech-vorbereiten"
+  ]
+}

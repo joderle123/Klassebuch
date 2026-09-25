@@ -1,0 +1,563 @@
+{
+  "id": "abwehr-coping",
+  "bereich": "muster",
+  "titel": "Abwehr und Bewältigung: wie Menschen sich schützen",
+  "untertitel": "Stress, Abwehrmechanismen und Schemata verstehen – und auf Schutzstrategien im Klassenzimmer gut antworten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können das Stressmodell von Lazarus und Folkman erklären und problemorientierte von emotionsorientierter Bewältigung unterscheiden.",
+    "Sie können wichtige Abwehrmechanismen in Alltagssprache beschreiben und reife von weniger reifen Formen unterscheiden.",
+    "Sie können erklären, was Schemata sind und wie Kinder durch Erdulden, Vermeiden oder Überkompensieren mit ihnen umgehen.",
+    "Sie erkennen Clownerie, Rückzug, Angriff und Überanpassung als mögliche Schutzstrategien und können darauf antworten, ohne das Kind bloßzustellen.",
+    "Sie können Kinder dabei unterstützen, reifere Bewältigungsformen zu entwickeln, und wissen, wann Schutzstrategien fachliche Hilfe erfordern."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Dylan, 11 Jahre, Cycle 4.2",
+          "text": "Sobald im Mathematikunterricht eine Textaufgabe an die Tafel kommt, beginnt Dylan zu blödeln. Er macht Geräusche, kommentiert jeden Satz der Lehrerin und bringt die halbe Klasse zum Lachen. Wird er aufgerufen, antwortet er mit einem Witz. In Sport und Kunst ist er ruhig und engagiert. Die Lehrerin ist genervt: „Er will nur im Mittelpunkt stehen.“ Im Gespräch mit der ISA stellt sich heraus, dass Dylan Texte nur mühsam liest und fürchtet, dass die anderen das merken.",
+          "fragen": [
+            "Wovor könnte Dylans Verhalten ihn schützen?",
+            "Was würde vermutlich passieren, wenn man ihm die Witze einfach verbietet?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Menschen schützen sich – körperlich und seelisch. Wenn eine Situation bedrohlich, beschämend oder überfordernd wirkt, setzen Strategien ein, die das innere Gleichgewicht sichern sollen. Manche sind bewusst und gezielt: um Hilfe bitten, eine Pause machen, einen Plan schmieden. Andere laufen weitgehend unbewusst ab: einen Witz reißen, bevor man ausgelacht wird; „ist mir egal“ sagen, bevor man enttäuscht wird; angreifen, bevor man angegriffen wird.\n\nFür die Arbeit mit Kindern und Jugendlichen ist dieser Blick entlastend und nützlich. Viel störendes Verhalten wird verständlicher, wenn man fragt: **Wovor schützt sich dieses Kind gerade?** Drei Denkmodelle helfen, diese Frage zu beantworten: das Stressmodell von Lazarus und Folkman, die Abwehrmechanismen und die Schemata."
+        },
+        {
+          "art": "merke",
+          "text": "Schutzstrategien sind Lösungen, keine Charakterfehler – oft alte Lösungen für alte Probleme, die heute mehr kosten, als sie nützen. Ein Kind gibt eine Schutzstrategie erst auf, wenn es sich sicher genug fühlt oder eine bessere zur Verfügung hat."
+        }
+      ]
+    },
+    {
+      "titel": "Stress und Bewältigung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nach dem **transaktionalen Stressmodell** von Richard Lazarus und Susan Folkman entsteht Stress nicht einfach durch ein Ereignis, sondern durch die Bewertung, die ein Mensch vornimmt (Lazarus & Folkman, 1984). Zwei Bewertungen laufen dabei blitzschnell und oft unbewusst ab und beeinflussen sich gegenseitig."
+        },
+        {
+          "art": "liste",
+          "titel": "Zwei Bewertungen",
+          "punkte": [
+            "Primäre Bewertung – Was bedeutet das für mich? Ist die Situation unwichtig, angenehm, eine Herausforderung, eine Bedrohung oder ein Verlust?",
+            "Sekundäre Bewertung – Was kann ich tun? Habe ich genug Fähigkeiten, Hilfe und Möglichkeiten, um damit fertigzuwerden?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Stress entsteht, wenn die Anforderungen die eigenen Möglichkeiten zu übersteigen scheinen. Deshalb erlebt die eine Schülerin eine Probe als machbare Herausforderung, während ihr Sitznachbar dieselbe Probe als Bedrohung erlebt und in der Nacht davor kaum schläft.\n\n**Bewältigung** (englisch *coping*) nennen Lazarus und Folkman alle Anstrengungen in Gedanken und Handlungen, mit solchen Anforderungen fertigzuwerden. Sie unterscheiden zwei Hauptformen: **Problemorientierte Bewältigung** verändert die Situation selbst, **emotionsorientierte Bewältigung** macht die Gefühle tragbar. Keine Form ist grundsätzlich besser. Entscheidend ist, ob sie zur Situation passt: Was sich ändern lässt, wird am besten angepackt. Was sich nicht ändern lässt – eine Trennung der Eltern, eine Krankheit –, braucht eher Wege, mit den Gefühlen zu leben."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Bewältigung im Schulalltag",
+          "spalten": [
+            "Form",
+            "Worum es geht",
+            "Beispiel vor einer Probe"
+          ],
+          "zeilen": [
+            [
+              "Problemorientiert",
+              "die Situation verändern",
+              "einen Lernplan machen, die Lehrerin um Übungsaufgaben bitten"
+            ],
+            [
+              "Emotionsorientiert",
+              "die Gefühle beruhigen",
+              "am Abend Musik hören, sich mit einer Freundin gegenseitig Mut machen"
+            ],
+            [
+              "Neu bewerten",
+              "die Situation anders sehen",
+              "„Es ist eine Probe, nicht mein ganzes Leben. Ich kann zeigen, was ich schon kann.“"
+            ],
+            [
+              "Unterstützung suchen",
+              "andere einbeziehen",
+              "mit einem Mitschüler gemeinsam lernen, den Eltern von der Sorge erzählen"
+            ],
+            [
+              "Vermeiden",
+              "der Belastung aus dem Weg gehen",
+              "am Probentag zu Hause bleiben wollen – entlastet kurzfristig, verstärkt die Angst aber auf Dauer"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Emotionsforschung ergänzt: Eine Situation gedanklich neu zu bewerten, beruhigt meist wirksamer, als Gefühle nur zu unterdrücken. Wer Gefühle bloß „wegdrückt“, bleibt innerlich angespannt (Gross, 1998).\n\n**Bewältigung entwickelt sich.** Kleine Kinder bewältigen Stress vor allem mithilfe von Erwachsenen: Sie werden getröstet und beruhigt, und man erklärt ihnen die Welt. Mit dem Alter kommen eigene Strategien hinzu – sich ablenken, sich gut zureden, Probleme durchdenken. Im Jugendalter wird das Repertoire größer, aber auch riskanter: Neben Sport, Musik und Gesprächen mit Freunden stehen Rückzug ins Handy, Substanzkonsum oder Selbstverletzung. Kinder, die wenig Unterstützung erfahren haben oder stark belastet sind, verfügen oft über ein schmales Repertoire und greifen immer wieder zur selben, manchmal schädlichen Strategie."
+        },
+        {
+          "art": "merke",
+          "text": "Ob etwas Stress auslöst, hängt davon ab, wie ein Kind die Situation und seine Möglichkeiten bewertet. Genau hier können Sie ansetzen: Anforderungen machbar gestalten, Hilfen sichtbar machen, Bewertungen gemeinsam überprüfen."
+        }
+      ]
+    },
+    {
+      "titel": "Abwehrmechanismen verständlich erklärt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Begriff **Abwehrmechanismen** stammt aus der Psychoanalyse. Gemeint sind weitgehend unbewusste seelische Vorgänge, die vor unerträglichen Gefühlen wie Angst, Scham, Schuld oder Ohnmacht schützen. Der Unterschied zur Bewältigung: Bewältigung ist eher bewusst und gewählt, Abwehr läuft eher automatisch ab. Die Grenze ist fließend.\n\nDer amerikanische Psychiater George Vaillant hat Abwehr in einer Langzeitstudie untersucht, die Harvard-Absolventen über Jahrzehnte begleitete, und sie nach Reife geordnet (Vaillant, 1977). **Unreife Formen** wie Projektion oder Ausagieren verzerren die Wirklichkeit stark oder belasten andere. **Mittlere Formen** wie Verschiebung oder Reaktionsbildung schützen, lenken Gefühle aber um oder verkehren sie ins Gegenteil. **Reife Formen** wie Humor oder Antizipation lassen Gefühle zu und halten trotzdem handlungsfähig. Männer, die überwiegend reifere Formen nutzten, kamen in seiner Studie in Beziehungen, Beruf und Gesundheit besser zurecht, und bei vielen reifte die Abwehr im Lauf des Lebens."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Häufige Abwehrformen im Schulalltag",
+          "spalten": [
+            "Mechanismus",
+            "Was dabei geschieht",
+            "So kann es in der Schule aussehen"
+          ],
+          "zeilen": [
+            [
+              "Verleugnung",
+              "Eine bedrohliche Tatsache wird nicht wahrgenommen oder heruntergespielt.",
+              "Nach der dritten ungenügenden Note: „Ich steh gut, das passt schon.“"
+            ],
+            [
+              "Projektion",
+              "Eigene unangenehme Gefühle oder Absichten werden anderen zugeschrieben.",
+              "„Die Lehrerin hasst mich“ – während das Kind selbst große Wut auf die Lehrerin hat."
+            ],
+            [
+              "Verschiebung",
+              "Ein Gefühl wird an einem ungefährlicheren Ziel ausgelassen.",
+              "Nach einem Streit mit dem Vater tritt ein Junge in der Pause nach einem Jüngeren."
+            ],
+            [
+              "Ausagieren",
+              "Innere Spannung wird sofort in Handlung umgesetzt, statt sie zu fühlen oder auszusprechen.",
+              "Bei einer schwierigen Aufgabe fliegt das Heft durch den Raum."
+            ],
+            [
+              "Rationalisierung",
+              "Vernünftig klingende Gründe verdecken das eigentliche Motiv.",
+              "„Ich hab nicht gelernt, weil man Geschichte später eh nicht braucht.“"
+            ],
+            [
+              "Reaktionsbildung",
+              "Ein Gefühl wird durch sein Gegenteil ersetzt.",
+              "Betonte Verachtung für eine Clique, zu der man insgeheim gern gehören würde."
+            ],
+            [
+              "Regression",
+              "Unter Belastung Rückgriff auf Verhalten früherer Entwicklungsstufen.",
+              "Nach der Geburt eines Geschwisters spricht eine Sechsjährige wieder in Babysprache."
+            ],
+            [
+              "Intellektualisierung",
+              "Belastendes wird nur sachlich-abstrakt behandelt, das Gefühl bleibt außen vor.",
+              "Ein Jugendlicher referiert kühl über Krebsstatistiken, während seine Mutter schwer erkrankt ist."
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Reife Formen, die man stärken kann (nach Vaillant, 1977)",
+          "punkte": [
+            "Humor: Belastendes mit Witz leichter machen, ohne es zu leugnen – „Na ja, wenigstens war es unvergesslich“ – und danach fragen, was beim nächsten Mal besser laufen kann.",
+            "Sublimierung: starke Gefühle in etwas Wertvolles lenken – Wut ins Boxtraining, Traurigkeit in Songtexte.",
+            "Antizipation: Kommendes realistisch vorausdenken und vorbereiten – sich vor dem Wechsel ins Lycée das Gebäude zeigen lassen.",
+            "Unterdrückung im Sinne von bewusstem Aufschieben: eine Sorge zur Seite legen, um handlungsfähig zu bleiben – „Darüber denke ich nach der Probe nach.“",
+            "Altruismus: anderen helfen und dadurch selbst Halt finden – etwa als Pate für neue Schülerinnen und Schüler."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Abwehr ist normal. Alle Menschen nutzen sie täglich, und Kinder greifen entwicklungsbedingt häufiger zu unreiferen Formen. Problematisch wird Abwehr, wenn sie starr und einseitig ist, die Wirklichkeit stark verzerrt oder anderen schadet.\n\nAbwehrmechanismen sind ein Denkmodell, keine Messwerte. Welche Abwehr gerade wirkt, lässt sich von außen nur vermuten. Nutzen Sie die Begriffe als Hypothese für sich und im Team – nicht als Urteil und nicht im Gespräch mit dem Kind („Du projizierst doch nur“)."
+        },
+        {
+          "art": "merke",
+          "text": "Abwehr schützt vor Gefühlen, die (noch) nicht auszuhalten sind. Wer sie einem Kind abrupt „wegnimmt“ – durch Bloßstellen oder Konfrontieren –, erzeugt meist mehr Abwehr, nicht weniger."
+        }
+      ]
+    },
+    {
+      "titel": "Schemata: wenn frühe Erfahrungen zur Brille werden",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der amerikanische Psychologe Jeffrey Young beschreibt in der **Schematherapie**, wie aus frühen Erfahrungen tief verankerte Grundüberzeugungen entstehen (Young et al., 2003). Ein **Schema** ist ein Muster aus Erinnerungen, Gefühlen, Gedanken und Körperempfindungen, das sich darum dreht, wie man sich selbst und die Beziehungen zu anderen erlebt. Es bildet sich in Kindheit und Jugend, wenn grundlegende Bedürfnisse wiederholt nicht erfüllt werden, und wirkt später wie eine Brille: Neue Situationen werden durch sie gesehen, auch wenn sie ganz anders sind."
+        },
+        {
+          "art": "liste",
+          "titel": "Grundbedürfnisse nach Young",
+          "punkte": [
+            "Sichere Bindung: Sicherheit, Verlässlichkeit, Zuwendung und Angenommensein",
+            "Autonomie, Kompetenz und ein Gefühl für die eigene Identität",
+            "Die Freiheit, berechtigte Bedürfnisse und Gefühle auszudrücken",
+            "Spontaneität und Spiel",
+            "Realistische Grenzen und Selbstkontrolle"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Young beschreibt 18 solcher Schemata, zum Beispiel **Verlassenheit** („Menschen, die mir wichtig sind, gehen weg“), **Misstrauen** („Andere nutzen mich aus oder tun mir weh“), **Unzulänglichkeit und Scham** („Mit mir stimmt etwas nicht“), **Versagen** („Ich schaffe es sowieso nicht“) oder **unerbittliche Ansprüche** („Nur perfekt ist gut genug“).\n\nFür den Schulalltag besonders aufschlussreich ist Youngs Beobachtung, dass Menschen auf drei Arten mit einem Schema umgehen. Sie **erdulden** es und verhalten sich, als sei es wahr. Sie **vermeiden** Situationen, die es berühren könnten. Oder sie **überkompensieren** und tun demonstrativ das Gegenteil. Dasselbe Schema kann deshalb bei verschiedenen Kindern völlig unterschiedlich aussehen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ein Schema, drei Gesichter",
+          "spalten": [
+            "Schema",
+            "Erdulden",
+            "Vermeiden",
+            "Überkompensieren"
+          ],
+          "zeilen": [
+            [
+              "Versagen: „Ich schaffe es sowieso nicht.“",
+              "gibt bei der ersten Schwierigkeit auf, sagt „Ich bin eben dumm“",
+              "fängt gar nicht erst an, blödelt, „vergisst“ Material, fehlt an Probentagen",
+              "prahlt („Das ist babyleicht“) oder arbeitet verbissen perfektionistisch"
+            ],
+            [
+              "Misstrauen: „Andere wollen mir schaden.“",
+              "lässt sich immer wieder ausnutzen, bleibt bei Freunden, die ihn schlecht behandeln",
+              "hält alle auf Abstand, erzählt nichts von sich",
+              "greift an, bevor er angegriffen wird, testet Erwachsene bis an die Grenze"
+            ],
+            [
+              "Verlassenheit: „Wer mir wichtig ist, geht weg.“",
+              "klammert sich an einzelne Menschen, ist bei jeder Abwesenheit verzweifelt",
+              "lässt niemanden nah heran, bleibt lieber allein",
+              "stößt Menschen weg, bevor sie gehen können, beendet Freundschaften abrupt"
+            ],
+            [
+              "Unzulänglichkeit und Scham: „Mit mir stimmt etwas nicht.“",
+              "macht sich klein, nimmt jede Kritik als Bestätigung",
+              "versteckt sich, meldet sich nie, meidet Blicke",
+              "wertet andere ab, gibt sich überlegen und unangreifbar"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Schematherapie wurde ursprünglich für Erwachsene mit tief verwurzelten Problemen entwickelt; für Kinder und Jugendliche gibt es Weiterentwicklungen. Für pädagogische Fachkräfte ist das Modell ein Schlüssel zum Verstehen, keine Behandlungsanleitung. Es erklärt zum Beispiel, warum ein Jugendlicher auf eine sachliche Korrektur reagiert, als sei er zutiefst beleidigt worden: Die Korrektur hat ein altes Schema berührt."
+        },
+        {
+          "art": "merke",
+          "text": "Wenn ein Kind scheinbar „übertrieben“ reagiert, lohnt die Frage: Welche alte Erfahrung wird hier gerade berührt? Oft reagiert das Kind nicht nur auf Sie, sondern auf viele Situationen davor."
+        }
+      ]
+    },
+    {
+      "titel": "Schutzstrategien im Klassenzimmer – und wie man antwortet",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Im Unterricht zeigen sich Schutzstrategien oft in wenigen typischen Formen. Sie haben ein ähnliches Ziel: sich vor Beschämung, Überforderung, Zurückweisung oder Hilflosigkeit zu schützen. Die Frage ist deshalb nicht nur: „Wie stoppe ich das Verhalten?“, sondern auch: „Wovor schützt es – und was braucht das Kind, um es weniger zu brauchen?“"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier häufige Schutzstrategien",
+          "spalten": [
+            "Strategie",
+            "Wovor sie schützen kann",
+            "Hilfreiche Antwort"
+          ],
+          "zeilen": [
+            [
+              "Clownerie",
+              "vor dem Gefühl, dumm dazustehen oder nicht dazuzugehören: „Lieber lustig als dumm“",
+              "nicht bloßstellen; unter vier Augen ansprechen; Aufgaben machbar gestalten; dem Humor an passender Stelle eine Bühne geben; Grenzen freundlich und ohne Sarkasmus setzen"
+            ],
+            [
+              "Rückzug",
+              "vor Überforderung, Beschämung, Zurückweisung, manchmal vor zu vielen Reizen",
+              "leise, niedrigschwellige Kontaktangebote; Wahlmöglichkeiten; kleine erste Schritte; nicht vor der Klasse drängen; prüfen, ob Traurigkeit, Mobbing oder Belastungen dahinterstehen"
+            ],
+            [
+              "Angriff",
+              "vor Ohnmacht, Kränkung und dem Gefühl, ausgeliefert zu sein: „Angriff ist die beste Verteidigung“",
+              "ruhig bleiben; nicht auf Provokationen einsteigen; andere schützen; einen gesichtswahrenden Ausweg lassen; später in Ruhe klären und die Beziehung reparieren"
+            ],
+            [
+              "Überanpassung",
+              "vor Kritik, Zurückweisung und Liebesverlust: „Wenn ich perfekt bin, passiert mir nichts“",
+              "auch hier hinschauen; das „brave“ Kind nach seinem Befinden fragen; Fehler ausdrücklich erlauben; die Person anerkennen, nicht nur die Leistung"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Eine Grundregel lautet: **Zuerst Sicherheit, dann Veränderung.** Kinder geben eine Schutzstrategie auf, wenn die Situation weniger bedrohlich wird oder sie eine bessere Strategie zur Verfügung haben. Wer das Verhalten nur bestraft, bestätigt oft genau die Befürchtung, die dahintersteht, etwa „Ich werde ja doch bloßgestellt“ oder „Erwachsene sind gegen mich“. Das heißt nicht, dass alles erlaubt ist: Grenzen bleiben nötig, besonders wenn andere verletzt werden. Die Grenze wirkt aber besser, wenn das Kind spürt, dass es trotzdem gesehen wird."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Das Verhalten beschreiben und seine Funktion vermuten – für sich oder im Team: „Wenn Texte kommen, macht er Witze. Vielleicht schützt ihn das davor, als schlechter Leser dazustehen.“",
+            "Die Vermutung im Gespräch unter vier Augen vorsichtig anbieten: „Mir fällt auf, dass du Witze machst, wenn es schwierig wird. Kann es sein, dass dir die Aufgabe gerade zu viel ist?“",
+            "Die Anforderung machbar gestalten: kleinere Schritte, Unterstützung, eine Probe im Kleinen.",
+            "Eine andere Strategie vereinbaren: ein Zeichen für „Ich brauche Hilfe“, eine Pausenkarte, einen Satz, den das Kind sagen kann.",
+            "Reifere Formen anerkennen, wenn sie auftauchen: „Du hast gesagt, dass du Hilfe brauchst, statt das Heft zu werfen. Das war stark.“",
+            "Nach einer Eskalation die Beziehung reparieren und gemeinsam anschauen, was vorher passiert ist."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Die Schutzstrategie öffentlich entlarven: „Du machst doch nur Witze, weil du nicht lesen kannst.“",
+            "Psychologische Deutungen als Vorwurf: „Du projizierst“, „Das ist nur Abwehr“.",
+            "Sarkasmus und Ironie – sie treffen genau die Scham, vor der sich das Kind schützt.",
+            "Machtkämpfe vor der Klasse, bei denen das Kind nur verlieren oder eskalieren kann.",
+            "Das stille, angepasste Kind übersehen, weil es nicht stört."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Dylans neue Rolle",
+          "text": "Die Lehrerin bespricht mit der ISA, was hinter Dylans Clownerie stecken könnte. Im Einzelgespräch sagt sie: „Mir ist aufgefallen, dass du Witze machst, wenn Textaufgaben kommen. Ich glaube, die Texte sind dir manchmal zu mühsam. Das kann man üben.“ Dylan zuckt mit den Schultern, dann nickt er. Sie vereinbaren: Ein Lernpartner liest Textaufgaben vor, und Dylan legt eine Karte auf den Tisch, wenn er Hilfe braucht. Sein Humor bekommt einen festen Platz: Er moderiert freitags den Wochenrückblick. Die Clownerie nimmt deutlich ab. Parallel werden seine Leseschwierigkeiten genauer abgeklärt.",
+          "fragen": [
+            "Welche Bausteine haben Dylans Schutzstrategie weniger nötig gemacht?",
+            "Warum ist es wichtig, die Leseschwierigkeiten zusätzlich abklären zu lassen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Bewältigung stärken und Grenzen erkennen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Langfristig geht es darum, Kindern ein breiteres Repertoire an Bewältigungsformen zu ermöglichen. Das gelingt am besten im Alltag: wenn Erwachsene zeigen, wie sie selbst mit Stress umgehen („Ich bin gerade angespannt, ich atme kurz durch“), wenn Gefühle benannt werden dürfen, wenn Probleme gemeinsam zerlegt und gelöst werden und wenn Fehler als Teil des Lernens gelten. Schulische Programme zum sozial-emotionalen Lernen, die solche Fähigkeiten mit allen Kindern einer Klasse oder Schule üben, verbessern nachweislich soziale Fähigkeiten und Verhalten, verringern emotionale Belastungen und wirken sich sogar positiv auf die Schulleistungen aus (Durlak et al., 2011).\n\n**Auch Erwachsene wehren ab.** Unter Druck greifen auch Fachkräfte zu Schutzstrategien: Zynismus im Lehrerzimmer („Bei dem ist eh alles verloren“), Schuldzuweisungen an Eltern oder Kind, Rückzug von besonders anstrengenden Schülern, Rationalisierungen („Dafür bin ich nicht zuständig“). Das ist menschlich – und ein Signal, dass die eigene Belastung zu hoch ist. Austausch im Team, Supervision und gute Selbstfürsorge sind dann kein Luxus, sondern Voraussetzung für professionelles Handeln."
+        },
+        {
+          "art": "liste",
+          "titel": "Wann eine Schutzstrategie mehr als pädagogische Antworten braucht",
+          "punkte": [
+            "Ein Kind zieht sich über Wochen immer mehr zurück, wirkt traurig, gereizt oder lustlos, schläft oder isst schlecht – dahinter kann eine Depression stehen.",
+            "Ein Kind wirkt wiederholt wie weggetreten oder „abgeschaltet“ – das kann auf Dissoziation nach belastenden Erfahrungen, aber auch auf eine körperliche Ursache wie Absencen hinweisen.",
+            "Aggression ist häufig, schwer und zeigt sich in vielen Situationen.",
+            "Die Strategie beeinträchtigt Lernen und Beziehungen über lange Zeit deutlich, trotz guter Unterstützung.",
+            "Hinter dem Verhalten stehen vermutlich Belastungen, die die Schule allein nicht auffangen kann – etwa eine Lernstörung oder schwierige Lebensumstände."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie in diesen Fällen Unterstützung bei Ihrer Leitung (Responsable), beim Diagnostique-Team des CDSE oder – im Lycée – beim SePAS. Beschreiben Sie das Verhalten, die Situationen, in denen es auftritt, und was Sie schon versucht haben. Die Abklärung von Lernstörungen, Depression, Traumafolgen oder körperlichen Ursachen ist Sache von Fachleuten."
+        },
+        {
+          "art": "achtung",
+          "text": "Selbstverletzung, Substanzkonsum, gestörtes Essverhalten oder Äußerungen von Lebensmüdigkeit sind Bewältigungsversuche mit hohem Risiko. Nehmen Sie sie immer ernst, sprechen Sie das Kind ruhig an und informieren Sie Ihre Leitung nach den internen Abläufen. Bei akuter Gefahr lassen Sie das Kind nicht allein."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist nach dem Stressmodell von Lazarus und Folkman entscheidend dafür, ob eine Situation Stress auslöst?",
+      "optionen": [
+        "Allein die objektive Schwere des Ereignisses",
+        "Die Bewertung der Situation und der eigenen Möglichkeiten, mit ihr fertigzuwerden",
+        "Die Tageszeit, zu der das Ereignis eintritt",
+        "Ob andere Menschen dieselbe Situation stressig finden"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Nach dem transaktionalen Modell entsteht Stress aus der Bewertung: Was bedeutet die Situation für mich, und reichen meine Möglichkeiten aus? Deshalb erleben zwei Kinder dieselbe Probe völlig unterschiedlich. Die objektive Schwere spielt eine Rolle, erklärt allein aber nicht, wie jemand reagiert, und die Einschätzung anderer ist nicht maßgeblich."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beispiele beschreiben emotionsorientierte Bewältigung? (mehrere richtig)",
+      "optionen": [
+        "Vor der Probe mit einer Freundin telefonieren, um sich Mut zu machen",
+        "Einen Lernplan für die nächste Woche erstellen",
+        "Nach einem Streit Musik hören, um ruhiger zu werden",
+        "Die Lehrerin um zusätzliche Übungsaufgaben bitten",
+        "Sich sagen: „Eine Note sagt nicht, wer ich bin.“"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Emotionsorientierte Bewältigung macht Gefühle tragbar – durch Zuspruch, Beruhigung oder eine veränderte Sicht auf die Situation. Lernplan und Übungsaufgaben sind problemorientiert: Sie verändern die Situation selbst. Beide Formen sind wertvoll; entscheidend ist, dass sie zur Situation passen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was trifft auf Abwehrmechanismen zu?",
+      "optionen": [
+        "Sie kommen nur bei Menschen mit psychischen Störungen vor.",
+        "Sie sind immer schädlich und sollten Kindern möglichst schnell abgewöhnt werden.",
+        "Sie sind bewusst eingesetzte Tricks, um Erwachsene zu täuschen.",
+        "Sie laufen weitgehend unbewusst ab, schützen vor unerträglichen Gefühlen und reichen von unreifen bis zu reifen Formen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Alle Menschen nutzen Abwehr, meist ohne es zu merken. Sie schützt vor Angst, Scham oder Ohnmacht und reicht von unreifen, verzerrenden Formen bis zu reifen wie Humor oder Antizipation. Problematisch wird sie erst, wenn sie starr ist, die Wirklichkeit stark verzerrt oder anderen schadet; bewusste Täuschung ist sie nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem heftigen Streit mit seinem Vater am Morgen tritt Samir (12) in der Pause ohne erkennbaren Anlass nach einem jüngeren Mitschüler.",
+      "frage": "Welcher Abwehrmechanismus beschreibt diese Reaktion am besten?",
+      "optionen": [
+        "Sublimierung",
+        "Verschiebung",
+        "Antizipation",
+        "Intellektualisierung"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Bei der Verschiebung wird ein Gefühl an einem ungefährlicheren Ziel ausgelassen – hier die Wut auf den Vater am jüngeren Mitschüler. Sublimierung würde die Wut in etwas Wertvolles lenken, Antizipation bereitet auf Kommendes vor, Intellektualisierung behandelt Belastendes nur sachlich. Die Einordnung erklärt das Verhalten, entschuldigt es aber nicht: Der Mitschüler muss geschützt werden."
+    },
+    {
+      "art": "fall",
+      "fall": "Dylan (11) macht jedes Mal Witze, wenn Textaufgaben an die Tafel kommen. Die Lehrerin vermutet, dass er schlecht liest und sich dafür schämt.",
+      "frage": "Welche Reaktion ist am hilfreichsten?",
+      "optionen": [
+        "Vor der Klasse sagen: „Du machst doch nur Witze, weil du nicht lesen kannst.“",
+        "Jeden Witz mit einem Eintrag bestrafen, bis das Verhalten aufhört.",
+        "Unter vier Augen die Vermutung behutsam ansprechen, Unterstützung beim Lesen organisieren, ein Hilfezeichen vereinbaren und seinem Humor einen passenden Platz geben.",
+        "Die Witze ignorieren und ihn nicht mehr aufrufen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Clownerie schützt Dylan vermutlich davor, als schlechter Leser dazustehen. Hilfreich ist, die Scham nicht zu verstärken, die Anforderung machbar zu machen und eine bessere Strategie anzubieten. Öffentliches Entlarven beschämt, Strafen allein lassen den Grund bestehen, und wer ihn nicht mehr aufruft, schließt ihn vom Lernen aus."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind gibt eine Schutzstrategie am schnellsten auf, wenn man sie konsequent bestraft.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Strafen allein bestätigen oft die Befürchtung, die hinter der Strategie steht, und verstärken den Schutzbedarf. Kinder lassen eine Schutzstrategie eher los, wenn die Situation sicherer wird und sie eine bessere Strategie zur Verfügung haben. Grenzen bleiben trotzdem nötig, besonders wenn andere verletzt werden."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist nach Young ein Schema?",
+      "optionen": [
+        "Ein tief verankertes Muster aus Erinnerungen, Gefühlen, Gedanken und Körperempfindungen über sich selbst und Beziehungen, entstanden aus früh unerfüllten Grundbedürfnissen",
+        "Ein Stundenplan, der Kindern Orientierung gibt",
+        "Eine bewusste Entscheidung, sich in bestimmten Situationen auf eine bestimmte Art zu verhalten",
+        "Eine angeborene Temperamentseigenschaft"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Schemata entstehen in Kindheit und Jugend, wenn Grundbedürfnisse wie sichere Bindung oder Autonomie wiederholt nicht erfüllt werden, und wirken später wie eine Brille auf neue Situationen. Sie sind weder bewusst gewählt noch angeboren, auch wenn das Temperament beeinflusst, wie ein Kind Erfahrungen verarbeitet."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Ein Kind trägt die Überzeugung „Ich schaffe es sowieso nicht“ in sich. Welche Verhaltensweisen können dazu passen? (mehrere richtig)",
+      "optionen": [
+        "Es gibt bei der ersten Schwierigkeit auf.",
+        "Es fängt Aufgaben gar nicht erst an und blödelt stattdessen.",
+        "Es prahlt, die Aufgabe sei babyleicht, oder arbeitet verbissen perfektionistisch.",
+        "Es bittet gelassen um Hilfe und probiert es dann erneut."
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Dasselbe Schema kann erduldet werden (schnelles Aufgeben), vermieden (gar nicht erst anfangen) oder überkompensiert (Prahlen, Perfektionismus). Gelassen um Hilfe zu bitten und es erneut zu versuchen, zeigt dagegen eine gesunde Bewältigung, die gerade nicht vom Schema bestimmt ist."
+    },
+    {
+      "art": "fall",
+      "fall": "Aylin (14) ist die „perfekte“ Schülerin: immer vorbereitet, immer freundlich, nie ein Widerwort. Eine Kollegin hat beobachtet, wie Aylin nach einer guten, aber nicht sehr guten Note weinend auf der Toilette saß. Seit Wochen wirkt sie blass und müde.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Aylin in einem ruhigen Moment ansprechen, nach ihrem Befinden fragen, Fehler ausdrücklich erlauben und die Beobachtungen mit der Leitung oder dem SePAS besprechen.",
+        "Nichts tun, denn Aylin ist leistungsstark und macht keine Probleme.",
+        "Aylin vor der Klasse loben, damit sie sieht, dass ihre Note gut ist.",
+        "Aylin raten, noch mehr zu lernen, damit sie wieder bessere Noten bekommt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Überanpassung und Perfektionismus können vor Kritik und Zurückweisung schützen – und große Belastung verbergen. Aylins Reaktion auf eine gute Note und ihre Erschöpfung sind Warnzeichen, die ein behutsames Gespräch und den Austausch mit Leitung oder SePAS rechtfertigen. Wegsehen übersieht die Not, öffentliches Lob erhöht den Druck, und mehr Lernen verstärkt das Muster."
+    },
+    {
+      "art": "fall",
+      "fall": "Marco (13) reagiert auf die Aufforderung, sein Handy wegzulegen, mit „Sie haben mir gar nichts zu sagen!“ und steht drohend auf. Die Klasse schaut gespannt zu.",
+      "frage": "Welche Reaktion ist am ehesten hilfreich?",
+      "optionen": [
+        "Laut werden und ihm vor der Klasse klarmachen, wer hier das Sagen hat.",
+        "Nachgeben, damit die Situation nicht eskaliert.",
+        "Ihm erklären, dass er offensichtlich projiziert und eigentlich auf jemand anderen wütend ist.",
+        "Ruhig bleiben, die Regel kurz wiederholen, einen gesichtswahrenden Ausweg anbieten („In die Tasche oder aufs Pult – du entscheidest“) und das Gespräch nach der Stunde führen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Angriff schützt oft vor Ohnmacht und Gesichtsverlust, vor Publikum besonders. Ruhe, eine kurze, klare Regel und ein Ausweg, der das Gesicht wahrt, senken die Spannung, ohne die Grenze aufzugeben; die eigentliche Klärung gehört in ein Gespräch unter vier Augen. Lautwerden eskaliert, Nachgeben entwertet die Regel, und psychologische Deutungen wirken im Konflikt als weiterer Angriff."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "In Vaillants Langzeitstudie kamen Männer, die überwiegend reifere Abwehrformen wie Humor, Antizipation oder Sublimierung nutzten, im Leben besser zurecht.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. In Vaillants Studie, die Harvard-Absolventen über Jahrzehnte begleitete, hing die Reife der Abwehr mit besserer Bewältigung in Beziehungen, Beruf und Gesundheit zusammen. Für die Praxis heißt das: Es lohnt sich, reife Formen bei Kindern zu erkennen, anzuerkennen und zu stärken."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Transaktionales Stressmodell",
+      "erklaerung": "Modell von Lazarus und Folkman: Stress entsteht, wenn ein Mensch eine Situation als bedrohlich oder überfordernd bewertet und seine Möglichkeiten als nicht ausreichend einschätzt."
+    },
+    {
+      "begriff": "Bewältigung (Coping)",
+      "erklaerung": "Anstrengungen in Gedanken und Handlungen, mit belastenden Anforderungen fertigzuwerden – problemorientiert (die Situation verändern) oder emotionsorientiert (die Gefühle tragbar machen)."
+    },
+    {
+      "begriff": "Abwehrmechanismus",
+      "erklaerung": "Weitgehend unbewusster seelischer Vorgang, der vor unerträglichen Gefühlen wie Angst, Scham oder Ohnmacht schützt, etwa Verleugnung, Projektion oder Humor."
+    },
+    {
+      "begriff": "Projektion",
+      "erklaerung": "Eigene unangenehme Gefühle oder Absichten werden anderen zugeschrieben: „Der hasst mich“ statt „Ich bin wütend auf ihn“."
+    },
+    {
+      "begriff": "Verschiebung",
+      "erklaerung": "Ein Gefühl wird an einem ungefährlicheren Ziel ausgelassen, etwa Wut auf die Eltern an einem Mitschüler."
+    },
+    {
+      "begriff": "Sublimierung",
+      "erklaerung": "Reife Abwehrform: Starke Impulse finden einen sozial wertvollen Ausdruck, etwa Wut im Sport oder Traurigkeit in Musik."
+    },
+    {
+      "begriff": "Schema",
+      "erklaerung": "Tief verankertes Muster aus Erinnerungen, Gefühlen, Gedanken und Körperempfindungen über sich selbst und Beziehungen, entstanden aus früh unerfüllten Grundbedürfnissen (Young)."
+    },
+    {
+      "begriff": "Überkompensation",
+      "erklaerung": "Umgang mit einem Schema, bei dem demonstrativ das Gegenteil gezeigt wird – etwa Prahlen bei der tiefen Überzeugung, nichts zu können."
+    }
+  ],
+  "quellen": [
+    "lazarusFolkman1984",
+    "vaillant1977",
+    "young2003",
+    "gross1998",
+    "durlak2011"
+  ],
+  "verwandt": [
+    "stress-gehirn",
+    "emotionsregulation",
+    "persoenlichkeitsentwicklung",
+    "deeskalation",
+    "beziehung-haltung",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "stress-werkzeugkoffer",
+    "ich-brauche-eine-pause",
+    "signalkarten",
+    "fehler-sind-helfer",
+    "aus-rueckschlaegen-lernen"
+  ]
+}
