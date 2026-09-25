@@ -240,6 +240,35 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-heute .ic{width:22px;height:22px;color:var(--accent);}
 .ar-heute b{display:block;font-size:13px;color:var(--muted);font-weight:600;}
 .ar-heute small{display:block;font-size:15px;color:var(--ink);font-weight:600;}
+/* Übersicht: Fällig diese Woche – je Kind eine Zeile */
+.ar-faellig{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow-1);padding:12px 8px 8px;margin:0 0 18px;max-width:760px;}
+.ar-faellig header{display:flex;align-items:center;gap:10px;padding:0 8px 6px;}
+.ar-faellig header .ic{width:20px;height:20px;color:var(--accent);flex:0 0 auto;}
+.ar-faellig h2{font-size:15px;font-weight:700;margin:0;}
+.ar-faellig header .ar-leise{margin-left:auto;font-size:12.5px;}
+.ar-faellig ul{list-style:none;margin:0;padding:0;}
+.ar-faellig-z{display:grid;grid-template-columns:10px minmax(0,150px) minmax(0,1fr) auto;gap:10px;align-items:center;padding:8px;border-radius:9px;color:inherit;text-decoration:none;font-size:14px;}
+.ar-faellig-z:hover{background:var(--surface-2);}
+.ar-f-punkt{width:9px;height:9px;border-radius:50%;background:var(--accent);}
+.ar-faellig-z.dringend .ar-f-punkt{background:#C0543F;}
+.ar-faellig-z.faellig .ar-f-punkt{background:#D9A93A;}
+.ar-f-name{font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ar-f-was{color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ar-f-mehr{display:inline-block;font-size:11.5px;font-weight:700;color:var(--muted);background:var(--bg-2);border-radius:999px;padding:0 6px;margin-left:4px;}
+.ar-f-wann{font-size:12.5px;font-weight:650;color:var(--muted);white-space:nowrap;}
+.ar-faellig-z.dringend .ar-f-wann{color:#9A3A26;}
+.ar-faellig-z.faellig .ar-f-wann{color:#8A6414;}
+.ar-faellig details summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--accent);padding:6px 8px 4px;}
+.ar-faellig-leer{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);margin:-8px 0 18px 4px;}
+.ar-faellig-leer .ic{width:16px;height:16px;color:#2F8A5B;}
+.ar-faellig-leer b{color:var(--ink-2);font-weight:650;}
+@media (max-width:640px){
+  .ar-faellig-z{grid-template-columns:10px minmax(0,1fr) auto;row-gap:2px;}
+  .ar-f-was{grid-column:2 / 4;grid-row:2;white-space:normal;}
+}
+/* Wiedervorlage im Eintrag-Formular */
+.ar-wv{display:inline-flex;align-items:center;gap:8px;margin-left:auto;font-size:13px;color:var(--muted);}
+.ar-wv input{font:inherit;font-size:13.5px;padding:6px 8px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);color:var(--ink);}
 /* Entwicklung & Ziele (ELDiB / PEI) */
 .ar-eldibkarte{border-top:3px solid #1F6B6F;}
 .ar-leiter{display:flex;flex-direction:column;gap:10px;margin:6px 0 4px;}

@@ -137,10 +137,12 @@ function schritte(d,r){
         '. Mit dem Kind (und den Eltern) festhalten: Frühwarnzeichen, was hilft, wer informiert wird. Bei Suizidgedanken mit Fachleuten.',
       material:['sicherheitsplan','nachgespraech-krise'],lernen:['deeskalation','selbstverletzung-suizid']});
   }
-  var verst=kl?profilNamen(['adhs','sozialverhalten','regulation']):[];
+  var verst=kl?profilNamen(['adhs','sozialverhalten','regulation']):[], TK=window.CDSE_TAGESKARTE, tk=TK?TK.karteVon(d):null;
   if(verst.length){
     add({key:'verstaerker',phase:'planen',titel:'Verstärkerplan oder tägliche Rückmeldekarte einführen',
       warum:'Bei '+verst.join(', ')+' wirkt sofortige, häufige Rückmeldung besonders gut: ein bis drei klar beschriebene Ziele, schnelle Einlösung, Rückmeldung auch an die Eltern.',
+      auto:tk?'Tageskarte seit '+datum(tk.start)+(tk.ende?' (beendet am '+datum(tk.ende)+')':''):'',
+      aktion:(TK&&r.bearbeiten)?{tk:'einrichten',text:'Tageskarte einrichten'}:null,
       material:['punkteplan','check-in-check-out','belohnungs-menue'],lernen:['verstaerkung']});
   }
   if(fokus.length){
@@ -157,7 +159,8 @@ function schritte(d,r){
 
   /* ---------- 4 Umsetzen ---------- */
   fokus.forEach(function(code){
-    var last=letzter(ein.filter(function(e){return e.ziel===code;}).map(function(e){return iso(e.datum);}).sort());
+    var tkLast=TK?TK.zuletztFuerCode(d,code):'';
+    var last=letzter(ein.filter(function(e){return e.ziel===code;}).map(function(e){return iso(e.datum);}).concat(tkLast?[tkLast]:[]).sort());
     var inf=H.itemZu?H.itemZu(code):null, z=A?A.ziele.filter(function(x){return x.code===code;})[0]:null;
     var frisch=last&&tageSeit(last)<=ZIEL_TAGE;
     add({key:'ziel:'+code,phase:'umsetzen',laufend:true,titel:'Fortschritt beobachten: '+code+(inf&&inf.it&&inf.it.keyword?' – '+inf.it.keyword:''),
@@ -176,6 +179,18 @@ function schritte(d,r){
     var gesehen={}, bl=[];
     kl.profile.slice(0,3).forEach(function(x){(x.def.blaetter||[]).slice(0,2).forEach(function(id){var b=KO.blattFuer(id,kl.ctx.schulstufe);if(b&&!gesehen[b.id]){gesehen[b.id]=1;bl.push(b.id);}});});
     if(bl.length){add({key:'material',phase:'umsetzen',titel:'Passendes Material einsetzen',warum:'Aus dem Kompass, in der Fassung für '+(kl.ctx.schulstufe||'die Schulstufe')+'. Mehr Material steht im Kompass bei jedem Profil.',material:bl.slice(0,4)});}
+  }
+  if(tk&&!tk.ende){
+    var tk14=TK.reihe(tk,plusTage(h,-13),h), tkS=TK.schnitt(tk14), tkZiel=tk.ziel||80, tkOk=tk14.filter(function(x){return x.erreicht;}).length;
+    if(tk14.length>=8&&tkS<tkZiel-20){
+      add({key:'tk-anpassen:'+plusTage(h,-(new Date(h+'T12:00:00').getDay()+6)%7),phase:'umsetzen',prio:2,titel:'Tageskarte anpassen: Ziele kleiner machen',
+        warum:'In den letzten zwei Wochen im Schnitt '+tkS+' % – das Tagesziel ('+tkZiel+' %) wird selten erreicht. Erfolg ist der Motor der Karte: Ziele kleiner und klarer formulieren, kürzere Abschnitte wählen oder das Tagesziel vorübergehend senken. Prüfen, ob die Belohnung für '+vn+' wirklich attraktiv ist.',
+        aktion:r.bearbeiten?{tk:'einrichten',text:'Tageskarte ändern'}:null,lernen:['verstaerkung']});
+    }else if(tk14.length>=8&&tkOk>=Math.ceil(tk14.length*0.8)&&tageSeit(tk.start)>=28){
+      add({key:'tk-ausschleichen',phase:'pruefen',titel:'Tageskarte schrittweise ausschleichen',
+        warum:'Das Tagesziel wird an '+tkOk+' von '+tk14.length+' Tagen erreicht (im Schnitt '+tkS+' %). Jetzt den nächsten Schritt planen: '+vn+' schätzt sich zuerst selbst ein und vergleicht mit der Lehrkraft, dann Rückmeldung nur noch morgens und nachmittags, schließlich ohne Karte – mit Lob für das Erreichte.',
+        aktion:r.bearbeiten?{tk:'einrichten',text:'Tageskarte ändern'}:null,lernen:['verstaerkung']});
+    }
   }
   if(planAktiv||elt.length){
     var we=wieder('eltern-regel',letzter(elt),ELTERN_TAGE,bp.start||beginn);
@@ -248,6 +263,7 @@ function aktionKnopf(a,primaer){
   if(a.tab){return '<button type="button" class="'+kl+'" data-tab="'+esc(a.tab)+'">'+esc(a.text)+'</button>';}
   if(a.ar){return '<button type="button" class="'+kl+'" data-ar="'+esc(a.ar)+'"'+(a.item?' data-item="'+esc(a.item)+'"':'')+(a.eid?' data-eid="'+esc(a.eid)+'"':'')+'>'+esc(a.text)+'</button>';}
   if(a.bp){return '<button type="button" class="'+kl+'" data-bp="'+esc(a.bp)+'">'+esc(a.text)+'</button>';}
+  if(a.tk){return '<button type="button" class="'+kl+'" data-tk="'+esc(a.tk)+'">'+esc(a.text)+'</button>';}
   return '';
 }
 function meta(s){
@@ -290,7 +306,7 @@ function tab(d,r){
   /* Kopf mit Fortschritt und Phasen */
   var pz=P.gesamt?Math.round(P.fertig/P.gesamt*100):0;
   h+='<section class="ar-karte bp-kopf"><div class="ar-kartenkopf"><div><p class="overline">Begleitplan</p><h2>Schritt für Schritt mit '+esc(vn)+'</h2></div>'+
-    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-bp="eigen-neu">'+svg('plus')+'Eigener Schritt</button>':'')+
+    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-bp="eigen-neu" title="Eine Frist (z. B. Rückruf) oder einen eigenen Schritt eintragen">'+svg('plus')+'Frist oder Schritt</button>':'')+
     '<button class="btn" type="button" data-bp="drucken">'+svg('print')+'Drucken</button></span></div>'+
     '<div class="bp-fortschritt"><span class="bp-balken" aria-hidden="true"><span style="width:'+pz+'%"></span></span><span class="bp-zahlen"><b>'+P.fertig+' von '+P.gesamt+'</b> Schritten erledigt'+
       (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
@@ -311,8 +327,10 @@ function tab(d,r){
   if(P.fokus.length){
     h+='<section class="ar-karte bp-fokus"><div class="ar-kartenkopf"><h3>Fokusziele'+(P.bp.fokusSeit?' <span class="ar-leise">seit '+esc(datum(P.bp.fokusSeit))+'</span>':'')+'</h3>'+(r.bearbeiten?'<button class="ar-link" type="button" data-bp="fokus">'+svg('edit')+'Ändern</button>':'')+'</div><ul>'+
       P.fokus.map(function(c){var z=P.A?P.A.ziele.filter(function(x){return x.code===c;})[0]:null, inf=H.itemZu?H.itemZu(c):null, erreicht=P.A&&P.A.e&&P.A.e.sel&&P.A.e.sel[c]==='e';
-        return '<li><span class="bp-code">'+esc(c)+'</span><span>'+esc((z&&z.text)||(inf&&inf.it&&(inf.it.text||inf.it.keyword))||'')+'</span>'+(erreicht?'<span class="bp-erreicht">laut ELDiB erreicht</span>':'')+'</li>';}).join('')+'</ul></section>';
+        return '<li><span class="bp-code">'+esc(c)+'</span><span>'+esc((z&&z.text)||(inf&&inf.it&&(inf.it.text||inf.it.keyword))||'')+'</span>'+(erreicht?'<span class="bp-erreicht">laut ELDiB erreicht</span>':'')+'</li>';}).join('')+'</ul>'+
+      (window.CDSE_TAGESKARTE?window.CDSE_TAGESKARTE.fokusLink(d,r):'')+'</section>';
   }
+  if(window.CDSE_TAGESKARTE){h+=window.CDSE_TAGESKARTE.karte(d,r);}
   /* Sofort */
   var sofort=P.liste.filter(function(s){return s.phase==='sofort';});
   if(sofort.length){h+='<section class="ar-karte bp-phase bp-sofort"><h3>'+svg('warn')+'Sofort</h3><ol class="bp-liste">'+sofort.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol></section>';}
@@ -344,6 +362,7 @@ function kennzahlenText(k){
   if(k.beobachtungen!=null){t.push(k.beobachtungen+(k.beobachtungen===1?' Beobachtung':' Beobachtungen')+' zu den Fokuszielen');}
   if(k.erreicht&&k.erreicht.length){t.push('erreicht: '+k.erreicht.join(', '));}
   if(k.screening){t.push('Screening: '+k.screening);}
+  if(k.tageskarte){t.push('Tageskarte: im Schnitt '+k.tageskarte.schnitt+' % an '+k.tageskarte.tage+(k.tageskarte.tage===1?' Tag':' Tagen')+' (Tagesziel an '+k.tageskarte.erreicht+' erreicht)');}
   return t;
 }
 /* Kennzahlen seit der letzten Überprüfung (oder dem Beginn) */
@@ -358,6 +377,8 @@ function kennzahlen(d,P){
   if(P.A&&P.A.e&&P.A.e.sel){k.erreicht=P.fokus.filter(function(c){return P.A.e.sel[c]==='e';});}
   var S=window.CDSE_SCREENING, ls=S&&S.letztes?S.letztes(d):null;
   if(ls&&imZeitraum(ls.s.datum)){k.screening=datum(ls.s.datum)+' – '+ls.e.gesamt.titel;}
+  var TK=window.CDSE_TAGESKARTE, tk=TK?TK.karteVon(d):null;
+  if(tk){var tl=TK.reihe(tk,'','').filter(function(x){return imZeitraum(x.datum);});if(tl.length){k.tageskarte={tage:tl.length,schnitt:TK.schnitt(tl),erreicht:tl.filter(function(x){return x.erreicht;}).length};}}
   return k;
 }
 
@@ -369,7 +390,25 @@ function kurzKarte(d,r){
   return '<div class="ar-karte bp-kurzkarte'+(n?' '+n.status:'')+'"><div class="ar-kartenkopf"><h2>Begleitplan</h2><button class="ar-link" type="button" data-tab="begleitplan">Zum Begleitplan'+svg('right')+'</button></div>'+
     '<div class="bp-fortschritt"><span class="bp-balken" aria-hidden="true"><span style="width:'+(P.gesamt?Math.round(P.fertig/P.gesamt*100):0)+'%"></span></span><span class="bp-zahlen"><b>'+P.fertig+' von '+P.gesamt+'</b> erledigt'+
       (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
-    (n?'<p class="bp-kurz-naechst"><span class="ar-leise">Als Nächstes:</span> <b>'+esc(n.titel)+'</b></p>':'<p class="ar-leise">Im Moment ist nichts offen.</p>')+'</div>';
+    (n?'<p class="bp-kurz-naechst"><span class="ar-leise">Als Nächstes:</span> <b>'+esc(n.titel)+'</b></p>':'<p class="ar-leise">Im Moment ist nichts offen.</p>')+
+    (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p class="bp-kurz-tk">'+esc(window.CDSE_TAGESKARTE.kurz(d))+'</p>':'')+'</div>';
+}
+
+/* ---------- Für die Startseite: was bei diesem Kind bis zum Stichtag ansteht ----------
+   Fallverantwortliche sehen die Schritte des Plans und Fristen ohne Zuständige;
+   Fristen mit einer zuständigen Person sieht nur diese Person. */
+function faellig(d,meId,bis){
+  var P=schritte(d,{}), verantw=(d.verantwortlich||[]).indexOf(meId)>=0, l=[];
+  P.liste.forEach(function(s){
+    if(STATUS_RANG[s.status]==null){return;}
+    var wer=s.eigen?String(s.eigen.wer||''):'';
+    if(wer?wer!==meId:!verantw){return;}
+    if(s.status==='offen'&&!(s.faellig&&s.faellig<=bis)){return;}
+    /* Auf der Startseite ohne Inhalt des Warnsignals – Einzelheiten stehen im Dossier */
+    var titel=/^warn:/.test(s.key)?s.titel.replace(/:.*$/,'')+' – bitte ansehen':s.titel;
+    l.push({key:s.key,titel:titel,status:s.status,faellig:s.faellig||''});
+  });
+  return l.sort(function(a,b){return (STATUS_RANG[a.status]-STATUS_RANG[b.status])||String(a.faellig||'9').localeCompare(String(b.faellig||'9'));});
 }
 
 /* ---------- Teil fürs Übergabeblatt ---------- */
@@ -379,6 +418,7 @@ function druckTeil(d){
   if(!P.gesamt){return '';}
   var offen=P.offen.slice(0,8), revs=((P.bp.reviews)||[]).slice().sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));}), rv=revs[0];
   return '<h2>Begleitplan</h2><p>'+P.fertig+' von '+P.gesamt+' Schritten erledigt.'+(P.naechster?' Als Nächstes: <b>'+esc(P.naechster.titel)+'</b>.':'')+'</p>'+
+    (window.CDSE_TAGESKARTE&&window.CDSE_TAGESKARTE.kurz(d)?'<p>'+esc(window.CDSE_TAGESKARTE.kurz(d))+'.</p>':'')+
     (P.fokus.length?'<h3>Fokusziele</h3><ul>'+P.fokus.map(function(c){var z=P.A?P.A.ziele.filter(function(x){return x.code===c;})[0]:null;return '<li><b>'+esc(c)+'</b>'+(z&&z.text?' – '+esc(z.text):'')+'</li>';}).join('')+'</ul>':'')+
     (offen.length?'<h3>Offene Schritte</h3><ul>'+offen.map(function(s){return '<li>'+esc(s.titel)+(s.status==='dringend'?' <small>(dringend)</small>':(s.faellig?' <small>(fällig '+esc(datum(s.faellig))+')</small>':''))+'</li>';}).join('')+'</ul>':'')+
     (rv?'<h3>Letzte Überprüfung ('+esc(datum(rv.datum))+')</h3><p>'+esc(rv.notiz||'').replace(/\n/g,'<br>')+'</p>':'');
@@ -430,13 +470,26 @@ function reviewDialog(d){
     ausfuehren:function(w){return T.ops.planUeberpruefung(d.id,{datum:w.werte.datum||heute(),notiz:w.werte.notiz,kennzahlen:k});}})
     .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Überprüfung gespeichert – die nächste ist in sechs Wochen');}});
 }
+/* Häufige Fristen: ein Klick füllt „Was ist zu tun?“, Frist in einer Woche, zuständig ich */
+var VORLAGEN=['Eltern zurückrufen','Lehrkraft kontaktieren','Helfernetz kontaktieren','PEI-Evaluation vorbereiten','Bericht schreiben','Réunion vorbereiten'];
 function eigenerDialog(d,x){
   x=x||{};
-  var konten=(K.konten?K.konten():[]).filter(function(k){return k&&k.id;}).map(function(k){return [k.id,k.name];});
-  var inhalt=H.feld('titel','Was ist zu tun?',x.titel||'','text',' maxlength="200"')+H.textfeld('text','Details (optional)',x.text||'',3)+
+  var konten=(K.konten?K.konten():[]).filter(function(k){return k&&k.id;}).map(function(k){return [k.id,k.name];}), me=(K.ich&&K.ich())||{};
+  var inhalt=(x.id?'':'<div class="bp-vorlagen" role="group" aria-label="Häufige Fristen">'+VORLAGEN.map(function(v){return '<button type="button" class="catchip" data-vorlage="'+esc(v)+'">'+esc(v)+'</button>';}).join('')+'</div>')+
+    H.feld('titel','Was ist zu tun?',x.titel||'','text',' maxlength="200"')+H.textfeld('text','Details (optional)',x.text||'',3)+
     '<div class="ar-raster3">'+H.auswahl('phase','Phase',x.phase||'umsetzen',PHASEN.map(function(p){return [p[0],p[1]];}))+
-      H.auswahl('wer','Zuständig',x.wer||'',konten,'– offen –')+H.feld('bis','Bis wann? (optional)',x.bis||'','date')+'</div>';
-  H.dialog(x.id?'Schritt ändern':'Eigener Schritt',inhalt,[{text:'Abbrechen',wert:''}].concat(x.id?[{text:'Löschen',wert:'loeschen',gefahr:true}]:[]).concat([{text:'Speichern',wert:'ok',primaer:true}]),{breit:true,
+      H.auswahl('wer','Zuständig',x.id?(x.wer||''):(me.id||''),konten,'– offen –')+H.feld('bis','Bis wann? (optional)',x.bis||'','date')+'</div>';
+  H.dialog(x.id?'Schritt ändern':'Frist oder Schritt',inhalt,[{text:'Abbrechen',wert:''}].concat(x.id?[{text:'Löschen',wert:'loeschen',gefahr:true}]:[]).concat([{text:'Speichern',wert:'ok',primaer:true}]),{breit:true,
+    nachAufbau:function(dlg){
+      dlg.addEventListener('click',function(ev){
+        var b=ev.target.closest&&ev.target.closest('[data-vorlage]');if(!b){return;}
+        var f=dlg.querySelector('form');f.elements.titel.value=b.getAttribute('data-vorlage');
+        if(!f.elements.bis.value){f.elements.bis.value=plusTage(heute(),7);}
+        if(!f.elements.wer.value&&me.id){f.elements.wer.value=me.id;}
+        Array.prototype.forEach.call(dlg.querySelectorAll('[data-vorlage]'),function(x){x.classList.toggle('on',x===b);});
+        f.elements.titel.focus();
+      });
+    },
     pruefen:function(w){return w.aktion==='loeschen'||String(w.werte.titel||'').trim()?'':'Bitte angeben, was zu tun ist.';},
     ausfuehren:function(w){
       if(w.aktion==='loeschen'){return T.ops.planEigenerLoeschen(d.id,x.id);}
@@ -466,5 +519,6 @@ document.addEventListener('click',function(ev){
 });
 window.addEventListener('afterprint',function(){document.body.classList.remove('bp-druck');});
 
-return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, schritte:function(d,r){bausteine();return schritte(d,r);}, kennzahlen:function(d){bausteine();return kennzahlen(d,schritte(d,{}));}};
+return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, schritte:function(d,r){bausteine();return schritte(d,r);}, kennzahlen:function(d){bausteine();return kennzahlen(d,schritte(d,{}));},
+  faellig:function(d,meId,bis){bausteine();return faellig(d,meId,bis);}};
 })();

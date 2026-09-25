@@ -615,7 +615,8 @@ function tabEintraege(d,r){
       auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
       (zo.length?auswahl('ziel','Bezug zu einem Förderziel (optional)','',zo,'– kein Bezug –'):'')+
       '<div class="ar-vorfall-platz" hidden>'+vorfallFelder()+'</div>'+
-      textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button></div></form>');
+      textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button>'+
+      '<label class="ar-wv" title="Erscheint als Frist im Begleitplan und unter „Fällig diese Woche“"><span>Wiedervorlage am (optional)</span><input type="date" name="wiedervorlage" min="'+heuteIso()+'"></label></div></form>');
   }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
   h+=vorfallAuswertung(d);
   var l=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
@@ -626,7 +627,10 @@ function eintragSpeichern(d,f){
   var text=f.elements.text.value.trim();
   if(!text){toast('Bitte einen Text eingeben');return;}
   var b=f.querySelector('button[type=submit]');b.disabled=true;
-  T.ops.eintrag(d.id,{datum:f.elements.datum.value,art:f.elements.art.value,titel:f.elements.titel.value.trim(),text:text,ziel:f.elements.ziel?f.elements.ziel.value:'',vorfall:f.elements.art.value==='vorfall'?vorfallAus(formWerte(f)):null}).then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast('Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
+  var art=f.elements.art.value, titel=f.elements.titel.value.trim(), dat=f.elements.datum.value||heuteIso(), wv=f.elements.wiedervorlage?f.elements.wiedervorlage.value:'';
+  T.ops.eintrag(d.id,{datum:dat,art:art,titel:titel,text:text,ziel:f.elements.ziel?f.elements.ziel.value:'',vorfall:art==='vorfall'?vorfallAus(formWerte(f)):null,
+    wiedervorlage:wv?{bis:wv,titel:'Nachfassen: '+(titel||ARTEN[art]||'Eintrag')+' vom '+datum(dat)}:null})
+    .then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast(wv?'Eintrag gespeichert – Wiedervorlage am '+datum(wv):'Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
 }
 function tabVerlauf(d){
   return karte('<h2>Protokoll</h2><p class="ar-leise">Jede Änderung am Dossier – wer, wann, was.</p><ol class="ar-protokoll">'+
@@ -1677,6 +1681,7 @@ function seiteScreening(neu){
   }).catch(function(e){var el=$('ar-sc');if(el){el.innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});}});
 }
 var naechsterTab=null;   /* Reiter, der beim Öffnen eines anderen Dossiers gezeigt werden soll */
+var TAB_IDS=['ueberblick','kompass','begleitplan','fiche','entwicklung','screening','profil','eintraege','verlauf'];
 
 /* ---------- Einstieg ---------- */
 function zeigen(seite,param,neu){
@@ -1685,7 +1690,15 @@ function zeigen(seite,param,neu){
     planDirty=false;
   }
   akt={seite:seite,param:param||''};
-  if(seite==='schueler'&&param){if(!aktDossier||aktDossier.id!==param){dossierTab=naechsterTab||'ueberblick';}naechsterTab=null;seiteDossier(param,neu);}
+  /* Verweis von außen auf einen bestimmten Reiter (z. B. „Fällig diese Woche“ → Begleitplan) */
+  var tabWunsch=/[?&]tab=([a-z]+)/.exec(location.hash||'');
+  if(tabWunsch&&TAB_IDS.indexOf(tabWunsch[1])<0){tabWunsch=null;}
+  if(seite==='schueler'&&param&&tabWunsch){try{history.replaceState(null,'','#/schueler/'+encodeURIComponent(param));}catch(e){}}
+  if(seite==='schueler'&&param){
+    if(tabWunsch){dossierTab=tabWunsch[1];}
+    else if(!aktDossier||aktDossier.id!==param){dossierTab=naechsterTab||'ueberblick';}
+    naechsterTab=null;seiteDossier(param,neu);
+  }
   else if(seite==='screening'){seiteScreening(neu);}
   else if(seite==='schueler'){seiteSchueler(neu);}
   else if(seite==='einsatz'){seiteEinsatz();}
@@ -1977,9 +1990,54 @@ function zuruecksetzen(){geladen=false;ladeVersprechen=null;aktDossier=null;letz
 /* Kleine Zusammenfassung für die Übersicht des Hubs */
 function heuteKarte(){
   var me=K.ich();if(!me||!K.privatDa()){return Promise.resolve('');}   /* auf der Übersicht nie nach dem Passwort fragen */
-  return T.meinPlan().then(function(p){
+  var plan=T.meinPlan().then(function(p){
     if(!p){return '<a class="ar-heute" href="#/einsatz">'+svg('uhr')+'<span><b>Mein Einsatzplan</b><small>Noch nicht eingetragen – wann bist du wo?</small></span></a>';}
     var s=planZu(p);return '<a class="ar-heute '+esc(s.art)+'" href="#/einsatz">'+svg('uhr')+'<span><b>Jetzt laut Plan</b><small>'+esc(statusText(s))+'</small></span></a>';
+  }).catch(function(){return '';});
+  return Promise.all([plan,faelligKarte()]).then(function(x){return x.join('');});
+}
+/* „Fällig diese Woche“: je Kind eine Zeile – nur eigene Fälle und eigene Fristen, nur aktive Dossiers.
+   Ohne Passwortabfrage: fehlt der Schlüssel, bleibt die Karte weg. */
+var FAELLIG_ZEILEN=6;
+function plusTageIso(iso,n){var t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return t.getFullYear()+'-'+pad(t.getMonth()+1)+'-'+pad(t.getDate());}
+function faelligWann(f,h){
+  if(f.status==='dringend'){return 'dringend';}
+  if(f.faellig&&f.faellig<h){return 'seit '+datum(f.faellig).slice(0,6);}
+  if(f.faellig===h||f.status==='faellig'){return 'heute';}
+  var dt=new Date(f.faellig+'T12:00:00');return TAGE[dt.getDay()]+' '+datum(f.faellig).slice(0,6);
+}
+function faelligKarte(){
+  var me=K.ich();if(!me||!window.CDSE_BEGLEITPLAN){return Promise.resolve('');}
+  return bereichLaden(false,true).then(function(z){
+    if(z.art!=='bereit'){return '';}
+    return T.alleDossiers().then(function(l){
+      var h=heuteIso(), bis=plusTageIso(h,7), zeilen=[], eigene=0;
+      l.forEach(function(d){
+        if(!d||!d.id||d.status==='inaktiv'){return;}
+        var verantw=(d.verantwortlich||[]).indexOf(me.id)>=0, fuerMich=((d.begleitplan||{}).eigene||[]).some(function(x){return x&&x.wer===me.id&&x.status!=='erledigt';});
+        if(!verantw&&!fuerMich){return;}
+        eigene++;
+        var f;try{f=window.CDSE_BEGLEITPLAN.faellig(d,me.id,bis);}catch(e){return;}
+        if(f.length){zeilen.push({d:d,f:f});}
+      });
+      if(!eigene){return '';}
+      if(!zeilen.length){return '<p class="ar-faellig-leer">'+svg('check')+'<span><b>Fällig diese Woche:</b> nichts – alles im Plan.</span></p>';}
+      var RANG={dringend:0,faellig:1,offen:2};
+      zeilen.sort(function(a,b){return (RANG[a.f[0].status]-RANG[b.f[0].status])||String(a.f[0].faellig||'9').localeCompare(String(b.f[0].faellig||'9'))||schuelerNameKurz(a.d.person).localeCompare(schuelerNameKurz(b.d.person),'de');});
+      var n=zeilen.reduce(function(s,z){return s+z.f.length;},0);
+      function zeile(z){
+        var f=z.f[0], art=f.status==='dringend'?'dringend':((f.status==='faellig'||(f.faellig&&f.faellig<=h))?'faellig':'bald');
+        return '<li><a class="ar-faellig-z '+art+'" href="#/schueler/'+encodeURIComponent(z.d.id)+'?tab=begleitplan" title="'+esc(z.f.map(function(x){return x.titel;}).join('\n'))+'">'+
+          '<span class="ar-f-punkt" aria-hidden="true"></span><b class="ar-f-name">'+esc(schuelerNameKurz(z.d.person))+'</b>'+
+          '<span class="ar-f-was">'+esc(f.titel)+(z.f.length>1?' <span class="ar-f-mehr">+'+(z.f.length-1)+'</span>':'')+'</span>'+
+          '<span class="ar-f-wann">'+esc(faelligWann(f,h))+'</span></a></li>';
+      }
+      var vorn=zeilen.slice(0,FAELLIG_ZEILEN), rest=zeilen.slice(FAELLIG_ZEILEN);
+      return '<section class="ar-faellig" aria-labelledby="ar-faellig-t"><header>'+svg('uhr')+'<h2 id="ar-faellig-t">Fällig diese Woche</h2><span class="ar-leise">'+
+          zeilen.length+(zeilen.length===1?' Kind':' Kinder')+' · '+n+(n===1?' Schritt':' Schritte')+'</span></header>'+
+        '<ul>'+vorn.map(zeile).join('')+'</ul>'+
+        (rest.length?'<details><summary>'+rest.length+(rest.length===1?' weiteres Kind':' weitere Kinder')+'</summary><ul>'+rest.map(zeile).join('')+'</ul></details>':'')+'</section>';
+    });
   }).catch(function(){return '';});
 }
 

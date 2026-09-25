@@ -93,6 +93,10 @@
 .bp-wie p{font-size:14px;color:var(--ink-2);max-width:88ch;margin-top:10px;}
 
 /* Dialoge */
+.bp-vorlagen{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;}
+.bp-vorlagen .catchip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);padding:5px 11px;font-size:13px;}
+.bp-vorlagen .catchip:hover{border-color:var(--accent-line);color:var(--ink);}
+.bp-vorlagen .catchip.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);box-shadow:none;}
 .bp-wahl{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:12px 0 0;}
 .bp-wahl legend{font-weight:650;font-size:13.5px;padding:0 4px;}
 .bp-wahl label{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;cursor:pointer;}

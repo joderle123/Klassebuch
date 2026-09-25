@@ -343,7 +343,14 @@ var ops={
     if(e.ziel){neu.ziel=String(e.ziel);}   /* Bezug zu einem ELDiB-Förderziel, z. B. "V-14" */
     if(e.vorfall&&typeof e.vorfall==='object'){neu.vorfall=e.vorfall;}   /* Vorfall-/Krisenprotokoll (Art „vorfall“) */
     d.eintraege=(d.eintraege||[]).concat([neu]);
-    return 'Eintrag: '+(e.titel||e.art||'Notiz');
+    /* Wiedervorlage: wird im selben Schreibvorgang eine Frist im Begleitplan (zuständig: wer einträgt) */
+    var wv=e.wiedervorlage&&/^\d{4}-\d{2}-\d{2}$/.test(String(e.wiedervorlage.bis||''))?e.wiedervorlage:null;
+    if(wv){
+      var bp=planVon(d);
+      bp.eigene=(bp.eigene||[]).concat([{id:neueId(8),titel:String(wv.titel||'Wiedervorlage').trim().slice(0,200),text:'',phase:'umsetzen',wer:ich().id,bis:wv.bis,status:'offen',von:ich().id,z:neu.z,bezug:'eintrag:'+neu.id}]);
+      if(!bp.start){bp.start=neu.z.slice(0,10);}
+    }
+    return 'Eintrag: '+(e.titel||e.art||'Notiz')+(wv?' – Wiedervorlage am '+wv.bis.split('-').reverse().join('.'):'');
   },'eintrag');},
   eintragAendern:function(id,eid,werte){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
@@ -492,6 +499,56 @@ var ops={
     bp.eigene=bp.eigene.filter(function(x){return x.id!==sid;});
     return 'Begleitplan: eigener Schritt „'+e.titel+'“ entfernt';
   },'begleitplan');},
+  /* ---- Tageskarte (optional, d.tageskarte): Ziele, Tagesabschnitte, Tagesziel, Punkte je Tag ----
+     cfg = {ziele:[{id,code,text}], abschnitte:[text], ziel:Prozent, belohnung, heim}. Ziele behalten ihre id;
+     gestrichene Ziele bleiben mit „aus“ erhalten, damit frühere Tage lesbar bleiben. */
+  tageskarte:function(id,cfg){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');cfg=cfg||{};
+    var t=jetzt(), alt=d.tageskarte&&Array.isArray(d.tageskarte.ziele)?d.tageskarte:null;
+    var ziele=(cfg.ziele||[]).map(function(z){z=z||{};return {id:String(z.id||''),code:String(z.code||'').slice(0,12),text:String(z.text||'').trim().slice(0,140)};}).filter(function(z){return z.text;}).slice(0,3);
+    if(!ziele.length){throw fehler('Bitte mindestens ein Ziel eintragen.');}
+    var abschnitte=(cfg.abschnitte||[]).map(function(a){return String(a||'').trim().slice(0,30);}).filter(Boolean).slice(0,10);
+    if(!abschnitte.length){throw fehler('Bitte mindestens einen Tagesabschnitt angeben.');}
+    var tk=alt||{v:1,start:t.slice(0,10),von:ich().id,tage:{},ziele:[]}, neuStart=!!(alt&&alt.ende);
+    var bleiben={};
+    ziele.forEach(function(z){
+      var vorher=z.id?(tk.ziele||[]).filter(function(x){return x.id===z.id;})[0]:null;
+      if(vorher){vorher.text=z.text;vorher.code=z.code||vorher.code||'';delete vorher.aus;bleiben[vorher.id]=1;}
+      else{var n={id:'z'+neueId(5),code:z.code,text:z.text,seit:t.slice(0,10)};tk.ziele.push(n);bleiben[n.id]=1;}
+    });
+    tk.ziele.forEach(function(x){if(!bleiben[x.id]&&!x.aus){x.aus=t.slice(0,10);}});
+    var zp=+cfg.ziel;tk.ziel=zp>=50&&zp<=100?Math.round(zp):80;
+    tk.abschnitte=abschnitte;tk.belohnung=String(cfg.belohnung||'').trim().slice(0,120);tk.heim=!!cfg.heim;
+    if(neuStart){delete tk.ende;delete tk.endeGrund;tk.phasen=(tk.phasen||[]).concat([{z:t.slice(0,10),art:'wieder'}]);}
+    tk.geaendert=t;tk.geaendertVon=ich().id;
+    d.tageskarte=tk;
+    var bp=planVon(d);if(!bp.start){bp.start=t.slice(0,10);}
+    return (alt?(neuStart?'Tageskarte wieder aufgenommen':'Tageskarte geändert'):'Tageskarte eingerichtet')+': '+ziele.length+(ziele.length===1?' Ziel':' Ziele')+', '+abschnitte.length+' Abschnitte, Tagesziel '+tk.ziel+' %';
+  },'tageskarte');},
+  /* w = {p:{zielId:[0|1|2|null je Abschnitt]}, s:'gut'|'mittel'|'schwer', notiz}; ein leerer Tag wird entfernt */
+  tageskarteTag:function(id,tag,w){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');w=w||{};
+    var tk=d.tageskarte;if(!tk||!Array.isArray(tk.ziele)){throw fehler('Für dieses Kind gibt es noch keine Tageskarte.');}
+    tag=String(tag||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(tag)){throw fehler('Ungültiger Tag.');}
+    var p={}, pkt=0, max=0, n=tk.abschnitte.length;
+    Object.keys(w.p||{}).forEach(function(zid){
+      if(!tk.ziele.some(function(z){return z.id===zid;})){return;}
+      var l=(w.p[zid]||[]).slice(0,n).map(function(v){return (v===0||v===1||v===2)?v:null;});
+      if(l.some(function(v){return v!=null;})){p[zid]=l;l.forEach(function(v){if(v!=null){pkt+=v;max+=2;}});}
+    });
+    var s=['gut','mittel','schwer'].indexOf(w.s)>=0?w.s:'', notiz=String(w.notiz||'').trim().slice(0,500);
+    tk.tage=tk.tage||{};
+    if(!max&&!s&&!notiz){if(!tk.tage[tag]){return false;}delete tk.tage[tag];return 'Tageskarte: Einträge vom '+tag.split('-').reverse().join('.')+' entfernt';}
+    tk.tage[tag]={p:p,a:tk.abschnitte.slice(),s:s,notiz:notiz,von:ich().id,z:jetzt()};
+    return 'Tageskarte '+tag.split('-').reverse().join('.')+': '+(max?pkt+' von '+max+' Punkten ('+Math.round(pkt/max*100)+' %)':'ohne Punkte');
+  },'tageskarte');},
+  tageskarteEnde:function(id,grund){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var tk=d.tageskarte;if(!tk||tk.ende){return false;}
+    tk.ende=jetzt().slice(0,10);tk.endeGrund=String(grund||'').trim().slice(0,200);
+    tk.phasen=(tk.phasen||[]).concat([{z:tk.ende,art:'ende'}]);
+    return 'Tageskarte beendet'+(tk.endeGrund?' – '+tk.endeGrund:'');
+  },'tageskarte');},
   planUeberpruefung:function(id,rv){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');rv=rv||{};
     var bp=planVon(d), t=jetzt(), x={id:neueId(8),datum:String(rv.datum||t.slice(0,10)),notiz:String(rv.notiz||'').trim().slice(0,4000),

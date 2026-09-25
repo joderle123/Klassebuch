@@ -96,6 +96,8 @@ block_nach('CDSE Hub — Arbeit: Schüler', 'kompass-wissen.js')
 block_nach('CDSE Hub — Arbeit: Schüler', 'berichte.js')
 # Begleitplan: Schritt für Schritt aus Dossier, Kompass und ELDiB
 block_nach('CDSE Hub — Arbeit: Schüler', 'begleitplan.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False)})
+# Tageskarte: Punkte je Ziel und Tagesabschnitt (Check-in/Check-out), im Begleitplan
+block_nach('CDSE Hub — Arbeit: Schüler', 'tageskarte.js')
 
 # 3) Gestaltung
 css = lies('arbeit.css')
@@ -109,6 +111,8 @@ if os.path.exists(os.path.join(SP, 'begleitplan.css')):
     css = css + '\n' + lies('begleitplan.css')
 if os.path.exists(os.path.join(SP, 'berichte.css')):
     css = css + '\n' + lies('berichte.css')
+if os.path.exists(os.path.join(SP, 'tageskarte.css')):
+    css = css + '\n' + lies('tageskarte.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]
