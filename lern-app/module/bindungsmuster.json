@@ -18,7 +18,7 @@
         {
           "art": "fall",
           "titel": "Drei Kinder, eine schlechte Note",
-          "text": "Cycle 4.1, Rückgabe der Mathematikprobe. Sara (10) hat eine schlechte Note. In der Pause kommt sie zur Lehrerin, zeigt auf eine Aufgabe und fragt, wie sie es beim nächsten Mal besser machen kann. Kevin (10) hat ebenfalls eine schlechte Note. Er zerknüllt das Blatt, sagt laut „Ist mir doch egal“ und lehnt jedes Hilfsangebot ab. Emma (10) weint, klammert sich an die Lehrerin und lässt sich lange nicht beruhigen. Als die Lehrerin sich einem anderen Kind zuwendet, ruft sie: „Sie mögen mich ja eh nicht!“",
+          "text": "Cycle 4.1, Rückgabe der Mathematikprobe. Sara (10) hat eine schlechte Note. In der Pause kommt sie zur Lehrerin, zeigt auf eine Aufgabe und fragt, wie sie es beim nächsten Mal besser machen kann. Jonas (10) hat ebenfalls eine schlechte Note. Er zerknüllt das Blatt, sagt laut „Ist mir doch egal“ und lehnt jedes Hilfsangebot ab. Emma (10) weint, klammert sich an die Lehrerin und lässt sich lange nicht beruhigen. Als die Lehrerin sich einem anderen Kind zuwendet, ruft sie: „Sie mögen mich ja eh nicht!“",
           "fragen": [
             "Was könnte hinter den drei unterschiedlichen Reaktionen stecken?",
             "Welche Erklärungen gibt es außer früheren Beziehungserfahrungen?"
@@ -84,7 +84,7 @@
         {
           "art": "mythos",
           "mythos": "Kinder mit unsicherer Bindung haben eine Bindungsstörung.",
-          "fakt": "Unsichere Bindungsmuster sind häufig und gehören zur normalen Bandbreite. Bindungsstörungen im Sinne von DSM-5-TR und ICD-11 – die reaktive Bindungsstörung und die Beziehungsstörung mit Enthemmung – sind selten. Sie entstehen nach schwerer Vernachlässigung oder häufig wechselnden Bezugspersonen in den ersten Lebensjahren (Zeanah & Gleason, 2015). Ob eine Bindungsstörung vorliegt, klären ausschließlich Fachleute."
+          "fakt": "Unsichere Bindungsmuster sind häufig und gehören zur normalen Bandbreite. Bindungsstörungen im Sinne von DSM-5-TR und ICD-11 – die reaktive Bindungsstörung und die Störung der sozialen Bindung mit Enthemmung – sind selten. Sie entstehen nach schwerer Vernachlässigung oder häufig wechselnden Bezugspersonen in den ersten Lebensjahren (Zeanah & Gleason, 2015). Ob eine Bindungsstörung vorliegt, klären ausschließlich Fachleute."
         }
       ]
     },
@@ -184,7 +184,7 @@
             },
             {
               "wie": "Ein Kind, das distanzlos auf fremde Erwachsene zugeht",
-              "unterschied": "Kann auf eine Beziehungsstörung mit Enthemmung nach früher Vernachlässigung hinweisen, aber auch mit Impulsivität oder dem Entwicklungsstand zusammenhängen. Die Einordnung ist Sache von Fachleuten; die Sicherheit des Kindes hat Vorrang."
+              "unterschied": "Kann auf eine Störung der sozialen Bindung mit Enthemmung nach früher Vernachlässigung hinweisen, aber auch mit Impulsivität oder dem Entwicklungsstand zusammenhängen. Die Einordnung ist Sache von Fachleuten; die Sicherheit des Kindes hat Vorrang."
             }
           ]
         },
@@ -352,13 +352,13 @@
     },
     {
       "art": "fall",
-      "fall": "Kevin (10) fragt nie um Hilfe. Bei einer schwierigen Aufgabe legt er den Kopf auf den Tisch und sagt: „Ist mir egal.“ Wenn die Lehrerin sich vor ihn stellt und fragt, was los ist, dreht er sich weg.",
+      "fall": "Jonas (10) fragt nie um Hilfe. Bei einer schwierigen Aufgabe legt er den Kopf auf den Tisch und sagt: „Ist mir egal.“ Wenn die Lehrerin sich vor ihn stellt und fragt, was los ist, dreht er sich weg.",
       "frage": "Welche Reaktion ist am ehesten hilfreich?",
       "optionen": [
-        "Kevin in Ruhe lassen – er zeigt ja deutlich, dass er niemanden braucht.",
-        "Kevin auffordern, jetzt sofort zu sagen, was er fühlt.",
+        "Jonas in Ruhe lassen – er zeigt ja deutlich, dass er niemanden braucht.",
+        "Jonas auffordern, jetzt sofort zu sagen, was er fühlt.",
         "Sich wortlos neben ihn setzen, beiläufig den ersten Schritt der Aufgabe zeigen und signalisieren, dass sie in der Nähe bleibt.",
-        "Kevin vor der Klasse loben, damit er merkt, dass er etwas kann."
+        "Jonas vor der Klasse loben, damit er merkt, dass er etwas kann."
       ],
       "richtig": [
         2
@@ -415,18 +415,18 @@
     },
     {
       "art": "fall",
-      "fall": "Lara (9) kümmert sich auffallend um die Stimmung ihrer Lehrerin: Sie fragt ständig, ob es ihr gut geht, räumt ungefragt auf, tröstet andere Kinder wie eine Erwachsene und wirkt selbst nie bedürftig. Ihre Mutter ist seit Monaten schwer krank.",
+      "fall": "Ida (9) kümmert sich auffallend um die Stimmung ihrer Lehrerin: Sie fragt ständig, ob es ihr gut geht, räumt ungefragt auf, tröstet andere Kinder wie eine Erwachsene und wirkt selbst nie bedürftig. Ihre Mutter ist seit Monaten schwer krank.",
       "frage": "Was ist die hilfreichste Reaktion?",
       "optionen": [
-        "Lara sagen, dass sie sich nicht in alles einmischen soll.",
-        "Lara als Hilfslehrerin einsetzen, da sie so reif ist.",
-        "Nichts tun – Lara ist offensichtlich sozial sehr kompetent.",
-        "Laras Fürsorge freundlich anerkennen, ihr keine Erwachsenenaufgaben übertragen, Raum für ihre eigenen Sorgen geben und mit der Leitung besprechen, wie die Familie unterstützt werden kann."
+        "Ida sagen, dass sie sich nicht in alles einmischen soll.",
+        "Ida als Hilfslehrerin einsetzen, da sie so reif ist.",
+        "Nichts tun – Ida ist offensichtlich sozial sehr kompetent.",
+        "Idas Fürsorge freundlich anerkennen, ihr keine Erwachsenenaufgaben übertragen, Raum für ihre eigenen Sorgen geben und mit der Leitung besprechen, wie die Familie unterstützt werden kann."
       ],
       "richtig": [
         3
       ],
-      "erklaerung": "Übertrieben fürsorgliches Verhalten kann bedeuten, dass ein Kind zu viel Verantwortung trägt, hier vermutlich wegen der Krankheit der Mutter. Lara braucht Erwachsene, die freundlich die Verantwortung übernehmen und ihr Raum für eigene Sorgen lassen. Sie als Hilfslehrerin einzusetzen, verstärkt die Rollenumkehr, ein Tadel beschämt sie, und Abwarten übersieht ihre Belastung."
+      "erklaerung": "Übertrieben fürsorgliches Verhalten kann bedeuten, dass ein Kind zu viel Verantwortung trägt, hier vermutlich wegen der Krankheit der Mutter. Ida braucht Erwachsene, die freundlich die Verantwortung übernehmen und ihr Raum für eigene Sorgen lassen. Sie als Hilfslehrerin einzusetzen, verstärkt die Rollenumkehr, ein Tadel beschämt sie, und Abwarten übersieht ihre Belastung."
     },
     {
       "art": "richtigfalsch",

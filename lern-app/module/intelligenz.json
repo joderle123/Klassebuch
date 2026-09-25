@@ -286,16 +286,16 @@
     },
     {
       "art": "fall",
-      "fall": "Pol (14) hat eine leichte intellektuelle Beeinträchtigung. Im Werkunterricht erklärt der Lehrer mündlich eine neue Aufgabe mit fünf Arbeitsschritten. Pol beginnt, stockt, wirft dann das Werkzeug hin und schreit: „Das ist scheiße!“",
+      "fall": "Jonas (14) hat eine leichte intellektuelle Beeinträchtigung. Im Werkunterricht erklärt der Lehrer mündlich eine neue Aufgabe mit fünf Arbeitsschritten. Jonas beginnt, stockt, wirft dann das Werkzeug hin und schreit: „Das ist scheiße!“",
       "frage": "Welche Reaktion ist am hilfreichsten?",
       "optionen": [
-        "Eine Strafe verhängen, damit Pol lernt, dass Werkzeug nicht geworfen wird.",
+        "Eine Strafe verhängen, damit Jonas lernt, dass Werkzeug nicht geworfen wird.",
         "Nichts unternehmen, weil solches Verhalten zur Beeinträchtigung gehört.",
-        "Nach der Beruhigung die Aufgabe in einzelnen Schritten vormachen, mit Bildern stützen und Pol erzählen lassen, was er als Nächstes tut.",
-        "Pol künftig nur noch einfache Aufräumarbeiten geben."
+        "Nach der Beruhigung die Aufgabe in einzelnen Schritten vormachen, mit Bildern stützen und Jonas erzählen lassen, was er als Nächstes tut.",
+        "Jonas künftig nur noch einfache Aufräumarbeiten geben."
       ],
       "richtig": [2],
-      "erklaerung": "Fünf mündliche Schritte auf einmal überfordern das Arbeitsgedächtnis; der Ausbruch ist sehr wahrscheinlich Ausdruck dieser Überforderung. Hilfreich sind Beruhigung, dann Vormachen, Bildstützen und das Prüfen des Verstehens. Strafe allein ändert die Ursache nicht, das Verhalten einfach „der Behinderung“ zuzuschreiben ist diagnostische Überschattung, und nur noch Aufräumarbeiten nehmen Pol Lernchancen."
+      "erklaerung": "Fünf mündliche Schritte auf einmal überfordern das Arbeitsgedächtnis; der Ausbruch ist sehr wahrscheinlich Ausdruck dieser Überforderung. Hilfreich sind Beruhigung, dann Vormachen, Bildstützen und das Prüfen des Verstehens. Strafe allein ändert die Ursache nicht, das Verhalten einfach „der Behinderung“ zuzuschreiben ist diagnostische Überschattung, und nur noch Aufräumarbeiten nehmen Jonas Lernchancen."
     },
     {
       "art": "einfach",

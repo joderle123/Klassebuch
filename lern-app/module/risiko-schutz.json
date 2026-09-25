@@ -1,0 +1,471 @@
+{
+  "id": "risiko-schutz",
+  "bereich": "grundlagen",
+  "titel": "Risiko- und Schutzfaktoren, Resilienz",
+  "untertitel": "Warum manche Kinder trotz Belastung gut zurechtkommen – und was Schule dazu beitragen kann",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können Risiko- und Schutzfaktoren auf den Ebenen Kind, Familie, Schule und Umfeld benennen und erklären, warum sie Wahrscheinlichkeiten und keine Vorhersagen sind.",
+    "Sie können erklären, was belastende Kindheitserfahrungen sind, was die ACE-Studie gezeigt hat – und was sie nicht zeigt.",
+    "Sie können Resilienz als Prozess beschreiben, der von Beziehungen und Umfeld abhängt, und nicht als feste Eigenschaft.",
+    "Sie können begründen, welche Rolle Schule und einzelne Bezugspersonen als Schutzfaktor spielen, und konkrete Schritte für Ihren Alltag planen.",
+    "Sie gehen mit Wissen über Belastungen so um, dass Kinder nicht auf ihre Risiken reduziert werden."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Wahrscheinlichkeiten, keine Schicksale",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Zwei Brüder",
+          "text": "Dario (11) und sein Bruder Marco (14) wachsen in derselben Familie auf. Der Vater ist seit zwei Jahren in Haft, die Mutter ist oft niedergeschlagen und arbeitet in zwei Jobs, die Familie ist mehrmals umgezogen. Marco schwänzt häufig, ist viel mit älteren Jugendlichen unterwegs und hatte schon Ärger mit der Polizei. Dario spielt im Fußballverein; sein Trainer nimmt ihn zu jedem Training mit. In der Schule hat ihm seine Lehrerin die Verantwortung für die Klassenbibliothek übertragen. Er hat Freunde und kommt im Unterricht gut mit.",
+          "fragen": [
+            "Was könnte den Unterschied zwischen den Brüdern mit erklären?",
+            "Was wäre für Marco jetzt noch möglich?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Risikofaktoren** sind Merkmale oder Lebensumstände, die die Wahrscheinlichkeit erhöhen, dass sich ein Kind ungünstig entwickelt – etwa psychische Probleme, Schulversagen oder Straffälligkeit. **Schutzfaktoren** sind Merkmale oder Umstände, die die Wirkung von Risiken abmildern. Sie zeigen ihre Kraft vor allem dann, wenn tatsächlich Belastungen vorhanden sind: Ein verlässlicher Erwachsener macht für ein Kind in einer stabilen Familie einen kleineren Unterschied als für ein Kind, dessen Familie gerade zerbricht (Rutter, 2012).\n\nBeide Begriffe beschreiben **Wahrscheinlichkeiten für Gruppen**, keine Vorhersagen für einzelne Kinder. Aus derselben Belastung können ganz unterschiedliche Wege folgen, und unterschiedliche Belastungen können zum selben Ergebnis führen. Für den Alltag heißt das: Kein Kind ist durch seine Risiken festgelegt. Und kein Kind ist allein dadurch geschützt, dass keine Risiken bekannt sind."
+        },
+        {
+          "art": "text",
+          "text": "Besonders aussagekräftig ist die **Häufung** von Risiken. Ein einzelner Risikofaktor erhöht die Wahrscheinlichkeit von Problemen meist nur wenig; kommen mehrere zusammen, steigt sie deutlich. Leider treten Risiken selten allein auf: Armut, beengtes Wohnen, psychische Belastung der Eltern und Konflikte in der Familie hängen oft zusammen und verstärken sich gegenseitig (Thapar et al., 2015).\n\nHilfreich ist ein Blick auf die verschiedenen Ebenen, auf denen ein Kind lebt. Urie Bronfenbrenner (1979) beschrieb Entwicklung als eingebettet in ineinandergreifende Systeme: die unmittelbaren Lebensbereiche wie Familie, Klasse und Freundeskreis; die Verbindungen zwischen ihnen, etwa zwischen Eltern und Schule; Bereiche, die das Kind indirekt beeinflussen, wie der Arbeitsplatz der Eltern oder soziale Dienste; und schließlich Kultur, Gesetze und wirtschaftliche Lage einer Gesellschaft. Risiken und Schutz finden sich auf allen Ebenen – und die Schule ist eine davon."
+        },
+        {
+          "art": "merke",
+          "text": "Risikofaktoren beschreiben Wahrscheinlichkeiten, keine Schicksale. Die Frage lautet nicht nur „Was belastet dieses Kind?“, sondern auch „Was schützt es – und was können wir dazu beitragen?“"
+        }
+      ]
+    },
+    {
+      "titel": "Risikofaktoren: was Entwicklung belasten kann",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Risikofaktoren auf verschiedenen Ebenen (Auswahl)",
+          "spalten": [
+            "Ebene",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "Kind",
+              "Frühgeburt und Komplikationen rund um die Geburt, chronische Erkrankungen, Entwicklungsstörungen wie ADHS, Autismus, Sprach- oder Lernstörungen, ein sehr reizbares oder stark gehemmtes Temperament"
+            ],
+            [
+              "Familie",
+              "Psychische Erkrankung oder Sucht eines Elternteils, Gewalt zwischen den Eltern, Misshandlung und Vernachlässigung, sehr harte oder unberechenbare Erziehung, hochstrittige Trennung, Verlust einer Bezugsperson, Inhaftierung eines Elternteils"
+            ],
+            [
+              "Schule und Gleichaltrige",
+              "Wiederholtes Scheitern, Mobbing und Ausgrenzung, Anschluss an eine Gruppe mit riskantem Verhalten, häufige Schulwechsel"
+            ],
+            [
+              "Umfeld und Gesellschaft",
+              "Armut und unsichere Wohnverhältnisse, Diskriminierung, Gewalt im Wohnumfeld, Krieg und Flucht, ein unsicherer Aufenthaltsstatus"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Wie stark ein Risiko wirkt, hängt von mehreren Umständen ab: von seiner **Dauer** – eine kurze Krise wiegt meist weniger als jahrelange Belastung –, vom **Zeitpunkt** – in den frühen Jahren und in Übergangsphasen sind Kinder besonders verletzlich –, von der **Bedeutung**, die ein Ereignis für das Kind hat, und davon, was zur gleichen Zeit schützt. Kinder unterscheiden sich außerdem in ihrer **Verletzlichkeit** (Vulnerabilität): Manche reagieren auf dieselbe Belastung stärker als andere, teils aufgrund von Veranlagung und Temperament."
+        },
+        {
+          "art": "text",
+          "text": "**Mehrsprachigkeit und Migration sind keine Risikofaktoren an sich.** In Luxemburg wachsen sehr viele Kinder mit Migrationsgeschichte auf, und die meisten entwickeln sich gut. Belastend können aber Umstände sein, die mit Migration einhergehen: der Verlust von Bezugspersonen und Heimat, Fluchterfahrungen, eine unsichere Zukunft, Armut oder Diskriminierung. Entscheidend ist also nicht die Herkunft, sondern die konkrete Lebenslage."
+        },
+        {
+          "art": "text",
+          "text": "**Übergänge sind besondere Zeiten.** Der Eintritt in die Spillschoul, der Wechsel in den Cycle 2 und vor allem der Übergang vom Cycle 4 ins Lycée bringen neue Anforderungen, neue Bezugspersonen und oft den Verlust vertrauter Freundschaften. Für belastete Kinder sind solche Übergänge Zeiten erhöhter Verletzlichkeit: Schutzfaktoren wie eine vertraute Lehrerin oder eine feste Klassengemeinschaft fallen weg, bevor neue entstanden sind. Zugleich bieten Übergänge die Chance für einen Neuanfang. Eine gut vorbereitete Übergabe, ein erstes Kennenlernen und eine feste Ansprechperson an der neuen Schule machen oft einen großen Unterschied."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder aus schwierigen Verhältnissen haben ohnehin kaum eine Chance.",
+          "fakt": "Belastete Lebensumstände erhöhen Risiken, doch viele Kinder aus solchen Verhältnissen entwickeln sich gut – vor allem, wenn sie verlässliche Beziehungen und Erfolgserlebnisse haben. Niedrige Erwartungen von Erwachsenen können dagegen zusätzlich schaden."
+        }
+      ]
+    },
+    {
+      "titel": "Belastende Kindheitserfahrungen: die ACE-Studie",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die bekannteste Untersuchung zu belastenden Kindheitserfahrungen ist die **ACE-Studie** (englisch *Adverse Childhood Experiences*) von Vincent Felitti und Kollegen (1998). Mehr als 9 000 Erwachsene, Versicherte einer großen Krankenversicherung in Kalifornien, beantworteten Fragen zu ihrer Kindheit. Erfasst wurden sieben Arten von Belastungen: emotionaler, körperlicher und sexueller Missbrauch sowie das Aufwachsen mit einem suchtkranken, psychisch kranken oder inhaftierten Familienmitglied und mit Gewalt gegen die Mutter. Spätere Auswertungen ergänzten unter anderem Vernachlässigung und die Trennung der Eltern.\n\nDie Ergebnisse waren eindrücklich. Belastende Kindheitserfahrungen waren **häufig**: Mehr als die Hälfte der Befragten berichtete mindestens eine der Kategorien – und das in einer überwiegend gut situierten Gruppe. Die Belastungen traten oft **gemeinsam** auf. Und es zeigte sich eine **Dosis-Wirkungs-Beziehung**: Je mehr Kategorien jemand erlebt hatte, desto höher war im Erwachsenenalter das Risiko für Rauchen, Alkohol- und Drogenprobleme, Depressionen und Suizidversuche, aber auch für körperliche Krankheiten wie Herz- und Lungenerkrankungen."
+        },
+        {
+          "art": "text",
+          "text": "Wie können frühe Belastungen so lange nachwirken? Diskutiert werden mehrere Wege, die sich ergänzen. Dauerstress verändert die Stressregulation des Körpers: Was kurzfristig schützt, schadet bei ständiger Aktivierung – McEwen (1998) spricht von **allostatischer Last**. Misshandlung und Vernachlässigung können die Entwicklung des Gehirns beeinflussen (Glaser, 2000). Und belastete Menschen greifen häufiger zu Bewältigungsversuchen, die kurzfristig entlasten und langfristig schaden, etwa Rauchen oder Alkohol."
+        },
+        {
+          "art": "liste",
+          "titel": "Was die ACE-Studie nicht zeigt",
+          "punkte": [
+            "Die Angaben beruhen auf Erinnerungen Erwachsener; manches wird vergessen oder anders erinnert.",
+            "Der ACE-Wert zählt nur Kategorien. Schwere, Dauer, Alter und Bedeutung einer Belastung bleiben unberücksichtigt – ebenso wie Schutzfaktoren.",
+            "Wichtige Belastungen fehlen, etwa Armut, Mobbing, Diskriminierung, Gewalt im Wohnumfeld, Krieg und Flucht.",
+            "Die Ergebnisse gelten für Gruppen. Für einen einzelnen Menschen sagt der ACE-Wert wenig voraus: Viele Menschen mit mehreren belastenden Erfahrungen sind gesund und zufrieden.",
+            "Der ACE-Fragebogen ist kein Diagnoseinstrument und nicht dafür gedacht, Kinder in der Schule einzustufen."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Die ACE-Forschung zeigt, wie viel frühe Belastungen ausmachen können – und wie wichtig Vorbeugung und Schutz sind. Sie ist kein Instrument, um einzelnen Kindern ihre Zukunft vorherzusagen."
+        },
+        {
+          "art": "achtung",
+          "text": "Erfahren Sie, dass ein Kind aktuell Gewalt, Missbrauch oder Vernachlässigung erlebt, folgen Sie den internen Kinderschutz-Abläufen und informieren Sie umgehend die Leitung. Hören Sie ruhig zu, nehmen Sie das Kind ernst, versprechen Sie keine Geheimhaltung und ermitteln Sie nicht selbst."
+        }
+      ]
+    },
+    {
+      "titel": "Schutzfaktoren und Resilienz",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Resilienz** bezeichnet eine gute Entwicklung trotz erheblicher Belastung. Von Resilienz spricht man also nur, wenn zwei Bedingungen erfüllt sind: Ein Kind war einem deutlichen Risiko ausgesetzt, und es entwickelt sich dennoch gut – oder erholt sich nach einer Krise wieder.\n\nMichael Rutter (2012), einer der Wegbereiter der Resilienzforschung, betont, dass Resilienz **keine feste Eigenschaft** ist, die ein Kind hat oder nicht hat. Sie ist ein **dynamischer Prozess**, der aus dem Zusammenspiel von Kind und Umwelt entsteht. Ein Kind kann in einer Lebensphase widerstandsfähig sein und in einer anderen nicht, in der Schule gut zurechtkommen und zugleich innerlich sehr leiden. Rutter beschreibt außerdem zwei bemerkenswerte Beobachtungen. Belastungen, die ein Kind bewältigen kann, können es stärken – ähnlich wie eine Impfung (**Stählungseffekt**). Und manche Lebenswege nehmen durch neue Erfahrungen eine deutliche Wende, etwa durch eine neue Beziehung, einen Schulwechsel oder eine neue Aufgabe (**Wendepunkte**)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Gut belegte Schutzfaktoren (Auswahl)",
+          "spalten": [
+            "Ebene",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "Kind",
+              "Selbstregulation, Problemlösefähigkeiten, Selbstwirksamkeit, ein zugängliches Temperament, Interessen und Talente, Humor, Hoffnung und das Gefühl, dass das eigene Leben einen Sinn hat"
+            ],
+            [
+              "Familie",
+              "Mindestens eine stabile, liebevolle Beziehung zu einem Elternteil oder einer anderen Bezugsperson; Wärme verbunden mit Struktur und Aufsicht; Zusammenhalt; Geschwister, die füreinander da sind"
+            ],
+            [
+              "Schule und Gleichaltrige",
+              "Verlässliche Beziehungen zu Lehrkräften und anderen Fachkräften, Erfolgserlebnisse, Zugehörigkeit zur Klasse, gute Freundschaften, ein Schulklima ohne Gewalt und Mobbing"
+            ],
+            [
+              "Umfeld",
+              "Vertrauenspersonen außerhalb der Familie wie eine Trainerin, ein Nachbar oder die Großmutter; Vereine und Freizeitangebote; erreichbare Beratung und Hilfe; soziale Sicherheit"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Unter allen Schutzfaktoren wird einer in der Forschung immer wieder als besonders wichtig beschrieben: **mindestens eine verlässliche Beziehung zu einem fürsorglichen Erwachsenen**. Das muss kein Elternteil sein. Es kann eine Großmutter sein, ein Trainer – oder eine Lehrkraft, ein Educateur, eine Mitarbeiterin der Maison Relais. Die Minnesota-Langzeitstudie zeigt außerdem, dass Entwicklung sich aus vielen Erfahrungen aufbaut: Frühe Belastungen hinterlassen Spuren, aber spätere gute Erfahrungen können den weiteren Weg deutlich verändern (Sroufe, 2005).\n\nFür die Praxis ist das eine gute Nachricht: Die meisten Schutzfaktoren sind nichts Außergewöhnliches. Es sind alltägliche Dinge – Beziehungen, die halten, Lernerfolge, Zugehörigkeit, die Fähigkeit, sich zu beruhigen, und Erwachsene, die Grenzen setzen und dabei zugewandt bleiben. Genau diese Dinge kann Schule beeinflussen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Resiliente Kinder sind unverwundbar – ihnen macht Belastung nichts aus.",
+          "fakt": "Resilienz heißt nicht, dass etwas nicht wehtut. Auch Kinder, die sich trotz Belastung gut entwickeln, leiden und brauchen Unterstützung. Wer nach außen gut funktioniert, kann innerlich sehr belastet sein."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Was uns nicht umbringt, macht uns härter.",
+          "fakt": "Belastungen, die ein Kind mit Unterstützung bewältigen kann, können tatsächlich stärken. Schwere, lang andauernde Belastungen ohne Schutz machen Kinder aber in der Regel verletzlicher, nicht stärker (Rutter, 2012)."
+        }
+      ]
+    },
+    {
+      "titel": "Die Rolle der Schule und einzelner Bezugspersonen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kinder verbringen einen großen Teil ihres Tages in der Schule und in der Maison Relais. Diese Orte sind damit weit mehr als Lernorte: Sie können Schutzfaktoren bieten, die in anderen Lebensbereichen fehlen – Verlässlichkeit, Erfolgserlebnisse, Zugehörigkeit und Erwachsene, die hinschauen. Für ein Kind aus einem chaotischen Zuhause kann ein Schultag mit festen Abläufen, einem freundlichen Empfang und einem warmen Mittagessen die stabilste Zeit des Tages sein.\n\nSchulen, die sozial-emotionale Fähigkeiten gezielt fördern, verbessern nachweislich Verhalten, Wohlbefinden und Leistungen ihrer Schülerinnen und Schüler (Durlak et al., 2011). Schutz entsteht aber auch im Kleinen: durch Beziehungen, die halten, und durch Aufgaben, an denen Kinder wachsen können."
+        },
+        {
+          "art": "tun",
+          "titel": "Was Schule und einzelne Fachkräfte tun können",
+          "punkte": [
+            "Sicherstellen, dass jedes Kind mindestens einen Erwachsenen in der Schule hat, der es gut kennt und an es glaubt. Fragen Sie im Team: Für welches Kind trifft das noch nicht zu – und wer übernimmt?",
+            "Stärken suchen und nutzen: Worin ist das Kind gut? Wo kann es glänzen, Verantwortung übernehmen, gebraucht werden?",
+            "Erfolgserlebnisse ermöglichen – auch außerhalb der Hauptfächer, etwa im Sport, in der Musik oder beim Helfen.",
+            "Zugehörigkeit stärken: Klassenrituale, Aufgaben für die Gemeinschaft, eine klare Haltung gegen Ausgrenzung und Mobbing.",
+            "Vorhersehbarkeit bieten: feste Abläufe, angekündigte Veränderungen, verlässliche Absprachen.",
+            "Kontakte zu Vereinen, Maison Relais und Freizeitangeboten fördern – Schutz entsteht auch außerhalb der Schule.",
+            "Mit Eltern auf Augenhöhe zusammenarbeiten und ihnen Wege zu Unterstützung zeigen, ohne sie zu beschämen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Kinder als „Risikokinder“ etikettieren oder in ihrer Anwesenheit über ihre Belastungen sprechen.",
+            "Die Erwartungen senken, weil „aus dieser Familie ohnehin nichts wird“.",
+            "Nur auf Defizite schauen und Förderpläne ohne Stärken schreiben.",
+            "Ein belastetes Kind vor jeder Anforderung schützen – bewältigbare Herausforderungen gehören zur Stärkung dazu.",
+            "Die Rolle der Eltern übernehmen wollen oder in Konkurrenz zu ihnen treten."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Dario – ein Jahr später",
+          "text": "Darios Lehrerin weiß, dass zu Hause vieles schwierig ist. Sie fragt nicht aus, aber sie ist verlässlich da: Jeden Montag erkundigt sie sich kurz nach dem Wochenende und dem letzten Fußballspiel. Als Darios Leistungen nach einem weiteren Umzug einbrechen, spricht sie mit der Mutter. Diese ist erleichtert, dass jemand „auf ihn schaut“, und nimmt das Angebot an, über die Schule Kontakt zu einer Beratungsstelle für Familien zu bekommen. Dario bleibt für die Klassenbibliothek verantwortlich. Beim Abschied am Ende des Schuljahres sagt er: „Sie haben immer gefragt.“",
+          "fragen": [
+            "Welche Schutzfaktoren hat die Lehrerin gestärkt?",
+            "Was hätte sie tun müssen, wenn sie Hinweise auf eine Gefährdung bemerkt hätte?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Sie müssen nicht die ganze Lebenslage eines Kindes ändern, um einen Unterschied zu machen. Eine verlässliche Beziehung, ein Ort, an dem das Kind etwas kann, und ein Erwachsener, der hinschaut, gehören zu den stärksten Schutzfaktoren, die es gibt."
+        }
+      ]
+    },
+    {
+      "titel": "Verantwortungsvoll mit dem Wissen umgehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wissen über die Belastungen eines Kindes ist sensibel. Es hilft, ein Kind besser zu verstehen – es kann aber auch zu Etiketten, sinkenden Erwartungen oder Gerede führen. Pädagogische Fachkräfte beobachten, begleiten, stärken und holen Unterstützung; sie stellen keine Diagnosen und ermitteln nicht. Einige Grundsätze helfen dabei."
+        },
+        {
+          "art": "liste",
+          "titel": "Grundsätze für den Alltag",
+          "punkte": [
+            "Nur so viel erfragen und weitergeben, wie für die Unterstützung des Kindes nötig ist – nach den internen Regeln zum Umgang mit vertraulichen Informationen.",
+            "Keine Checklisten oder Fragebögen zu belastenden Erfahrungen mit Kindern ausfüllen; das gehört in fachliche Hände und einen geschützten Rahmen.",
+            "Das Kind nicht zum Erzählen drängen. Erzählt es von sich aus, ruhig zuhören und ernst nehmen.",
+            "Beobachtungen sachlich dokumentieren und Vermutungen als Vermutungen kennzeichnen.",
+            "Stärken und unterstützende Personen ebenso festhalten wie Belastungen.",
+            "Belastungen im Team teilen: Wer mit belasteten Kindern arbeitet, braucht selbst Schutzfaktoren – kollegialen Austausch, Supervision und klare Grenzen."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Stärken gehören in jeden Bericht und jeden Förderplan. Ein Satz wie „Emma kümmert sich liebevoll um jüngere Kinder und zeichnet ausgezeichnet“ ist für die weitere Unterstützung ebenso wichtig wie die Liste ihrer Belastungen."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung, wenn sich Belastungen bei einem Kind häufen, seine Entwicklung sich deutlich verschlechtert oder die Familie Unterstützung braucht. Je nach Situation können das ESEB, im Lycée der SePAS, Fachleute des CDSE oder Hilfsangebote für Familien einbezogen werden. Bei Hinweisen auf eine Gefährdung gelten die internen Kinderschutz-Abläufe."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt einen Risikofaktor am besten?",
+      "optionen": [
+        "Eine Ursache, die sicher zu einer Störung führt",
+        "Ein Merkmal oder Umstand, der die Wahrscheinlichkeit einer ungünstigen Entwicklung in einer Gruppe erhöht",
+        "Eine Diagnose, die Fachleute stellen",
+        "Ein Beleg dafür, dass die Eltern versagt haben"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Risikofaktoren beschreiben Wahrscheinlichkeiten für Gruppen, keine sicheren Folgen für einzelne Kinder. Sie sind keine Diagnosen, sondern Merkmale oder Lebensumstände. Viele Risiken – etwa Armut, Krankheit oder Krieg – liegen außerhalb der Verantwortung der Eltern."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zur ACE-Studie treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Belastende Kindheitserfahrungen waren häufig – auch in einer überwiegend gut situierten Gruppe.",
+        "Je mehr Arten von Belastung, desto höher im Durchschnitt das spätere Gesundheitsrisiko.",
+        "Der ACE-Wert erfasst Schwere und Dauer der Belastungen genau.",
+        "Ein hoher ACE-Wert sagt sicher voraus, dass ein Mensch krank wird.",
+        "Wichtige Belastungen wie Armut oder Mobbing wurden nicht erfasst."
+      ],
+      "richtig": [
+        0,
+        1,
+        4
+      ],
+      "erklaerung": "Die Studie zeigte, dass belastende Kindheitserfahrungen häufig sind und dass das Risiko mit der Zahl der Belastungsarten steigt (Felitti et al., 1998). Der ACE-Wert zählt aber nur Kategorien – Schwere, Dauer und Schutzfaktoren bleiben unberücksichtigt, wichtige Belastungen fehlen. Für einzelne Menschen erlaubt er keine sichere Vorhersage."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Resilienz ist eine angeborene Eigenschaft: Ein Kind hat sie oder hat sie nicht.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Resilienz ist nach Rutter (2012) ein dynamischer Prozess, der aus dem Zusammenspiel von Kind und Umwelt entsteht. Anlage und Temperament spielen eine Rolle, aber Beziehungen, Erfahrungen und Lebensumstände entscheiden mit – und können sich verändern."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Kollege schlägt vor, alle Kinder der Klasse einen ACE-Fragebogen ausfüllen zu lassen, um die „Risikokinder“ frühzeitig zu erkennen.",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Zustimmen – je früher man die Werte kennt, desto besser.",
+        "Zustimmen, die Ergebnisse aber nur im Lehrerzimmer besprechen.",
+        "Abraten: Der ACE-Wert ist kein Instrument, um einzelne Kinder einzustufen, und die Befragung kann belasten und etikettieren. Sinnvoller sind ein schützendes Klassenklima, aufmerksames Beobachten und bei Sorgen der Weg über die Leitung.",
+        "Die Kinder stattdessen im Stuhlkreis nach belastenden Erlebnissen fragen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Der ACE-Wert beschreibt Zusammenhänge in Gruppen und ist nicht dafür gedacht, einzelne Kinder in der Schule einzustufen. Fragen nach Missbrauch oder Gewalt können Kinder belasten und gehören in einen geschützten, fachlichen Rahmen – schon gar nicht in eine Gruppe. Werte im Lehrerzimmer zu besprechen, fördert zudem Etiketten statt Unterstützung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welcher Schutzfaktor wird in der Forschung immer wieder als besonders wichtig beschrieben?",
+      "optionen": [
+        "Ein hoher Intelligenzquotient",
+        "Materieller Wohlstand der Familie",
+        "Möglichst wenig Kontakt zu Gleichaltrigen",
+        "Mindestens eine verlässliche Beziehung zu einem fürsorglichen Erwachsenen"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Eine verlässliche Beziehung zu mindestens einem fürsorglichen Erwachsenen gilt als einer der wichtigsten Schutzfaktoren – und diese Person muss kein Elternteil sein. Gute kognitive Fähigkeiten und materielle Sicherheit können ebenfalls schützen, stehen aber nicht an erster Stelle und lassen sich im Schulalltag kaum beeinflussen. Gute Freundschaften schützen eher, als dass sie schaden."
+    },
+    {
+      "art": "fall",
+      "fall": "Marco (14) schwänzt häufig und ist viel mit älteren Jugendlichen unterwegs. Eine Kollegin sagt im Lehrerzimmer: „Bei dem ist der Zug abgefahren.“",
+      "frage": "Welche Antwort passt am besten zur Resilienzforschung?",
+      "optionen": [
+        "„Stimmt, mit 14 ist die Entwicklung abgeschlossen.“",
+        "„Auch im Jugendalter gibt es Wendepunkte – etwa durch eine neue verlässliche Beziehung oder eine Aufgabe, in der er etwas kann. Überlegen wir gemeinsam, wer ihn erreichen könnte.“",
+        "„Er sollte möglichst schnell die Schule verlassen, damit er andere nicht mitzieht.“",
+        "„Da kann nur noch die Polizei helfen.“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Rutter (2012) beschreibt Wendepunkte, an denen Lebenswege durch neue Erfahrungen eine andere Richtung nehmen – auch im Jugendalter. Entwicklung ist mit 14 nicht abgeschlossen. Ausschluss würde Marco wichtige Schutzfaktoren wie Schule und Beziehungen nehmen, und die Verantwortung allein an die Polizei abzugeben, übersieht, was Schule beitragen kann."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen stärken Schutzfaktoren in der Schule? (mehrere richtig)",
+      "optionen": [
+        "Einem Kind eine Aufgabe übertragen, in der es gebraucht wird und etwas kann",
+        "Konsequent gegen Mobbing und Ausgrenzung vorgehen",
+        "Einem belasteten Kind alle Anforderungen erlassen",
+        "Sicherstellen, dass jedes Kind mindestens einen Erwachsenen in der Schule hat, der es gut kennt",
+        "Die Belastungen eines Kindes vor der Klasse erklären, damit alle Rücksicht nehmen"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Verantwortung und Erfolgserlebnisse, ein sicheres Klassenklima und verlässliche Beziehungen sind wirksame Schutzfaktoren. Alle Anforderungen zu erlassen, nimmt dem Kind die Chance, an bewältigbaren Herausforderungen zu wachsen. Belastungen vor der Klasse offenzulegen, verletzt die Privatsphäre und kann zu Etiketten und Ausgrenzung führen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was meint Michael Rutter mit dem „Stählungseffekt“?",
+      "optionen": [
+        "Bewältigbare Belastungen, die mit Unterstützung gemeistert werden, können widerstandsfähiger machen.",
+        "Je mehr ein Kind leidet, desto stärker wird es.",
+        "Kinder sollten möglichst früh harten Belastungen ausgesetzt werden.",
+        "Resiliente Kinder spüren keine Belastung."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Der Stählungseffekt beschreibt, dass gemeisterte, bewältigbare Belastungen – ähnlich einer Impfung – stärken können. Schwere und dauerhafte Belastungen ohne Schutz machen dagegen eher verletzlicher. Deshalb heißt die Folgerung nicht, Kinder Belastungen auszusetzen, sondern sie bei bewältigbaren Herausforderungen zu begleiten; und auch resiliente Kinder spüren Belastung."
+    },
+    {
+      "art": "fall",
+      "fall": "Aline (10) erzählt Ihnen in der Pause, dass ihr Vater zu Hause die Mutter schlägt. Sie bittet Sie, es niemandem zu sagen.",
+      "frage": "Was ist das richtige Vorgehen?",
+      "optionen": [
+        "Das Versprechen geben, damit Aline ihr Vertrauen behält.",
+        "Die Eltern sofort anrufen und zur Rede stellen.",
+        "Aline genau befragen, um herauszufinden, ob es wirklich stimmt.",
+        "Ruhig zuhören, Aline ernst nehmen, ihr erklären, dass Sie das nicht für sich behalten dürfen, weil Sie Hilfe holen möchten – und umgehend die Leitung nach den internen Kinderschutz-Abläufen informieren."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Gewalt zwischen den Eltern belastet Kinder schwer und ist ein Anlass für die Kinderschutz-Abläufe. Ein Geheimhaltungsversprechen könnten Sie nicht halten; das würde Alines Vertrauen später enttäuschen. Eltern zur Rede zu stellen, kann Aline und ihre Mutter gefährden, und genaues Befragen ist Aufgabe von Fachleuten – Sie hören zu und holen Hilfe."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Kommen mehrere Risikofaktoren zusammen, steigt das Risiko in der Regel deutlich stärker als bei einem einzelnen Faktor.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Ein einzelner Risikofaktor erhöht die Wahrscheinlichkeit von Problemen meist nur wenig; die Häufung mehrerer Risiken ist deutlich aussagekräftiger. Weil Risiken oft gemeinsam auftreten, lohnt sich der Blick auf die gesamte Lebenslage."
+    },
+    {
+      "art": "fall",
+      "fall": "In einer Fallbesprechung zu Emma (8) sammelt das Team zwölf Belastungen. Stärken, Interessen oder unterstützende Personen werden nicht genannt.",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Gezielt nach Stärken, Interessen und unterstützenden Personen fragen und daraus erste Schritte ableiten.",
+        "Weitere Belastungen sammeln, um das Bild zu vervollständigen.",
+        "Die Fallbesprechung beenden, weil man bei so vielen Belastungen ohnehin wenig tun kann.",
+        "Emma bitten, ihre Belastungen selbst aufzuschreiben."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Unterstützung setzt an Schutzfaktoren an – an dem, was Emma kann, was sie interessiert und wer ihr zur Seite steht. Eine reine Belastungsliste führt leicht zu Hoffnungslosigkeit und Etiketten. Emma ihre Belastungen aufschreiben zu lassen, kann sie überfordern und gehört nicht in den Schulalltag."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Risikofaktor",
+      "erklaerung": "Merkmal oder Lebensumstand, der die Wahrscheinlichkeit einer ungünstigen Entwicklung in einer Gruppe erhöht. Keine sichere Vorhersage für das einzelne Kind."
+    },
+    {
+      "begriff": "Schutzfaktor",
+      "erklaerung": "Merkmal oder Umstand, der die Wirkung von Risiken abmildert, etwa eine verlässliche Beziehung oder Erfolgserlebnisse. Wirkt vor allem, wenn Belastungen vorhanden sind."
+    },
+    {
+      "begriff": "Vulnerabilität",
+      "erklaerung": "Verletzlichkeit: die Neigung, auf Belastungen stärker zu reagieren als andere, etwa aufgrund von Veranlagung oder Temperament."
+    },
+    {
+      "begriff": "Risikohäufung",
+      "erklaerung": "Das Zusammentreffen mehrerer Risikofaktoren. Es erhöht die Wahrscheinlichkeit von Problemen deutlich stärker als ein einzelner Faktor."
+    },
+    {
+      "begriff": "Belastende Kindheitserfahrungen (ACE)",
+      "erklaerung": "Englisch Adverse Childhood Experiences: Misshandlung, Vernachlässigung und schwere Belastungen im Elternhaus, wie sie in der ACE-Studie erfasst wurden."
+    },
+    {
+      "begriff": "Dosis-Wirkungs-Beziehung",
+      "erklaerung": "Zusammenhang, bei dem das Risiko mit der Menge einer Belastung steigt – in der ACE-Studie mit der Zahl der erlebten Belastungsarten."
+    },
+    {
+      "begriff": "Allostatische Last",
+      "erklaerung": "Nach Bruce McEwen die Abnutzung des Körpers durch wiederholte oder dauerhafte Aktivierung der Stresssysteme."
+    },
+    {
+      "begriff": "Resilienz",
+      "erklaerung": "Gute Entwicklung trotz erheblicher Belastung oder Erholung nach einer Krise. Ein dynamischer Prozess, keine feste Eigenschaft."
+    },
+    {
+      "begriff": "Stählungseffekt",
+      "erklaerung": "Nach Michael Rutter die stärkende Wirkung bewältigbarer Belastungen, die mit Unterstützung gemeistert werden – ähnlich einer Impfung."
+    },
+    {
+      "begriff": "Wendepunkt",
+      "erklaerung": "Eine Erfahrung, durch die ein Lebensweg eine deutlich andere Richtung nimmt, etwa eine neue Beziehung, ein Schulwechsel oder eine neue Aufgabe."
+    }
+  ],
+  "quellen": [
+    "felitti1998",
+    "rutter2012",
+    "rutter2015",
+    "bronfenbrenner1979",
+    "mcewen1998",
+    "glaser2000",
+    "sroufe2005",
+    "durlak2011",
+    "whoMaltreatment2006",
+    "schneiderLindenberger2018"
+  ],
+  "verwandt": [
+    "biopsychosozial",
+    "stress-gehirn",
+    "trauma",
+    "kinderschutz",
+    "bindung",
+    "traumapaedagogik",
+    "elternarbeit",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "staerken-karten",
+    "mein-staerkenprofil",
+    "wer-ist-fuer-mich-da",
+    "mein-unterstuetzungsnetz",
+    "darauf-bin-ich-stolz"
+  ]
+}
