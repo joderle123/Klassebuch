@@ -354,7 +354,7 @@ profile:[
  {id:'mutismus', name:'Selektiver Mutismus', re:'\\bF94\\.0|\\b6B06|mutismus|mutisme', lernen:['sprache-mutismus','angst'], blaetter:['ich-kann-mutig-sein','mut-leiter']},
  {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btic|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
  {id:'essstoerung', name:'Essstörung', thema:'Auffälliges Essverhalten', beob:[['warn:essen']], re:'\\bF50|\\b6B8[0-5]|anorex|bulim|essst[öo]rung|\\barfid\\b|trouble alimentaire', lernen:['essstoerungen'], blaetter:['koerperbild','was-tut-mir-gut']},
- {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
+ {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|intelligenzentwicklung|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
  {id:'sucht', name:'Sucht und problematische Mediennutzung', thema:'Hinweise auf Suchtmittel', beob:[['warn:sucht']], re:'\\bF1[0-9]\\.|\\b6C5[01]|\\bsucht|abh[äa]ngigkeit|cannabis|addiction|gaming disorder', lernen:['sucht-medien'], blaetter:['medien-tagebuch','mein-handy-und-ich','bildschirmzeit']},
  {id:'psychose', name:'Psychose oder bipolare Störung', thema:'Ungewöhnliche Wahrnehmungen', beob:[['warn:wahrnehmung']], re:'\\bF2[0-9]|\\bF31|\\b6A2|\\b6A6|psychos|schizophren|bipolar|manisch', lernen:['psychose-bipolar'], blaetter:[]}
 ],

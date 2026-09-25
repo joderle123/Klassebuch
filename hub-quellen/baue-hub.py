@@ -92,6 +92,10 @@ if _fehlt:
 block_nach('CDSE Hub — Arbeit: Schüler', 'kompass.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False),
     '@@KOMPASS_QUELLEN@@': _json.dumps({k: _quellen[k] for k in _genutzt}, ensure_ascii=False)})
 block_nach('CDSE Hub — Arbeit: Schüler', 'kompass-wissen.js')
+# Berichte und Arztbriefe (Auslesen, Bestätigen, Originaldatei verschlüsselt)
+block_nach('CDSE Hub — Arbeit: Schüler', 'berichte.js')
+# Begleitplan: Schritt für Schritt aus Dossier, Kompass und ELDiB
+block_nach('CDSE Hub — Arbeit: Schüler', 'begleitplan.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False)})
 
 # 3) Gestaltung
 css = lies('arbeit.css')
@@ -101,6 +105,10 @@ if os.path.exists(os.path.join(SP, 'screening.css')):
     css = css + '\n' + lies('screening.css')
 if os.path.exists(os.path.join(SP, 'kompass.css')):
     css = css + '\n' + lies('kompass.css')
+if os.path.exists(os.path.join(SP, 'begleitplan.css')):
+    css = css + '\n' + lies('begleitplan.css')
+if os.path.exists(os.path.join(SP, 'berichte.css')):
+    css = css + '\n' + lies('berichte.css')
 if '/* ==== Arbeit: Schüler, Dossier' in s:
     a = s.index('/* ==== Arbeit: Schüler, Dossier'); b = s.index('/* ==== Ende Arbeit ==== */', a) + len('/* ==== Ende Arbeit ==== */')
     s = s[:a] + css + s[b:]

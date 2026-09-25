@@ -1,0 +1,27 @@
+/* ==== Berichte und Arztbriefe (im Kompass) ==== */
+.ber-karte h3{display:flex;align-items:center;gap:8px;margin:0;font-size:15px;}
+.ber-karte h3 .ic{width:17px;height:17px;color:var(--accent);}
+.ber-liste{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px;}
+.ber-liste li{display:flex;flex-direction:column;gap:3px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:14px;}
+.ber-kopf{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;}
+.ber-zeile{font-size:13px;color:var(--ink-2);}
+.ber-akt{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px;}
+.ber-akt .ar-link{font-size:13px;}
+.ber-einfuegen{margin-top:10px;}
+.ber-einfuegen summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent);}
+.ber-wahl{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:12px 0 0;}
+.ber-wahl legend{font-weight:650;font-size:13.5px;padding:0 4px;}
+.ber-p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:7px 0;border-top:1px solid var(--line);}
+.ber-p:first-of-type{border-top:0;}
+.ber-p label{display:flex;align-items:baseline;gap:8px;font-size:14px;cursor:pointer;min-width:0;}
+.ber-p label input{flex:0 0 auto;transform:translateY(2px);}
+.ber-p select{font:inherit;font-size:13px;padding:3px 6px;border:1px solid var(--line-2);border-radius:6px;background:var(--surface);}
+.ber-p small{grid-column:1/-1;color:var(--muted);font-size:12.5px;line-height:1.45;padding-left:24px;}
+.ber-p.aus label b{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-2);}
+.ber-aus{grid-column:1/-1;padding-left:24px;font-size:12px;font-weight:700;color:#8A6414;}
+.ber-warn{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;margin:0 0 10px;border-radius:10px;background:#FDF6E4;border:1px solid #F0DDAA;font-size:14px;}
+.ber-warn .ic{width:16px;height:16px;flex:0 0 auto;color:#8A6414;margin-top:2px;}
+.ber-hinweis{display:flex;gap:8px;align-items:center;margin:12px 0 0!important;font-size:13px;color:var(--ink-2);}
+.ber-hinweis .ic{width:16px;height:16px;flex:0 0 auto;color:var(--accent);}
+.ber-text{margin-top:10px;max-height:50vh;overflow:auto;white-space:pre-wrap;font-size:13.5px;line-height:1.55;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);}
+@media (max-width:640px){.ber-p{grid-template-columns:minmax(0,1fr);}.ber-p select{justify-self:start;margin-left:24px;}}

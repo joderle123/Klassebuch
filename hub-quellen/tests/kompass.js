@@ -121,6 +121,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.screenshot({ path: path.join(OUT, 'k1-kompass-lang.png') });
   await page.setViewportSize({ width: 1280, height: 900 }); await warte(100);
 
+  const ueb = await page.evaluate(() => CDSE_ARBEIT.hilfen.uebergabeHtml(CDSE_ARBEIT.hilfen.aktDossier()));
+  check('Übergabeblatt: Kompass mit Profilen, „Das Wichtigste im Umgang“, Warnsignal zuerst, Hinweis „Entwurf“', ueb.includes('<h2>Kompass</h2>') && ueb.includes('Das Wichtigste im Umgang') && ueb.indexOf('Warnsignal im Screening') > ueb.indexOf('Das Wichtigste im Umgang') && ueb.includes('keine Diagnose'));
   console.log('4) Ohne Responsable-Recht: keine Datenbank-Angaben');
   await page.evaluate(() => { window.__resp = CDSE_TEAM.istResponsable; CDSE_TEAM.istResponsable = () => false; });
   await neuZeichnen();
@@ -129,6 +131,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Borderline-Züge nur noch aus Beobachtung („Starke Gefühlsschwankungen“, Beobachtet)', c2['Starke Gefühlsschwankungen'] === 'Beobachtet' && !c2['Emotionale Instabilität / Borderline-Züge'], c2);
   check('Kein Datenbank-Text im Kompass (F60.31, Z-Code, „nur Responsables“)', !html.includes('F60.31') && !html.includes('Z-Code') && !html.includes('ko-nurresp'), ['F60.31','Z-Code','ko-nurresp'].filter(s => html.includes(s)).map(s => s + ': ' + html.slice(Math.max(0, html.indexOf(s) - 200), html.indexOf(s) + 60)));
   check('ADHS bleibt Diagnose (steht im DS)', c2['ADHS'] === 'Diagnose');
+  const ueb2 = await page.evaluate(() => CDSE_ARBEIT.hilfen.uebergabeHtml(CDSE_ARBEIT.hilfen.aktDossier()));
+  check('Übergabeblatt ohne Responsable-Recht: Kompass ohne Datenbank-Angaben', ueb2.includes('<h2>Kompass</h2>') && !ueb2.includes('F60.31') && ueb2.includes('Starke Gefühlsschwankungen'));
   await page.evaluate(() => { CDSE_TEAM.istResponsable = window.__resp; });
   await neuZeichnen();
 

@@ -25,7 +25,7 @@
 window.CDSE_TEAM=(function(){
 'use strict';
 var K=window.CDSE_KONTO;
-var P_BEREICH=['gemeinsam'], P_SCHUELER=['gemeinsam','schueler'], P_EINSATZ=['gemeinsam','einsatz'];
+var P_BEREICH=['gemeinsam'], P_SCHUELER=['gemeinsam','schueler'], P_EINSATZ=['gemeinsam','einsatz'], P_ANHANG=['gemeinsam','anhaenge'];
 var RSA={name:'RSA-OAEP',hash:'SHA-256'};
 var ALPHA='0123456789abcdefghjkmnpqrstvwxyz';
 var te=new TextEncoder(), td=new TextDecoder();
@@ -231,6 +231,26 @@ function dossierLesen(id){
   });
 }
 function dossierSchreiben(d){return aesVersiegeln(orgKey,d,{format:'cdse-dossier',version:1,id:d.id,gen:ring.gen|0}).then(function(t){return K.speicher.schreiben(P_SCHUELER,dateiName(d.id),t);});}
+/* Anhänge (z. B. Arztbriefe): je Anhang eine eigene verschlüsselte Datei neben den Dossiers,
+   damit die Dossiers klein bleiben und die Schülerliste schnell lädt */
+function anhangName(did,aid){return String(did).replace(/[^0-9a-z]/g,'')+'-'+String(aid).replace(/[^0-9a-z]/g,'')+'.cdsa';}
+function anhangSpeichern(did,datei){
+  istBereit();datei=datei||{};
+  var bytes=datei.bytes instanceof Uint8Array?datei.bytes:new Uint8Array(datei.bytes||[]);
+  if(bytes.length>12*1024*1024){return Promise.reject(fehler('Die Datei ist zu groß (höchstens 12 MB).'));}
+  var id=neueId(10), obj={name:String(datei.name||'Datei').slice(0,200),typ:String(datei.typ||''),b64:b64(bytes)};
+  return aesVersiegeln(orgKey,obj,{format:'cdse-anhang',version:1,dossier:did,id:id,gen:ring.gen|0})
+    .then(function(t){return K.speicher.schreiben(P_ANHANG,anhangName(did,id),t);})
+    .then(function(){return {id:id,name:obj.name,typ:obj.typ,groesse:bytes.length};});
+}
+function anhangLesen(did,aid){
+  istBereit();
+  return K.speicher.lesen(P_ANHANG,anhangName(did,aid)).then(function(t){
+    var b=json(t);if(!b||b.format!=='cdse-anhang'){throw fehler('Die Datei wurde nicht gefunden.');}
+    return aesOeffnen(orgKey,b);
+  }).then(function(o){return {name:o.name,typ:o.typ,bytes:unb64(o.b64)};});
+}
+function anhangLoeschen(did,aid){istBereit();return K.speicher.loeschen(P_ANHANG,anhangName(did,aid));}
 /* Alle Dossiers laden (für die Liste). Mit Zwischenspeicher für die Sitzung. */
 function alleDossiers(neu){
   istBereit();
@@ -297,6 +317,7 @@ function teamName(id){return K.team(id).name;}
 function planVon(d){d.begleitplan=d.begleitplan||{v:1};var b=d.begleitplan;b.schritte=b.schritte||{};return b;}
 var PLAN_STATUS={erledigt:'erledigt',spaeter:'auf später gelegt','passt-nicht':'passt nicht'};
 var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
+var BERICHT_ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
 var ops={
   person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
@@ -391,6 +412,37 @@ var ops={
     d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
     return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
   },'screening');},
+  /* ---- Berichte und Arztbriefe ----
+     b = {art, titel, von, datum, text, datei:{id,name,typ,groesse}, profile:[{id,art,beleg}], medikamente:[{name,beleg}],
+     empfehlungen:[text], schritte:[text]}: bestätigte Profile gehen in den Kompass (Bezug auf den Bericht),
+     gewählte Empfehlungen als eigene Schritte in den Begleitplan – alles in einem Schreibvorgang */
+  bericht:function(id,b){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');b=b||{};
+    var t=jetzt(), me=ich().id, x={id:neueId(8),art:BERICHT_ART[b.art]?b.art:'bericht',titel:String(b.titel||'').trim().slice(0,200),von:String(b.von||'').trim().slice(0,200),
+      datum:String(b.datum||'').slice(0,10),text:String(b.text||'').slice(0,60000),
+      datei:(b.datei&&b.datei.id)?{id:String(b.datei.id),name:String(b.datei.name||'').slice(0,200),typ:String(b.datei.typ||'').slice(0,100),groesse:+b.datei.groesse||0}:null,
+      profile:(b.profile||[]).slice(0,20).map(function(p){return {id:String(p.id),art:p.art==='verdacht'?'verdacht':'diagnose',beleg:String(p.beleg||'').slice(0,300)};}),
+      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){return {name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};}),
+      empfehlungen:(b.empfehlungen||[]).slice(0,20).map(function(e){return String(e).slice(0,500);}),eingetragenVon:me,z:t};
+    var quelle=BERICHT_ART[x.art]+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
+    d.berichte=(d.berichte||[]).concat([x]);
+    var bp=planVon(d);
+    if(x.profile.length){
+      var mk=bp.merkmale=bp.merkmale||{};
+      x.profile.forEach(function(p){var alt=mk[p.id];if(alt&&alt.art==='diagnose'&&p.art==='verdacht'&&alt.bezug!==('bericht:'+x.id)){return;}mk[p.id]={art:p.art,quelle:quelle,bezug:'bericht:'+x.id,z:t,von:me};});
+    }
+    (b.schritte||[]).slice(0,10).forEach(function(s){s=String(s||'').trim();if(!s){return;}
+      bp.eigene=(bp.eigene||[]).concat([{id:neueId(8),titel:s.slice(0,200),text:'Empfehlung aus: '+quelle,phase:'umsetzen',wer:'',bis:'',status:'offen',von:me,z:t}]);});
+    if(!bp.start&&((b.schritte||[]).length||x.profile.length)){bp.start=t.slice(0,10);}
+    return 'Bericht eingetragen: '+quelle+(x.profile.length?' – '+x.profile.length+(x.profile.length===1?' Profil':' Profile')+' im Kompass':'')+((b.schritte||[]).length?', '+b.schritte.length+(b.schritte.length===1?' Schritt':' Schritte')+' im Begleitplan':'');
+  },'bericht');},
+  berichtLoeschen:function(id,bid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var x=(d.berichte||[]).filter(function(b){return b.id===bid;})[0];if(!x){return false;}
+    d.berichte=d.berichte.filter(function(b){return b.id!==bid;});
+    var mk=((d.begleitplan||{}).merkmale)||{};Object.keys(mk).forEach(function(k){if(mk[k]&&mk[k].bezug==='bericht:'+bid){delete mk[k];}});
+    return 'Bericht entfernt: '+(BERICHT_ART[x.art]||'Bericht')+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
+  },'bericht');},
   /* ---- Begleitplan und Kompass ---- */
   /* Kompass: Entscheidung des Teams zu einem Profil (key = Profil-ID oder z. B. 'ds:emotional').
      art: diagnose | verdacht (vom Team eingetragen) · aus (ausgeblendet) · geklaert (Rückfrage erledigt) · '' (zurücksetzen) */
@@ -483,7 +535,8 @@ var ops={
     istBereit();
     return dossierLesen(id).then(function(d){
       if(!rechte(d).loeschen){throw fehler('Löschen darf nur die Verwaltung');}
-      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){delete cache[id];
+      var anh=(d.berichte||[]).map(function(b){return b&&b.datei&&b.datei.id;}).filter(Boolean);
+      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){return Promise.all(anh.map(function(a){return anhangLoeschen(id,a).catch(function(){});}));}).then(function(){delete cache[id];
         return mitgliederAendern(function(){},'Dossier gelöscht: '+((d.person&&(d.person.nachname+', '+d.person.vorname))||id));});
     });
   }
@@ -549,6 +602,8 @@ return {
   /* Eintrag im gemeinsamen, verschlüsselten Protokoll der Verwaltung (z. B. Datenbank-Export) */
   protokollieren:function(text){return mitgliederAendern(function(){},String(text||'').slice(0,300));},
   wartende:wartende, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
+  /* Anhänge (Originaldateien von Berichten), verschlüsselt */
+  anhangSpeichern:anhangSpeichern, anhangLesen:anhangLesen, anhangLoeschen:anhangLoeschen, BERICHT_ART:BERICHT_ART,
   mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
   alleDossiers:alleDossiers, dossier:dossier, neuesDossier:neuesDossier, rechte:rechte, ops:ops,
   planSpeichern:planSpeichern, meinPlan:meinPlan, lesbarePlaene:lesbarePlaene, empfaengerFuer:function(){return empfaengerFuer(ich());},

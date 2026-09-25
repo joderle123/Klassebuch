@@ -251,7 +251,7 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
+  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat(window.CDSE_BEGLEITPLAN?[['begleitplan','Begleitplan']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
     .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
@@ -264,6 +264,7 @@ function dossierZeichnen(d){
 }
 function tabInhalt(d,r){
   if(dossierTab==='kompass'&&window.CDSE_KOMPASS){return window.CDSE_KOMPASS.tab(d,r);}
+  if(dossierTab==='begleitplan'&&window.CDSE_BEGLEITPLAN){return window.CDSE_BEGLEITPLAN.tab(d,r);}
   if(dossierTab==='fiche'){return tabFiche(d,r);}
   if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
   if(dossierTab==='screening'&&window.CDSE_SCREENING){return window.CDSE_SCREENING.tab(d,r);}
@@ -384,6 +385,7 @@ function tabUeberblick(d,r){
       blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
       '</div></div>';
   }
+  if(window.CDSE_BEGLEITPLAN){h+=window.CDSE_BEGLEITPLAN.kurzKarte(d,r);}
   if(window.CDSE_KOMPASS){h+=window.CDSE_KOMPASS.kurzKarte(d);}
   h+=eldibUeberblick(d);
   if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
@@ -1194,6 +1196,18 @@ function eldibDruck(d){
   return h;
 }
 function drucken(d){
+  var html=uebergabeHtml(d);
+  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();
+  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+}
+/* Teile aus Zusatzmodulen (Kompass, Begleitplan) */
+function zusatzDruck(d){
+  var h='';
+  [window.CDSE_KOMPASS,window.CDSE_BEGLEITPLAN].forEach(function(m){try{if(m&&m.druckTeil){h+=m.druckTeil(d);}}catch(e){}});
+  return h;
+}
+function uebergabeHtml(d){
   var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum);
   function liste(t,l){return l&&l.length?'<h3>'+esc(t)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul>':'';}
   var letzte=(d.eintraege||[]).slice().sort(function(x,y){return x.datum<y.datum?1:-1;}).slice(0,5);
@@ -1202,16 +1216,15 @@ function drucken(d){
     'ul{margin:0 0 4pt 16pt;padding:0}li{margin:1pt 0}.sub{color:#444;margin:2pt 0 10pt}.raster{display:grid;grid-template-columns:1fr 1fr;gap:0 18pt}table{border-collapse:collapse;width:100%}td{border:1px solid #bbb;padding:3pt 5pt;vertical-align:top}td:first-child{width:32%;background:#f3f4f8}'+
     '.eintrag{margin:4pt 0}.eintrag small{color:#555}.fuss{margin-top:16pt;font-size:8.5pt;color:#666}@page{margin:1.6cm}'+
     'table.eldib{margin-top:4pt}table.eldib th{border:1px solid #bbb;padding:3pt 5pt;background:#e8eaf3;text-align:left;font-size:9.5pt}table.eldib td{font-size:9.5pt}table.eldib td:first-child{width:18%}'+
-    '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}</style></head><body><main>'+
+    '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}.klein{font-size:8.5pt;color:#555;margin:2pt 0 0}</style></head><body><main>'+
     '<h1>Übergabeblatt: '+esc(schuelerName(p))+'</h1><p class="sub">'+esc([a!=null?a+' Jahre':'',p.klasse,p.schule].filter(Boolean).join(' · '))+' — Stelle: '+esc(team(d.stelle).name)+', fallverantwortlich: '+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
     '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
     (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein DS-Profil vorhanden.</i></p>')+
+    zusatzDruck(d)+
     eldibDruck(d)+
     (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small>'+(e.vorfall?vorfallDruck(e.vorfall,e.text):'<br>'+esc(e.text).replace(/\n/g,'<br>'))+'</div>';}).join(''):'')+
     '<p class="fuss">Vertraulich – nur für die Arbeit im CDSE. Erstellt am '+esc(datum(heuteIso()))+' von '+esc(K.ich().name)+'. '+esc(profilQuelle(d))+'</p></main></body></html>';
-  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
-  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();
-  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+  return html;
 }
 
 /* =====================================================================
@@ -1981,5 +1994,5 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
     /* für Kompass, Begleitplan und Screening: ELDiB-Auswertung, DS, passende Arbeitsblätter, Vorfall-Minuten, Eintragsarten */
     eldibAuswertung:function(d){return bankDa()?eldibAuswertung(d):null;}, blaetterZuItem:blaetterZuItem, toolboxHref:toolboxHref,
     itemZu:function(c){return bankDa()?itemZu(c):null;}, vorfallMinuten:vorfallMinuten, ARTEN:ARTEN,
-    dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}}};
+    dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}, uebergabeHtml:uebergabeHtml}};
 })();

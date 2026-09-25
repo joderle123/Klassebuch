@@ -47,6 +47,16 @@ function zipLesen(buf){
     throw new Error('Unbekanntes Packverfahren in der Word-Datei ('+f.name+').');
   }));
 }
+/* Reiner Text einer Word-Datei (für Berichte und Arztbriefe): Absätze durch Zeilenumbrüche getrennt */
+function docxText(buf){
+  return zipLesen(buf).then(function(dateien){
+    var f=dateien.filter(function(x){return x.name==='word/document.xml';})[0];
+    if(!f){throw new Error('Das ist keine Word-Datei (.docx).');}
+    var doc=new DOMParser().parseFromString(new TextDecoder().decode(f.daten),'application/xml');
+    var body=doc.getElementsByTagNameNS(W,'body')[0]||doc.documentElement;
+    return textVon(body);
+  });
+}
 var CRC=(function(){var t=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++){c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);}t[n]=c>>>0;}return t;})();
 function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++){c=CRC[(c^b[i])&255]^(c>>>8);}return (c^0xFFFFFFFF)>>>0;}
 /* Einträge ungepackt (Methode 0) – gültig für Word, LibreOffice und Pages */
@@ -591,5 +601,5 @@ function pfadeAusBlob(blob){return blob.arrayBuffer().then(zipLesen).then(functi
   return {pfade:Object.keys(k.slots).map(function(p){return p+' ['+k.slots[p].art+(k.slots[p].sdt?':'+k.slots[p].sdt.typ:'')+']';}),rest:k.rest};
 });}
 return {pfadeAusBlob:pfadeAusBlob, lesen:lesen, schreiben:schreiben, dateiname:dateiname, vorlageBlob:vorlageBlob, lesenAusBlob:lesenAusBlob,
-  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText};
+  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText, docxText:docxText};
 })();

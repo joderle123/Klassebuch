@@ -1350,6 +1350,166 @@ ol.ko-liste li::marker{font-weight:700;color:var(--accent);}
   body.ko-druck .ko-q::before{content:'[';}
   body.ko-druck .ko-q::after{content:']';}
 }
+/* ==== Begleitplan (Reiter im Dossier) ==== */
+.bp-kopf{border-top:3px solid var(--accent);}
+.bp-kopf .ar-kartenkopf{align-items:flex-start;}
+.bp-kopf .overline,.bp-naechster .overline{margin:0 0 2px;}
+.bp-kopf h2{margin:0;}
+.bp-fortschritt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 0;font-size:14px;}
+.bp-balken{flex:1 1 180px;height:8px;border-radius:999px;background:var(--bg-2);overflow:hidden;}
+.bp-balken span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#4E5BC4);border-radius:999px;transition:width .3s;}
+.bp-zahlen{color:var(--ink-2);}
+.bp-z-dringend{color:#B23A24;font-weight:700;}
+.bp-z-faellig{color:#8A6414;font-weight:700;}
+
+/* Phasen */
+.bp-phasen{list-style:none;margin:16px 0 2px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:none;}
+.bp-phasen li{position:relative;}
+.bp-phasen li:not(:last-child)::after{content:'';position:absolute;top:19px;right:-6px;width:6px;height:2px;background:var(--line-2);}
+.bp-phasen button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font:inherit;color:var(--ink);cursor:pointer;text-align:left;min-width:0;}
+.bp-phasen button:hover{border-color:var(--accent-line);background:var(--surface-2);}
+.bp-pnr{display:inline-grid;place-items:center;width:24px;height:24px;flex:0 0 auto;border-radius:50%;background:var(--bg-2);color:var(--ink-2);font-size:12.5px;font-weight:800;}
+.bp-pnr .ic{width:14px;height:14px;}
+.bp-ptext{display:flex;flex-direction:column;min-width:0;line-height:1.25;}
+.bp-pname{min-width:0;font-size:13.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bp-ptext .bp-pzahl{font-size:11.5px;}
+.bp-pzahl{font-size:12px;color:var(--muted);font-weight:600;flex:0 0 auto;}
+.bp-phasen li.offen .bp-pnr{background:var(--accent-soft);color:var(--accent);}
+.bp-phasen li.fertig .bp-pnr{background:#DCEFE3;color:#1E6B45;}
+.bp-phasen li.fertig button{background:#F6FBF8;}
+
+/* Als Nächstes */
+.bp-naechster{border-left:5px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),var(--surface) 60%);}
+.bp-naechster.dringend{border-left-color:#C0543F;background:linear-gradient(90deg,#FCEDEA,var(--surface) 60%);}
+.bp-naechster.faellig{border-left-color:#D9A93A;background:linear-gradient(90deg,#FDF6E4,var(--surface) 60%);}
+.bp-naechster.fertig{border-left-color:#2F8A5B;background:linear-gradient(90deg,#EAF3EE,var(--surface) 60%);}
+.bp-naechster h3{font-family:var(--font-display);font-size:20px;letter-spacing:-.015em;margin:2px 0 6px;}
+.bp-naechster>p{max-width:80ch;color:var(--ink-2);}
+.bp-naechster .ar-knopfreihe{margin-top:12px;align-items:center;}
+.bp-naechster .bp-links{margin-top:6px;}
+
+/* Fokusziele */
+.bp-fokus h3{margin:0;font-size:15px;}
+.bp-fokus ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px;}
+.bp-fokus li{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:14.5px;line-height:1.45;}
+.bp-code{display:inline-block;flex:0 0 auto;padding:1px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:800;}
+.bp-erreicht{font-size:12px;font-weight:700;color:#1E6B45;background:#EAF3EE;border-radius:999px;padding:1px 8px;}
+
+/* Phasen-Abschnitte und Schritte */
+.bp-phasekopf{display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap;margin-bottom:6px;}
+.bp-phasekopf h3{display:flex;align-items:center;gap:8px;margin:0;font-size:16px;}
+.bp-phasekopf .bp-pzahl{margin-left:auto;}
+.bp-sofort{border-left:4px solid #C0543F;}
+.bp-sofort h3{display:flex;align-items:center;gap:8px;margin:0 0 4px;color:#9A3A26;font-size:16px;}
+.bp-sofort h3 .ic{width:18px;height:18px;}
+.bp-liste{list-style:none;margin:4px 0 0;padding:0;}
+.bp-schritt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:start;padding:11px 0;border-top:1px solid var(--line);}
+.bp-schritt:first-child{border-top:0;}
+.bp-punkt{display:inline-grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;border:2px solid var(--line-2);background:var(--surface);color:#fff;}
+.bp-punkt .ic{width:13px;height:13px;}
+.bp-punkt.erledigt,.bp-punkt.laufend{background:#2F8A5B;border-color:#2F8A5B;}
+.bp-punkt.dringend{background:#C0543F;border-color:#C0543F;}
+.bp-punkt.faellig{background:#D9A93A;border-color:#D9A93A;}
+.bp-punkt.spaeter{border-color:var(--line-2);color:var(--muted);}
+.bp-punkt.geplant{border-style:dashed;color:var(--muted);}
+.bp-punkt.passt-nicht{border-color:var(--line);color:var(--faint);}
+.bp-text{min-width:0;display:flex;flex-direction:column;gap:3px;}
+.bp-text b{font-size:14.5px;font-weight:650;line-height:1.4;}
+.bp-warum{font-size:13.5px;color:var(--ink-2);line-height:1.5;max-width:90ch;}
+.bp-meta{font-size:12.5px;color:var(--muted);font-weight:600;}
+.bp-schritt.faellig .bp-meta{color:#8A6414;}
+.bp-schritt.dringend .bp-meta{color:#9A3A26;}
+.bp-schritt.erledigt .bp-text b,.bp-schritt.passt-nicht .bp-text b{color:var(--muted);font-weight:600;}
+.bp-schritt.laufend .bp-text b{color:var(--ink-2);}
+.bp-schritt.geplant .bp-text b{color:var(--ink-2);font-weight:600;}
+.bp-links{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px;}
+.bp-links a{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--accent);text-decoration:none;font-weight:560;}
+.bp-links a:hover{text-decoration:underline;}
+.bp-links .ic{width:14px;height:14px;flex:0 0 auto;}
+.bp-akt{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.bp-akt .btn{padding:6px 12px;font-size:13px;min-height:0;white-space:nowrap;}
+.bp-entscheid{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 12px;}
+.bp-entscheid .ar-link{font-size:12.5px;}
+
+/* Überprüfungen, Weggeklicktes, Erklärung */
+.bp-reviews h3{margin:0 0 6px;font-size:15px;}
+.bp-reviews ol{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.bp-reviews li{padding:10px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);font-size:14px;}
+.bp-reviews li p{margin:6px 0 0;}
+.bp-kz{display:block;margin-top:6px;font-size:12.5px;color:var(--muted);font-weight:600;}
+.bp-weg>summary,.bp-wie>summary{cursor:pointer;list-style:none;}
+.bp-weg>summary::-webkit-details-marker,.bp-wie>summary::-webkit-details-marker{display:none;}
+.bp-weg h3,.bp-wie h3{display:inline;margin:0;font-size:15px;}
+.bp-weg>summary::before,.bp-wie>summary::before{content:'';display:inline-block;width:7px;height:7px;margin:0 10px 2px 2px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;}
+.bp-weg[open]>summary::before,.bp-wie[open]>summary::before{transform:rotate(45deg);}
+.bp-wie p{font-size:14px;color:var(--ink-2);max-width:88ch;margin-top:10px;}
+
+/* Dialoge */
+.bp-wahl{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:12px 0 0;}
+.bp-wahl legend{font-weight:650;font-size:13.5px;padding:0 4px;}
+.bp-wahl label{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;cursor:pointer;}
+.bp-wahl label:first-of-type{border-top:0;}
+.bp-wahl input{flex:0 0 auto;margin:0;transform:translateY(2px);}
+.bp-wahl small{color:var(--muted);}
+
+/* Kurzkarte im Überblick */
+.bp-kurzkarte{border-left:4px solid var(--accent);}
+.bp-kurzkarte.dringend{border-left-color:#C0543F;}
+.bp-kurzkarte.faellig{border-left-color:#D9A93A;}
+.bp-kurzkarte .ar-kartenkopf{margin-bottom:0;}
+.bp-kurzkarte .bp-fortschritt{margin-top:6px;}
+.bp-kurz-naechst{margin:10px 0 0!important;font-size:14.5px;}
+
+@media (max-width:900px){
+  .bp-phasen{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
+  .bp-phasen button{flex-direction:column;align-items:center;gap:3px;padding:8px 4px;text-align:center;}
+  .bp-pname{font-size:12px;white-space:normal;line-height:1.2;}
+  .bp-ptext{align-items:center;text-align:center;}
+  .bp-phasen li:not(:last-child)::after{display:none;}
+}
+@media (max-width:640px){
+  .bp-schritt{grid-template-columns:auto minmax(0,1fr);}
+  .bp-akt{grid-column:2;align-items:flex-start;}
+  .bp-entscheid{justify-content:flex-start;}
+  .bp-naechster h3{font-size:18px;}
+  .bp-pzahl{font-size:11px;}
+  .bp-phasen .bp-pname{display:none;}
+  .bp-phasen .bp-ptext{align-items:center;}
+}
+@media print{
+  body.bp-druck *{visibility:hidden!important;}
+  body.bp-druck #bp-plan,body.bp-druck #bp-plan *{visibility:visible!important;}
+  body.bp-druck #bp-plan{position:absolute;left:0;top:0;width:100%;}
+  body.bp-druck #bp-plan .keindruck,body.bp-druck #bp-plan .bp-akt{display:none!important;}
+  body.bp-druck .ar-karte{break-inside:avoid;box-shadow:none;}
+}
+/* ==== Berichte und Arztbriefe (im Kompass) ==== */
+.ber-karte h3{display:flex;align-items:center;gap:8px;margin:0;font-size:15px;}
+.ber-karte h3 .ic{width:17px;height:17px;color:var(--accent);}
+.ber-liste{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px;}
+.ber-liste li{display:flex;flex-direction:column;gap:3px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);font-size:14px;}
+.ber-kopf{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;}
+.ber-zeile{font-size:13px;color:var(--ink-2);}
+.ber-akt{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:4px;}
+.ber-akt .ar-link{font-size:13px;}
+.ber-einfuegen{margin-top:10px;}
+.ber-einfuegen summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--accent);}
+.ber-wahl{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:12px 0 0;}
+.ber-wahl legend{font-weight:650;font-size:13.5px;padding:0 4px;}
+.ber-p{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:center;padding:7px 0;border-top:1px solid var(--line);}
+.ber-p:first-of-type{border-top:0;}
+.ber-p label{display:flex;align-items:baseline;gap:8px;font-size:14px;cursor:pointer;min-width:0;}
+.ber-p label input{flex:0 0 auto;transform:translateY(2px);}
+.ber-p select{font:inherit;font-size:13px;padding:3px 6px;border:1px solid var(--line-2);border-radius:6px;background:var(--surface);}
+.ber-p small{grid-column:1/-1;color:var(--muted);font-size:12.5px;line-height:1.45;padding-left:24px;}
+.ber-p.aus label b{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-2);}
+.ber-aus{grid-column:1/-1;padding-left:24px;font-size:12px;font-weight:700;color:#8A6414;}
+.ber-warn{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;margin:0 0 10px;border-radius:10px;background:#FDF6E4;border:1px solid #F0DDAA;font-size:14px;}
+.ber-warn .ic{width:16px;height:16px;flex:0 0 auto;color:#8A6414;margin-top:2px;}
+.ber-hinweis{display:flex;gap:8px;align-items:center;margin:12px 0 0!important;font-size:13px;color:var(--ink-2);}
+.ber-hinweis .ic{width:16px;height:16px;flex:0 0 auto;color:var(--accent);}
+.ber-text{margin-top:10px;max-height:50vh;overflow:auto;white-space:pre-wrap;font-size:13.5px;line-height:1.55;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);}
+@media (max-width:640px){.ber-p{grid-template-columns:minmax(0,1fr);}.ber-p select{justify-self:start;margin-left:24px;}}
 </style>
 
 <!-- App-Verzeichnis laden. Tippfehler darin abfangen, damit der Hub
@@ -2878,7 +3038,7 @@ return {
 window.CDSE_TEAM=(function(){
 'use strict';
 var K=window.CDSE_KONTO;
-var P_BEREICH=['gemeinsam'], P_SCHUELER=['gemeinsam','schueler'], P_EINSATZ=['gemeinsam','einsatz'];
+var P_BEREICH=['gemeinsam'], P_SCHUELER=['gemeinsam','schueler'], P_EINSATZ=['gemeinsam','einsatz'], P_ANHANG=['gemeinsam','anhaenge'];
 var RSA={name:'RSA-OAEP',hash:'SHA-256'};
 var ALPHA='0123456789abcdefghjkmnpqrstvwxyz';
 var te=new TextEncoder(), td=new TextDecoder();
@@ -3084,6 +3244,26 @@ function dossierLesen(id){
   });
 }
 function dossierSchreiben(d){return aesVersiegeln(orgKey,d,{format:'cdse-dossier',version:1,id:d.id,gen:ring.gen|0}).then(function(t){return K.speicher.schreiben(P_SCHUELER,dateiName(d.id),t);});}
+/* Anhänge (z. B. Arztbriefe): je Anhang eine eigene verschlüsselte Datei neben den Dossiers,
+   damit die Dossiers klein bleiben und die Schülerliste schnell lädt */
+function anhangName(did,aid){return String(did).replace(/[^0-9a-z]/g,'')+'-'+String(aid).replace(/[^0-9a-z]/g,'')+'.cdsa';}
+function anhangSpeichern(did,datei){
+  istBereit();datei=datei||{};
+  var bytes=datei.bytes instanceof Uint8Array?datei.bytes:new Uint8Array(datei.bytes||[]);
+  if(bytes.length>12*1024*1024){return Promise.reject(fehler('Die Datei ist zu groß (höchstens 12 MB).'));}
+  var id=neueId(10), obj={name:String(datei.name||'Datei').slice(0,200),typ:String(datei.typ||''),b64:b64(bytes)};
+  return aesVersiegeln(orgKey,obj,{format:'cdse-anhang',version:1,dossier:did,id:id,gen:ring.gen|0})
+    .then(function(t){return K.speicher.schreiben(P_ANHANG,anhangName(did,id),t);})
+    .then(function(){return {id:id,name:obj.name,typ:obj.typ,groesse:bytes.length};});
+}
+function anhangLesen(did,aid){
+  istBereit();
+  return K.speicher.lesen(P_ANHANG,anhangName(did,aid)).then(function(t){
+    var b=json(t);if(!b||b.format!=='cdse-anhang'){throw fehler('Die Datei wurde nicht gefunden.');}
+    return aesOeffnen(orgKey,b);
+  }).then(function(o){return {name:o.name,typ:o.typ,bytes:unb64(o.b64)};});
+}
+function anhangLoeschen(did,aid){istBereit();return K.speicher.loeschen(P_ANHANG,anhangName(did,aid));}
 /* Alle Dossiers laden (für die Liste). Mit Zwischenspeicher für die Sitzung. */
 function alleDossiers(neu){
   istBereit();
@@ -3150,6 +3330,7 @@ function teamName(id){return K.team(id).name;}
 function planVon(d){d.begleitplan=d.begleitplan||{v:1};var b=d.begleitplan;b.schritte=b.schritte||{};return b;}
 var PLAN_STATUS={erledigt:'erledigt',spaeter:'auf später gelegt','passt-nicht':'passt nicht'};
 var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
+var BERICHT_ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
 var ops={
   person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
@@ -3244,6 +3425,37 @@ var ops={
     d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
     return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
   },'screening');},
+  /* ---- Berichte und Arztbriefe ----
+     b = {art, titel, von, datum, text, datei:{id,name,typ,groesse}, profile:[{id,art,beleg}], medikamente:[{name,beleg}],
+     empfehlungen:[text], schritte:[text]}: bestätigte Profile gehen in den Kompass (Bezug auf den Bericht),
+     gewählte Empfehlungen als eigene Schritte in den Begleitplan – alles in einem Schreibvorgang */
+  bericht:function(id,b){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');b=b||{};
+    var t=jetzt(), me=ich().id, x={id:neueId(8),art:BERICHT_ART[b.art]?b.art:'bericht',titel:String(b.titel||'').trim().slice(0,200),von:String(b.von||'').trim().slice(0,200),
+      datum:String(b.datum||'').slice(0,10),text:String(b.text||'').slice(0,60000),
+      datei:(b.datei&&b.datei.id)?{id:String(b.datei.id),name:String(b.datei.name||'').slice(0,200),typ:String(b.datei.typ||'').slice(0,100),groesse:+b.datei.groesse||0}:null,
+      profile:(b.profile||[]).slice(0,20).map(function(p){return {id:String(p.id),art:p.art==='verdacht'?'verdacht':'diagnose',beleg:String(p.beleg||'').slice(0,300)};}),
+      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){return {name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};}),
+      empfehlungen:(b.empfehlungen||[]).slice(0,20).map(function(e){return String(e).slice(0,500);}),eingetragenVon:me,z:t};
+    var quelle=BERICHT_ART[x.art]+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
+    d.berichte=(d.berichte||[]).concat([x]);
+    var bp=planVon(d);
+    if(x.profile.length){
+      var mk=bp.merkmale=bp.merkmale||{};
+      x.profile.forEach(function(p){var alt=mk[p.id];if(alt&&alt.art==='diagnose'&&p.art==='verdacht'&&alt.bezug!==('bericht:'+x.id)){return;}mk[p.id]={art:p.art,quelle:quelle,bezug:'bericht:'+x.id,z:t,von:me};});
+    }
+    (b.schritte||[]).slice(0,10).forEach(function(s){s=String(s||'').trim();if(!s){return;}
+      bp.eigene=(bp.eigene||[]).concat([{id:neueId(8),titel:s.slice(0,200),text:'Empfehlung aus: '+quelle,phase:'umsetzen',wer:'',bis:'',status:'offen',von:me,z:t}]);});
+    if(!bp.start&&((b.schritte||[]).length||x.profile.length)){bp.start=t.slice(0,10);}
+    return 'Bericht eingetragen: '+quelle+(x.profile.length?' – '+x.profile.length+(x.profile.length===1?' Profil':' Profile')+' im Kompass':'')+((b.schritte||[]).length?', '+b.schritte.length+(b.schritte.length===1?' Schritt':' Schritte')+' im Begleitplan':'');
+  },'bericht');},
+  berichtLoeschen:function(id,bid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var x=(d.berichte||[]).filter(function(b){return b.id===bid;})[0];if(!x){return false;}
+    d.berichte=d.berichte.filter(function(b){return b.id!==bid;});
+    var mk=((d.begleitplan||{}).merkmale)||{};Object.keys(mk).forEach(function(k){if(mk[k]&&mk[k].bezug==='bericht:'+bid){delete mk[k];}});
+    return 'Bericht entfernt: '+(BERICHT_ART[x.art]||'Bericht')+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
+  },'bericht');},
   /* ---- Begleitplan und Kompass ---- */
   /* Kompass: Entscheidung des Teams zu einem Profil (key = Profil-ID oder z. B. 'ds:emotional').
      art: diagnose | verdacht (vom Team eingetragen) · aus (ausgeblendet) · geklaert (Rückfrage erledigt) · '' (zurücksetzen) */
@@ -3336,7 +3548,8 @@ var ops={
     istBereit();
     return dossierLesen(id).then(function(d){
       if(!rechte(d).loeschen){throw fehler('Löschen darf nur die Verwaltung');}
-      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){delete cache[id];
+      var anh=(d.berichte||[]).map(function(b){return b&&b.datei&&b.datei.id;}).filter(Boolean);
+      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){return Promise.all(anh.map(function(a){return anhangLoeschen(id,a).catch(function(){});}));}).then(function(){delete cache[id];
         return mitgliederAendern(function(){},'Dossier gelöscht: '+((d.person&&(d.person.nachname+', '+d.person.vorname))||id));});
     });
   }
@@ -3402,6 +3615,8 @@ return {
   /* Eintrag im gemeinsamen, verschlüsselten Protokoll der Verwaltung (z. B. Datenbank-Export) */
   protokollieren:function(text){return mitgliederAendern(function(){},String(text||'').slice(0,300));},
   wartende:wartende, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
+  /* Anhänge (Originaldateien von Berichten), verschlüsselt */
+  anhangSpeichern:anhangSpeichern, anhangLesen:anhangLesen, anhangLoeschen:anhangLoeschen, BERICHT_ART:BERICHT_ART,
   mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
   alleDossiers:alleDossiers, dossier:dossier, neuesDossier:neuesDossier, rechte:rechte, ops:ops,
   planSpeichern:planSpeichern, meinPlan:meinPlan, lesbarePlaene:lesbarePlaene, empfaengerFuer:function(){return empfaengerFuer(ich());},
@@ -3663,7 +3878,7 @@ function dossierZeichnen(d){
     (r.weitergeben?'<button type="button" data-ar="verantwortlich">'+svg('users')+'Fallverantwortliche ändern</button>':'')+
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
-  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
+  var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat(window.CDSE_BEGLEITPLAN?[['begleitplan','Begleitplan']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
     .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
@@ -3676,6 +3891,7 @@ function dossierZeichnen(d){
 }
 function tabInhalt(d,r){
   if(dossierTab==='kompass'&&window.CDSE_KOMPASS){return window.CDSE_KOMPASS.tab(d,r);}
+  if(dossierTab==='begleitplan'&&window.CDSE_BEGLEITPLAN){return window.CDSE_BEGLEITPLAN.tab(d,r);}
   if(dossierTab==='fiche'){return tabFiche(d,r);}
   if(dossierTab==='entwicklung'){return tabEntwicklung(d,r);}
   if(dossierTab==='screening'&&window.CDSE_SCREENING){return window.CDSE_SCREENING.tab(d,r);}
@@ -3796,6 +4012,7 @@ function tabUeberblick(d,r){
       blickListe('Ressourcen',blick.ressourcen,'')+blickListe('Interessen',blick.interessen,'')+blickListe('Wünsche',blick.wuensche,'')+
       '</div></div>';
   }
+  if(window.CDSE_BEGLEITPLAN){h+=window.CDSE_BEGLEITPLAN.kurzKarte(d,r);}
   if(window.CDSE_KOMPASS){h+=window.CDSE_KOMPASS.kurzKarte(d);}
   h+=eldibUeberblick(d);
   if(blick&&(blick.diagnosen.length||blick.empfehlungen.length||blick.cni.length)){
@@ -4606,6 +4823,18 @@ function eldibDruck(d){
   return h;
 }
 function drucken(d){
+  var html=uebergabeHtml(d);
+  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();
+  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+}
+/* Teile aus Zusatzmodulen (Kompass, Begleitplan) */
+function zusatzDruck(d){
+  var h='';
+  [window.CDSE_KOMPASS,window.CDSE_BEGLEITPLAN].forEach(function(m){try{if(m&&m.druckTeil){h+=m.druckTeil(d);}}catch(e){}});
+  return h;
+}
+function uebergabeHtml(d){
   var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum);
   function liste(t,l){return l&&l.length?'<h3>'+esc(t)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul>':'';}
   var letzte=(d.eintraege||[]).slice().sort(function(x,y){return x.datum<y.datum?1:-1;}).slice(0,5);
@@ -4614,16 +4843,15 @@ function drucken(d){
     'ul{margin:0 0 4pt 16pt;padding:0}li{margin:1pt 0}.sub{color:#444;margin:2pt 0 10pt}.raster{display:grid;grid-template-columns:1fr 1fr;gap:0 18pt}table{border-collapse:collapse;width:100%}td{border:1px solid #bbb;padding:3pt 5pt;vertical-align:top}td:first-child{width:32%;background:#f3f4f8}'+
     '.eintrag{margin:4pt 0}.eintrag small{color:#555}.fuss{margin-top:16pt;font-size:8.5pt;color:#666}@page{margin:1.6cm}'+
     'table.eldib{margin-top:4pt}table.eldib th{border:1px solid #bbb;padding:3pt 5pt;background:#e8eaf3;text-align:left;font-size:9.5pt}table.eldib td{font-size:9.5pt}table.eldib td:first-child{width:18%}'+
-    '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}</style></head><body><main>'+
+    '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}.klein{font-size:8.5pt;color:#555;margin:2pt 0 0}</style></head><body><main>'+
     '<h1>Übergabeblatt: '+esc(schuelerName(p))+'</h1><p class="sub">'+esc([a!=null?a+' Jahre':'',p.klasse,p.schule].filter(Boolean).join(' · '))+' — Stelle: '+esc(team(d.stelle).name)+', fallverantwortlich: '+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
     '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
     (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein DS-Profil vorhanden.</i></p>')+
+    zusatzDruck(d)+
     eldibDruck(d)+
     (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small>'+(e.vorfall?vorfallDruck(e.vorfall,e.text):'<br>'+esc(e.text).replace(/\n/g,'<br>'))+'</div>';}).join(''):'')+
     '<p class="fuss">Vertraulich – nur für die Arbeit im CDSE. Erstellt am '+esc(datum(heuteIso()))+' von '+esc(K.ich().name)+'. '+esc(profilQuelle(d))+'</p></main></body></html>';
-  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
-  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(html);doc.close();
-  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+  return html;
 }
 
 /* =====================================================================
@@ -5393,7 +5621,953 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
     /* für Kompass, Begleitplan und Screening: ELDiB-Auswertung, DS, passende Arbeitsblätter, Vorfall-Minuten, Eintragsarten */
     eldibAuswertung:function(d){return bankDa()?eldibAuswertung(d):null;}, blaetterZuItem:blaetterZuItem, toolboxHref:toolboxHref,
     itemZu:function(c){return bankDa()?itemZu(c):null;}, vorfallMinuten:vorfallMinuten, ARTEN:ARTEN,
-    dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}}};
+    dsStand:dsStand, blick:function(d){return aufEinenBlick(d);}, uebergabeHtml:uebergabeHtml}};
+})();
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Begleitplan: Schritt für Schritt durch die Begleitung
+   ---------------------------------------------------------------------
+   Reiter „Begleitplan“ im Dossier. Der Hub leitet die Schritte jedes Mal
+   neu aus dem Dossier ab – Fiche, DS, ELDiB, Screening, Kompass,
+   Einträge, Vorfälle – mit Phase, Dringlichkeit, Fälligkeit, Grund und
+   der passenden Aktion. „Als Nächstes“ zeigt den einen wichtigsten
+   offenen Schritt. Das Team entscheidet: erledigt, später, passt nicht;
+   dazu bis zu drei Fokusziele, eigene Schritte und Überprüfungen alle
+   sechs Wochen. Gespeichert werden nur diese Entscheidungen
+   (d.begleitplan, über die Operationen plan* in team.js).
+   ===================================================================== */
+window.CDSE_BEGLEITPLAN=(function(){
+'use strict';
+var T=null, K=null, H=null;
+function bausteine(){T=window.CDSE_TEAM||null;K=window.CDSE_KONTO||null;H=(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.hilfen)||null;return !!(T&&K&&H);}
+var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "inklusion-luxemburg": "Inklusion und Unterstützung in Luxemburg", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "risiko-schutz": "Risiko- und Schutzfaktoren, Resilienz", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "uebertragung": "Beziehungsdynamik: Übertragung und Gegenübertragung", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
+
+var PHASEN=[['start','Ankommen','Grundlagen klären, Beziehung aufbauen'],['verstehen','Verstehen','Einschätzen, was das Kind braucht'],
+  ['planen','Planen','Ziele und Umgang festlegen'],['umsetzen','Umsetzen','Im Alltag begleiten und beobachten'],['pruefen','Überprüfen','Alle sechs Wochen: Was hat sich verändert?']];
+var PHASE_NR={sofort:-1};PHASEN.forEach(function(p,i){PHASE_NR[p[0]]=i;});
+var STATUS_TEXT={dringend:'dringend',faellig:'fällig',offen:'offen',geplant:'geplant',spaeter:'später',erledigt:'erledigt',laufend:'läuft','passt-nicht':'passt nicht'};
+var STATUS_RANG={dringend:0,faellig:1,offen:2};
+var REVIEW_TAGE=42, ELTERN_TAGE=28, ZIEL_TAGE=14, SC_WDH=90, ELDIB_WDH=183, NACH_TAGE=3, VORLAUF=7;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function svg(n){return H?H.svg(n):'';}
+function datum(i){return H?H.datum(i):i;}
+function heute(){return H?H.heuteIso():new Date().toISOString().slice(0,10);}
+function tageSeit(iso){if(!iso){return 1e9;}var t=new Date(String(iso).slice(0,10)+'T12:00:00').getTime();return isNaN(t)?1e9:Math.floor((Date.now()-t)/864e5);}
+function plusTage(iso,n){var t=new Date(String(iso||heute()).slice(0,10)+'T12:00:00');t.setDate(t.getDate()+n);return t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);}
+function vorname(d){return ((d&&d.person)||{}).vorname||'dem Kind';}
+function iso(v){return String(v||'').slice(0,10);}
+
+/* =====================================================================
+   Schritte ableiten
+   ===================================================================== */
+function schritte(d,r){
+  r=r||{};
+  var bp=d.begleitplan||{}, L=[], h=heute(), ein=(d.eintraege||[]).filter(Boolean), S=window.CDSE_SCREENING, D=window.CDSE_DATENBANK, KO=window.CDSE_KOMPASS;
+  var kl=null;try{kl=KO&&KO.lesen?KO.lesen(d):null;}catch(e){kl=null;}
+  var A=null;try{A=H.eldibAuswertung?H.eldibAuswertung(d):null;}catch(e){A=null;}
+  var st=(H.dsStand?H.dsStand(d):null)||{bewertungen:{}};
+  var ds={};try{ds=D&&D.datensatz?D.datensatz(Object.assign({},d,{db:{},id:''})):{};}catch(e){ds={};}
+  var vn=vorname(d), beginn=bp.start||iso(d.stelleSeit)||iso(d.erstellt)||h;
+  function add(s){s.nr=L.length;s.prio=s.prio||3;L.push(s);}
+  function daten(art,ab){return ein.filter(function(e){return e.art===art&&(!ab||iso(e.datum)>=ab);}).map(function(e){return iso(e.datum);}).sort();}
+  function erster(l){return l.length?l[0]:'';}
+  function letzter(l){return l.length?l[l.length-1]:'';}
+  /* Wiederkehrend: letzter Termin = neuestes Datum aus den Daten oder „erledigt“ des Teams; fällig nach dem Abstand */
+  function wieder(key,datenDatum,abstand,start){
+    var e=(bp.schritte||{})[key], z=(e&&e.status==='erledigt')?iso(e.z):'', zuletzt=[datenDatum||'',z].sort().pop();
+    return {zuletzt:zuletzt,faellig:plusTage(zuletzt||start||h,abstand),teamZuletzt:z&&z===zuletzt};
+  }
+  var planAktiv=!!(bp.start||bp.fokusSeit);
+  function profilNamen(ids){return (kl?kl.profile:[]).filter(function(x){return ids.indexOf(x.id)>=0;}).map(function(x){return (x.art==='diagnose'||x.art==='verdacht')?x.def.name:(x.def.thema||x.def.name);});}
+
+  /* ---------- Sofort: Warnsignale der letzten drei Monate ---------- */
+  var warn90=[];
+  if(S&&S.auswerten){
+    (d.screenings||[]).filter(function(s){return tageSeit(s.datum)<=90;}).forEach(function(s){
+      var e;try{e=S.auswerten(s);}catch(x){return;}
+      e.warn.forEach(function(w){
+        warn90.push(w.id);
+        var kurz=((window.CDSE_KOMPASS_WISSEN||{}).warnKurz||{})[w.id]||w.text;
+        add({key:'warn:'+s.id+':'+w.id,phase:'sofort',prio:1,titel:'Warnsignal vom '+datum(s.datum)+': '+kurz,warum:w.tun,aktion:{tab:'screening',text:'Zum Screening'}});
+      });
+    });
+  }
+
+  /* ---------- 1 Ankommen ---------- */
+  add({key:'verantwortlich',phase:'start',titel:'Fallverantwortliche Person festlegen',
+    warum:'Eine Person behält den Überblick, koordiniert die Schritte und ist Ansprechperson für Eltern und Netz.',
+    auto:(d.verantwortlich||[]).length?'Fallverantwortlich: '+d.verantwortlich.map(H.kname).join(', '):'',
+    aktion:r.weitergeben?{ar:'verantwortlich',text:'Festlegen'}:null});
+  var fehlt=(D&&D.kernFehlt&&d.fiche)?D.kernFehlt(ds):[];
+  add({key:'fiche',phase:'start',titel:'Fiche de renseignement vervollständigen',
+    warum:!d.fiche?'Noch keine Fiche im Dossier: hochladen oder im Reiter „Fiche“ ausfüllen.':(fehlt.length?'Es fehlen noch: '+fehlt.map(function(f){return f.label;}).join(', ')+'.':''),
+    auto:(d.fiche&&!fehlt.length)?'Alle Kernangaben sind da.':'',aktion:{tab:'fiche',text:'Zur Fiche'}});
+  var elt=daten('gespraech_eltern');
+  add({key:'eltern-erst',phase:'start',titel:'Erstes Gespräch mit den Eltern',
+    warum:'Sicht und Anliegen der Eltern kennenlernen, die Begleitung erklären, das Einverständnis für den Austausch mit anderen Diensten klären.',
+    auto:elt.length?'Gespräch am '+datum(erster(elt)):'',aktion:{tab:'eintraege',text:'Gespräch eintragen'},material:['elterngespraech-vorbereiten'],lernen:['elternarbeit']});
+  var kin=daten('gespraech_kind'), kDs=Object.keys(st.bewertungen||{}).some(function(k){return /^k_/.test(k);});
+  add({key:'kind-erst',phase:'start',titel:'Kennenlerngespräch mit '+vn,
+    warum:'Die Sicht des Kindes: Was läuft gut, was ist schwer, was wünscht es sich? Das ist die Grundlage für gemeinsame Ziele.',
+    auto:kin.length?'Gespräch am '+datum(erster(kin)):(kDs?'Im DS erfasst (Sicht des Kindes)':''),aktion:{tab:'eintraege',text:'Gespräch eintragen'},lernen:['gespraechsfuehrung','beziehung-haltung']});
+  var dienste=(ds.dienste||[]).slice();if(ds.scas==='ja'&&dienste.join(' ').toUpperCase().indexOf('SCAS')<0){dienste.push('SCAS');}
+  if(dienste.length){
+    add({key:'netz',phase:'start',titel:'Helfernetz abstimmen: Wer macht was?',
+      warum:'Beteiligt: '+dienste.join(', ')+'. Aufgaben absprechen, gemeinsame Ziele festhalten, Informationen nur mit Einverständnis der Eltern weitergeben.'});
+  }
+
+  /* ---------- 2 Verstehen ---------- */
+  var hatDs=!!(d.profil&&d.profil.ds&&Object.keys(d.profil.ds.bewertungen||{}).length);
+  add({key:'ds',phase:'verstehen',titel:'DS aus dem ELDiB-Generator übernehmen',
+    warum:'Der DS bündelt die Sicht von Schule, Kind und Eltern und die eigene Beobachtung. Daraus entstehen Stärken, Schwierigkeiten, Vorschläge fürs Screening und der Kompass.',
+    auto:hatDs?'DS vom '+datum(d.profil.datum):'',aktion:r.bearbeiten?{ar:'eldib-uebernehmen',text:'Übernehmen'}:null});
+  add({key:'eldib',phase:'verstehen',titel:'ELDiB-Einschätzung',
+    warum:'Die Entwicklungsstufe (ETEP) bestimmt, wie viel Führung von außen '+vn+' braucht – unabhängig vom Alter.',
+    auto:A?'Einschätzung vom '+datum(A.e&&A.e.datum):'',aktion:{ar:'eldib-oeffnen',text:'Im ELDiB-Generator öffnen'},lernen:['etep']});
+  var sc=(d.screenings||[]).filter(function(s){return tageSeit(s.datum)<=180;}), wer={};sc.forEach(function(s){wer[s.von]=1;});
+  var nWer=Object.keys(wer).length, dsV=(S&&S.dsVorschlag&&r.bearbeiten)?S.dsVorschlag(d,'lehrkraft','GS'):null;
+  add({key:'screening',phase:'verstehen',titel:'Screening von zwei Personen',
+    warum:(nWer===1?'Bisher eine Einschätzung ('+H.kname(sc[0].von)+', '+datum(sc[0].datum)+'). Eine zweite Person sieht oft anderes – das ist wertvoll.':
+      'Zwei unabhängige Einschätzungen (z. B. Lehrkraft und Éducateur) zeigen, wo und bei wem sich '+vn+' anders zeigt.')+
+      (dsV&&dsV.n&&tageSeit(dsV.datum)<=92?' Aus dem DS sind schon '+dsV.n+' Aussagen vorausgefüllt.':''),
+    auto:nWer>=2?nWer+' Personen haben eingeschätzt':'',aktion:{tab:'screening',text:'Zum Screening'}});
+  if(kl&&(kl.klaeren.length||kl.offen.length)){
+    add({key:'kompass-klaeren',phase:'verstehen',titel:'Profil im Kompass zuordnen',
+      warum:kl.klaeren.map(function(k){return 'Im DS steht „'+k.name+'“';}).concat(kl.offen.map(function(o){return o.quelle+': „'+o.text+'“';})).join(' · ')+'. Erst mit der Zuordnung zeigt der Kompass die passenden Hinweise.',
+      aktion:{tab:'kompass',text:'Zum Kompass'}});
+  }
+  var ls=(S&&S.letztes)?S.letztes(d):null;
+  if(ls&&ls.e.gesamt.art==='planen'&&d.stelle!=='diagnostique'){
+    add({key:'abklaerung:'+ls.s.id,phase:'verstehen',prio:2,titel:'Abklärung durch die Diagnostique besprechen',warum:ls.e.gesamt.text,aktion:{tab:'screening',text:'Screening ansehen'}});
+  }
+
+  /* ---------- 3 Planen ---------- */
+  var fokus=(bp.fokus||[]).filter(Boolean);
+  if(A){
+    add({key:'fokus',phase:'planen',titel:'Bis zu drei Fokusziele wählen',
+      warum:'Wenige Ziele, die alle kennen und konsequent verfolgen, wirken mehr als viele. '+(A.ziele.length?A.ziele.length+(A.ziele.length===1?' Förderziel':' Förderziele')+' aus der ELDiB stehen zur Auswahl.':'Vorschläge aus den nächsten Schritten der ELDiB stehen bereit.'),
+      auto:fokus.length?'Fokus: '+fokus.join(', ')+(bp.fokusSeit?' (seit '+datum(bp.fokusSeit)+')':''):'',aktion:r.bearbeiten?{bp:'fokus',text:'Fokusziele wählen'}:null});
+  }
+  if(kl&&kl.profile.length){
+    add({key:'umgang',phase:'planen',titel:'Umgang im Team absprechen',
+      warum:'Der Kompass zeigt Umgang, Material und was eher schadet – für '+kl.profile.slice(0,3).map(function(x){return (x.art==='diagnose'||x.art==='verdacht')?x.def.name:(x.def.thema||x.def.name);}).join(', ')+'. Wenn alle gleich reagieren, gibt das Halt.',
+      aktion:{tab:'kompass',text:'Zum Kompass'}});
+  }
+  var vorf90=ein.filter(function(e){return e.art==='vorfall'&&tageSeit(e.datum)<=90;}).length;
+  var risiko=kl?profilNamen(['instabil','selbstverletzung']):[];
+  if(warn90.length||vorf90>=2||risiko.length){
+    var akut=warn90.some(function(w){return w==='suizid'||w==='selbstverletzung'||w==='gefahr';});
+    add({key:'krisenplan',phase:'planen',prio:akut?1:2,titel:'Krisen- und Sicherheitsplan erstellen',
+      warum:[warn90.length?'Warnsignal im Screening':'',vorf90>=2?vorf90+' Vorfälle in drei Monaten':'',risiko.length?'Kompass: '+risiko.join(', '):''].filter(Boolean).join(' · ')+
+        '. Mit dem Kind (und den Eltern) festhalten: Frühwarnzeichen, was hilft, wer informiert wird. Bei Suizidgedanken mit Fachleuten.',
+      material:['sicherheitsplan','nachgespraech-krise'],lernen:['deeskalation','selbstverletzung-suizid']});
+  }
+  var verst=kl?profilNamen(['adhs','sozialverhalten','regulation']):[];
+  if(verst.length){
+    add({key:'verstaerker',phase:'planen',titel:'Verstärkerplan oder tägliche Rückmeldekarte einführen',
+      warum:'Bei '+verst.join(', ')+' wirkt sofortige, häufige Rückmeldung besonders gut: ein bis drei klar beschriebene Ziele, schnelle Einlösung, Rückmeldung auch an die Eltern.',
+      material:['punkteplan','check-in-check-out','belohnungs-menue'],lernen:['verstaerkung']});
+  }
+  if(fokus.length){
+    var eltNach=daten('gespraech_eltern',bp.fokusSeit||'');
+    add({key:'eltern-ziele',phase:'planen',titel:'Fokusziele und Umgang mit den Eltern besprechen',
+      warum:'Gleiche Ziele und gleiche Worte zu Hause und in der Schule helfen '+vn+', das Neue zu üben.',
+      auto:eltNach.length?'Gespräch am '+datum(erster(eltNach)):'',aktion:{tab:'eintraege',text:'Gespräch eintragen'},material:['elterngespraech-vorbereiten']});
+  }
+  if(d.stelle==='isa'){
+    var sch=daten('gespraech_schule',beginn);
+    add({key:'schule-absprache',phase:'planen',titel:'Absprache mit der Lehrkraft',
+      warum:'Ziele, Umgang und Rückmeldewege mit der Klassenlehrkraft vereinbaren.',auto:sch.length?'Gespräch am '+datum(erster(sch)):'',aktion:{tab:'eintraege',text:'Gespräch eintragen'}});
+  }
+
+  /* ---------- 4 Umsetzen ---------- */
+  fokus.forEach(function(code){
+    var last=letzter(ein.filter(function(e){return e.ziel===code;}).map(function(e){return iso(e.datum);}).sort());
+    var inf=H.itemZu?H.itemZu(code):null, z=A?A.ziele.filter(function(x){return x.code===code;})[0]:null;
+    var frisch=last&&tageSeit(last)<=ZIEL_TAGE;
+    add({key:'ziel:'+code,phase:'umsetzen',laufend:true,titel:'Fortschritt beobachten: '+code+(inf&&inf.it&&inf.it.keyword?' – '+inf.it.keyword:''),
+      warum:(z&&z.text?'„'+z.text+'“ ':'')+(last?'Zuletzt beobachtet am '+datum(last)+'.':'Noch keine Beobachtung.')+' Eine kurze Notiz pro Woche reicht.',
+      faellig:last?plusTage(last,ZIEL_TAGE):plusTage(bp.fokusSeit||h,VORLAUF),auto:frisch?'läuft – zuletzt am '+datum(last):'',
+      aktion:r.bearbeiten?{ar:'ziel-eintrag',item:code,text:'Beobachtung eintragen'}:null});
+  });
+  ein.filter(function(e){return e.art==='vorfall'&&tageSeit(e.datum)<=30;}).forEach(function(e){
+    var v=e.vorfall||{};
+    add({key:'nachgespraech:'+e.id,phase:'umsetzen',prio:2,titel:'Nachgespräch zum Vorfall vom '+datum(e.datum),
+      warum:'Was ist passiert, was hat geholfen, was machen wir beim nächsten Mal anders? Das Ergebnis im Vorfallprotokoll unter „Nachbesprechung“ festhalten.',
+      faellig:plusTage(e.datum,NACH_TAGE),auto:String(v.nachbesprechung||'').trim()?'Nachbesprechung festgehalten':'',
+      aktion:r.bearbeiten?{ar:'eintrag-aendern',eid:e.id,text:'Protokoll ergänzen'}:null,material:['nachgespraech-krise']});
+  });
+  if(kl&&kl.profile.length&&KO&&KO.blattFuer){
+    var gesehen={}, bl=[];
+    kl.profile.slice(0,3).forEach(function(x){(x.def.blaetter||[]).slice(0,2).forEach(function(id){var b=KO.blattFuer(id,kl.ctx.schulstufe);if(b&&!gesehen[b.id]){gesehen[b.id]=1;bl.push(b.id);}});});
+    if(bl.length){add({key:'material',phase:'umsetzen',titel:'Passendes Material einsetzen',warum:'Aus dem Kompass, in der Fassung für '+(kl.ctx.schulstufe||'die Schulstufe')+'. Mehr Material steht im Kompass bei jedem Profil.',material:bl.slice(0,4)});}
+  }
+  if(planAktiv||elt.length){
+    var we=wieder('eltern-regel',letzter(elt),ELTERN_TAGE,bp.start||beginn);
+    add({key:'eltern-regel',phase:'umsetzen',wiederkehrend:we,titel:'Austausch mit den Eltern',
+      warum:'Etwa alle vier Wochen: Was läuft gut, was ist schwierig, was brauchen die Eltern?'+(we.zuletzt?' Zuletzt am '+datum(we.zuletzt)+'.':''),
+      faellig:we.faellig,aktion:{tab:'eintraege',text:'Gespräch eintragen'}});
+  }
+
+  /* ---------- 5 Überprüfen ---------- */
+  var revs=(bp.reviews||[]).map(function(v){return iso(v.datum);}).sort();
+  if(planAktiv){
+    var wr=wieder('review',letzter(revs),REVIEW_TAGE,bp.fokusSeit||bp.start);
+    add({key:'review',phase:'pruefen',wiederkehrend:wr,titel:(revs.length?'Nächste Überprüfung':'Erste Überprüfung')+' (alle sechs Wochen)',
+      warum:'Gemeinsam anschauen: Fokusziele, Vorfälle, Screening, Rückmeldungen von Kind und Eltern – und den Plan anpassen.'+(wr.zuletzt?' Letzte Überprüfung am '+datum(wr.zuletzt)+'.':''),
+      faellig:wr.faellig,aktion:r.bearbeiten?{bp:'review',text:'Überprüfung eintragen'}:null});
+  }else{
+    add({key:'review',phase:'pruefen',titel:'Überprüfung alle sechs Wochen',warum:'Beginnt, sobald der Plan läuft – zum Beispiel mit den Fokuszielen.',ruht:true});
+  }
+  var scLast=letzter((d.screenings||[]).map(function(s){return iso(s.datum);}).sort());
+  if(scLast){var ws=wieder('screening-wdh',scLast,SC_WDH);add({key:'screening-wdh',phase:'pruefen',wiederkehrend:ws,titel:'Screening wiederholen',warum:'Nach etwa drei Monaten zeigt ein neues Screening, was sich verändert hat. Letztes Screening: '+datum(scLast)+'.',faellig:ws.faellig,aktion:{tab:'screening',text:'Zum Screening'}});}
+  if(A&&A.e&&A.e.datum){var wd=wieder('eldib-wdh',iso(A.e.datum),ELDIB_WDH);add({key:'eldib-wdh',phase:'pruefen',wiederkehrend:wd,titel:'ELDiB neu einschätzen',warum:'Nach etwa einem halben Jahr: Welche Items sind erreicht, welche Stufe ist jetzt dran? Letzte Einschätzung: '+datum(A.e.datum)+'.',faellig:wd.faellig,aktion:{ar:'eldib-oeffnen',text:'Im ELDiB-Generator öffnen'}});}
+
+  /* ---------- Eigene Schritte ---------- */
+  (bp.eigene||[]).forEach(function(x){
+    add({key:'eigen:'+x.id,eigen:x,phase:PHASE_NR[x.phase]!=null&&x.phase!=='sofort'?x.phase:'umsetzen',titel:x.titel,warum:x.text||'',faellig:x.bis||'',wer:x.wer||'',
+      auto:x.status==='erledigt'?'erledigt'+(x.erledigt?' am '+datum(iso(x.erledigt)):'')+(x.erledigtVon?' ('+H.kname(x.erledigtVon)+')':''):''});
+  });
+
+  /* ---------- Status ---------- */
+  L.forEach(function(s){
+    var e=(bp.schritte||{})[s.key];s.entscheidung=e||null;
+    if(s.auto){s.status=s.laufend?'laufend':'erledigt';return;}
+    if(s.ruht){s.status='geplant';return;}
+    if(e&&!s.eigen){
+      if(e.status==='erledigt'&&!s.wiederkehrend){s.status='erledigt';return;}
+      if(e.status==='passt-nicht'){s.status='passt-nicht';return;}
+      if(e.status==='spaeter'&&(!e.bis||e.bis>h)){s.status='spaeter';return;}
+    }
+    if(s.wiederkehrend&&s.faellig>plusTage(h,VORLAUF)){s.status='geplant';return;}
+    if(s.prio===1){s.status='dringend';return;}
+    s.status=(s.faellig&&s.faellig<=h)?'faellig':'offen';
+  });
+  var offen=L.filter(function(s){return STATUS_RANG[s.status]!=null;}).sort(function(a,b){
+    return (STATUS_RANG[a.status]-STATUS_RANG[b.status])||(PHASE_NR[a.phase]-PHASE_NR[b.phase])||(a.prio-b.prio)||(a.nr-b.nr);});
+  var phasen={};PHASEN.forEach(function(p){phasen[p[0]]={gesamt:0,fertig:0,offen:0,termin:''};});
+  L.forEach(function(s){var p=phasen[s.phase];if(!p||s.status==='passt-nicht'){return;}
+    if(s.status==='geplant'){if(s.faellig&&(!p.termin||s.faellig<p.termin)){p.termin=s.faellig;}return;}p.gesamt++;if(s.status==='erledigt'||s.status==='laufend'){p.fertig++;}else if(s.status!=='spaeter'){p.offen++;}});
+  var gesamt=0, fertig=0;Object.keys(phasen).forEach(function(k){gesamt+=phasen[k].gesamt;fertig+=phasen[k].fertig;});
+  return {liste:L,naechster:offen[0]||null,offen:offen,phasen:phasen,gesamt:gesamt,fertig:fertig,fokus:fokus,A:A,kl:kl,bp:bp,
+    dringend:offen.filter(function(s){return s.status==='dringend';}).length,faellig:offen.filter(function(s){return s.status==='faellig';}).length};
+}
+
+/* =====================================================================
+   Darstellung
+   ===================================================================== */
+var STATUS_ICON={erledigt:'check',laufend:'check',dringend:'warn',faellig:'uhr',spaeter:'uhr',geplant:'cal',offen:'',"passt-nicht":'x'};
+function statusPunkt(s){var ic=STATUS_ICON[s.status];return '<span class="bp-punkt '+s.status+'" title="'+esc(STATUS_TEXT[s.status])+'" aria-label="'+esc(STATUS_TEXT[s.status])+'">'+(ic?svg(ic):'')+'</span>';}
+function blatt(id){var T0=window.CDSE_TOOLBOX_INDEX, bl=(T0&&Array.isArray(T0.blaetter))?T0.blaetter:[];return bl.filter(function(b){return b.id===id;})[0]||null;}
+function links(s,kl){
+  var st=kl&&kl.ctx?kl.ctx.schulstufe:'', KO=window.CDSE_KOMPASS, gesehen={};
+  var bl=(s.material||[]).map(function(id){var b=(KO&&KO.blattFuer)?KO.blattFuer(id,st):blatt(id);return b;}).filter(function(b){if(!b||gesehen[b.id]){return false;}gesehen[b.id]=1;return true;});
+  var lm=(s.lernen||[]).filter(function(id){return LERN_TITEL[id];});
+  if(!bl.length&&!lm.length){return '';}
+  return '<span class="bp-links">'+bl.map(function(b){return '<a href="apps/toolbox.html#blatt='+encodeURIComponent(b.id)+'" target="cdse-toolbox">'+svg('datei')+esc(b.titel)+'</a>';}).join('')+
+    lm.map(function(id){return '<a href="apps/lernen.html#/modul/'+encodeURIComponent(id)+'" target="cdse-lernen">'+svg('buch')+esc(LERN_TITEL[id])+'</a>';}).join('')+'</span>';
+}
+function aktionKnopf(a,primaer){
+  if(!a){return '';}
+  var kl='btn'+(primaer?' primary':'');
+  if(a.tab){return '<button type="button" class="'+kl+'" data-tab="'+esc(a.tab)+'">'+esc(a.text)+'</button>';}
+  if(a.ar){return '<button type="button" class="'+kl+'" data-ar="'+esc(a.ar)+'"'+(a.item?' data-item="'+esc(a.item)+'"':'')+(a.eid?' data-eid="'+esc(a.eid)+'"':'')+'>'+esc(a.text)+'</button>';}
+  if(a.bp){return '<button type="button" class="'+kl+'" data-bp="'+esc(a.bp)+'">'+esc(a.text)+'</button>';}
+  return '';
+}
+function meta(s){
+  var e=s.entscheidung, t=[];
+  if(s.status==='erledigt'||s.status==='laufend'){t.push(s.auto||('erledigt'+(e&&e.z?' am '+datum(iso(e.z)):'')+(e&&e.von?' ('+H.kname(e.von)+')':'')));}
+  else if(s.status==='spaeter'){t.push('auf später gelegt'+(e.bis?' bis '+datum(e.bis):''));}
+  else if(s.status==='passt-nicht'){t.push('passt nicht'+(e&&e.von?' ('+H.kname(e.von)+')':''));}
+  else if(s.status==='geplant'){t.push(s.ruht?'beginnt später':(s.wiederkehrend&&s.wiederkehrend.zuletzt?'zuletzt am '+datum(s.wiederkehrend.zuletzt)+' · ':'')+'nächster Termin '+datum(s.faellig));}
+  else if(s.faellig){t.push((s.faellig<heute()?'fällig seit ':(s.faellig===heute()?'fällig heute':'fällig am '))+(s.faellig===heute()?'':datum(s.faellig)));}
+  if(s.wer){t.push('zuständig: '+H.kname(s.wer));}
+  if(e&&e.notiz){t.push('„'+e.notiz+'“');}
+  return t.length?'<span class="bp-meta">'+esc(t.join(' · '))+'</span>':'';
+}
+function entscheidKnoepfe(s,r){
+  if(!r.bearbeiten){return '';}
+  var k=esc(s.key), h='';
+  if(s.eigen){
+    h+=(s.status==='erledigt'?'<button type="button" class="ar-link" data-bp="eigen-offen" data-sid="'+esc(s.eigen.id)+'">Wieder offen</button>':'<button type="button" class="ar-link" data-bp="eigen-erledigt" data-sid="'+esc(s.eigen.id)+'">'+svg('check')+'Erledigt</button>')+
+      '<button type="button" class="ar-link" data-bp="eigen-aendern" data-sid="'+esc(s.eigen.id)+'">Ändern</button>';
+    return '<span class="bp-entscheid">'+h+'</span>';
+  }
+  if(s.auto){return '';}
+  if(s.entscheidung&&(s.status==='erledigt'||s.status==='spaeter'||s.status==='passt-nicht')){return '<span class="bp-entscheid"><button type="button" class="ar-link" data-bp="offen" data-key="'+k+'">Wieder offen</button></span>';}
+  if(s.status==='geplant'){return '';}
+  return '<span class="bp-entscheid">'+(nurDialog(s)?'':'<button type="button" class="ar-link" data-bp="erledigt" data-key="'+k+'">'+svg('check')+'Erledigt</button>')+
+    '<button type="button" class="ar-link" data-bp="spaeter" data-key="'+k+'">Später</button>'+
+    (s.prio===1?'':'<button type="button" class="ar-link" data-bp="passt-nicht" data-key="'+k+'">Passt nicht</button>')+'</span>';
+}
+/* Laufende Beobachtung und Überprüfung werden über ihre Aktion erledigt, nicht per Haken */
+function nurDialog(s){return !!(s.laufend||(s.aktion&&s.aktion.bp==='review'));}
+function schrittHtml(s,r,kl){
+  return '<li class="bp-schritt '+s.status+(s.prio===1?' wichtig':'')+'" data-key="'+esc(s.key)+'">'+statusPunkt(s)+
+    '<div class="bp-text"><b>'+esc(s.titel)+'</b>'+(s.warum&&s.status!=='erledigt'?'<span class="bp-warum">'+esc(s.warum)+'</span>':'')+meta(s)+(s.status!=='erledigt'?links(s,kl):'')+'</div>'+
+    '<div class="bp-akt">'+(s.status==='erledigt'||s.status==='passt-nicht'?'':aktionKnopf(s.aktion,false))+entscheidKnoepfe(s,r)+'</div></li>';
+}
+
+function tab(d,r){
+  if(!bausteine()){return '<p>Der Begleitplan fehlt in dieser Hub-Datei.</p>';}
+  var P=schritte(d,r), vn=vorname(d), h='<div class="bp" id="bp-plan">';
+  /* Kopf mit Fortschritt und Phasen */
+  var pz=P.gesamt?Math.round(P.fertig/P.gesamt*100):0;
+  h+='<section class="ar-karte bp-kopf"><div class="ar-kartenkopf"><div><p class="overline">Begleitplan</p><h2>Schritt für Schritt mit '+esc(vn)+'</h2></div>'+
+    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-bp="eigen-neu">'+svg('plus')+'Eigener Schritt</button>':'')+
+    '<button class="btn" type="button" data-bp="drucken">'+svg('print')+'Drucken</button></span></div>'+
+    '<div class="bp-fortschritt"><span class="bp-balken" aria-hidden="true"><span style="width:'+pz+'%"></span></span><span class="bp-zahlen"><b>'+P.fertig+' von '+P.gesamt+'</b> Schritten erledigt'+
+      (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
+    '<ol class="bp-phasen">'+PHASEN.map(function(p,i){var x=P.phasen[p[0]], fertig=x.gesamt&&x.fertig===x.gesamt;
+      return '<li class="'+(fertig?'fertig':(x.offen?'offen':''))+'"><button type="button" data-bp="phase" data-phase="'+p[0]+'"><span class="bp-pnr">'+(fertig?svg('check'):(i+1))+'</span><span class="bp-ptext"><span class="bp-pname">'+esc(p[1])+'</span><span class="bp-pzahl">'+(x.gesamt?x.fertig+' von '+x.gesamt:(x.termin?'ab '+esc(datum(x.termin).slice(0,6)):'–'))+'</span></span></button></li>';}).join('')+'</ol></section>';
+  /* Als Nächstes */
+  var n=P.naechster;
+  if(n){
+    h+='<section class="ar-karte bp-naechster '+n.status+'"><p class="overline">Als Nächstes · '+esc(n.phase==='sofort'?'Sofort':PHASEN[PHASE_NR[n.phase]][1])+(n.status!=='offen'?' · '+esc(STATUS_TEXT[n.status]):'')+'</p>'+
+      '<h3>'+esc(n.titel)+'</h3>'+(n.warum?'<p>'+esc(n.warum)+'</p>':'')+meta(n)+links(n,P.kl)+
+      '<div class="ar-knopfreihe">'+aktionKnopf(n.aktion,true)+(r.bearbeiten&&!n.eigen&&!nurDialog(n)?'<button type="button" class="btn" data-bp="erledigt" data-key="'+esc(n.key)+'">'+svg('check')+'Erledigt</button>':'')+
+        (r.bearbeiten&&n.eigen?'<button type="button" class="btn" data-bp="eigen-erledigt" data-sid="'+esc(n.eigen.id)+'">'+svg('check')+'Erledigt</button>':'')+
+        (r.bearbeiten&&!n.eigen?'<button type="button" class="ar-link" data-bp="spaeter" data-key="'+esc(n.key)+'">Später</button>':'')+'</div></section>';
+  }else{
+    h+='<section class="ar-karte bp-naechster fertig"><p class="overline">Als Nächstes</p><h3>Im Moment ist nichts offen.</h3><p>Die nächsten Schritte erscheinen hier, sobald sie anstehen – zum Beispiel die nächste Überprüfung.</p></section>';
+  }
+  /* Fokusziele */
+  if(P.fokus.length){
+    h+='<section class="ar-karte bp-fokus"><div class="ar-kartenkopf"><h3>Fokusziele'+(P.bp.fokusSeit?' <span class="ar-leise">seit '+esc(datum(P.bp.fokusSeit))+'</span>':'')+'</h3>'+(r.bearbeiten?'<button class="ar-link" type="button" data-bp="fokus">'+svg('edit')+'Ändern</button>':'')+'</div><ul>'+
+      P.fokus.map(function(c){var z=P.A?P.A.ziele.filter(function(x){return x.code===c;})[0]:null, inf=H.itemZu?H.itemZu(c):null, erreicht=P.A&&P.A.e&&P.A.e.sel&&P.A.e.sel[c]==='e';
+        return '<li><span class="bp-code">'+esc(c)+'</span><span>'+esc((z&&z.text)||(inf&&inf.it&&(inf.it.text||inf.it.keyword))||'')+'</span>'+(erreicht?'<span class="bp-erreicht">laut ELDiB erreicht</span>':'')+'</li>';}).join('')+'</ul></section>';
+  }
+  /* Sofort */
+  var sofort=P.liste.filter(function(s){return s.phase==='sofort';});
+  if(sofort.length){h+='<section class="ar-karte bp-phase bp-sofort"><h3>'+svg('warn')+'Sofort</h3><ol class="bp-liste">'+sofort.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol></section>';}
+  /* Phasen */
+  PHASEN.forEach(function(p,i){
+    var l=P.liste.filter(function(s){return s.phase===p[0]&&s.status!=='passt-nicht';});
+    var reihen=l.filter(function(s){return s.status!=='erledigt'&&s.status!=='laufend';}).concat(l.filter(function(s){return s.status==='laufend';})).concat(l.filter(function(s){return s.status==='erledigt';}));
+    var x=P.phasen[p[0]];
+    h+='<section class="ar-karte bp-phase" id="bp-phase-'+p[0]+'"><div class="bp-phasekopf"><h3><span class="bp-pnr">'+(i+1)+'</span>'+esc(p[1])+'</h3><span class="ar-leise">'+esc(p[2])+'</span><span class="bp-pzahl">'+(x.gesamt?x.fertig+' von '+x.gesamt:(x.termin?'nächster Termin '+esc(datum(x.termin)):''))+'</span></div>'+
+      (reihen.length?'<ol class="bp-liste">'+reihen.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol>':'<p class="ar-leise">Keine Schritte.</p>')+'</section>';
+  });
+  /* Überprüfungen */
+  var revs=(P.bp.reviews||[]).slice().sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));});
+  if(revs.length){
+    h+='<section class="ar-karte bp-reviews"><h3>Überprüfungen</h3><ol>'+revs.map(function(v){var k=v.kennzahlen||{};
+      return '<li><b>'+esc(datum(v.datum))+'</b> <span class="ar-leise">'+esc(H.kname(v.von))+'</span>'+(v.notiz?'<p>'+esc(v.notiz).replace(/\n/g,'<br>')+'</p>':'')+
+        (Object.keys(k).length?'<span class="bp-kz">'+kennzahlenText(k).map(esc).join(' · ')+'</span>':'')+'</li>';}).join('')+'</ol></section>';
+  }
+  /* Passt nicht */
+  var weg=P.liste.filter(function(s){return s.status==='passt-nicht';});
+  if(weg.length){h+='<details class="ar-karte bp-weg keindruck"><summary><h3>Passt nicht ('+weg.length+')</h3></summary><ol class="bp-liste">'+weg.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol></details>';}
+  h+='<details class="ar-karte bp-wie keindruck"><summary><h3>Wie der Begleitplan arbeitet</h3></summary><p>Der Hub leitet die Schritte jedes Mal neu aus dem Dossier ab: Fiche, DS, ELDiB, Screening, Kompass, Einträge und Vorfälle. Was sich aus den Daten ablesen lässt, hakt er selbst ab – zum Beispiel ein Elterngespräch, sobald es als Eintrag im Dossier steht. Wiederkehrende Schritte (Austausch mit den Eltern, Überprüfung alle sechs Wochen, Screening und ELDiB wiederholen) erscheinen rechtzeitig vor dem Termin.</p><p>„Als Nächstes“ zeigt immer den wichtigsten offenen Schritt: zuerst Dringendes, dann Fälliges, dann in der Reihenfolge der Phasen. Was nicht passt, lässt sich wegklicken; jede Entscheidung steht im Protokoll.</p></details>';
+  return h+'</div>';
+}
+function kennzahlenText(k){
+  var t=[];
+  if(k.vorfaelle!=null){t.push(k.vorfaelle+(k.vorfaelle===1?' Vorfall':' Vorfälle'));}
+  if(k.timeout){t.push(k.timeout+' Min. Time-out');}
+  if(k.beobachtungen!=null){t.push(k.beobachtungen+(k.beobachtungen===1?' Beobachtung':' Beobachtungen')+' zu den Fokuszielen');}
+  if(k.erreicht&&k.erreicht.length){t.push('erreicht: '+k.erreicht.join(', '));}
+  if(k.screening){t.push('Screening: '+k.screening);}
+  return t;
+}
+/* Kennzahlen seit der letzten Überprüfung (oder dem Beginn) */
+function kennzahlen(d,P){
+  /* seit der letzten Überprüfung (ohne ihren Tag) bzw. seit dem Start des Plans (mit dem Starttag) */
+  var bp=d.begleitplan||{}, revs=(bp.reviews||[]).map(function(v){return iso(v.datum);}).sort(), nachRev=revs.length>0, ab=nachRev?revs[revs.length-1]:[bp.start||'',bp.fokusSeit||''].filter(Boolean).sort()[0]||'';
+  function imZeitraum(dt){dt=iso(dt);return !ab||(nachRev?dt>ab:dt>=ab);}
+  var ein=(d.eintraege||[]).filter(function(e){return e&&imZeitraum(e.datum);});
+  var vf=ein.filter(function(e){return e.art==='vorfall';}), min=0;
+  vf.forEach(function(e){var v=e.vorfall||{};if(H.vorfallMinuten&&v.timeoutVon&&v.timeoutBis){min+=H.vorfallMinuten(v.timeoutVon,v.timeoutBis)||0;}});
+  var k={seit:ab||'',vorfaelle:vf.length,timeout:min,beobachtungen:ein.filter(function(e){return e.ziel&&P.fokus.indexOf(e.ziel)>=0;}).length};
+  if(P.A&&P.A.e&&P.A.e.sel){k.erreicht=P.fokus.filter(function(c){return P.A.e.sel[c]==='e';});}
+  var S=window.CDSE_SCREENING, ls=S&&S.letztes?S.letztes(d):null;
+  if(ls&&imZeitraum(ls.s.datum)){k.screening=datum(ls.s.datum)+' – '+ls.e.gesamt.titel;}
+  return k;
+}
+
+/* ---------- Kurzfassung für den Überblick ---------- */
+function kurzKarte(d,r){
+  if(!bausteine()){return '';}
+  var P;try{P=schritte(d,r||{});}catch(e){return '';}
+  var n=P.naechster;
+  return '<div class="ar-karte bp-kurzkarte'+(n?' '+n.status:'')+'"><div class="ar-kartenkopf"><h2>Begleitplan</h2><button class="ar-link" type="button" data-tab="begleitplan">Zum Begleitplan'+svg('right')+'</button></div>'+
+    '<div class="bp-fortschritt"><span class="bp-balken" aria-hidden="true"><span style="width:'+(P.gesamt?Math.round(P.fertig/P.gesamt*100):0)+'%"></span></span><span class="bp-zahlen"><b>'+P.fertig+' von '+P.gesamt+'</b> erledigt'+
+      (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
+    (n?'<p class="bp-kurz-naechst"><span class="ar-leise">Als Nächstes:</span> <b>'+esc(n.titel)+'</b></p>':'<p class="ar-leise">Im Moment ist nichts offen.</p>')+'</div>';
+}
+
+/* ---------- Teil fürs Übergabeblatt ---------- */
+function druckTeil(d){
+  if(!bausteine()){return '';}
+  var P;try{P=schritte(d,{});}catch(e){return '';}
+  if(!P.gesamt){return '';}
+  var offen=P.offen.slice(0,8), revs=((P.bp.reviews)||[]).slice().sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));}), rv=revs[0];
+  return '<h2>Begleitplan</h2><p>'+P.fertig+' von '+P.gesamt+' Schritten erledigt.'+(P.naechster?' Als Nächstes: <b>'+esc(P.naechster.titel)+'</b>.':'')+'</p>'+
+    (P.fokus.length?'<h3>Fokusziele</h3><ul>'+P.fokus.map(function(c){var z=P.A?P.A.ziele.filter(function(x){return x.code===c;})[0]:null;return '<li><b>'+esc(c)+'</b>'+(z&&z.text?' – '+esc(z.text):'')+'</li>';}).join('')+'</ul>':'')+
+    (offen.length?'<h3>Offene Schritte</h3><ul>'+offen.map(function(s){return '<li>'+esc(s.titel)+(s.status==='dringend'?' <small>(dringend)</small>':(s.faellig?' <small>(fällig '+esc(datum(s.faellig))+')</small>':''))+'</li>';}).join('')+'</ul>':'')+
+    (rv?'<h3>Letzte Überprüfung ('+esc(datum(rv.datum))+')</h3><p>'+esc(rv.notiz||'').replace(/\n/g,'<br>')+'</p>':'');
+}
+
+/* =====================================================================
+   Aktionen
+   ===================================================================== */
+function aktuell(){var d=H&&H.aktDossier&&H.aktDossier();return d||null;}
+function fertig(p,meldung){return p.then(function(neu){if(neu){H.dossierZeichnen(neu);}H.toast(meldung);return neu;},function(e){H.toast((e&&e.message)||String(e));});}
+function schrittVon(d,key){var P=schritte(d,T.rechte(d));return P.liste.filter(function(s){return s.key===key;})[0]||null;}
+function spaeterDialog(d,s){
+  H.dialog('Auf später legen','<p><b>'+esc(s.titel)+'</b></p><div class="ar-raster2">'+H.feld('bis','Wieder zeigen am',plusTage(heute(),14),'date')+'</div>'+H.feld('notiz','Notiz (optional)','','text',' maxlength="200"'),
+    [{text:'Abbrechen',wert:''},{text:'Später',wert:'ok',primaer:true}],
+    {pruefen:function(w){return w.werte.bis&&w.werte.bis>heute()?'':'Bitte ein Datum in der Zukunft wählen.';},
+     ausfuehren:function(w){return T.ops.planSchritt(d.id,s.key,{status:'spaeter',bis:w.werte.bis,notiz:w.werte.notiz,titel:s.titel});}})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Auf später gelegt');}});
+}
+function passtNichtDialog(d,s){
+  H.dialog('Passt nicht','<p><b>'+esc(s.titel)+'</b> passt für '+esc(vorname(d))+' nicht? Der Schritt wandert nach unten unter „Passt nicht“ und lässt sich dort wieder öffnen.</p>'+H.feld('notiz','Warum? (optional)','','text',' maxlength="200"'),
+    [{text:'Abbrechen',wert:''},{text:'Passt nicht',wert:'ok',primaer:true}],
+    {ausfuehren:function(w){return T.ops.planSchritt(d.id,s.key,{status:'passt-nicht',notiz:w.werte.notiz,titel:s.titel});}})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Verschoben nach „Passt nicht“');}});
+}
+function fokusDialog(d){
+  var A=H.eldibAuswertung?H.eldibAuswertung(d):null;if(!A){H.toast('Zuerst eine ELDiB-Einschätzung übernehmen.');return;}
+  var bp=d.begleitplan||{}, alt=bp.fokus||[], gesehen={}, gruppen=[];
+  var ziele=A.ziele.map(function(z){gesehen[z.code]=1;return {code:z.code,text:z.text,info:z.ueber?'für das Alter überfällig':''};});
+  if(ziele.length){gruppen.push(['Förderziele (PEI) aus der ELDiB',ziele]);}
+  var kand=[];(A.naechste||[]).forEach(function(n){n.items.forEach(function(x){if(gesehen[x.code]){return;}gesehen[x.code]=1;kand.push({code:x.code,text:x.it.text||x.it.keyword||'',info:n.bereich.name+', Stufe '+x.stufe+(x.nicht?' – noch nicht erreicht':'')});});});
+  if(kand.length){gruppen.push(['Nächste Schritte laut ELDiB',kand]);}
+  alt.forEach(function(c){if(!gesehen[c]){gruppen.unshift(['Bisheriger Fokus',[{code:c,text:'',info:''}]]);gesehen[c]=1;}});
+  if(!gruppen.length){H.toast('Die ELDiB enthält noch keine Ziele.');return;}
+  var inhalt='<p>Wähle höchstens drei Ziele, auf die sich alle in den nächsten Wochen konzentrieren. Die übrigen Förderziele bleiben in der ELDiB erhalten.</p>'+
+    gruppen.map(function(g){return '<fieldset class="bp-wahl"><legend>'+esc(g[0])+'</legend>'+g[1].map(function(z){
+      return '<label><input type="checkbox" name="z-'+esc(z.code)+'" value="'+esc(z.code)+'"'+(alt.indexOf(z.code)>=0?' checked':'')+'><span class="bp-code">'+esc(z.code)+'</span><span>'+esc(z.text)+(z.info?' <small>'+esc(z.info)+'</small>':'')+'</span></label>';}).join('')+'</fieldset>';}).join('');
+  H.dialog('Fokusziele wählen',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){var n=Object.keys(w.werte).filter(function(k){return /^z-/.test(k)&&w.werte[k];}).length;return n>3?'Bitte höchstens drei Ziele wählen (gewählt: '+n+').':'';},
+    ausfuehren:function(w){var l=Object.keys(w.werte).filter(function(k){return /^z-/.test(k)&&w.werte[k];}).map(function(k){return k.slice(2);});return T.ops.planFokus(d.id,l);}})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Fokusziele gespeichert');}});
+}
+function reviewDialog(d){
+  var P=schritte(d,T.rechte(d)), k=kennzahlen(d,P), kt=kennzahlenText(k);
+  var inhalt='<p>Seit '+(k.seit?datum(k.seit):'Beginn')+':'+(kt.length?' '+esc(kt.join(' · ')):' noch keine Zahlen')+'.</p>'+
+    '<div class="ar-raster2">'+H.feld('datum','Datum',heute(),'date')+'</div>'+
+    H.textfeld('notiz','Was hat sich verändert? Was behalten wir bei, was passen wir an?','',6);
+  H.dialog('Überprüfung eintragen',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){return String(w.werte.notiz||'').trim()?'':'Bitte kurz festhalten, was sich verändert hat.';},
+    ausfuehren:function(w){return T.ops.planUeberpruefung(d.id,{datum:w.werte.datum||heute(),notiz:w.werte.notiz,kennzahlen:k});}})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Überprüfung gespeichert – die nächste ist in sechs Wochen');}});
+}
+function eigenerDialog(d,x){
+  x=x||{};
+  var konten=(K.konten?K.konten():[]).filter(function(k){return k&&k.id;}).map(function(k){return [k.id,k.name];});
+  var inhalt=H.feld('titel','Was ist zu tun?',x.titel||'','text',' maxlength="200"')+H.textfeld('text','Details (optional)',x.text||'',3)+
+    '<div class="ar-raster3">'+H.auswahl('phase','Phase',x.phase||'umsetzen',PHASEN.map(function(p){return [p[0],p[1]];}))+
+      H.auswahl('wer','Zuständig',x.wer||'',konten,'– offen –')+H.feld('bis','Bis wann? (optional)',x.bis||'','date')+'</div>';
+  H.dialog(x.id?'Schritt ändern':'Eigener Schritt',inhalt,[{text:'Abbrechen',wert:''}].concat(x.id?[{text:'Löschen',wert:'loeschen',gefahr:true}]:[]).concat([{text:'Speichern',wert:'ok',primaer:true}]),{breit:true,
+    pruefen:function(w){return w.aktion==='loeschen'||String(w.werte.titel||'').trim()?'':'Bitte angeben, was zu tun ist.';},
+    ausfuehren:function(w){
+      if(w.aktion==='loeschen'){return T.ops.planEigenerLoeschen(d.id,x.id);}
+      var v={titel:w.werte.titel,text:w.werte.text,phase:w.werte.phase,wer:w.werte.wer,bis:w.werte.bis};
+      return x.id?T.ops.planEigenerAendern(d.id,x.id,v):T.ops.planEigener(d.id,v);
+    }})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast(res.aktion==='loeschen'?'Schritt gelöscht':'Gespeichert');}});
+}
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-bp]');if(!t||!bausteine()){return;}
+  var d=aktuell();if(!d){return;}
+  var a=t.getAttribute('data-bp'), key=t.getAttribute('data-key')||'', sid=t.getAttribute('data-sid')||'';
+  var eigen=sid?((d.begleitplan||{}).eigene||[]).filter(function(x){return x.id===sid;})[0]:null;
+  if(a==='phase'){var el=document.getElementById('bp-phase-'+t.getAttribute('data-phase'));if(el){el.scrollIntoView({block:'start',behavior:'smooth'});}return;}
+  if(a==='drucken'){document.body.classList.add('bp-druck');setTimeout(function(){window.print();},50);return;}
+  if(a==='fokus'){fokusDialog(d);return;}
+  if(a==='review'){reviewDialog(d);return;}
+  if(a==='eigen-neu'){eigenerDialog(d,null);return;}
+  if(a==='eigen-aendern'&&eigen){eigenerDialog(d,eigen);return;}
+  if(a==='eigen-erledigt'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'erledigt'}),'Erledigt');return;}
+  if(a==='eigen-offen'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'offen'}),'Wieder offen');return;}
+  var s=key?schrittVon(d,key):null;if(!s){return;}
+  if(a==='erledigt'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'erledigt',titel:s.titel}),'Erledigt: '+s.titel);return;}
+  if(a==='offen'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'',titel:s.titel}),'Wieder offen');return;}
+  if(a==='spaeter'){spaeterDialog(d,s);return;}
+  if(a==='passt-nicht'){passtNichtDialog(d,s);return;}
+});
+window.addEventListener('afterprint',function(){document.body.classList.remove('bp-druck');});
+
+return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, schritte:function(d,r){bausteine();return schritte(d,r);}, kennzahlen:function(d){bausteine();return kennzahlen(d,schritte(d,{}));}};
+})();
+</script>
+<script>
+/* =====================================================================
+   CDSE Hub — Berichte und Arztbriefe im Dossier
+   ---------------------------------------------------------------------
+   Einen Bericht hinzufügen (PDF, Word oder eingefügter Text): Der Hub
+   liest den Text aus und schlägt vor, was er gefunden hat – Diagnosen
+   und Verdacht (mit Verneinung: „kein Hinweis auf …“), ICD-Codes,
+   Medikamente, Datum, Absender und Empfehlungen. Übernommen wird nur,
+   was das Team abhakt: Profile gehen in den Kompass, Empfehlungen auf
+   Wunsch als Schritte in den Begleitplan. Die Originaldatei liegt auf
+   Wunsch verschlüsselt neben dem Dossier (CDSE_TEAM.anhangSpeichern).
+   Gescannte PDFs enthalten keinen Text – dann hilft Einfügen/Abtippen.
+   ===================================================================== */
+window.CDSE_BERICHTE=(function(){
+'use strict';
+var T=null, K=null, H=null;
+function bausteine(){T=window.CDSE_TEAM||null;K=window.CDSE_KONTO||null;H=(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.hilfen)||null;return !!(T&&K&&H);}
+var ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
+var MAX_DATEI=12*1024*1024;
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function svg(n){return H?H.svg(n):'';}
+function datum(i){return H?H.datum(i):i;}
+function groesse(n){return n>=1048576?(n/1048576).toFixed(1).replace('.',',')+' MB':Math.max(1,Math.round(n/1024))+' KB';}
+
+/* =====================================================================
+   PDF: Text auslesen, ohne Bibliothek. Unterstützt Flate-komprimierte
+   Inhalte, Objekt-Streams und ToUnicode-Tabellen (so erzeugen Word,
+   LibreOffice und Browser ihre PDFs). Scans enthalten keinen Text.
+   ===================================================================== */
+function latin1(b,s,e){var t='';for(var i=s;i<e;i+=8192){t+=String.fromCharCode.apply(null,b.subarray(i,Math.min(e,i+8192)));}return t;}
+function inflatePdf(bytes){
+  var ds=new DecompressionStream('deflate'), w=ds.writable.getWriter(), r=ds.readable.getReader(), teile=[], n=0;
+  w.write(bytes).catch(function(){});w.close().catch(function(){});
+  function lies(){return r.read().then(function(x){if(x.done){return;}teile.push(x.value);n+=x.value.length;return lies();},function(){/* Rest nach einem Fehler ignorieren */});}
+  return lies().then(function(){var o=new Uint8Array(n),p=0;teile.forEach(function(t){o.set(t,p);p+=t.length;});return o;});
+}
+function pdfObjekte(b,bin){
+  var o={}, re=/(\d+)\s+(\d+)\s+obj\b/g, m;
+  function laengeVon(dict){
+    var d=/\/Length\s+(\d+)(?:\s+(\d+)\s+R)?/.exec(dict);if(!d){return -1;}
+    if(d[2]==null){return +d[1];}
+    var rm=new RegExp('(?:^|[^0-9])'+d[1]+'\\s+'+d[2]+'\\s+obj\\s*(\\d+)\\s*endobj').exec(bin);return rm?+rm[1]:-1;
+  }
+  while((m=re.exec(bin))){
+    var start=re.lastIndex, eIdx=bin.indexOf('endobj',start);if(eIdx<0){break;}
+    var sIdx=bin.indexOf('stream',start), obj={nr:+m[1],dict:'',daten:null};
+    if(sIdx>=0&&sIdx<eIdx){
+      obj.dict=bin.slice(start,sIdx);
+      var ds=sIdx+6;if(bin.charCodeAt(ds)===13){ds++;}if(bin.charCodeAt(ds)===10){ds++;}
+      var len=laengeVon(obj.dict), de=len>=0?ds+len:-1;
+      if(de<ds||bin.slice(de,de+40).indexOf('endstream')<0){de=bin.indexOf('endstream',ds);}
+      obj.daten=b.subarray(ds,Math.max(ds,de));
+      eIdx=bin.indexOf('endobj',de);if(eIdx<0){o[obj.nr]=obj;break;}
+    }else{obj.dict=bin.slice(start,eIdx);}
+    o[obj.nr]=obj;re.lastIndex=eIdx+6;
+  }
+  return o;
+}
+function stromText(obj){
+  if(!obj||!obj.daten){return Promise.resolve('');}
+  if(/\/Filter\s*\[?\s*\/FlateDecode/.test(obj.dict)){return inflatePdf(obj.daten).then(function(u){return u?latin1(u,0,u.length):'';});}
+  if(/\/Filter/.test(obj.dict)){return Promise.resolve('');}   /* Bilder, andere Filter */
+  return Promise.resolve(latin1(obj.daten,0,obj.daten.length));
+}
+function hexBytes(h){h=h.replace(/[^0-9a-fA-F]/g,'');if(h.length%2){h+='0';}var o=[];for(var i=0;i<h.length;i+=2){o.push(parseInt(h.substr(i,2),16));}return o;}
+function utf16(bytes){var s='';for(var i=0;i+1<bytes.length;i+=2){s+=String.fromCharCode((bytes[i]<<8)|bytes[i+1]);}return s;}
+/* ToUnicode-Tabelle: {laenge, map:{code: text}} */
+function cmapLesen(t){
+  var map={}, laenge=1, m;
+  var cs=/begincodespacerange([\s\S]*?)endcodespacerange/.exec(t);if(cs){var h=/<([0-9a-fA-F]+)>/.exec(cs[1]);if(h){laenge=Math.max(1,h[1].length/2);}}
+  var reC=/beginbfchar([\s\S]*?)endbfchar/g;
+  while((m=reC.exec(t))){var reP=/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]*)>/g,p;while((p=reP.exec(m[1]))){map[parseInt(p[1],16)]=utf16(hexBytes(p[2]));}}
+  var reR=/beginbfrange([\s\S]*?)endbfrange/g;
+  while((m=reR.exec(t))){
+    var reZ=/<([0-9a-fA-F]+)>\s*<([0-9a-fA-F]+)>\s*(<[0-9a-fA-F]*>|\[[^\]]*\])/g,z;
+    while((z=reZ.exec(m[1]))){
+      var lo=parseInt(z[1],16), hi=parseInt(z[2],16);if(hi-lo>5000){continue;}
+      if(z[3].charAt(0)==='['){var l=z[3].match(/<([0-9a-fA-F]*)>/g)||[];for(var i=0;i<l.length&&lo+i<=hi;i++){map[lo+i]=utf16(hexBytes(l[i]));}}
+      else{var basis=hexBytes(z[3].slice(1,-1));for(var c=lo;c<=hi;c++){var bb=basis.slice(),k=c-lo,j=bb.length-1;while(k>0&&j>=0){var s2=bb[j]+k;bb[j]=s2&255;k=s2>>8;j--;}map[c]=utf16(bb);}}
+    }
+  }
+  return {laenge:laenge,map:map};
+}
+var WINANSI={128:'€',130:'‚',131:'ƒ',132:'„',133:'…',134:'†',135:'‡',136:'ˆ',137:'‰',138:'Š',139:'‹',140:'Œ',142:'Ž',145:'‘',146:'’',147:'“',148:'”',149:'•',150:'–',151:'—',152:'˜',153:'™',154:'š',155:'›',156:'œ',158:'ž',159:'Ÿ'};
+/* Bytes → {text, breite (in 1/1000 der Schriftgröße), leer (Anzahl Leerzeichen)} */
+function zeichenkette(bytes,font){
+  var laenge=font?(font.cmap?font.cmap.laenge:(font.zweiByte?2:1)):1, s='', breite=0, leer=0;
+  for(var i=0;i+laenge<=bytes.length;i+=laenge){
+    var code=0;for(var j=0;j<laenge;j++){code=(code<<8)|bytes[i+j];}
+    var ch=(font&&font.cmap)?font.cmap.map[code]:(laenge===1?(WINANSI[code]||String.fromCharCode(code)):null);
+    if(ch!=null){s+=ch;if(ch===' '){leer++;}}
+    breite+=font&&font.breite?font.breite(code):500;
+  }
+  return {text:s,breite:breite,leer:leer};
+}
+function literalBytes(s){
+  var o=[], i=0;
+  while(i<s.length){
+    var c=s.charAt(i);
+    if(c!=='\\'){o.push(s.charCodeAt(i)&255);i++;continue;}
+    var n=s.charAt(i+1);
+    if(/[0-7]/.test(n)){var oct=/^[0-7]{1,3}/.exec(s.slice(i+1))[0];o.push(parseInt(oct,8)&255);i+=1+oct.length;continue;}
+    var esc2={n:10,r:13,t:9,b:8,f:12};
+    if(esc2[n]!=null){o.push(esc2[n]);}else if(n==='\r'||n==='\n'){if(n==='\r'&&s.charAt(i+2)==='\n'){i++;}}else{o.push(n.charCodeAt(0)&255);}
+    i+=2;
+  }
+  return o;
+}
+/* Inhaltsstrom deuten: Text-Operatoren mit der jeweils gewählten Schrift */
+function inhaltText(t,fonts){
+  var aus='', font=null, groesse=12, i=0, n=t.length, stapel=[];
+  /* Position im Textraum: x (aktuell), zx (Zeilenanfang); tm = Textmatrix [a,b,c,d,e,f] */
+  var x=0, zx=0, zy=0, tm=[1,0,0,1,0,0], tc=0, tw=0;
+  function zeile(){if(aus&&!/\n$/.test(aus)){aus+='\n';}}
+  function luecke(dx){if(dx>groesse*0.22&&aus&&!/\s$/.test(aus)){aus+=' ';}}
+  function schreibe(bytes){var z=zeichenkette(bytes,font);aus+=z.text;x+=z.breite/1000*groesse+tc*(z.text.length)+tw*z.leer;}
+  while(i<n){
+    var c=t.charAt(i);
+    if(c==='%'){while(i<n&&t.charAt(i)!=='\n'&&t.charAt(i)!=='\r'){i++;}continue;}
+    if(/\s/.test(c)){i++;continue;}
+    if(c==='('){var tiefe=1,j=i+1,roh='';while(j<n&&tiefe>0){var cj=t.charAt(j);if(cj==='\\'){roh+=cj+t.charAt(j+1);j+=2;continue;}if(cj==='('){tiefe++;}else if(cj===')'){tiefe--;if(!tiefe){break;}}roh+=cj;j++;}
+      stapel.push({str:literalBytes(roh)});i=j+1;continue;}
+    if(c==='<'&&t.charAt(i+1)!=='<'){var e=t.indexOf('>',i);stapel.push({str:hexBytes(t.slice(i+1,e))});i=e+1;continue;}
+    if(c==='['){stapel.push({auf:true});i++;continue;}
+    if(c===']'){var arr=[];while(stapel.length&&!stapel[stapel.length-1].auf){arr.unshift(stapel.pop());}stapel.pop();stapel.push({arr:arr});i++;continue;}
+    if(c==='<'&&t.charAt(i+1)==='<'){i+=2;continue;}
+    if(c==='>'&&t.charAt(i+1)==='>'){i+=2;continue;}
+    var m=/^(\/[^\s\/\[\]()<>{}%]*|[+-]?(?:\d+\.?\d*|\.\d+)|[A-Za-z'"*]+)/.exec(t.slice(i,i+64));
+    if(!m){i++;continue;}
+    var tok=m[1];i+=tok.length;
+    if(tok.charAt(0)==='/'){stapel.push({name:tok.slice(1)});continue;}
+    if(/^[+-]?[\d.]/.test(tok)){stapel.push({zahl:parseFloat(tok)});continue;}
+    /* Operator */
+    var zahlen=stapel.filter(function(q){return q.zahl!=null;}).map(function(q){return q.zahl;});
+    if(tok==='Tf'){var nm=stapel.filter(function(q){return q.name!=null;}).pop();font=nm?fonts[nm.name]||null:null;if(zahlen.length){groesse=Math.abs(zahlen[zahlen.length-1])||groesse;}}
+    else if(tok==='Tc'){tc=zahlen.length?zahlen[0]:0;}
+    else if(tok==='Tw'){tw=zahlen.length?zahlen[0]:0;}
+    else if(tok==='Tj'||tok==="'"||tok==='"'){if(tok!=='Tj'){zeile();x=zx;}var sx=stapel.filter(function(q){return q.str;}).pop();if(sx){schreibe(sx.str);}}
+    else if(tok==='TJ'){var ax=stapel.filter(function(q){return q.arr;}).pop();if(ax){ax.arr.forEach(function(q){if(q.str){schreibe(q.str);}else if(q.zahl!=null){var dx=-q.zahl/1000*groesse;luecke(dx);x+=dx;}});}}
+    else if(tok==='Td'||tok==='TD'){var ty=zahlen.length?zahlen[zahlen.length-1]:0, tx=zahlen.length>1?zahlen[zahlen.length-2]:0;
+      zx+=tx;zy+=ty;if(Math.abs(ty)>groesse*0.3){zeile();}else{luecke(zx-x);}x=zx;}
+    else if(tok==='T*'){zeile();x=zx;}
+    else if(tok==='BT'){x=zx=zy=0;tm=[1,0,0,1,0,0];}
+    else if(tok==='ET'){zeile();}
+    else if(tok==='Tm'&&zahlen.length>=6){
+      var neu=zahlen.slice(-6), skala=Math.abs(neu[0])||1, altEnde=tm[4]+tm[0]*x;
+      if(Math.abs(neu[5]-tm[5])>groesse*skala*0.3){zeile();}else{luecke((neu[4]-altEnde)/skala);}
+      tm=neu;x=zx=zy=0;
+    }
+    else if(tok==='BI'){var ei=t.indexOf('EI',i);i=ei<0?n:ei+2;}
+    stapel=[];
+  }
+  return aus;
+}
+function pdfText(buf){
+  var b=new Uint8Array(buf), bin=latin1(b,0,b.length);
+  if(bin.slice(0,1024).indexOf('%PDF')<0){return Promise.reject(new Error('Das ist keine PDF-Datei.'));}
+  if(/\/Encrypt\s/.test(bin)){return Promise.reject(new Error('Das PDF ist geschützt (verschlüsselt). Bitte den Text im PDF markieren, kopieren und einfügen.'));}
+  var o=pdfObjekte(b,bin);
+  /* Objekt-Streams auspacken */
+  var objStm=Object.keys(o).map(function(k){return o[k];}).filter(function(x){return x.daten&&/\/Type\s*\/ObjStm/.test(x.dict);});
+  return Promise.all(objStm.map(function(x){
+    return stromText(x).then(function(t){
+      var first=+((/\/First\s+(\d+)/.exec(x.dict)||[])[1]||0), kopf=t.slice(0,first).trim().split(/\s+/).map(Number);
+      for(var i=0;i+1<kopf.length;i+=2){var von=first+kopf[i+1], bis=i+3<kopf.length?first+kopf[i+3]:t.length;if(!o[kopf[i]]){o[kopf[i]]={nr:kopf[i],dict:t.slice(von,bis),daten:null};}}
+    });
+  })).then(function(){
+    function ref(dict,key){var m=new RegExp('/'+key+'\\s+(\\d+)\\s+\\d+\\s+R').exec(dict);return m?o[+m[1]]:null;}
+    /* Seiten in Lesereihenfolge (Seitenbaum), sonst in Dateireihenfolge */
+    var seiten=[], gesehen={};
+    function baum(x){
+      if(!x||gesehen[x.nr]){return;}gesehen[x.nr]=1;
+      if(/\/Type\s*\/Page\b/.test(x.dict)&&!/\/Type\s*\/Pages\b/.test(x.dict)){seiten.push(x);return;}
+      var kids=/\/Kids\s*\[([^\]]*)\]/.exec(x.dict);if(!kids){return;}
+      var re=/(\d+)\s+\d+\s+R/g,k;while((k=re.exec(kids[1]))){baum(o[+k[1]]);}
+    }
+    var root=null, rm, reRoot=/\/Root\s+(\d+)\s+\d+\s+R/g;while((rm=reRoot.exec(bin))){root=o[+rm[1]];}
+    if(root){baum(ref(root.dict,'Pages'));}
+    if(!seiten.length){seiten=Object.keys(o).map(function(k){return o[k];}).filter(function(x){return /\/Type\s*\/Page\b/.test(x.dict)&&!/\/Type\s*\/Pages\b/.test(x.dict);});}
+    var cmaps={};
+    function arrayText(dict,key){
+      var m=new RegExp('/'+key+'\\s*(\\[|(\\d+)\\s+\\d+\\s+R)').exec(dict);if(!m){return '';}
+      if(m[2]){var ob=o[+m[2]];return ob?ob.dict:'';}
+      var a=m.index+m[0].length-1, tiefe=0;for(var j=a;j<dict.length;j++){var ch=dict.charAt(j);if(ch==='['){tiefe++;}else if(ch===']'){tiefe--;if(!tiefe){return dict.slice(a,j+1);}}}
+      return dict.slice(a);
+    }
+    function breiten(fo){
+      var w={}, dw=0, dict=fo.dict;
+      if(/\/Subtype\s*\/Type0/.test(dict)){
+        var df=arrayText(dict,'DescendantFonts'), r1=/(\d+)\s+\d+\s+R/.exec(df), cid=r1?o[+r1[1]]:null;
+        if(cid){
+          dw=+((/\/DW\s+(\d+)/.exec(cid.dict)||[])[1]||1000);
+          var wt=arrayText(cid.dict,'W').replace(/^\s*\[|\]\s*$/g,''), tk=wt.match(/\[[^\]]*\]|[\d.]+/g)||[];
+          for(var k=0;k<tk.length;){
+            var c0=+tk[k];
+            if(tk[k+1]&&tk[k+1].charAt(0)==='['){(tk[k+1].match(/[\d.]+/g)||[]).forEach(function(v,j){w[c0+j]=+v;});k+=2;}
+            else{var c1=+tk[k+1], wv=+tk[k+2];if(c1-c0<70000){for(var c=c0;c<=c1;c++){w[c]=wv;}}k+=3;}
+          }
+        }
+        return {zweiByte:true,breite:function(code){return w[code]!=null?w[code]:dw;}};
+      }
+      var erst=+((/\/FirstChar\s+(\d+)/.exec(dict)||[])[1]||0);
+      (arrayText(dict,'Widths').match(/[\d.]+/g)||[]).forEach(function(v,j){w[erst+j]=+v;});
+      return {zweiByte:false,breite:function(code){return w[code]!=null?w[code]:500;}};
+    }
+    function schriften(seite){
+      var res=/\/Resources\s*<</.test(seite.dict)?seite.dict:((ref(seite.dict,'Resources')||{}).dict||'');
+      /* geerbte Ressourcen aus dem Seitenbaum */
+      if(!/\/Font/.test(res)){var p=ref(seite.dict,'Parent');while(p&&!/\/Font/.test(res)){res=/\/Resources\s*<</.test(p.dict)?p.dict:((ref(p.dict,'Resources')||{}).dict||'');p=ref(p.dict,'Parent');}}
+      var fd=/\/Font\s*<<([\s\S]*?)>>/.exec(res), fr=fd?fd[1]:(((ref(res,'Font')||{}).dict)||'');
+      var f={}, re=/\/([^\s\/]+)\s+(\d+)\s+\d+\s+R/g, m;
+      while((m=re.exec(fr))){var fo=o[+m[2]];if(!fo){continue;}var tu=ref(fo.dict,'ToUnicode'), br=breiten(fo);f[m[1]]={nr:fo.nr,cmapObj:tu,breite:br.breite,zweiByte:br.zweiByte};}
+      return f;
+    }
+    var text=[];
+    return seiten.reduce(function(p,seite){
+      return p.then(function(){
+        var fonts=schriften(seite);
+        var cm=Object.keys(fonts).map(function(k){var x=fonts[k];if(!x.cmapObj){return Promise.resolve();}
+          if(cmaps[x.cmapObj.nr]){x.cmap=cmaps[x.cmapObj.nr];return Promise.resolve();}
+          return stromText(x.cmapObj).then(function(t){x.cmap=cmaps[x.cmapObj.nr]=cmapLesen(t);});});
+        return Promise.all(cm).then(function(){
+          var c=/\/Contents\s*\[([^\]]*)\]/.exec(seite.dict), l=[];
+          if(c){var re=/(\d+)\s+\d+\s+R/g,k;while((k=re.exec(c[1]))){l.push(o[+k[1]]);}}else{var r1=ref(seite.dict,'Contents');if(r1){l.push(r1);}}
+          return Promise.all(l.map(stromText)).then(function(teile){text.push(inhaltText(teile.join('\n'),fonts));});
+        });
+      });
+    },Promise.resolve()).then(function(){return text.join('\n\n').replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();});
+  });
+}
+
+/* ---------- Datei → Text ---------- */
+function dateiText(datei){
+  var name=String(datei.name||'').toLowerCase();
+  return datei.arrayBuffer().then(function(buf){
+    if(/\.pdf$/.test(name)||datei.type==='application/pdf'){return pdfText(buf).then(function(t){return {text:t,buf:buf};});}
+    if(/\.docx$/.test(name)){if(!window.CDSE_FICHE||!window.CDSE_FICHE.docxText){throw new Error('Word-Dateien kann diese Hub-Datei nicht lesen.');}return window.CDSE_FICHE.docxText(buf).then(function(t){return {text:t,buf:buf};});}
+    if(/\.doc$/.test(name)){throw new Error('Alte Word-Dateien (.doc) kann der Hub nicht lesen. Bitte als .docx oder PDF speichern – oder den Text einfügen.');}
+    if(/\.(txt|text|md)$/.test(name)||/^text\//.test(datei.type)){return {text:new TextDecoder().decode(buf),buf:buf};}
+    throw new Error('Diese Dateiart kann der Hub nicht lesen. Möglich sind PDF, Word (.docx) und Text.');
+  });
+}
+
+/* =====================================================================
+   Erkennen: Vorschläge, die das Team bestätigt
+   ===================================================================== */
+/* Satzgrenze: Punkt, Semikolon, Zeilenende – ein Punkt vor einer Ziffer (F84.0, 2.5 mg) zählt nicht */
+var NEG_VOR=/(kein(e|en|er|em|es)?|nicht|ohne|ausgeschlossen|ausschluss|keinerlei|pas d['e]|pas de|aucun(e)?|absence d|sans|no |not |without|ruled out|excluded)(?:[^.;\n]|\.(?=\d)){0,60}$/i;
+var NEG_NACH=/^(?:[^.;\n]|\.(?=\d)){0,40}(ausgeschlossen|ausgeschlossen werden|nicht bestätigt|nicht bestätigen|unauffällig|nicht erfüllt|exclu|écarté|ruled out|excluded|not confirmed)/i;
+var VERD_VOR=/(verdacht|v\.\s?a\.|vd\.\s?a\.|verdachtsdiagnose|dd\b|differentialdiagnos|differenzialdiagnos|abklärung|zu klären|möglich(e|er|es)?|wahrscheinlich|suspicion|suspecté?e?|hypothèse|probable|à confirmer|à exclure|possible|suspected|probable)(?:[^.;\n]|\.(?=\d)){0,50}$/i;
+var VERD_NACH=/^(?:[^.;\n]|\.(?=\d)){0,20}(\?|\(v\.\s?a\.\)|à confirmer|zu klären|to be confirmed)/i;
+var VERD_FREI=/verdacht|v\.\s?a\.|suspicion|suspect|à confirmer|\?/i;
+var MEDIKAMENTE=[['Methylphenidat',/methylphenidat|ritalin|medikinet|concerta|equasym|kinecteen|rubifen/i],['Lisdexamfetamin',/lisdexamfetamin|elvanse/i],['Dexamfetamin',/dexamfetamin|attentin/i],
+  ['Atomoxetin',/atomoxetin|strattera/i],['Guanfacin',/guanfacin|intuniv/i],['Clonidin',/clonidin|catapres/i],['Risperidon',/risperidon|risperdal/i],['Aripiprazol',/aripiprazol|abilify/i],
+  ['Quetiapin',/quetiapin|seroquel/i],['Olanzapin',/olanzapin|zyprexa/i],['Fluoxetin',/fluoxetin|fluctine|prozac/i],['Sertralin',/sertralin|zoloft/i],['Escitalopram',/escitalopram|cipralex|seroplex/i],
+  ['Melatonin',/melatonin|circadin|slenyto/i],['Valproat',/valpro|depakin|orfiril/i],['Levetiracetam',/levetiracetam|keppra/i],['Lamotrigin',/lamotrigin|lamictal/i],['Lithium',/lithium/i]];
+var MED_AB=/(abgesetzt|beendet|ausgeschlichen|gestoppt|arrêté|interrompu|discontinued|stopped)/i;
+var EMPF_KOPF=/^\s*(empfehlung(en)?|therapieempfehlung(en)?|weiteres vorgehen|procédure|procedure|recommandation(s)?|recommendation(s)?|vorschl(ä|a)ge|conseils?|propositions?|plan de traitement)\b[^\n]{0,40}:?\s*$/i;
+var EMPF_ZEILE=/^\s*(?:empfehlung(?:en)?|therapieempfehlung(?:en)?|weiteres vorgehen|recommandations?|recommendations?)\s*:\s*(.+)$/i;
+var MONATE={januar:1,jänner:1,janvier:1,january:1,februar:2,février:2,fevrier:2,february:2,märz:3,maerz:3,mars:3,march:3,april:4,avril:4,mai:5,may:5,juni:6,juin:6,june:6,juli:7,juillet:7,july:7,august:8,août:8,aout:8,september:9,septembre:9,oktober:10,octobre:10,october:10,november:11,novembre:11,dezember:12,décembre:12,decembre:12,december:12};
+function pad(n){return (n<10?'0':'')+n;}
+function daten(text){
+  var o=[], m, re=/\b(\d{1,2})[./](\d{1,2})[./](\d{2,4})\b/g;
+  while((m=re.exec(text))){var j=+m[3];if(j<100){j+=2000;}var mo=+m[2], t=+m[1];if(mo>=1&&mo<=12&&t>=1&&t<=31&&j>=1990&&j<=2100){o.push({iso:j+'-'+pad(mo)+'-'+pad(t),index:m.index});}}
+  var re2=/\b(\d{1,2})\.?\s+([A-Za-zäöüéèûôÄÖÜ]+)\s+(\d{4})\b/g;
+  while((m=re2.exec(text))){var mm=MONATE[m[2].toLowerCase()];if(mm){o.push({iso:m[3]+'-'+pad(mm)+'-'+pad(+m[1]),index:m.index});}}
+  return o.sort(function(a,b){return a.index-b.index;});
+}
+function satzUm(text,i){
+  var a=Math.max(text.lastIndexOf('\n',i-1),text.lastIndexOf('. ',i-1)+1,0), e=text.length, e1=text.indexOf('\n',i), e2=text.indexOf('. ',i);
+  if(e1>=0){e=e1;}if(e2>=0&&e2<e){e=e2+1;}
+  return text.slice(a,e).replace(/\s+/g,' ').trim().replace(/^[-•*·–]\s*/,'').slice(0,240);
+}
+var UEBER_DIAG=/^\s*(diagnose(n)?|verdachtsdiagnose(n)?|diagnos(is|es)|diagnostics?|diagnostique|conclusion|synthèse|synthese|beurteilung|zusammenfassung|zusammenfassende beurteilung|impression clinique|klinische diagnose(n)?)\b/i;
+var UEBER_ANDERE=/^\s*(empfehlung|therapieempfehlung|weiteres vorgehen|procédure|recommandation|recommendation|medikation|médication|medication|traitement|behandlung|therapie|anamnese|familienanamnese|sozialanamnese|vorgeschichte|antécédents|verlauf|befund)\b/i;
+var FAMILIE=/\b(vater|mutter|eltern|bruder|schwester|geschwister|onkel|tante|großvater|großmutter|opa|oma|cousin|cousine|père|mère|frère|sœur|soeur|oncle|grand-père|grand-mère|father|mother|brother|sister|familienanamnese|familiär)/i;
+/* Zusammenhang einer Fundstelle: 'diagnose', 'familie' oder 'andere' */
+function zusammenhang(text,i){
+  var ls=text.lastIndexOf('\n',i-1)+1, le=text.indexOf('\n',i);if(le<0){le=text.length;}
+  var zeile=text.slice(ls,le);
+  if(FAMILIE.test(zeile)){return 'familie';}
+  if(/\b([FZ]\d{2}(\.\d{1,2})?|6[A-E]\d{2})\b/.test(zeile)||/\b(diagnos\w*|diagnostiziert|leidet an|souffre d|présente une?|besteht eine?|es liegt\b.{0,40}\bvor)/i.test(zeile)){return 'diagnose';}
+  var pos=ls-1;
+  while(pos>0&&ls-pos<4000){
+    var s2=text.lastIndexOf('\n',pos-1)+1, z=text.slice(s2,pos).trim();
+    if(z&&z.length<70){if(UEBER_DIAG.test(z)){return 'diagnose';}if(UEBER_ANDERE.test(z)){return FAMILIE.test(z)?'familie':'andere';}}
+    pos=s2-1;
+  }
+  return 'andere';
+}
+function erkennen(text,d){
+  text=String(text||'').replace(/\r\n?/g,'\n');
+  var KO=window.CDSE_KOMPASS, res={profile:[],codes:[],medikamente:[],datum:'',von:'',art:'bericht',empfehlungen:[]};
+  /* Diagnosen, Verdacht, Verneinung. Vorausgewählt wird nur, was im Diagnose-Zusammenhang steht
+     (Abschnitt „Diagnosen“, ICD-Code in der Zeile, „Diagnose:“); sonst „im Text erwähnt“. */
+  var analyse=text.replace(/nicht näher bezeichnet\w*|non précisée?s?|not otherwise specified/gi,function(m){return m.replace(/\S/g,'x');});
+  var je={};
+  (KO&&KO.fundstellen?KO.fundstellen(text):[]).forEach(function(f){
+    var vor=analyse.slice(Math.max(0,f.index-80),f.index), nach=analyse.slice(f.index+f.text.length,f.index+f.text.length+60);
+    var neg=NEG_VOR.test(vor)||NEG_NACH.test(nach), verd=VERD_VOR.test(vor)||VERD_NACH.test(nach), kx=zusammenhang(text,f.index);
+    var art=neg?'aus':(kx==='familie'?'erwaehnt':(verd?'verdacht':(kx==='diagnose'?'diagnose':'erwaehnt')));
+    var RANG={diagnose:4,verdacht:3,erwaehnt:2,aus:1}, alt=je[f.id];
+    if(!alt||RANG[art]>RANG[alt.art]){je[f.id]={id:f.id,art:art,beleg:satzUm(text,f.index)};}
+  });
+  var FOLGE={diagnose:0,verdacht:1,erwaehnt:2,aus:3};
+  res.profile=Object.keys(je).map(function(k){var x=je[k], p=KO.profilDef(k);x.name=p?p.name:k;return x;}).sort(function(a,b){return FOLGE[a.art]-FOLGE[b.art];});
+  /* ICD-Codes ohne Profil */
+  var gesehen={}, m, reIcd=/\b([FZ]\d{2}(?:\.\d{1,2})?|6[A-E]\d{2}(?:\.[0-9A-Z]{1,2})?)\b/g;
+  while((m=reIcd.exec(text))){var c=m[1];if(gesehen[c]){continue;}gesehen[c]=1;var ids=KO&&KO.passende?KO.passende(c):[];if(!ids.length){res.codes.push({code:c,beleg:satzUm(text,m.index)});}}
+  /* Medikamente mit Dosis */
+  MEDIKAMENTE.forEach(function(md){
+    var re=new RegExp(md[1].source,'gi'), mm;
+    while((mm=re.exec(text))){
+      var um=text.slice(mm.index,mm.index+60), dosis=(/(\d+(?:[.,]\d+)?)\s?(mg|µg|mcg|ml)\b/i.exec(um)||[])[0]||'', satz=satzUm(text,mm.index);
+      if(res.medikamente.some(function(x){return x.name===md[0];})){break;}
+      res.medikamente.push({name:md[0],dosis:dosis,beleg:satz,abgesetzt:MED_AB.test(satz)});break;
+    }
+  });
+  /* Datum: das erste Datum im Kopf, das nicht das Geburtsdatum ist */
+  var geb=((d&&d.person)||{}).geburtsdatum||'', kopf=text.slice(0,1500);
+  var dt=daten(kopf).filter(function(x){return x.iso!==geb;})[0]||daten(text).filter(function(x){return x.iso!==geb;})[0];
+  res.datum=dt?dt.iso:'';
+  /* Absender: eine Zeile im Kopf mit Klinik, Praxis, Dienst … */
+  var zeilen=text.split('\n').map(function(z){return z.trim();}).filter(Boolean);
+  var von=zeilen.slice(0,15).filter(function(z){return /(klinik|psychiatrie|pédopsychiatrie|pedopsychiatrie|hôpital|hopital|centre hospitalier|\bCHL\b|\bHRS\b|\bCHEM\b|kannerklinik|service|praxis|cabinet|dr\.?\s?med|psycholog|therap|institut|zentrum|centre|ambulanz|consultation)/i.test(z)&&z.length<=90;})[0];
+  res.von=von||'';
+  /* Art des Berichts: das Schlüsselwort, das im Text zuerst steht */
+  var ARTEN_RE=[['arztbrief',/arztbrief|entlassungsbrief|epikrise|lettre de sortie|compte[- ]rendu|consultation|dr\.?\s?med/i],
+    ['befund',/befundbericht|\bbefund\b|diagnostik|bilan psycho|évaluation|evaluation|testergebnis|wisc|\biq\b|intelligenztest/i],
+    ['therapie',/therapiebericht|ergotherapie|logopädie|psychotherapie|psychomotori|thérapie|rapport de thérapie/i],
+    ['schule',/schulbericht|rapport scolaire|zeugnis|bulletin/i]];
+  var frueh=1e9;ARTEN_RE.forEach(function(a){var mm=a[1].exec(text);if(mm&&mm.index<frueh){frueh=mm.index;res.art=a[0];}});
+  /* Empfehlungen: Zeilen unter einer Überschrift wie „Empfehlungen“ */
+  for(var i=0;i<zeilen.length&&res.empfehlungen.length<8;i++){
+    var ez=EMPF_ZEILE.exec(zeilen[i]);if(ez&&ez[1].length>8){res.empfehlungen.push(ez[1].replace(/^[-•*·–]\s*/,'').slice(0,240));continue;}
+    if(!EMPF_KOPF.test(zeilen[i])){continue;}
+    for(var j=i+1;j<zeilen.length&&res.empfehlungen.length<8;j++){
+      var z=zeilen[j];
+      if(/:\s*$/.test(z)&&z.length<60&&!/^[-•*·–]/.test(z)){break;}
+      if(z.length<8){continue;}
+      if(/^(mit freundlichen|freundliche grüße|cordialement|meilleures salutations|kind regards|dr\.?\s?med)/i.test(z)){break;}
+      res.empfehlungen.push(z.replace(/^[-•*·–\d.)\s]+/,'').slice(0,240));
+    }
+    break;
+  }
+  return res;
+}
+
+/* =====================================================================
+   Darstellung im Kompass
+   ===================================================================== */
+function liste(d){return (d.berichte||[]).slice().sort(function(a,b){return String(b.datum||b.z).localeCompare(String(a.datum||a.z));});}
+function karte(d,r){
+  if(!bausteine()){return '';}
+  var l=liste(d);
+  if(!l.length&&!r.bearbeiten){return '';}
+  var KO=window.CDSE_KOMPASS;
+  return '<section class="ar-karte ber-karte keindruck"><div class="ar-kartenkopf"><h3>'+svg('datei')+'Berichte und Arztbriefe'+(l.length?' ('+l.length+')':'')+'</h3>'+
+    (r.bearbeiten?'<button class="btn" type="button" data-ber="neu">'+svg('hoch')+'Bericht hinzufügen</button>':'')+'</div>'+
+    (l.length?'<ul class="ber-liste">'+l.map(function(b){
+      var prof=(b.profile||[]).map(function(p){var def=KO&&KO.profilDef?KO.profilDef(p.id):null;return (def?def.name:p.id)+(p.art==='verdacht'?' (Verdacht)':'');});
+      var med=(b.medikamente||[]).map(function(m){return m.name+(m.dosis?' '+m.dosis:'');});
+      return '<li><div class="ber-kopf"><b>'+esc(ART[b.art]||'Bericht')+(b.von?' – '+esc(b.von):'')+'</b><span class="ar-leise">'+esc(b.datum?datum(b.datum):'ohne Datum')+(b.titel?' · '+esc(b.titel):'')+'</span></div>'+
+        (prof.length?'<span class="ber-zeile">Im Kompass: '+esc(prof.join(', '))+'</span>':'')+(med.length?'<span class="ber-zeile">Medikation: '+esc(med.join(', '))+'</span>':'')+
+        '<span class="ber-akt"><button type="button" class="ar-link" data-ber="lesen" data-bid="'+esc(b.id)+'">Lesen</button>'+
+        (b.datei?'<button type="button" class="ar-link" data-ber="datei" data-bid="'+esc(b.id)+'">'+svg('runter')+'Originaldatei ('+esc(groesse(b.datei.groesse||0))+')</button>':'')+
+        (r.bearbeiten?'<button type="button" class="ar-link gefahr" data-ber="loeschen" data-bid="'+esc(b.id)+'">Entfernen</button>':'')+'</span></li>';}).join('')+'</ul>'
+      :'<p class="ar-leise">Arztbriefe, Befunde oder Therapieberichte als PDF, Word oder Text hinzufügen: Der Hub liest Diagnosen, Medikation und Empfehlungen aus und schlägt sie zur Übernahme in den Kompass und den Begleitplan vor. Übernommen wird nur, was du bestätigst.</p>')+
+    '</section>';
+}
+/* Medikation laut den Berichten (je Wirkstoff der neueste Bericht, ohne abgesetzte) */
+function medikation(d){
+  var o={};
+  liste(d).slice().reverse().forEach(function(b){(b.medikamente||[]).forEach(function(m){o[m.name]={name:m.name,dosis:m.dosis,datum:b.datum,art:ART[b.art]||'Bericht',abgesetzt:!!m.abgesetzt};});});
+  return Object.keys(o).map(function(k){return o[k];}).filter(function(m){return !m.abgesetzt;});
+}
+
+/* =====================================================================
+   Hinzufügen: Datei oder Text → Vorschläge prüfen → speichern
+   ===================================================================== */
+function aktuell(){var d=H&&H.aktDossier&&H.aktDossier();return d||null;}
+function neuDialog(d){
+  var inhalt='<p>PDF, Word-Datei (.docx) oder Text. Der Hub liest Diagnosen, Medikation und Empfehlungen aus und zeigt sie dir zur Prüfung. Übernommen wird nur, was du abhakst.</p>'+
+    '<label class="ar-feld voll ber-datei"><span>Datei wählen</span><input type="file" name="datei" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain"></label>'+
+    '<details class="ber-einfuegen"><summary>Oder Text einfügen (z. B. aus einem gescannten Brief abgetippt)</summary>'+H.textfeld('text','Text des Berichts','',8)+'</details>';
+  H.dialog('Bericht hinzufügen',inhalt,[{text:'Abbrechen',wert:''},{text:'Auslesen',wert:'ok',primaer:true}],{breit:true,
+    pruefen:function(w){var f=w.dialog.querySelector('input[name=datei]').files[0];if(!f&&!String(w.werte.text||'').trim()){return 'Bitte eine Datei wählen oder Text einfügen.';}if(f&&f.size>MAX_DATEI){return 'Die Datei ist zu groß (höchstens 12 MB).';}return '';},
+    ausfuehren:function(w){
+      var f=w.dialog.querySelector('input[name=datei]').files[0], txt=String(w.werte.text||'');
+      if(!f){return {text:txt,datei:null};}
+      return dateiText(f).then(function(x){return {text:(x.text||'')+(txt.trim()?'\n\n'+txt:''),datei:{name:f.name,typ:f.type||'',bytes:new Uint8Array(x.buf)}};});
+    }
+  }).then(function(res){if(res&&res.ergebnis){pruefDialog(d,res.ergebnis);}});
+}
+function pruefDialog(d,x){
+  var text=x.text||'', buchstaben=(text.match(/[A-Za-zÀ-ÿ]/g)||[]).length;
+  var E=erkennen(text,d), KO=window.CDSE_KOMPASS;
+  var ARTNAME={diagnose:'Diagnose',verdacht:'Verdacht',aus:'ausgeschlossen'};
+  var leer=buchstaben<80;
+  var inhalt=(leer?'<div class="ber-warn">'+svg('warn')+'<span>'+(x.datei?'In dieser Datei steht kaum lesbarer Text – vermutlich ein Scan. ':'')+'Bitte die wichtigsten Angaben (Diagnosen mit ICD-Code, Medikation, Empfehlungen) unten eintragen oder den Text einfügen; die Datei kann trotzdem abgelegt werden.</span></div>':'')+
+    '<div class="ar-raster3">'+H.auswahl('art','Art',E.art,Object.keys(ART).map(function(k){return [k,ART[k]];}))+H.feld('datum','Datum des Berichts',E.datum,'date')+H.feld('von','Von (Klinik, Praxis, Dienst)',E.von,'text',' maxlength="200"')+'</div>'+
+    H.feld('titel','Titel (optional)','','text',' maxlength="200"')+
+    '<fieldset class="ber-wahl"><legend>Diagnosen und Verdacht – in den Kompass übernehmen</legend>'+
+      (E.profile.length?E.profile.map(function(p){
+        var an=p.art==='diagnose'||p.art==='verdacht';
+        return '<div class="ber-p'+(p.art==='aus'?' aus':'')+(p.art==='erwaehnt'?' erwaehnt':'')+'"><label><input type="checkbox" name="p-'+esc(p.id)+'"'+(an?' checked':'')+'><b>'+esc(p.name)+'</b></label>'+
+          '<select name="pa-'+esc(p.id)+'" aria-label="Stand"><option value="diagnose"'+(p.art!=='verdacht'?' selected':'')+'>Diagnose</option><option value="verdacht"'+(p.art==='verdacht'?' selected':'')+'>Verdacht</option></select>'+
+          (p.art==='aus'?'<span class="ber-aus">im Text verneint oder ausgeschlossen</span>':'')+(p.art==='erwaehnt'?'<span class="ber-aus">nur erwähnt (nicht als Diagnose des Kindes) – bitte prüfen</span>':'')+'<small>„'+esc(p.beleg)+'“</small></div>';}).join('')
+        :'<p class="ar-leise">Keine Diagnose erkannt.</p>')+
+      '<label class="ar-feld voll"><span>Weitere Diagnose oder Verdacht (Freitext, z. B. „F90.0“ oder „Verdacht auf Autismus“)</span><input type="text" name="frei" maxlength="200"></label>'+
+      (E.codes.length?'<p class="ar-leise">Weitere ICD-Codes im Text, keinem Profil zugeordnet: '+esc(E.codes.map(function(c){return c.code;}).join(', '))+'</p>':'')+'</fieldset>'+
+    '<fieldset class="ber-wahl"><legend>Medikation</legend>'+
+      (E.medikamente.length?E.medikamente.map(function(m,i){
+        return '<div class="ber-p'+(m.abgesetzt?' aus':'')+'"><label><input type="checkbox" name="m-'+i+'"'+(m.abgesetzt?'':' checked')+'><b>'+esc(m.name)+'</b>'+(m.dosis?' '+esc(m.dosis):'')+'</label>'+(m.abgesetzt?'<span class="ber-aus">abgesetzt</span>':'')+'<small>„'+esc(m.beleg)+'“</small></div>';}).join('')
+        :'<p class="ar-leise">Keine Medikation erkannt.</p>')+'</fieldset>'+
+    '<fieldset class="ber-wahl"><legend>Empfehlungen – als Schritt in den Begleitplan?</legend>'+
+      (E.empfehlungen.length?E.empfehlungen.map(function(e,i){return '<div class="ber-p"><label><input type="checkbox" name="e-'+i+'"><span>'+esc(e)+'</span></label></div>';}).join('')
+        :'<p class="ar-leise">Keine Empfehlungen erkannt.</p>')+'</fieldset>'+
+    (x.datei?'<label class="ar-haken"><input type="checkbox" name="ablegen" checked> Originaldatei verschlüsselt beim Dossier ablegen ('+esc(x.datei.name)+', '+esc(groesse(x.datei.bytes.length))+')</label>':'')+
+    '<p class="ber-hinweis">'+svg('users')+'Was du übernimmst, sehen alle, die das Dossier lesen dürfen – Diagnosen im Kompass mit dem Vermerk „laut Bericht“.</p>';
+  H.dialog('Bericht prüfen und übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
+    ausfuehren:function(w){
+      var v=w.werte, prof=[], med=[], empf=[], schritte=[];
+      E.profile.forEach(function(p){if(v['p-'+p.id]){prof.push({id:p.id,art:v['pa-'+p.id]==='verdacht'?'verdacht':'diagnose',beleg:p.beleg});}});
+      var frei=String(v.frei||'').trim();
+      if(frei&&KO&&KO.passende){var ids=KO.passende(frei), verd=VERD_FREI.test(frei);ids.forEach(function(id){if(!prof.some(function(p){return p.id===id;})){prof.push({id:id,art:verd?'verdacht':'diagnose',beleg:frei});}});}
+      E.medikamente.forEach(function(m,i){if(v['m-'+i]){med.push({name:m.name,dosis:m.dosis,beleg:m.beleg,abgesetzt:m.abgesetzt});}});
+      E.empfehlungen.forEach(function(e,i){empf.push(e);if(v['e-'+i]){schritte.push(e);}});
+      var p=Promise.resolve(null);
+      if(x.datei&&v.ablegen){p=T.anhangSpeichern(d.id,x.datei);}
+      return p.then(function(meta){
+        return T.ops.bericht(d.id,{art:v.art,datum:v.datum,von:v.von,titel:v.titel,text:text,datei:meta,profile:prof,medikamente:med,empfehlungen:empf,schritte:schritte})
+          .catch(function(e){if(meta){T.anhangLoeschen(d.id,meta.id).catch(function(){});}throw e;});
+      });
+    }
+  }).then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Bericht übernommen');}});
+}
+function lesenDialog(d,b){
+  var KO=window.CDSE_KOMPASS;
+  var inhalt='<p class="ar-leise">'+esc(ART[b.art]||'Bericht')+(b.von?' – '+esc(b.von):'')+(b.datum?' · '+esc(datum(b.datum)):'')+' · eingetragen von '+esc(H.kname(b.eingetragenVon))+' am '+esc(datum(String(b.z||'').slice(0,10)))+'</p>'+
+    ((b.profile||[]).length?'<p><b>Im Kompass:</b> '+esc(b.profile.map(function(p){var def=KO&&KO.profilDef?KO.profilDef(p.id):null;return (def?def.name:p.id)+(p.art==='verdacht'?' (Verdacht)':'');}).join(', '))+'</p>':'')+
+    ((b.medikamente||[]).length?'<p><b>Medikation:</b> '+esc(b.medikamente.map(function(m){return m.name+(m.dosis?' '+m.dosis:'')+(m.abgesetzt?' (abgesetzt)':'');}).join(', '))+'</p>':'')+
+    ((b.empfehlungen||[]).length?'<p><b>Empfehlungen:</b></p><ul>'+b.empfehlungen.map(function(e){return '<li>'+esc(e)+'</li>';}).join('')+'</ul>':'')+
+    (b.text?'<div class="ber-text">'+esc(b.text)+'</div>':'<p class="ar-leise">Kein Text gespeichert.</p>');
+  H.dialog(b.titel||(ART[b.art]||'Bericht'),inhalt,[{text:'Schließen',wert:''}],{breit:true});
+}
+function dateiHerunterladen(d,b,t){
+  if(t){t.disabled=true;}
+  T.anhangLesen(d.id,b.datei.id).then(function(f){
+    var url=URL.createObjectURL(new Blob([f.bytes],{type:f.typ||'application/octet-stream'})), a=document.createElement('a');
+    a.href=url;a.download=f.name||'Bericht';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},20000);
+  },function(e){H.toast((e&&e.message)||String(e));}).then(function(){if(t){t.disabled=false;}});
+}
+function loeschenDialog(d,b){
+  H.dialog('Bericht entfernen','<p>Den Bericht'+(b.von?' von '+esc(b.von):'')+' aus dem Dossier entfernen? Profile, die aus diesem Bericht in den Kompass übernommen wurden, werden dort wieder entfernt'+(b.datei?'; die Originaldatei wird gelöscht':'')+'. Im Protokoll bleibt vermerkt, dass es den Bericht gab.</p>',
+    [{text:'Abbrechen',wert:''},{text:'Entfernen',wert:'ok',primaer:true,gefahr:true}],
+    {ausfuehren:function(){return T.ops.berichtLoeschen(d.id,b.id).then(function(neu){if(b.datei){return T.anhangLoeschen(d.id,b.datei.id).catch(function(){}).then(function(){return neu;});}return neu;});}})
+    .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Bericht entfernt');}});
+}
+document.addEventListener('click',function(ev){
+  var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-ber]');if(!t||!bausteine()){return;}
+  var d=aktuell();if(!d){return;}
+  var a=t.getAttribute('data-ber'), b=(d.berichte||[]).filter(function(x){return x.id===t.getAttribute('data-bid');})[0];
+  if(a==='neu'){neuDialog(d);return;}
+  if(!b){return;}
+  if(a==='lesen'){lesenDialog(d,b);return;}
+  if(a==='datei'&&b.datei){dateiHerunterladen(d,b,t);return;}
+  if(a==='loeschen'){loeschenDialog(d,b);return;}
+});
+
+return {karte:karte, medikation:medikation, erkennen:erkennen, pdfText:pdfText, dateiText:dateiText, ART:ART};
 })();
 </script>
 <script>
@@ -5753,7 +6927,7 @@ profile:[
  {id:'mutismus', name:'Selektiver Mutismus', re:'\\bF94\\.0|\\b6B06|mutismus|mutisme', lernen:['sprache-mutismus','angst'], blaetter:['ich-kann-mutig-sein','mut-leiter']},
  {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btic|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
  {id:'essstoerung', name:'Essstörung', thema:'Auffälliges Essverhalten', beob:[['warn:essen']], re:'\\bF50|\\b6B8[0-5]|anorex|bulim|essst[öo]rung|\\barfid\\b|trouble alimentaire', lernen:['essstoerungen'], blaetter:['koerperbild','was-tut-mir-gut']},
- {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
+ {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|intelligenzentwicklung|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
  {id:'sucht', name:'Sucht und problematische Mediennutzung', thema:'Hinweise auf Suchtmittel', beob:[['warn:sucht']], re:'\\bF1[0-9]\\.|\\b6C5[01]|\\bsucht|abh[äa]ngigkeit|cannabis|addiction|gaming disorder', lernen:['sucht-medien'], blaetter:['medien-tagebuch','mein-handy-und-ich','bildschirmzeit']},
  {id:'psychose', name:'Psychose oder bipolare Störung', thema:'Ungewöhnliche Wahrnehmungen', beob:[['warn:wahrnehmung']], re:'\\bF2[0-9]|\\bF31|\\b6A2|\\b6A6|psychos|schizophren|bipolar|manisch', lernen:['psychose-bipolar'], blaetter:[]}
 ],
@@ -5865,7 +7039,7 @@ window.CDSE_KOMPASS=(function(){
 var T=null, K=null, H=null;
 function bausteine(){T=window.CDSE_TEAM||null;K=window.CDSE_KONTO||null;H=(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.hilfen)||null;return !!(T&&K&&H);}
 function W(){return window.CDSE_KOMPASS_WISSEN||null;}
-var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
+var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "inklusion-luxemburg": "Inklusion und Unterstützung in Luxemburg", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "risiko-schutz": "Risiko- und Schutzfaktoren, Resilienz", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "uebertragung": "Beziehungsdynamik: Übertragung und Gegenübertragung", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
 var QUELLEN={"barkley2015": "Barkley, R. A. (2015). Attention-Deficit Hyperactivity Disorder: A Handbook for Diagnosis and Treatment (4th ed.). New York: Guilford.", "faraone2021": "Faraone, S. V. et al. (2021). The World Federation of ADHD International Consensus Statement: 208 evidence-based conclusions about the disorder. Neuroscience & Biobehavioral Reviews, 128, 789–818.", "niceNG87": "NICE (2018). Attention deficit hyperactivity disorder: diagnosis and management (NG87). London: National Institute for Health and Care Excellence.", "awmfAdhs2018": "AWMF (2018). S3-Leitlinie „Aufmerksamkeitsdefizit-/Hyperaktivitätsstörung (ADHS) im Kindes-, Jugend- und Erwachsenenalter“ (AWMF-Registernummer 028-045).", "doepfner2019": "Döpfner, M., Schürmann, S. & Frölich, J. (2019). Therapieprogramm für Kinder mit hyperkinetischem und oppositionellem Problemverhalten THOP (6. Aufl.). Weinheim: Beltz.", "wood1996": "Wood, M. M. (1996). Developmental Therapy – Developmental Teaching (3rd ed.). Austin: Pro-Ed.", "crone2010": "Crone, D. A., Hawken, L. S. & Horner, R. H. (2010). Responding to Problem Behavior in Schools: The Behavior Education Program (2nd ed.). New York: Guilford.", "kazdin2008": "Kazdin, A. E. (2008). The Kazdin Method for Parenting the Defiant Child. Boston: Houghton Mifflin.", "petermann2012": "Petermann, F. & Petermann, U. (2012). Training mit aggressiven Kindern (13. Aufl.). Weinheim: Beltz.", "frick2014": "Frick, P. J., Ray, J. V., Thornton, L. C. & Kahn, R. E. (2014). Can callous-unemotional traits enhance the understanding, diagnosis, and treatment of serious conduct problems in children and adolescents? A comprehensive review. Psychological Bulletin, 140(1), 1–57.", "niceCG158": "NICE (2013). Antisocial behaviour and conduct disorders in children and young people: recognition and management (CG158). London: NICE.", "omer2004": "Omer, H. & von Schlippe, A. (2004). Autorität durch Beziehung. Göttingen: Vandenhoeck & Ruprecht.", "webbStratton2003": "Webster-Stratton, C. & Reid, M. J. (2003). Treating conduct problems and strengthening social and emotional competence in young children: The Dina Dinosaur treatment program. Journal of Emotional and Behavioral Disorders, 11(3), 130–143.", "durlak2011": "Durlak, J. A., Weissberg, R. P., Dymnicki, A. B., Taylor, R. D. & Schellinger, K. B. (2011). The impact of enhancing students’ social and emotional learning: A meta-analysis of school-based universal interventions. Child Development, 82(1), 405–432.", "perry2006": "Perry, B. D. & Szalavitz, M. (2006). The Boy Who Was Raised as a Dog. New York: Basic Books.", "vanDerKolk2014": "van der Kolk, B. (2014). The Body Keeps the Score. New York: Viking.", "siegel1999": "Siegel, D. J. (1999). The Developing Mind. New York: Guilford.", "felitti1998": "Felitti, V. J. et al. (1998). Relationship of childhood abuse and household dysfunction to many of the leading causes of death in adults: The Adverse Childhood Experiences (ACE) Study. American Journal of Preventive Medicine, 14(4), 245–258.", "rutter2012": "Rutter, M. (2012). Resilience as a dynamic concept. Development and Psychopathology, 24(2), 335–344.", "bandura1977": "Bandura, A. (1977). Self-efficacy: Toward a unifying theory of behavioral change. Psychological Review, 84(2), 191–215.", "niceNG116": "NICE (2018). Post-traumatic stress disorder (NG116). London: NICE.", "whoMaltreatment2006": "World Health Organization & ISPCAN (2006). Preventing child maltreatment: a guide to taking action and generating evidence. Genf: WHO.", "bowlby1969": "Bowlby, J. (1969). Attachment and Loss, Vol. 1: Attachment. New York: Basic Books.", "grossmann2012": "Grossmann, K. & Grossmann, K. E. (2012). Bindungen – das Gefüge psychischer Sicherheit (5. Aufl.). Stuttgart: Klett-Cotta.", "zeanah2015": "Zeanah, C. H. & Gleason, M. M. (2015). Annual research review: Attachment disorders in early childhood – clinical presentation, causes, correlates, and treatment. Journal of Child Psychology and Psychiatry, 56(3), 207–222.", "niceNG26": "NICE (2015). Children’s attachment: attachment in children and young people who are adopted from care, in care or at high risk of going into care (NG26). London: NICE.", "ainsworth1978": "Ainsworth, M. D. S., Blehar, M. C., Waters, E. & Wall, S. (1978). Patterns of Attachment. Hillsdale, NJ: Erlbaum.", "sroufe2005": "Sroufe, L. A. (2005). Attachment and development: A prospective, longitudinal study from birth to adulthood. Attachment & Human Development, 7(4), 349–367.", "schneiderLindenberger2018": "Schneider, W. & Lindenberger, U. (Hrsg.) (2018). Entwicklungspsychologie (8. Aufl.). Weinheim: Beltz.", "gross1998": "Gross, J. J. (1998). The emerging field of emotion regulation: An integrative review. Review of General Psychology, 2(3), 271–299.", "bergsson1998": "Bergsson, M. & Luckfiel, H. (1998). Umgang mit „schwierigen“ Kindern. Berlin: Cornelsen Scriptor.", "kendallHedtke2006": "Kendall, P. C. & Hedtke, K. A. (2006). Cognitive-Behavioral Therapy for Anxious Children: Therapist Manual (3rd ed.). Ardmore, PA: Workbook Publishing.", "linehan1993": "Linehan, M. M. (1993). Cognitive-Behavioral Treatment of Borderline Personality Disorder. New York: Guilford.", "fonagy2002": "Fonagy, P., Gergely, G., Jurist, E. L. & Target, M. (2002). Affect Regulation, Mentalization, and the Development of the Self. New York: Other Press.", "sharpFonagy2015": "Sharp, C. & Fonagy, P. (2015). Practitioner review: Borderline personality disorder in adolescence – recent conceptualization, intervention, and implications for clinical practice. Journal of Child Psychology and Psychiatry, 56(12), 1266–1288.", "kaess2014": "Kaess, M., Brunner, R. & Chanen, A. (2014). Borderline personality disorder in adolescence. Pediatrics, 134(4), 782–793.", "awmfBps2022": "AWMF (2022). S3-Leitlinie Borderline-Persönlichkeitsstörung. Federführung: Deutsche Gesellschaft für Psychiatrie und Psychotherapie, Psychosomatik und Nervenheilkunde (DGPPN).", "rathusMiller2015": "Rathus, J. H. & Miller, A. L. (2015). DBT Skills Manual for Adolescents. New York: Guilford.", "niceNG225": "NICE (2022). Self-harm: assessment, management and preventing recurrence (NG225). London: NICE.", "stanleyBrown2012": "Stanley, B. & Brown, G. K. (2012). Safety planning intervention: A brief intervention to mitigate suicide risk. Cognitive and Behavioral Practice, 19(2), 256–264.", "millerRathusLinehan2007": "Miller, A. L., Rathus, J. H. & Linehan, M. M. (2007). Dialectical Behavior Therapy with Suicidal Adolescents. New York: Guilford.", "rossouwFonagy2012": "Rossouw, T. I. & Fonagy, P. (2012). Mentalization-based treatment for self-harm in adolescents: a randomized controlled trial. Journal of the American Academy of Child and Adolescent Psychiatry, 51(12), 1304–1313.", "nock2010": "Nock, M. K. (2010). Self-injury. Annual Review of Clinical Psychology, 6, 339–363.", "hawton2012": "Hawton, K., Saunders, K. E. A. & O’Connor, R. C. (2012). Self-harm and suicide in adolescents. The Lancet, 379(9834), 2373–2382.", "lord2018": "Lord, C., Elsabbagh, M., Baird, G. & Veenstra-Vanderweele, J. (2018). Autism spectrum disorder. The Lancet, 392(10146), 508–520.", "dsm5tr": "American Psychiatric Association (2022). Diagnostic and Statistical Manual of Mental Disorders, Fifth Edition, Text Revision (DSM-5-TR). Washington, DC: APA.", "mesibov2004": "Mesibov, G. B., Shea, V. & Schopler, E. (2004). The TEACCH Approach to Autism Spectrum Disorders. New York: Springer.", "niceCG170": "NICE (2013). Autism spectrum disorder in under 19s: support and management (CG170). London: NICE.", "gray2015": "Gray, C. (2015). The New Social Story Book. Arlington, TX: Future Horizons.", "niceCG159": "NICE (2013). Social anxiety disorder: recognition, assessment and treatment (CG159). London: NICE.", "beesdo2009": "Beesdo, K., Knappe, S. & Pine, D. S. (2009). Anxiety and anxiety disorders in children and adolescents: developmental issues and implications for DSM-V. Psychiatric Clinics of North America, 32(3), 483–524.", "kearney2008": "Kearney, C. A. (2008). School absenteeism and school refusal behavior in youth: A contemporary review. Clinical Psychology Review, 28(3), 451–471.", "thapar2012": "Thapar, A., Collishaw, S., Pine, D. S. & Thapar, A. K. (2012). Depression in adolescence. The Lancet, 379(9820), 1056–1067.", "niceNG134": "NICE (2019). Depression in children and young people: identification and management (NG134). London: NICE.", "schulteKoerne2010": "Schulte-Körne, G. (2010). The prevention, diagnosis, and treatment of dyslexia. Deutsches Ärzteblatt International, 107(41), 718–727.", "casey2008": "Casey, B. J., Jones, R. M. & Hare, T. A. (2008). The adolescent brain. Annals of the New York Academy of Sciences, 1124, 111–126.", "millerRollnick2013": "Miller, W. R. & Rollnick, S. (2013). Motivational Interviewing (3rd ed.). New York: Guilford.", "bronfenbrenner1979": "Bronfenbrenner, U. (1979). The Ecology of Human Development. Cambridge, MA: Harvard University Press.", "bishop2017": "Bishop, D. V. M. et al. (2017). Phase 2 of CATALISE: a multinational and multidisciplinary Delphi consensus study of problems with language development: Terminology. Journal of Child Psychology and Psychiatry, 58(10), 1068–1080.", "lazarusFolkman1984": "Lazarus, R. S. & Folkman, S. (1984). Stress, Appraisal, and Coping. New York: Springer.", "nolting2002": "Nolting, H.-P. (2002). Störungen in der Schulklasse. Weinheim: Beltz."};
 
 var RANG={diagnose:4,verdacht:3,hypothese:2,beobachtet:1};
@@ -5895,6 +7069,14 @@ function passende(text){
   if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
   var t=String(text).normalize?String(text).normalize('NFC'):String(text);
   return reCache.filter(function(x){return x.re.test(t);}).map(function(x){return x.id;});
+}
+/* Fundstellen im Text: [{id, index, text}] – für das Auslesen von Berichten */
+function fundstellen(text){
+  var w=W();if(!w||!text){return [];}
+  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
+  var o=[];
+  reCache.forEach(function(x){var re=new RegExp(x.re.source,'gi'),m;while((m=re.exec(text))){o.push({id:x.id,index:m.index,text:m[0]});if(!m[0].length){re.lastIndex++;}}});
+  return o.sort(function(a,b){return a.index-b.index;});
 }
 function dsFrage(k){var a=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.a)||{};return (a[k]&&a[k].q)||k;}
 function chipName(g,k){var c=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.chips&&DS_TEXTE.de.chips[g])||{};return (c[k]&&c[k][0])||k;}
@@ -5950,6 +7132,7 @@ function lesen(d){
   /* 3) vom Team eingetragen (z. B. aus einem Arztbrief) */
   Object.keys(team).forEach(function(k){
     var x=team[k];if(!x||(x.art!=='diagnose'&&x.art!=='verdacht')){return;}
+    if(x.bezug&&/^bericht:/.test(x.bezug)){grund(k,x.art,'Laut '+(x.quelle||'Bericht')+(x.art==='verdacht'?' (Verdacht)':''),'team');return;}
     grund(k,x.art,'Vom Team eingetragen'+(x.art==='verdacht'?' (Verdacht)':'')+(x.quelle?': '+x.quelle:''),'team');
   });
   /* 4) DS: Arbeitshypothesen, Lebenslage, Anlass, Ereignisse */
@@ -6107,7 +7290,7 @@ function artChip(art){return '<span class="ko-art '+art+'" title="'+esc(ART_TEXT
 function blattFuer(id,stufe){
   var T0=window.CDSE_TOOLBOX_INDEX, bl=(T0&&Array.isArray(T0.blaetter))?T0.blaetter:[];
   var b=bl.filter(function(x){return x.id===id;})[0];if(!b){return null;}
-  if(!stufe||(b.stufen||[]).indexOf(stufe)>=0){return b;}
+  if(!stufe||(b.stufen||[]).indexOf(stufe)>=0||b.bereich==='Werkzeuge für Fachkräfte'){return b;}
   return bl.filter(function(x){return x.bereich===b.bereich&&x.thema===b.thema&&(x.stufen||[]).indexOf(stufe)>=0;})[0]||b;
 }
 function material(ids,ctx){
@@ -6126,7 +7309,8 @@ function tab(d,r){
   h+='<div class="ko-stand keindruck" role="note">'+svg('info')+'<span><b>Entwurf, Stand '+esc(datum(w.stand))+':</b> Die Inhalte sind vor dem Einsatz fachlich zu prüfen (z. B. durch die Diagnostique). Der Kompass ordnet Fachwissen dem Profil zu. Er stellt keine Diagnose und ersetzt keine Behandlung.</span></div>';
   /* Profil */
   h+='<section class="ar-karte ko-kopf"><div class="ar-kartenkopf"><div><p class="overline">Kompass</p><h2>Was '+esc(vn)+' braucht</h2></div>'+
-    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-ko="ergaenzen">'+svg('plus')+'Profil ergänzen</button>':'')+
+    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten&&window.CDSE_BERICHTE?'<button class="btn" type="button" data-ber="neu">'+svg('hoch')+'Bericht hinzufügen</button>':'')+
+    (r.bearbeiten?'<button class="btn" type="button" data-ko="ergaenzen">'+svg('plus')+'Profil ergänzen</button>':'')+
     '<button class="btn" type="button" data-ko="drucken">'+svg('print')+'Drucken</button></span></div>';
   if(L.profile.length){
     h+='<ul class="ko-profilchips">'+L.profile.map(function(x){
@@ -6140,6 +7324,7 @@ function tab(d,r){
     '<dt>Entwicklung (ELDiB)</dt><dd>'+(st?Object.keys(st.bereiche).filter(function(c){return c==='V'||c==='SOZ'||c==='K';}).map(function(c){var x=st.bereiche[c];return esc(x.name)+' Stufe '+ROEM[x.stufe];}).join(' · ')+
       ' <span class="ko-leise">→ Rolle der Erwachsenen: <b>'+esc(w.stufen[st.rolle].rolle)+'</b></span>':'<span class="ko-leise">noch keine ELDiB-Einschätzung – Hinweise gelten dann für alle Stufen</span>')+'</dd>'+
     '<dt>Lebenslage</dt><dd>'+(Object.keys(ctx.umfeld).length?Object.keys(ctx.umfeld).map(function(id){return esc(umfeldDef(id).name);}).join(' · '):'<span class="ko-leise">keine besonderen Angaben</span>')+'</dd>'+
+    (function(){var med=window.CDSE_BERICHTE?window.CDSE_BERICHTE.medikation(d):[];return med.length?'<dt>Medikation</dt><dd>'+med.map(function(m){return esc(m.name+(m.dosis?' '+m.dosis:''))+' <span class="ko-leise">(laut '+esc(m.art)+(m.datum?' vom '+esc(datum(m.datum)):'')+')</span>';}).join(' · ')+'</dd>':'';})()+
     '<dt>Material für</dt><dd>'+(ctx.schulstufe?esc(ctx.schulstufe):'<span class="ko-leise">Schulstufe unbekannt</span>')+'</dd></dl>';
   /* Rückfragen */
   L.klaeren.forEach(function(k){
@@ -6152,7 +7337,8 @@ function tab(d,r){
       (r.bearbeiten?' <button type="button" class="ar-link" data-ko="zuordnen" data-text="'+esc(x.text)+'" data-art="'+esc(x.art)+'" data-resp="'+(x.nurResp?1:0)+'">Profil wählen</button>':'')+'</div></div>';
   });
   h+='</section>';
-  if(!L.profile.length&&!Object.keys(ctx.umfeld).length&&!st){return h+ausgeblendetKarte(L,r)+'</div>';}
+  var berichte=window.CDSE_BERICHTE?window.CDSE_BERICHTE.karte(d,r):'';
+  if(!L.profile.length&&!Object.keys(ctx.umfeld).length&&!st){return h+berichte+ausgeblendetKarte(L,r)+'</div>';}
   /* Das Wichtigste zuerst */
   h+=wichtigstes(d,L,ctx,Q,r);
   /* Profile */
@@ -6169,7 +7355,7 @@ function tab(d,r){
   /* Lebenslage */
   var ul=Object.keys(ctx.umfeld);
   if(ul.length){h+='<section class="ar-karte ko-block"><h3>Lebenslage mitdenken</h3><ul class="ko-liste">'+ul.map(function(id){var u=umfeldDef(id);return punkt(u,ctx,Q,u.name+(ctx.umfeld[id].length?': '+ctx.umfeld[id].join('; '):''));}).join('')+'</ul></section>';}
-  h+=ausgeblendetKarte(L,r);
+  h+=berichte+ausgeblendetKarte(L,r);
   /* Quellen */
   if(Q.liste.length){
     h+='<details class="ar-karte ko-quellen" id="ko-quellen"><summary><h3>Quellen ('+Q.liste.length+')</h3></summary><ol>'+Q.liste.map(function(k,i){return '<li id="ko-q-'+(i+1)+'">'+esc(QUELLEN[k])+'</li>';}).join('')+'</ol>'+
@@ -6241,6 +7427,24 @@ function kurzKarte(d){
   return '<div class="ar-karte ko-kurzkarte"><div class="ar-kartenkopf"><h2>Kompass</h2><button class="ar-link" type="button" data-tab="kompass">Umgang und Material ansehen'+svg('right')+'</button></div>'+
     (L.profile.length?'<ul class="ko-profilchips">'+L.profile.slice(0,5).map(function(x){return '<li><span class="ko-pchip '+x.art+'">'+esc(anzeigeName(x))+artChip(x.art)+'</span></li>';}).join('')+'</ul>':'')+
     (L.klaeren.length?'<p class="ko-leise">Im DS steht ein Oberbegriff, der noch zugeordnet werden kann.</p>':'')+'</div>';
+}
+
+/* ---------- Teil fürs Übergabeblatt (ohne Quellenliste – die steht im Hub) ---------- */
+function druckTeil(d){
+  if(!bausteine()||!W()){return '';}
+  var L;try{L=lesen(d);}catch(e){return '';}
+  if(!L.profile.length){return '';}
+  var w=W(), ctx=L.ctx, l=[], warn=Object.keys(L.beob.warn);
+  if(warn.length){l.push(['Warnsignal im Screening: '+warn.map(function(k){return L.beob.warn[k].text;}).join(', ')+'. Die Schritte im Screening gehen vor.','dringend']);}
+  L.profile.slice(0,4).forEach(function(x){
+    var um=x.def.umgang||[], it=um.filter(function(i){var p=passt(i,ctx);return p&&p.warum;})[0]||um.filter(function(i){return passt(i,ctx);})[0];
+    if(it){l.push([it.t,anzeigeName(x)]);}
+  });
+  w.kombinationen.filter(function(k){return k.wenn.every(function(id){return L.ids[id];});}).slice(0,2).forEach(function(k){l.push([k.t,'Kombination']);});
+  if(ctx.stufen){var s=w.stufen[ctx.stufen.rolle];if(s&&s.umgang[0]){l.push([s.umgang[0].t,'ETEP-Stufe '+ROEM[ctx.stufen.rolle]+': '+s.rolle]);}}
+  return '<h2>Kompass</h2><p>'+L.profile.map(function(x){return '<b>'+esc(anzeigeName(x))+'</b> ('+esc(ART_NAME[x.art])+')';}).join(' · ')+'</p>'+
+    '<h3>Das Wichtigste im Umgang</h3><ul>'+l.map(function(z){return '<li>'+esc(z[0])+' <small>('+esc(z[1])+')</small></li>';}).join('')+'</ul>'+
+    '<p class="klein">Entwurf, fachlich zu prüfen – keine Diagnose. Alle Hinweise mit Fachquellen: Hub → Dossier → Kompass.</p>';
 }
 
 /* =====================================================================
@@ -6321,7 +7525,7 @@ window.addEventListener('afterprint',function(){
   Array.prototype.forEach.call(document.querySelectorAll('#ko-ergebnis details[data-war-offen]'),function(x){x.open=x.getAttribute('data-war-offen')==='1';x.removeAttribute('data-war-offen');});
 });
 
-return {tab:tab, kurzKarte:kurzKarte, lesen:function(d){bausteine();return lesen(d);}, passende:passende, blattFuer:blattFuer};
+return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, fundstellen:fundstellen, profilDef:function(id){return profilDef(id);}, lesen:function(d){bausteine();return lesen(d);}, passende:passende, blattFuer:blattFuer};
 })();
 </script>
 <script>
@@ -6668,6 +7872,16 @@ function zipLesen(buf){
     if(f.meth===8){return inflate(f.daten).then(function(d){return {name:f.name,daten:d};});}
     throw new Error('Unbekanntes Packverfahren in der Word-Datei ('+f.name+').');
   }));
+}
+/* Reiner Text einer Word-Datei (für Berichte und Arztbriefe): Absätze durch Zeilenumbrüche getrennt */
+function docxText(buf){
+  return zipLesen(buf).then(function(dateien){
+    var f=dateien.filter(function(x){return x.name==='word/document.xml';})[0];
+    if(!f){throw new Error('Das ist keine Word-Datei (.docx).');}
+    var doc=new DOMParser().parseFromString(new TextDecoder().decode(f.daten),'application/xml');
+    var body=doc.getElementsByTagNameNS(W,'body')[0]||doc.documentElement;
+    return textVon(body);
+  });
 }
 var CRC=(function(){var t=new Uint32Array(256);for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++){c=(c&1)?(0xEDB88320^(c>>>1)):(c>>>1);}t[n]=c>>>0;}return t;})();
 function crc32(b){var c=0xFFFFFFFF;for(var i=0;i<b.length;i++){c=CRC[(c^b[i])&255]^(c>>>8);}return (c^0xFFFFFFFF)>>>0;}
@@ -7213,7 +8427,7 @@ function pfadeAusBlob(blob){return blob.arrayBuffer().then(zipLesen).then(functi
   return {pfade:Object.keys(k.slots).map(function(p){return p+' ['+k.slots[p].art+(k.slots[p].sdt?':'+k.slots[p].sdt.typ:'')+']';}),rest:k.rest};
 });}
 return {pfadeAusBlob:pfadeAusBlob, lesen:lesen, schreiben:schreiben, dateiname:dateiname, vorlageBlob:vorlageBlob, lesenAusBlob:lesenAusBlob,
-  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText};
+  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText, docxText:docxText};
 })();
 </script>
 <script>
@@ -7569,7 +8783,7 @@ window.CDSE_SCREENING=(function(){
 var T=null, K=null, H=null;
 function bausteine(){T=window.CDSE_TEAM||null;K=window.CDSE_KONTO||null;H=(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.hilfen)||null;return !!(T&&K&&H);}
 function B(){return window.CDSE_SCREENING_BOGEN||null;}
-var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
+var LERN_TITEL={"abwehr-coping": "Abwehr und Bewältigung: wie Menschen sich schützen", "adhs": "ADHS", "angst": "Angststörungen bei Kindern und Jugendlichen", "autismus": "Autismus-Spektrum", "beobachten-dokumentieren": "Beobachten und dokumentieren", "beziehung-haltung": "Beziehungsgestaltung und professionelle Haltung", "bindung": "Bindung – warum Beziehung zuerst kommt", "bindungsmuster": "Bindungsmuster im Alltag erkennen", "bindungsstoerungen": "Bindungsstörungen", "biopsychosozial": "Das bio-psycho-soziale Modell", "deeskalation": "Deeskalation und Krisenintervention", "depression": "Depression bei Kindern und Jugendlichen", "diagnostik-grundbegriffe": "Diagnostik verstehen: Beobachtung, Screening, Test, Diagnose", "elternarbeit": "Zusammenarbeit mit Eltern", "emotionsregulation": "Emotionsregulation – wie Kinder mit Gefühlen umgehen lernen", "entwicklung-0-18": "Entwicklung von 0 bis 18", "essstoerungen": "Essstörungen", "etep": "ETEP und ELDiB in der Praxis", "gespraechsfuehrung": "Gespräche führen", "inklusion-luxemburg": "Inklusion und Unterstützung in Luxemburg", "intelligenz": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung", "kinderschutz": "Kinderschutz: Gefährdung erkennen und handeln", "lernen-verhalten": "Wie Verhalten entsteht und sich verändert", "lernstoerungen": "Lese-Rechtschreib- und Rechenstörung", "medikation": "Medikamente bei Kindern und Jugendlichen: Grundwissen", "mentalisieren": "Mentalisieren – das Innere des anderen verstehen", "neue-autoritaet": "Neue Autorität: Präsenz statt Macht", "oppositionell-aggressiv": "Oppositionelles und aggressives Verhalten", "persoenlichkeitsentwicklung": "Persönlichkeitsentwicklung in der Jugend", "psychose-bipolar": "Seltene, aber wichtige: Psychose und bipolare Störung", "risiko-schutz": "Risiko- und Schutzfaktoren, Resilienz", "schulvermeidung": "Schulangst und Schulvermeidung", "selbstfuersorge": "Selbstfürsorge und Grenzen im helfenden Beruf", "selbstverletzung-suizid": "Selbstverletzung und Suizidalität – erkennen und handeln", "sprache-mutismus": "Sprachentwicklungsstörungen und selektiver Mutismus", "stress-gehirn": "Stress, Gehirn und Verhalten", "sucht-medien": "Substanzkonsum und problematische Mediennutzung", "temperament-persoenlichkeit": "Temperament und Persönlichkeit", "testwerte-lesen": "Testergebnisse lesen: IQ, T-Werte, Prozentränge", "trauma": "Trauma und Traumafolgen", "traumapaedagogik": "Traumapädagogik im Schulalltag", "uebertragung": "Beziehungsdynamik: Übertragung und Gegenübertragung", "verstaerkung": "Verhalten gezielt ändern: Verstärkung, Konsequenzen, Pläne", "zwang-tics": "Zwänge und Tics"};
 var GELB=0.8, ROT=1.5;          /* Mittelwert 0–3: ab „manchmal bis oft“ beobachten, ab „oft“ im Mittel deutlich */
 var STUFE_TEXT={gruen:'unauffällig',gelb:'beobachten',rot:'deutlich',offen:'zu wenig Angaben'};
 var zustand={};                 /* je Dossier: {modus, id, entwurf} */

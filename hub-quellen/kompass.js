@@ -47,6 +47,14 @@ function passende(text){
   var t=String(text).normalize?String(text).normalize('NFC'):String(text);
   return reCache.filter(function(x){return x.re.test(t);}).map(function(x){return x.id;});
 }
+/* Fundstellen im Text: [{id, index, text}] – für das Auslesen von Berichten */
+function fundstellen(text){
+  var w=W();if(!w||!text){return [];}
+  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
+  var o=[];
+  reCache.forEach(function(x){var re=new RegExp(x.re.source,'gi'),m;while((m=re.exec(text))){o.push({id:x.id,index:m.index,text:m[0]});if(!m[0].length){re.lastIndex++;}}});
+  return o.sort(function(a,b){return a.index-b.index;});
+}
 function dsFrage(k){var a=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.a)||{};return (a[k]&&a[k].q)||k;}
 function chipName(g,k){var c=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.chips&&DS_TEXTE.de.chips[g])||{};return (c[k]&&c[k][0])||k;}
 function umfeldDef(id){var w=W();return w?w.umfeld.filter(function(u){return u.id===id;})[0]||null:null;}
@@ -101,6 +109,7 @@ function lesen(d){
   /* 3) vom Team eingetragen (z. B. aus einem Arztbrief) */
   Object.keys(team).forEach(function(k){
     var x=team[k];if(!x||(x.art!=='diagnose'&&x.art!=='verdacht')){return;}
+    if(x.bezug&&/^bericht:/.test(x.bezug)){grund(k,x.art,'Laut '+(x.quelle||'Bericht')+(x.art==='verdacht'?' (Verdacht)':''),'team');return;}
     grund(k,x.art,'Vom Team eingetragen'+(x.art==='verdacht'?' (Verdacht)':'')+(x.quelle?': '+x.quelle:''),'team');
   });
   /* 4) DS: Arbeitshypothesen, Lebenslage, Anlass, Ereignisse */
@@ -258,7 +267,7 @@ function artChip(art){return '<span class="ko-art '+art+'" title="'+esc(ART_TEXT
 function blattFuer(id,stufe){
   var T0=window.CDSE_TOOLBOX_INDEX, bl=(T0&&Array.isArray(T0.blaetter))?T0.blaetter:[];
   var b=bl.filter(function(x){return x.id===id;})[0];if(!b){return null;}
-  if(!stufe||(b.stufen||[]).indexOf(stufe)>=0){return b;}
+  if(!stufe||(b.stufen||[]).indexOf(stufe)>=0||b.bereich==='Werkzeuge für Fachkräfte'){return b;}
   return bl.filter(function(x){return x.bereich===b.bereich&&x.thema===b.thema&&(x.stufen||[]).indexOf(stufe)>=0;})[0]||b;
 }
 function material(ids,ctx){
@@ -277,7 +286,8 @@ function tab(d,r){
   h+='<div class="ko-stand keindruck" role="note">'+svg('info')+'<span><b>Entwurf, Stand '+esc(datum(w.stand))+':</b> Die Inhalte sind vor dem Einsatz fachlich zu prüfen (z. B. durch die Diagnostique). Der Kompass ordnet Fachwissen dem Profil zu. Er stellt keine Diagnose und ersetzt keine Behandlung.</span></div>';
   /* Profil */
   h+='<section class="ar-karte ko-kopf"><div class="ar-kartenkopf"><div><p class="overline">Kompass</p><h2>Was '+esc(vn)+' braucht</h2></div>'+
-    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten?'<button class="btn" type="button" data-ko="ergaenzen">'+svg('plus')+'Profil ergänzen</button>':'')+
+    '<span class="ar-knopfreihe keindruck">'+(r.bearbeiten&&window.CDSE_BERICHTE?'<button class="btn" type="button" data-ber="neu">'+svg('hoch')+'Bericht hinzufügen</button>':'')+
+    (r.bearbeiten?'<button class="btn" type="button" data-ko="ergaenzen">'+svg('plus')+'Profil ergänzen</button>':'')+
     '<button class="btn" type="button" data-ko="drucken">'+svg('print')+'Drucken</button></span></div>';
   if(L.profile.length){
     h+='<ul class="ko-profilchips">'+L.profile.map(function(x){
@@ -291,6 +301,7 @@ function tab(d,r){
     '<dt>Entwicklung (ELDiB)</dt><dd>'+(st?Object.keys(st.bereiche).filter(function(c){return c==='V'||c==='SOZ'||c==='K';}).map(function(c){var x=st.bereiche[c];return esc(x.name)+' Stufe '+ROEM[x.stufe];}).join(' · ')+
       ' <span class="ko-leise">→ Rolle der Erwachsenen: <b>'+esc(w.stufen[st.rolle].rolle)+'</b></span>':'<span class="ko-leise">noch keine ELDiB-Einschätzung – Hinweise gelten dann für alle Stufen</span>')+'</dd>'+
     '<dt>Lebenslage</dt><dd>'+(Object.keys(ctx.umfeld).length?Object.keys(ctx.umfeld).map(function(id){return esc(umfeldDef(id).name);}).join(' · '):'<span class="ko-leise">keine besonderen Angaben</span>')+'</dd>'+
+    (function(){var med=window.CDSE_BERICHTE?window.CDSE_BERICHTE.medikation(d):[];return med.length?'<dt>Medikation</dt><dd>'+med.map(function(m){return esc(m.name+(m.dosis?' '+m.dosis:''))+' <span class="ko-leise">(laut '+esc(m.art)+(m.datum?' vom '+esc(datum(m.datum)):'')+')</span>';}).join(' · ')+'</dd>':'';})()+
     '<dt>Material für</dt><dd>'+(ctx.schulstufe?esc(ctx.schulstufe):'<span class="ko-leise">Schulstufe unbekannt</span>')+'</dd></dl>';
   /* Rückfragen */
   L.klaeren.forEach(function(k){
@@ -303,7 +314,8 @@ function tab(d,r){
       (r.bearbeiten?' <button type="button" class="ar-link" data-ko="zuordnen" data-text="'+esc(x.text)+'" data-art="'+esc(x.art)+'" data-resp="'+(x.nurResp?1:0)+'">Profil wählen</button>':'')+'</div></div>';
   });
   h+='</section>';
-  if(!L.profile.length&&!Object.keys(ctx.umfeld).length&&!st){return h+ausgeblendetKarte(L,r)+'</div>';}
+  var berichte=window.CDSE_BERICHTE?window.CDSE_BERICHTE.karte(d,r):'';
+  if(!L.profile.length&&!Object.keys(ctx.umfeld).length&&!st){return h+berichte+ausgeblendetKarte(L,r)+'</div>';}
   /* Das Wichtigste zuerst */
   h+=wichtigstes(d,L,ctx,Q,r);
   /* Profile */
@@ -320,7 +332,7 @@ function tab(d,r){
   /* Lebenslage */
   var ul=Object.keys(ctx.umfeld);
   if(ul.length){h+='<section class="ar-karte ko-block"><h3>Lebenslage mitdenken</h3><ul class="ko-liste">'+ul.map(function(id){var u=umfeldDef(id);return punkt(u,ctx,Q,u.name+(ctx.umfeld[id].length?': '+ctx.umfeld[id].join('; '):''));}).join('')+'</ul></section>';}
-  h+=ausgeblendetKarte(L,r);
+  h+=berichte+ausgeblendetKarte(L,r);
   /* Quellen */
   if(Q.liste.length){
     h+='<details class="ar-karte ko-quellen" id="ko-quellen"><summary><h3>Quellen ('+Q.liste.length+')</h3></summary><ol>'+Q.liste.map(function(k,i){return '<li id="ko-q-'+(i+1)+'">'+esc(QUELLEN[k])+'</li>';}).join('')+'</ol>'+
@@ -392,6 +404,24 @@ function kurzKarte(d){
   return '<div class="ar-karte ko-kurzkarte"><div class="ar-kartenkopf"><h2>Kompass</h2><button class="ar-link" type="button" data-tab="kompass">Umgang und Material ansehen'+svg('right')+'</button></div>'+
     (L.profile.length?'<ul class="ko-profilchips">'+L.profile.slice(0,5).map(function(x){return '<li><span class="ko-pchip '+x.art+'">'+esc(anzeigeName(x))+artChip(x.art)+'</span></li>';}).join('')+'</ul>':'')+
     (L.klaeren.length?'<p class="ko-leise">Im DS steht ein Oberbegriff, der noch zugeordnet werden kann.</p>':'')+'</div>';
+}
+
+/* ---------- Teil fürs Übergabeblatt (ohne Quellenliste – die steht im Hub) ---------- */
+function druckTeil(d){
+  if(!bausteine()||!W()){return '';}
+  var L;try{L=lesen(d);}catch(e){return '';}
+  if(!L.profile.length){return '';}
+  var w=W(), ctx=L.ctx, l=[], warn=Object.keys(L.beob.warn);
+  if(warn.length){l.push(['Warnsignal im Screening: '+warn.map(function(k){return L.beob.warn[k].text;}).join(', ')+'. Die Schritte im Screening gehen vor.','dringend']);}
+  L.profile.slice(0,4).forEach(function(x){
+    var um=x.def.umgang||[], it=um.filter(function(i){var p=passt(i,ctx);return p&&p.warum;})[0]||um.filter(function(i){return passt(i,ctx);})[0];
+    if(it){l.push([it.t,anzeigeName(x)]);}
+  });
+  w.kombinationen.filter(function(k){return k.wenn.every(function(id){return L.ids[id];});}).slice(0,2).forEach(function(k){l.push([k.t,'Kombination']);});
+  if(ctx.stufen){var s=w.stufen[ctx.stufen.rolle];if(s&&s.umgang[0]){l.push([s.umgang[0].t,'ETEP-Stufe '+ROEM[ctx.stufen.rolle]+': '+s.rolle]);}}
+  return '<h2>Kompass</h2><p>'+L.profile.map(function(x){return '<b>'+esc(anzeigeName(x))+'</b> ('+esc(ART_NAME[x.art])+')';}).join(' · ')+'</p>'+
+    '<h3>Das Wichtigste im Umgang</h3><ul>'+l.map(function(z){return '<li>'+esc(z[0])+' <small>('+esc(z[1])+')</small></li>';}).join('')+'</ul>'+
+    '<p class="klein">Entwurf, fachlich zu prüfen – keine Diagnose. Alle Hinweise mit Fachquellen: Hub → Dossier → Kompass.</p>';
 }
 
 /* =====================================================================
@@ -472,5 +502,5 @@ window.addEventListener('afterprint',function(){
   Array.prototype.forEach.call(document.querySelectorAll('#ko-ergebnis details[data-war-offen]'),function(x){x.open=x.getAttribute('data-war-offen')==='1';x.removeAttribute('data-war-offen');});
 });
 
-return {tab:tab, kurzKarte:kurzKarte, lesen:function(d){bausteine();return lesen(d);}, passende:passende, blattFuer:blattFuer};
+return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, fundstellen:fundstellen, profilDef:function(id){return profilDef(id);}, lesen:function(d){bausteine();return lesen(d);}, passende:passende, blattFuer:blattFuer};
 })();
