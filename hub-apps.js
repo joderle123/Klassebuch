@@ -131,7 +131,7 @@ window.CDSE_APPS = [
   {
     id: 'toolbox',
     name: 'Toolbox',
-    beschreibung: '125 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
+    beschreibung: '180 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
     symbol: 'werkzeug',
     farbe: '#A8741A',
     bereich: 'Materialien',
@@ -140,6 +140,18 @@ window.CDSE_APPS = [
     quelle: { repo: 'ISA-APP', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'offline/ISA-App.html',
               zusatz: [{ pfad: 'offline/toolbox-index.js', datei: 'apps/toolbox-index.js' }] },
     stichworte: 'isa material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf'
+  },
+
+  {
+    id: 'skills-kurs',
+    name: 'Skills-Kurs',
+    beschreibung: 'Skills-Unterricht für Kleingruppen von 12 bis 16 Jahren: 30 Einheiten und 9 Joker, jede mit Ablauf in Minuten, Anleitung mit Beispielsätzen, Material zum Abhaken und 51 Schülerblättern. Die nächste Einheit der Gruppe steht immer oben.',
+    symbol: 'ziel',
+    farbe: '#6E4A7E',
+    bereich: 'Materialien',
+    datei: 'apps/toolbox.html#kurs',
+    dateizugriff: true,
+    stichworte: 'skills kurs unterricht einheit gruppe gefühle anspannung dbt jugendliche training stunde lektion gefühlsrad'
   },
 
   {
