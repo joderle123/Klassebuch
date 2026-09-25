@@ -204,3 +204,23 @@
   .db-kpi b{font-size:24px;}
   .db-gross b{font-size:38px;}
 }
+
+/* ---------- Verbindung zur Fiche (Reiter „Fiche“ im Dossier, Seitenblatt) ---------- */
+.db-blatt-wo{display:inline-flex;flex-wrap:wrap;gap:4px 14px;}
+.db-blatt-wo .ar-link{font-size:12.5px;}
+.db-fv{margin-top:14px;}
+.db-fv .ar-kartenkopf{align-items:baseline;}
+.db-fv-satz{margin:0 0 14px;color:var(--ink-2);max-width:70ch;}
+.db-fv-raster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px;}
+.db-fv-teil{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--bg);min-width:0;}
+.db-fv-teil h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 6px;}
+.db-fv-zahl{margin:0 0 6px;font-size:14px;color:var(--ink-2);}
+.db-fv-zahl b{font-size:20px;color:var(--ink);margin-right:4px;font-variant-numeric:tabular-nums;}
+.db-fv-fehlt,.db-fv-ok{display:flex;align-items:center;gap:7px;margin:8px 0 4px;font-size:13.5px;font-weight:600;}
+.db-fv-fehlt{color:var(--ink-2);}
+.db-fv-fehlt .ic{color:#B4533A;}
+.db-fv-ok{color:#1E6B45;}
+.db-fv-liste{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px;}
+.db-fv-liste li{font-size:13.5px;}
+.db-fv .ar-knopfreihe{margin-top:0;}
+@media (max-width:720px){.db-fv-raster{grid-template-columns:minmax(0,1fr);}}

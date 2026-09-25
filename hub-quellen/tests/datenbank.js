@@ -471,6 +471,45 @@ const STATS = [
   const dr2 = Object.fromEntries(await balken('direction'));
   check('Direction von Noah geändert → Diagramm zeigt 07 Dudelange, 01 Luxembourg jetzt nur Luca', dr2['07 Dudelange'] === 1 && dr2['01, Luxembourg'] === 1 && await kpi('dossiers') === '11', dr2);
 
+  console.log('18b) Fiche ↔ Datenbank: alle Angaben der Fiche als Variablen, Karte im Reiter „Fiche“');
+  const rund = await page.evaluate(async () => {
+    const f = { person: { nachname: 'Rund', vorname: 'Test', geschlecht: 'w', geburtsdatum: '2016-01-01' },
+      fiche: { datum: '2026-09-01', iam: 'IAM-TEST-1', strasse: '1, rue du Test', ort: 'L-7610 Larochette', progression: ['C1.1', 'C1.2', 'C2.1', 'C2.1'],
+        depistage: { cl: 'Logopédie 2021', cdm: 'non', cdv: '' } } };
+    const r = (await CDSE_FICHE.lesenAusBlob(await CDSE_FICHE.schreiben(f))).daten;
+    /* Clôture und Schuljahr stehen nur in älteren Fichen (25-26) – direkt einsetzen */
+    const ds = CDSE_DATENBANK.datensatz({ id: 'rund', person: Object.assign({}, f.person, r.person), fiche: Object.assign({}, r.fiche, { schuljahr: '2026-2027', cdse: { cloture: { aktiv: true, von: '2026-07-10' } } }) });
+    const q = {}; CDSE_DATENBANK.felder.forEach(x => { q[x.key] = x.quelle; });
+    return { ds, q };
+  });
+  check('Neue Variablen aus der Fiche (über die Word-Vorlage): IAM, Wohnort ohne PLZ, Schullaufbahn, Dépistage, Clôture, Schuljahr',
+    rund.ds.iam === 'IAM-TEST-1' && rund.ds.wohnort === 'Larochette' && rund.ds.laufbahn === 'C1.1 → C1.2 → C2.1 → C2.1' && JSON.stringify(rund.ds.depistage) === '["CL"]' &&
+    rund.ds.cloture === '2026-07-10' && rund.ds.ficheSchuljahr === '2026-2027', rund.ds);
+  check('Jede Variable kennt ihre Herkunft (Fiche, Datenbank, beides, Dossier)', rund.q.direction === 'fiche' && rund.q.iq === 'db' && rund.q.sorgerecht === 'beide' && rund.q.eintraege === 'dossier' && Object.values(rund.q).every(Boolean), rund.q);
+  await gehe('#/schueler/' + ids.noah); await page.waitForSelector('.ar-tabs [data-tab="fiche"]', { timeout: 20000 });
+  await page.click('.ar-tabs [data-tab="fiche"]'); await page.waitForSelector('.db-fv', { timeout: 10000 });
+  const fehlt1 = await page.$$eval('.db-fv-liste li', l => l.map(x => x.textContent.trim()));
+  check('Reiter „Fiche“ (Responsable): Karte „In der Datenbank“ mit fehlenden Kernangaben (Matricule, Nationalität)', (await text('.db-fv h2')) === 'In der Datenbank' && fehlt1.join('|') === 'Matricule|Nationalität', fehlt1);
+  check('Karte: noch keine eigenen Datenbank-Angaben', (await text('.db-fv')).includes('Noch keine.'));
+  await page.locator('.db-fv').scrollIntoViewIfNeeded(); await page.locator('.db-fv').screenshot({ path: path.join(OUT, 'db8-fiche-karte.png') });
+  await page.click('.db-fv [data-ar="db-angaben"]'); await page.waitForSelector('dialog.ar-dialog input[name="iq"]');
+  await page.fill('dialog.ar-dialog input[name="iq"]', '99'); await dialogKnopf('Speichern');
+  await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await page.waitForSelector('.db-fv'); await warte(200);
+  check('Datenbank-Angaben direkt aus dem Dossier: IQ gespeichert, Karte zeigt „1 eigene Angabe · IQ“', /1\s*eigene Angabe/.test(await text('.db-fv')) && (await text('.db-fv')).includes('IQ') &&
+    (await page.evaluate(async id => (await CDSE_TEAM.dossier(id, true)).db.iq, ids.noah)) === 99);
+  await page.click('.db-fv-liste button:has-text("Nationalität")'); await page.waitForSelector('dialog.ar-dialog input[name="f.nationalitaet"]');
+  await page.fill('dialog.ar-dialog input[name="f.nationalitaet"]', 'française'); await dialogKnopf('Speichern');
+  await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await page.waitForSelector('.db-fv'); await warte(200);
+  const fehlt2 = await page.$$eval('.db-fv-liste li', l => l.map(x => x.textContent.trim()));
+  check('Fehlende Angabe über die Karte in der Fiche ergänzt → nur noch Matricule fehlt', fehlt2.join('|') === 'Matricule', fehlt2);
+  await page.click('.db-fv [data-ar="db-zeigen"]'); await page.waitForSelector('dialog.db-blatt[open]', { timeout: 20000 }); await warte(200);
+  const blattN = await text('dialog.db-blatt');
+  check('„In der Datenbank ansehen“ öffnet die Tabelle mit dem Seitenblatt (Nationalität und IQ schon da)', await page.evaluate(() => location.hash) === '#/datenbank/tabelle' && blattN.includes('TEST Noah') && blattN.includes('française') && /IQ\s*99/.test(blattN), blattN.slice(0, 160));
+  check('Seitenblatt: jede Gruppe zeigt, woher die Werte kommen (Fiche / Datenbank-Angaben)', await page.isVisible('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Person")) [data-db-b="fiche"]') &&
+    await page.isVisible('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Klinisches Profil")) [data-db-b="db"]') && !(await page.isVisible('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Entwicklung und Dossier")) .db-blatt-wo button')));
+  await page.click('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Person")) [data-db-b="fiche"]'); await page.waitForSelector('.ar-tabs [data-tab="fiche"].on', { timeout: 20000 });
+  check('Vom Seitenblatt zurück in den Reiter „Fiche“ des Dossiers', (await text('.ar-dkopf h1')).includes('TEST Noah') && await page.isVisible('.db-fv'));
+
   console.log('19) Handy (390 px)');
   await page.setViewportSize({ width: 390, height: 844 }); await warte(300);
   await db(''); await warte(200);
@@ -500,6 +539,13 @@ const STATS = [
   const kopfMia = await page.$$eval('.db-tab thead th', l => l.map(x => x.textContent.replace(/[▲▼]/g, '').trim()));
   check('Verwaltung hat Zugang; Standardspalten (Leas Auswahl gehört Lea)', kopfMia.includes('Schule') && !kopfMia.includes('IQ'), kopfMia.join('|'));
   check('Mias Protokoll ist leer (je Person)', await page.evaluate(() => { const l = JSON.parse(localStorage.getItem('cdse-db-protokoll-v1') || '[]'); return !l.some(e => e.name === 'Lea Beispiel'); }));
+
+  console.log('21) Mitarbeiter: Reiter „Fiche“ ohne Datenbank-Karte');
+  await abmelden(); await anmelden('Paul Probe', 'drittes Passwort 333');
+  await gehe('#/schueler/' + ids.ben); await page.waitForSelector('.ar-tabs [data-tab="fiche"]', { timeout: 20000 });
+  await page.click('.ar-tabs [data-tab="fiche"]'); await page.waitForSelector('.ar-fkopf'); await warte(200);
+  check('Mitarbeiter: Fiche sichtbar, aber keine Karte „In der Datenbank“', await page.isVisible('.ar-fkopf') && !(await page.$('.db-fv')));
+  check('Modul prüft selbst: ficheKarte() gibt Mitarbeitern nichts', await page.evaluate(() => CDSE_DATENBANK.ficheKarte({ id: 'x', fiche: {} }, {}) === ''));
 
   check('Keine Fehler in der Konsole', errors.length === 0, errors.slice(0, 5).join(' | '));
   console.log('\n' + ok + ' ok, ' + bad + ' Fehler  (' + Math.round((Date.now() - t0) / 1000) + ' s, Bilder in ' + OUT + ')');

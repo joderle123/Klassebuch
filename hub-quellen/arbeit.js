@@ -1411,6 +1411,8 @@ document.addEventListener('click',function(ev){
     case 'fiche-hochladen-dossier':ficheHochladen(d);break;
     case 'fiche-download':ficheHerunterladen(d,t);break;
     case 'fiche-teil':ficheTeilDialog(d,t.getAttribute('data-teil'));break;
+    case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){aktDossier=neu;dossierZeichnen(neu);}});}break;
+    case 'db-zeigen':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.zeigen(d.id);}break;
     case 'weitergeben':weitergebenDialog(d);break;
     case 'rechte':rechteDialog(d);break;
     case 'verantwortlich':verantwortlichDialog(d);break;
@@ -1637,6 +1639,8 @@ function tabFiche(d,r){
       ohneLeere(c.sonstige).map(function(s){return '<li class="aus"><span class="ar-massn-punkt" aria-hidden="true"></span><div><b>'+esc(s.label||'Weitere Angabe')+'</b><small>'+esc([s.name,s.von,s.bis].filter(Boolean).join(' · '))+'</small></div></li>';}).join('')+'</ul>'+
     (!ueber.length&&fleer(c)?'<p class="ar-leise">Keine Maßnahme eingetragen.</p>':''),'cdse',r);
   h+='</div>';
+  /* Responsables: was aus dieser Fiche in der Datenbank steht und was dort noch fehlt */
+  if(T.istResponsable()&&window.CDSE_DATENBANK&&window.CDSE_DATENBANK.ficheKarte){h+=window.CDSE_DATENBANK.ficheKarte(d,r);}
   return h;
 }
 /* ---------- Abschnitte bearbeiten ---------- */

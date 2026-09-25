@@ -207,6 +207,13 @@ function rolleNorm(f){
 function sorgerechtAusFiche(x){var o=[];(Array.isArray(x.f.vertreter)?x.f.vertreter:[]).forEach(function(v){if(v&&v.autoritaet===true){var r=rolleNorm(v.funktion);if(o.indexOf(r)<0){o.push(r);}}});return o;}
 function sorgerechtVon(x){var t=liste(x.db.tutelle);return t.length?t:sorgerechtAusFiche(x);}
 function eldib(d){try{return (H&&H.eldibKurz)?H.eldibKurz(d):null;}catch(e){return null;}}
+/* Wohnort ohne Straße und ohne Postleitzahl: „L-7610 Larochette“ → „Larochette“ */
+function ortschaft(v){var s=txt(v).replace(/^\s*(?:L\s*-\s*)?\d{4}\b[\s,]*/i,'').trim();return s||txt(v);}
+function laufbahnVon(f){return (Array.isArray(f.progression)?f.progression:[]).map(txt).filter(Boolean).join(' → ');}
+/* Dépistage: Kompetenzzentren, bei denen in der Fiche etwas steht („non“ zählt nicht) */
+var DEPISTAGE=[['cl','CL'],['cdm','CDM'],['cdv','CDV'],['autres','andere']];
+function depistageVon(f){var dp=f.depistage||{};return DEPISTAGE.filter(function(z){var v=dp[z[0]];return txt(v)!==''&&jaNein(v)!=='nein';}).map(function(z){return z[1];});}
+function clotureVon(f){var c=(f.cdse||{}).cloture;return (c&&typeof c==='object')?(iso(c.von)||iso(c.bis)):'';}
 
 /* =====================================================================
    FELDER: alle Variablen – {key, label, gruppe, typ, optionen?, info?, wert(d)}
@@ -223,6 +230,7 @@ var FELDER=[
   F('vorname','Vorname','Identität','text',function(d,x){return txt(x.p.vorname);}),
   F('matricule','Matricule','Identität','text',function(d,x){return txt(x.p.matricule);}),
   F('mfiles','Dossier M-Files','Identität','text',function(d,x){return txt(x.f.mfiles);}),
+  F('iam','Identité IAM','Identität','text',function(d,x){return txt(x.f.iam);}),
   F('geschlecht','Geschlecht','Person','auswahl',function(d,x){var g=norm(x.p.geschlecht);return g==='w'?'Mädchen':(g==='m'?'Junge':'');},{optionen:['Junge','Mädchen']}),
   F('geburtsdatum','Geburtsdatum','Person','datum',function(d,x){return iso(x.p.geburtsdatum);}),
   F('alter','Alter (Jahre)','Person','zahl',function(d,x){return alterVon(x.p.geburtsdatum);},{info:'aus dem Geburtsdatum berechnet'}),
@@ -232,6 +240,7 @@ var FELDER=[
   F('sprache','Erstsprache (Gruppe)','Person','auswahl',function(d,x){return spracheGruppe(x.f.ersteSprache);},{optionen:SPRACH_CODES,info:'vereinheitlicht: LU, FR, DE, PT …'}),
   F('migration','Migrationskontext','Person','ja-nein',function(d,x){return migrationVon(x.f);},{optionen:['ja','nein'],info:'„ja“, wenn die Fiche einen Migrationskontext oder ein Ankunftsdatum nennt'}),
   F('ankunft','Ankunft in Luxemburg','Person','datum',function(d,x){return iso(x.f.ankunft);}),
+  F('wohnort','Wohnort (Ortschaft)','Person','text',function(d,x){return ortschaft(x.f.ort);},{info:'Code, localité der Fiche – ohne Straße und Postleitzahl'}),
   F('schule','Schule','Schule','text',function(d,x){return txt((x.f.schule||{}).name)||txt(x.p.schule);}),
   F('klasse','Klasse','Schule','text',function(d,x){return klasseVon(x);}),
   F('cycle','Cycle','Schule','auswahl',function(d,x){return cycleVon(klasseVon(x));},{optionen:['C1','C2','C3','C4','ES','andere'],info:'aus der Klasse abgeleitet (ES = Enseignement secondaire)'}),
@@ -239,6 +248,7 @@ var FELDER=[
   F('schulform','Schulform','Schule','auswahl',function(d,x){var s=norm(x.db.schulform);return (s==='public'||s==='offentlich')?'öffentlich':((s==='prive'||s==='privat')?'privat':'');},{optionen:['öffentlich','privat']}),
   F('vorherigeSchule','Vorherige Schule','Schule','text',function(d,x){return txt(x.db.vorherigeSchule);}),
   F('schulwechsel','Schulwechsel am','Schule','datum',function(d,x){return iso(x.db.schulwechsel);}),
+  F('laufbahn','Schullaufbahn','Schule','text',function(d,x){return laufbahnVon(x.f);},{info:'Progression scolaire der Fiche, ein Schuljahr nach dem anderen'}),
   F('stelle','Stelle','Begleitung im CDSE','auswahl',function(d){return stelleName(d.stelle);},{optionen:function(){return teams().map(function(t){return t.name;});}}),
   F('status','Status','Begleitung im CDSE','auswahl',function(d){return d.status==='inaktiv'?'inaktiv':'aktiv';},{optionen:['aktiv','inaktiv']}),
   F('verantwortlich','Fallverantwortlich','Begleitung im CDSE','liste',function(d){return (d.verantwortlich||[]).map(kontoName).filter(Boolean);}),
@@ -247,6 +257,8 @@ var FELDER=[
   F('erstellt','Dossier angelegt','Begleitung im CDSE','datum',function(d){return iso(d.erstellt);}),
   F('geaendert','Zuletzt geändert','Begleitung im CDSE','datum',function(d){return iso(d.geaendert);}),
   F('ficheDatum','Datum der Fiche','Begleitung im CDSE','datum',function(d,x){return iso(x.f.datum);}),
+  F('ficheSchuljahr','Schuljahr der Fiche','Begleitung im CDSE','text',function(d,x){return txt(x.f.schuljahr);}),
+  F('cloture','Clôture du dossier','Begleitung im CDSE','datum',function(d,x){return clotureVon(x.f);},{info:'Datum der Clôture in der Fiche'}),
   F('massnahmen','Laufende Maßnahmen','Maßnahmen','liste',function(d,x){return eindeutig(x.ms.filter(function(m){return m.stand==='laufend';}).map(function(m){return m.kurz;}));},{optionen:ARTEN,info:'in der Fiche angekreuzt, begonnen und nicht beendet'}),
   F('massnahmenAlle','Alle Maßnahmen (auch beendete)','Maßnahmen','liste',function(d,x){return eindeutig(x.ms.map(function(m){return m.kurz;}));},{optionen:ARTEN}),
   F('dsDatum','DS: Datum','Maßnahmen','datum',function(d,x){var m=eineMassnahme(x,'diagnostic');return m?(m.von||m.bis):'';}),
@@ -274,15 +286,25 @@ var FELDER=[
   F('diagnosen','Diagnosen','Klinisches Profil','liste',function(d,x){return liste(x.db.diagnosen);},{info:'nur, was in den Datenbank-Angaben eingetragen ist'}),
   F('verdacht','Verdacht / Profil','Klinisches Profil','liste',function(d,x){return liste(x.db.verdacht);}),
   F('iq','IQ','Klinisches Profil','zahl',function(d,x){return zahl(x.db.iq);}),
+  F('depistage','Dépistage','Klinisches Profil','liste',function(d,x){return depistageVon(x.f);},{optionen:['CL','CDM','CDV','andere'],info:'Kompetenzzentren mit einem Eintrag unter „Dépistage“ in der Fiche'}),
   F('eldibZiele','ELDiB: Förderziele','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ziele:null;}),
   F('eldibUeber','ELDiB: überfällige Items','Entwicklung und Dossier','zahl',function(d){var k=eldib(d);return k?k.ueber:null;}),
   F('eintraege','Anzahl Einträge','Entwicklung und Dossier','zahl',function(d){return (d.eintraege||[]).length;}),
   F('letzterEintrag','Letzter Eintrag','Entwicklung und Dossier','datum',function(d){return (d.eintraege||[]).map(function(e){return iso(e&&e.datum);}).filter(Boolean).sort().pop()||'';})
 ];
+/* Woher kommt der Wert? fiche = Fiche de renseignement (Reiter „Fiche“ im Dossier),
+   db = nur Datenbank-Angaben, beide = Datenbank-Angabe mit Fiche als Ersatz, dossier = Dossier selbst */
+var AUS_FICHE=['nachname','vorname','matricule','mfiles','iam','geschlecht','geburtsdatum','alter','geburtsort','nationalitaet','erstsprache','sprache','migration','ankunft','wohnort',
+  'schule','klasse','cycle','direction','laufbahn','ficheDatum','ficheSchuljahr','cloture','massnahmen','massnahmenAlle','dsDatum','dsWer','isaBeginn','isaEnde','isaWer','isaDauer',
+  'cgBeginn','cgWer','beschulung','beschulungOrt','beschulungBeginn','beschulungDauer','schulHilfen','depistage','beginn','dauerBegleitung'];
+var AUS_BEIDEN=['dienste','scas','sorgerecht'];
+var NUR_DB=['schulform','vorherigeSchule','schulwechsel','cni','andereMassnahme','autreCc','eltern','massnahmenFamilie','scolEtranger','diagnosen','verdacht','iq'];
+FELDER.forEach(function(f){f.quelle=AUS_FICHE.indexOf(f.key)>=0?'fiche':(AUS_BEIDEN.indexOf(f.key)>=0?'beide':(NUR_DB.indexOf(f.key)>=0?'db':'dossier'));});
+var QUELLE_TEXT={fiche:'Fiche',beide:'Fiche + Datenbank',db:'Datenbank',dossier:'Dossier'};
 var FELD_MAP=null;
 function feldVon(k){if(!FELD_MAP){FELD_MAP={};FELDER.forEach(function(f){FELD_MAP[f.key]=f;});}return FELD_MAP[k]||null;}
 function optionenVon(f){var o=f&&f.optionen;return Array.isArray(o)?o:[];}
-function gruppierbar(f){return ['nachname','vorname','matricule','mfiles','geburtsdatum'].indexOf(f.key)<0;}
+function gruppierbar(f){return ['nachname','vorname','matricule','mfiles','iam','geburtsdatum','laufbahn'].indexOf(f.key)<0;}
 function leerWert(f,v){if(f.typ==='liste'){return Array.isArray(v)?eindeutig(v):[];}if(f.typ==='zahl'){return istZahl(v)?v:null;}return v==null?'':String(v);}
 
 /* datensatz(d): flaches Objekt aller Variablen eines Dossiers (zwischengespeichert je Stand und Tag) */
@@ -618,8 +640,10 @@ function fokusMerken(){var a=document.activeElement;fokusKey=(a&&zust.el&&zust.e
 function fokusZurueck(){if(!fokusKey||!zust.el){return;}var e=zust.el.querySelector('[data-fokus="'+fokusKey.replace(/"/g,'')+'"]');fokusKey=null;if(e){try{e.focus({preventScroll:true});}catch(x){e.focus();}}}
 function neuZeichnen(){fokusMerken();zeichnen();fokusZurueck();}
 
+var offenId=null;   /* Seitenblatt, das nach dem Laden aufgehen soll (Sprung aus dem Reiter „Fiche“) */
 function seite(el,param,neu){
   if(!el){return;}
+  var oeffnen=offenId;offenId=null;
   if(!bausteine()){el.innerHTML='<p>Die Datenbank braucht den Arbeitsbereich des Hubs.</p>';return;}
   blaetterSchliessen();
   zust.el=el;
@@ -628,7 +652,7 @@ function seite(el,param,neu){
   if(!el.__db){el.__db=true;ereignisse(el);}
   if(!resizeAn){resizeAn=true;window.addEventListener('resize',function(){clearTimeout(resizeTimer);resizeTimer=setTimeout(diagrammeZeichnen,150);});}
   el.innerHTML=rahmen()+'<div id="db-inhalt">'+H.laedt('Lade die Dossiers …')+'</div>';
-  laden(!!neu).then(function(){if(zust.el===el){zeichnen();}},function(e){
+  laden(!!neu).then(function(){if(zust.el===el){zeichnen();if(oeffnen&&eintragVon(oeffnen)){blattOeffnen(oeffnen);}}},function(e){
     if(zust.el===el){inhalt(H.karte('<h2>Die Dossiers ließen sich nicht laden</h2>'+H.hinweis(esc(fehlerText(e)))+'<button class="btn" type="button" data-db="neu-laden">'+svg('reload')+'Nochmal versuchen</button>','ar-leer'));}
   });
 }
@@ -963,7 +987,11 @@ function blattHtml(x){
     return '<li class="'+m.stand+'"><b>'+esc(m.lang)+(m.standort?' · '+esc(m.standort):'')+'</b><span class="db-stand">'+esc(STAND[m.stand])+'</span><small>'+esc([m.von?'Beginn '+datumDe(m.von):'ohne Beginn',m.bis?'Ende '+datumDe(m.bis):'',m.dauer!=null?m.dauer+(m.dauer===1?' Monat':' Monate'):'',m.wer?'Intervenant·e: '+m.wer:''].filter(Boolean).join(' · '))+'</small></li>';
   }).join('')+'</ul>':'<p class="ar-leise">Keine Maßnahme in der Fiche angekreuzt.</p>')+'</section>';
   GRUPPEN.forEach(function(g){
-    h+='<section class="db-blatt-teil"><h3>'+esc(g)+'</h3><dl class="ar-dl db-dl">'+FELDER.filter(function(f){return f.gruppe===g;}).map(function(f){
+    var fs=FELDER.filter(function(f){return f.gruppe===g;});
+    var ausFiche=fs.some(function(f){return f.quelle==='fiche'||f.quelle==='beide';}), ausDb=fs.some(function(f){return f.quelle==='db'||f.quelle==='beide';});
+    h+='<section class="db-blatt-teil"><div class="db-blatt-teilkopf"><h3>'+esc(g)+'</h3><span class="db-blatt-wo">'+
+      (ausFiche?'<button class="ar-link" type="button" data-db-b="fiche" title="Diese Werte kommen aus der Fiche de renseignement">'+svg('datei')+'Fiche</button>':'')+
+      (ausDb?'<button class="ar-link" type="button" data-db-b="db" title="Angaben, die nur in der Datenbank stehen">'+svg('edit')+'Datenbank-Angaben</button>':'')+'</span></div><dl class="ar-dl db-dl">'+fs.map(function(f){
       var v=anzeige(f,r[f.key]);return '<dt>'+esc(f.label)+'</dt><dd'+(v?'':' class="leer"')+'>'+(v?esc(v):'—')+'</dd>';
     }).join('')+'</dl></section>';
   });
@@ -973,6 +1001,47 @@ function blattHtml(x){
   if(vl.length){h+='<section class="db-blatt-teil"><h3>Letzte Änderungen</h3><ol class="ar-protokoll">'+vl.map(function(v){return '<li><span class="ar-leise">'+esc(H.datumZeit(v.z))+'</span><b>'+esc(H.kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol></section>';}
   return h+'</div>';
 }
+
+/* =====================================================================
+   Verbindung zur Fiche: Karte im Reiter „Fiche“ des Dossiers.
+   Dieselben Werte wie in Tabelle und Export (datensatz) – nichts doppelt.
+   ===================================================================== */
+/* Kernangaben für die Statistik und wo man sie in der Fiche ergänzt */
+var KERN=[['geschlecht','person'],['geburtsdatum','person'],['matricule','person'],['nationalitaet','person'],['erstsprache','person'],['ficheDatum','person'],
+  ['schule','schule'],['klasse','schule'],['direction','schule'],['massnahmenAlle','cdse']];
+function kernFehlt(r){
+  return KERN.filter(function(k){
+    if(k[0]==='direction'&&r.cycle==='ES'){return false;}   /* Directions régionales gibt es nur im Fondamental */
+    return istLeer(r[k[0]]);
+  });
+}
+function ficheKarte(d,recht){
+  if(!bausteine()||!d||!T.istResponsable()){return '';}
+  recht=recht||{};
+  var r=datensatz(d), db=d.db||{}, fehlt=kernFehlt(r);
+  var ausFiche=FELDER.filter(function(f){return f.quelle==='fiche'&&!istLeer(r[f.key]);}).length;
+  var eigene=FELDER.filter(function(f){return f.quelle==='db'&&!istLeer(r[f.key]);}).map(function(f){var v=r[f.key];return f.label+(f.typ==='liste'&&v.length>1?' ('+v.length+')':'');});
+  if(txt(db.notiz)){eigene.push('Notiz');}
+  return '<section class="ar-karte db-fv" aria-labelledby="db-fv-titel"><div class="ar-kartenkopf"><h2 id="db-fv-titel">In der Datenbank</h2><span class="ar-leise">nur Responsables und Verwaltung</span></div>'+
+    '<p class="db-fv-satz">Was in dieser Fiche steht, steht automatisch in der Datenbank – ohne zweites Eintragen. Jede Änderung hier gilt sofort für Tabelle, Abfragen und Export.</p>'+
+    '<div class="db-fv-raster">'+
+      '<div class="db-fv-teil"><h3>Aus der Fiche</h3><p class="db-fv-zahl"><b>'+ausFiche+'</b> Angaben in der Datenbank</p>'+
+        (fehlt.length?'<p class="db-fv-fehlt">'+svg('warn')+'Für die Statistik fehlt noch:</p><ul class="db-fv-liste">'+fehlt.map(function(k){var f=feldVon(k[0]);
+            return '<li>'+(recht.bearbeiten?'<button class="ar-link" type="button" data-ar="fiche-teil" data-teil="'+k[1]+'">'+svg('edit')+esc(f.label)+'</button>':esc(f.label))+'</li>';}).join('')+'</ul>'
+          :'<p class="db-fv-ok">'+svg('check')+'Alle Kernangaben für die Statistik sind da.</p>')+'</div>'+
+      '<div class="db-fv-teil"><h3>Nur in der Datenbank</h3>'+(eigene.length?'<p class="db-fv-zahl"><b>'+eigene.length+'</b> eigene '+(eigene.length===1?'Angabe':'Angaben')+'</p><p class="ar-klein">'+esc(eigene.join(' · '))+'</p>'
+          :'<p class="ar-klein">Noch keine. Schulform, CNI-Entscheidung, Diagnosen, IQ und die Familiensituation stehen nicht in der Fiche und werden nur hier gepflegt.</p>')+'</div>'+
+    '</div>'+
+    '<div class="ar-knopfreihe"><button class="btn" type="button" data-ar="db-angaben">'+svg('edit')+'Datenbank-Angaben bearbeiten</button>'+
+      '<button class="btn" type="button" data-ar="db-zeigen">'+svg('daten')+'In der Datenbank ansehen</button></div></section>';
+}
+/* Datenbank-Angaben direkt aus dem Dossier bearbeiten → neues Dossier (oder null) */
+function bearbeiten(d){
+  if(!bausteine()||!d||!T.istResponsable()){return Promise.resolve(null);}
+  return dbDialog(d).then(function(neu){if(neu&&zust.daten.some(function(x){return x.d.id===neu.id;})){ersetzeDossier(neu);}return neu;});
+}
+/* In die Tabelle der Datenbank springen und das Seitenblatt dieses Dossiers öffnen */
+function zeigen(id){offenId=id||null;location.hash='#/datenbank/tabelle';}
 
 /* ---------- Datenbank-Angaben bearbeiten (d.db; nur Responsables und Verwaltung) ---------- */
 var DB_NAMEN={schulform:'Schulform',vorherigeSchule:'vorherige Schule',schulwechsel:'Schulwechsel',scolEtranger:'Schulbesuch im Ausland',cni:'CNI-Entscheidung',autreCc:'anderes Kompetenzzentrum',autreMesure:'andere Maßnahme',
@@ -1656,6 +1725,8 @@ function ereignisse(el){
 }
 
 return {seite:seite, felder:FELDER, datensatz:datensatz,
+  /* Verbindung zum Reiter „Fiche“ im Dossier */
+  ficheKarte:ficheKarte, bearbeiten:bearbeiten, zeigen:zeigen,
   /* für Tests und andere Module: Abfragen ohne Oberfläche */
   abfrage:function(rows,a){return ausfuehren(rows,abfrageNorm(a));}, frage:frageVerstehen, satz:function(a){return satz(abfrageNorm(a));},
   cdseStats:{abbilden:function(s,e){return abbilden(s,Object.assign({dr:{},cg:'cgPro'},e||{}));}, drImport:drImport}};
