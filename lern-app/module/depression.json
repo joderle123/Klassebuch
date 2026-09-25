@@ -1,0 +1,450 @@
+{
+  "id": "depression",
+  "bereich": "stoerungen",
+  "titel": "Depression bei Kindern und Jugendlichen",
+  "untertitel": "Mehr als traurig – erkennen, ansprechen, begleiten und weitervermitteln",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können beschreiben, wie sich eine Depression bei Kindern und Jugendlichen zeigt – oft anders als bei Erwachsenen.",
+    "Sie können normale Traurigkeit und Trauer von einer möglichen Depression unterscheiden und kennen Situationen, die ähnlich aussehen.",
+    "Sie kennen Risiko- und Schutzfaktoren und wissen, was im Schulalltag hilft und was schadet.",
+    "Sie können ein Kind oder eine Jugendliche auf Ihre Sorge ansprechen und auch Suizidgedanken direkt erfragen.",
+    "Sie wissen, wann und wie Sie Leitung, Eltern und Fachleute einbeziehen und was eine Behandlung umfasst."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Sara (14) zieht sich zurück",
+          "text": "Sara war eine aufmerksame Schülerin, spielte Volleyball und hatte eine feste Freundesgruppe. Seit den Herbstferien kommt sie oft zu spät, legt im Unterricht den Kopf auf den Tisch und gibt Aufgaben nur halb ab. In der Pause sitzt sie allein mit dem Handy. Zum Training geht sie nicht mehr. Auf eine Frage der Lehrerin antwortet sie gereizt: „Ist doch eh alles egal.“ Die Mitschülerinnen sagen, Sara sei „komisch geworden“. Die Mutter berichtet am Telefon, Sara schlafe bis mittags und esse kaum noch mit der Familie.",
+          "fragen": [
+            "Welche Veränderungen fallen Ihnen auf, und seit wann bestehen sie?",
+            "Was würden Sie als Nächstes tun?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Jeder Mensch ist manchmal traurig, lustlos oder schlecht gelaunt. Eine **Depression** ist mehr: eine Erkrankung, bei der gedrückte oder gereizte Stimmung, Freudlosigkeit und weitere Beschwerden über Wochen anhalten und den Alltag deutlich beeinträchtigen. Sie betrifft Denken, Gefühle, Körper und Verhalten. Kinder und Jugendliche mit einer Depression können sich nicht „einfach zusammenreißen“ – so wenig wie jemand mit einer Grippe.\n\nFür pädagogische Fachkräfte ist die Depression aus zwei Gründen wichtig. Erstens wird sie bei jungen Menschen oft übersehen, weil sie sich anders zeigt als bei Erwachsenen: als Reizbarkeit, Rückzug, Leistungsabfall oder Bauchweh statt als sichtbare Traurigkeit. Zweitens ist sie der wichtigste Risikofaktor für Suizidgedanken im Jugendalter. Früh erkannt, lässt sich eine Depression gut behandeln (Thapar et al., 2012)."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Depression ist eine behandelbare Erkrankung, keine Charakterschwäche und keine Laune. Ihre Aufgabe ist es, Veränderungen zu bemerken, das Kind anzusprechen und dafür zu sorgen, dass es fachliche Hilfe bekommt – nicht, eine Diagnose zu stellen."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: wie sich eine Depression zeigt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Klassifikationssysteme DSM-5-TR und ICD-11 beschreiben die depressive Episode ähnlich. Kernmerkmale sind eine **gedrückte Stimmung** und eine **Freudlosigkeit**: Dinge, die früher Freude gemacht haben, sind gleichgültig geworden. Bei Kindern und Jugendlichen kann statt der gedrückten eine **gereizte Stimmung** im Vordergrund stehen. Hinzu kommen weitere Beschwerden: veränderter Schlaf, veränderter Appetit, Müdigkeit und Energiemangel, Konzentrationsprobleme, Gefühle von Wertlosigkeit oder Schuld, verlangsamtes oder unruhiges Verhalten und Gedanken an den Tod. Für eine Diagnose müssen mehrere dieser Merkmale – nach DSM-5-TR mindestens fünf, darunter die Stimmung oder die Freudlosigkeit – über mindestens zwei Wochen fast täglich bestehen und den Alltag deutlich beeinträchtigen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wie sich eine Depression je nach Alter zeigen kann",
+          "spalten": [
+            "Alter",
+            "Häufige Anzeichen im Alltag"
+          ],
+          "zeilen": [
+            [
+              "Jüngere Kinder (bis etwa 8 Jahre)",
+              "Weinerlichkeit, Reizbarkeit, Bauch- oder Kopfweh ohne körperliche Ursache, Spielunlust, Anhänglichkeit, Rückschritte in bereits Gelerntem"
+            ],
+            [
+              "Schulkinder (etwa 8–12 Jahre)",
+              "Freudlosigkeit, Rückzug von Freunden, Leistungsabfall, Konzentrationsprobleme, Aussagen wie „Ich kann nichts“ oder „Mich mag keiner“, Wutausbrüche"
+            ],
+            [
+              "Jugendliche",
+              "Gereiztheit, Grübeln, Rückzug ins Zimmer oder ins Handy, Schlafen bis mittags oder Schlaflosigkeit, Hoffnungslosigkeit, Leistungsabfall, Fehlzeiten, manchmal Alkohol oder Drogen, Selbstverletzung"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Vor der Pubertät ist eine Depression deutlich seltener als danach. Im Jugendalter steigt die Häufigkeit stark an; im Laufe eines Jahres sind nach Schätzungen etwa vier bis fünf von hundert Jugendlichen betroffen, Mädchen etwa doppelt so oft wie Jungen (Thapar et al., 2012). In einer Klasse mit zwanzig Jugendlichen ist es also gut möglich, dass eine oder einer betroffen ist – oft unbemerkt.\n\nWichtig für den Schulalltag: Eine Depression zeigt sich selten auf einen Blick. Verdächtig ist vor allem die **Veränderung** gegenüber früher und ihre **Dauer**. Ein Kind, das schon immer ruhig war, ist nicht depressiv, weil es ruhig ist. Ein Kind, das seit Wochen nicht mehr lacht, seine Hobbys aufgibt und schlechter wird, verdient Aufmerksamkeit."
+        },
+        {
+          "art": "liste",
+          "titel": "Anzeichen, die Sie ernst nehmen sollten",
+          "punkte": [
+            "Deutliche Veränderung gegenüber früher, die länger als zwei Wochen anhält.",
+            "Rückzug von Freunden und Aktivitäten, die früher wichtig waren.",
+            "Anhaltende Gereiztheit oder Wut, die nicht zur Person passt.",
+            "Leistungsabfall, Müdigkeit, Konzentrationsprobleme, vermehrte Fehlzeiten.",
+            "Abwertende Aussagen über sich selbst („Ich bin zu nichts nütze“).",
+            "Aussagen über Hoffnungslosigkeit, Tod oder Sterben – auch in Aufsätzen, Zeichnungen oder sozialen Medien."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen und Verlauf",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine Depression hat selten eine einzige Ursache. Meist wirken Veranlagung, Belastungen und Denkmuster zusammen. **Veranlagung:** Kinder von Eltern mit einer Depression haben ein deutlich erhöhtes Risiko – durch die Gene und durch die Lebensumstände, die eine elterliche Erkrankung mit sich bringt. **Belastungen:** Verluste, Trennung der Eltern, Mobbing, Ausgrenzung, Misshandlung, chronischer Streit zu Hause, Migration mit Entwurzelung, eine chronische Krankheit oder anhaltender Schulmisserfolg können eine Depression auslösen oder verstärken. **Denkmuster:** Wer Misserfolge sich selbst zuschreibt und Erfolge dem Zufall („Ich bin dumm“ – „Das war Glück“), rutscht leichter in eine Abwärtsspirale.\n\nDie **Pubertät** ist eine Zeit erhöhter Verletzlichkeit: Körper, Gehirn, Beziehungen und Erwartungen verändern sich gleichzeitig. Häufig geht einer Depression eine **Angststörung** voraus. Auch mit ADHS, Störungen des Sozialverhaltens, Essstörungen und Substanzkonsum tritt eine Depression gehäuft gemeinsam auf (Thapar et al., 2012)."
+        },
+        {
+          "art": "text",
+          "text": "Eine depressive Episode klingt bei jungen Menschen mit Behandlung oft innerhalb einiger Monate ab. Rückfälle sind aber häufig, und wer in der Jugend eine Depression hatte, hat auch als Erwachsener ein erhöhtes Risiko. Deshalb lohnt es sich, früh zu handeln, die Behandlung nicht zu früh zu beenden und nach einer Episode aufmerksam zu bleiben.\n\n**Schutzfaktoren** sind mindestens eine verlässliche Bezugsperson, Freundschaften, das Gefühl, irgendwo dazuzugehören, Erfolgserlebnisse, körperliche Aktivität, ausreichend Schlaf und die Erfahrung, Probleme selbst lösen zu können. Die Schule kann viele davon stärken."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder haben noch keine richtigen Sorgen – eine Depression gibt es erst bei Erwachsenen.",
+          "fakt": "Depressionen kommen schon im Kindesalter vor, wenn auch seltener als bei Jugendlichen. Sie zeigen sich bei Kindern oft als Reizbarkeit, Rückzug oder körperliche Beschwerden und werden deshalb leicht übersehen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Eine Depression in der Jugend ist nur eine Phase, die sich von selbst auswächst.",
+          "fakt": "Stimmungsschwankungen gehören zur Pubertät, eine Depression nicht. Sie beeinträchtigt Schule, Freundschaften und Entwicklung, kann wiederkehren und ist der wichtigste Risikofaktor für Suizidalität. Abwarten ohne fachliche Einschätzung ist deshalb keine gute Lösung."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Rückzug, Müdigkeit und Leistungsabfall haben viele mögliche Gründe. Die Abklärung ist Aufgabe von Fachleuten. Für Sie ist es hilfreich, die wichtigsten Möglichkeiten zu kennen, damit Sie genau beobachten und im Gespräch mit Eltern und Fachleuten die richtigen Fragen stellen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussehen kann",
+          "punkte": [
+            {
+              "wie": "Traurigkeit und Trauer",
+              "unterschied": "Nach einem Verlust sind Trauer, Weinen und Rückzug normal. Trauer kommt meist in Wellen; dazwischen kann das Kind lachen und spielen. Bei einer Depression ist die Freudlosigkeit anhaltend und umfassend, oft mit Selbstabwertung. Trauer kann aber in eine Depression übergehen."
+            },
+            {
+              "wie": "Angststörungen",
+              "unterschied": "Auch Angst führt zu Rückzug und Vermeidung; im Vordergrund stehen aber Sorgen und Befürchtungen, nicht die Freudlosigkeit. Beides tritt häufig zusammen auf."
+            },
+            {
+              "wie": "ADHS",
+              "unterschied": "Konzentrationsprobleme gibt es bei beiden. Bei ADHS bestehen sie seit früher Kindheit, bei einer Depression treten sie neu auf, zusammen mit Stimmungsveränderung."
+            },
+            {
+              "wie": "Mobbing, Gewalt oder Belastungen zu Hause",
+              "unterschied": "Rückzug und Traurigkeit können eine verständliche Reaktion auf eine bedrohliche Lage sein. Dann steht der Schutz des Kindes an erster Stelle – eine Depression kann zusätzlich bestehen."
+            },
+            {
+              "wie": "Körperliche Ursachen und Schlafmangel",
+              "unterschied": "Blutarmut, Schilddrüsenerkrankungen, andere Krankheiten oder chronischer Schlafmangel, etwa durch nächtliche Mediennutzung, können müde und lustlos machen. Eine ärztliche Untersuchung gehört zur Abklärung."
+            },
+            {
+              "wie": "Oppositionelles Verhalten",
+              "unterschied": "Gereiztheit und Verweigerung können zu einer Depression gehören. Wer nur auf das Verhalten reagiert, übersieht leicht die Not dahinter."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Entscheidend sind Veränderung, Dauer und Beeinträchtigung. Beschreiben Sie, was Sie seit wann beobachten, und überlassen Sie die Einordnung den Fachleuten."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: was im Schulalltag hilft",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der wichtigste Schritt ist oft der einfachste: das Kind **ansprechen**. Wählen Sie einen ruhigen Moment ohne Publikum und benennen Sie konkret, was Ihnen aufgefallen ist, ohne zu bewerten: „Mir ist aufgefallen, dass du in letzter Zeit oft allein bist und im Training fehlst. Ich mache mir ein bisschen Sorgen. Wie geht es dir?“ Hören Sie zu, spiegeln Sie, was Sie hören, und widerstehen Sie dem Impuls, die Sorgen kleinzureden („Das wird schon wieder“) oder sofort Lösungen anzubieten. Viele Jugendliche sind erleichtert, wenn jemand ihre Veränderung bemerkt."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Regelmäßiger kurzer Kontakt mit einer vertrauten Person, etwa ein Gruß am Morgen und fünf Minuten am Ende der Woche.",
+            "Anforderungen vorübergehend anpassen: Aufgaben in kleinen Schritten, Fristen verlängern, Prioritäten setzen – abgesprochen im Team und mit den Eltern.",
+            "Kleine Erfolge sichtbar machen und konkret würdigen, ohne zu übertreiben.",
+            "Aktiv bleiben unterstützen: Bewegung, eine Aufgabe in der Klasse, ein Angebot in der Pause – Aktivität kann die Stimmung heben, auch wenn der Antrieb fehlt.",
+            "Zugehörigkeit stärken: Partnerarbeit mit einem freundlichen Mitschüler, Einbezug in die Gruppe ohne Druck.",
+            "Beobachtungen sachlich dokumentieren und mit den Fallverantwortlichen teilen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "„Reiß dich zusammen“ oder „Anderen geht es viel schlechter“.",
+            "Das Kind vor der Klasse auf seine Stimmung ansprechen.",
+            "Rückzug als Faulheit oder Desinteresse deuten und mit Strafen beantworten.",
+            "Alles abnehmen und nichts mehr zutrauen – auch das nimmt Erfolgserlebnisse.",
+            "Versprechen, niemandem etwas zu sagen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Zusammenarbeit mit den Eltern.** Sprechen Sie Ihre Beobachtungen nach Absprache im Team mit den Eltern an – beschreibend, ohne Diagnose und ohne Schuldzuweisung. Fragen Sie, wie sie ihr Kind zu Hause erleben. Ermutigen Sie zu einer fachlichen Abklärung, etwa bei der Kinderärztin oder dem Kinderarzt, einer Kinder- und Jugendpsychiaterin oder einer psychologischen Beratungsstelle. Manche Eltern reagieren erschrocken oder abwehrend; geben Sie Zeit und bleiben Sie im Kontakt. Wenn ein Elternteil selbst belastet ist, braucht die Familie oft zusätzliche Unterstützung."
+        },
+        {
+          "art": "fall",
+          "titel": "Wie es mit Sara weiterging",
+          "text": "Die Klassenlehrerin spricht Sara nach der Stunde an und sagt, was ihr aufgefallen ist. Sara zuckt erst mit den Schultern, erzählt dann, dass sie nachts kaum schläft und „alles zu viel“ sei. Die Lehrerin fragt ruhig, ob Sara manchmal daran denke, nicht mehr leben zu wollen. Sara verneint, sagt aber, sie wünsche sich oft, „einfach weg“ zu sein. Die Lehrerin bedankt sich für ihre Offenheit, sagt, dass sie sich Hilfe holen wird, und informiert noch am selben Tag die Fallverantwortliche. Im Gespräch mit der Mutter wird eine Abklärung vereinbart. In der Schule bekommt Sara vorübergehend weniger Hausaufgaben und einen festen Termin pro Woche mit der Educatrice.",
+          "fragen": [
+            "Welche Schritte der Lehrerin waren besonders wichtig?",
+            "Warum war es richtig, die Fallverantwortliche noch am selben Tag zu informieren, obwohl Sara Suizidgedanken verneint hat?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Suizidalität ansprechen und weiterleiten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine Depression ist der wichtigste Risikofaktor für Suizidgedanken und Suizidversuche im Jugendalter (Hawton, Saunders & O’Connor, 2012). Deshalb gehört zu jedem ernsthaften Gespräch über eine mögliche Depression auch die Frage nach Gedanken an den Tod. Viele Erwachsene scheuen diese Frage aus Sorge, das Kind erst auf die Idee zu bringen. Diese Sorge ist unbegründet: Die ruhige, direkte Frage erhöht das Risiko nicht, und viele Betroffene sind erleichtert, darüber sprechen zu können.\n\nFragen Sie klar und ohne Umschweife: „Manchmal geht es Menschen so schlecht, dass sie nicht mehr leben möchten. Geht es dir manchmal so?“ Wenn ja: „Hast du schon darüber nachgedacht, wie du es tun würdest?“ Hören Sie zu, ohne zu bewerten, und bleiben Sie ruhig."
+        },
+        {
+          "art": "liste",
+          "titel": "Warnzeichen",
+          "punkte": [
+            "Reden, Schreiben oder Zeichnen über Tod, Sterben oder Suizid.",
+            "Hoffnungslosigkeit („Es hat alles keinen Sinn“, „Ohne mich wären alle besser dran“).",
+            "Rückzug, Abschiednehmen, Verschenken wichtiger Dinge.",
+            "Plötzliche Ruhe oder Gelassenheit nach einer Zeit großer Verzweiflung.",
+            "Selbstverletzung, riskantes Verhalten, zunehmender Alkohol- oder Drogenkonsum."
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Bei Hinweisen auf Suizidgedanken lassen Sie das Kind oder die Jugendliche nicht allein zurück und informieren Sie sofort Ihre Leitung nach den internen Abläufen. Besteht eine akute Gefahr – etwa ein konkreter Plan oder Zugang zu Mitteln –, bleibt eine Erwachsene beim Kind, bis die zuständigen Stellen übernommen haben; im Notfall wird der Rettungsdienst gerufen. Versprechen Sie keine Verschwiegenheit. Weitere Schritte, etwa ein Sicherheitsplan, werden mit Fachleuten erarbeitet (Stanley & Brown, 2012). Das Modul „Selbstverletzung und Suizidalität“ beschreibt das Vorgehen ausführlich."
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Diagnose stellen Fachleute: Kinder- und Jugendpsychiaterinnen und -psychiater, Psychologinnen und Psychologen oder Psychotherapeutinnen und -therapeuten. Dazu gehören Gespräche mit dem Kind und den Eltern, Fragebögen, Informationen aus der Schule und eine körperliche Untersuchung, um andere Ursachen auszuschließen.\n\nDie Behandlung richtet sich nach dem Schweregrad (NICE, 2019). Bei einer **leichten Depression** stehen Begleitung, Beratung und psychologische Angebote im Vordergrund, oft mit einer kurzen Zeit aufmerksamen Beobachtens. Bei einer **mittelgradigen bis schweren Depression** wird eine Psychotherapie empfohlen, etwa eine kognitive Verhaltenstherapie, eine interpersonelle oder eine familienbezogene Therapie. **Antidepressiva** kommen bei Kindern und Jugendlichen nur bei mittelgradiger bis schwerer Depression in Frage, werden von Fachärztinnen und Fachärzten verordnet, in der Regel zusammen mit Psychotherapie, und eng begleitet. Zu Beginn einer solchen Behandlung können Suizidgedanken vorübergehend zunehmen; auch deshalb ist die Aufmerksamkeit der Erwachsenen im Umfeld wichtig."
+        },
+        {
+          "art": "text",
+          "text": "Die Schule ist Teil der Behandlung, auch wenn sie nicht behandelt. Ein verlässlicher Alltag, eine vertraute Ansprechperson, angepasste Anforderungen und eine gut geplante Rückkehr nach einer längeren Fehlzeit oder einem Klinikaufenthalt tragen wesentlich zur Genesung bei. Stimmen Sie sich mit den Eltern und – mit deren Einverständnis – mit den Behandelnden ab, welche Unterstützung sinnvoll ist. Nach einer depressiven Episode bleiben Sie aufmerksam: Rückfälle kündigen sich oft durch dieselben Veränderungen an wie beim ersten Mal."
+        },
+        {
+          "art": "weiter",
+          "text": "Informieren Sie die Fallverantwortlichen und Ihre Leitung, wenn Veränderungen länger als zwei Wochen anhalten, das Kind deutlich beeinträchtigt ist oder Sie sich Sorgen machen. Sofort handeln Sie bei Aussagen über Tod oder Suizid, bei Selbstverletzung und bei Hinweisen auf Gewalt oder Vernachlässigung. Für die Abklärung können das Diagnostique-Team, Kinderärztinnen und Kinderärzte sowie kinder- und jugendpsychiatrische Dienste einbezogen werden – über die internen Wege Ihrer Einrichtung."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Wie zeigt sich eine Depression bei jüngeren Kindern häufig?",
+      "optionen": [
+        "Vor allem durch ständiges, sichtbares Weinen",
+        "Oft durch Reizbarkeit, Bauch- oder Kopfweh, Spielunlust und Rückzug",
+        "Fast immer durch Hochstimmung und Übermut",
+        "Meist durch plötzlich bessere Schulleistungen"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Jüngere Kinder können ihre Gefühle oft noch nicht in Worte fassen. Eine Depression zeigt sich dann eher als Reizbarkeit, körperliche Beschwerden, Spielunlust und Rückzug. Sichtbare Traurigkeit kann vorkommen, ist aber nicht das einzige Zeichen; Hochstimmung spricht nicht für eine Depression."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Merkmale gehören zu einer Depression, wenn sie über mindestens zwei Wochen bestehen? (mehrere richtig)",
+      "optionen": [
+        "Freudlosigkeit an Dingen, die früher Spaß gemacht haben",
+        "Veränderter Schlaf oder Appetit",
+        "Anhaltende Gereiztheit",
+        "Ein einzelner trauriger Tag nach einer schlechten Note",
+        "Gedanken an den Tod"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Freudlosigkeit, Veränderungen von Schlaf und Appetit, bei Kindern und Jugendlichen auch Gereiztheit, sowie Gedanken an den Tod gehören zu den Merkmalen einer depressiven Episode. Ein einzelner trauriger Tag nach einer Enttäuschung ist eine normale Reaktion, keine Depression – entscheidend sind Dauer und Beeinträchtigung."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine 14-Jährige ist seit etwa sechs Wochen zurückgezogen, ihre Noten fallen, sie hat ihr Hobby aufgegeben und sagt: „Ist doch eh alles egal.“",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Abwarten – in der Pubertät ist das normal und geht vorbei.",
+        "Sie vor der Klasse fragen, was los ist, damit sie merkt, dass man sich kümmert.",
+        "Sie in einem ruhigen Moment ansprechen, konkret benennen, was Ihnen auffällt, zuhören, auch nach Gedanken an den Tod fragen und die Fallverantwortlichen informieren.",
+        "Den Eltern mitteilen, dass ihre Tochter depressiv ist und Medikamente braucht."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Veränderung, Dauer und Beeinträchtigung sprechen dafür, genau hinzuschauen. Ein ruhiges Gespräch unter vier Augen, das Beobachtungen benennt und auch Suizidgedanken erfragt, ist der richtige Schritt, ebenso die Information im Team. Abwarten verschenkt Zeit, Ansprechen vor der Klasse beschämt, und Diagnosen oder Medikamente sind Sache von Fachleuten."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Bei Kindern und Jugendlichen kann statt einer gedrückten Stimmung eine gereizte Stimmung im Vordergrund stehen.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. DSM-5-TR nennt ausdrücklich, dass die Stimmung bei Kindern und Jugendlichen auch gereizt sein kann. Deshalb werden depressive Jugendliche manchmal nur als „schwierig“ oder „aufmüpfig“ wahrgenommen, und die Not dahinter bleibt unbemerkt."
+    },
+    {
+      "art": "einfach",
+      "frage": "Worin unterscheidet sich Trauer nach einem Verlust typischerweise von einer Depression?",
+      "optionen": [
+        "Trauer kommt in Wellen; dazwischen sind Freude und Spiel möglich. Bei einer Depression ist die Freudlosigkeit anhaltend und oft mit Selbstabwertung verbunden.",
+        "Trauer dauert immer länger als eine Depression.",
+        "Bei Trauer gibt es nie Schlafprobleme.",
+        "Trauer betrifft nur Erwachsene."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Trauer verläuft meist in Wellen und lässt Momente der Freude zu; das Selbstwertgefühl bleibt eher erhalten. Bei einer Depression ist die Freudlosigkeit umfassend und anhaltend. Auch Trauer kann mit Schlafproblemen einhergehen und Kinder betreffen, und sie kann in eine Depression übergehen."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Junge sagt nach dem Unterricht leise: „Manchmal wünsche ich mir, ich wäre tot.“",
+      "frage": "Wie reagieren Sie?",
+      "optionen": [
+        "„So etwas sagt man nicht. Morgen sieht die Welt schon anders aus.“",
+        "Ruhig bleiben, zuhören, direkt nachfragen, ob er daran denkt, sich etwas anzutun, ihn nicht allein zurücklassen und sofort die Leitung informieren.",
+        "Das Thema wechseln, um ihn nicht weiter zu belasten.",
+        "Ihm versprechen, dass das unter Ihnen bleibt, damit er weiter mit Ihnen redet."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Aussagen über den Wunsch zu sterben werden immer ernst genommen. Die direkte Frage nach Suizidgedanken ist hilfreich, und die Leitung muss sofort informiert werden. Beschwichtigen und Themenwechsel lassen das Kind allein, und Verschwiegenheit dürfen Sie in dieser Lage nicht versprechen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was hilft einem Kind mit einer Depression im Schulalltag? (mehrere richtig)",
+      "optionen": [
+        "Kleine, erreichbare Aufgaben und sichtbare Erfolge",
+        "Der Satz „Reiß dich zusammen, anderen geht es schlechter“",
+        "Regelmäßige kurze Kontakte mit einer vertrauten Person",
+        "Das Kind vor der Klasse auf seine Stimmung ansprechen",
+        "Anforderungen vorübergehend anpassen, abgesprochen mit Team und Eltern"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Kleine Erfolge, verlässliche Beziehung und vorübergehend angepasste Anforderungen unterstützen die Genesung. Appelle an die Willenskraft und Vergleiche verstärken Schuldgefühle, und das Ansprechen vor der Klasse beschämt."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage zu Antidepressiva bei Jugendlichen trifft zu?",
+      "optionen": [
+        "Sie sind bei jeder Form der Depression das Mittel der ersten Wahl.",
+        "Die Schule kann sie bei Bedarf empfehlen.",
+        "Sie ersetzen eine Psychotherapie vollständig.",
+        "Sie kommen bei mittelgradiger bis schwerer Depression in Frage, werden von Fachärzten verordnet, meist zusammen mit Psychotherapie und enger Begleitung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Nach den Leitlinien kommen Antidepressiva bei jungen Menschen nur bei mittelgradiger bis schwerer Depression in Frage, verordnet von Fachärzten und in der Regel zusammen mit Psychotherapie. Bei leichter Depression stehen Begleitung und psychologische Angebote im Vordergrund. Empfehlungen zu Medikamenten gehören nicht zur Rolle der Schule."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Jugendliche, die seit Wochen sehr niedergeschlagen war, wirkt plötzlich auffallend ruhig und gelassen. Sie verschenkt ihre Lieblingsbücher an Mitschülerinnen.",
+      "frage": "Wie ist das einzuordnen?",
+      "optionen": [
+        "Als gutes Zeichen: Die Depression ist vorbei.",
+        "Als mögliches Warnzeichen für Suizidgedanken – sofort die Leitung informieren und die Jugendliche nicht allein lassen.",
+        "Als Zeichen von Großzügigkeit, das man loben sollte.",
+        "Als Hinweis auf eine Konzentrationsstörung."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Plötzliche Ruhe nach einer Zeit großer Verzweiflung und das Verschenken wichtiger Dinge können Warnzeichen sein, etwa wenn jemand eine Entscheidung getroffen hat. Das muss sofort ernst genommen werden. Erleichterung oder Lob würden die Gefahr übersehen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn eine depressive Episode abgeklungen ist, besteht kein erhöhtes Risiko mehr für eine weitere.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Rückfälle sind bei Depressionen häufig, auch Jahre später. Deshalb ist es wichtig, eine Behandlung nicht zu früh zu beenden und auf erneute Veränderungen zu achten, die sich oft ähnlich ankündigen wie beim ersten Mal."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welcher Umstand erhöht das Risiko für eine Depression bei Kindern und Jugendlichen besonders?",
+      "optionen": [
+        "Eine Depression bei einem Elternteil zusammen mit belastenden Lebensereignissen",
+        "Eine hohe Begabung",
+        "Einzelkind zu sein",
+        "Eine frühe Einschulung"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Eine Depression in der Familie gehört zu den stärksten Risikofaktoren – über Veranlagung und Lebensumstände. Belastungen wie Verluste, Mobbing oder Misshandlung kommen häufig hinzu. Begabung, Geschwisterzahl oder Einschulungsalter sind keine gesicherten Risikofaktoren."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Depressive Episode",
+      "erklaerung": "Zeitraum von mindestens zwei Wochen mit gedrückter oder gereizter Stimmung oder Freudlosigkeit und weiteren Beschwerden, die den Alltag deutlich beeinträchtigen."
+    },
+    {
+      "begriff": "Freudlosigkeit (Anhedonie)",
+      "erklaerung": "Verlust von Freude und Interesse an Dingen, die früher wichtig waren. Ein Kernmerkmal der Depression."
+    },
+    {
+      "begriff": "Suizidalität",
+      "erklaerung": "Oberbegriff für Gedanken an den Tod, Suizidgedanken, Suizidpläne und Suizidversuche. Jede Äußerung wird ernst genommen."
+    },
+    {
+      "begriff": "Warnzeichen",
+      "erklaerung": "Veränderungen oder Aussagen, die auf eine akute Suizidgefahr hindeuten können, etwa Hoffnungslosigkeit, Abschiednehmen oder plötzliche Ruhe nach großer Verzweiflung."
+    },
+    {
+      "begriff": "Sicherheitsplan",
+      "erklaerung": "Mit Fachleuten erarbeiteter, schriftlicher Plan für Krisen: Warnzeichen, eigene Strategien, Ansprechpersonen und Notfallnummern."
+    },
+    {
+      "begriff": "Kognitive Verhaltenstherapie",
+      "erklaerung": "Psychotherapie, die an Gedanken, Gefühlen und Verhalten ansetzt, etwa an abwertenden Denkmustern und am Rückzug. Bei Depressionen im Jugendalter gut untersucht."
+    },
+    {
+      "begriff": "Antidepressiva",
+      "erklaerung": "Medikamente gegen Depression. Bei jungen Menschen nur bei mittelgradiger bis schwerer Depression, fachärztlich verordnet und eng begleitet."
+    },
+    {
+      "begriff": "Rückfall",
+      "erklaerung": "Erneutes Auftreten einer depressiven Episode nach einer Besserung. Kündigt sich oft durch ähnliche Veränderungen an wie beim ersten Mal."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "thapar2012",
+    "niceNG134",
+    "hawton2012",
+    "stanleyBrown2012",
+    "schneiderMargraf2019",
+    "petermann2013"
+  ],
+  "verwandt": [
+    "selbstverletzung-suizid",
+    "angst",
+    "schulvermeidung",
+    "gespraechsfuehrung",
+    "stress-gehirn",
+    "medikation"
+  ],
+  "toolbox": [
+    "wenn-ich-traurig-bin",
+    "wenn-es-laenger-schwer-ist",
+    "drei-gute-dinge",
+    "wer-ist-fuer-mich-da",
+    "sicherheitsplan"
+  ]
+}
