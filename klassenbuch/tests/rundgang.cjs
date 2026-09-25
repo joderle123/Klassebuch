@@ -109,6 +109,10 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.evaluate(() => { window.__geoeffnet = []; }); await page.click('#kb-userchip');
   check('Klick auf die Person öffnet den Hub (statt einer Namensliste)', JSON.stringify(await page.evaluate(() => window.__geoeffnet)) === JSON.stringify([['../hub.html#/', 'cdse-hub']]) && !(await page.$('#kb-gate.open')));
 
+  await page.evaluate(sid => { localStorage.setItem('cdse-kb-zuordnung', JSON.stringify({ klassenbuch: { [sid]: 'hub123' } })); window.__geoeffnet = []; window.__kbGo('students'); location.hash = '#/student/' + encodeURIComponent(sid) + '?hub=uebersicht'; }, ids.tom); await warte(800);
+  await page.click('.kb-hub-dossier');
+  check('Zugeordnetes Kind: „Dossier im Hub“ öffnet das Hub-Dossier', JSON.stringify(await page.evaluate(() => window.__geoeffnet)) === JSON.stringify([['../hub.html#/schueler/hub123', 'cdse-hub']]));
+
   console.log('8) Keine Anfragen ins Internet, keine Fehler');
   check('Keine externen Anfragen (Google Fonts o. ä.)', extern.length === 0, extern);
   check('Keine Fehler in der Konsole', errors.length === 0, errors.slice(0, 5));

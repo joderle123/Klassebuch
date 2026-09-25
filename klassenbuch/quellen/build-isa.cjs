@@ -39,7 +39,6 @@ var NSPELL_JS = read('vendor/nspell.bundle.js');
 var SPELL_DATA = 'window.KB_SPELL_DATA={aff:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.aff.gz')).toString('base64') +
   '",dic:"' + fs.readFileSync(path.join(ROOT,'vendor/lb/lb_LU.dic.gz')).toString('base64') + '"};';
 var dos = read('dossier.html');
-var sav = read('SAVOIR.html');
 
 /* ---- Teile extrahieren ---- */
 var anwStyle  = between(anw, '<style>', '</style>');
@@ -48,9 +47,6 @@ var anwScript = between(anw, '<script>', '</script>');
 var dosStyle  = between(dos, '<style>', '</style>');
 var dosBody   = between(dos, '<body>', '<script>');
 var dosScript = between(dos, '<script>', '</script>');
-var savStyle  = between(sav, '<style>', '</style>');
-var savBody   = between(sav, '<body>', '<script>');
-var savScript = between(sav, '<script>', '</script>');
 
 /* ============================================================
    CSS-Scoper
@@ -120,7 +116,6 @@ function scopeCss(css, scope) {
 }
 var anwStyleScoped = scopeCss(anwStyle, '#anw-root');
 var dosStyleScoped = scopeCss(dosStyle, '#dos-root');
-var savStyleScoped = scopeCss(savStyle, '#sav-root');
 
 /* ============================================================
    Patches der anwesenheit-Engine
@@ -427,6 +422,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hub-avatar{width:54px;height:54px;border-radius:15px;font-size:23px;box-shadow:0 6px 16px rgba(79,91,213,.28);}
 .kb-hub-name{font-size:22px;}
 .kb-hub-head{padding-top:22px;}
+.kb-hub-id .kb-hub-dossier{margin-left:auto;align-self:center;}
 .card.kb-mini h4{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;margin:0 0 11px;padding-bottom:10px;border-bottom:1px solid var(--kb-border);}
 .kb-subhead{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--kb-text);}
 .kb-subhead.kb-subhead-mt{margin-top:30px;border-top:1px solid var(--kb-border);padding-top:24px;}
@@ -505,149 +501,23 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-acc .sv-prose{padding:0 0 14px;}
 .sv-do strong{color:var(--kb-accent2-dark);}
 .sv-dont strong{color:var(--kb-danger-dark);}
-/* ===== Geführter klinischer Trichter (KB_GUIDE) ===== */
-.kb-guide-disc{font-size:13px;line-height:1.55;color:var(--kb-text-soft);background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:12px;padding:11px 14px;margin:0 0 16px;}
-.kb-guide-host{margin:0;}
-.kb-guide-footer{margin-top:16px;text-align:center;}
-.kb-guide-expert{color:var(--kb-muted);}
-.gd-steps{display:flex;align-items:center;gap:4px;margin:0 0 18px;flex-wrap:wrap;}
-.gd-step{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--kb-muted-2);}
-.gd-step .gd-num{width:21px;height:21px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--kb-surface-2);border:1px solid var(--kb-border);color:var(--kb-muted);}
-.gd-step.is-on{color:var(--kb-accent);}
-.gd-step.is-on .gd-num{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
-.gd-step.is-done{color:var(--kb-accent2-dark);}
-.gd-step.is-done .gd-num{background:var(--kb-accent2-50);border-color:transparent;color:var(--kb-accent2-dark);}
-.gd-sep{flex:0 0 12px;height:2px;border-radius:2px;background:var(--kb-border);}
-.gd-card{background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:18px;padding:22px 24px;box-shadow:var(--kb-shadow-sm);}
-.gd-kicker{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--kb-accent);margin:0 0 6px;}
-.gd-q{font-size:19px;font-weight:800;letter-spacing:-.01em;margin:0 0 4px;color:var(--kb-text);line-height:1.25;}
-.gd-sub{font-size:13.5px;color:var(--kb-muted);margin:0 0 16px;line-height:1.5;}
-.gd-progress{height:6px;border-radius:6px;background:var(--kb-surface-2);overflow:hidden;margin:0 0 18px;}
-.gd-progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--kb-accent),var(--kb-accent-light));border-radius:6px;transition:width .3s ease;}
-.gd-chips{display:flex;flex-wrap:wrap;gap:9px;}
-.gd-chip{font:inherit;font-size:13.5px;font-weight:600;text-align:left;padding:10px 14px;border-radius:12px;background:var(--kb-surface);border:1.5px solid var(--kb-border);color:var(--kb-text);cursor:pointer;transition:border-color .12s ease,background .12s ease;line-height:1.35;}
-.gd-chip:hover{border-color:var(--kb-accent-light);background:var(--kb-accent-50);}
-.gd-chip.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);color:var(--kb-accent-dark);}
-.gd-chip.is-sel::before{content:'✓ ';font-weight:900;}
-.gd-cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:10px;}
-.gd-cat{font:inherit;text-align:left;padding:13px 15px;border-radius:14px;background:var(--kb-surface);border:1.5px solid var(--kb-border);cursor:pointer;transition:border-color .12s ease,background .12s ease;}
-.gd-cat:hover{border-color:var(--kb-accent-light);}
-.gd-cat.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);}
-.gd-cat.is-lock{border-color:transparent;background:var(--kb-danger-50);cursor:default;}
-.gd-cat-t{font-weight:800;font-size:13.5px;color:var(--kb-text);display:flex;align-items:center;gap:6px;}
-.gd-cat-t .gd-cat-n{margin-left:auto;font-size:11px;font-weight:800;color:#fff;background:var(--kb-accent);border-radius:999px;padding:1px 7px;}
-.gd-cat-f{font-size:11.5px;color:var(--kb-muted);margin-top:3px;line-height:1.4;}
-.gd-opts{display:flex;flex-direction:column;gap:8px;}
-.gd-opt{font:inherit;font-size:14px;font-weight:600;text-align:left;padding:12px 16px;border-radius:12px;background:var(--kb-surface);border:1.5px solid var(--kb-border);color:var(--kb-text);cursor:pointer;display:flex;align-items:center;gap:11px;transition:border-color .12s ease,background .12s ease;}
-.gd-opt:hover{border-color:var(--kb-accent-light);background:var(--kb-accent-50);}
-.gd-opt.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);color:var(--kb-accent-dark);}
-.gd-opt .gd-radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--kb-border);flex:0 0 auto;}
-.gd-opt.is-sel .gd-radio{border-color:var(--kb-accent);background:radial-gradient(circle at center,var(--kb-accent) 0 4px,transparent 5px);}
-.gd-conv{margin-top:18px;background:var(--kb-accent2-50);border-radius:12px;padding:12px 15px;}
-.gd-conv-h{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--kb-accent2-dark);margin:0 0 8px;}
-.gd-conv-row{display:flex;align-items:center;gap:10px;margin:0 0 6px;font-size:13px;}
-.gd-conv-row:last-child{margin-bottom:0;}
-.gd-conv-n{flex:1;font-weight:700;color:var(--kb-text);}
-.gd-conv-bar{flex:0 0 90px;height:7px;border-radius:7px;background:#fff;overflow:hidden;}
-.gd-conv-bar>i{display:block;height:100%;background:var(--kb-accent2);border-radius:7px;transition:width .3s ease;}
-.gd-nav{display:flex;align-items:center;gap:10px;margin-top:20px;}
-.gd-nav .gd-spacer{flex:1;}
-.gd-back{font:inherit;font-weight:700;font-size:14px;background:none;border:none;color:var(--kb-muted);cursor:pointer;padding:10px 4px;}
-.gd-back:hover{color:var(--kb-text);}
-.gd-count{font-size:12.5px;color:var(--kb-muted);font-weight:600;}
-.gd-axis{width:100%;font:inherit;text-align:left;padding:14px 18px;border-radius:14px;background:var(--kb-surface);border:1.5px solid var(--kb-border);cursor:pointer;margin:0 0 10px;display:flex;align-items:center;gap:14px;transition:border-color .12s ease,transform .12s ease,box-shadow .12s ease;}
-.gd-axis:hover{border-color:var(--kb-accent);transform:translateX(2px);box-shadow:var(--kb-shadow-sm);}
-.gd-axis-rank{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:14px;background:var(--kb-accent-50);color:var(--kb-accent-dark);flex:0 0 auto;}
-.gd-axis-b{flex:1;}
-.gd-axis-n{font-weight:800;font-size:15px;color:var(--kb-text);}
-.gd-axis-meta{font-size:12px;color:var(--kb-muted);margin-top:2px;}
-.gd-axis-go{color:var(--kb-accent);font-weight:800;font-size:20px;}
-.gd-axis.is-sel{border-color:var(--kb-accent);background:var(--kb-accent-50);}
-.gd-check{width:24px;height:24px;border-radius:7px;border:2px solid var(--kb-border);flex:0 0 auto;display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px;line-height:1;}
-.gd-axis.is-sel .gd-check{background:var(--kb-accent);border-color:var(--kb-accent);}
-.gd-multi-h{font-size:13.5px;font-weight:800;color:var(--kb-text-soft);margin:2px 2px 12px;}
-/* ===== Stylisches Lese-Ergebnis (Submuster) ===== */
-.gd-axiscard{margin-bottom:16px;padding:0;overflow:hidden;}
-.rs-hero{padding:20px 22px 16px;background:linear-gradient(135deg,var(--kb-accent-50),var(--kb-surface) 70%);border-bottom:1px solid var(--kb-border);}
-.rs-hero-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 9px;}
-.rs-hero-badge{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-accent2-dark);background:var(--kb-accent2-50);padding:4px 11px;border-radius:999px;}
-.rs-axis-chip{font-size:12px;font-weight:700;color:var(--kb-accent-dark);background:#fff;border:1px solid var(--kb-accent-100);padding:4px 11px;border-radius:999px;}
-.rs-hero-name{font-size:23px;font-weight:900;letter-spacing:-.02em;line-height:1.15;color:var(--kb-text);}
-.gd-axiscard .gd-caveat{margin:14px 18px 0;}
-.rs-list{padding:14px 16px 18px;display:flex;flex-direction:column;gap:10px;}
-.rs-sec{border:1px solid var(--kb-border);border-radius:14px;background:var(--kb-surface);overflow:hidden;transition:border-color .15s ease,box-shadow .15s ease;}
-.rs-sec[open]{border-color:var(--kb-accent-200);box-shadow:var(--kb-shadow-sm);}
-.rs-head{cursor:pointer;list-style:none;display:flex;align-items:center;gap:13px;padding:13px 15px;}
-.rs-head::-webkit-details-marker{display:none;}
-.rs-head:hover{background:var(--kb-accent-50);}
-.rs-ic{width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;font-size:18px;border-radius:11px;background:var(--kb-accent-50);}
-.rs-ht{flex:1;min-width:0;}
-.rs-title{display:block;font-weight:800;font-size:14.5px;color:var(--kb-text);line-height:1.25;}
-.rs-blurb{display:block;font-size:12.5px;color:var(--kb-muted);line-height:1.45;margin-top:2px;}
-.rs-sec[open] .rs-blurb{display:none;}
-.rs-more{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--kb-accent);white-space:nowrap;}
-.rs-sec[open] .rs-more{display:none;}
-.rs-chev{flex:0 0 auto;color:var(--kb-muted);font-size:12px;transition:transform .18s ease;}
-.rs-sec[open] .rs-chev{transform:rotate(180deg);}
-.rs-body{padding:0 16px 16px;font-size:14px;line-height:1.6;color:var(--kb-text-soft);}
-.rs-body>:first-child{margin-top:6px;}
-.rs-gold-lead{font-weight:600;color:var(--kb-text);}
-.gd-trend{font-size:12.5px;line-height:1.5;color:var(--kb-text-soft);background:var(--kb-surface-2);border:1px solid var(--kb-border);border-radius:10px;padding:9px 13px;margin:0 0 14px;}
-/* ===== Verlauf-Timeline ===== */
-.tl-filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;}
-.tl-chip{font-size:13px;font-weight:700;text-decoration:none;color:var(--kb-text-soft);background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:999px;padding:6px 13px;transition:all .12s ease;}
-.tl-chip span{opacity:.6;font-weight:800;margin-left:3px;}
-.tl-chip:hover{border-color:var(--kb-accent-light);color:var(--kb-text);}
+/* ===== Verlauf: Filter-Chips (der aktive war blau auf blau) ===== */
+.tl-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);font-size:13px;font-weight:650;text-decoration:none;}
+.tl-chip:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
 .tl-chip.is-on{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
-.tl-chip.is-on span{opacity:.85;}
-.tl{position:relative;padding-left:8px;}
-.tl-item{position:relative;display:flex;gap:14px;padding:0 0 18px 0;}
-.tl-item::before{content:'';position:absolute;left:18px;top:38px;bottom:-4px;width:2px;background:var(--kb-border);}
-.tl-item:last-child::before{display:none;}
-.tl-ic{position:relative;z-index:1;width:38px;height:38px;flex:0 0 auto;display:grid;place-items:center;font-size:17px;border-radius:50%;background:var(--kb-surface);border:1.5px solid var(--kb-border);box-shadow:var(--kb-shadow-sm);}
-.tl-screening .tl-ic{background:var(--kb-accent-50);border-color:var(--kb-accent-200);}
-.tl-absence .tl-ic{background:var(--kb-warn-50);border-color:transparent;}
-.tl-goal .tl-ic{background:var(--kb-accent2-50);border-color:transparent;}
-.tl-c{flex:1;min-width:0;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:12px 15px;box-shadow:var(--kb-shadow-sm);}
-.tl-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 5px;}
-.tl-t{font-weight:800;font-size:14px;color:var(--kb-text);}
-.tl-d{font-size:12px;color:var(--kb-muted);font-weight:600;white-space:nowrap;flex:0 0 auto;}
-.tl-b{font-size:13.5px;line-height:1.55;color:var(--kb-text-soft);}
-.tl-b .entry-body{margin:0;}
-.tl-scr em{font-style:normal;font-weight:800;font-size:10.5px;text-transform:uppercase;letter-spacing:.02em;opacity:.8;}
-.tl-goals{margin:4px 0 0;padding-left:18px;}
-.tl-goals li{margin:2px 0;}
-.gd-sb{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;padding:2px 8px;border-radius:8px;margin-left:8px;vertical-align:middle;}
-.gd-sb-deutlich{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
-.gd-sb-mittel{background:var(--kb-warn-50);color:#8a5a00;}
-.gd-sb-mild{background:var(--kb-accent-50);color:var(--kb-accent-dark);}
-.gd-risk{background:var(--kb-danger-50);border-radius:12px;padding:12px 15px;margin:0 0 16px;color:var(--kb-danger-dark);font-size:13.5px;font-weight:600;line-height:1.5;}
-.gd-result-head{text-align:center;padding:4px 0 2px;}
-.gd-result-badge{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--kb-accent2-dark);background:var(--kb-accent2-50);padding:4px 12px;border-radius:999px;}
-.gd-result-name{font-size:22px;font-weight:900;letter-spacing:-.02em;margin:10px 0 2px;color:var(--kb-text);line-height:1.2;}
-.gd-result-axis{font-size:13px;color:var(--kb-muted);}
-.gd-acute{background:var(--kb-danger-50);border:1.5px solid var(--kb-danger);border-radius:14px;padding:14px 16px;margin:0 0 16px;}
-.gd-acute.is-krit{background:var(--kb-danger);color:#fff;border-color:var(--kb-danger-dark);}
-.gd-acute-h{font-weight:900;font-size:15px;color:var(--kb-danger-dark);margin:0 0 6px;}
-.gd-acute.is-krit .gd-acute-h{color:#fff;}
-.gd-acute-list{margin:0 0 8px;padding-left:20px;font-size:13.5px;font-weight:600;}
-.gd-acute-do{font-size:13px;line-height:1.5;}
-.gd-acute:not(.is-krit) .gd-acute-do{color:var(--kb-danger-dark);}
-.gd-caveat{font-size:12.5px;line-height:1.5;color:var(--kb-text-soft);background:var(--kb-warn-50);border-radius:10px;padding:10px 13px;margin:14px 0 0;}
-.gd-altbox{margin-top:16px;border:1px dashed var(--kb-accent-200);border-radius:12px;padding:13px 15px;background:var(--kb-accent-50);}
-.gd-altbox-h{font-weight:800;font-size:13px;color:var(--kb-accent-dark);margin:0 0 4px;}
-.gd-altbox p{font-size:13px;color:var(--kb-text-soft);margin:0 0 10px;line-height:1.5;}
-.gd-gate-q{margin:0 0 16px;}
-.gd-gate-t{font-weight:700;font-size:14px;color:var(--kb-text);margin:0 0 8px;}
-.gd-conf{border-radius:12px;padding:13px 15px;margin:0 0 16px;border-left:4px solid var(--kb-muted);background:var(--kb-surface-2);}
-.gd-conf-l{font-weight:800;font-size:14.5px;color:var(--kb-text);}
-.gd-conf-t{font-size:12.5px;color:var(--kb-text-soft);margin-top:4px;line-height:1.5;}
-.gd-conf-ok{border-left-color:var(--kb-accent2);background:var(--kb-accent2-50);}
-.gd-conf-ok .gd-conf-l{color:var(--kb-accent2-dark);}
-.gd-conf-warn{border-left-color:var(--kb-warn);background:var(--kb-warn-50);}
-.gd-conf-warn .gd-conf-l{color:#8a5a00;}
-.gd-conf-muted{border-left-color:var(--kb-muted-2);}
-.gd-linkbtn{font:inherit;font-weight:700;font-size:inherit;background:none;border:none;color:var(--kb-accent);cursor:pointer;padding:0;text-decoration:underline;}
+.kb-ziel-ok{color:var(--kb-muted);}
+/* ===== Screening: Hinweis auf den Hub und frühere Angaben (nur lesen) ===== */
+.kb-scr-hinweis{background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:14px;padding:16px 18px;margin:0 0 16px;}
+.kb-scr-hinweis h3{margin:0 0 6px;font-size:16px;}
+.kb-scr-hinweis p{margin:0 0 12px;font-size:14px;line-height:1.55;color:var(--kb-text-soft);max-width:72ch;}
+.kb-scr-alt h4{margin:0 0 4px;font-size:15px;}
+.kb-scr-alt .kb-scr-sub{font-size:12.5px;color:var(--kb-muted);margin:0 0 12px;}
+.kb-scr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px 20px;margin:0 0 12px;}
+.kb-scr-grid h5{margin:0 0 6px;font-size:13.5px;}
+.kb-scr-grid ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:13.5px;}
+.kb-scr-dl{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:6px 14px;font-size:13.5px;margin:4px 0 0;}
+.kb-scr-dl dt{color:var(--kb-muted);}.kb-scr-dl dd{margin:0;font-weight:600;}
+@media (max-width:640px){.kb-scr-dl{grid-template-columns:minmax(0,1fr);}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 `;
 
@@ -684,46 +554,6 @@ var ACCENT_OVERRIDE = `
 #anw-root #btn-tt{ display:inline-flex; }
 #anw-root .sync-section,#anw-root #reconnect-bar{ display:none !important; }
 #dos-root .main{ max-width:1180px; margin:0 auto; }
-/* ---- Savoir (Screening) auf gemeinsame Tokens mappen ---- */
-#sav-root{
-  --ink:var(--kb-text); --paper:var(--kb-bg); --cream:var(--kb-surface-2);
-  --gold:var(--kb-accent2); --rust:var(--kb-accent); --sage:var(--kb-muted);
-  --line:var(--kb-border);
-  font-family:var(--kb-font);
-}
-/* Savoir-Innenansicht an den Klassenbuch-Look angleichen (nur CSS, keine Struktur) */
-#sav-root .topnav{ position:static; background:var(--kb-surface); padding:14px 28px; }
-#sav-root .topnav-inner,#sav-root .global-nav,#sav-root .main{ max-width:1120px; }
-#sav-root .global-nav{ padding:16px 28px 0; }
-#sav-root .main{ padding:26px 28px 80px; }
-#sav-root .brand-logo,#sav-root .brand-sub{ font-family:var(--kb-font); }
-#sav-root .brand-logo{ font-size:20px; font-weight:800; letter-spacing:-.02em; color:var(--kb-text); }
-#sav-root .brand-sub{ letter-spacing:.08em; }
-#sav-root .global-nav-btn,#sav-root .diag-subtab{ font-family:var(--kb-font); text-transform:none; letter-spacing:0; font-size:13.5px; font-weight:700; }
-#sav-root .global-nav-btn.active,#sav-root .diag-subtab.active{ color:var(--kb-accent); border-bottom-color:var(--kb-accent); }
-#sav-root .verdacht-guide{ font-size:13.5px; color:var(--kb-text-soft); background:var(--kb-accent-50); border:1px solid var(--kb-border); border-radius:10px; padding:10px 14px; margin:0 0 16px; line-height:1.5; }
-#sav-root .verdacht-mild{ margin-top:14px; border-top:1px solid var(--kb-border); }
-#sav-root .verdacht-mild>summary{ cursor:pointer; font-weight:700; font-size:13.5px; color:var(--kb-muted); padding:10px 0; list-style:none; }
-#sav-root .verdacht-mild>summary::-webkit-details-marker{ display:none; }
-#sav-root .verdacht-mild>summary::before{ content:'▸ '; color:var(--kb-muted); }
-#sav-root .verdacht-mild[open]>summary::before{ content:'▾ '; }
-/* Optionale "System & Kontext"-Sektion: standardmäßig ruhig & zugeklappt */
-#sav-root .kontext-modul-fold{ border:1px dashed var(--kb-border); border-radius:12px; background:var(--kb-surface-2); padding:0; }
-#sav-root .kontext-modul-fold>.kontext-modul-summary{ cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:13px 16px; font-weight:800; color:var(--kb-text); }
-#sav-root .kontext-modul-fold>.kontext-modul-summary::-webkit-details-marker{ display:none; }
-#sav-root .kontext-modul-fold>.kontext-modul-summary::before{ content:'▸'; color:var(--kb-muted); font-size:13px; transition:transform .15s; }
-#sav-root .kontext-modul-fold[open]>.kontext-modul-summary::before{ transform:rotate(90deg); }
-#sav-root .kontext-modul-fold .kontext-modul-opt{ font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:var(--kb-muted); }
-#sav-root .kontext-modul-fold .kontext-modul-badge{ margin-left:auto; font-size:11.5px; font-weight:800; color:#fff; background:var(--kb-accent2); border-radius:999px; padding:2px 9px; }
-#sav-root .kontext-modul-fold>:not(summary){ padding-left:16px; padding-right:16px; }
-#sav-root .kontext-modul-fold>.symdia-sym-grid{ padding-bottom:14px; }
-#sav-root .kontext-modul-fold .kontext-modul-subline{ padding-top:2px; padding-bottom:10px; }
-/* Kontext-Leiste über dem eingebetteten Screening */
-.sav-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 16px;background:var(--kb-accent-50);border-bottom:1px solid var(--kb-border);}
-.sav-bar .sav-back{font:inherit;font-weight:700;border:1px solid var(--kb-border);background:#fff;color:var(--kb-text);padding:7px 12px;border-radius:9px;cursor:pointer;}
-.sav-bar .sav-back:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
-.sav-bar .sav-who{font-weight:800;}
-.sav-bar .sav-hint{font-size:12px;color:var(--kb-muted);}
 /* Dossier ruhiger & luftiger */
 #dos-root .card{ border-radius:16px; box-shadow:none; }
 #dos-root .card-grid{ gap:18px; }
@@ -826,11 +656,11 @@ var SHELL_BODY_TOP = `
 <div class="kb-app" id="kb-app">
   <div class="kb-topbar">
     <button class="kb-burger" id="kb-burger" aria-label="Menü öffnen">☰</button>
-    <div class="kb-topbrand"><span class="kb-logo">📓</span><span>ISA-Journal</span></div>
+    <div class="kb-topbrand"><span class="kb-logo">📓</span><span>Journal</span></div>
   </div>
   <button class="kb-reopen" id="kb-reopen" aria-label="Seitenleiste einblenden" title="Seitenleiste einblenden">☰</button>
   <aside class="kb-side" id="kb-side" aria-label="Hauptnavigation">
-    <div class="kb-brand"><span class="kb-logo">📓</span><span class="kb-brandtext"><b>ISA-Journal</b><small>CDSE · Ambulant</small></span><button class="kb-collapse" id="kb-collapse" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen">«</button></div>
+    <div class="kb-brand"><span class="kb-logo">📓</span><span class="kb-brandtext"><b>Journal</b><small id="kb-brand-team">CDSE</small></span><button class="kb-collapse" id="kb-collapse" aria-label="Seitenleiste einklappen" title="Seitenleiste einklappen">«</button></div>
     <button class="kb-userchip" id="kb-userchip" aria-label="Aktuelle Person — klicken zum Wechseln"></button>
     <div class="kb-yearbar" id="kb-yearbar"></div>
     <nav class="kb-nav">
@@ -843,18 +673,18 @@ var SHELL_BODY_TOP = `
         <button class="kb-link" data-kb-nav="themes"><span class="kb-ic">🏷️</span>Themen-Analyse</button>
       </div>
       <div class="kb-navgroup">
-        <div class="kb-navlabel">Wissen &amp; Material</div>
-        <button class="kb-link" data-kb-nav="patho"><span class="kb-ic">🧠</span>Pathologien</button>
-        <button class="kb-link" data-kb-nav="material"><span class="kb-ic">🧰</span>Material-Bibliothek</button>
+        <div class="kb-navlabel">Im CDSE Hub</div>
+        <button class="kb-link" data-kb-hub="toolbox"><span class="kb-ic">🧰</span>Toolbox</button>
+        <button class="kb-link" data-kb-hub="screening"><span class="kb-ic">🔍</span>Screening</button>
+        <button class="kb-link" data-kb-hub="lernen"><span class="kb-ic">📖</span>Lernen</button>
       </div>
       <div class="kb-navgroup">
         <div class="kb-navlabel">Export &amp; Daten</div>
         <button class="kb-link" data-kb-nav="export"><span class="kb-ic">📑</span>Dossier-PDF</button>
-        <button class="kb-link" data-kb-nav="ai"><span class="kb-ic">🤖</span>KI-Export</button>
         <button class="kb-link" data-kb-nav="data"><span class="kb-ic">💾</span>Daten &amp; Backup</button>
       </div>
     </nav>
-    <div class="kb-foot">Alle Daten bleiben lokal auf diesem Gerät. Kein Server, keine Cloud.</div>
+    <div class="kb-foot">Gespeichert in diesem Browser, verschlüsselt im Hub-Tresor und – falls verbunden – in der Team-Datei. Keine Cloud.</div>
   </aside>
   <div class="kb-scrim" id="kb-scrim"></div>
   <main class="kb-stage" id="kb-stage">
@@ -942,7 +772,10 @@ var DOS_OVERRIDES = `
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
       '<a class="kb-hub-back" href="#/dashboard" data-route="#/dashboard">← Meine Schüler</a>'+
-      '<div class="kb-hub-id"><div class="kb-hub-avatar">'+initial+'</div><div><div class="kb-hub-name">'+escapeHtml(student.name)+'</div><div class="kb-hub-meta">'+meta.join(' · ')+'</div></div></div>'+
+      '<div class="kb-hub-id"><div class="kb-hub-avatar">'+initial+'</div><div><div class="kb-hub-name">'+escapeHtml(student.name)+'</div><div class="kb-hub-meta">'+meta.join(' · ')+'</div></div>'+
+        (function(){var z={};try{z=JSON.parse(localStorage.getItem('cdse-kb-zuordnung')||'{}')||{};}catch(e){}var hid=z.journal&&z.journal[sid];
+          return hid?'<button class="btn btn-sm kb-hub-dossier" type="button" data-kb-hub="schueler" data-kb-hub-zusatz="/'+escapeAttr(encodeURIComponent(hid))+'" title="Das verschlüsselte Dossier dieses Kindes im CDSE Hub öffnen">📂 Dossier im Hub</button>':'';})()+
+      '</div>'+
       '<div class="kb-hub-tabs">'+tb+'</div></div>';
   }
   function isaNoteRoute(sid){var ret=encodeURIComponent('#/student/'+encodeURIComponent(sid)+'?hub=notizen');return '#/entry/new/'+encodeURIComponent(sid)+'?return='+ret;}
@@ -984,8 +817,8 @@ var DOS_OVERRIDES = `
       scrVal = scrAcute ? '🚨 Krise' : ((scr.risiken&&scr.risiken.length) ? 'Risiko-Hinweis' : 'erfasst');
       scrAct = '<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=screening">Öffnen</button>';
     } else {
-      scrVal = (scr&&scr.noApi) ? 'lädt …' : '—';
-      scrAct = '<button class="btn btn-sm ra" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Start</button>';
+      scrVal = '—';
+      scrAct = '<button class="btn btn-sm ra" data-kb-hub="screening">Im Hub</button>';
     }
 
     /* ---- Förderziele ---- */
@@ -1054,17 +887,14 @@ var DOS_OVERRIDES = `
       items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
-      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+window.kbZiele(g).map(zielLi).join('')+'</ul>'});}
     });
     if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
+    /* Frühere Screenings: nur Datum, Zahl der Beobachtungen und Krisenhinweis – keine Verdachtsachsen */
     if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
-      var ax=(s.axes||[]).map(function(a){return escapeHtml(a.name)+' <em>'+escapeHtml(a.staerke)+'</em>';}).join(', ');
-      var mu=(s.muster||[]).map(function(m){return escapeHtml(m.name);}).join(' · ');
-      var b='';
-      if(s.acute)b+='<span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Akute Krise</span> ';
-      else if(s.risk)b+='<span class="sv-risk">⚠ Risiko</span> ';
-      b+='<div class="tl-scr">'+(ax?('Achsen: '+ax):'keine über Schwelle')+(mu?('<br>Submuster: <strong>'+mu+'</strong>'):'')+(s.confidence?('<br>Einordnung: '+escapeHtml(s.confidence)):'')+'</div>';
-      items.push({date:s.date,type:'screening',icon:'🧠',title:'Screening',body:b});
+      var b=(s.acute?'<span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Krisenhinweis</span> ':'')+
+        '<div class="tl-scr">'+(s.symCount|0)+' Beobachtung'+((s.symCount|0)===1?'':'en')+' angekreuzt (früheres Screening, Einzelheiten im Reiter „Screening“)</div>';
+      items.push({date:s.date,type:'screening',icon:'🧠',title:'Screening (früher)',body:b});
     });}
     var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(rep&&rep.date){items.push({date:rep.date,type:'report',icon:'🩺',title:escapeHtml(rep.type||'Diagnostischer Bericht'),body:'Bericht im Dossier hinterlegt.'});}
     items.sort(function(a,b){return (a.date<b.date)?1:(a.date>b.date?-1:0);});
@@ -1179,12 +1009,14 @@ var DOS_OVERRIDES = `
     return '<div class="kb-hub-pad"><div class="kb-placeholder"><div class="kb-placeholder-ic">🕸️</div><h3>Helfernetz</h3><p>Modul wird geladen …</p></div></div>';
   }
   function hubScreening(student){
-    var sid=student.id;
-    var disc='<p class="kb-guide-disc">Geführtes klinisches Screening (Savoir): Schritt für Schritt durchklicken — die Antworten verdichten sich wie ein Spinnennetz zum konkreten Submuster. <strong>Hypothesen, keine Diagnosen.</strong></p>';
-    var host='<div id="kb-guide-host" class="kb-guide-host" data-sid="'+escapeAttr(sid)+'">'+
-      '<div class="gd-card"><p class="gd-sub" style="margin:0;">Screening-Modul lädt …</p></div></div>';
-    var expert='<div class="kb-guide-footer"><button class="btn btn-sm kb-guide-expert" data-kb-act="open-screening" data-kb-arg="'+escapeAttr(sid)+'">Experten-Ansicht öffnen (vollständiges Savoir)</button></div>';
-    return '<div class="kb-hub-pad kb-hub-screening">'+disc+host+expert+'</div>';
+    var sid=student.id, S=window.KB_SCREENING, d=S?S.get(sid):null, akut=S?S.acuteFlags(sid):[];
+    var kopf='<div class="kb-scr-hinweis"><h3>Das Screening ist in den CDSE Hub umgezogen</h3>'+
+      '<p>Dort gibt es einen Beobachtungsbogen mit Stärken, Auswirkungen im Alltag und nächsten Schritten – ohne Verdachtsdiagnosen. Frühere Angaben aus dem Klassenbuch übernimmt der Hub in der Screening-Übersicht ins Dossier; hier bleiben sie zum Nachlesen.</p>'+
+      '<button class="btn btn-primary btn-sm" data-kb-hub="screening">Screening im Hub öffnen</button></div>';
+    if(!d||(!d.symptome.length&&!d.history.length)){return '<div class="kb-hub-pad">'+kopf+'<div class="empty-state">Im Klassenbuch wurde für '+escapeHtml(student.name)+' kein Screening erfasst.</div></div>';}
+    return '<div class="kb-hub-pad">'+kopf+
+      (akut.length?'<div class="hub-acute"><span>🚨 Frühere Angabe im Screening: '+akut.map(function(a){return escapeHtml(a.label);}).join(' · ')+' – bitte klären, ob das bekannt ist und begleitet wird.</span></div>':'')+
+      '<div class="kb-scr-alt" id="kb-scr-alt" data-sid="'+escapeAttr(sid)+'"><h4>Frühere Beobachtungen</h4><p class="kb-scr-sub">Wird geladen …</p></div></div>';
   }
   /* ---- Noten & Module (pro Schüler/Fach) ---- */
   function hubNoten(student){
@@ -1257,7 +1089,7 @@ var DOS_OVERRIDES = `
         html: hubHeader(student,tab)+'<div class="kb-hub-body">'+sectionHtml+'</div>',
         afterRender: function(root){
         if(baseAfter){try{baseAfter(root);}catch(e){}}
-        if(tab==='screening'&&window.KB_GUIDE){try{var gh=root.querySelector('#kb-guide-host');if(gh){window.KB_GUIDE.mount(gh,student);}}catch(e){}}
+        if(tab==='screening'&&window.KB_SCREENING&&window.KB_SCREENING.fuellen){try{window.KB_SCREENING.fuellen(root);}catch(e){}}
         if(tab==='helfernetz'&&window.KB_BUBBLE_WIRE){try{window.KB_BUBBLE_WIRE(root,student);}catch(e){}}
         if(tab==='fortschritt'&&window.KB_PEI){try{
           var sid2=student.id; var rr=function(){if(window.render){try{window.render();}catch(e){}}};
@@ -1300,19 +1132,28 @@ var DOS_OVERRIDES = `
     };
   }
 
+  /* Wochenziele liegen je nach Ansicht als Text oder als {text,done} vor.
+     Überall dieselbe Umwandlung – sonst erscheint „[object Object]“, und beim
+     Aktualisieren wird der Zieltext überschrieben (Fehler H5). */
+  window.kbZiele=function(arr){
+    return (Array.isArray(arr)?arr:[]).map(function(g){
+      var t=(g&&typeof g==='object')?String(g.text||''):String(g==null?'':g);
+      if(t==='[object Object]'){t='⚠ Zieltext verloren (Fehler einer älteren Version) – in einer Tageskopie nachsehen';}
+      return {text:t,done:!!(g&&typeof g==='object'&&g.done)};
+    }).filter(function(g){return g.text.trim();});
+  };
+  function zielLi(g){return '<li'+(g.done?' class="kb-ziel-ok"':'')+'>'+(g.done?'✓ ':'')+escapeHtml(g.text)+'</li>';}
   window.KB_DOS_RECONCILE=function(){
     if(!window.KB_ROSTER){return;}
     var keep=window.KB_ROSTER.ids();
     Repo.students=(Repo.students||[]).filter(function(s){return keep[s.id];});
-    Repo.entries=(Repo.entries||[]).filter(function(e){return keep[e.studentId];});
+    /* Einträge von Kindern, die nicht (mehr) in der Liste stehen, bleiben erhalten (Fehler H7) */
     (Repo.reunions||[]).forEach(function(r){
       if(r&&Array.isArray(r.studentOrder)){r.studentOrder=r.studentOrder.filter(function(id){return keep[id];});}
-      if(r&&r.goals){Object.keys(r.goals).forEach(function(k){if(k!=='group'&&!keep[k]){delete r.goals[k];}});}
     });
     try{
       if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){
         Storage.clear('students').then(function(){return Storage.putAll('students',Repo.students);}).catch(function(){});
-        Storage.clear('entries').then(function(){return Storage.putAll('entries',Repo.entries);}).catch(function(){});
         Storage.putAll('reunions',Repo.reunions).catch(function(){});
       }
     }catch(e){}
@@ -1335,14 +1176,20 @@ var SHELL_CONTROLLER = `
   var app=document.getElementById('kb-app');
   function $(id){return document.getElementById(id);}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  var PANELS=['dos-root','sav-root','isa-root','kb-data','isa-home','isa-agenda'];
+  var PANELS=['dos-root','kb-data','isa-home','isa-agenda'];
+  /* Hub-Apps im selben Ordner bzw. den Hub selbst öffnen – in denselben
+     benannten Tabs wie der Hub (ein Tab je App, kein Neuladen des Hubs) */
+  var HUB_ZIELE={toolbox:['toolbox.html','cdse-toolbox'],lernen:['lernen.html','cdse-lernen'],screening:['../hub.html#/screening','cdse-hub'],hub:['../hub.html#/','cdse-hub'],schueler:['../hub.html#/schueler','cdse-hub']};
+  function hubOpen(was,zusatz){var z=HUB_ZIELE[was];if(!z){return;}var w=window.open(z[0]+(zusatz||''),z[1]);if(w){try{w.focus();}catch(e){}}}
+  window.__kbHub=hubOpen;
+  document.addEventListener('click',function(ev){var el=ev.target.closest&&ev.target.closest('[data-kb-hub]');if(!el){return;}ev.preventDefault();hubOpen(el.getAttribute('data-kb-hub'),el.getAttribute('data-kb-hub-zusatz')||'');if(app.classList.contains('kb-open')){app.classList.remove('kb-open');}});
+  var DOS_ROUTES={students:'#/dashboard',reunion:'#/reunion',orga:'#/orga',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   var DOS_ROUTES={students:'#/dashboard',search:'#/search',themes:'#/themes',export:'#/export',ai:'#/ai-export'};
   function showPanel(id){for(var i=0;i<PANELS.length;i++){var el=$(PANELS[i]);if(el){el.classList.toggle('active',PANELS[i]===id);}}}
   function setActive(nav){var links=document.querySelectorAll('[data-kb-nav]');for(var i=0;i<links.length;i++){links[i].classList.toggle('active',links[i].getAttribute('data-kb-nav')===nav);}}
   function closeDrawer(){app.classList.remove('kb-open');}
 
   function go(nav){
-    if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}
     if(DOS_ROUTES[nav]){
       showPanel('dos-root'); setActive(nav);
       if(window.navigate){window.navigate(DOS_ROUTES[nav]);}
@@ -1356,12 +1203,9 @@ var SHELL_CONTROLLER = `
       showPanel('kb-data'); setActive('data');
       try{renderBkCounts();}catch(e){}
     } else if(nav==='material'){
-      showPanel('isa-root'); setActive('material');
-      if(window.KB_MATERIALS){try{window.KB_MATERIALS.openTab();}catch(e){}}
+      hubOpen('toolbox');
     } else if(nav==='patho'){
-      showPanel('sav-root'); setActive('patho');
-      var sb=$('sav-bar'); if(sb){sb.style.display='none';}
-      if(window.SAVOIR_API&&window.SAVOIR_API.gotoInfos){window.SAVOIR_API.gotoInfos();}
+      hubOpen('lernen');
     }
     closeDrawer();
   }
@@ -1415,13 +1259,8 @@ var SHELL_CONTROLLER = `
     else if(act==='go-students'){ go('students'); }
     else if(act==='open-notes'){ showPanel('dos-root'); setActive('students'); if(window.navigate){window.navigate('#/student/'+encodeURIComponent(arg)+'?hub=notizen');} }
     else if(act==='open-screening'){
-      showPanel('sav-root'); setActive('students');
-      var sb=$('sav-bar'); if(sb){sb.style.display='';}
-      var who=$('sav-who'); var nm=(window.KB_ROSTER&&window.KB_ROSTER.byId(arg));
-      if(who){who.textContent=nm?('Screening: '+nm.name):'Screening';}
-      window.__SAV_RETURN=arg;
-      if(window.KB_SCREENING){try{window.KB_SCREENING.openStudent(arg);}catch(e){}}
-      else if(window.SAVOIR_API&&window.SAVOIR_API.gotoScreening){window.SAVOIR_API.gotoScreening();}
+      showPanel('dos-root'); setActive('students');
+      if(window.navigate){window.navigate('#/student/'+encodeURIComponent(arg)+'?hub=screening');}
       closeDrawer();
     }
   });
@@ -1522,20 +1361,6 @@ var SHELL_CONTROLLER = `
   }
   if(window.KB_SYNC){window.KB_SYNC.onStatus(function(){renderSync();});window.KB_SYNC.init();}
 
-  // Savoir-Kontextleiste: zurück zum Schüler (Eingaben werden gesichert)
-  var savBack=$('sav-back');
-  if(savBack){savBack.addEventListener('click',function(){
-    if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}
-    var sid=window.__SAV_RETURN||(window.KB_SCREENING&&window.KB_SCREENING.activeId);
-    var sb=$('sav-bar'); if(sb){sb.style.display='none';}
-    showPanel('dos-root'); setActive('students');
-    if(sid&&window.navigate){window.navigate('#/student/'+encodeURIComponent(sid)+'?hub=screening');}
-    else if(window.navigate){window.navigate('#/dashboard');}
-  });}
-  // Sicherheitsnetz: Screening-Eingaben beim Verlassen/Tab-Wechsel sichern
-  window.addEventListener('beforeunload',function(){if(window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
-  document.addEventListener('visibilitychange',function(){if(document.hidden&&window.KB_SCREENING){try{window.KB_SCREENING.capture();}catch(e){}}});
-
   /* ============================================================
      Identität: „Wer arbeitet hier?" — erste Ansicht der App.
      Eigenständiger ISA-Speicher (kein Anwesenheits-Modul). Der gewählte
@@ -1572,13 +1397,29 @@ var SHELL_CONTROLLER = `
   function openGate(){if(!gate)buildGate();renderGateGrid();gate.classList.add('open');}
   function closeGate(){if(gate)gate.classList.remove('open');}
   function pickUser(u){setCurUser(u);addExtraUser(u);closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render();}catch(e){}}if($('isa-home')&&$('isa-home').classList.contains('active')&&window.KB_HOME){try{window.KB_HOME.render();}catch(e){}}}
-  function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser();
-    if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">wechseln</span>';c.title='Angemeldet als '+u+' — klicken zum Wechseln';}
+  /* Angemeldet im CDSE Hub? Dann gilt diese Person – kein zweites „Wer arbeitet
+     hier?“ und kein frei wählbarer Name. Der Hub legt sie beim Anmelden in
+     'cdse-nutzer' ab und entfernt sie beim Abmelden. Ohne Hub (Datei einzeln
+     geöffnet) bleibt die Personenwahl wie bisher. */
+  function hubNutzer(){try{var n=JSON.parse(localStorage.getItem('cdse-nutzer')||'null');return (n&&n.name)?n:null;}catch(e){return null;}}
+  function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser(), hn=hubNutzer();
+    if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">'+(hn?'Hub':'wechseln')+'</span>';
+      c.title=hn?('Angemeldet im CDSE Hub als '+u+' – Person wechseln: im Hub abmelden und neu anmelden'):('Angemeldet als '+u+' — klicken zum Wechseln');}
     else{c.innerHTML='<span class="kb-uc-av">?</span><span class="kb-uc-n">Wer bist du?</span>';c.title='Person wählen';}
   }
-  var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',openGate);}
-  updateUserChip();
-  if(!curUser()){openGate();}
+  var ucBtn=$('kb-userchip'); if(ucBtn){ucBtn.addEventListener('click',function(){if(hubNutzer()){hubOpen('hub');}else{openGate();}});}
+  function hubPersonUebernehmen(){var hn=hubNutzer();if(hn&&curUser()!==hn.name){pickUser(hn.name);}else{updateUserChip();}return !!hn;}
+  if(!hubPersonUebernehmen()&&!curUser()){openGate();}
+  window.addEventListener('storage',function(e){if(e.key==='cdse-nutzer'){hubPersonUebernehmen();teamZeigen();}});
+
+  /* Team aus dem Hub: Name in der Seitenleiste und im Fenstertitel */
+  function teamZeigen(){
+    var hn=hubNutzer(), t=hn&&hn.team, name='';
+    var liste=(window.CDSE_TEAMS||[]);for(var i=0;i<liste.length;i++){if(liste[i].id===t){name=liste[i].name;break;}}
+    var el=$('kb-brand-team');if(el){el.textContent=name||'CDSE';}
+    document.title='Journal · '+(name||'CDSE');
+  }
+  teamZeigen();
 
   /* ============================================================
      Schuljahre (KB_YEARS): Auswahl in der Seitenleiste + Verwaltung.
@@ -1906,14 +1747,24 @@ window.KB_SYNC=(function(){
      Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
   var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','pei','goals','years','agenda','tasks'];
   var BASE_LS='klassebuch_sync_base';
+  /* Welche App schreibt die Datei? Klassenbuch und Journal nutzen dasselbe
+     Format; eine fremde Datei wird abgelehnt statt vermischt (Fehler H2). */
+  var APP='journal', FREMD_COLLS=['noten','terms','timetables','blocks'];
+  /* Tiefe Kopie: Basis und Live-Daten dürfen sich nie Objekte teilen, sonst
+     sieht der Vergleich Änderungen „an Ort und Stelle“ nicht (Fehler K4). */
+  function kopie(o){return o==null?o:JSON.parse(JSON.stringify(o));}
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
 
   function eqPayload(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+  /* Je Datensatz gewinnt der jüngere Zeitstempel. Bei Gleichstand entscheidet
+     der Inhalt – auf allen Geräten gleich, damit die Datei nicht zwischen zwei
+     Fassungen hin- und herpendelt (früher gewann immer die eigene Fassung). */
+  function gewinnt(a,b){var ta=a._ts||0,tb=b._ts||0;if(ta!==tb){return ta>tb;}var sa=JSON.stringify(a),sb=JSON.stringify(b);return sa>=sb;}
   function mergeColl(remote,local){
     var by={},i,r,ex;
     for(i=0;i<(remote||[]).length;i++){r=remote[i];by[r.id]=r;}
-    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||(r._ts||0)>=(ex._ts||0)){by[r.id]=r;}}
+    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||gewinnt(r,ex)){by[r.id]=r;}}
     var out=[];for(var k in by){out.push(by[k]);}return out;
   }
   function diffColl(base,live,now){
@@ -1925,10 +1776,12 @@ window.KB_SYNC=(function(){
     return out;
   }
   function liveOf(coll){var out=[];for(var i=0;i<(coll||[]).length;i++){if(!coll[i]._del){out.push(coll[i].d);}}return out;}
-  function emptyDoc(){var d={_format:FMT,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
+  function emptyDoc(){var d={_format:FMT,_app:APP,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
   function buildLocalDoc(base,live,now){var ld=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var bc=(base&&base.colls&&base.colls[n])||[];ld.colls[n]=mergeColl(bc,diffColl(bc,live[n]||[],now));}return ld;}
-  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return nb;}
-  function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
+  /* Sammlungen, die diese Version nicht kennt (neuere App-Stände), unverändert durchreichen */
+  function fremdeBehalten(nb,remote){if(remote&&remote.colls){for(var k in remote.colls){if(COLLS.indexOf(k)<0&&Array.isArray(remote.colls[k])){nb.colls[k]=remote.colls[k];}}}return nb;}
+  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return fremdeBehalten(nb,remote);}
+  function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return fremdeBehalten(nb,remote);}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
   function summarize(doc){var keys=['roster','dosEntries','pei','goals','agenda','screening','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}return c;}
@@ -1943,13 +1796,13 @@ window.KB_SYNC=(function(){
     /* Sicherheitsnetz: Fehlt eine Sammlung im Dokument (ältere Team-Datei,
        oder die Sammlung steht nicht in COLLS), wird sie NICHT angewendet.
        Sonst käme syncApply([]) an und würde lokale Daten löschen. */
-    function sc(o,m,coll){if(!coll)return;s(o,m,liveOf(coll));}
+    function sc(o,m,coll){if(!coll)return;s(o,m,kopie(liveOf(coll)));}
     sc(window.KB_ROSTER,'syncApply',doc.colls.roster);
     sc(window.KB_DOS_SYNC,'applyEntries',doc.colls.dosEntries);
     sc(window.KB_DOS_SYNC,'applyReunions',doc.colls.dosReunions);
     sc(window.KB_ANW,'applyEntries',doc.colls.anwEntries);
     sc(window.KB_ANW,'applyNotes',doc.colls.anwNotes);
-    if(doc.colls.anwSettings){var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);}
+    if(doc.colls.anwSettings){var se=kopie(liveOf(doc.colls.anwSettings));s(window.KB_ANW,'applySettings',se[0]||null);}
     sc(window.KB_BUBBLE,'syncApply',doc.colls.bubble);
     sc(window.KB_SCREENING,'syncApply',doc.colls.screening);
     sc(window.KB_PEI,'syncApply',doc.colls.pei);
@@ -1979,6 +1832,7 @@ window.KB_SYNC=(function(){
       if(!txt||!txt.trim())return null;
       var d;try{d=JSON.parse(txt);}catch(e){return 'INVALID';}
       if(!d||d._format!==FMT||!d.colls)return 'INVALID';
+      if((d._app&&d._app!==APP)||(!d._app&&FREMD_COLLS.some(function(k){return !!d.colls[k];}))){return 'FREMD';}
       return d;
     });
   }
@@ -2088,9 +1942,10 @@ window.KB_SYNC=(function(){
     if(fehlt.length){setStatus({pending:false,error:'',warten:fehlt.join(', ')});return Promise.resolve();}
     if(status.warten)setStatus({warten:''});
     busy=true;setStatus({pending:true});
-    var now=Date.now();var live=collGet();
+    var now=Date.now();var live=kopie(collGet());
     return readFile().then(function(remote){
       if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unveraendert).',pending:false});busy=false;return;}
+      if(remote==='FREMD'){setStatus({error:'Diese Team-Datei gehört zum Klassenbuch, nicht zum Journal — bitte die Datei des Journals wählen. Nichts wurde verändert.',pending:false});busy=false;return;}
       var nb,apply;
       if(!base){nb=firstReconcile(live,remote||null,now);apply=true;}
       else{
@@ -2193,653 +2048,72 @@ window.KB_SYNC=(function(){
 `;
 
 /* ============================================================
-   SAVOIR (klinisches Screening) — als #sav-root eingebettet.
-   Das gesamte Original-Skript wird in eine Funktion gewrappt
-   (JS-Globals isoliert, keine Kollision mit anw/dos) und gibt
-   eine schmale window.SAVOIR_API nach außen: reine Scoring-/
-   Daten-Funktionen + getScreening/setScreening (Pro-Schüler-
-   Puffer) + Moduswechsel (Diagnostik / Krankheitsbilder).
-   ============================================================ */
-var SAVOIR_API_EXPORT = `
-  /* === Savoir-API nach außen (für Klassenbuch-Hub & KI-Export) === */
-  try{
-    window.SAVOIR_API = {
-      SAVOIR_GLOBAL: (typeof SAVOIR_GLOBAL!=='undefined')?SAVOIR_GLOBAL:null,
-      SAVOIR_TUNING: (typeof SAVOIR_TUNING!=='undefined')?SAVOIR_TUNING:null,
-      scoreVerdachtsachsen: (typeof scoreVerdachtsachsen!=='undefined')?scoreVerdachtsachsen:null,
-      computeSymptomScores: (typeof computeSymptomScores!=='undefined')?computeSymptomScores:null,
-      planMusterFor: (typeof planMusterFor!=='undefined')?planMusterFor:null,
-      symptomDiagnoseFor: (typeof symptomDiagnoseFor!=='undefined')?symptomDiagnoseFor:null,
-      STATE: (typeof STATE!=='undefined')?STATE:null,
-      showMode: (typeof showMode!=='undefined')?showMode:null,
-      showView: (typeof showView!=='undefined')?showView:null,
-      renderDiagnostik: (typeof renderDiagnostik!=='undefined')?renderDiagnostik:null,
-      getScreening: function(){
-        var g={symptome:[]}; try{ g=loadGlobalDiag()||g; }catch(e){}
-        var plans={}; try{ plans=JSON.parse(window.localStorage.getItem('savoir_plans')||'{}')||{}; }catch(e){}
-        return { symptome:(g.symptome||[]).slice(), plans:plans };
-      },
-      setScreening: function(data){
-        data=data||{};
-        try{ saveGlobalDiag({symptome:(data.symptome||[]).slice(), lastAchse:null}); }catch(e){}
-        try{ window.localStorage.setItem('savoir_plans', JSON.stringify(data.plans||{})); }catch(e){}
-        try{ if(typeof STATE!=='undefined'){STATE.diagSubtab='eingabe';} if(typeof showMode!=='undefined'){showMode('diagnostik');} }catch(e){}
-      },
-      gotoInfos: function(){ try{ if(typeof showMode!=='undefined'){showMode('krankheitsbilder');} }catch(e){} },
-      gotoScreening: function(){ try{ if(typeof STATE!=='undefined'){STATE.diagSubtab='eingabe';} if(typeof showMode!=='undefined'){showMode('diagnostik');} }catch(e){} }
-    };
-  }catch(e){ try{console.error('SAVOIR_API export failed',e);}catch(_){ } }
-`;
-/* API VOR dem Original-init() exportieren, damit SAVOIR_API auch dann steht,
-   falls init() in einer Umgebung mal stolpert. Alles in try/catch gekapselt. */
-var savScriptPatched = replaceOnce(savScript, '(function init() {',
-  SAVOIR_API_EXPORT + '\n/* --- danach folgt der originale Savoir-init --- */\n(function init() {',
-  'sav:api-before-init');
-var SAVOIR_MODULE = '(function(){\ntry{\n/* === SAVOIR.html <script> — gewrappt, JS-Globals isoliert === */\n' + savScriptPatched + '\n}catch(__savErr){try{console.error("SAVOIR embed error", __savErr);}catch(_){ }}\n})();';
-
-/* ============================================================
-   KB_SCREENING — Pro-Schüler-Speicher fürs Savoir-Screening.
-   Hält je Schüler {symptome, plans} (= Savoirs Eingabe-Puffer),
-   lädt sie beim Öffnen ins Savoir-Modul (setScreening) und liest
-   sie beim Verlassen zurück (capture). result()/detail() berechnen
-   über SAVOIR_API das kompakte Ergebnis (Achsen + Risiken + Submuster).
+   KB_SCREENING — nur noch zum Nachlesen. Das Screening ist in den CDSE Hub
+   umgezogen (Schüler → Dossier → Screening: Beobachtungsbogen ohne
+   Verdachtsdiagnosen). Frühere Angaben bleiben hier lesbar und werden über
+   die Team-Datei unverändert weitergereicht (Sammlung „screening“), bis der
+   Hub sie ins Dossier übernommen hat. Die Texte zu den Kürzeln stehen in
+   kb-screening-texte.js (neben dieser Datei, nur bei Bedarf geladen).
    ============================================================ */
 var SCREENING_MODULE = `
 window.KB_SCREENING=(function(){
   var LS='klassebuch_screening_v1';
-  var activeId=null;
+  var AKUT={'16.1':'Suizidale Gedanken berichtet','16.2':'Konkreter Suizidplan oder Vorbereitungs-Handlungen','16.3':'Selbstverletzendes Verhalten'};
   function loadAll(){try{var r=localStorage.getItem(LS);if(r){return JSON.parse(r)||{};}}catch(e){}return {};}
   function saveAll(o){try{localStorage.setItem(LS,JSON.stringify(o));}catch(e){}}
   var data=loadAll();
-  function get(sid){var r=data[sid];if(!r){r={symptome:[],plans:{},demografie:{},gate:{},history:[],updatedAt:''};}if(!r.symptome){r.symptome=[];}if(!r.plans){r.plans={};}if(!r.demografie){r.demografie={};}if(!r.gate){r.gate={};}if(!Array.isArray(r.history)){r.history=[];}return r;}
-  function set(sid,r){data[sid]=r;saveAll(data);}
-  function api(){return window.SAVOIR_API||null;}
-  function capture(){
-    if(!activeId)return;var a=api();if(!a||!a.getScreening)return;
-    try{var s=a.getScreening();set(activeId,{symptome:(s.symptome||[]).slice(),plans:s.plans||{},updatedAt:new Date().toISOString()});}catch(e){}
-  }
-  function openStudent(sid){
-    capture(); activeId=sid; var a=api();
-    if(a&&a.setScreening){try{a.setScreening(get(sid));}catch(e){}}
-  }
-  function plain(html){return String(html==null?'':html).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
-  /* Klinische Stellschrauben kommen zentral aus SAVOIR_TUNING (SAVOIR.html) via
-     SAVOIR_API. Fallbacks greifen nur, falls die API mal nicht bereit ist.
-     Diese Schicht verändert das Savoir-Scoring NICHT — sie liest dieselbe Config. */
-  function TUNE(){var a=window.SAVOIR_API;return (a&&a.SAVOIR_TUNING)?a.SAVOIR_TUNING:null;}
-  var ACUTE_FALLBACK={'16.2':{sev:'kritisch',forcesRisk:'R01',label:'Konkreter Suizidplan / Vorbereitungshandlungen'},'16.1':{sev:'akut',forcesRisk:null,label:'Suizidale Gedanken berichtet'},'16.3':{sev:'akut',forcesRisk:'R02',label:'Aktive Selbstverletzung'}};
-  var CRISIS_LINE='Sofort Fachweg einschalten: KJP-Notdienst, SOS Détresse 454545, im Notfall 112. Schüler/in nicht allein lassen.';
-  function acuteMap(){var t=TUNE();return (t&&t.acuteItems)?t.acuteItems:ACUTE_FALLBACK;}
-  function weakBelow(){var t=TUNE();return (t&&typeof t.weakGlobalBelow==='number')?t.weakGlobalBelow:3;}
-  function isRareAxis(id){var t=TUNE();if(t&&t.axisPrior&&t.axisPrior[id]!=null)return t.axisPrior[id]<=0.6;return (id==='A13'||id==='A04'||id==='A12');}
-  function acuteFlags(symptome){var M=acuteMap();var out=[];(symptome||[]).forEach(function(id){if(M[id])out.push({id:id,sev:M[id].sev,label:M[id].label});});out.sort(function(a,b){return (a.sev==='kritisch'?-1:0)-(b.sev==='kritisch'?-1:0);});return out;}
-  function matchGate(when,g){when=when||{};for(var k in when){if(k.slice(-2)==='In'){var f=k.slice(0,-2);if((when[k]||[]).indexOf(g[f])<0)return false;}else if(g[k]!==when[k]){return false;}}return true;}
-  /* Klinische Konfidenz aus dem Kriterien-Check (Dauer/Beeinträchtigung/Ausschluss),
-     regelbasiert aus SAVOIR_TUNING.confidenceRules. Bildet das DSM/ICD-Prinzip
-     "Symptome + Dauer + klinisch bedeutsame Beeinträchtigung + Ausschluss" ab.
-     Ändert NICHT, WELCHE Achse führt — nur, wie belastbar der Verdacht ist. */
-  function confidenceOf(gate){
-    var g=gate||{}; if(!g.dauer&&!g.beeintr&&!g.alt)return null;
-    var t=TUNE();
-    var rules=(t&&t.confidenceRules)?t.confidenceRules:[
-      {when:{alt:'ja'},tone:'warn',label:'Differential zuerst klären',text:''},
-      {when:{beeintr:'kaum'},tone:'muted',label:'Beobachten — aktuell kein bedeutsamer Leidensdruck',text:''},
-      {when:{dauer:'kurz'},tone:'warn',label:'Mögliche akute Belastungsreaktion — beobachten',text:''},
-      {when:{dauerIn:['mittel','lang'],beeintrIn:['merklich','stark']},tone:'ok',label:'Verdacht erhärtet — fachliche Abklärung empfohlen',text:''},
-      {when:{},tone:'muted',label:'Hinweis — weiter beobachten, Daten ergänzen',text:''}
-    ];
-    for(var i=0;i<rules.length;i++){if(matchGate(rules[i].when,g))return {key:'r'+i,tone:rules[i].tone,label:rules[i].label,text:rules[i].text||''};}
-    return null;
-  }
-  function result(sid){
-    var a=api(); var d=get(sid);
-    if(!a||!a.scoreVerdachtsachsen)return {hasData:false,noApi:true};
-    if(!d.symptome||!d.symptome.length)return {hasData:false,acute:acuteFlags(d.symptome)};
-    var res; try{res=a.scoreVerdachtsachsen(d.symptome.slice());}catch(e){return {hasData:false};}
-    var achsen=((res&&res.achsenSortiert)||[]).filter(function(x){return x&&x.staerke;});
-    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
-    var topMuster=null,topTopicKey=null,topAchseName=null;
-    for(var i=0;i<achsen.length && !topMuster;i++){
-      var ac=achsen[i].achse||{}; var tk=ac.topicKey; if(!tk||!d.plans[tk])continue;
-      if(a.computeSymptomScores){try{var ms=a.computeSymptomScores(d.plans[tk],tk);if(ms&&ms.length&&ms[0].muster){topMuster=ms[0].muster;topTopicKey=tk;topAchseName=ac.name;}}catch(e){}}
-    }
-    var conf=confidenceOf(d.gate);
-    return {hasData:true,achsen:achsen,risiken:risiken,topMuster:topMuster,topTopicKey:topTopicKey,topAchseName:topAchseName,confidence:conf,acute:acuteFlags(d.symptome),globalCount:(d.symptome||[]).length,updatedAt:d.updatedAt};
-  }
-  function symTextMap(){
-    var m={}; try{var a=api(); var pool=a&&a.SAVOIR_GLOBAL&&a.SAVOIR_GLOBAL.symptomPool; (pool&&pool.symptome||[]).forEach(function(s){m[s.id]=s.text;});}catch(e){} return m;
-  }
-  function detail(sid){
-    var a=api(); var r=result(sid); if(!r.hasData)return null;
-    var d=get(sid); var L=[]; var sm=symTextMap();
-    var acute=acuteFlags(d.symptome);
-    if(acute.length){
-      L.push('⚠⚠ AKUTE KRISE — SICHERHEIT HAT VORRANG ⚠⚠');
-      acute.forEach(function(x){L.push('  - '+x.label+' ['+x.sev+']');});
-      L.push('  '+CRISIS_LINE);
-      L.push('');
-    }
-    L.push('A) Erfasste Beobachtungen im Screening (die Antworten):');
-    if(d.symptome&&d.symptome.length){d.symptome.forEach(function(id){L.push('  - '+(sm[id]||id));});}else{L.push('  - (keine globalen Symptome markiert)');}
-    var SHK=(a&&a.SAVOIR_TUNING&&a.SAVOIR_TUNING.sharedKontextKeys)?a.SAVOIR_TUNING.sharedKontextKeys:['alter','geschlecht','schule','familie'];
-    function axName(tk){var g=a&&a.SAVOIR_GLOBAL;if(g){for(var i=0;i<g.achsen.length;i++){if(g.achsen[i].topicKey===tk)return g.achsen[i].name;}}return tk;}
-    var deepKeys=[];
-    if(d.plans){for(var dk in d.plans){var dp=d.plans[dk];if(dp&&((dp.symptome&&dp.symptome.length)||(dp.kontext&&Object.keys(dp.kontext).length)))deepKeys.push(dk);}}
-    // Eckdaten (einmal): aus der geteilten Demografie, lesbar gemacht
-    var demo=d.demografie||{};
-    if(Object.keys(demo).length&&a&&a.symptomDiagnoseFor&&deepKeys.length){
-      var lab={}; (a.symptomDiagnoseFor(deepKeys[0]).kontextFragen||[]).forEach(function(f){(f.optionen||[]).forEach(function(o){lab[f.id+'='+o.val]=(f.titel||f.id)+': '+o.text;});});
-      var dd=Object.keys(demo).map(function(k){return lab[k+'='+demo[k]]||(k+': '+demo[k]);});
-      if(dd.length)L.push('  Eckdaten: '+dd.join('; '));
-    }
-    if(deepKeys.length&&a&&a.symptomDiagnoseFor){
-      deepKeys.forEach(function(tk){
-        var diag=a.symptomDiagnoseFor(tk)||{}; var ps=d.plans[tk]||{};
-        L.push('  Vertiefung — '+axName(tk)+':');
-        if(ps.kontext&&diag.kontextFragen){
-          var cl=[]; diag.kontextFragen.forEach(function(f){if(SHK.indexOf(f.id)>=0)return;var v=ps.kontext[f.id]; if(v){var opt=(f.optionen||[]).filter(function(o){return o.val===v;})[0]; cl.push((f.titel||f.id)+': '+((opt&&opt.text)||v));}});
-          if(cl.length)L.push('    Kontext: '+cl.join('; '));
-        }
-        if(ps.symptome&&ps.symptome.length&&diag.symptomKategorien){
-          var tm={}; diag.symptomKategorien.forEach(function(k){(k.symptome||[]).forEach(function(s){tm[s.id]=s.text;});});
-          ps.symptome.forEach(function(id){L.push('    - '+(tm[id]||id));});
-        }
-      });
-    }
-    L.push('');
-    L.push('B) Ergebnis (vom Programm berechnet):');
-    if(r.confidence)L.push('Klinische Einordnung (Kriterien-Check Dauer/Beeinträchtigung): '+r.confidence.label+'.');
-    L.push('Verdachtsachsen (Ausprägung):');
-    if(r.achsen.length){r.achsen.forEach(function(x){L.push('  - '+((x.achse&&x.achse.name)||(x.achse&&x.achse.id)||'?')+': '+x.staerke);});}else{L.push('  - keine über Schwelle');}
-    if(r.risiken.length){L.push('Risiko-Hinweise:');r.risiken.forEach(function(x){L.push('  - '+((x.risiko&&x.risiko.name)||'?')+': '+x.staerke);});}
-    deepKeys.forEach(function(tk){
-      var ms=[]; try{ms=a.computeSymptomScores(d.plans[tk],tk)||[];}catch(e){}
-      var top=ms[0]; if(!top||!top.muster)return; var b=top.muster.bloecke||{};
-      L.push('');
-      L.push('Submuster — '+axName(tk)+': '+(top.muster.name||'?'));
-      if(b.profil)L.push('  Erklärung: '+plain(b.profil));
-      if(b.ansatzHaupt)L.push('  Umgang/Ansatz: '+plain(b.ansatzHaupt));
-      if(b.ansatzTust)L.push('  Konkret tun: '+plain(b.ansatzTust));
-      if(b.ansatzNicht)L.push('  Vermeiden: '+plain(b.ansatzNicht));
-      if(b.phasen&&b.phasen[0])L.push('  Nächste Schritte: '+(b.phasen[0].titel||'')+' — '+plain(b.phasen[0].was||b.phasen[0].ziele||''));
-      if(b.schuleAnpassungen)L.push('  Schulanpassungen: '+plain(b.schuleAnpassungen));
-      var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
-      if(krise)L.push('  Krisen-/Risikohinweis: '+plain(krise));
-    });
-    /* Ehrliche methodische Einordnung (Wrapper, ändert das Scoring nicht) */
-    var rare=(r.achsen||[]).filter(function(x){return x.achse&&isRareAxis(x.achse.id);}).map(function(x){return x.achse.name;});
-    L.push('');
-    L.push('Methodischer Hinweis: rechnerische Verdachts-/Triage-Hilfe (KI-Programm Savoir), KEINE Diagnose. Das Ergebnis ist eine Beobachtungs-Schwerpunkt-Hypothese, die einen Fachblick verdient; die klinische Bedeutung hängt von Dauer, Beeinträchtigung und Ausschluss ab (Kriterien-Check). Fachliche Abklärung (Mehr-Informanten, Anamnese, Goldstandards) bleibt erforderlich.');
-    if(rare.length)L.push('Basisraten-Vorsicht: '+rare.join(', ')+' sind selten — mit besonderer Zurückhaltung lesen.');
-    if((d.symptome||[]).length<weakBelow())L.push('Schwache Datenbasis: beruht auf wenigen Beobachtungen ('+(d.symptome||[]).length+') — als vorläufig behandeln.');
-    return {text:L.join('\\n'), updatedAt:r.updatedAt};
-  }
-  /* Datierter Snapshot fürs Verlauf-/Trend-Bild: kompakte Zusammenfassung des
-     aktuellen Ergebnisses. snapshotDaily upsertet einen Eintrag pro Kalendertag. */
-  function snapshotOf(sid){
-    var a=api(); var d=get(sid); var r=result(sid); if(!r||!r.hasData)return null;
-    var axes=(r.achsen||[]).slice(0,4).map(function(x){return {id:(x.achse&&x.achse.id)||'',name:(x.achse&&x.achse.name)||'',staerke:x.staerke};});
-    var muster=[];
-    if(a&&a.computeSymptomScores&&d.plans){for(var k in d.plans){var p=d.plans[k];if(!p||!((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))continue;try{var ms=a.computeSymptomScores(p,k);if(ms&&ms[0]&&ms[0].muster){var ax=null,GG=a.SAVOIR_GLOBAL;if(GG){for(var i=0;i<GG.achsen.length;i++){if(GG.achsen[i].topicKey===k){ax=GG.achsen[i];break;}}}muster.push({axis:(ax&&ax.name)||k,name:ms[0].muster.name||''});}}catch(e){}}}
-    var conf=confidenceOf(d.gate);
-    return {risk:!!(r.risiken&&r.risiken.length),acute:!!(r.acute&&r.acute.length),symCount:(d.symptome||[]).length,axes:axes,muster:muster,confidence:conf?conf.label:null};
-  }
-  function snapshotDaily(sid){
-    var s=snapshotOf(sid); if(!s)return;
-    var today=new Date().toISOString().slice(0,10);
-    var d=get(sid); d.history=Array.isArray(d.history)?d.history:[];
-    var snap={date:today}; for(var k in s)snap[k]=s[k];
-    var idx=-1; for(var i=0;i<d.history.length;i++){if(d.history[i].date===today){idx=i;break;}}
-    var isNew=(idx<0);
-    if(!isNew){ if(JSON.stringify(d.history[idx])===JSON.stringify(snap))return; d.history[idx]=snap; }
-    else { d.history.push(snap); }
-    d.history.sort(function(a,b){return a.date<b.date?1:-1;});
-    set(sid,d);
-    if(isNew&&window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
-  }
-  return {
-    get:function(sid){return get(sid);},
-    hasData:function(sid){var d=get(sid);return !!(d.symptome&&d.symptome.length);},
-    snapshotDaily:snapshotDaily,
-    history:function(sid){var d=get(sid);return (d.history||[]).slice();},
-    get activeId(){return activeId;},
-    setActive:function(sid){activeId=sid;},
-    /* Direkter Schreibzugriff für den geführten Trichter (KB_GUIDE):
-       schreibt {symptome, plans} pro Schüler, ohne die Experten-Ansicht zu
-       laden. activeId wird neutralisiert, damit ein späteres capture() aus der
-       Experten-Ansicht die frisch geführten Daten nicht überschreibt. */
-    update:function(sid,d){
-      d=d||{}; var r=get(sid);
-      r={ symptome:(d.symptome!=null?d.symptome.slice():(r.symptome||[])),
-          plans:(d.plans!=null?d.plans:(r.plans||{})),
-          demografie:(d.demografie!=null?d.demografie:(r.demografie||{})),
-          gate:(d.gate!=null?d.gate:(r.gate||{})),
-          history:(d.history!=null?d.history:(r.history||[])),
-          updatedAt:new Date().toISOString() };
-      set(sid,r); activeId=null;
-      if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
-      return r;
-    },
-    capture:capture,
-    openStudent:openStudent,
-    acuteFlags:function(sid){return acuteFlags((get(sid).symptome)||[]);},
-    confidenceOf:confidenceOf,
-    result:result,
-    detail:detail,
-    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''});}return out;},
-    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]={symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''};}});saveAll(data);}
-  };
-})();
-`;
-
-/* ============================================================
-   KB_GUIDE — Geführter klinischer Trichter ("durchklicken").
-   Reine Präsentations-Schicht über der UNVERÄNDERTEN Savoir-Engine:
-   - Phase 1 "Beobachten": Triage der 16 Kategorien → gezieltes Ankreuzen
-     der beobachtbaren Items (K16/Krise IMMER dabei). Ergebnis = globale
-     Symptom-IDs, die 1:1 an scoreVerdachtsachsen gehen.
-   - Phase 2 "Verdacht": scoreVerdachtsachsen verdichtet zur/zu den Top-Achse(n)
-     (+ Risikofilter R01-R03). Nutzer wählt die Achse zum Vertiefen.
-   - Phase 3 "Vertiefen": symptomDiagnoseFor(topicKey) liefert die exakten
-     kontextFragen + symptomKategorien. Eine Frage pro Schritt; nach jeder
-     Antwort zeigt computeSymptomScores live, welches Submuster führt
-     (Spinnennetz, das sich zusammenzieht).
-   - Phase 4 "Ergebnis": konkretes Submuster + Erklärung + Umgang + Goldstandards.
-   Scores sind per Konstruktion identisch zur Engine — es werden dieselben
-   Funktionen mit denselben Eingaben aufgerufen. Daten landen in KB_SCREENING
-   ({symptome, plans}); result()/detail() und KI-Export lesen daraus.
-   Die OPTIONALE "System & Kontext"-Schicht (verändert NIE das Ranking) ist
-   bewusst nicht Teil des Trichters; sie bleibt der Experten-Ansicht vorbehalten.
-   ============================================================ */
-var GUIDE_MODULE = `
-window.KB_GUIDE=(function(){
-  function api(){return window.SAVOIR_API||null;}
-  function SG(){var a=api();return (a&&a.SAVOIR_GLOBAL)?a.SAVOIR_GLOBAL:null;}
+  function kopie(o){return JSON.parse(JSON.stringify(o));}
+  function get(sid){var r=data[sid]||{};return kopie({symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:Array.isArray(r.history)?r.history:[],updatedAt:r.updatedAt||''});}
+  function hat(sid){var r=data[sid];return !!(r&&((r.symptome&&r.symptome.length)||(r.history&&r.history.length)));}
+  function acuteFlags(sid){return (get(sid).symptome||[]).filter(function(id){return AKUT[id];}).map(function(id){return {id:id,label:AKUT[id]};});}
   function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c];});}
-  function plain(h){return String(h==null?'':h).replace(/<[^>]*>/g,' ').replace(/&nbsp;/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/\\s+/g,' ').trim();}
-  function clamp(s,n){s=String(s||'');return s.length>n?(s.slice(0,n).replace(/\\s+\\S*$/,'')+'…'):s;}
-
-  var host=null, student=null, ST=null;
-
-  function symById(id){var g=SG();if(!g)return null;var p=g.symptomPool.symptome;for(var i=0;i<p.length;i++){if(p[i].id===id)return p[i];}return null;}
-  function axisByTopic(tk){var g=SG();if(!g)return null;for(var i=0;i<g.achsen.length;i++){if(g.achsen[i].topicKey===tk)return g.achsen[i];}return null;}
-  function symsOfCat(catId){var g=SG();if(!g)return [];return g.symptomPool.symptome.filter(function(s){return s.kategorie===catId;});}
-  function buildTiefe(tk){var a=api();var diag=(a&&a.symptomDiagnoseFor)?a.symptomDiagnoseFor(tk):null;var steps=[];var keys=sharedKeys();if(diag){(diag.kontextFragen||[]).forEach(function(f){if(keys.indexOf(f.id)<0)steps.push({type:'kontext',frage:f});});(diag.symptomKategorien||[]).forEach(function(k){if(k&&k.symptome&&k.symptome.length){steps.push({type:'symptome',kat:k});}});}return steps;}
-
-  function read(){return window.KB_SCREENING?window.KB_SCREENING.get(ST.sid):{symptome:[],plans:{}};}
-  function write(d){if(window.KB_SCREENING&&window.KB_SCREENING.update){window.KB_SCREENING.update(ST.sid,d);}}
-  function ensurePlan(tk,d){d.plans=d.plans||{};if(!d.plans[tk]){d.plans[tk]={symptome:[],kontext:{}};}var p=d.plans[tk];if(!p.symptome)p.symptome=[];if(!p.kontext)p.kontext={};return p;}
-
-  function initState(sid){
-    var st={sid:sid,stage:'breit',breitSub:'triage',cats:[],catIdx:0,selAxes:[],curIdx:0,axisTopicKey:null,axisName:null,tiefeSteps:[],tiefeIdx:0,_selInit:false};
-    if(!api()||!SG())return st;
-    var d=window.KB_SCREENING?window.KB_SCREENING.get(sid):{symptome:[],plans:{}};
-    var hasSym=d.symptome&&d.symptome.length;
-    if(hasSym){var seen={};(d.symptome||[]).forEach(function(id){var s=symById(id);if(s)seen[s.kategorie]=1;});st.cats=Object.keys(seen);}
-    var deepened=[];
-    if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))deepened.push(k);}}
-    if(deepened.length){st.selAxes=deepened;st._selInit=true;st.curIdx=0;st.axisTopicKey=deepened[0];var ax0=axisByTopic(deepened[0]);st.axisName=ax0?ax0.name:deepened[0];st.tiefeSteps=buildTiefe(deepened[0]);st.stage='ergebnis';return st;}
-    if(hasSym){st.stage='verdacht';return st;}
-    return st;
+  function datum(i){var m=/^(\\d{4})-(\\d{2})-(\\d{2})/.exec(String(i||''));return m?(m[3]+'.'+m[2]+'.'+m[1]):'';}
+  var texteLaden=null;
+  function texte(){
+    if(window.CDSE_KB_TEXTE){return Promise.resolve(window.CDSE_KB_TEXTE);}
+    if(!texteLaden){texteLaden=new Promise(function(res){var s=document.createElement('script');s.src='kb-screening-texte.js';s.onload=function(){res(window.CDSE_KB_TEXTE||null);};s.onerror=function(){res(null);};document.head.appendChild(s);});}
+    return texteLaden;
   }
-
-  /* ---------- Wrapper + geteilte Helfer (lesen SAVOIR_TUNING, ändern das Scoring nicht) ---------- */
-  function TUNE(){var a=api();return (a&&a.SAVOIR_TUNING)?a.SAVOIR_TUNING:null;}
-  function rareAxis(id){var t=TUNE();if(t&&t.axisPrior&&t.axisPrior[id]!=null)return t.axisPrior[id]<=0.6;return id==='A13'||id==='A04'||id==='A12';}
-  function weakGlobalBelow(){var t=TUNE();return (t&&typeof t.weakGlobalBelow==='number')?t.weakGlobalBelow:3;}
-  function weakAxisMax(){var t=TUNE();return (t&&typeof t.weakAxisEvidenceMax==='number')?t.weakAxisEvidenceMax:2;}
-  function sharedKeys(){var t=TUNE();return (t&&t.sharedKontextKeys)?t.sharedKontextKeys:['alter','geschlecht','schule','familie'];}
-  function gateQs(){var t=TUNE();return (t&&t.gateQuestions&&t.gateQuestions.length)?t.gateQuestions:[
-    {key:'dauer',titel:'Seit wann bestehen die Auffälligkeiten?',optionen:[{val:'kurz',text:'unter ~2 Wochen'},{val:'mittel',text:'einige Wochen bis Monate'},{val:'lang',text:'über ~6 Monate / anhaltend'}]},
-    {key:'beeintr',titel:'Wie stark ist der Alltag beeinträchtigt (Schule, Familie, Freunde)?',optionen:[{val:'kaum',text:'kaum oder nicht'},{val:'merklich',text:'merklich'},{val:'stark',text:'stark'}]},
-    {key:'alt',titel:'Gibt es eine naheliegendere Erklärung (akute Belastung, Substanz, somatisch)?',optionen:[{val:'nein',text:'eher nicht'},{val:'ja',text:'ja, möglich'}]}
-  ];}
-  function acuteBanner(){
-    var fl=(window.KB_SCREENING&&window.KB_SCREENING.acuteFlags)?window.KB_SCREENING.acuteFlags(ST.sid):[];
-    if(!fl.length)return '';
-    var krit=fl.some(function(x){return x.sev==='kritisch';});
-    return '<div class="gd-acute'+(krit?' is-krit':'')+'"><div class="gd-acute-h">🚨 Akute Krise — Sicherheit hat Vorrang</div>'+
-      '<ul class="gd-acute-list">'+fl.map(function(x){return '<li>'+esc(x.label)+(x.sev==='kritisch'?' <strong>(kritisch)</strong>':'')+'</li>';}).join('')+'</ul>'+
-      '<div class="gd-acute-do">Sofort Fachweg: <strong>KJP-Notdienst</strong> · <strong>SOS Détresse 454545</strong> · im Notfall <strong>112</strong>. Schüler/in nicht allein lassen.</div></div>';
-  }
-  function axisEvidence(symptome,axisId){var g=SG();if(!g)return 0;var map=g.symptomMapping||{};var n=0;(symptome||[]).forEach(function(id){if(map[id]&&map[id][axisId])n++;});return n;}
-  function deepenedAxes(d){var out=[];d=d||read();if(d.plans){for(var k in d.plans){var p=d.plans[k];if(p&&((p.symptome&&p.symptome.length)||(p.kontext&&Object.keys(p.kontext).length)))out.push(k);}}return out;}
-  function demoQuestions(){
-    var a=api();var keys=sharedKeys();var seen={};var out=[];
-    (ST.selAxes||[]).forEach(function(tk){var diag=a&&a.symptomDiagnoseFor?a.symptomDiagnoseFor(tk):null;if(!diag)return;(diag.kontextFragen||[]).forEach(function(f){if(keys.indexOf(f.id)>=0&&!seen[f.id]){seen[f.id]=1;out.push(f);}});});
-    return out;
-  }
-  function demoComplete(){var d=read();var demo=d.demografie||{};var qs=demoQuestions();if(!qs.length)return true;for(var i=0;i<qs.length;i++){if(!demo[qs[i].id])return false;}return true;}
-  function applyDemoToPlans(d){var demo=d.demografie||{};(ST.selAxes||[]).forEach(function(tk){var ps=ensurePlan(tk,d);Object.keys(demo).forEach(function(k){ps.kontext[k]=demo[k];});});}
-  function setCurrentAxis(i){ST.curIdx=i;ST.axisTopicKey=ST.selAxes[i];var ax=axisByTopic(ST.axisTopicKey);ST.axisName=ax?ax.name:ST.axisTopicKey;ST.tiefeSteps=buildTiefe(ST.axisTopicKey);ST.tiefeIdx=0;}
-  function startDeepening(){for(var i=0;i<ST.selAxes.length;i++){setCurrentAxis(i);if(ST.tiefeSteps.length){ST.stage='tiefe';return;}}ST.stage='kriterien';}
-  function nextAxisOrKriterien(){var i=ST.curIdx+1;while(i<ST.selAxes.length){setCurrentAxis(i);if(ST.tiefeSteps.length){ST.stage='tiefe';return;}i++;}ST.stage='kriterien';}
-
-  /* ---------- Phasen-Stepper ---------- */
-  function phaseBar(){
-    var order=['breit','verdacht','tiefe','kriterien','ergebnis'];
-    var labels={breit:'Beobachten',verdacht:'Verdacht',tiefe:'Vertiefen',kriterien:'Prüfen',ergebnis:'Ergebnis'};
-    var stage=(ST.stage==='demografie')?'tiefe':ST.stage;
-    var cur=order.indexOf(stage);
-    var h='<div class="gd-steps">';
-    order.forEach(function(s,i){
-      var cls=i<cur?'is-done':(i===cur?'is-on':'');
-      var num=i<cur?'✓':String(i+1);
-      h+=(i?'<span class="gd-sep"></span>':'')+'<span class="gd-step '+cls+'"><span class="gd-num">'+num+'</span>'+esc(labels[s])+'</span>';
+  /* Frühere Angaben lesbar darstellen: Beobachtungen nach Bereich, Vertiefung, Dauer/Umfeld */
+  function fuellen(root){
+    var el=root&&root.querySelector('#kb-scr-alt');if(!el){return;}
+    var sid=el.getAttribute('data-sid'), d=get(sid);
+    texte().then(function(X){
+      if(!document.body.contains(el)){return;}
+      var gruppen={}, folge=[], vert=[], fragen=[];
+      d.symptome.forEach(function(id){var t=X&&X.symptome[id], k=t?(X.kategorien[t[0]]||'Beobachtungen'):'Beobachtungen';if(!gruppen[k]){gruppen[k]=[];folge.push(k);}gruppen[k].push(t?t[1]:('Aussage '+id));});
+      Object.keys(d.plans||{}).forEach(function(th){var p=d.plans[th]||{}, T=X&&X.themen[th];
+        (p.symptome||[]).forEach(function(id){var t=T&&T.sym[id], x=t?t[1]:('Aussage '+id);if(vert.indexOf(x)<0){vert.push(x);}});
+        Object.keys(p.kontext||{}).forEach(function(f){var q=T&&T.fragen[f], v=p.kontext[f];fragen.push([q?q[0]:f,q&&q[1][v]!=null?q[1][v]:v]);});
+      });
+      Object.keys(d.demografie||{}).forEach(function(f){var v=d.demografie[f], q=null;if(X){Object.keys(X.themen).some(function(k){var x=X.themen[k].fragen[f];if(x&&x[1][v]!=null){q=x;return true;}return false;});}fragen.unshift([q?q[0]:f,q?q[1][v]:v]);});
+      ((X&&X.gate)||[]).forEach(function(g){var v=(d.gate||{})[g.key];if(v){fragen.unshift([g.titel,g.optionen[v]!=null?g.optionen[v]:v]);}});
+      var gesehen={};fragen=fragen.filter(function(q){var k=q[0]+'|'+q[1];if(gesehen[k]){return false;}gesehen[k]=1;return true;});
+      var h='<h4>Frühere Beobachtungen</h4><p class="kb-scr-sub">'+(d.updatedAt?'Stand '+datum(d.updatedAt)+' · ':'')+'Ja/Nein-Liste des alten Screenings. Die frühere automatische Auswertung wird nicht mehr angezeigt.'+(X?'':' (Die Texte zu den Kürzeln fehlen: kb-screening-texte.js liegt nicht neben dieser Datei.)')+'</p>';
+      h+='<div class="kb-scr-grid">'+folge.map(function(k){return '<div><h5>'+esc(k)+'</h5><ul>'+gruppen[k].map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul></div>';}).join('')+
+        (vert.length?'<div><h5>Weitere Beobachtungen (Vertiefung)</h5><ul>'+vert.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul></div>':'')+'</div>';
+      if(fragen.length){h+='<dl class="kb-scr-dl">'+fragen.map(function(q){return '<dt>'+esc(q[0])+'</dt><dd>'+esc(q[1])+'</dd>';}).join('')+'</dl>';}
+      el.innerHTML=h;
     });
-    return h+'</div>';
   }
-  function navBar(backLabel,nextLabel,nextG,count){
-    var h='<div class="gd-nav">';
-    h+=backLabel?('<button class="gd-back" data-g="back">‹ '+esc(backLabel)+'</button>'):'<span></span>';
-    h+='<span class="gd-spacer"></span>';
-    if(count)h+='<span class="gd-count">'+esc(count)+'</span>';
-    if(nextLabel)h+='<button class="btn btn-primary" data-g="'+esc(nextG||'next')+'">'+esc(nextLabel)+'</button>';
-    return h+'</div>';
-  }
-
-  /* ---------- Phase 1: Beobachten ---------- */
-  function drillCats(){var g=SG();if(!g)return [];return g.symptomPool.kategorien.filter(function(c){return ST.cats.indexOf(c.id)>=0||c.id==='K16';});}
-
-  function renderBreit(){
-    var g=SG();if(!g)return loading();
-    if(ST.breitSub==='triage'){
-      var d=read();var counts={};(d.symptome||[]).forEach(function(id){var s=symById(id);if(s)counts[s.kategorie]=(counts[s.kategorie]||0)+1;});
-      var tiles=g.symptomPool.kategorien.map(function(c){
-        var lock=(c.id==='K16');var sel=lock||ST.cats.indexOf(c.id)>=0;var n=counts[c.id]||0;
-        return '<button class="gd-cat'+(sel?' is-sel':'')+(lock?' is-lock':'')+'" data-g="cat" data-id="'+esc(c.id)+'"'+(lock?' disabled':'')+'>'+
-          '<div class="gd-cat-t">'+esc(c.name)+(lock?' 🔒':'')+(n?'<span class="gd-cat-n">'+n+'</span>':'')+'</div>'+
-          '<div class="gd-cat-f">'+esc(clamp(c.fokus,90))+'</div></button>';
-      }).join('');
-      return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 1 · Beobachten</p>'+
-        '<h3 class="gd-q">In welchen Bereichen zeigt sich etwas?</h3>'+
-        '<p class="gd-sub">Tippe die auffälligen Bereiche an — danach kreuzt du nur dort die konkreten Beobachtungen an. <strong>Krise &amp; Selbstgefährdung</strong> wird immer geprüft.</p>'+
-        '<div class="gd-cats">'+tiles+'</div>'+
-        navBar('',(ST.cats.length?'Weiter · '+ST.cats.length+' Bereich'+(ST.cats.length>1?'e':''):'Nur Krise prüfen')+' ›','breit-drill','')+'</div>';
-    }
-    /* drill */
-    var cats=drillCats();var c=cats[ST.catIdx]||cats[0];
-    var d2=read();var sel=d2.symptome||[];
-    var chips=symsOfCat(c.id).map(function(s){
-      var on=sel.indexOf(s.id)>=0;
-      return '<button class="gd-chip'+(on?' is-sel':'')+'" data-g="sym" data-id="'+esc(s.id)+'">'+esc(s.text)+'</button>';
-    }).join('');
-    var pct=Math.round(((ST.catIdx+1)/Math.max(1,cats.length))*100);
-    var last=ST.catIdx>=cats.length-1;
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 1 · Beobachten · '+esc(c.id==='K16'?'Krise':('Bereich '+(ST.catIdx+1)+'/'+cats.length))+'</p>'+
-      '<h3 class="gd-q">'+esc(c.name)+'</h3>'+
-      '<p class="gd-sub">'+esc(c.fokus)+'</p>'+
-      '<div class="gd-progress"><i style="width:'+pct+'%"></i></div>'+
-      '<div class="gd-chips">'+(chips||'<span class="muted">Keine Items.</span>')+'</div>'+
-      navBar('Zurück',(last?'Zur Auswertung ›':'Weiter ›'),'breit-next',(ST.catIdx+1)+' / '+cats.length)+'</div>';
-  }
-
-  /* ---------- Phase 2: Verdacht (Mehrfachauswahl) ---------- */
-  function staerkeBadge(s){return '<span class="gd-sb gd-sb-'+esc(s)+'">'+esc(s)+'</span>';}
-  function axisToggle(x){
-    var ac=x.achse||{};var on=ST.selAxes.indexOf(ac.topicKey)>=0;
-    var meta=(ac.goldstandards&&ac.goldstandards.length)?('Absicherung: '+clamp(ac.goldstandards.join(', '),52)):'';
-    return '<button class="gd-axis'+(on?' is-sel':'')+'" data-g="axis-toggle" data-topic="'+esc(ac.topicKey||'')+'">'+
-      '<span class="gd-check">'+(on?'✓':'')+'</span>'+
-      '<span class="gd-axis-b"><span class="gd-axis-n">'+esc(ac.name||'?')+(x.staerke?staerkeBadge(x.staerke):'')+'</span>'+(meta?'<span class="gd-axis-meta">'+esc(meta)+'</span>':'')+'</span></button>';
-  }
-  function renderVerdacht(){
-    var a=api();if(!a||!a.scoreVerdachtsachsen)return loading();
-    var d=read();var res=a.scoreVerdachtsachsen((d.symptome||[]).slice());
-    var achsen=(res&&res.achsenSortiert)||[];
-    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
-    var strong=achsen.filter(function(x){return x.staerke!=='mild';});
-    var mild=achsen.filter(function(x){return x.staerke==='mild';});
-    if(!ST._selInit){ST.selAxes=strong.map(function(x){return x.achse.topicKey;}).filter(Boolean);ST._selInit=true;}
-    var h=phaseBar();
-    if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — bei akuter Gefährdung den Fachweg einschalten (Helfernetz / KJP-Notdienst, 112).</div>';}
-    h+='<div class="gd-card"><p class="gd-kicker">Phase 2 · Beobachtungs-Schwerpunkte</p>';
-    if(achsen.length){
-      h+='<h3 class="gd-q">Was soll vertieft werden?</h3>'+
-         '<p class="gd-sub">Schwerpunkte, die einen <strong>Fachblick verdienen</strong>. <strong>Mehrfachauswahl</strong> — Komorbidität ist der Normalfall (z. B. ADHS <em>und</em> Depression); starke sind vorausgewählt, tippe zum An-/Abwählen. Reihung = rechnerische Symptomdichte, kein Diagnose-Ranking.</p>';
-      var list=strong.length?strong:achsen;
-      h+=list.map(function(x){return axisToggle(x);}).join('');
-      if(strong.length&&mild.length){h+='<details class="sv-acc" style="margin-top:6px;"><summary>Schwächere Tendenzen ('+mild.length+') — auch wählbar</summary><div class="sv-prose">'+mild.map(function(x){return axisToggle(x);}).join('')+'</div></details>';}
-      var rareShown=achsen.filter(function(x){return x.achse&&rareAxis(x.achse.id);}).map(function(x){return x.achse.name||'';});
-      h+='<div class="gd-caveat">Dauer, Verlauf und Beeinträchtigung prüft das Programm nicht hier — das kommt gleich als kurzer Kriterien-Check und gehört in die fachliche Abklärung.';
-      if(rareShown.length)h+='<br>Basisraten-Vorsicht bei <strong>'+rareShown.map(esc).join(', ')+'</strong>: selten.';
-      h+='</div>';
-      if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — ein einzelnes Zeichen ist kein Syndrom.</div>';}
-      var n=ST.selAxes.length;
-      h+='<div class="gd-nav"><button class="gd-back" data-g="back">‹ Beobachtungen</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="deepen-start"'+(n?'':' disabled')+'>'+(n?('Vertiefen ('+n+') ›'):'Mind. 1 wählen')+'</button></div>';
-    } else {
-      var scores=(res&&res.achsenScores)||{};var g=SG();
-      var raw=g.achsen.map(function(ac){return {achse:ac,score:scores[ac.id]||0};}).filter(function(x){return x.score>0;}).sort(function(a2,b2){return b2.score-a2.score;}).slice(0,3);
-      if(raw.length){
-        h+='<h3 class="gd-q">Noch kein belastbares Muster</h3><p class="gd-sub">Keine Achse erreicht die Konvergenz-Schwelle (mind. zwei zusammenpassende Beobachtungen). Mehr beobachten — oder einer leichten Tendenz nachgehen:</p>';
-        h+=raw.map(function(x){return axisToggle({achse:x.achse,staerke:'mild'});}).join('');
-        if((d.symptome||[]).length<weakGlobalBelow()){h+='<div class="gd-caveat">⚖ Schwache Datenbasis: erst '+(d.symptome||[]).length+' Beobachtung(en) — ein einzelnes Zeichen ist kein Syndrom.</div>';}
-        var n2=ST.selAxes.length;
-        h+='<div class="gd-nav"><button class="gd-back" data-g="back">‹ Beobachtungen</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="deepen-start"'+(n2?'':' disabled')+'>'+(n2?('Vertiefen ('+n2+') ›'):'Mind. 1 wählen')+'</button></div>';
-      } else {
-        h+='<h3 class="gd-q">Noch keine Beobachtungen</h3><p class="gd-sub">Geh zurück und kreuze einige Beobachtungen an, dann verdichtet sich hier ein Verdacht.</p>'+navBar('Beobachtungen ergänzen','','','');
-      }
-    }
-    return h+'</div>';
-  }
-
-  /* ---------- Phase 3: Eckdaten (einmal, geteilt) ---------- */
-  function renderDemografie(){
-    var d=read();var demo=d.demografie||{};var qs=demoQuestions();
-    var blocks=qs.map(function(f){
-      return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(f.titel)+'</div><div class="gd-opts">'+
-        (f.optionen||[]).map(function(o){var on=demo[f.id]===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="demo" data-key="'+esc(f.id)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+'</div></div>';
-    }).join('');
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 3 · Eckdaten (einmal)</p>'+
-      '<h3 class="gd-q">Kurz zur Person</h3><p class="gd-sub">Gilt für alle gewählten Achsen — du gibst es nur <strong>einmal</strong> ein, nicht pro Achse erneut.</p>'+
-      (blocks||'<p class="gd-sub">Keine Eckdaten nötig.</p>')+
-      '<div class="gd-nav"><button class="gd-back" data-g="demo-back">‹ Zurück</button><span class="gd-spacer"></span><button class="btn btn-primary" data-g="demo-done">Weiter ›</button></div></div>';
-  }
-
-  /* ---------- Phase 4: Vertiefen (je Achse) ---------- */
-  function convergence(ps){
-    var a=api();if(!a||!a.computeSymptomScores)return '';
-    var scores=[];try{scores=a.computeSymptomScores(ps,ST.axisTopicKey)||[];}catch(e){}
-    if(!scores.length)return '<div class="gd-conv"><div class="gd-conv-h">Spur</div><div class="gd-conv-row"><span class="gd-conv-n muted">Noch zu wenig — wähle ein paar Merkmale.</span></div></div>';
-    var top=scores.slice(0,2);var max=top[0].score||1;
-    var rows=top.map(function(s){var w=Math.max(12,Math.round((s.score/max)*100));return '<div class="gd-conv-row"><span class="gd-conv-n">'+esc((s.muster&&s.muster.name)||'?')+'</span><span class="gd-conv-bar"><i style="width:'+w+'%"></i></span></div>';}).join('');
-    return '<div class="gd-conv"><div class="gd-conv-h">🕸 Aktuell am wahrscheinlichsten</div>'+rows+'</div>';
-  }
-  function renderTiefe(){
-    var steps=ST.tiefeSteps||[];if(!steps.length){nextAxisOrKriterien();return (ST.stage==='kriterien')?renderKriterien():renderTiefe();}
-    if(ST.tiefeIdx>=steps.length)ST.tiefeIdx=steps.length-1;
-    var step=steps[ST.tiefeIdx];var d=read();var ps=ensurePlan(ST.axisTopicKey,d);
-    var pct=Math.round(((ST.tiefeIdx+1)/steps.length)*100);
-    var nAx=(ST.selAxes||[]).length;var axPos=(nAx>1)?(' · Achse '+(ST.curIdx+1)+'/'+nAx):'';
-    var body='';
-    if(step.type==='kontext'){
-      var f=step.frage;var cur=ps.kontext[f.id];
-      body='<h3 class="gd-q">'+esc(f.titel)+'</h3><p class="gd-sub">'+esc(ST.axisName||'')+' · eine Auswahl</p>'+
-        '<div class="gd-progress"><i style="width:'+pct+'%"></i></div><div class="gd-opts">'+
-        (f.optionen||[]).map(function(o){var on=cur===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="opt" data-fid="'+esc(f.id)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+
-        '</div>';
-    } else {
-      var k=step.kat;
-      body='<h3 class="gd-q">'+esc(k.titel)+'</h3><p class="gd-sub">'+esc(ST.axisName||'')+' · zutreffende Merkmale ankreuzen</p>'+
-        '<div class="gd-progress"><i style="width:'+pct+'%"></i></div><div class="gd-chips">'+
-        (k.symptome||[]).map(function(s){var on=ps.symptome.indexOf(s.id)>=0;return '<button class="gd-chip'+(on?' is-sel':'')+'" data-g="tsym" data-id="'+esc(s.id)+'">'+esc(s.text)+'</button>';}).join('')+
-        '</div>';
-    }
-    var lastStep=ST.tiefeIdx>=steps.length-1;var lastAxis=ST.curIdx>=nAx-1;
-    var nextLabel=lastStep?(lastAxis?'Weiter zu Kriterien ›':'Nächste Achse ›'):'Weiter ›';
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 4 · Vertiefen — '+esc(ST.axisName||'')+esc(axPos)+'</p>'+body+
-      convergence(ps)+
-      navBar('Zurück',nextLabel,'tiefe-next',(ST.tiefeIdx+1)+' / '+steps.length)+'</div>';
-  }
-
-  /* ---------- Phase 5: Kriterien-Check (einmal, geteilt) ---------- */
-  function renderKriterien(){
-    var d=read();var g=d.gate||{};
-    var blocks=gateQs().map(function(q){
-      return '<div class="gd-gate-q"><div class="gd-gate-t">'+esc(q.titel)+'</div><div class="gd-opts">'+
-        (q.optionen||[]).map(function(o){var on=g[q.key]===o.val;return '<button class="gd-opt'+(on?' is-sel':'')+'" data-g="gate" data-key="'+esc(q.key)+'" data-val="'+esc(o.val)+'"><span class="gd-radio"></span>'+esc(o.text)+'</button>';}).join('')+
-        '</div></div>';
-    }).join('');
-    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(g):null;
-    var live=conf?('<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div></div>'):'';
-    return phaseBar()+'<div class="gd-card"><p class="gd-kicker">Phase 5 · Klinische Kriterien</p>'+
-      '<h3 class="gd-q">Kurz absichern, bevor wir einordnen</h3>'+
-      '<p class="gd-sub">Symptome allein sind keine Diagnose. Dauer, Beeinträchtigung und Ausschluss entscheiden über die klinische Bedeutung — gilt für alle gewählten Achsen.</p>'+
-      blocks+live+
-      '<div class="gd-nav"><button class="gd-back" data-g="kriterien-back">‹ Zurück</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="gate-skip">Überspringen</button> <button class="btn btn-primary btn-sm" data-g="gate-done">Ergebnis ansehen ›</button></div></div>';
-  }
-
-  /* ---------- Phase 6: Ergebnis (alle vertieften Achsen, vollständig lesbar) ---------- */
-  function firstSentence(html,n){var t=plain(html);if(!t)return '';var m=t.match(/^[^.!?]*[.!?]/);var s=(m&&m[0].length>=40)?m[0]:t;return clamp(s,n||150);}
-  function secCard(ic,title,blurb,full,open){
-    if(!full)return '';
-    return '<details class="rs-sec"'+(open?' open':'')+'>'+
-      '<summary class="rs-head"><span class="rs-ic">'+ic+'</span>'+
-        '<span class="rs-ht"><span class="rs-title">'+esc(title)+'</span>'+(blurb?'<span class="rs-blurb">'+esc(blurb)+'</span>':'')+'</span>'+
-        '<span class="rs-more">ganz lesen</span><span class="rs-chev">▾</span></summary>'+
-      '<div class="rs-body sv-prose">'+full+'</div></details>';
-  }
-  function musterSections(b,ax,openFirst){
-    b=b||{};var h='<div class="rs-list">';
-    if(b.profil)h+=secCard('🧭','Worum es geht',firstSentence(b.profil,170),b.profil,openFirst);
-    var umgang=[b.ansatzHaupt||'',b.ansatzTust?('<p class="sv-do"><strong>✓ Konkret tun</strong></p>'+b.ansatzTust):'',b.ansatzNicht?('<p class="sv-dont"><strong>✗ Vermeiden</strong></p>'+b.ansatzNicht):''].filter(Boolean).join('');
-    if(umgang)h+=secCard('🤝','Umgang mit diesem Profil',firstSentence(b.ansatzHaupt||b.ansatzTust||umgang,170)||'Wie du dich verhältst — und was du vermeidest.',umgang,false);
-    if(b.phasen&&b.phasen.length){var ph=b.phasen.map(function(p){return '<p><strong>'+esc(p.titel||'')+'</strong></p>'+(p.was||p.ziele||'');}).join('');var pt=b.phasen.map(function(p){return p.titel;}).filter(Boolean).slice(0,3).join(' → ');h+=secCard('🪜','Nächste Schritte',pt||'Der Weg in sinnvollen Etappen.',ph,false);}
-    if(b.schuleAnpassungen)h+=secCard('🏫','Schulanpassungen',firstSentence(b.schuleAnpassungen,170)||'Konkrete Anpassungen im Schulalltag.',b.schuleAnpassungen,false);
-    var krise=b.risikoKritisch||(b.krisenampel&&b.krisenampel.rot&&[].concat(b.krisenampel.rot.zeichen||[]).join('; '));
-    if(krise){var kfull=(String(krise).indexOf('<')>=0)?krise:('<p>'+esc(krise)+'</p>');h+=secCard('🚨','Krisen-/Risikohinweis',firstSentence(krise,170)||'Worauf du bei Gefahr sofort achtest.',kfull,false);}
-    if(ax&&ax.goldstandards&&ax.goldstandards.length)h+=secCard('🔬','Womit fachlich absichern',ax.goldstandards.slice(0,2).join(' · ')+(ax.goldstandards.length>2?' …':''),'<p class="rs-gold-lead">Diese Verfahren sichern den Verdacht fachlich ab:</p><ul>'+ax.goldstandards.map(function(g){return '<li>'+esc(g)+'</li>';}).join('')+'</ul>',false);
-    return h+'</div>';
-  }
-  function renderErgebnis(){
-    var a=api();if(!a)return loading();
-    var d=read();
-    var axes=(ST.selAxes&&ST.selAxes.length)?ST.selAxes.slice():deepenedAxes(d);
-    axes=axes.filter(function(tk){return d.plans&&d.plans[tk];});
-    var res=a.scoreVerdachtsachsen?a.scoreVerdachtsachsen((d.symptome||[]).slice()):null;
-    var risiken=((res&&res.aktiveRisiken)||[]).filter(function(x){return x&&x.staerke;});
-    var h=phaseBar();
-    if(risiken.length){h+='<div class="gd-risk">⚠ <strong>Risiko-Hinweis:</strong> '+risiken.map(function(x){return esc((x.risiko&&x.risiko.name)||'?')+' ('+esc(x.staerke)+')';}).join(', ')+' — Sicherheit hat Vorrang (Helfernetz / KJP-Notdienst, 112).</div>';}
-    var conf=(window.KB_SCREENING&&window.KB_SCREENING.confidenceOf)?window.KB_SCREENING.confidenceOf(d.gate):null;
-    if(conf){h+='<div class="gd-conf gd-conf-'+conf.tone+'"><div class="gd-conf-l">'+esc(conf.label)+'</div>'+(conf.text?'<div class="gd-conf-t">'+esc(conf.text)+'</div>':'')+'</div>';}
-    else{h+='<div class="gd-caveat">Klinische Kriterien (Dauer/Beeinträchtigung) noch nicht geprüft — <button class="gd-linkbtn" data-g="goto-kriterien">jetzt prüfen</button>, das schärft die Einordnung erheblich.</div>';}
-    if(!axes.length){
-      h+='<div class="gd-card"><div class="gd-result-head"><span class="gd-result-badge">Ergebnis</span><div class="gd-result-name">Noch nichts vertieft</div></div><p class="gd-sub" style="margin-top:12px;">Wähle in der Verdachts-Phase mindestens eine Achse zum Vertiefen.</p><div class="gd-nav"><button class="gd-back" data-g="goto-verdacht">‹ Achsen wählen</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="restart">Neu starten</button></div></div>';
-      return h;
-    }
-    /* datierten Snapshot festhalten (Verlauf/Trend) + Trend-Zeile zeigen */
-    if(window.KB_SCREENING&&window.KB_SCREENING.snapshotDaily){try{window.KB_SCREENING.snapshotDaily(ST.sid);}catch(e){}}
-    var hist=(window.KB_SCREENING&&window.KB_SCREENING.history)?window.KB_SCREENING.history(ST.sid):[];
-    if(hist.length>1){
-      var prev=hist[1],pAx=(prev.axes&&prev.axes[0])?(prev.axes[0].name+' ('+prev.axes[0].staerke+')'):'—';
-      h+='<div class="gd-trend">📈 <strong>Verlauf:</strong> '+hist.length+' Screenings · zuvor '+esc((prev.date||'').slice(8,10)+'.'+(prev.date||'').slice(5,7)+'.')+': '+esc(pAx)+(prev.acute?' · Krise':(prev.risk?' · Risiko':''))+' — kompletter Verlauf im Tab <strong>Verlauf</strong>.</div>';
-    }
-    if(axes.length>1){h+='<p class="gd-multi-h">'+axes.length+' Befunde (Komorbidität) — alle gehören in die fachliche Abklärung:</p>';}
-    axes.forEach(function(tk,i){
-      var ax=axisByTopic(tk);var ps=d.plans[tk]||{symptome:[],kontext:{}};
-      var scores=[];try{scores=a.computeSymptomScores(ps,tk)||[];}catch(e){}
-      var top=scores[0];
-      h+='<div class="gd-card gd-axiscard">';
-      h+='<div class="rs-hero"><div class="rs-hero-row"><span class="rs-hero-badge">'+(axes.length>1?('Befund '+(i+1)+'/'+axes.length):'Erkanntes Submuster')+'</span><span class="rs-axis-chip">'+esc((ax&&ax.name)||tk)+'</span></div>'+
-        '<div class="rs-hero-name">'+esc(top&&top.muster?top.muster.name:'Kein eindeutiges Submuster')+'</div></div>';
-      var evN=axisEvidence(d.symptome,(ax&&ax.id)||'');
-      if(evN<=weakAxisMax()){h+='<div class="gd-caveat">⚖ <strong>Schwache Datenbasis:</strong> nur '+evN+' passende Beobachtung(en) — vorläufig behandeln.</div>';}
-      if(ax&&rareAxis(ax.id)){h+='<div class="gd-caveat"><strong>Basisraten-Vorsicht:</strong> '+esc(ax.name)+' ist selten — mit Zurückhaltung lesen, früh fachlich abklären.</div>';}
-      if(top&&top.muster){h+=musterSections(top.muster.bloecke,ax,i===0);}
-      else{h+='<p class="gd-sub" style="margin-top:10px;">Kein eindeutiges Submuster — ergänze vertiefende Merkmale: <button class="gd-linkbtn" data-g="redeepen" data-topic="'+esc(tk)+'">jetzt vertiefen</button>.</p>';}
-      h+='</div>';
-    });
-    h+='<p class="muted" style="font-size:12px;margin:4px 2px 0;line-height:1.5;">Beobachtungs-Hypothese eines KI-geschriebenen Programms (Savoir) — <strong>keine Diagnose</strong>. Alles oben ist hier vollständig lesbar (keine separate App nötig). Erscheint auch im Schüler-Hub und im KI-Export des Dossiers.</p>';
-    h+='<div class="gd-nav" style="margin-top:14px;"><button class="gd-back" data-g="goto-verdacht">‹ Achsen ändern</button><span class="gd-spacer"></span><button class="btn btn-sm" data-g="goto-kriterien">Kriterien</button> <button class="btn btn-sm" data-g="restart">Neu starten</button></div>';
-    return h;
-  }
-
-  function loading(){return '<div class="gd-card"><p class="gd-sub" style="margin:0;">Screening-Modul lädt … einen Moment.</p></div>';}
-
-  function paint(){
-    if(!host)return;
-    if(!api()||!SG()){host.innerHTML=loading();if(!ST||!ST._retry){if(ST)ST._retry=1;setTimeout(function(){if(host)paint();},450);}return;}
-    var h='';
-    try{
-      h=acuteBanner();
-      if(ST.stage==='breit')h+=renderBreit();
-      else if(ST.stage==='verdacht')h+=renderVerdacht();
-      else if(ST.stage==='demografie')h+=renderDemografie();
-      else if(ST.stage==='tiefe')h+=renderTiefe();
-      else if(ST.stage==='kriterien')h+=renderKriterien();
-      else if(ST.stage==='ergebnis')h+=renderErgebnis();
-      else h+=renderBreit();
-    }catch(e){h='<div class="gd-card"><p class="gd-sub">Fehler im Trichter: '+esc((e&&e.message)||String(e))+'</p></div>';}
-    host.innerHTML=h;
-  }
-
-  function onClick(ev){
-    var el=ev.target.closest&&ev.target.closest('[data-g]');
-    if(!el||!host.contains(el))return;
-    var g=el.getAttribute('data-g');ev.preventDefault();
-    var d,ps;
-    if(g==='cat'){var id=el.getAttribute('data-id');if(id==='K16')return;var i=ST.cats.indexOf(id);if(i>=0)ST.cats.splice(i,1);else ST.cats.push(id);paint();return;}
-    if(g==='breit-drill'){ST.breitSub='drill';ST.catIdx=0;paint();return;}
-    if(g==='sym'){var sid=el.getAttribute('data-id');d=read();d.symptome=d.symptome||[];var j=d.symptome.indexOf(sid);if(j>=0)d.symptome.splice(j,1);else d.symptome.push(sid);write(d);paint();return;}
-    if(g==='breit-next'){var cats=drillCats();if(ST.catIdx<cats.length-1){ST.catIdx++;}else{ST._selInit=false;ST.stage='verdacht';}paint();return;}
-    if(g==='back'){
-      if(ST.stage==='breit'){if(ST.breitSub==='drill'){if(ST.catIdx>0){ST.catIdx--;}else{ST.breitSub='triage';}}paint();return;}
-      if(ST.stage==='verdacht'){ST.stage='breit';ST.breitSub='drill';var c2=drillCats();ST.catIdx=Math.max(0,c2.length-1);paint();return;}
-      if(ST.stage==='tiefe'){if(ST.tiefeIdx>0){ST.tiefeIdx--;}else if(ST.curIdx>0){setCurrentAxis(ST.curIdx-1);ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);}else if(demoQuestions().length){ST.stage='demografie';}else{ST.stage='verdacht';}paint();return;}
-      return;
-    }
-    if(g==='axis-toggle'){var tk=el.getAttribute('data-topic');if(!tk)return;var ti=ST.selAxes.indexOf(tk);if(ti>=0)ST.selAxes.splice(ti,1);else ST.selAxes.push(tk);paint();return;}
-    if(g==='deepen-start'){if(!ST.selAxes.length)return;d=read();ST.selAxes.forEach(function(tk){ensurePlan(tk,d);});write(d);ST.curIdx=0;if(demoQuestions().length&&!demoComplete()){ST.stage='demografie';}else{applyDemoToPlans(d);write(d);startDeepening();}paint();return;}
-    if(g==='demo'){var dk=el.getAttribute('data-key'),dv=el.getAttribute('data-val');d=read();d.demografie=d.demografie||{};if(d.demografie[dk]===dv)delete d.demografie[dk];else d.demografie[dk]=dv;write(d);paint();return;}
-    if(g==='demo-back'){ST.stage='verdacht';paint();return;}
-    if(g==='demo-done'){d=read();applyDemoToPlans(d);write(d);startDeepening();paint();return;}
-    if(g==='opt'){var fid=el.getAttribute('data-fid'),val=el.getAttribute('data-val');d=read();ps=ensurePlan(ST.axisTopicKey,d);if(ps.kontext[fid]===val)delete ps.kontext[fid];else ps.kontext[fid]=val;write(d);paint();return;}
-    if(g==='tsym'){var tid=el.getAttribute('data-id');d=read();ps=ensurePlan(ST.axisTopicKey,d);var k2=ps.symptome.indexOf(tid);if(k2>=0)ps.symptome.splice(k2,1);else ps.symptome.push(tid);write(d);paint();return;}
-    if(g==='tiefe-next'){if(ST.tiefeIdx<ST.tiefeSteps.length-1){ST.tiefeIdx++;}else{nextAxisOrKriterien();}paint();return;}
-    if(g==='gate'){var gk=el.getAttribute('data-key'),gv=el.getAttribute('data-val');d=read();d.gate=d.gate||{};if(d.gate[gk]===gv)delete d.gate[gk];else d.gate[gk]=gv;write(d);paint();return;}
-    if(g==='gate-done'||g==='gate-skip'){ST.stage='ergebnis';paint();return;}
-    if(g==='kriterien-back'){if(ST.selAxes.length){setCurrentAxis(ST.selAxes.length-1);ST.tiefeIdx=Math.max(0,ST.tiefeSteps.length-1);ST.stage=ST.tiefeSteps.length?'tiefe':'verdacht';}else{ST.stage='verdacht';}paint();return;}
-    if(g==='goto-kriterien'){ST.stage='kriterien';paint();return;}
-    if(g==='goto-verdacht'){ST._selInit=true;ST.stage='verdacht';paint();return;}
-    if(g==='redeepen'){var rtk=el.getAttribute('data-topic');if(rtk){if(ST.selAxes.indexOf(rtk)<0)ST.selAxes.push(rtk);var idx=ST.selAxes.indexOf(rtk);setCurrentAxis(idx);d=read();ensurePlan(rtk,d);applyDemoToPlans(d);write(d);ST.stage=ST.tiefeSteps.length?'tiefe':'kriterien';}paint();return;}
-    if(g==='restart'){ST=initState(ST.sid);ST.stage='breit';ST.breitSub='triage';ST.catIdx=0;ST.selAxes=[];ST._selInit=false;paint();return;}
-  }
-
   return {
-    mount:function(hostEl,stu){
-      if(!hostEl||!stu)return;
-      host=hostEl;student=stu;
-      if(!ST||ST.sid!==stu.id){ST=initState(stu.id);}
-      else{ST._retry=0;}
-      host.addEventListener('click',onClick);
-      paint();
-    },
-    reset:function(sid){if(ST&&ST.sid===sid){ST=initState(sid);}}
+    get:get, hasData:hat, acuteFlags:acuteFlags, fuellen:fuellen,
+    history:function(sid){return get(sid).history;},
+    result:function(sid){var d=get(sid);return {hasData:hat(sid),acute:acuteFlags(sid),risiken:[],globalCount:d.symptome.length,updatedAt:d.updatedAt,nurLesen:true};},
+    syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''});}return kopie(out);},
+    syncApply:function(arr){data={};(arr||[]).forEach(function(r){if(r&&r.id){data[r.id]=kopie({symptome:r.symptome||[],plans:r.plans||{},demografie:r.demografie||{},gate:r.gate||{},history:r.history||[],updatedAt:r.updatedAt||''});}});saveAll(data);}
   };
 })();
 `;
 
 /* ============================================================
-   Isa-Toolbox-Integration: Materialdaten, Taxonomie, Modul, ISA-App
+   Isa-Toolbox-Integration: Materialdaten, Taxonomie, Modul
    ============================================================ */
-var MATERIALS_JSON = '[]', TAXONOMY_JSON = '{}', ISA_B64 = '', MATERIALS_MODULE = '';
-try { MATERIALS_JSON = read('materials.json'); } catch (e) { console.warn('materials.json fehlt — Material-Matching leer.'); }
-try { TAXONOMY_JSON = read('taxonomy.json'); } catch (e) { console.warn('taxonomy.json fehlt.'); }
-try { MATERIALS_MODULE = read('materials-module.js'); } catch (e) { console.warn('materials-module.js fehlt — KB_MATERIALS deaktiviert.'); }
-try { ISA_B64 = fs.readFileSync(path.join(ROOT, 'ISA-App.html')).toString('base64'); }
-catch (e) { console.warn('ISA-App.html fehlt — Material-Tab ohne Bibliothek.'); }
-
-/* Lehrplan-Rubrik: Mathe-Jahresprogramm 5ᵉ PF (getrennt von der Material-Bibliothek) */
-var MATHE_JSON = '{}', MATHE_MODULE = '', MATHE_PDF_B64 = '';
-try { MATHE_JSON = read('mathe-programm.json'); } catch (e) { console.warn('mathe-programm.json fehlt — Lehrplan leer.'); }
-try { MATHE_MODULE = read('mathe-module.js'); } catch (e) { console.warn('mathe-module.js fehlt — KB_MATHE deaktiviert.'); }
-var PDFLIB_JS = '', MATHE_PDF_JS = '', PDF_FONT_REG = '', PDF_FONT_BOLD = '';
-try { PDFLIB_JS = read('vendor-jspdf.umd.min.js'); } catch (e) { console.warn('vendor-jspdf.umd.min.js fehlt — PDF-Export deaktiviert.'); }
-try { MATHE_PDF_JS = read('mathe-pdf.js'); } catch (e) { console.warn('mathe-pdf.js fehlt — PDF-Export deaktiviert.'); }
-try { PDF_FONT_REG = fs.readFileSync(path.join(ROOT, 'vendor-DejaVuSans-sub.ttf')).toString('base64'); } catch (e) { console.warn('vendor-DejaVuSans-sub.ttf fehlt.'); }
-try { PDF_FONT_BOLD = fs.readFileSync(path.join(ROOT, 'vendor-DejaVuSans-Bold-sub.ttf')).toString('base64'); } catch (e) { console.warn('vendor-DejaVuSans-Bold-sub.ttf fehlt.'); }
+/* Materialvorschläge kommen aus dem Verzeichnis der Hub-Toolbox (toolbox-index.js
+   neben dieser Datei); geöffnet wird die Toolbox im Hub. */
+var TAXONOMY_JSON = read('taxonomy.json');
+var MATERIALS_MODULE = read('materials-module.js');
 function scriptSafe(s) { return String(s).replace(/<\/(script)/gi, '<\\/$1'); }
-try { MATHE_PDF_B64 = fs.readFileSync(path.join(ROOT, 'PROG_5PF_MATHE.pdf')).toString('base64'); } catch (e) { console.warn('PROG_5PF_MATHE.pdf fehlt — Original-PDF nicht eingebettet.'); }
 
 function jsonForScript(s) { return String(s).replace(/</g, '\\u003c').replace(new RegExp(String.fromCharCode(0x2028), 'g'), '\\u2028').replace(new RegExp(String.fromCharCode(0x2029), 'g'), '\\u2029'); }
 
@@ -3354,7 +2628,11 @@ function isaNS(s){
     .split('klassebuch_extra_users').join('isa_extra_users')
     .split('savoir_plans').join('isa_savoir_plans')
     .split('anwesenheit_user').join('isa_user')
-    .split('kb_side_collapsed').join('isa_side_collapsed');
+    .split('kb_side_collapsed').join('isa_side_collapsed')
+    /* auch diese Schlüssel trennen – sonst unterdrückt die Tageskopie der einen App die der anderen (Fehler M6) */
+    .split('klassebuch_backup_lastday').join('isa_backup_lastday')
+    .split('kb_sync_auto').join('isa_sync_auto')
+    .split('klassebuch_fenster').join('isa_fenster');
 }
 dosScript      = isaNS(dosScript);
 /* ISA startet ohne Klassebuch-Seed (keine Beispiel-Schüler/-Einträge/-Réunionen). */
@@ -3492,10 +2770,10 @@ ROSTER_MODULE  = isaNS(ROSTER_MODULE);
 BUBBLE_MODULE  = isaNS(BUBBLE_MODULE);
 SCREENING_MODULE = isaNS(SCREENING_MODULE);
 SYNC_MODULE    = isaNS(SYNC_MODULE);
-SAVOIR_MODULE  = isaNS(SAVOIR_MODULE);
 DOS_OVERRIDES  = isaNS(DOS_OVERRIDES);
 MATERIALS_MODULE = isaNS(MATERIALS_MODULE);
 SHELL_CONTROLLER = isaNS(SHELL_CONTROLLER);
+TABS_GUARD = isaNS(TABS_GUARD);   /* eigener Fensterkanal, sonst falsche Warnung „zwei Fenster“ (M6) */
 
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%93%3C/text%3E%3C/svg%3E";
 
@@ -4259,17 +3537,13 @@ var parts = [
   '<head>',
   '<meta charset="utf-8">',
   '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
-  '<title>ISA-Journal</title>',
+  '<title>Journal · CDSE</title>',
   '<meta name="theme-color" content="#0f766e">',
   '<link rel="icon" href="' + FAVICON + '">',
-  '<link rel="preconnect" href="https://fonts.googleapis.com">',
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">',
   '<style>',
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
-  '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
   '/* === Material / Isa-Toolbox === */', MATERIAL_CSS,
   '/* === ISA-Journal (Home · Terminplan · Notizen) === */', ISA_CSS,
@@ -4278,23 +3552,17 @@ var parts = [
   '<body>',
   SHELL_BODY_TOP,
   '<section class="kb-panel" id="dos-root">', dosBody, '</section>',
-  '<section class="kb-panel" id="sav-root">',
-  '<div class="sav-bar" id="sav-bar" style="display:none"><button class="sav-back" id="sav-back">← Zurück zum Schüler</button><span class="sav-who" id="sav-who"></span><span class="sav-hint">Screening-Befunde sind Beobachtungs-Hypothesen, keine Diagnosen.</span></div>',
-  savBody,
-  '</section>',
-  '<section class="kb-panel" id="isa-root"><div class="isa-host" id="isa-host"></div></section>',
   '<section class="kb-panel kb-pad" id="isa-home"><div id="isa-home-body"></div></section>',
   '<section class="kb-panel kb-pad" id="isa-agenda"><div id="isa-agenda-body"></div></section>',
   SHELL_PANELS_EXTRA,
-  '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
-  '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
+  '<script src="toolbox-index.js"></' + 'script>',
+  '<script src="../hub-apps.js"></' + 'script>',
+  '<script>window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
   '<script>' + BUBBLE_MODULE + '</' + 'script>',
-  '<script>' + SAVOIR_MODULE + '</' + 'script>',
   '<script>' + SCREENING_MODULE + '</' + 'script>',
-  '<script>' + GUIDE_MODULE + '</' + 'script>',
   '<script>' + SYNC_MODULE + '</' + 'script>',
   '<script>' + MATERIALS_MODULE + '</' + 'script>',
   '<script>' + ISA_NOTES_MODULE + '</' + 'script>',
@@ -4312,5 +3580,6 @@ var parts = [
   ''
 ];
 
-fs.writeFileSync(path.join(ROOT, 'isa.html'), parts.join('\n'), 'utf8');
-console.log('isa.html geschrieben: ' + parts.join('\n').length + ' Bytes');
+var ZIEL = process.env.KB_ZIEL || path.join(ROOT, '..', '..', 'apps', 'journal.html');
+fs.writeFileSync(ZIEL, parts.join('\n'), 'utf8');
+console.log(path.relative(process.cwd(), ZIEL) + ' geschrieben: ' + Math.round(Buffer.byteLength(parts.join('\n')) / 1024) + ' KB');

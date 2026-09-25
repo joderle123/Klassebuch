@@ -307,6 +307,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hub-avatar{width:54px;height:54px;border-radius:15px;font-size:23px;box-shadow:0 6px 16px rgba(79,91,213,.28);}
 .kb-hub-name{font-size:22px;}
 .kb-hub-head{padding-top:22px;}
+.kb-hub-id .kb-hub-dossier{margin-left:auto;align-self:center;}
 .card.kb-mini h4{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;margin:0 0 11px;padding-bottom:10px;border-bottom:1px solid var(--kb-border);}
 .kb-subhead{font-size:17px;font-weight:800;letter-spacing:-.01em;margin:0 0 12px;color:var(--kb-text);}
 .kb-subhead.kb-subhead-mt{margin-top:30px;border-top:1px solid var(--kb-border);padding-top:24px;}
@@ -6600,7 +6601,10 @@ Repo.init()
     var initial=escapeHtml((student.name||'?').charAt(0).toUpperCase());
     return '<div class="kb-hub-head">'+
       '<a class="kb-hub-back" href="#/dashboard" data-route="#/dashboard">← Alle Schüler</a>'+
-      '<div class="kb-hub-id"><div class="kb-hub-avatar">'+initial+'</div><div><div class="kb-hub-name">'+escapeHtml(student.name)+'</div><div class="kb-hub-meta">'+meta.join(' · ')+'</div></div></div>'+
+      '<div class="kb-hub-id"><div class="kb-hub-avatar">'+initial+'</div><div><div class="kb-hub-name">'+escapeHtml(student.name)+'</div><div class="kb-hub-meta">'+meta.join(' · ')+'</div></div>'+
+        (function(){/* im Hub zugeordnet? (legt der Übernahme-Assistent des Hubs ab) */var z={};try{z=JSON.parse(localStorage.getItem('cdse-kb-zuordnung')||'{}')||{};}catch(e){}var hid=z.klassenbuch&&z.klassenbuch[sid];
+          return hid?'<button class="btn btn-sm kb-hub-dossier" type="button" data-kb-hub="schueler" data-kb-hub-zusatz="/'+escapeAttr(encodeURIComponent(hid))+'" title="Das verschlüsselte Dossier dieses Kindes im CDSE Hub öffnen">📂 Dossier im Hub</button>':'';})()+
+      '</div>'+
       '<div class="kb-hub-tabs">'+tb+'</div></div>';
   }
   function hubOverview(student){

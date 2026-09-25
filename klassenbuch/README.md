@@ -19,12 +19,35 @@ unverändert. Hier wird der Stand weiterentwickelt und nach `apps/klassenbuch.ht
 - **Menü „Im CDSE Hub“:** Toolbox, Screening und Lernen öffnen sich in denselben Tabs wie aus dem Hub.
 - **Keine Anfragen ins Internet:** Die Google-Schriften sind entfernt.
 
+## Journal
+
+Das Journal für ISA und Diagnostique wird aus denselben Quelltexten gebaut
+(`build-isa.cjs` → `apps/journal.html`, 1,1 MB statt 17 MB). Es hat dieselben Änderungen und eigene
+Speicherschlüssel (`isa_…`). Eine Team-Datei des Klassenbuchs lehnt es ab, und umgekehrt.
+
+## Zusammenführung mit dem Hub
+
+- **Person und Team** kommen aus dem Hub (`cdse-nutzer`). Es gibt keine zweite Personenwahl.
+- **Schülerdaten:** Die Hub-Seite „Schüler“ zeigt einen Hinweis, wenn Klassenbuch oder Journal Daten
+  haben, die noch nicht im Hub-Dossier stehen. Der Assistent ordnet jedes Kind einem Dossier zu oder
+  legt ein neues an. Er übernimmt verlustfrei, ohne Dubletten, und trägt Änderungen später nach:
+  - Einträge (mit Kategorie, Schlagwörtern und Verfasser)
+  - Réunion-Beiträge und Wochenziele
+  - DS/PEI-Berichte
+  - Helfernetz
+  - frühere Screenings
+- **„Dossier im Hub“:** Danach zeigt das Klassenbuch beim Kind den Knopf „Dossier im Hub“.
+- **Was im Klassenbuch bleibt:** Klassenführung, also Anwesenheit, Réunion, Stundenplan, Noten und Berichte.
+
 ## Bauen und prüfen
 
 ```bash
 node klassenbuch/quellen/build-merged.cjs      # → apps/klassenbuch.html
+node klassenbuch/quellen/build-isa.cjs         # → apps/journal.html
 npx http-server . -p 8099 -s                   # im Hauptordner, in einem zweiten Fenster
-node klassenbuch/tests/rundgang.cjs            # Rundgang, nur erfundene Personen
+node klassenbuch/tests/rundgang.cjs            # Klassenbuch: Rundgang
+node klassenbuch/tests/fehler.cjs              # Klassenbuch: behobene Fehler (zwei Geräte, Team-Datei)
+node klassenbuch/tests/journal.cjs             # Journal: Rundgang
 ```
 
 Neben `apps/klassenbuch.html` müssen liegen:

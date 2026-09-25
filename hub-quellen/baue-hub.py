@@ -74,6 +74,8 @@ for _p in sorted(glob.glob(os.path.join(SP, '..', 'lern-app', 'module', '*.json'
 block_nach('CDSE Hub — Arbeit: Schüler', 'screening.js', {'@@LERN_TITEL@@': _json.dumps(_lern, ensure_ascii=False)})
 block_nach('CDSE Hub — Arbeit: Schüler', 'screening-bogen.js')
 block_nach('CDSE Hub — Arbeit: Schüler', 'fiche.js', {'@@FICHE_VORLAGE_B64@@': VORLAGE_B64})
+# Übernahme aus Klassenbuch und Journal (Einträge, Wochenziele, Helfernetz, frühere Screenings)
+block_nach('CDSE Hub — Arbeit: Schüler', 'kb-uebernahme.js')
 
 # 3) Gestaltung
 css = lies('arbeit.css')

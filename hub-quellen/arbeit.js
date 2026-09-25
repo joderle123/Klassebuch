@@ -180,7 +180,8 @@ function listeZeichnen(l){
     '<span class="ar-trenner"></span><button class="catchip'+(filter.meine?' on':'')+'" type="button" data-filter-meine="1">'+svg('check')+'Nur meine</button>'+
     (bankDa()?'<button class="catchip'+(filter.ueber?' on':'')+'" type="button" data-filter-ueber="1" title="Schüler mit ELDiB-Items, die für ihr Alter längst erwartet werden">'+svg('warn')+'Überfällige Items</button>':'')+'</div>'+
     '<span class="ar-knopfreihe"><button class="btn" type="button" data-ar="fiche-hochladen" title="Aus einer Fiche de renseignement (.docx) ein Dossier anlegen oder aktualisieren">'+svg('hoch')+'Fiche hochladen</button>'+
-    '<button class="btn primary" type="button" data-ar="neu">'+svg('plus')+'Neuer Schüler</button></span></div>';
+    '<button class="btn primary" type="button" data-ar="neu">'+svg('plus')+'Neuer Schüler</button></span></div>'+
+    (window.CDSE_KB_UEBERNAHME?'<div id="ar-kbu"></div>':'');
   if(!sicht.length){
     h+=karte(l.length?'<p>Keine Schüler für diese Auswahl.</p>':'<h2>Noch keine Dossiers</h2><p>Meist beginnt ein Dossier beim Diagnostique: <b>„Neuer Schüler“</b> anlegen, dann das Profil aus dem DS des ELDiB-Generators übernehmen.</p>','ar-leer');
   }else{
@@ -198,6 +199,8 @@ function listeZeichnen(l){
       }).join('')+'</div>';
   }
   el.innerHTML=h;
+  /* Daten aus Klassenbuch oder Journal, die noch nicht im Hub stehen */
+  if(window.CDSE_KB_UEBERNAHME){try{window.CDSE_KB_UEBERNAHME.karte($('ar-kbu'),l);}catch(e){}}
 }
 function neuerSchueler(){
   var me=K.ich();
@@ -334,6 +337,21 @@ function blickListe(titel,l,kl,leer){
   if(!l||!l.length){return leer?'<div class="ar-blick '+(kl||'')+'"><h3>'+esc(titel)+'</h3><p class="ar-leise">'+esc(leer)+'</p></div>':'';}
   return '<div class="ar-blick '+(kl||'')+'"><h3>'+esc(titel)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul></div>';
 }
+/* Helfernetz („Support Bubble“), übernommen aus Klassenbuch/Journal – nur lesen */
+var NETZ_BEREICH={familie:'Familie / familiäre Hilfen',schule_lokal:'Schule: lokal/regional',schule_national:'Schule: national',externe:'Externe Akteur:innen'};
+var NETZ_FREQ={woechentlich:'wöchentlich',monatlich:'monatlich',anfrage:'auf Anfrage',auf_anfrage:'auf Anfrage'};
+function helfernetzKarte(d){
+  var hn=d.helfernetz||{}, apps=Object.keys(hn);if(!apps.length){return '';}
+  return apps.map(function(app){
+    var x=(hn[app]||{}).daten||{}, nodes=x.nodes||[];
+    var gruppen={};nodes.forEach(function(n){var b=NETZ_BEREICH[n.area]||n.area||'Weitere';(gruppen[b]=gruppen[b]||[]).push(n);});
+    return karte('<h3>Helfernetz</h3><p class="ar-klein">aus dem '+(app==='journal'?'Journal':'Klassenbuch')+(x.dateBegin||x.dateEnd?' · Diagnostik '+esc([datum(x.dateBegin),datum(x.dateEnd)].filter(Boolean).join(' – ')):'')+'</p>'+
+      (nodes.length?Object.keys(gruppen).map(function(b){return '<p class="ar-netz-b">'+esc(b)+'</p><ul class="ar-netz">'+gruppen[b].map(function(n){
+        var z=[NETZ_FREQ[n.freq]||n.freq,n.status==='neu'?'neu hinzugekommen':(n.status==='beendet'?'nicht weitergeführt':''),n.relation==='indirekt'?'indirekt':''].filter(Boolean);
+        return '<li'+(n.status==='beendet'?' class="aus"':'')+'><b>'+esc(n.name||'')+'</b>'+(z.length?' <small>'+esc(z.join(' · '))+'</small>':'')+(n.note?'<small class="ar-netz-n">'+esc(n.note)+'</small>':'')+'</li>';}).join('')+'</ul>';}).join(''):'<p class="ar-leise">Keine Personen eingetragen.</p>')+
+      ((x.snapshots||[]).length?'<p class="ar-klein">'+x.snapshots.length+(x.snapshots.length===1?' gespeicherter Stand':' gespeicherte Stände')+' im Dossier gesichert.</p>':''));
+  }).join('');
+}
 function tabUeberblick(d,r){
   var p=d.person||{}, blick=aufEinenBlick(d), h='<div class="ar-zwei"><div class="ar-haupt">';
   var neu=(d.profil&&r.bearbeiten&&bankDa())?eldibNeuer(d):null;
@@ -370,6 +388,7 @@ function tabUeberblick(d,r){
   h+=karte('<h3>Zuständigkeit</h3><dl class="ar-dl"><dt>Stelle</dt><dd>'+esc(team(d.stelle).name)+(d.stelleSeit?' <small>seit '+esc(datum(d.stelleSeit))+'</small>':'')+'</dd>'+
     '<dt>Fallverantwortlich</dt><dd>'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</dd>'+
     '<dt>Schreibrecht</dt><dd>'+esc(rechteListe.map(kname).join(', ')||'—')+'</dd></dl><p class="ar-klein">Außerdem bearbeiten dürfen die Responsables und die Verwaltung. Lesen dürfen alle Freigeschalteten.</p>');
+  h+=helfernetzKarte(d);
   var wg=(d.weitergaben||[]);
   if(wg.length){h+=karte('<h3>Weg durch das CDSE</h3><ol class="ar-weg">'+wg.map(function(w){return '<li><b>'+esc(team(w.von).name)+' → '+esc(team(w.an).name)+'</b><small>'+esc(datum(w.z.slice(0,10)))+' · '+esc(kname(w.durch))+'</small>'+(w.notiz?'<span>'+esc(w.notiz)+'</span>':'')+'</li>';}).join('')+'</ol>');}
   h+='</aside></div>';
@@ -512,9 +531,19 @@ function zielOptionen(d,dazu){
 }
 function eintragHtml(e,r,d){
   var eigen=e.von===(K.ich()||{}).id;
-  return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span>'+zielChip(e.ziel)+'<b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
+  return '<article class="ar-eintrag" data-eid="'+esc(e.id)+'"><header><span class="ar-art">'+esc(ARTEN[e.art]||e.art)+'</span>'+zielChip(e.ziel)+'<b>'+esc(e.titel||'')+'</b><small>'+esc(datum(e.datum))+' · '+(e.herkunft?'übernommen von ':'')+esc(kname(e.von))+(e.geaendert?' · geändert':'')+'</small>'+
     (r&&r.bearbeiten&&(eigen||r.weitergeben)?'<span class="ar-eintrag-aktion"><button type="button" class="ar-link" data-ar="eintrag-aendern" data-eid="'+esc(e.id)+'">'+svg('edit')+'Ändern</button><button type="button" class="ar-link gefahr" data-ar="eintrag-loeschen" data-eid="'+esc(e.id)+'">'+svg('x')+'Löschen</button></span>':'')+
-    '</header><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p></article>';
+    '</header><p>'+esc(e.text).replace(/\n/g,'<br>')+'</p>'+herkunftZeile(e)+'</article>';
+}
+/* Übernommen aus Klassenbuch/Journal: Kategorie, Schlagwörter, Verfasser und Bericht bleiben sichtbar */
+function herkunftZeile(e){
+  if(!e.herkunft||!e.herkunft.app){return '';}
+  var t=[(e.herkunft.app==='journal'?'aus dem Journal':'aus dem Klassenbuch')];
+  if(e.thema&&e.thema!==e.titel){t.push(e.thema);}
+  if(e.autorName){t.push('verfasst von '+e.autorName);}
+  if(e.tags&&e.tags.length){t.push('Schlagwörter: '+e.tags.join(', '));}
+  if(e.bericht&&e.bericht.goals&&e.bericht.goals.length){t.push((e.bericht.type||'Bericht')+' mit '+e.bericht.goals.length+(e.bericht.goals.length===1?' Förderziel':' Förderzielen')+': '+e.bericht.goals.map(function(g){return g.code||g.title;}).filter(Boolean).join(', '));}
+  return '<p class="ar-herkunft">'+esc(t.join(' · '))+'</p>';
 }
 function tabEintraege(d,r){
   var h='';
@@ -1878,6 +1907,7 @@ function heuteKarte(){
 
 return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLaden:bereichLaden, vorladen:vorladen, heuteKarte:heuteKarte, planZu:planZu,
   /* gemeinsame Bausteine für Zusatzmodule (Datenbank, Fiche) – gleiche Optik überall */
+  neuLaden:function(){if(akt&&akt.seite){zeigen(akt.seite,akt.param,true);}},
   hilfen:{esc:esc, svg:svg, pad:pad, heuteIso:heuteIso, datum:datum, datumZeit:datumZeit, alter:alter, team:team, ava:ava, kname:kname,
     schuelerName:schuelerName, schuelerNameKurz:schuelerNameKurz, kopf:kopf, karte:karte, hinweis:hinweis, laedt:laedt, fehlerText:fehlerText,
     toast:toast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,

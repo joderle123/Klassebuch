@@ -427,3 +427,13 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-tl-vorschau td{padding:6px 10px;border-top:1px solid var(--line);}
 .ar-tl-vorschau td.fehlt{color:#8A3A24;font-weight:600;}
 @media (max-width:760px){.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1fr) auto;}.ar-tl-tab .ar-zeile>span:nth-child(2),.ar-tl-tab .ar-zeile>span:nth-child(3){grid-column:1/-1;}}
+
+/* Übernommen aus Klassenbuch/Journal */
+.ar-herkunft{margin:6px 0 0;font-size:12.5px;color:var(--muted);}
+.ar-netz-b{margin:10px 0 4px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
+.ar-netz{margin:0;padding:0;list-style:none;display:grid;gap:5px;}
+.ar-netz li{font-size:13.5px;line-height:1.4;}
+.ar-netz li small{color:var(--muted);}
+.ar-netz li.aus b{text-decoration:line-through;color:var(--muted);}
+.ar-netz-n{display:block;}
+.kbu-link{margin:0 0 12px;}

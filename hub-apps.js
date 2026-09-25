@@ -97,7 +97,8 @@ window.CDSE_APPS = [
     datei: 'apps/journal.html',
     dateizugriff: true,
     teams: ['isa', 'diagnostique'],
-    quelle: { repo: 'Klassebuch', branch: 'claude/focused-galileo-e2s63b', pfad: 'isa.html' },
+    /* Testversion: gebaut aus klassenbuch/quellen (node klassenbuch/quellen/build-isa.cjs), siehe Klassenbuch */
+    quelle: { repo: 'Klassebuch', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'apps/journal.html' },
     stichworte: 'isa journal mein tag terminplan agenda notizen schüler dossier'
   },
 

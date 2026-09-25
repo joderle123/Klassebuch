@@ -380,6 +380,38 @@ var ops={
     d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
     return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
   },'screening');},
+  /* Übernahme aus Klassenbuch/Journal in EINEM Schreibvorgang: p = {app, kb, eintraege:[{datum, art, titel, text,
+     thema, tags, autorName, herkunft:{app,id,updatedAt,…}, bericht?, quelle?, skalen?}], helfernetz?:{daten, quellen}}.
+     Schon übernommene Einträge (gleiche Herkunft) werden nicht verdoppelt, geänderte (neueres updatedAt) nachgetragen. */
+  klassenbuchUebernehmen:function(id,p){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var t=jetzt(), me=ich().id, hk={}, neu=0, akt=0, extra=[];
+    d.eintraege=d.eintraege||[];
+    d.eintraege.forEach(function(e){if(e.herkunft&&e.herkunft.app){hk[e.herkunft.app+'|'+e.herkunft.id]=e;}});
+    (p.eintraege||[]).forEach(function(x){
+      if(!x||!x.herkunft||!x.herkunft.app){return;}
+      var alt=hk[x.herkunft.app+'|'+x.herkunft.id];
+      if(!alt){d.eintraege.push(Object.assign({},x,{id:neueId(8),von:me,z:t}));neu++;return;}
+      if(String(x.herkunft.updatedAt||'')>String((alt.herkunft||{}).updatedAt||'')){
+        /* im Hub schon bearbeitet? Dann nicht überschreiben, sondern den neuen Stand daneben ablegen */
+        if(alt.geaendert){d.eintraege.push(Object.assign({},x,{id:neueId(8),von:me,z:t,titel:(x.titel?x.titel+' – ':'')+'neuer Stand aus dem '+(p.app==='journal'?'Journal':'Klassenbuch')}));hk[x.herkunft.app+'|'+x.herkunft.id]=d.eintraege[d.eintraege.length-1];akt++;return;}
+        ['datum','art','titel','text','thema','tags','autorName','herkunft','bericht','quelle','skalen'].forEach(function(f){if(x[f]!==undefined){alt[f]=x[f];}});
+        alt.nachgetragen=t;akt++;
+      }
+    });
+    d.herkunft=d.herkunft||{};
+    var l=d.herkunft[p.app]||[];if(l.indexOf(p.kb)<0){d.herkunft[p.app]=l.concat([p.kb]);extra.push('Zuordnung');}
+    if(p.helfernetz&&p.helfernetz.daten){
+      d.helfernetz=d.helfernetz||{};
+      var h0=d.helfernetz[p.app];
+      if(!h0||JSON.stringify(h0.daten)!==JSON.stringify(p.helfernetz.daten)){d.helfernetz[p.app]={kb:p.kb,daten:p.helfernetz.daten,quellen:p.helfernetz.quellen||[],von:me,z:t};extra.push('Helfernetz');}
+      var m=String(p.helfernetz.daten.matrikel||'').trim(), pm=String((d.person||{}).matricule||'').trim();
+      if(m&&!pm){d.person=Object.assign({},d.person,{matricule:m});extra.push('Matricule');}
+      else if(m&&pm&&m!==pm){extra.push('Matricule im '+(p.app==='journal'?'Journal':'Klassenbuch')+' weicht ab – Hub-Wert behalten');}
+    }
+    if(!neu&&!akt&&!extra.length){return false;}
+    return 'Übernahme aus dem '+(p.app==='journal'?'Journal':'Klassenbuch')+': '+[neu?neu+(neu===1?' Eintrag':' Einträge')+' neu':'',akt?akt+' aktualisiert':''].concat(extra).filter(Boolean).join(', ');
+  },'uebernahme');},
   loeschen:function(id){
     istBereit();
     return dossierLesen(id).then(function(d){
