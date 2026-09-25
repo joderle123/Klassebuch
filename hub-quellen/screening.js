@@ -79,7 +79,7 @@ function auswerten(s){
   else if(rot.length&&belastung>=2){g={art:'planen',titel:'Unterstützung planen und Abklärung besprechen',text:'In '+namen(rot)+' zeigen sich deutliche Schwierigkeiten, die den Alltag spürbar beeinträchtigen. Sinnvoll: die nächsten Schritte unten umsetzen, Förderziele festlegen und im Team besprechen, ob eine Abklärung durch die Diagnostique nötig ist.'};}
   else if(rot.length){g={art:'foerdern',titel:'Gezielt fördern und weiter beobachten',text:'In '+namen(rot)+' ist einiges deutlich ausgeprägt, beeinträchtigt den Alltag aber (noch) wenig. Die Förderideen unten umsetzen und in sechs bis acht Wochen erneut einschätzen.'};}
   else if(gelb.length){g={art:'beobachten',titel:'Im Blick behalten',text:'Einige Beobachtungen in '+namen(gelb)+'. Im Alltag fördern und in zwei bis drei Monaten erneut einschätzen.'};}
-  else{g={art:'unauffaellig',titel:'Keine auffälligen Bereiche',text:'Im Bogen zeigt sich kein auffälliger Bereich. Wenn Sie sich trotzdem Sorgen machen: Beobachtungen festhalten und im Team besprechen.'};}
+  else{g={art:'unauffaellig',titel:'Keine auffälligen Bereiche',text:'Im Bogen zeigt sich kein auffälliger Bereich. Wenn du dir trotzdem Sorgen machst: Beobachtungen festhalten und im Team besprechen.'};}
   var zusatz=[];
   if(!warn.length&&(rot.length||gelb.length)){
     if(a.dauer==='kurz'){zusatz.push('Die Schwierigkeiten bestehen erst seit kurzem – an mögliche Belastungen denken und in vier bis sechs Wochen erneut einschätzen.');}
@@ -236,7 +236,7 @@ function formular(d){
     '<div class="ar-raster3">'+H.feld('sc-datum','Datum',e.datum,'date')+
       H.auswahl('sc-stufe','Stufe',e.stufe,bog.stufen.map(function(s){return [s.id,s.name+' ('+s.alter+')'];}))+
       H.auswahl('sc-rolle','Ich beobachte als',e.rolle,bog.rollen)+'</div>'+
-    '<p class="sc-anleitung">Wie oft haben Sie das <b>'+esc(bog.zeitraum)+'</b> beobachtet? Bewerten Sie nur, was Sie selbst gesehen haben – sonst „k. A.“ (kann ich nicht beurteilen). Es gibt keine richtigen oder falschen Antworten.</p></div>';
+    '<p class="sc-anleitung">Wie oft hast du das <b>'+esc(bog.zeitraum)+'</b> beobachtet? Bewerte nur, was du selbst gesehen hast – sonst „k. A.“ (kann ich nicht beurteilen). Es gibt keine richtigen oder falschen Antworten.</p></div>';
   bog.bereiche.forEach(function(b,bi){
     h+='<section class="ar-karte sc-abschnitt" id="sc-b-'+b.id+'"><h3><span class="sc-nr">'+(bi+1)+'</span>'+esc(b.name)+'</h3><p class="sc-bhinweis">'+esc(b.hinweis)+'</p>'+
       items(b,e.stufe).map(function(i){n++;return '<div class="sc-item" id="sc-i-'+i.id+'"><p>'+esc(i.text)+'</p>'+skala(i.id,e.antworten[i.id])+'</div>';}).join('')+'</section>';
@@ -563,10 +563,10 @@ function kbDialogZeigen(X){
       (vor.length?'<optgroup label="Passt zum Namen">'+vor.map(function(v){return opt(v.d,v.d.id===wahl);}).join('')+'</optgroup>':'')+
       '<optgroup label="Alle Dossiers">'+ziel.filter(function(d){return !vid[d.id];}).map(function(d){return opt(d,false);}).join('')+'</optgroup></select></label></div>';
   }).join('');
-  var inhalt=(x.length?'<p>Gefunden: <b>'+x.length+'</b> frühere'+(x.length===1?'s Screening':' Screenings')+' aus Klassenbuch oder Journal'+(offen.length<x.length?', davon '+(x.length-offen.length)+' schon übernommen':'')+'. Ordnen Sie jedes Kind seinem Dossier zu – Vorschläge nach dem Namen sind schon ausgewählt, bitte prüfen.</p>':
-      '<p>In diesem Browser liegen keine früheren Screenings aus Klassenbuch oder Journal. Wählen Sie die Team-Datei auf O:\\ (zum Beispiel „klassebuch-team.json“) oder eine Tageskopie aus.</p>')+
+  var inhalt=(x.length?'<p>Gefunden: <b>'+x.length+'</b> frühere'+(x.length===1?'s Screening':' Screenings')+' aus Klassenbuch oder Journal'+(offen.length<x.length?', davon '+(x.length-offen.length)+' schon übernommen':'')+'. Ordne jedes Kind seinem Dossier zu – Vorschläge nach dem Namen sind schon ausgewählt, bitte prüfen.</p>':
+      '<p>In diesem Browser liegen keine früheren Screenings aus Klassenbuch oder Journal. Wähle die Team-Datei auf O:\\ (zum Beispiel „klassebuch-team.json“) oder eine Tageskopie aus.</p>')+
     '<p class="sc-klein">Übernommen werden die Beobachtungen im Wortlaut, Angaben zu Dauer, Alltag und Umfeld und frühere Krisenhinweise. Die frühere automatische Auswertung (Verdachtsachsen) wird nicht angezeigt. In Klassenbuch und Journal bleibt alles unverändert.</p>'+
-    (ziel.length||!x.length?'':'<p class="sc-hinweis">'+svg('info')+'<span>Sie haben noch in keinem Dossier Schreibrechte. Legen Sie die Dossiers zuerst an oder bitten Sie die Fallverantwortlichen um ein Schreibrecht.</span></p>')+
+    (ziel.length||!x.length?'':'<p class="sc-hinweis">'+svg('info')+'<span>Du hast noch in keinem Dossier Schreibrechte. Lege die Dossiers zuerst an oder bitte die Fallverantwortlichen um ein Schreibrecht.</span></p>')+
     (x.length?'<div class="sc-kb-liste">'+zeilen+'</div>':'')+
     '<div class="sc-kb-datei"><label class="btn"><input type="file" accept=".json,application/json" multiple data-kb-datei>'+svg('datei')+'Team-Datei oder Tageskopien hinzufügen</label>'+
       '<span>'+(kbDateien.length?'Schon gelesen: '+kbDateien.map(function(q){return esc(q.herkunft);}).join(', ')+'.':'Die Team-Datei enthält den gemeinsamen Stand aller Geräte; Tageskopien helfen, später verlorene Angaben wiederzufinden.')+'</span></div>'+
@@ -641,7 +641,7 @@ function ubZeichnen(){
   var x=ubDaten(), n={alle:x.length,warn:0,bedarf:0,ohne:0,meine:0}, me=K.ich();
   x.forEach(function(y){if(y.warn){n.warn++;}if(y.e&&(y.e.gesamt.art==='planen'||y.e.gesamt.art==='foerdern')){n.bedarf++;}if(!y.s){n.ohne++;}if(meine(y.d,me)){n.meine++;}});
   var kb=kbListe(ub.alle), kbOffen=kb.filter(function(y){return !y.in&&!y.ausgeblendet;});
-  var h=(kbOffen.length?'<div class="ar-karte sc-kb-karte"><div class="sc-kb-text"><b>Frühere Screenings aus Klassenbuch oder Journal</b><span>'+(kbOffen.length===1?'Ein früheres Screening ist':kbOffen.length+' frühere Screenings sind')+' noch keinem Dossier zugeordnet. Übernehmen Sie '+(kbOffen.length===1?'es':'sie')+', damit die Beobachtungen nicht verloren gehen.</span></div>'+
+  var h=(kbOffen.length?'<div class="ar-karte sc-kb-karte"><div class="sc-kb-text"><b>Frühere Screenings aus Klassenbuch oder Journal</b><span>'+(kbOffen.length===1?'Ein früheres Screening ist':kbOffen.length+' frühere Screenings sind')+' noch keinem Dossier zugeordnet. Übernimm '+(kbOffen.length===1?'es':'sie')+', damit die Beobachtungen nicht verloren gehen.</span></div>'+
       '<button class="btn primary" type="button" data-scu="kb">'+svg('check')+'Zuordnen und übernehmen</button></div>':'')+
     '<div class="sc-ub-zahlen">'+[['warn','Warnsignale (3 Monate)','rot'],['bedarf','Handlungsbedarf','gelb'],['ohne','ohne Screening',''],['alle','aktive Schüler','']].map(function(k){
       return '<div class="sc-ub-zahl '+k[2]+'"><b>'+n[k[0]]+'</b><span>'+k[1]+'</span></div>';}).join('')+'</div>'+

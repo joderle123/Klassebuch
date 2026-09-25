@@ -189,7 +189,7 @@ function karte(el,dossiers){
     if(!l.length){el.innerHTML='';return;}
     el.innerHTML=offen.length?
       '<div class="ar-karte sc-kb-karte"><div class="sc-kb-text"><b>Schülerdaten aus Klassenbuch oder Journal</b><span>'+
-        (offen.length===1?'Für ein Kind liegen':'Für '+offen.length+' Kinder liegen')+' Einträge, Wochenziele oder ein Helfernetz im Klassenbuch bzw. Journal, die noch nicht im Hub-Dossier stehen. Übernehmen Sie sie – dann steht alles an einem Ort, verschlüsselt und mit Rechten.</span></div>'+
+        (offen.length===1?'Für ein Kind liegen':'Für '+offen.length+' Kinder liegen')+' Einträge, Wochenziele oder ein Helfernetz im Klassenbuch bzw. Journal, die noch nicht im Hub-Dossier stehen. Übernimm sie – dann steht alles an einem Ort, verschlüsselt und mit Rechten.</span></div>'+
         '<button class="btn primary" type="button" data-kbu="oeffnen">'+svg('check')+'Zuordnen und übernehmen</button></div>':
       '<p class="ar-klein kbu-link"><button class="ar-link" type="button" data-kbu="oeffnen">Daten aus Klassenbuch oder Journal übernehmen ('+l.length+')</button></p>';
   });
@@ -221,10 +221,10 @@ function dialogZeigen(){
         '<optgroup label="Neu">'+'<option value="neu">+ Neues Dossier anlegen („'+esc(c.name||'ohne Namen')+'“)</option></optgroup>'+
         '<optgroup label="Alle Dossiers">'+ziel.filter(function(d){return !vid[d.id];}).map(function(d){return opt(d,false);}).join('')+'</optgroup></select></label></div>';
     }).join('');
-    var inhalt=(l.length?'<p>Gefunden: <b>'+l.length+'</b> '+(l.length===1?'Kind':'Kinder')+' mit Daten aus Klassenbuch oder Journal'+(offen.length<l.length?', davon '+(l.length-offen.length)+' schon vollständig übernommen':'')+'. Ordnen Sie jedes Kind seinem Dossier zu – oder legen Sie ein neues an. Vorschläge nach dem Namen sind ausgewählt, bitte prüfen.</p>':
-        '<p>In diesem Browser liegen keine Schülerdaten aus Klassenbuch oder Journal. Wählen Sie die Team-Datei auf O:\\ (z. B. „klassebuch-team.json“), eine Tageskopie oder eine Sicherung aus.</p>')+
+    var inhalt=(l.length?'<p>Gefunden: <b>'+l.length+'</b> '+(l.length===1?'Kind':'Kinder')+' mit Daten aus Klassenbuch oder Journal'+(offen.length<l.length?', davon '+(l.length-offen.length)+' schon vollständig übernommen':'')+'. Ordne jedes Kind seinem Dossier zu – oder lege ein neues an. Vorschläge nach dem Namen sind ausgewählt, bitte prüfen.</p>':
+        '<p>In diesem Browser liegen keine Schülerdaten aus Klassenbuch oder Journal. Wähle die Team-Datei auf O:\\ (z. B. „klassebuch-team.json“), eine Tageskopie oder eine Sicherung aus.</p>')+
       '<p class="sc-klein">Übernommen werden Dossier-Einträge und Réunion-Beiträge (mit Kategorie, Schlagwörtern und Verfasser), Wochenziele, das Helfernetz, DS/PEI-Berichte und frühere Screenings. Was schon übernommen ist, wird nicht verdoppelt; geänderte Einträge werden nachgetragen. In Klassenbuch und Journal bleibt alles unverändert.</p>'+
-      (ziel.length||!l.length?'':'<p class="sc-hinweis">'+svg('info')+'<span>Sie haben noch in keinem Dossier Schreibrechte – Sie können aber neue Dossiers anlegen.</span></p>')+
+      (ziel.length||!l.length?'':'<p class="sc-hinweis">'+svg('info')+'<span>Du hast noch in keinem Dossier Schreibrechte – du kannst aber neue Dossiers anlegen.</span></p>')+
       (l.length?'<div class="sc-kb-liste">'+zeilen+'</div>':'')+
       '<div class="sc-kb-datei"><label class="btn"><input type="file" accept=".json,application/json" multiple data-kbu-datei>'+svg('datei')+'Team-Datei, Tageskopie oder Sicherung hinzufügen</label>'+
         '<span>'+(dateien.length?'Schon gelesen: '+dateien.map(function(q){return esc(q.herkunft);}).join(', ')+'.':'Die Team-Datei enthält den gemeinsamen Stand aller Geräte; Tageskopien und Sicherungen ergänzen, was anderswo fehlt.')+'</span></div>'+
