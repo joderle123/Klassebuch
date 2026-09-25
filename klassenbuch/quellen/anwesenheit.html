@@ -567,8 +567,6 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     <div style="display:flex;flex-direction:column;gap:10px;">
       <button class="btn btn-primary btn-block" id="export-json">⬇️ Backup speichern (Datei)</button>
       <button class="btn btn-ghost btn-block" id="export-csv">⬇️ Als Excel/CSV exportieren</button>
-      <label class="btn btn-ghost btn-block" style="cursor:pointer;">⬆️ Backup laden<input type="file" id="import-json" accept=".json,application/json" style="display:none;"></label>
-      <button class="btn btn-danger btn-block" id="reset-all">🗑️ Alle Daten löschen</button>
     </div>
     <div class="modal-actions"><button class="btn btn-ghost" data-close>Schliessen</button></div>
   </div>
@@ -1507,8 +1505,10 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     document.getElementById('new-student-name').addEventListener('keydown',function(e){if(e.key==='Enter')addStudent();});
     document.getElementById('export-json').addEventListener('click',exportJSON);
     document.getElementById('export-csv').addEventListener('click',exportCSV);
-    document.getElementById('reset-all').addEventListener('click',resetAll);
-    document.getElementById('import-json').addEventListener('change',function(e){if(e.target.files[0])importJSON(e.target.files[0]);e.target.value='';});
+    /* „Backup laden“ und „Alle Daten löschen“ sind entfernt: beide ersetzten alle Absenzen und wurden über
+       die Team-Datei an alle verteilt (Fehler M5). Wiederherstellen geht über die Tageskopien. */
+    var _ra=document.getElementById('reset-all');if(_ra){_ra.addEventListener('click',resetAll);}
+    var _ij=document.getElementById('import-json');if(_ij){_ij.addEventListener('change',function(e){if(e.target.files[0])importJSON(e.target.files[0]);e.target.value='';});}
     var sse=document.getElementById('stats-student');if(sse)sse.addEventListener('change',renderStats);
     var sst=document.getElementById('stats-status');if(sst)sst.addEventListener('change',renderStats);
     document.getElementById('note-add').addEventListener('click',addNote);

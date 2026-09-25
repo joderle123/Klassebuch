@@ -997,6 +997,13 @@ var Repo = {
        dieselbe Karte; im Protokoll soll man sehen, von wem was stammt. */
     if (data.updatedBy) clean.updatedBy = String(data.updatedBy).trim();
     var idx = self.entries.findIndex(function (e) { return e.id === clean.id; });
+    /* Beim Bearbeiten bleiben Felder erhalten, die das Formular nicht kennt –
+       z. B. die Förderziele eines importierten DS/PEI-Berichts (Fehler H6). */
+    if (idx >= 0) {
+      var vorher = self.entries[idx];
+      Object.keys(vorher).forEach(function (k) { if (!(k in clean) && !(k in data)) clean[k] = vorher[k]; });
+      if (!data.createdAt && vorher.createdAt) clean.createdAt = vorher.createdAt;
+    }
     if (idx >= 0) self.entries[idx] = clean; else self.entries.push(clean);
     return Storage.put('entries', clean).then(function () { return clean; });
   },
@@ -1701,7 +1708,8 @@ function viewDashboard(params, query) {
     var meta = []; if (klasse) meta.push(escapeHtml(klasse)); if (level) meta.push('Niveau ' + escapeHtml(level));
     var chips = [];
     if (abs && abs.total) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + abs.total + ' Absenzen' + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
-    if (scr && scr.hasData) chips.push(scr.risiken && scr.risiken.length ? '<span class="st-chip st-danger">⚠ Screening-Risiko</span>' : '<span class="st-chip st-ok">Screening erfasst</span>');
+    if (s.active === false) chips.unshift('<span class="st-chip">ehemalig</span>');
+    if (scr && scr.hasData) chips.push(scr.acute && scr.acute.length ? '<span class="st-chip st-danger">⚠ Krisenhinweis (früheres Screening)</span>' : '<span class="st-chip">Screening (früher)</span>');
     if (cg && cg.goals && cg.goals.length) chips.push('<span class="st-chip">' + cg.goals.length + ' Förderziele</span>');
     var foot = lastEntry ? ('Letzter Eintrag ' + escapeHtml(formatDate(lastEntry.date)) + ' · ' + pluralize(entries.length, 'Eintrag', 'Einträge')) : 'Noch keine Einträge';
     return '<article class="card student-card st-card" data-route="#/student/' + s.id + '" tabindex="0" role="button" aria-label="Dossier von ' + escapeAttr(s.name) + ' öffnen">' +
@@ -1981,7 +1989,7 @@ function viewStudentDetail(params) {
             var id = btn.getAttribute('data-id');
             var entry = Repo.getEntry(id);
             if (!entry) return;
-            if (!confirm('Diesen Eintrag vom ' + formatDate(entry.date) + ' wirklich löschen? Das kann nicht rückgängig gemacht werden.')) return;
+            if (!confirm('Diesen Eintrag vom ' + formatDate(entry.date) + ' wirklich löschen? Er liegt danach 120 Tage im Papierkorb (Verbindung & Backup).')) return;
             Repo.deleteEntry(id).then(function () {
               showToast('Eintrag gelöscht.');
               navigate('#/student/' + student.id, true);
@@ -2005,7 +2013,9 @@ function uniqueSorted(values, preferredOrder) {
   values.forEach(function (v) { set[v] = true; });
   var unique = Object.keys(set);
   if (preferredOrder) {
-    return preferredOrder.filter(function (v) { return set[v]; });
+    /* bekannte Werte in fester Reihenfolge, unbekannte (z. B. aus älteren Ständen) dahinter statt verworfen */
+    return preferredOrder.filter(function (v) { return set[v]; })
+      .concat(unique.filter(function (v) { return preferredOrder.indexOf(v) === -1; }).sort(function (a, b) { return a.localeCompare(b, 'de'); }));
   }
   return unique.sort(function (a, b) { return a.localeCompare(b, 'de'); });
 }
@@ -4674,7 +4684,7 @@ function viewReportImport(params, query) {
           try { if (window.KB_ROSTER.update) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() }); } catch (e) {}
         }
         if (!sid) { showToast('Bitte einen Schüler zuordnen.'); return; }
-        var dateIso = st.dateIso || (new Date().toISOString().slice(0, 10));
+        var dateIso = st.dateIso || todayIso();
         var body = kbReportToEntryText(r);
         var tags = [r.type === 'PEI' ? 'PEI' : (r.type === 'DS' ? 'DS' : 'Bericht')];
         if (r.goals && r.goals.length) tags.push('ELDiB');
@@ -4709,7 +4719,7 @@ function viewReportImport(params, query) {
             st.kind = ext.kind; st.rawText = ext.text || '';
             st.warnLowText = (st.rawText.replace(/\s/g, '').length < 200);
             st.report = kbParseReport(st.rawText);
-            st.dateIso = kbReportDateIso(st.report.reportDate) || (new Date().toISOString().slice(0, 10));
+            st.dateIso = kbReportDateIso(st.report.reportDate) || todayIso();
             if (!st.studentId) { var mid = autoMatchStudent(); if (mid) st.studentId = mid; else { st.createNew = true; st.newName = st.report.identity.name || ''; } }
             var body = kbReportToEntryText(st.report);
             var detMap = detectNamesInText([body], { excludeNames: st.report.identity.name ? [st.report.identity.name] : [] });
@@ -4864,7 +4874,7 @@ function maybeShowPrivacyBanner() {
   if (dismissed) return;
   root.innerHTML =
     '<div class="privacy-banner">' +
-      '<div><strong>🔒 Alle Daten bleiben lokal auf diesem Gerät.</strong> Keine Cloud, keine Telemetrie — Sicherungen erstellst du selbst über „Daten &amp; Backup".</div>' +
+      '<div><strong>🔒 Keine Cloud, keine Telemetrie.</strong> Gespeichert wird in diesem Browser, verschlüsselt im Hub-Tresor und – falls verbunden – in der Team-Datei auf O:\\.</div>' +
       '<button type="button" id="banner-dismiss-btn">Verstanden</button>' +
     '</div>';
   qs('#banner-dismiss-btn', root).addEventListener('click', function () {

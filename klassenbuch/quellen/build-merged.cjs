@@ -174,7 +174,7 @@ var ANW_API = [
   "    summaryForStudent:function(id){var e=0,u=0,v=0,he=0,hu=0;state.entries.forEach(function(x){if(x.studentId!==id)return;var h=countHours(x);if(x.status==='entschuldigt'){e++;he+=h;}else if(x.status==='unentschuldigt'){u++;hu+=h;}else if(x.status==='verspaetet'){v++;}});return {entschuldigt:e,unentschuldigt:u,verspaetet:v,hoursEnt:he,hoursUnent:hu,total:e+u+v};},",
   "    recentForStudent:function(id,n){return state.entries.filter(function(e){return e.studentId===id;}).sort(function(a,b){return a.date<b.date?1:-1;}).slice(0,n||8);},",
   "    notes:function(){return state.notes.slice().sort(function(a,b){return a.date<b.date?1:(a.date>b.date?-1:0);});},",
-  "    tasksForLevel:function(level){return state.notes.filter(function(n){return (n.type==='hausaufgabe'||n.type==='pruefung')&&(!n.level||!level||n.level===level);}).sort(function(a,b){return a.date<b.date?1:-1;});},",
+  "    tasksForLevel:function(level,sid){return state.notes.filter(function(n){return (n.type==='hausaufgabe'||n.type==='pruefung')&&(!n.level||!level||n.level===level)&&(!n.studentId||n.studentId===sid);}).sort(function(a,b){return a.date<b.date?1:-1;});},",
   "    statusLabel:function(s){return (STATUS[s]&&STATUS[s].label)||s;},",
   "    fmt:function(iso){return fmtD(iso);},",
   "    openStudent:function(id){activeStudentId=id;rememberStudent(id);var s=state.students.find(function(x){return x.id===id;});if(s){classFilter=s.level||classFilter;}renderAll();},",
@@ -607,6 +607,11 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .sv-acc .sv-prose{padding:0 0 14px;}
 .sv-do strong{color:var(--kb-accent2-dark);}
 .sv-dont strong{color:var(--kb-danger-dark);}
+/* ===== Verlauf: Filter-Chips (der aktive war blau auf blau) ===== */
+.tl-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;border:1px solid var(--kb-border);background:var(--kb-surface);color:var(--kb-text);font-size:13px;font-weight:650;text-decoration:none;}
+.tl-chip:hover{border-color:var(--kb-accent);color:var(--kb-accent);}
+.tl-chip.is-on{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
+.kb-ziel-ok{color:var(--kb-muted);}
 /* ===== Screening: Hinweis auf den Hub und frühere Angaben (nur lesen) ===== */
 .kb-scr-hinweis{background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);border-radius:14px;padding:16px 18px;margin:0 0 16px;}
 .kb-scr-hinweis h3{margin:0 0 6px;font-size:16px;}
@@ -915,7 +920,7 @@ var SHELL_PANELS_EXTRA = `
         <div id="kb-sync-status" class="kb-sync-status">…</div>
         <div id="kb-sync-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
       </div>
-      <div class="kb-card"><h3 style="margin:0 0 6px;">📋 Anwesenheit & Klassenbuch</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export, gemeinsame Datei.</p><button class="kb-btn kb-btn-primary" id="kb-data-anw">Anwesenheit-Daten öffnen</button></div>
+      <div class="kb-card"><h3 style="margin:0 0 6px;">📋 Anwesenheit & Klassenbuch</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export, gemeinsame Datei.</p><button class="kb-btn kb-btn-primary" id="kb-data-anw">Sichern oder als Excel/CSV exportieren</button></div>
       <div class="kb-card"><h3 style="margin:0 0 6px;">🗂️ Dossiers & Réunion</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Schüler-Dossiers, Réunionen und Organisation — Backup exportieren/importieren.</p><button class="kb-btn kb-btn-primary" id="kb-data-dos">Dossier-Backup öffnen</button></div>
       <div class="kb-card">
         <div class="kb-card-h"><h3>📅 Wochen-Sicherung</h3><span class="kb-term-now" id="kb-wk-range"></span></div>
@@ -1454,7 +1459,7 @@ var DOS_OVERRIDES = `
     /* ---- Wochenziele (sichtbar mit Ziel-Texten) ---- */
     var wochenCard;
     if(weekly.length){
-      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<ul class="hub-list">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';
+      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<ul class="hub-list">'+window.kbZiele(weekly).map(zielLi).join('')+'</ul></div>';
     } else {
       wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
     }
@@ -1503,7 +1508,7 @@ var DOS_OVERRIDES = `
       items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
-      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+window.kbZiele(g).map(zielLi).join('')+'</ul>'});}
     });
     if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
     /* Frühere Screenings: nur Datum, Zahl der Beobachtungen und Krisenhinweis – keine Verdachtsachsen */
@@ -1534,15 +1539,15 @@ var DOS_OVERRIDES = `
       if(!e&&!g.length){return;}
       out.push('<div class="card"><div class="muted" style="font-size:.85em;display:flex;justify-content:space-between;gap:8px;align-items:center;"><span>Réunion '+escapeHtml(formatDate(r.date))+'</span>'+(e&&e.author?'<span class="reunion-author" title="Verfasst von '+escapeAttr(e.author)+'">✍ '+escapeHtml(e.author)+'</span>':'')+'</div>'+
         (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
-        (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul></div>':'')+'</div>');
+        (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+window.kbZiele(g).map(zielLi).join('')+'</ul></div>':'')+'</div>');
     });
-    var today=(new Date()).toISOString().slice(0,10);
+    var today=todayIso();
     var up=reu.filter(function(r){return r.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
-    function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return d.toISOString().slice(0,10);}
+    function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
     var nextDate=up.length?up[0].date:nextMondayISO();
     var nObj=Repo.getReunionByDate?Repo.getReunionByDate(nextDate):null;
     var ex=Repo.reunionEntryFor(nextDate,sid);
-    var exGoals=(nObj&&nObj.goals&&nObj.goals[sid])?nObj.goals[sid]:[];
+    var exGoals=window.kbZiele((nObj&&nObj.goals&&nObj.goals[sid])?nObj.goals[sid]:[]).map(function(g){return g.text;});
     var willCreate=!nObj;
     var writeBox='<div class="card reu-write">'+
       '<h4 class="reu-h">✍️ Für die Réunion am '+escapeHtml(formatDate(nextDate))+(willCreate?' <span class="muted" style="font-weight:600;font-size:.8em;">(wird neu angelegt)</span>':'')+'</h4>'+
@@ -1567,9 +1572,9 @@ var DOS_OVERRIDES = `
   function hubAufgaben(student){
     var lvl=rosterLevel(student.id);
     if(!window.KB_ANW){return '<div class="empty-state">Klassenbuch-Modul nicht geladen.</div>';}
-    var tasks=window.KB_ANW.tasksForLevel(lvl);
-    var rows=tasks.map(function(n){var icon=n.type==='pruefung'?'📝':'📒';return '<div class="card"><div class="muted" style="font-size:.85em;">'+icon+' '+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+'</div><div>'+escapeHtml(n.text)+'</div></div>';}).join('');
-    return '<div class="kb-hub-pad"><p class="muted">Hausaufgaben & Prüfungen aus dem Klassenbuch für Niveau '+escapeHtml(lvl)+'. (Individuell zugewiesene Aufgaben folgen später.)</p>'+(tasks.length?rows:'<div class="empty-state">Keine Aufgaben/Prüfungen hinterlegt.</div>')+'</div>';
+    var tasks=window.KB_ANW.tasksForLevel(lvl,student.id);
+    var rows=tasks.map(function(n){var icon=n.type==='pruefung'?'📝':'📒';return '<div class="card"><div class="muted" style="font-size:.85em;">'+icon+' '+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+(n.studentId?' · <b>nur für '+escapeHtml(student.name)+'</b>':'')+'</div><div>'+escapeHtml(n.text)+'</div></div>';}).join('');
+    return '<div class="kb-hub-pad"><p class="muted">Hausaufgaben & Prüfungen aus dem Klassenbuch für Niveau '+escapeHtml(lvl)+' – dazu die, die nur für '+escapeHtml(student.name)+' eingetragen sind.</p>'+(tasks.length?rows:'<div class="empty-state">Keine Aufgaben/Prüfungen hinterlegt.</div>')+'</div>';
   }
   function hubHelfernetz(student){
     if(window.KB_BUBBLE_RENDER){return window.KB_BUBBLE_RENDER(student);}
@@ -1679,7 +1684,9 @@ var DOS_OVERRIDES = `
             var r2=Repo.getReunionByDate?Repo.getReunionByDate(date2):null;
             var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
             base.goals=base.goals||{};
-            if(goals2.length){base.goals[sid2]=goals2;}else if(base.goals[sid2]){delete base.goals[sid2];}
+            /* als {text,done} speichern und das Häkchen „erledigt“ gleicher Ziele behalten */
+            var alt2=window.kbZiele(base.goals[sid2]);
+            if(goals2.length){base.goals[sid2]=goals2.map(function(t){return {text:t,done:alt2.some(function(a){return a.text===t&&a.done;})};});}else if(base.goals[sid2]){delete base.goals[sid2];}
             Repo.saveReunion(base).then(function(){
               if(text2){var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:text2,author:((window.KB_USER&&window.KB_USER.get())||'')};if(eid2){p2.id=eid2;}return Repo.saveEntry(p2);}
             }).then(function(){
@@ -1693,19 +1700,30 @@ var DOS_OVERRIDES = `
     };
   }
 
+  /* Wochenziele liegen je nach Ansicht als Text oder als {text,done} vor.
+     Überall dieselbe Umwandlung – sonst erscheint „[object Object]“, und beim
+     Aktualisieren wird der Zieltext überschrieben (Fehler H5). */
+  window.kbZiele=function(arr){
+    return (Array.isArray(arr)?arr:[]).map(function(g){
+      var t=(g&&typeof g==='object')?String(g.text||''):String(g==null?'':g);
+      if(t==='[object Object]'){t='⚠ Zieltext verloren (Fehler einer älteren Version) – in einer Tageskopie nachsehen';}
+      return {text:t,done:!!(g&&typeof g==='object'&&g.done)};
+    }).filter(function(g){return g.text.trim();});
+  };
+  function zielLi(g){return '<li'+(g.done?' class="kb-ziel-ok"':'')+'>'+(g.done?'✓ ':'')+escapeHtml(g.text)+'</li>';}
   window.KB_DOS_RECONCILE=function(){
     if(!window.KB_ROSTER){return;}
     var keep=window.KB_ROSTER.ids();
+    /* Nur Anzeige-Listen aufräumen. Einträge und Wochenziele von Kindern, die
+       nicht (mehr) in der Liste stehen, bleiben erhalten – früher wurden sie
+       hier endgültig gelöscht und über den Abgleich verteilt (Fehler H7). */
     Repo.students=(Repo.students||[]).filter(function(s){return keep[s.id];});
-    Repo.entries=(Repo.entries||[]).filter(function(e){return keep[e.studentId];});
     (Repo.reunions||[]).forEach(function(r){
       if(r&&Array.isArray(r.studentOrder)){r.studentOrder=r.studentOrder.filter(function(id){return keep[id];});}
-      if(r&&r.goals){Object.keys(r.goals).forEach(function(k){if(k!=='group'&&!keep[k]){delete r.goals[k];}});}
     });
     try{
       if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){
         Storage.clear('students').then(function(){return Storage.putAll('students',Repo.students);}).catch(function(){});
-        Storage.clear('entries').then(function(){return Storage.putAll('entries',Repo.entries);}).catch(function(){});
         Storage.putAll('reunions',Repo.reunions).catch(function(){});
       }
     }catch(e){}
@@ -2366,7 +2384,7 @@ window.KB_BUBBLE=(function(){
     addNode:function(sid,n){var r=get(sid);n.id='bn_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);r.nodes.push(n);set(sid,r);return n.id;},
     updateNode:function(sid,id,f){var r=get(sid);r.nodes.forEach(function(n){if(n.id===id){for(var k in f){n[k]=f[k];}}});set(sid,r);},
     removeNode:function(sid,id){var r=get(sid);r.nodes=r.nodes.filter(function(n){return n.id!==id;});set(sid,r);},
-    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:new Date().toISOString().slice(0,10),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
+    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:(function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})(new Date()),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
     snapshots:function(sid){return (get(sid).snapshots||[]).slice();},
     removeSnapshot:function(sid,snapId){var r=get(sid);r.snapshots=(r.snapshots||[]).filter(function(s){return s.id!==snapId;});set(sid,r);},
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:r.nodes||[],snapshots:r.snapshots||[]});}return out;},
@@ -2596,14 +2614,24 @@ window.KB_SYNC=(function(){
      Anwenden mit einer leeren Liste überschreiben (= Datenverlust). */
   var COLLS=['roster','dosEntries','dosReunions','anwEntries','anwNotes','anwSettings','bubble','screening','noten','terms','timetables','blocks'];
   var BASE_LS='klassebuch_sync_base';
+  /* Welche App schreibt die Datei? Klassenbuch und Journal nutzen dasselbe
+     Format; eine fremde Datei wird abgelehnt statt vermischt (Fehler H2). */
+  var APP='klassenbuch', FREMD_COLLS=['pei','goals','years','agenda','tasks'];
+  /* Tiefe Kopie: Basis und Live-Daten dürfen sich nie Objekte teilen, sonst
+     sieht der Vergleich Änderungen „an Ort und Stelle“ nicht (Fehler K4). */
+  function kopie(o){return o==null?o:JSON.parse(JSON.stringify(o));}
   var DBNAME='klassebuch-sync';
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
 
   function eqPayload(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+  /* Je Datensatz gewinnt der jüngere Zeitstempel. Bei Gleichstand entscheidet
+     der Inhalt – auf allen Geräten gleich, damit die Datei nicht zwischen zwei
+     Fassungen hin- und herpendelt (früher gewann immer die eigene Fassung). */
+  function gewinnt(a,b){var ta=a._ts||0,tb=b._ts||0;if(ta!==tb){return ta>tb;}var sa=JSON.stringify(a),sb=JSON.stringify(b);return sa>=sb;}
   function mergeColl(remote,local){
     var by={},i,r,ex;
     for(i=0;i<(remote||[]).length;i++){r=remote[i];by[r.id]=r;}
-    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||(r._ts||0)>=(ex._ts||0)){by[r.id]=r;}}
+    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||gewinnt(r,ex)){by[r.id]=r;}}
     var out=[];for(var k in by){out.push(by[k]);}return out;
   }
   function diffColl(base,live,now){
@@ -2615,10 +2643,12 @@ window.KB_SYNC=(function(){
     return out;
   }
   function liveOf(coll){var out=[];for(var i=0;i<(coll||[]).length;i++){if(!coll[i]._del){out.push(coll[i].d);}}return out;}
-  function emptyDoc(){var d={_format:FMT,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
+  function emptyDoc(){var d={_format:FMT,_app:APP,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
   function buildLocalDoc(base,live,now){var ld=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var bc=(base&&base.colls&&base.colls[n])||[];ld.colls[n]=mergeColl(bc,diffColl(bc,live[n]||[],now));}return ld;}
-  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return nb;}
-  function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
+  /* Sammlungen, die diese Version nicht kennt (neuere App-Stände), unverändert durchreichen */
+  function fremdeBehalten(nb,remote){if(remote&&remote.colls){for(var k in remote.colls){if(COLLS.indexOf(k)<0&&Array.isArray(remote.colls[k])){nb.colls[k]=remote.colls[k];}}}return nb;}
+  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return fremdeBehalten(nb,remote);}
+  function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return fremdeBehalten(nb,remote);}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
   function summarize(doc){var keys=['roster','dosEntries','dosReunions','anwEntries','anwNotes','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}return c;}
@@ -2633,13 +2663,13 @@ window.KB_SYNC=(function(){
     /* Sicherheitsnetz: Fehlt eine Sammlung im Dokument (ältere Team-Datei,
        oder die Sammlung steht nicht in COLLS), wird sie NICHT angewendet.
        Sonst käme syncApply([]) an und würde lokale Daten löschen. */
-    function sc(o,m,coll){if(!coll)return;s(o,m,liveOf(coll));}
+    function sc(o,m,coll){if(!coll)return;s(o,m,kopie(liveOf(coll)));}
     sc(window.KB_ROSTER,'syncApply',doc.colls.roster);
     sc(window.KB_DOS_SYNC,'applyEntries',doc.colls.dosEntries);
     sc(window.KB_DOS_SYNC,'applyReunions',doc.colls.dosReunions);
     sc(window.KB_ANW,'applyEntries',doc.colls.anwEntries);
     sc(window.KB_ANW,'applyNotes',doc.colls.anwNotes);
-    if(doc.colls.anwSettings){var se=liveOf(doc.colls.anwSettings);s(window.KB_ANW,'applySettings',se[0]||null);}
+    if(doc.colls.anwSettings){var se=kopie(liveOf(doc.colls.anwSettings));s(window.KB_ANW,'applySettings',se[0]||null);}
     sc(window.KB_BUBBLE,'syncApply',doc.colls.bubble);
     sc(window.KB_SCREENING,'syncApply',doc.colls.screening);
     sc(window.KB_NOTEN,'syncApply',doc.colls.noten);
@@ -2668,6 +2698,7 @@ window.KB_SYNC=(function(){
       if(!txt||!txt.trim())return null;
       var d;try{d=JSON.parse(txt);}catch(e){return 'INVALID';}
       if(!d||d._format!==FMT||!d.colls)return 'INVALID';
+      if((d._app&&d._app!==APP)||(!d._app&&FREMD_COLLS.some(function(k){return !!d.colls[k];}))){return 'FREMD';}
       return d;
     });
   }
@@ -2777,9 +2808,10 @@ window.KB_SYNC=(function(){
     if(fehlt.length){setStatus({pending:false,error:'',warten:fehlt.join(', ')});return Promise.resolve();}
     if(status.warten)setStatus({warten:''});
     busy=true;setStatus({pending:true});
-    var now=Date.now();var live=collGet();
+    var now=Date.now();var live=kopie(collGet());
     return readFile().then(function(remote){
       if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unveraendert).',pending:false});busy=false;return;}
+      if(remote==='FREMD'){setStatus({error:'Diese Team-Datei gehört zum Journal, nicht zum Klassenbuch — bitte die Datei des Klassenbuchs wählen. Nichts wurde verändert.',pending:false});busy=false;return;}
       var nb,apply;
       if(!base){nb=firstReconcile(live,remote||null,now);apply=true;}
       else{
@@ -3125,7 +3157,7 @@ window.KB_NOTEN=(function(){
     periodsFor:periodsFor, norm:norm, list:listOf, subjectAvg:subjAvg,
     getMode:function(sid){return rec(sid).mode;},
     setMode:function(sid,m){var r=rec(sid);var nm=(m==='trimester'?'trimester':'semester');if(r.mode!==nm){r.mode=nm;r.updatedAt=new Date().toISOString();notify(sid);}},
-    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:new Date().toISOString().slice(0,10)});r.updatedAt=new Date().toISOString();notify(sid);},
+    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:(function(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');})(new Date())});r.updatedAt=new Date().toISOString();notify(sid);},
     remove:function(sid,id){var r=rec(sid);r.grades=r.grades.filter(function(g){return g.id!==id;});r.updatedAt=new Date().toISOString();notify(sid);},
     periodAvg:function(sid,period,subjects){var avgs=[];(subjects||[]).forEach(function(su){var a=subjAvg(sid,su,period);if(a!=null)avgs.push(a);});if(!avgs.length)return null;var s=0;for(var i=0;i<avgs.length;i++)s+=avgs[i];return s/avgs.length;},
     moduleOf:function(sid,subject){return modOf(sid,subject);},
@@ -3182,7 +3214,7 @@ window.KB_WEEKLY=(function(){
     function push(wi,cat,line){if(wi<0)return;(buckets[wi][cat]=buckets[wi][cat]||[]).push(line);}
 
     try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var cat=(e.category==='Team-Réunion')?'Réunion-Beiträge':'Dossier-Einträge';var by=e.author?(' <em>(von '+esc(e.author)+')</em>'):'';push(wi,cat,'<div class="it"><div class="ih"><b>'+esc(nameOf(students,e.studentId))+'</b>'+by+' · '+fmtD(e.date)+((e.category&&e.category!=='Team-Réunion')?(' · '+esc(e.category)):'')+'</div><div class="tx">'+nl2br(e.text||'')+'</div></div>');});}catch(e){}
-    try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportReunions():[]).forEach(function(r){var wi=weekOf(r.date);if(wi<0)return;var g=r.goals||{};Object.keys(g).forEach(function(sid){var arr=g[sid]||[];if(!arr.length)return;var who=(sid==='group')?'Gruppe':esc(nameOf(students,sid));push(wi,'Wochenziele','<div class="it"><div class="ih"><b>'+who+'</b> · '+fmtD(r.date)+'</div><div class="tx">'+arr.map(function(x){return '• '+esc(x);}).join('<br>')+'</div></div>');});});}catch(e){}
+    try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportReunions():[]).forEach(function(r){var wi=weekOf(r.date);if(wi<0)return;var g=r.goals||{};Object.keys(g).forEach(function(sid){var arr=g[sid]||[];if(!arr.length)return;var who=(sid==='group')?'Gruppe':esc(nameOf(students,sid));push(wi,'Wochenziele','<div class="it"><div class="ih"><b>'+who+'</b> · '+fmtD(r.date)+'</div><div class="tx">'+window.kbZiele(arr).map(function(x){return (x.done?'✓ ':'• ')+esc(x.text);}).join('<br>')+'</div></div>');});});}catch(e){}
     try{(window.KB_NOTEN?KB_NOTEN.syncExport():[]).forEach(function(r){(r.grades||[]).forEach(function(g){var wi=weekOf(g.date);if(wi<0)return;var n60=(+g.max>0?(+g.points/+g.max*60):0);push(wi,'Noten','<div class="it2">'+fmtD(g.date)+' · <b>'+esc(nameOf(students,r.id))+'</b> · '+esc(g.subject||'')+(g.label?(' ('+esc(g.label)+')'):'')+': '+(+g.points)+'/'+(+g.max)+' → '+(Math.round(n60*10)/10).toString().replace('.',',')+'/60</div>');});});}catch(e){}
     try{if(window.KB_SCREENING&&KB_SCREENING.history){(window.KB_ROSTER?KB_ROSTER.list():[]).forEach(function(s){(KB_SCREENING.history(s.id)||[]).forEach(function(h){var wi=weekOf(h.date);if(wi<0)return;var mu=(h.muster||[]).map(function(x){return (x&&x.name)?x.name:x;}).join(' · ');var risk=h.acute?'akute Krise':(h.risk?'Risiko':'');push(wi,'Screenings','<div class="it2">'+fmtD(h.date)+' · <b>'+esc(s.name)+'</b>'+(risk?(' · '+risk):'')+(mu?(' · '+esc(mu)):'')+'</div>');});});}}catch(e){}
     try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var lab=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status);push(wi,'Absenzen','<div class="it2">'+fmtD(e.date)+' · <b>'+esc(nameOf(students,e.studentId))+'</b> · '+esc(lab)+(e.subject?(' · '+esc(e.subject)):'')+(e.byUser?(' <em>('+esc(e.byUser)+')</em>'):'')+'</div>');});}catch(e){}
@@ -3235,7 +3267,7 @@ window.KB_WEEKLY=(function(){
     try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportReunions():[]).forEach(function(r){
       if(!inW(r.date))return;var g=r.goals||{};
       Object.keys(g).forEach(function(sid){var arr=g[sid]||[];if(!arr.length)return;
-        add('Wochenziele',r.date,(sid==='group')?'Gruppe':nameOf(students,sid),'','','',arr.join(' | '));});
+        add('Wochenziele',r.date,(sid==='group')?'Gruppe':nameOf(students,sid),'','','',window.kbZiele(arr).map(function(x){return (x.done?'✓ ':'')+x.text;}).join(' | '));});
     });}catch(e){}
     try{(window.KB_NOTEN?KB_NOTEN.syncExport():[]).forEach(function(r){
       (r.grades||[]).forEach(function(g){if(!inW(g.date))return;
