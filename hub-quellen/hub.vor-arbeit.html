@@ -2072,7 +2072,12 @@ function nutzerFuerApps(ich){
   try{
     if(!ich){return;}
     var alt={};try{alt=JSON.parse(localStorage.getItem('cdse-nutzer')||'{}')||{};}catch(e){alt={};}
-    localStorage.setItem('cdse-nutzer',JSON.stringify({id:ich.id,name:ich.name,team:ich.team||'',rolle:(alt.id===ich.id&&alt.rolle)||'',stand:new Date().toISOString()}));
+    var neu={id:ich.id,name:ich.name,team:ich.team||'',rolle:(alt.id===ich.id&&alt.rolle)||''};
+    /* nur bei einer echten Änderung schreiben – sonst wäre jeder Start eine Änderung für den Tresor
+       (neuer Stand, bei zwei PCs sogar eine Konflikt-Kopie) */
+    if(alt.id===neu.id&&alt.name===neu.name&&(alt.team||'')===neu.team&&(alt.rolle||'')===neu.rolle){return;}
+    neu.stand=new Date().toISOString();
+    localStorage.setItem('cdse-nutzer',JSON.stringify(neu));
   }catch(e){}
 }
 window.CDSE_KONTO.start({

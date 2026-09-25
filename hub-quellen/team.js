@@ -125,7 +125,11 @@ function rolleFuerApps(){
   try{
     var me=ich();if(!me){return;}
     var alt={};try{alt=JSON.parse(localStorage.getItem('cdse-nutzer')||'{}')||{};}catch(e){alt={};}
-    localStorage.setItem('cdse-nutzer',JSON.stringify({id:me.id,name:me.name||alt.name||'',team:me.team||alt.team||'',rolle:rolle(me.id)||'mitarbeiter',stand:jetzt()}));
+    var neu={id:me.id,name:me.name||alt.name||'',team:me.team||alt.team||'',rolle:rolle(me.id)||'mitarbeiter'};
+    /* nur bei einer echten Änderung schreiben (der Tresor sähe sonst bei jedem Start eine Änderung) */
+    if(alt.id===neu.id&&alt.name===neu.name&&(alt.team||'')===neu.team&&alt.rolle===neu.rolle){return;}
+    neu.stand=jetzt();
+    localStorage.setItem('cdse-nutzer',JSON.stringify(neu));
   }catch(e){}
 }
 /* Beim Abmelden/Sperren alles vergessen */

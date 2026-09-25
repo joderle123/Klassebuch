@@ -1,7 +1,20 @@
 // Test des Daten-Tresors (http + OPFS als "Hub-Ordner auf dem Server")
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
-const fs = require('fs');
+const fs = require('fs'), path = require('path'), cp = require('child_process');
 const OUT = __dirname, BASE = 'http://127.0.0.1:8099/';
+/* Schritt 13 braucht den Hub von vor dem Tresor („Phase 1“) als _alt-test.html im Hauptordner.
+   Fehlt die Datei, wird sie aus der Git-Geschichte geholt (Stand vor dem Commit, der den Tresor
+   einführte) und am Ende wieder gelöscht. */
+const ALT = path.join(__dirname, '..', '..', '_alt-test.html');
+let altSelbst = false;
+if (!fs.existsSync(ALT)) {
+  try {
+    const c = cp.execFileSync('git', ['log', '--format=%H', '--reverse', '-S', 'tresorPacken', '--', 'hub.html'], { cwd: path.dirname(ALT) }).toString().trim().split('\n')[0];
+    fs.writeFileSync(ALT, cp.execFileSync('git', ['show', c + '^:hub.html'], { cwd: path.dirname(ALT), maxBuffer: 256 * 1024 * 1024 }));
+    altSelbst = true;
+  } catch (e) { console.log('Hinweis: _alt-test.html fehlt und ließ sich nicht aus der Git-Geschichte holen – Schritt 13 schlägt fehl.'); }
+}
+function altWeg() { if (altSelbst) { try { fs.unlinkSync(ALT); } catch (e) { } } }
 let ok = 0, bad = 0;
 function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name); } else { bad++; console.log('  ✗ ' + name + (info !== undefined ? '  → ' + String(info).slice(0, 300) : '')); } }
 
@@ -332,4 +345,5 @@ const marke = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('cds
   console.log('\n' + ok + ' ok, ' + bad + ' Fehler');
   await browser.close();
   process.exitCode = bad ? 1 : 0;
-})().catch(e => { console.error('ABBRUCH:', e); process.exitCode = 2; });
+  altWeg();
+})().catch(e => { console.error('ABBRUCH:', e); process.exitCode = 2; altWeg(); });
