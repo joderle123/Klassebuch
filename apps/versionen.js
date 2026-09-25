@@ -2,10 +2,10 @@
 window.CDSE_APP_VERSIONEN = {
   "klassenbuch": {
     "stand": "2026-09-25",
-    "commit": "2a45e9d",
+    "commit": "910ed95",
     "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Klassenbuch (Testversion): Anwesenheit passt auf Laptop, Tablet und Handy",
-    "groesse": 1284869
+    "aenderung": "Klassenbuch/Journal (Testversion): Design-Fehler aus dem Galileo-Stand behoben",
+    "groesse": 1285390
   },
   "screening": {
     "stand": "2026-09-24",
@@ -30,9 +30,9 @@ window.CDSE_APP_VERSIONEN = {
   },
   "journal": {
     "stand": "2026-09-25",
-    "commit": "ec12171",
+    "commit": "910ed95",
     "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Hub + Klassenbuch/Journal: Schülerdaten zusammenführen, Journal neu gebaut",
-    "groesse": 1134290
+    "aenderung": "Klassenbuch/Journal (Testversion): Design-Fehler aus dem Galileo-Stand behoben",
+    "groesse": 1136657
   }
 };
