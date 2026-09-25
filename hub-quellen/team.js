@@ -292,6 +292,11 @@ function aendern(id,fn,art){
 function brauche(r,was){if(!r[was]){throw fehler(was==='bearbeiten'?'Du hast für dieses Dossier nur Leserechte. Bitte die Fallverantwortlichen um ein Schreibrecht.':'Dafür fehlt dir das Recht. Das dürfen die Fallverantwortlichen, die Responsables und die Verwaltung.');}}
 function name(id){var k=K.konten().filter(function(x){return x.id===id;})[0];return k?k.name:'(gelöschtes Konto)';}
 function teamName(id){return K.team(id).name;}
+/* Begleitplan (optional, d.begleitplan): nur die Entscheidungen des Teams werden gespeichert –
+   die vorgeschlagenen Schritte berechnet der Hub jedes Mal neu aus dem Dossier. */
+function planVon(d){d.begleitplan=d.begleitplan||{v:1};var b=d.begleitplan;b.schritte=b.schritte||{};return b;}
+var PLAN_STATUS={erledigt:'erledigt',spaeter:'auf später gelegt','passt-nicht':'passt nicht'};
+var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
 var ops={
   person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
@@ -386,6 +391,62 @@ var ops={
     d.screeningsAlt=d.screeningsAlt.filter(function(x){return x.id!==aid;});
     return 'Früheres Screening aus dem '+(a.quelle==='journal'?'Journal':'Klassenbuch')+' entfernt'+(a.stand?' (Stand '+String(a.stand).slice(0,10)+')':'');
   },'screening');},
+  /* ---- Begleitplan und Kompass ---- */
+  /* Kompass: Entscheidung des Teams zu einem Profil (key = Profil-ID oder z. B. 'ds:emotional').
+     art: diagnose | verdacht (vom Team eingetragen) · aus (ausgeblendet) · geklaert (Rückfrage erledigt) · '' (zurücksetzen) */
+  planMerkmal:function(id,key,werte){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');werte=werte||{};key=String(key||'').slice(0,60);if(!key){throw fehler('Profil fehlt');}
+    var bp=planVon(d), mk=bp.merkmale=bp.merkmale||{}, art=String(werte.art||''), name=String(werte.name||key).slice(0,120);
+    if(!art){if(!mk[key]){return false;}delete mk[key];return 'Kompass: „'+name+'“ zurückgesetzt';}
+    if(!MERKMAL_ART[art]){throw fehler('Unbekannte Angabe');}
+    mk[key]={art:art,quelle:String(werte.quelle||'').trim().slice(0,300),bezug:String(werte.bezug||'').slice(0,60),z:jetzt(),von:ich().id};
+    return 'Kompass: „'+name+'“ '+MERKMAL_ART[art]+(mk[key].quelle&&art!=='aus'?' – '+mk[key].quelle:'');
+  },'begleitplan');},
+  planSchritt:function(id,key,werte){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');werte=werte||{};
+    var bp=planVon(d), alt=bp.schritte[key], st=werte.status||'', titel=String(werte.titel||key).slice(0,160);
+    if(!st){if(!alt){return false;}delete bp.schritte[key];return 'Begleitplan: „'+titel+'“ wieder offen';}
+    if(!PLAN_STATUS[st]){throw fehler('Unbekannter Status');}
+    bp.schritte[key]={status:st,z:jetzt(),von:ich().id,notiz:String(werte.notiz||'').trim().slice(0,2000),bis:werte.bis||''};
+    if(!bp.start){bp.start=jetzt().slice(0,10);}
+    return 'Begleitplan: „'+titel+'“ '+PLAN_STATUS[st]+(st==='spaeter'&&werte.bis?' (bis '+werte.bis+')':'')+(werte.notiz?' – '+String(werte.notiz).trim().slice(0,200):'');
+  },'begleitplan');},
+  planFokus:function(id,codes){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var bp=planVon(d), l=(codes||[]).map(String).filter(Boolean).slice(0,3);
+    if(JSON.stringify(bp.fokus||[])===JSON.stringify(l)){return false;}
+    bp.fokus=l;bp.fokusSeit=jetzt().slice(0,10);if(!bp.start){bp.start=bp.fokusSeit;}
+    return l.length?'Begleitplan: Fokusziele '+l.join(', '):'Begleitplan: Fokusziele entfernt';
+  },'begleitplan');},
+  planEigener:function(id,e){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');e=e||{};
+    var bp=planVon(d), t=jetzt(), x={id:neueId(8),titel:String(e.titel||'').trim().slice(0,200),text:String(e.text||'').trim().slice(0,2000),
+      phase:String(e.phase||'umsetzen'),wer:String(e.wer||''),bis:String(e.bis||''),status:'offen',von:ich().id,z:t};
+    if(!x.titel){throw fehler('Bitte angeben, was zu tun ist.');}
+    bp.eigene=(bp.eigene||[]).concat([x]);if(!bp.start){bp.start=t.slice(0,10);}
+    return 'Begleitplan: eigener Schritt „'+x.titel+'“';
+  },'begleitplan');},
+  planEigenerAendern:function(id,sid,werte){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');werte=werte||{};
+    var bp=planVon(d), e=(bp.eigene||[]).filter(function(x){return x.id===sid;})[0];if(!e){throw fehler('Schritt nicht gefunden');}
+    ['titel','text','phase','wer','bis','status'].forEach(function(k){if(werte[k]!=null){e[k]=String(werte[k]);}});
+    if(werte.status==='erledigt'){e.erledigt=jetzt();e.erledigtVon=ich().id;}
+    e.geaendert=jetzt();e.geaendertVon=ich().id;
+    return 'Begleitplan: „'+e.titel+'“ '+(werte.status==='erledigt'?'erledigt':(werte.status==='offen'?'wieder offen':'geändert'));
+  },'begleitplan');},
+  planEigenerLoeschen:function(id,sid){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var bp=planVon(d), e=(bp.eigene||[]).filter(function(x){return x.id===sid;})[0];if(!e){return false;}
+    bp.eigene=bp.eigene.filter(function(x){return x.id!==sid;});
+    return 'Begleitplan: eigener Schritt „'+e.titel+'“ entfernt';
+  },'begleitplan');},
+  planUeberpruefung:function(id,rv){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');rv=rv||{};
+    var bp=planVon(d), t=jetzt(), x={id:neueId(8),datum:String(rv.datum||t.slice(0,10)),notiz:String(rv.notiz||'').trim().slice(0,4000),
+      kennzahlen:rv.kennzahlen&&typeof rv.kennzahlen==='object'?rv.kennzahlen:{},von:ich().id,z:t};
+    bp.reviews=(bp.reviews||[]).concat([x]);if(!bp.start){bp.start=x.datum;}
+    return 'Begleitplan: Überprüfung vom '+x.datum+(x.notiz?' – '+x.notiz.slice(0,200):'');
+  },'begleitplan');},
   /* Übernahme aus Klassenbuch/Journal in EINEM Schreibvorgang: p = {app, kb, eintraege:[{datum, art, titel, text,
      thema, tags, autorName, herkunft:{app,id,updatedAt,…}, bericht?, quelle?, skalen?}], helfernetz?:{daten, quellen}}.
      Schon übernommene Einträge (gleiche Herkunft) werden nicht verdoppelt, geänderte (neueres updatedAt) nachgetragen. */

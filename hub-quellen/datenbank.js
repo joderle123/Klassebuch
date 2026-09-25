@@ -1739,6 +1739,8 @@ function ereignisse(el){
 }
 
 return {seite:seite, felder:FELDER, datensatz:datensatz,
+  /* Kernangaben, die im Datensatz fehlen: [{key, label}] (für den Begleitplan) */
+  kernFehlt:function(r){return kernFehlt(r||{}).map(function(k){var f=FELDER.filter(function(x){return x.key===k[0];})[0];return {key:k[0],label:f?f.label:k[0],teil:k[1]};});},
   /* Verbindung zum Reiter „Fiche“ im Dossier */
   ficheKarte:ficheKarte, bearbeiten:bearbeiten, zeigen:zeigen,
   /* für Tests und andere Module: Abfragen ohne Oberfläche */

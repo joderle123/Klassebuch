@@ -42,6 +42,13 @@ window.LERN_QUELLEN = {
   zeanah2015: 'Zeanah, C. H. & Gleason, M. M. (2015). Annual research review: Attachment disorders in early childhood – clinical presentation, causes, correlates, and treatment. Journal of Child Psychology and Psychiatry, 56(3), 207–222.',
   sharpFonagy2015: 'Sharp, C. & Fonagy, P. (2015). Practitioner review: Borderline personality disorder in adolescence – recent conceptualization, intervention, and implications for clinical practice. Journal of Child Psychology and Psychiatry, 56(12), 1266–1288.',
   kaess2014: 'Kaess, M., Brunner, R. & Chanen, A. (2014). Borderline personality disorder in adolescence. Pediatrics, 134(4), 782–793.',
+  /* Emotionale Instabilität, Selbstverletzung: DBT und MBT (für den Kompass im Hub) */
+  niceCG78: 'NICE (2009). Borderline personality disorder: recognition and management (CG78). London: National Institute for Health and Care Excellence.',
+  awmfBps2022: 'AWMF (2022). S3-Leitlinie Borderline-Persönlichkeitsstörung. Federführung: Deutsche Gesellschaft für Psychiatrie und Psychotherapie, Psychosomatik und Nervenheilkunde (DGPPN).',
+  linehan1993: 'Linehan, M. M. (1993). Cognitive-Behavioral Treatment of Borderline Personality Disorder. New York: Guilford.',
+  millerRathusLinehan2007: 'Miller, A. L., Rathus, J. H. & Linehan, M. M. (2007). Dialectical Behavior Therapy with Suicidal Adolescents. New York: Guilford.',
+  rathusMiller2015: 'Rathus, J. H. & Miller, A. L. (2015). DBT Skills Manual for Adolescents. New York: Guilford.',
+  rossouwFonagy2012: 'Rossouw, T. I. & Fonagy, P. (2012). Mentalization-based treatment for self-harm in adolescents: a randomized controlled trial. Journal of the American Academy of Child and Adolescent Psychiatry, 51(12), 1304–1313.',
   schulteKoerne2010: 'Schulte-Körne, G. (2010). The prevention, diagnosis, and treatment of dyslexia. Deutsches Ärzteblatt International, 107(41), 718–727.',
   butterworth2005: 'Butterworth, B. (2005). The development of arithmetical abilities. Journal of Child Psychology and Psychiatry, 46(1), 3–18.',
   bishop2017: 'Bishop, D. V. M. et al. (2017). Phase 2 of CATALISE: a multinational and multidisciplinary Delphi consensus study of problems with language development: Terminology. Journal of Child Psychology and Psychiatry, 58(10), 1068–1080.',
