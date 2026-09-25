@@ -99,7 +99,7 @@ function laden(opt){
     ring=r;
     if(!r||r.format!=='cdse-schluesselring'){zustand={art:'kein-bereich'};return zustand;}
     if(!r.fuer||!r.fuer[me.id]){orgKey=null;zustand={art:'wartet'};return zustand;}
-    return schluesselHolen(me,opt.leise).then(function(){return mitgliederLesen();}).then(function(m){mitgl=m;zustand={art:'bereit'};return zustand;});
+    return schluesselHolen(me,opt.leise).then(function(){return mitgliederLesen();}).then(function(m){mitgl=m;zustand={art:'bereit'};rolleFuerApps();return zustand;});
   }).catch(function(e){if(e&&e.abgebrochen){zustand={art:'gesperrt'};return zustand;}zustand={art:'fehler',text:(e&&e.message)||String(e)};return zustand;});
 }
 /* Den gemeinsamen Schlüssel holen: aus der Sitzung oder mit dem privaten Schlüssel */
@@ -118,6 +118,15 @@ function schluesselHolen(me,leise){
       });
     });
   });
+}
+/* Die eigene Rolle für die Apps ablegen (z. B. dürfen Responsables in der
+   Toolbox fremdes Team-Material bearbeiten). Wird beim Abmelden entfernt. */
+function rolleFuerApps(){
+  try{
+    var me=ich();if(!me){return;}
+    var alt={};try{alt=JSON.parse(localStorage.getItem('cdse-nutzer')||'{}')||{};}catch(e){alt={};}
+    localStorage.setItem('cdse-nutzer',JSON.stringify({id:me.id,name:me.name||alt.name||'',team:me.team||alt.team||'',rolle:rolle(me.id)||'mitarbeiter',stand:jetzt()}));
+  }catch(e){}
 }
 /* Beim Abmelden/Sperren alles vergessen */
 function vergessen(){ring=null;orgKey=null;mitgl=null;cache={};cacheZeit=0;zustand={art:'unbekannt'};return idbSet('team-schluessel',null);}

@@ -2057,9 +2057,19 @@ function datenStatus(st){
 }
 function teamOrdnerAnlegen(){if(ICH&&TEAMS_AKTIV&&byId('klassenbuch')){window.CDSE_KONTO.teamOrdner(ICH.teamName);}}
 
+/* Name (und, sobald bekannt, Rolle) für die Apps ablegen – z. B. zeigt die
+   Toolbox damit, wer Material hochlädt. Beim Abmelden entfernt der Hub den
+   Eintrag wie alle App-Daten. */
+function nutzerFuerApps(ich){
+  try{
+    if(!ich){return;}
+    var alt={};try{alt=JSON.parse(localStorage.getItem('cdse-nutzer')||'{}')||{};}catch(e){alt={};}
+    localStorage.setItem('cdse-nutzer',JSON.stringify({id:ich.id,name:ich.name,team:ich.team||'',rolle:(alt.id===ich.id&&alt.rolle)||'',stand:new Date().toISOString()}));
+  }catch(e){}
+}
 window.CDSE_KONTO.start({
   bereit:function(ich,hinweise){
-    ICH=ich;HINWEISE=(hinweise||[]).map(function(h){return HINWEIS_TEXT[h];}).filter(Boolean);
+    ICH=ich;HINWEISE=(hinweise||[]).map(function(h){return HINWEIS_TEXT[h];}).filter(Boolean);nutzerFuerApps(ich);
     renderMe();route();teamOrdnerAnlegen();
   },
   status:datenStatus,
@@ -2071,7 +2081,7 @@ window.CDSE_KONTO.start({
     document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;
   },
   geaendert:function(ich){
-    ICH=ich;renderMe();aufraeumen(false);teamOrdnerAnlegen();
+    ICH=ich;nutzerFuerApps(ich);renderMe();aufraeumen(false);teamOrdnerAnlegen();
     if(view==='app'&&!current){location.hash='#/';}
     route();
   }

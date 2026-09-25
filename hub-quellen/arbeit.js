@@ -773,16 +773,34 @@ function toolboxZuItem(code,klasse,max){
   if(liste.length&&!liste.some(function(m){return !m.ki;})){var team=bew.filter(function(x){return !x.m.ki;})[0];if(team){liste[liste.length-1]=team.m;}}
   return {liste:liste,n:l.length};
 }
+/* Arbeitsblätter (Toolbox v2): professionell gesetzt, mit Seite für die Lehrperson.
+   Passender Cycle zählt am meisten, dann wie gezielt das Blatt das Item fördert. */
+function blaetterZuItem(code,klasse,max){
+  var T=window.CDSE_TOOLBOX_INDEX;
+  if(!T||!Array.isArray(T.blaetter)){return {liste:[],n:0};}
+  var zy=zyklusVon(klasse);
+  var l=T.blaetter.filter(function(b){return (b.eldib||[]).indexOf(code)>=0;});
+  var bew=l.map(function(b){return {b:b,s:4/Math.max(1,(b.eldib||[]).length)+(zy&&(b.stufen||[]).indexOf(zy)>=0?5:0)};});
+  bew.sort(function(a,b){return b.s-a.s||String(a.b.nr).localeCompare(String(b.b.nr));});
+  return {liste:bew.slice(0,max||3).map(function(x){return x.b;}),n:l.length};
+}
+function stufenKurz(s){s=(s||[]).slice();return s.length>1?s[0]+'–'+s[s.length-1]:(s[0]||'');}
 function toolboxHref(teile){return 'apps/toolbox.html#'+teile.map(function(t){return t[0]+'='+encodeURIComponent(t[1]);}).join('&');}
 function toolboxBlock(code,d){
-  var T=toolboxZuItem(code,(d.person||{}).klasse,3);
-  if(!T.n){return '';}
-  return '<h4>Passende Materialien aus der Toolbox</h4><ul class="ar-material">'+T.liste.map(function(m){
+  var kl=(d.person||{}).klasse, B=blaetterZuItem(code,kl,3), T=toolboxZuItem(code,kl,3);
+  if(!T.n&&!B.n){return '';}
+  var ab=B.n?'<ul class="ar-blaetter">'+B.liste.map(function(b){
+      return '<li><a href="'+esc(toolboxHref([['blatt',b.id]]))+'" target="cdse-toolbox"><span class="ar-ab-nr">'+esc(b.nr)+'</span>'+esc(b.titel)+'</a>'+
+        '<small>Arbeitsblatt · '+esc(stufenKurz(b.stufen))+' · '+esc(b.bereich)+(b.fr?' · auch Französisch':'')+'</small></li>';
+    }).join('')+'</ul>'+
+    (B.n>B.liste.length?'<a class="ar-link ar-blaetter-alle" href="'+esc(toolboxHref([['eldib',code]]))+'" target="cdse-toolbox">Alle '+B.n+' Arbeitsblätter zu '+esc(code)+'</a>':''):'';
+  if(!T.n){return '<h4>Passende Arbeitsblätter aus der Toolbox</h4>'+ab;}
+  return '<h4>Passende Materialien aus der Toolbox</h4>'+ab+'<ul class="ar-material">'+T.liste.map(function(m){
       var info=[(m.typ||[]).join(', '),(m.alter||[]).join(' · '),m.ab?'mit Arbeitsblatt':''].filter(Boolean).join(' · ');
       return '<li><a href="'+esc(toolboxHref([['eldib',code],['material',m.id]]))+'" target="cdse-toolbox">'+esc(m.titel)+'</a>'+
         '<small>'+esc(info)+(m.ki?' · <span class="ar-ki" title="Von einer KI entworfen – vor dem Einsatz fachlich prüfen">KI-Entwurf</span>':'')+'</small></li>';
     }).join('')+'</ul>'+
-    (T.n>T.liste.length?'<a class="ar-link ar-material-alle" href="'+esc(toolboxHref([['eldib',code]]))+'" target="cdse-toolbox">Alle '+T.n+' Materialien zu '+esc(code)+' in der Toolbox</a>':'');
+    (T.n>T.liste.length?'<a class="ar-link ar-material-alle" href="'+esc(toolboxHref([['eldib',code],['seite','einheiten']]))+'" target="cdse-toolbox">Alle '+T.n+' Materialien zu '+esc(code)+' in der Toolbox</a>':'');
 }
 function beispiele(code){return (ELDIB_BANK.beispiele||{})[code]||[];}
 /* Hinweise des CDSE zum Item (z. B. „Logopädie einschalten“, „Piktogramme vorhanden“) */
@@ -968,7 +986,11 @@ function ueberZeile(u){
   return '<li class="ar-ueb'+(u.luecke>=UEBER_DEUTLICH?' stark':'')+'">'+icode(u.code)+'<div><b>'+esc(u.it.keyword)+'</b> – '+esc(u.it.description)+
     '<small>Stufe '+ROEM[u.stufe]+', üblich bis etwa '+ELDIB_BANK.stufen[u.stufe].max+' Jahre · <b>'+esc(jahreText(u.luecke))+' überfällig</b> · '+
     (u.istZiel?'<span class="ar-ist-ziel">ist Förderziel</span>':'<span class="ar-kein-ziel">noch kein Förderziel</span>')+
-    (function(){var n=toolboxZuItem(u.code).n;return n?' · <a class="ar-tb" href="'+esc(toolboxHref([['eldib',u.code]]))+'" target="cdse-toolbox">'+n+(n>1?' Materialien':' Material')+' in der Toolbox</a>':'';})()+
+    (function(){
+      var n=toolboxZuItem(u.code).n, b=blaetterZuItem(u.code).n;if(!n&&!b){return '';}
+      var t=[b?b+(b>1?' Arbeitsblätter':' Arbeitsblatt'):'',n?n+(n>1?' Materialien':' Material'):''].filter(Boolean).join(' · ');
+      return ' · <a class="ar-tb" href="'+esc(toolboxHref([['eldib',u.code]]))+'" target="cdse-toolbox">'+t+' in der Toolbox</a>';
+    })()+
     '</small>'+hinweisHtml(u.code)+'</div></li>';
 }
 function eldibUeberblick(d){
