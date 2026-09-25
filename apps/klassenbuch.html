@@ -243,8 +243,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
   .kb-burger{font-size:19px;line-height:1;background:none;border:1px solid var(--kb-border);border-radius:9px;width:40px;height:40px;cursor:pointer;}
   .kb-topbrand{display:flex;align-items:center;gap:9px;font-weight:800;}
   .kb-topbrand .kb-logo{width:30px;height:30px;font-size:16px;}
-  .kb-side{position:fixed;top:0;left:0;bottom:0;height:100vh;height:100dvh;transform:translateX(-100%);transition:transform .2s ease;box-shadow:0 0 50px rgba(0,0,0,.25);}
-  .kb-app.kb-open .kb-side{transform:none;}
+  .kb-side{position:fixed;top:0;left:0;bottom:0;height:100vh;height:100dvh;transform:translateX(-100%);transition:transform .2s ease,box-shadow .2s ease;box-shadow:none;}
+  .kb-app.kb-open .kb-side{transform:none;box-shadow:0 0 50px rgba(0,0,0,.25);}   /* Schatten nur offen – sonst ragt er zugeklappt in die Seite */
   .kb-app.kb-open .kb-scrim{display:block;position:fixed;inset:0;background:rgba(15,20,35,.45);z-index:39;}
   .kb-pad,.kb-hub-head,.kb-hub-body{padding-left:16px;padding-right:16px;}
 }
@@ -278,6 +278,8 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hub-body{padding:22px 28px 64px;}
 .kb-hub-grid{gap:18px;}
 .kb-hub-sec{margin:0 0 28px;}
+/* Handy/Tablet: schmale Ränder – steht nach den „luftigen“ Abständen, sonst würde es überschrieben */
+@media(max-width:880px){.kb-pad,.kb-hub-head,.kb-hub-body{padding-left:16px;padding-right:16px;}.kb-pad{padding-top:20px;padding-bottom:56px;}.kb-hub-body{padding-top:18px;padding-bottom:48px;}}
 /* Sidebar-Gruppen */
 .kb-navgroup{margin-top:16px;}
 .kb-navlabel{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--kb-muted-2);padding:2px 11px 5px;}
@@ -295,7 +297,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .st-chip.st-ok{background:var(--kb-accent2-50);color:var(--kb-accent2-dark);border-color:transparent;}
 .st-foot{font-size:12px;color:var(--kb-muted);margin-top:auto;}
 /* Hub-Status-Leiste */
-.kb-statstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin:0 0 22px;}
+.kb-statstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,138px),1fr));gap:12px;margin:0 0 22px;}
 .kb-stat-tile{display:flex;align-items:center;gap:12px;background:var(--kb-surface);border:1px solid var(--kb-border);border-radius:14px;padding:13px 15px;box-shadow:var(--kb-shadow-sm);}
 .kb-stat-tile .kt-ic{flex:0 0 auto;width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:18px;background:var(--kb-accent-50);}
 .kb-stat-tile .v{font-size:21px;font-weight:800;color:var(--kb-text);line-height:1;}
@@ -1335,7 +1337,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 #dos-root .card-grid{ gap:18px; }
 #dos-root .page-head h2{ font-size:25px; letter-spacing:-.02em; }
 #dos-root .empty-state{ border-radius:16px; }
-#dos-root .card.kb-mini{ box-shadow:var(--kb-shadow-sm); transition:box-shadow .15s ease, transform .15s ease; }
+#dos-root .card.kb-mini{ padding:14px 16px 16px; box-shadow:var(--kb-shadow-sm); transition:box-shadow .15s ease, transform .15s ease; }
 #dos-root .card.kb-mini:hover{ box-shadow:var(--kb-shadow); transform:translateY(-2px); }
 #dos-root .sv-muster{ box-shadow:var(--kb-shadow-sm); }
 /* Einklappbarer Analyse-Block in der Dossier-Ansicht (entschlackt) */
@@ -1833,7 +1835,7 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
         <div class="kb-ttbar">
           <div class="kb-ttlevels" id="kb-tt-levels" role="group" aria-label="Niveau"></div>
           <div class="kb-ttacts">
-            <select class="kb-in" id="kb-tt-copy" style="max-width:250px;"></select>
+            <select class="kb-in" id="kb-tt-copy" style="max-width:min(100%,330px);"></select>
             <button class="kb-btn" id="kb-tt-copybtn">Übernehmen</button>
             <button class="kb-btn" id="kb-tt-clear" title="Alle Fächer in diesem Trimester leeren (Pausen bleiben)">Leeren</button>
             <button class="kb-btn" id="kb-tt-reset" title="Den offiziellen Stundenplan 2026/27 wieder einsetzen">↺ Standard-Stundenplan</button>
@@ -4977,7 +4979,7 @@ function viewReunion(params, query) {
           '<button class="reu-navbtn" data-act="goreu" data-date="' + (newer ? escapeAttr(newer.date) : '') + '"' + (newer ? '' : ' disabled') + ' title="jüngere Réunion">›</button>' +
         '</div>' +
         '<div class="reu-title"><span class="kick">Team-Réunion · Montags</span>' +
-          '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select></div>' +
+          (opts.length ? '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select>' : '<span class="dt">Noch keine Réunion</span>') + '</div>' +
         '<div class="reu-actions">' +
           (hasNext
             ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
@@ -9646,7 +9648,7 @@ window.KB_MATERIALS=(function(){
         for(var i=0;i<ls.length;i++){if(ls[i].id===p[0])y=ls[i];}
         return '<option value="'+esc(k)+'">'+esc((y?y.label:p[0])+' · '+window.KB_TERMS.termLabel(p[1]))+'</option>';
       });
-      $('kb-tt-copy').innerHTML=opts.length?('<option value="">— aus anderem Trimester übernehmen —</option>'+opts.join('')):'<option value="">— kein anderer Plan vorhanden —</option>';
+      $('kb-tt-copy').innerHTML=opts.length?('<option value="">— aus anderem Trimester übernehmen —</option>'+opts.join('')):'<option value="">— noch kein anderer Plan —</option>';
       $('kb-tt-copy').disabled=!opts.length; $('kb-tt-copybtn').disabled=!opts.length;
     }
     var tt=window.KB_ANW.getTimetable()||{}, grid=tt[ttLevel]||{};

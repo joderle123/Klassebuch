@@ -3302,7 +3302,7 @@ function viewReunion(params, query) {
           '<button class="reu-navbtn" data-act="goreu" data-date="' + (newer ? escapeAttr(newer.date) : '') + '"' + (newer ? '' : ' disabled') + ' title="jüngere Réunion">›</button>' +
         '</div>' +
         '<div class="reu-title"><span class="kick">Team-Réunion · Montags</span>' +
-          '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select></div>' +
+          (opts.length ? '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select>' : '<span class="dt">Noch keine Réunion</span>') + '</div>' +
         '<div class="reu-actions">' +
           (hasNext
             ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
