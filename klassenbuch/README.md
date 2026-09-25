@@ -18,6 +18,9 @@ unverändert. Hier wird der Stand weiterentwickelt und nach `apps/klassenbuch.ht
   - Der KI-Export ist aus dem Menü genommen.
 - **Menü „Im CDSE Hub“:** Toolbox, Screening und Lernen öffnen sich in denselben Tabs wie aus dem Hub.
 - **Keine Anfragen ins Internet:** Die Google-Schriften sind entfernt.
+- **Anwesenheit auf jedem Bildschirm:**
+  - Auf dem Laptop (ab 1280 px) passt die ganze Woche ohne Scrollen, alle Tage gleich breit.
+  - Auf Tablet und Handy scrollt nur die Tabelle in ihrer Karte. Früher verrutschte die ganze Seite.
 - **„Heute“ (neue Startseite, fürs Morning Meeting):**
   - wer heute fehlt,
   - offene Entschuldigungen (älter als 3 Tage),
@@ -56,6 +59,7 @@ npx http-server . -p 8099 -s                   # im Hauptordner, in einem zweite
 node klassenbuch/tests/rundgang.cjs            # Klassenbuch: Rundgang
 node klassenbuch/tests/fehler.cjs              # Klassenbuch: behobene Fehler (zwei Geräte, Team-Datei)
 node klassenbuch/tests/heute.cjs               # Klassenbuch: Heute-Tafel
+node klassenbuch/tests/layout.cjs              # Klassenbuch: Anwesenheit auf Laptop, Tablet, Handy
 node klassenbuch/tests/journal.cjs             # Journal: Rundgang
 ```
 

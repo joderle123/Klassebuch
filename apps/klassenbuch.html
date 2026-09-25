@@ -953,7 +953,9 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 #anw-root .stu-head .tot .v{font-size:28px;font-weight:900;color:var(--primary);}
 #anw-root .stu-head .tot .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
 @media (max-width:900px){
-  #anw-root .layout{flex-direction:column;}
+  /* stretch: sonst wird der Inhalt so breit wie die Wochentabelle und rechts abgeschnitten
+     (Mittwoch–Freitag auf Handy/Tablet unerreichbar); so scrollt die Tabelle in ihrer Karte */
+  #anw-root .layout{flex-direction:column;align-items:stretch;}
   #anw-root .sidebar{flex:1 1 auto;width:100%;position:relative;top:0;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--line);}
   #anw-root .side-list{flex-direction:row;flex-wrap:wrap;}
   #anw-root .side-stu{flex:1 1 200px;}
@@ -1386,9 +1388,10 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 /* ---- Wochen-Horaire (Klassenbuch): größer & besser lesbar ---- */
 /* Höhere Zellen + größere Schrift = Hauptgewinn; Spaltenbreite moderat,
    damit alle 5 Tage auch auf Laptops ohne Scrollen passen. */
-#anw-root .wk-grid table{ border-spacing:6px; }
-#anw-root .wk-grid-large table{ min-width:800px; }
-#anw-root .wk-grid thead th{ min-width:124px; padding:11px 8px; font-size:14px; }
+#anw-root .wk-grid table{ border-spacing:6px; table-layout:fixed; }
+#anw-root .wk-grid thead th.th-time{ width:64px; }   /* Tage gleich breit */
+#anw-root .wk-grid-large table{ min-width:700px; }
+#anw-root .wk-grid thead th{ min-width:108px; padding:11px 6px; font-size:14px; }
 #anw-root .wk-grid thead th .dn{ font-size:16.5px; }
 #anw-root .wk-grid thead th .dt{ font-size:12.5px; }
 #anw-root .wk-grid .tc{ font-size:13px; padding:10px 10px; }
@@ -1409,8 +1412,8 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 #anw-root .side-stu .nm{ font-size:13px; }
 #anw-root .side-stu .nm small{ font-size:10px; }
 #anw-root .side-stu .hrs{ font-size:11px; padding:2px 7px; }
-/* Spalten dürfen den frei gewordenen Platz nutzen */
-#anw-root .wk-grid thead th{ min-width:138px; }
+/* Spalten nutzen freien Platz über width:100%; eine größere Mindestbreite würde bei 1280 px
+   den Freitag abschneiden */
 
 /* ---- Schülerliste per Klick einklappen + Summe unter das Horaire ---- */
 #anw-root .wrap{ display:flex; flex-direction:column; }

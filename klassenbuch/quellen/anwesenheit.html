@@ -64,7 +64,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .stu-head .tot .v{font-size:28px;font-weight:900;color:var(--primary);}
 .stu-head .tot .l{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
 @media (max-width:900px){
-  .layout{flex-direction:column;}
+  /* stretch: sonst wird der Inhalt so breit wie die Wochentabelle und rechts abgeschnitten
+     (Mittwoch–Freitag auf Handy/Tablet unerreichbar); so scrollt die Tabelle in ihrer Karte */
+  .layout{flex-direction:column;align-items:stretch;}
   .sidebar{flex:1 1 auto;width:100%;position:relative;top:0;height:auto;max-height:none;border-right:none;border-bottom:1px solid var(--line);}
   .side-list{flex-direction:row;flex-wrap:wrap;}
   .side-stu{flex:1 1 200px;}
