@@ -1376,6 +1376,8 @@ function speichernDialog(){
      DS/ISA/C&G (mesure_cdse_1..3, Daten, „réalisé par“) → fiche.cdse.diagnostic/isa/cgPro|cgEltern
      spec_school + scolarisation_specialisee + debut/fin_scol_spe → fiche.cdse.annexe|cdp|cst (+ Standort),
        ohne spec_school → fiche.cdse.sonstige · autres_services → fiche.intervenants
+     ab CDSE Stats 0.5: Annexe/CST/CdP/Atelier/Rééducation mit eigenen Daten → fiche.cdse.* (welche = Standort),
+       cg_type → cgPro/cgEltern, autres_cc (Liste) → db.autreCc, langue_1_autre → fiche.ersteSprache
      school_type → db.schulform · previous_school, date_school_change → db.vorherigeSchule, db.schulwechsel
      date_decision_cni → db.cni · autre_cc_implique → db.autreCc · autre_mesure (+ Daten) → db.autreMesure
      scol_etranger → db.scolEtranger · diagnostics → db.diagnosen · verdachtsdiagnosen_profil → db.verdacht
@@ -1383,26 +1385,38 @@ function speichernDialog(){
      id, created_at, updated_at → db.herkunft · age → nicht übernommen (wird berechnet)
    ===================================================================== */
 var STATS_FELDER=[['id','ID'],['matricule','National ID','Matricule'],['dossier_mfile','M-File No.','N° M-File','Dossier M-File'],['nom','Last name','Nom'],['prenom','First name','Prénom'],
-  ['sexe','Sex','Sexe'],['date_naissance','Date of birth','Date de naissance'],['age','Age','Âge'],['dir','DIR'],['ecole_lycee','School','École / Lycée','Ecole/Lycée'],['school_type','School sector','Secteur'],
-  ['spec_school','Specialized school','École spécialisée'],['previous_school','Previous school','École précédente'],['date_school_change','School change date','Date changement d’école'],
+  ['sexe','Sex','Sexe'],['date_naissance','Date of birth','Date de naissance'],['age','Age','Âge'],['dir','DIR','Direction de région'],['ecole_lycee','School','École / Lycée','Ecole/Lycée'],['school_type','School sector','Secteur'],
+  ['spec_school','Specialized school','École spécialisée','Specialized school (old field)'],['previous_school','Previous school','École précédente'],['date_school_change','School change date','Date changement d’école'],
   ['mesure_cdse_1','CDSE Measure 1','Mesure CDSE 1'],['mesure_cdse_2','CDSE Measure 2','Mesure CDSE 2'],['mesure_cdse_3','CDSE Measure 3','Mesure CDSE 3'],['date_decision_cni','CNI decision date','Date décision CNI'],
   ['ds_realise_par','DS performed by','DS réalisé par'],['date_ds','DS date','Date DS'],['isa_realise_par','ISA performed by','ISA réalisé par'],['debut_isa','ISA start','Début ISA'],['fin_isa','ISA end','Fin ISA'],
   ['cg_realise_par','C&G performed by','C&G réalisé par'],['debut_cg','C&G start','Début C&G'],['fin_cg','C&G end','Fin C&G'],['scolarisation_specialisee','Institution'],['debut_scol_spe','Spec. schooling start'],['fin_scol_spe','Spec. schooling end'],
-  ['autre_mesure','Other measure','Autre mesure'],['debut_autre_mesure','Other measure start'],['fin_autre_mesure','Other measure end'],['autre_cc_implique','Other C&C involved'],['autres_services','Other services','Autres services'],
-  ['scol_etranger','Schooling abroad','Scolarité à l’étranger'],['diagnostics','Diagnoses','Diagnostics'],['verdachtsdiagnosen_profil','Suspected diagnoses / Profile'],['iq','IQ','QI'],['langue_1','First language','Langue 1'],
-  ['parents','Parents'],['scas','SCAS'],['tutelle','Guardianship by','Tutelle'],['mesures_famille','Family measures','Mesures famille'],['created_at','Created at'],['updated_at','Updated at']];
-var STATS_LISTEN=['autres_services','diagnostics','verdachtsdiagnosen_profil','tutelle','mesures_famille'];
+  ['autre_mesure','Other measure','Autre mesure','Other measure — which'],['debut_autre_mesure','Other measure start'],['fin_autre_mesure','Other measure end'],['autre_cc_implique','Other C&C involved','Other CC involved (old text)'],['autres_services','Other services','Autres services'],
+  ['scol_etranger','Schooling abroad','Scolarité à l’étranger'],['diagnostics','Diagnoses','Diagnostics'],['verdachtsdiagnosen_profil','Suspected diagnoses / Profile'],['iq','IQ','QI'],['langue_1','First language','Langue 1'],['langue_1_autre','First language — which'],
+  ['parents','Parents'],['parents_autre','Parents — which situation'],['scas','SCAS'],['tutelle','Guardianship by','Tutelle'],['mesures_famille','Family measures','Mesures famille'],['created_at','Created at'],['updated_at','Updated at'],
+  /* ab CDSE Stats 0.5: Annexe, CST, CdP, Atelier und Rééducation als eigene Maßnahmen, C&G für wen, andere CC als Liste, ELDiB-Stufen */
+  ['cg_type','C&G for'],['atelier_type','Which atelier'],['atelier_realise_par','Atelier led by'],['debut_atelier','Atelier start'],['fin_atelier','Atelier end'],
+  ['reeducation_type','Which rééducation'],['reeducation_realise_par','Rééducation by'],['debut_reeducation','Rééducation start'],['fin_reeducation','Rééducation end'],
+  ['debut_annexe','Annexe start'],['fin_annexe','Annexe end'],['cst_groupe','CST group'],['debut_cst','CST start'],['fin_cst','CST end'],
+  ['cdp_region','CdP class in'],['debut_cdp','CdP start'],['fin_cdp','CdP end'],['autres_cc','Other competence centres (CC)'],
+  ['eldib_date','ELDiB date'],['eldib_v','Stage — Behaviour (V)'],['eldib_k','Stage — Communication (K)'],['eldib_soz','Stage — Socialisation (SOZ)'],['eldib_kog','Stage — Cognition (KOG)']];
+var STATS_LISTEN=['autres_services','diagnostics','verdachtsdiagnosen_profil','tutelle','mesures_famille','autres_cc'];
 var SPRACHE_STATS={LU:'Luxemburgisch',FR:'Französisch',DE:'Deutsch',PT:'Portugiesisch',EN:'Englisch',IT:'Italienisch',ES:'Spanisch',OTHER:'andere'};
 /* Alte DIR-Liste von CDSE Stats → Directions der Fiche; nicht eindeutige Namen wählt man in der Vorschau */
 var DR_ALT={'dir luxembourg-ville':'01, Luxembourg','dir esch-sur-alzette':'06 Esch/Alzette','dir petange':'03 Pétange','dir remich':'09 Remich','dir grevenmacher':'10 Grevenmacher','dir echternach':'11 Echternach',
   'dir mersch':'12 Mersch','dir redange/rambrouch':'13 Rédange/Attert','dir diekirch/vianden':'14 Diekirch','dir clervaux/wiltz':'15 Wiltz','dir wiltz':'15 Wiltz'};
 var DR_UNKLAR=['dir capellen','dir strassen','dir luxembourg-est','dir luxembourg-ouest'];
 var ZUORDNUNG=[['matricule','person.matricule','Abgleich mit vorhandenen Dossiers'],['nom, prenom','person.nachname, person.vorname',''],['sexe (M / F / D)','person.geschlecht (m / w)','„D“ bleibt leer – der Hub kennt nur Junge/Mädchen'],
-  ['date_naissance','person.geburtsdatum',''],['dossier_mfile','fiche.mfiles',''],['dir (alte DIR-Liste)','fiche.ef.dr (Directions der Fiche)','Zuordnung in der Vorschau'],['ecole_lycee','fiche.schule.name, person.schule',''],
+  ['date_naissance','person.geburtsdatum',''],['dossier_mfile','fiche.mfiles',''],['dir (DR 01–15 oder alte DIR-Liste)','fiche.ef.dr (Directions der Fiche)','Zuordnung in der Vorschau'],['ecole_lycee','fiche.schule.name, person.schule',''],
   ['langue_1 (LU, FR, DE, PT …)','fiche.ersteSprache','„Other“ → andere'],['mesure_cdse_1–3, date_ds, ds_realise_par','fiche.cdse.diagnostic','angekreuzt; Beginn und Ende = date_ds (ein Termin); Intervenant·e'],['debut_isa, fin_isa, isa_realise_par','fiche.cdse.isa',''],
   ['debut_cg, fin_cg, cg_realise_par','fiche.cdse.cgPro oder .cgEltern','wählbar'],['spec_school, scolarisation_specialisee, debut/fin_scol_spe','fiche.cdse.annexe / .cdp / .cst','Institution = Standort (CdP/CST); ohne spec_school: fiche.cdse.sonstige'],
   ['autres_services','fiche.intervenants (Institution)',''],['school_type (Public / Privé)','db.schulform',''],['previous_school, date_school_change','db.vorherigeSchule, db.schulwechsel',''],['date_decision_cni','db.cni',''],
-  ['autre_cc_implique','db.autreCc',''],['autre_mesure + Daten','db.autreMesure',''],['scol_etranger (Yes / No)','db.scolEtranger (ja / nein)',''],['diagnostics, verdachtsdiagnosen_profil','db.diagnosen, db.verdacht','unverändert übernommen'],
+  ['autres_cc (ab 0.5, Liste) oder autre_cc_implique','db.autreCc','Liste mit „; “ verbunden'],
+  ['cg_type (Professionals / Parents / beide)','fiche.cdse.cgPro und/oder .cgEltern','ohne cg_type: Wahl oben'],
+  ['atelier_type, debut/fin_atelier, atelier_realise_par','fiche.cdse.atelier','welches Atelier = Standort'],
+  ['reeducation_type, debut/fin_reeducation, reeducation_realise_par','fiche.cdse.reeducation','welche Rééducation = Standort'],
+  ['debut/fin_annexe · cst_groupe, debut/fin_cst · cdp_region, debut/fin_cdp','fiche.cdse.annexe · .cst · .cdp','ab CDSE Stats 0.5; CST-Gruppe und CdP-Region = Standort'],
+  ['langue_1_autre, parents_autre','fiche.ersteSprache, db.eltern','Text zu „Other“'],
+  ['eldib_*, dur_*, measures_* (berechnet)','–','nicht übernommen: ELDiB-Stufen kommen aus dem ELDiB-Generator, Dauern rechnet der Hub selbst'],['autre_mesure + Daten','db.autreMesure',''],['scol_etranger (Yes / No)','db.scolEtranger (ja / nein)',''],['diagnostics, verdachtsdiagnosen_profil','db.diagnosen, db.verdacht','unverändert übernommen'],
   ['iq','db.iq','nur 40–160'],['parents (Together / Separated / Other)','db.eltern (zusammen / getrennt / anderes)',''],['scas (Yes / No)','db.scas (ja / nein)',''],
   ['tutelle','db.tutelle','Mother → Mutter, Father → Vater, Both parents → Mutter + Vater, Foster family → Pflegefamilie …'],['mesures_famille','db.massnahmenFamilie',''],
   ['id, created_at, updated_at','db.herkunft','created_at zählt für den Beginn der Begleitung'],['age','–','wird aus dem Geburtsdatum berechnet']];
@@ -1461,24 +1475,34 @@ function abbilden(s,e){
   if(t('ecole_lycee')){person.schule=t('ecole_lycee');fiche.schule={name:t('ecole_lycee')};}
   if(t('dossier_mfile')){fiche.mfiles=t('dossier_mfile');}
   if(t('dir')){var dr=e.dr[t('dir')];if(dr){fiche.ef={dr:dr};}else{w.push('Direction „'+t('dir')+'“ nicht zugeordnet');}}
-  if(t('langue_1')){fiche.ersteSprache=SPRACHE_STATS[t('langue_1').toUpperCase()]||t('langue_1');}
+  if(t('langue_1')){fiche.ersteSprache=(norm(s.langue_1)==='other'&&t('langue_1_autre'))?t('langue_1_autre'):(SPRACHE_STATS[t('langue_1').toUpperCase()]||t('langue_1'));}
   var mass=[s.mesure_cdse_1,s.mesure_cdse_2,s.mesure_cdse_3].map(norm).filter(Boolean);
   function mn(key,von,bis,wer){var o={aktiv:true};if(iso(von)){o.von=iso(von);}if(iso(bis)){o.bis=iso(bis);}if(txt(wer)){o.name=txt(wer);}cdse[key]=o;return o;}
   /* Der DS ist in CDSE Stats ein Termin (date_ds): Beginn und Ende an diesem Tag */
   if(mass.indexOf('ds')>=0||iso(s.date_ds)||t('ds_realise_par')){mn('diagnostic',s.date_ds,s.date_ds,s.ds_realise_par);}
   if(mass.indexOf('isa')>=0||iso(s.debut_isa)||t('isa_realise_par')){mn('isa',s.debut_isa,s.fin_isa,s.isa_realise_par);}
-  if(mass.indexOf('c&g')>=0||iso(s.debut_cg)||t('cg_realise_par')){mn(e.cg==='cgEltern'?'cgEltern':'cgPro',s.debut_cg,s.fin_cg,s.cg_realise_par);}
+  if(mass.indexOf('c&g')>=0||iso(s.debut_cg)||t('cg_realise_par')){
+    /* ab 0.5 sagt cg_type, für wen; sonst gilt die Wahl in der Vorschau */
+    var cgt=norm(s.cg_type), cgK=cgt==='parents'?['cgEltern']:(cgt==='professionals'?['cgPro']:(cgt?['cgPro','cgEltern']:[e.cg==='cgEltern'?'cgEltern':'cgPro']));
+    cgK.forEach(function(k){mn(k,s.debut_cg,s.fin_cg,s.cg_realise_par);});
+  }
+  /* ab 0.5: Atelier, Rééducation, Annexe, CST und CdP als eigene Maßnahmen (Standort = welches Atelier / welche Gruppe / Region) */
+  if(mass.indexOf('atelier')>=0||iso(s.debut_atelier)||t('atelier_realise_par')||t('atelier_type')){var ma=mn('atelier',s.debut_atelier,s.fin_atelier,s.atelier_realise_par);if(t('atelier_type')){ma.standort=t('atelier_type');}}
+  if(mass.indexOf('reeducation')>=0||iso(s.debut_reeducation)||t('reeducation_realise_par')||t('reeducation_type')){var mr=mn('reeducation',s.debut_reeducation,s.fin_reeducation,s.reeducation_realise_par);if(t('reeducation_type')){mr.standort=t('reeducation_type');}}
+  if(mass.indexOf('annexe')>=0||iso(s.debut_annexe)||iso(s.fin_annexe)){mn('annexe',s.debut_annexe,s.fin_annexe,'');}
+  if(mass.indexOf('cst')>=0||iso(s.debut_cst)||iso(s.fin_cst)||t('cst_groupe')){var mc=mn('cst',s.debut_cst,s.fin_cst,'');if(t('cst_groupe')){mc.standort=t('cst_groupe');}}
+  if(mass.indexOf('cdp')>=0||iso(s.debut_cdp)||iso(s.fin_cdp)||t('cdp_region')){var mp=mn('cdp',s.debut_cdp,s.fin_cdp,'');var rg=drAus(t('cdp_region'));if(rg&&DR.indexOf(rg)>=0){mp.standort=rg;}}
   var spec=norm(s.spec_school), inst=t('scolarisation_specialisee');
   var sk=/annexe|junglinster/.test(spec)?'annexe':(/\bcst\b|socio/.test(spec)?'cst':(/participation|cdp/.test(spec)?'cdp':''));
-  if(sk){var sm=mn(sk,s.debut_scol_spe,s.fin_scol_spe,'');if(inst&&sk!=='annexe'){sm.standort=inst;}}
-  else if(inst||mass.indexOf('spec. school.')>=0||iso(s.debut_scol_spe)){cdse.sonstige=[{aktiv:true,label:'Scolarisation spécialisée'+(inst?' – '+inst:''),von:iso(s.debut_scol_spe),bis:iso(s.fin_scol_spe)}];}
+  if(sk&&!cdse[sk]){var sm=mn(sk,s.debut_scol_spe,s.fin_scol_spe,'');if(inst&&sk!=='annexe'){sm.standort=inst;}}
+  else if(!sk&&(inst||mass.indexOf('spec. school.')>=0||iso(s.debut_scol_spe))){cdse.sonstige=[{aktiv:true,label:'Scolarisation spécialisée'+(inst?' – '+inst:''),von:iso(s.debut_scol_spe),bis:iso(s.fin_scol_spe)}];}
   if(Object.keys(cdse).length){fiche.cdse=cdse;}
   var dienste=liste(s.autres_services);if(dienste.length){fiche.intervenants=dienste.map(function(x){return {institution:x};});}
   var st=norm(s.school_type);if(st==='public'){db.schulform='public';}else if(st==='prive'||st==='private'){db.schulform='prive';}
   if(t('previous_school')){db.vorherigeSchule=t('previous_school');}
   if(iso(s.date_school_change)){db.schulwechsel=iso(s.date_school_change);}
   if(iso(s.date_decision_cni)){db.cni=iso(s.date_decision_cni);}
-  if(t('autre_cc_implique')){db.autreCc=t('autre_cc_implique');}
+  var cc=liste(s.autres_cc);if(cc.length){db.autreCc=cc.join('; ');}else if(t('autre_cc_implique')){db.autreCc=t('autre_cc_implique');}
   if(t('autre_mesure')||iso(s.debut_autre_mesure)){db.autreMesure={name:t('autre_mesure')||'andere Maßnahme',von:iso(s.debut_autre_mesure),bis:iso(s.fin_autre_mesure)};}
   else if(mass.indexOf('other')>=0){db.autreMesure={name:'andere Maßnahme',von:'',bis:''};}
   var se=jaNein(norm(s.scol_etranger)==='yes'?'ja':s.scol_etranger);if(se){db.scolEtranger=se;}

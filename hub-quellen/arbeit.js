@@ -1950,6 +1950,8 @@ function ficheTeilDialog(d,teil){
       return '<fieldset class="ar-fset"><legend><label class="ar-haken"><input type="checkbox" name="'+b+'.aktiv"'+(x.aktiv?' checked':'')+'> '+esc(m[1])+'</label></legend><div class="ar-raster2">'+
         (m[0]==='cdp'?auswahl(b+'.standort','CdP (Direction régionale)',x.standort||'',F_DR.map(function(y){return [y,y];}),'–'):'')+
         (m[0]==='cst'?auswahl(b+'.standort','CST',x.standort||'',F_CST.map(function(y){return [y,y];}),'–'):'')+
+        (m[0]==='atelier'?feld(b+'.standort','Quel atelier',x.standort):'')+
+        (m[0]==='reeducation'?feld(b+'.standort','Type de rééducation',x.standort):'')+
         feld(b+'.name','Intervenant·e',x.name)+feld(b+'.tel','Téléphone',x.tel,'tel')+feld(b+'.mail','E-Mail',x.mail,'email')+feld(b+'.von','Début de la mesure',x.von,'date')+feld(b+'.bis','Fin de la mesure',x.bis,'date')+'</div>'+
         (m[0]==='cst'?'<h4>Responsable CST</h4>'+kontaktFelder(b+'.responsable',x.responsable)+'<h4>Personne de référence CDSE</h4>'+kontaktFelder(b+'.referent',x.referent):'')+'</fieldset>';}).join('');
   }else{return;}

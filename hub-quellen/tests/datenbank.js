@@ -465,6 +465,25 @@ const STATS = [
   const prot2 = await page.$$eval('[data-db-liste="eigene"] li', l => l.map(x => x.textContent));
   check('Protokoll: drei Importe mit Anzahl (1 angelegt · 2 ergänzt · 2 angelegt)', prot2.length === 5 && prot2[0].includes('Import CDSE Stats · 1 Datensatz') && prot2[1].includes('2 ergänzt') && prot2[2].includes('2 angelegt'), prot2.slice(0, 3));
 
+  console.log('17b) Export aus CDSE Stats 0.5 (neue Maßnahmen, DR 01–15, C&G für wen, andere CC als Liste)');
+  const neu05 = await page.evaluate(() => {
+    const s = { id: 'stats-0500', matricule: '2016010100077', nom: 'Probe', prenom: 'Ida', sexe: 'F', date_naissance: '2016-01-01', dir: 'DR 05 Sanem',
+      ecole_lycee: 'École fondamentale Test (fictive)', mesure_cdse_1: 'Atelier', mesure_cdse_2: 'CST', mesure_cdse_3: 'C&G',
+      atelier_type: 'Demo atelier A', debut_atelier: '2025-02-01', cst_groupe: 'Moveo', debut_cst: '2024-09-15', fin_cst: '2025-07-15',
+      debut_annexe: '2023-09-15', fin_annexe: '2024-07-15', cdp_region: 'DR 03 Pétange', debut_cdp: '2022-09-15',
+      cg_type: 'Parents', debut_cg: '2025-03-01', reeducation_type: 'Demo rééducation B', debut_reeducation: '2025-04-01',
+      autres_cc: ['CDI — Centre pour le développement intellectuel', 'CL — Centre de logopédie'], langue_1: 'Other', langue_1_autre: 'albanais',
+      eldib_v: '3', dur_cst: 10, measures_all: ['Atelier', 'CST'] };
+    const e = { dr: { 'DR 05 Sanem': CDSE_DATENBANK.cdseStats.drImport('DR 05 Sanem') } };
+    return CDSE_DATENBANK.cdseStats.abbilden(s, e);
+  });
+  const c05 = neu05.fiche.cdse || {};
+  check('0.5: DR 05 Sanem → „05 Sanem“', (neu05.fiche.ef || {}).dr === '05 Sanem', neu05.fiche.ef);
+  check('0.5: Atelier mit „welches“ und Beginn, CST-Gruppe Moveo, Annexe mit Daten, CdP-Region Pétange', c05.atelier && c05.atelier.standort === 'Demo atelier A' && c05.atelier.von === '2025-02-01' &&
+    c05.cst && c05.cst.standort === 'Moveo' && c05.cst.bis === '2025-07-15' && c05.annexe && c05.annexe.von === '2023-09-15' && c05.cdp && c05.cdp.standort === '03 Pétange', c05);
+  check('0.5: C&G „Parents“ → C&G Eltern (nicht Fachkräfte), Rééducation mit Typ', c05.cgEltern && !c05.cgPro && c05.reeducation && c05.reeducation.standort === 'Demo rééducation B', Object.keys(c05));
+  check('0.5: andere CC als Liste → Text, Sprache „Other“ → albanais, keine Warnung', neu05.db.autreCc === 'CDI — Centre pour le développement intellectuel; CL — Centre de logopédie' && neu05.fiche.ersteSprache === 'albanais' && neu05.warnungen.length === 0, [neu05.db.autreCc, neu05.fiche.ersteSprache, neu05.warnungen]);
+
   console.log('18) Was über die Fiche ins Dossier kommt, steht sofort in der Datenbank');
   await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id, true); await CDSE_TEAM.ops.fiche(id, { fiche: { ef: Object.assign({}, d.fiche.ef, { dr: '07 Dudelange' }) } }, 'Test: Direction geändert'); }, ids.noah);
   await db('');
