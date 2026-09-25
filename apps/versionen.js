@@ -1,11 +1,11 @@
 /* Automatisch erzeugt von update-apps.cjs — nicht von Hand ändern. */
 window.CDSE_APP_VERSIONEN = {
   "klassenbuch": {
-    "stand": "2026-09-22",
-    "commit": "7a19c5d",
-    "quelle": "Klassebuch · claude/focused-galileo-e2s63b",
-    "aenderung": "Klassenbuch: Notizen je Schueler, und eine Ansicht fuer die ganze Klasse",
-    "groesse": 19719197
+    "stand": "2026-09-25",
+    "commit": "1e09847",
+    "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Klassenbuch (Testversion): Heute-Tafel als Startseite",
+    "groesse": 1284492
   },
   "screening": {
     "stand": "2026-09-24",
@@ -29,10 +29,10 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 3475093
   },
   "journal": {
-    "stand": "2026-09-22",
-    "commit": "7a19c5d",
-    "quelle": "Klassebuch · claude/focused-galileo-e2s63b",
-    "aenderung": "Klassenbuch: Notizen je Schueler, und eine Ansicht fuer die ganze Klasse",
-    "groesse": 17414457
+    "stand": "2026-09-25",
+    "commit": "ec12171",
+    "quelle": "Klassebuch · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Hub + Klassenbuch/Journal: Schülerdaten zusammenführen, Journal neu gebaut",
+    "groesse": 1134290
   }
 };

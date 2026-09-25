@@ -37,6 +37,19 @@ function git(args, cwd, asBuffer) {
   return asBuffer ? out : out.toString('utf8').trim();
 }
 
+/* Liegt die App im Hub-Repository selbst (Klassenbuch, Journal), ist die Spitze des Branches oft eine
+   andere Änderung. Dann zählt der letzte Commit, der die App-Datei geändert hat – aus dem lokalen Klon,
+   aber nur, wenn er denselben Stand des Branches kennt. Sonst null (= Spitze des Branches). */
+function eigenerStand(q, spitze) {
+  try {
+    var url = git(['remote', 'get-url', 'origin'], ROOT);
+    if (!new RegExp('/' + q.repo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(\\.git)?/?$', 'i').test(url)) { return null; }
+    if (git(['rev-parse', 'origin/' + q.branch], ROOT) !== spitze) { return null; }
+    var z = git(['log', '-1', '--format=%cI%x09%h%x09%s', 'origin/' + q.branch, '--', q.pfad], ROOT).split('\t');
+    return z.length === 3 && z[1] ? z : null;
+  } catch (e) { return null; }
+}
+
 /* hub-apps.js genauso auswerten wie der Browser (window.CDSE_APPS) */
 var win = {};
 try {
@@ -72,6 +85,8 @@ apps.forEach(function (a) {
     var wann = git(['log', '-1', '--format=%cI', ref], dir);
     var commit = git(['rev-parse', '--short', ref], dir);
     var aenderung = git(['log', '-1', '--format=%s', ref], dir);
+    var eigen = eigenerStand(q, git(['rev-parse', ref], dir));
+    if (eigen) { wann = eigen[0]; commit = eigen[1]; aenderung = eigen[2]; }
     var inhalt = git(['show', ref + ':' + q.pfad], dir, true);
 
     /* Plausibilität: eine leere oder fremde Datei nie über eine App schreiben */
