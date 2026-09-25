@@ -14,3 +14,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Bilder aus Testläufen
+hub-quellen/tests/*-aus/
+hub-quellen/tests/*.png

@@ -404,6 +404,8 @@ return {
   zustand:function(){return zustand;},
   laden:laden, einrichten:einrichten, vergessen:vergessen,
   rolle:rolle, istAdmin:istAdmin, istResponsable:istResponsable, darfFreischalten:darfFreischalten,
+  /* Eintrag im gemeinsamen, verschlüsselten Protokoll der Verwaltung (z. B. Datenbank-Export) */
+  protokollieren:function(text){return mitgliederAendern(function(){},String(text||'').slice(0,300));},
   wartende:wartende, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
   mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
   alleDossiers:alleDossiers, dossier:dossier, neuesDossier:neuesDossier, rechte:rechte, ops:ops,
