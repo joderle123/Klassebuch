@@ -1530,16 +1530,25 @@ var Repo = {
         if (sIdx[s.id] !== undefined) self.students[sIdx[s.id]] = s;
         else { self.students.push(s); sIdx[s.id] = self.students.length - 1; }
       });
-      var eIdx = {}; self.entries.forEach(function (e, i) { eIdx[e.id] = i; });
-      data.entries.forEach(function (e) {
-        if (eIdx[e.id] !== undefined) self.entries[eIdx[e.id]] = e;
-        else { self.entries.push(e); eIdx[e.id] = self.entries.length - 1; }
-      });
-      var rIdx = {}; self.reunions.forEach(function (r, i) { rIdx[r.id] = i; });
-      importReunions.forEach(function (r) {
-        if (rIdx[r.id] !== undefined) self.reunions[rIdx[r.id]] = r;
-        else { self.reunions.push(r); rIdx[r.id] = self.reunions.length - 1; }
-      });
+      /* Einträge und Réunions mit gleicher Kennung: die Fassung aus der Datei ersetzt die
+         vorhandene nur, wenn sie nachweislich neuer ist (updatedAt auf beiden Seiten) - die
+         ersetzte kommt in den Papierkorb. Ohne Zeitstempel bleibt die vorhandene. */
+      var zahl = { neu: 0, ersetzt: 0, behalten: 0 };
+      var zeit = function (x) { var t = x && x.updatedAt ? Date.parse(x.updatedAt) : NaN; return isNaN(t) ? null : t; };
+      var mische = function (liste, neue, art) {
+        var idx = {}; liste.forEach(function (x, i) { idx[x.id] = i; });
+        neue.forEach(function (x) {
+          var i = idx[x.id];
+          if (i === undefined) { liste.push(x); idx[x.id] = liste.length - 1; zahl.neu++; return; }
+          var alt = liste[i];
+          if (JSON.stringify(alt) === JSON.stringify(x)) return;
+          var tNeu = zeit(x), tAlt = zeit(alt);
+          if (tNeu !== null && tAlt !== null && tNeu > tAlt) { Trash.push(art, alt); liste[i] = x; zahl.ersetzt++; }
+          else zahl.behalten++;
+        });
+      };
+      mische(self.entries, data.entries, 'entry');
+      mische(self.reunions, importReunions, 'reunion');
     }
     return Promise.all([
       Storage.replaceAll('students', self.students),
@@ -1548,7 +1557,7 @@ var Repo = {
       Storage.setMeta('seeded', true),
       Storage.setMeta('seeded_reunions', true),
       Storage.setMeta('seeded_reunions_v', REUNION_SEED_VERSION)
-    ]);
+    ]).then(function () { return zahl || null; });
   }
 };
 
@@ -2280,7 +2289,10 @@ function viewDashboard(params, query) {
     var initial = escapeHtml((s.name || '?').charAt(0).toUpperCase());
     var meta = []; if (klasse) meta.push(escapeHtml(klasse)); if (level) meta.push('Niveau ' + escapeHtml(level));
     var chips = [];
-    if (abs && abs.total) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + pluralize(abs.total, 'Absenz', 'Absenzen') + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
+    /* Ein Retard ist keine Absenz: eigene Zahl, eigener Chip (wie in der Wochen-Sicherung) */
+    var nAbs = abs ? (abs.entschuldigt || 0) + (abs.unentschuldigt || 0) : 0, nRet = abs ? (abs.verspaetet || 0) : 0;
+    if (nAbs) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + pluralize(nAbs, 'Absenz', 'Absenzen') + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
+    if (nRet) chips.push('<span class="st-chip">' + pluralize(nRet, 'Retard', 'Retards') + '</span>');
     if (s.active === false) chips.unshift('<span class="st-chip">ehemalig</span>');
     if (scr && scr.hasData) chips.push(scr.acute && scr.acute.length ? '<span class="st-chip st-danger">⚠ Krisenhinweis (früheres Screening)</span>' : '<span class="st-chip">Screening (früher)</span>');
     if (cg && cg.goals && cg.goals.length) chips.push('<span class="st-chip">' + pluralize(cg.goals.length, 'Förderziel', 'Förderziele') + '</span>');
@@ -2675,7 +2687,7 @@ function viewEntryForm(params) {
         '</div>' +
         '<div class="field">' +
           '<label for="f-author">Autor (Kürzel)</label>' +
-          '<input type="text" id="f-author" placeholder="z. B. JP" value="' + escapeAttr(existing ? existing.author : ((window.KB_USER && window.KB_USER.get && window.KB_USER.get()) || '')) + '">' +
+          '<input type="text" id="f-author" placeholder="z. B. MM" value="' + escapeAttr(existing ? existing.author : ((window.KB_USER && window.KB_USER.get && window.KB_USER.get()) || '')) + '">' +
         '</div>' +
       '</div>' +
       '<div class="row">' +
@@ -4001,7 +4013,7 @@ function viewBackup() {
         pluralize((d.entries || []).length, 'Eintrag', 'Einträge') +
         (d.exportedAt ? ' (exportiert am ' + escapeHtml(formatDateTime(d.exportedAt)) + ')' : '') + '.</p>' +
       '<div class="field">' +
-        '<label class="checkbox-row"><input type="radio" name="import-mode" value="merge" checked> <span><strong>Zusammenführen</strong> — neue Datensätze ergänzen, gleiche IDs werden überschrieben, bestehende Daten bleiben sonst erhalten.</span></label>' +
+        '<label class="checkbox-row"><input type="radio" name="import-mode" value="merge" checked> <span><strong>Zusammenführen</strong> — neue Datensätze ergänzen; gleiche IDs werden nur durch eine neuere Fassung ersetzt (die alte kommt in den Papierkorb), bestehende Daten bleiben sonst erhalten.</span></label>' +
       '</div>' +
       '<div class="page-head" style="margin:0;">' +
         '<button type="button" class="btn" id="bk-cancel-import">Abbrechen</button>' +
@@ -4071,8 +4083,13 @@ function viewBackup() {
         if (confirmBtn) confirmBtn.addEventListener('click', function () {
           /* Nur Zusammenführen: „Ersetzen“ löschte alles Vorhandene ohne Papierkorb – wie das entfernte „Backup laden“ */
           var mode = 'merge';
-          Repo.importAll(pendingImport.data, mode).then(function () {
-            showToast('Import abgeschlossen (' + (mode === 'replace' ? 'ersetzt' : 'zusammengeführt') + ').');
+          Repo.importAll(pendingImport.data, mode).then(function (z) {
+            /* Kurz sagen, was mit den Einträgen und Réunions der Datei passiert ist */
+            var was = [];
+            if (z && z.neu) was.push(z.neu + ' übernommen');
+            if (z && z.ersetzt) was.push(z.ersetzt + ' durch die neuere Fassung ersetzt (die alte liegt im Papierkorb)');
+            if (z && z.behalten) was.push(z.behalten + ' vorhandene behalten (die Fassung in der Datei war nicht neuer)');
+            showToast('Import abgeschlossen: ' + (was.length ? was.join(', ') + '.' : 'nichts Neues – alles war schon da.'), { duration: 7000 });
             pendingImport = null;
             fileInput.value = '';
             navigate('#/backup', true);
@@ -5991,7 +6008,7 @@ function viewReportImport(params, query) {
       '<p class="muted" style="margin:0 0 8px;">Matrikelnummer, Geburtsdatum, E-Mail und Telefon werden <strong>immer automatisch entfernt</strong>. Die folgenden Namen/Orte werden beim KI-Export ersetzt und für künftige Berichte gemerkt:</p>' +
       (detRows || '<p class="muted">Keine Namen automatisch erkannt.</p>') +
       '<div class="field" style="margin-top:8px;"><label for="imp-extra">Weitere zu schützende Namen <span class="hint">(eine pro Zeile, z. B. Eltern/Geschwister)</span></label>' +
-        '<textarea id="imp-extra" rows="2" placeholder="z. B. Sabrina Scheffen">' + escapeHtml(st.extra) + '</textarea></div>' +
+        '<textarea id="imp-extra" rows="2" placeholder="z. B. Mia Muster">' + escapeHtml(st.extra) + '</textarea></div>' +
       '<div class="page-head" style="margin-top:14px;">' +
         '<button type="button" class="btn" id="imp-cancel">Abbrechen</button>' +
         '<button type="button" class="btn btn-primary" id="imp-save">📥 Bericht im Dossier speichern</button>' +

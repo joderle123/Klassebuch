@@ -5,7 +5,8 @@
 // „Tag leeren“, Papierkorb, Noten, leerer Name, Stundenplan (K15a–e). Zweite Runde: Hinweis nach
 // „+ Schuljahr anlegen“ (K6), Texte und Einzahl, Retards in der Wochen-Sicherung, Fehlzeiten nach
 // Stundenplan, Dossier-Backup, Handy (Woche, Warnleisten, CSV mit Ehemaligen, Startdialog 320 px).
-// Nur erfundene Personen.
+// Dritte Runde: Retards eigens im Übersichts-Chip und in der Team-Datei, Backup-Import ersetzt nur
+// durch neuere Fassungen. Nur erfundene Personen.
 // Aufruf: node klassenbuch/tests/korrekturen.cjs   (Webserver auf Port 8099 für den Hauptordner)
 'use strict';
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
@@ -24,6 +25,23 @@ async function kontext(browser, fehler, opt) {
   await ctx.route('**/*', r => r.request().url().startsWith(HOST + '/') ? r.continue() : r.abort());
   await ctx.addInitScript(() => { window.open = (function (o) { return function (u, n) { return u ? null : o.call(window, u, n); }; })(window.open); window.print = function () {}; });
   if (opt.init) { await ctx.addInitScript(opt.init); }
+  if (opt.teamDatei) {
+    /* Nachgestellte Team-Datei (wie in fehler.cjs): die Griffe der File System Access API lesen und schreiben in Node */
+    const dateien = {};
+    await ctx.exposeBinding('__fsLesen', (src, n) => dateien[n] || '');
+    await ctx.exposeBinding('__fsSchreiben', (src, n, t) => { dateien[n] = t; });
+    await ctx.addInitScript(() => {
+      class Griff {
+        constructor(n) { Object.defineProperty(this, '__n', { value: n, enumerable: false }); }
+        get name() { return this.__n; } get kind() { return 'file'; }
+        queryPermission() { return Promise.resolve('granted'); } requestPermission() { return Promise.resolve('granted'); }
+        getFile() { const n = this.__n; return window.__fsLesen(n).then(t => ({ text: () => Promise.resolve(t) })); }
+        createWritable() { const n = this.__n; let b = ''; return Promise.resolve({ write: d => { b += d; return Promise.resolve(); }, close: () => window.__fsSchreiben(n, b) }); }
+      }
+      window.showOpenFilePicker = async () => [new Griff('klassebuch-team.json')];
+      window.showSaveFilePicker = async () => new Griff('klassebuch-team.json');
+    });
+  }
   const dialoge = [];
   ctx.antwort = null;   // true/false: nächste Rückfrage annehmen/ablehnen
   ctx.on('page', p => {
@@ -312,8 +330,9 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   const loeschen = (ctx4.dialoge.find(d => d.typ === 'confirm') || {}).text || '';
   check('Löschen fragt in der Einzahl: „1 Dossier-Eintrag, 1 Absenz, 1 Note“ – und „Abbrechen“ lässt Tom stehen', loeschen.includes('Daran hängen: 1 Dossier-Eintrag, 1 Absenz, 1 Note.') && !!(await R.evaluate(sid => KB_ROSTER.byId(sid), k4.tom)), loeschen);
   await R.evaluate(() => { window.__kbGo('students'); location.hash = '#/'; }); await warte(700);
-  const chips = await R.evaluate(sid => { const k = document.querySelector('article.st-card[data-route="#/student/' + sid + '"] .st-chips'); return k ? k.textContent.replace(/\s+/g, ' ').trim() : ''; }, k4.tom);
-  check('Übersicht: „1 Absenz“ statt „1 Absenzen“', chips.includes('1 Absenz · 1 unent.') && !chips.includes('Absenzen'), chips);
+  const chips = await R.evaluate(ids => ids.map(sid => { const k = document.querySelector('article.st-card[data-route="#/student/' + sid + '"] .st-chips'); return k ? k.textContent.replace(/\s+/g, ' ').trim() : ''; }), [k4.tom, k4.lea]);
+  check('Übersicht: „1 Absenz“ statt „1 Absenzen“', chips[0].includes('1 Absenz · 1 unent.') && !chips[0].includes('Absenzen'), chips[0]);
+  check('Übersicht: der Retard hat einen eigenen Chip „1 Retard“ und zählt nicht als Absenz', chips[1] === '1 Retard', chips[1]);
   await R.evaluate(() => { window.__kbGo('data'); const i = document.getElementById('kb-wk-date'); i.value = '2026-09-14'; i.dispatchEvent(new Event('change', { bubbles: true })); }); await warte(300);
   /* nur Absenzen und Retards prüfen – die eingebauten Daten der Annexe können in derselben Woche weitere Einträge haben */
   const wochenSich = await R.evaluate(() => ({ teile: document.getElementById('kb-wk-counts').textContent.replace(/\s+/g, ' ').trim().replace(/^.*?: /, '').split(' · '), bereiche: KB_WEEKLY.collect('2026-09-14', '2026-09-20').filter(r => /^(Absenzen|Retards)$/.test(r.bereich)).map(r => r.bereich + ':' + r.details).sort().join(' | ') }));
@@ -323,6 +342,8 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   const quelle = await R.evaluate(() => fetch(location.href).then(r => r.text()));
   const alt = ['vollständig present', 'schicke mir bitte', 'Chrome/Edge moeglich', 'bleiben unveraendert', '<i>index.html</i>'].filter(s => quelle.includes(s));
   check('Texte: „vollständig präsent“, Hinweis beim DS/PEI-Import für Lehrkräfte, „möglich“, „unverändert“, Hub statt index.html', regler.includes('10 = vollständig präsent') && alt.length === 0 && quelle.includes('erkennt der Import sie nicht') && quelle.includes('Nur in Chrome/Edge möglich.') && quelle.includes('(lokale Daten bleiben unverändert)'), { alt, regler: regler.includes('vollständig präsent') });
+  const autorFeld = await R.evaluate(() => (document.getElementById('f-author') || {}).placeholder);
+  check('Platzhalter nur mit erfundenen Namen: Autor „z. B. MM“, DS/PEI-Import „z. B. Mia Muster“', autorFeld === 'z. B. MM' && quelle.includes('<textarea id="imp-extra" rows="2" placeholder="z. B. Mia Muster">'), autorFeld);
   await R.evaluate(() => { window.__kbGo('students'); location.hash = '#/backup'; }); await warte(700);
   const bk = await R.evaluate(() => ({ zahl: +((/(\d+) Schüler/.exec(document.getElementById('bk-summary').textContent) || [])[1] || -1), liste: KB_ROSTER.list().length }));
   const [bkDl] = await Promise.all([R.waitForEvent('download', { timeout: 8000 }).catch(() => null), R.click('#bk-export')]);
@@ -384,6 +405,50 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   const wer = await G.evaluate(() => ({ offen: document.getElementById('kb-gate').classList.contains('open'), person: KB_USER.get() }));
   check('Karte oben nicht abgeschnitten, „+ Andere Person“ erreichbar, danach ist die Person gewählt', !!tor && tor.offen && tor.oben >= 0 && geklickt && !wer.offen && wer.person === 'Test Person', { tor, geklickt, wer });
   await ctx7.close();
+
+  console.log('17) Backup importieren: Vorhandenes nur durch eine neuere Fassung ersetzen');
+  const ctx8 = await kontext(browser, fehler);
+  const I = await ctx8.newPage(); await frisch(I);
+  const imp = await I.evaluate(async () => {
+    const tom = KB_ROSTER.add('Tom Muster', '', 'L1', 'ES');
+    const neu = t => Repo.saveEntry({ studentId: tom, date: '2027-06-07', author: 'Test', category: 'Schule', tags: [], text: t });
+    const a = await neu('A hier (erfunden)'), b = await neu('B hier (erfunden)'), c = await neu('C hier (erfunden)'), d = await neu('D gleich (erfunden)');
+    const r = await Repo.saveReunion({ date: '2027-06-07', orgItems: ['Orga hier (erfunden)'], studentOrder: [], goals: {} });
+    const spaeter = new Date(Date.parse(a.updatedAt) + 864e5).toISOString(), frueher = new Date(Date.parse(b.updatedAt) - 864e5).toISOString();
+    /* A: in der Datei neuer · B: in der Datei älter · C: in der Datei ohne Zeitstempel · D: gleich · dazu ein neuer Eintrag und eine neue Réunion */
+    const datei = { format: 'cdse-dossier-backup', version: 2, exportedAt: spaeter, students: [],
+      entries: [Object.assign({}, a, { text: 'A aus der Datei, neuer (erfunden)', updatedAt: spaeter }), Object.assign({}, b, { text: 'B aus der Datei, älter (erfunden)', updatedAt: frueher }),
+        Object.assign({}, c, { text: 'C aus der Datei, ohne Zeitstempel (erfunden)', updatedAt: undefined }), Object.assign({}, d),
+        { id: 'e_imp_neu', studentId: tom, date: '2027-06-08', author: 'Test', category: 'Schule', tags: [], text: 'Neu aus der Datei (erfunden)', sliders: {}, createdAt: spaeter, updatedAt: spaeter }],
+      reunions: [Object.assign({}, r, { orgItems: ['Orga aus der Datei (erfunden)'] }), { id: 'reu_20270614', date: '2027-06-14', orgItems: ['Neue Réunion (erfunden)'], studentOrder: [], goals: {}, discussed: [] }] };
+    return { ids: [a.id, b.id, c.id, d.id], reu: r.id, json: JSON.stringify(datei) };
+  });
+  await I.evaluate(() => { window.__kbGo('students'); location.hash = '#/backup'; }); await warte(700);
+  await I.setInputFiles('#bk-file', { name: 'dossier-backup.json', mimeType: 'application/json', buffer: Buffer.from(imp.json) }); await warte(600);
+  await I.click('#bk-confirm-import'); await warte(700);
+  const nachImp = await I.evaluate(([ids, reu]) => ({
+    texte: ids.map(id => (Repo.getEntry(id) || {}).text), neu: !!Repo.getEntry('e_imp_neu'), orga: (Repo.getReunion(reu) || {}).orgItems, reuNeu: !!Repo.getReunion('reu_20270614'),
+    papierkorb: KB_TRASH.list().filter(t => t.kind === 'entry' && t.data.id === ids[0]).map(t => t.data.text),
+    meldung: [...document.querySelectorAll('#toast-root .toast')].map(t => t.textContent).join(' | ')
+  }), [imp.ids, imp.reu]);
+  check('Neuere Fassung aus der Datei ersetzt die vorhandene, die alte liegt im Papierkorb', nachImp.texte[0] === 'A aus der Datei, neuer (erfunden)' && nachImp.papierkorb.join() === 'A hier (erfunden)', nachImp);
+  check('Ältere Fassung und eine ohne Zeitstempel ersetzen nichts – auch bei den Réunions nicht', nachImp.texte[1] === 'B hier (erfunden)' && nachImp.texte[2] === 'C hier (erfunden)' && nachImp.texte[3] === 'D gleich (erfunden)' && JSON.stringify(nachImp.orga) === '["Orga hier (erfunden)"]', nachImp);
+  check('Neues kommt dazu; die Meldung sagt, wie viel übernommen, ersetzt und behalten wurde', nachImp.neu && nachImp.reuNeu && nachImp.meldung.includes('Import abgeschlossen: 2 übernommen, 1 durch die neuere Fassung ersetzt (die alte liegt im Papierkorb), 3 vorhandene behalten'), nachImp.meldung);
+  await ctx8.close();
+
+  console.log('18) Team-Datei: Retards eigens gezählt');
+  const ctx9 = await kontext(browser, fehler, { teamDatei: true });
+  const T = await ctx9.newPage(); await frisch(T);
+  await T.evaluate(() => {
+    const tom = KB_ROSTER.add('Tom Muster', '', 'L1', 'ES');
+    const e = (id, date, status) => ({ id, studentId: tom, date, weekday: new Date(date + 'T12:00:00').getDay(), blockId: 'b3', subject: 'Mathe', status, hours: 1.5, note: '', byUser: 'Test', byUserAt: 1 });
+    KB_ANW.applyEntries([e('t1', '2026-09-21', 'unentschuldigt'), e('t2', '2026-09-22', 'entschuldigt'), Object.assign(e('t3', '2026-09-23', 'verspaetet'), { lateMin: 5 })]);
+  });
+  await T.evaluate(() => KB_SYNC.connectNew()); await warte(2500);
+  await T.evaluate(() => window.__kbGo('data')); await warte(400);
+  const team = await T.evaluate(() => { const t = document.getElementById('kb-sync-status').textContent.replace(/\s+/g, ' '), m = /In der gemeinsamen Datei: .*/.exec(t); return m ? m[0] : '(nicht verbunden)'; });
+  check('Team-Datei: „2 Absenzen · 1 Retard“ statt „3 Absenzen“', team.includes(' 2 Absenzen · 1 Retard · '), team);
+  await ctx9.close();
 
   check('Keine Fehler in der Konsole', fehler.length === 0, fehler.slice(0, 5));
   console.log('\n' + ok + ' ok, ' + bad + ' Fehler  (' + Math.round((Date.now() - t0) / 1000) + ' s)');

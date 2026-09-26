@@ -66,6 +66,7 @@ node klassenbuch/tests/rundgang.cjs
 node klassenbuch/tests/fehler.cjs
 node klassenbuch/tests/heute.cjs
 node klassenbuch/tests/layout.cjs
+node klassenbuch/tests/korrekturen.cjs   # Korrekturen aus der Durchsicht (Anwesenheit, Dossier, Sicherung, Texte)
 ```
 
 Bilder aus den Testläufen landen in `klassenbuch/tests/aus/`. Dieser Ordner wird nicht mit abgelegt, weil die Bilder

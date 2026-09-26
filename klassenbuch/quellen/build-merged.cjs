@@ -1496,7 +1496,7 @@ window.KB_ROSTER=(function(){
   function persist(){try{localStorage.setItem(LS,JSON.stringify(list));}catch(e){}}
   function nameKey(n){return String(n||'').toLowerCase().replace(/[^a-z]/g,'');}
   /* Fehlende Schüler der Liste werden IMMER ergänzt (so kommt ein später
-     dazugekommener wie Logan auch in bestehende Installationen). Niveau setzen
+     dazugekommenes Kind auch in bestehende Installationen). Niveau setzen
      und Nicht-Gelistete inaktiv schalten passiert dagegen nur EINMAL, damit
      spätere Korrekturen von Hand nicht wieder überschrieben werden. */
   /* Eingebaute Schueler werden nur EINMAL je Geraet eingetragen. Frueher kamen
@@ -2678,7 +2678,7 @@ var SHELL_CONTROLLER = `
     else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — der Browser setzt die Freigabe beim Neustart zurück. Die App fragt beim ersten Klick von selbst danach, sonst hier „Verbinden" ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
-    if(s.connected&&s.counts){var k=s.counts,z=function(n,eins,mehr){return '<b>'+(n||0)+'</b> '+(n===1?eins:mehr);};info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · '+z(k.dosEntries,'Dossier-Eintrag','Dossier-Einträge')+' · '+z(k.anwEntries,'Absenz','Absenzen')+' · '+z(k.anwNotes,'Notiz','Notizen')+' · '+z(k.dosReunions,'Réunion','Réunionen')+' · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
+    if(s.connected&&s.counts){var k=s.counts,z=function(n,eins,mehr){return '<b>'+(n||0)+'</b> '+(n===1?eins:mehr);};info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · '+z(k.dosEntries,'Dossier-Eintrag','Dossier-Einträge')+' · '+z((k.anwEntries||0)-(k.anwRetards||0),'Absenz','Absenzen')+' · '+z(k.anwRetards,'Retard','Retards')+' · '+z(k.anwNotes,'Notiz','Notizen')+' · '+z(k.dosReunions,'Réunion','Réunionen')+' · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
     if(s.connected){
       var bk;
       if(s.backupName){bk='Auto-Sicherung: Ordner <b>'+esc(s.backupName)+'</b> · letzte Kopie: '+(s.backupLast?esc(s.backupLast):'noch keine')+(s.backupErr==='reconnect'?' · <span style="color:#c9851f">bitte bestätigen</span>':'');}
@@ -3095,7 +3095,10 @@ window.KB_SYNC=(function(){
   function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return fremdeBehalten(nb,remote);}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
-  function summarize(doc){var keys=['roster','dosEntries','dosReunions','anwEntries','anwNotes','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}return c;}
+  function summarize(doc){var keys=['roster','dosEntries','dosReunions','anwEntries','anwNotes','bubble'];var c={};for(var j=0;j<keys.length;j++){var coll=(doc&&doc.colls&&doc.colls[keys[j]])||[];var n=0;for(var i=0;i<coll.length;i++){if(!coll[i]._del)n++;}c[keys[j]]=n;}
+    /* Retards stehen mit den Absenzen in anwEntries - eigens zählen, damit sie nicht als Absenzen gelten */
+    var ae=(doc&&doc.colls&&doc.colls.anwEntries)||[],nr=0;for(var q=0;q<ae.length;q++){if(!ae[q]._del&&ae[q].d&&ae[q].d.status==='verspaetet')nr++;}c.anwRetards=nr;
+    return c;}
 
   function collGet(){
     function c(o,m){return (o&&o[m])?o[m]():[];}
@@ -3730,9 +3733,9 @@ window.KB_NOTEN=(function(){
   function rec(sid){var r=data[sid];if(!r){r={mode:'semester',grades:[],modules:{}};data[sid]=r;}if(!r.grades)r.grades=[];if(!r.modules)r.modules={};if(!r.mode)r.mode='semester';return r;}
   function notify(sid){saveAll(data);for(var i=0;i<hooks.length;i++){try{hooks[i](sid);}catch(e){}}}
   function nid(){return 'gr_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
-  /* Aus dem Team-Rapport vom 16.09.2026: „Matteo an Alex K hunn Semester,
-     dei aner Trimester". Einmalig gesetzt, danach jederzeit im Noten-Tab
-     umstellbar. */
+  /* Aus dem Team-Rapport vom 16.09.2026: die Kinder in SEM (unten) haben
+     Semester, alle anderen Trimester. Einmalig gesetzt, danach jederzeit
+     im Noten-Tab umstellbar. */
   var MODE_FLAG='klassebuch_noten_modus_2627';
   (function applyModes2627(){
     try{if(localStorage.getItem(MODE_FLAG))return;}catch(e){}

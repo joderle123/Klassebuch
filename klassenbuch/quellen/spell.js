@@ -144,7 +144,7 @@
     if (VORNAMEN[k] || appVornamen[k]) return true;
     return k.indexOf('-') > 0 && k.split('-').every(function (t) { return VORNAMEN[t] || appVornamen[t]; });
   }
-  /* Nach diesen Woertern folgt ein Name: Dr Meinhardt, Madame Tissier. */
+  /* Nach diesen Woertern folgt ein Name: Dr Muster, Madame Beispiel. */
   var TITEL = { dr: 1, drs: 1, dres: 1, prof: 1, mme: 1, mmes: 1, madame: 1, madamm: 1, 'här': 1, herr: 1,
     monsieur: 1, mr: 1, hr: 1, fr: 1, fra: 1, frau: 1, dokter: 1, doktesch: 1, famill: 1, famille: 1 };
 
@@ -181,7 +181,7 @@
     if (GROSS.test(w) && istName(w)) return true;
     var ap = w.split(/['’]/);
     if (ap.length === 2 && tiefe < 3) {
-      /* d'Mamm, D'Lilly, z'intégréieren: der kurze Artikel haengt am Wort,
+      /* d'Mamm, D'Lea, z'intégréieren: der kurze Artikel haengt am Wort,
          im Woerterbuch steht aber nur das Wort selbst. */
       if (ap[0].length <= 2 && ap[1].length >= 2) return pruefe(ap[1], tiefe + 1);
       /* Endung hinter dem Apostroph: CCP'en, Tic'en */
@@ -325,8 +325,8 @@
     WORT.lastIndex = 0;
     while ((m = WORT.exec(txt))) {
       var w = m[0], ok = richtig(w);
-      /* Nach einem Titel oder Vornamen steht ein Name: Dr Meinhardt,
-         Madame Tissier, Jean-Pierre Tomozei. */
+      /* Nach einem Titel oder Vornamen steht ein Name: Dr Muster,
+         Madame Beispiel, Jean-Paul Probe. */
       if (!ok && vor && GROSS.test(w) && /^[\s.]{1,3}$/.test(txt.slice(vorEnde, m.index))) {
         var v = vor.toLowerCase();
         if (TITEL[v] || (GROSS.test(vor) && istVorname(vor))) ok = true;
