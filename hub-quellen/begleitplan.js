@@ -33,6 +33,7 @@ function tageSeit(iso){if(!iso){return 1e9;}var t=new Date(String(iso).slice(0,1
 function plusTage(iso,n){var t=new Date(String(iso||heute()).slice(0,10)+'T12:00:00');t.setDate(t.getDate()+n);return lokalIso(t);}
 var FRIST_MAX=730, SPAETER_MAX=365;   /* Tippfehler wie „2062“ abfangen: Fristen höchstens zwei Jahre, „später“ höchstens ein Jahr voraus */
 function vorname(d){return ((d&&d.person)||{}).vorname||'dem Kind';}
+function fallverantwortliche(d){var l=((d&&d.verantwortlich)||[]).map(function(id){return H.kname(id);});return l.length?'die Fallverantwortlichen ('+l.join(', ')+')':'die Fallverantwortlichen';}
 function iso(v){return String(v||'').slice(0,10);}
 
 /* =====================================================================
@@ -267,8 +268,9 @@ function links(s,kl){
   return '<span class="bp-links">'+bl.map(function(b){return '<a href="apps/toolbox.html#blatt='+encodeURIComponent(b.id)+'" target="cdse-toolbox">'+svg('datei')+esc(b.titel)+'</a>';}).join('')+
     lm.map(function(id){return '<a href="apps/lernen.html#/modul/'+encodeURIComponent(id)+'" target="cdse-lernen">'+svg('buch')+esc(LERN_TITEL[id])+'</a>';}).join('')+'</span>';
 }
-function aktionKnopf(a,primaer){
+function aktionKnopf(a,primaer,r){
   if(!a){return '';}
+  if(a.tab==='eintraege'&&r&&!r.bearbeiten){return '';}   /* „Gespräch eintragen“ führte ohne Schreibrecht ins Leere */
   var kl='btn'+(primaer?' primary':'');
   if(a.tab){return '<button type="button" class="'+kl+'" data-tab="'+esc(a.tab)+'">'+esc(a.text)+'</button>';}
   if(a.ar){return '<button type="button" class="'+kl+'" data-ar="'+esc(a.ar)+'"'+(a.item?' data-item="'+esc(a.item)+'"':'')+(a.eid?' data-eid="'+esc(a.eid)+'"':'')+'>'+esc(a.text)+'</button>';}
@@ -307,7 +309,7 @@ function nurDialog(s){return !!(s.laufend||(s.aktion&&s.aktion.bp==='review'));}
 function schrittHtml(s,r,kl){
   return '<li class="bp-schritt '+s.status+(s.prio===1?' wichtig':'')+'" data-key="'+esc(s.key)+'">'+statusPunkt(s)+
     '<div class="bp-text"><b>'+esc(s.titel)+'</b>'+(s.warum&&s.status!=='erledigt'?'<span class="bp-warum">'+esc(s.warum)+'</span>':'')+meta(s)+(s.status!=='erledigt'?links(s,kl):'')+'</div>'+
-    '<div class="bp-akt">'+(s.status==='erledigt'||s.status==='passt-nicht'?'':aktionKnopf(s.aktion,false))+entscheidKnoepfe(s,r)+'</div></li>';
+    '<div class="bp-akt">'+(s.status==='erledigt'||s.status==='passt-nicht'?'':aktionKnopf(s.aktion,false,r))+entscheidKnoepfe(s,r)+'</div></li>';
 }
 /* Offene Schritte zuerst, laufende danach; erledigte eingeklappt („Erledigt (n) anzeigen“) */
 function schrittListe(l,r,kl){
@@ -329,12 +331,14 @@ function tab(d,r){
       (P.dringend?' · <span class="bp-z-dringend">'+P.dringend+' dringend</span>':'')+(P.faellig?' · <span class="bp-z-faellig">'+P.faellig+' fällig</span>':'')+'</span></div>'+
     '<ol class="bp-phasen">'+PHASEN.map(function(p,i){var x=P.phasen[p[0]], fertig=x.gesamt&&x.fertig===x.gesamt;
       return '<li class="'+(fertig?'fertig':(x.offen?'offen':''))+'"><button type="button" data-bp="phase" data-phase="'+p[0]+'"><span class="bp-pnr">'+(fertig?svg('check'):(i+1))+'</span><span class="bp-ptext"><span class="bp-pname">'+esc(p[1])+'</span><span class="bp-pzahl">'+(x.gesamt?x.fertig+' von '+x.gesamt:(x.termin?'ab '+esc(datum(x.termin).slice(0,6)):'–'))+'</span></span></button></li>';}).join('')+'</ol></section>';
+  /* Nur lesen: sagen, wer ein Schreibrecht geben kann (statt Knöpfe ohne Erklärung wegzulassen) */
+  if(!r.bearbeiten){h+='<div class="keindruck">'+H.hinweis('Du kannst den Begleitplan lesen. Eintragen, abhaken und die Tageskarte führen dürfen die Zuständigen – frage '+esc(fallverantwortliche(d))+' nach einem Schreibrecht.','info')+'</div>';}
   /* Als Nächstes */
   var n=P.naechster;
   if(n){
     h+='<section class="ar-karte bp-naechster '+n.status+'"><p class="overline">Als Nächstes · '+esc(n.phase==='sofort'?'Sofort':PHASEN[PHASE_NR[n.phase]][1])+(n.status!=='offen'?' · '+esc(STATUS_TEXT[n.status]):'')+'</p>'+
       '<h3>'+esc(n.titel)+'</h3>'+(n.warum?'<p>'+esc(n.warum)+'</p>':'')+meta(n)+links(n,P.kl)+
-      '<div class="ar-knopfreihe">'+aktionKnopf(n.aktion,true)+(r.bearbeiten&&!n.eigen&&!nurDialog(n)?'<button type="button" class="btn" data-bp="erledigt" data-key="'+esc(n.key)+'">'+svg('check')+'Erledigt</button>':'')+
+      '<div class="ar-knopfreihe">'+aktionKnopf(n.aktion,true,r)+(r.bearbeiten&&!n.eigen&&!nurDialog(n)?'<button type="button" class="btn" data-bp="erledigt" data-key="'+esc(n.key)+'">'+svg('check')+'Erledigt</button>':'')+
         (r.bearbeiten&&n.eigen?'<button type="button" class="btn" data-bp="eigen-erledigt" data-sid="'+esc(n.eigen.id)+'">'+svg('check')+'Erledigt</button>':'')+
         (r.bearbeiten&&!n.eigen?'<button type="button" class="ar-link" data-bp="spaeter" data-key="'+esc(n.key)+'">Später</button>':'')+'</div></section>';
   }else{

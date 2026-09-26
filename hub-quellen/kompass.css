@@ -116,7 +116,7 @@ ol.ko-liste li::marker{font-weight:700;color:var(--accent);}
   body.ko-druck #ko-ergebnis .keindruck{display:none!important;}
   body.ko-druck .ar-karte{break-inside:avoid;box-shadow:none;}
   body.ko-druck .ko-profil>summary>.ic{display:none;}
-  body.ko-druck .ko-q{border:0;padding:0;min-width:0;height:auto;}
+  body.ko-druck .ko-q{display:inline;border:0;padding:0;min-width:0;height:auto;}   /* inline-grid setzte „[“, Zahl und „]“ untereinander */
   body.ko-druck .ko-q::before{content:'[';}
   body.ko-druck .ko-q::after{content:']';}
 }

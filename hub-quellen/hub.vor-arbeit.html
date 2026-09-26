@@ -130,11 +130,12 @@ code{background:var(--bg-2);border-radius:5px;padding:1px 6px;color:var(--ink-2)
 .tile-ic .ic{width:24px;height:24px;stroke-width:1.6;}
 .tile-eyebrow{font-size:11px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--ac) 80%,var(--ink));margin-bottom:6px;}
 .tile h3{margin:0 0 8px;font-size:21px;line-height:1.2;font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);color:var(--ink);}
-.tile p{margin:0;color:var(--muted);font-size:14px;line-height:1.55;flex:1;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.tile p{margin:0;color:var(--muted);font-size:14px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 .tile-info{display:inline-flex;align-items:center;gap:7px;align-self:flex-start;margin-top:14px;font-size:12.5px;font-weight:560;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;}
 .tile-info .ic{width:14px;height:14px;color:var(--ac);}
 .tile-note{margin-top:14px;font-size:12.5px;line-height:1.45;color:#6E4A00;background:#FBF3E1;border:1px solid #F0DDB2;border-radius:9px;padding:8px 11px;}
-.tile-foot{display:flex;align-items:center;gap:10px;margin:18px -22px 0;padding:13px 22px;border-top:1px solid var(--line);}
+.tile-foot{display:flex;align-items:center;gap:10px;margin:auto -22px 0;padding:13px 22px;border-top:1px solid var(--line);}
+.tile>:has(+.tile-foot){margin-bottom:18px;}   /* Abstand zum Fuß; der Fuß selbst sitzt unten (margin-top:auto) */
 .tile-stand{font-size:12px;font-weight:500;color:var(--faint);}
 .tile-foot .grow{flex:1;}
 .tile-open{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:620;color:var(--accent);text-decoration:none;padding:6px 4px 6px 10px;border-radius:8px;transition:gap .15s,color .15s;}
@@ -238,6 +239,7 @@ html.tor-offen .hub{visibility:hidden;}
 .feld input[type=password],.feld input:not([type]),.feld input[type=text]{font:inherit;font-size:15px;height:44px;padding:0 13px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);color:var(--ink);transition:border-color .15s,box-shadow .15s;}
 .feld input:focus{outline:none;border-color:var(--accent);box-shadow:var(--focus);}
 .feld .hilfe{font-size:12.5px;color:var(--muted);line-height:1.45;}
+.feld select{width:100%;min-width:0;}   /* lange Auswahl („Ich habe keine/n Responsable …“) macht die Karte nicht breiter als den Bildschirm */
 .meldung{display:flex;gap:9px;align-items:flex-start;font-size:13.5px;line-height:1.5;padding:10px 12px;border-radius:10px;margin:0 0 16px;}
 .meldung.fehler{background:#FCEDEA;color:#7A2A18;border:1px solid #F0C9C0;}
 .meldung.info{background:var(--accent-soft);color:var(--accent-strong);border:1px solid var(--accent-line);}
@@ -1865,7 +1867,7 @@ function openApp(id){
   if(!fr){
     fr=document.createElement('iframe');
     fr.className='appframe';fr.title=a.name;
-    fr.setAttribute('allow','clipboard-read; clipboard-write; fullscreen');
+    if(!IS_FILE){fr.setAttribute('allow','clipboard-read; clipboard-write; fullscreen');}   /* unter file:// sperrte die Angabe Zwischenablage und Vollbild (mit Warnungen in der Konsole) */
     fr.src=a.datei;
     $('frames').appendChild(fr);frames[id]=fr;
     if(!IS_FILE){checkExists(a);}
@@ -1929,17 +1931,20 @@ function show(v){
   view=v;
   ['home','app','guide'].forEach(function(n){$('v-'+n).classList.toggle('on',n===v);});
   if(v!=='app'&&v!=='guide'){current=null;}
-  sideOverride=null;applySide();renderSide();
+  applySide();renderSide();   /* die eigene Wahl (Ein-/Ausklappen) bleibt */
 }
 var mqRail=window.matchMedia('(max-width:1000px)'), mqMobile=window.matchMedia('(max-width:700px)');
+/* Einklappen/Ausklappen: die eigene Wahl gilt auf allen Seiten und nach dem Neuladen (ohne Wahl: schmal in Apps und auf kleinen Bildschirmen) */
+var SIDE_KEY='cdse-seitenleiste';
 function applySide(){
-  var rail=sideOverride?sideOverride==='rail':(view==='app'||mqRail.matches);
+  var w=sideOverride||lsGet(SIDE_KEY,null);
+  var rail=(w==='rail'||w==='full')?w==='rail':(view==='app'||mqRail.matches);
   if(mqMobile.matches){rail=false;}
   hub.classList.toggle('rail',rail);
   $('collapse-t').textContent=rail?'Ausklappen':'Einklappen';
   $('collapse').setAttribute('aria-label',rail?'Menü ausklappen':'Menü einklappen');
 }
-$('collapse').addEventListener('click',function(){sideOverride=hub.classList.contains('rail')?'full':'rail';applySide();});
+$('collapse').addEventListener('click',function(){sideOverride=hub.classList.contains('rail')?'full':'rail';lsSet(SIDE_KEY,sideOverride);applySide();});
 (mqRail.addEventListener?mqRail.addEventListener('change',applySide):mqRail.addListener(applySide));
 (mqMobile.addEventListener?mqMobile.addEventListener('change',applySide):mqMobile.addListener(applySide));
 function closeDrawer(){hub.classList.remove('drawer');}
@@ -2088,11 +2093,15 @@ window.CDSE_KONTO.start({
     renderMe();route();teamOrdnerAnlegen();
   },
   status:datenStatus,
+  /* nach dem Neuladen ist der Schlüssel erst jetzt da: Übersicht neu (Einsatzplan, Fällig diese Woche) */
+  schluesselDa:function(){if(ICH&&view==='home'){renderHome();}},
+  /* Ungespeichertes im Arbeitsbereich (Einsatzplan): vor dem Abmelden fragen */
+  vorAbmelden:function(){return !(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.vorAbmelden)||window.CDSE_ARBEIT.vorAbmelden();},
   appsSchliessen:function(){aufraeumen(true);if(view==='app'){show('home');}},
   abgemeldet:function(){
     menuAuf(false);aufraeumen(true);ICH=null;HINWEISE=[];renderMe();activeCat='';$('q').value='';
     try{history.replaceState(null,'','#/');}catch(e){}
-    show('home');$('home-body').innerHTML='';$('hello').textContent='';$('lead').textContent='';
+    sideOverride=null;show('home');$('home-body').innerHTML='';$('hello').textContent='';$('lead').textContent='';
     document.title=HUB_TITLE;$('top-title').textContent=HUB_TITLE;
   },
   geaendert:function(ich){

@@ -36,7 +36,10 @@ function datum(iso){if(!iso){return '';}var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(is
 function datumZeit(iso){if(!iso){return '';}var d=new Date(iso);return isNaN(d)?iso:pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()+', '+pad(d.getHours())+':'+pad(d.getMinutes());}
 /* Kalendertag eines Zeitstempels in Ortszeit (ein reines Datum bleibt, wie es ist) */
 function tagVon(iso){if(!iso||/^\d{4}-\d{2}-\d{2}$/.test(iso)){return iso||'';}var d=new Date(iso);return isNaN(d)?String(iso).slice(0,10):d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
-function alter(geb){if(!geb){return null;}var g=new Date(geb+'T12:00:00'),h=new Date();if(isNaN(g)){return null;}var j=h.getFullYear()-g.getFullYear();if(h.getMonth()<g.getMonth()||(h.getMonth()===g.getMonth()&&h.getDate()<g.getDate())){j--;}return j;}
+function alter(geb){if(!geb){return null;}var g=new Date(geb+'T12:00:00'),h=new Date();if(isNaN(g)){return null;}var j=h.getFullYear()-g.getFullYear();if(h.getMonth()<g.getMonth()||(h.getMonth()===g.getMonth()&&h.getDate()<g.getDate())){j--;}return j<0?null:j;}
+/* Plausibel? Ein Datum in der Zukunft ist bei Geburtsdatum und Eintrag ein Tippfehler (wie 2062) */
+function zukunft(iso){return !!iso&&String(iso).slice(0,10)>heuteIso();}
+var GEB_ZUKUNFT='Das Geburtsdatum liegt in der Zukunft – bitte korrigieren.', DATUM_ZUKUNFT='Das Datum liegt in der Zukunft – bitte korrigieren.';
 function team(id){return K.team(id);}
 function ini(n){return K.initialen(n);}
 function ava(name,farbe,klein){return '<span class="ava'+(klein?' klein':'')+'" style="--tc:'+esc(farbe||'#586277')+'">'+esc(ini(name))+'</span>';}
@@ -73,24 +76,37 @@ function dialog(titel,inhalt,knoepfe,opt){
     document.body.appendChild(d);
     var form=d.querySelector('form'), fertig=false, laeuft=false, pause=false, anfang=null;
     function werte(){var o={};Array.prototype.forEach.call(form.elements,function(el){if(!el.name){return;}if(el.type==='checkbox'){o[el.name]=el.checked;}else if(el.type==='radio'){if(el.checked){o[el.name]=el.value;}}else{o[el.name]=el.value;}});return o;}
-    /* Geschriebener Text, der beim Abbrechen verloren ginge (Auswahlfelder sind schnell wieder gesetzt) */
+    /* Was beim Abbrechen verloren ginge: jeder geänderte Wert im Formular (Text, Datum, Auswahl, Haken) und
+       angeklickte Bewertungen oder Punkte (Knöpfe, data-geaendert) */
     function textGeaendert(){
       if(!anfang){return false;}
-      return Array.prototype.some.call(form.querySelectorAll('textarea[name],input[name]'),function(el){
-        if(el.tagName==='INPUT'&&!/^(text|search|email|tel|url)$/.test(el.type)){return false;}
-        return String(el.value||'').trim()!==String(anfang[el.name]==null?'':anfang[el.name]).trim();
+      if(d.dataset.geaendert==='1'){return true;}
+      var jetzt=werte(), namen={};
+      Object.keys(anfang).concat(Object.keys(jetzt)).forEach(function(k){namen[k]=1;});
+      return Object.keys(namen).some(function(k){
+        var a=anfang[k], b=jetzt[k];
+        if(typeof a==='boolean'||typeof b==='boolean'){return !!a!==!!b;}
+        return String(a==null?'':a).trim()!==String(b==null?'':b).trim();
       });
     }
     function zu(w){if(fertig){return;}fertig=true;if(d.open){d.close();}d.remove();res(w);}
     function knoepfeAn(an){Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(x){x.disabled=!an;});}
     d.fehler=function(t){var p=d.querySelector('.ar-dialog-fehler');p.textContent=t;p.hidden=!t;if(t&&p.scrollIntoView){p.scrollIntoView({block:'nearest'});}};
+    d.ungespeichert=function(){return !fertig&&textGeaendert();};   /* für die Rückfrage beim Neuladen */
     /* Abbrechen (Knopf ohne Wert oder Esc): während des Speicherns nicht; angefangenen Text nicht ohne Rückfrage verwerfen */
     function abbrechen(){
       if(laeuft){return;}
-      if(textGeaendert()&&d.dataset.verwerfen!=='1'){d.dataset.verwerfen='1';d.fehler('Du hast etwas geschrieben, das noch nicht gespeichert ist. Nochmal „'+((form.querySelector('.ar-knoepfe button[value=""]')||{}).textContent||'Abbrechen')+'“ (oder Esc), um es zu verwerfen.');return;}
+      /* eigene Rückfrage des Formulars (z. B. Startcodes noch nicht gedruckt) */
+      if(opt.vorAbbrechen){var frage=opt.vorAbbrechen();if(frage){d.fehler(frage);return;}}
+      if(textGeaendert()&&d.dataset.verwerfen!=='1'){d.dataset.verwerfen='1';d.fehler('Du hast etwas geändert, das noch nicht gespeichert ist. Nochmal „'+((form.querySelector('.ar-knoepfe button[value=""]')||{}).textContent||'Abbrechen')+'“ (oder Esc), um es zu verwerfen.');return;}
       zu({aktion:'',werte:werte()});
     }
     form.addEventListener('input',function(){if(d.dataset.verwerfen==='1'){d.dataset.verwerfen='';d.fehler('');}});
+    /* Bewertung oder Punkte angeklickt (Knöpfe statt Formularfelder) */
+    form.addEventListener('click',function(ev){
+      var b=ev.target.closest&&ev.target.closest('.ar-dialog-inhalt button[aria-pressed],.ar-dialog-inhalt .ar-skala button');if(!b){return;}
+      d.dataset.geaendert='1';if(d.dataset.verwerfen==='1'){d.dataset.verwerfen='';d.fehler('');}
+    });
     Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(b){
       b.addEventListener('click',function(ev){
         ev.preventDefault();
@@ -112,7 +128,10 @@ function dialog(titel,inhalt,knoepfe,opt){
       });
     });
     form.addEventListener('submit',function(ev){ev.preventDefault();var p=form.querySelector('button[type=submit]');if(p){p.click();}});
-    d.addEventListener('cancel',function(ev){ev.preventDefault();abbrechen();});
+    /* vom Programm geschlossen (z. B. zum neu Öffnen mit weiteren Dateien): ohne Rückfrage */
+    d.addEventListener('cancel',function(ev){ev.preventDefault();if(!ev.isTrusted&&!laeuft){zu({aktion:'',werte:werte()});return;}abbrechen();});
+    /* Esc selbst behandeln: aus einem Datumsfeld heraus schloss Chrome den Dialog nach der Rückfrage sonst trotzdem */
+    d.addEventListener('keydown',function(ev){if(ev.key!=='Escape'||ev.isComposing||(ev.target&&ev.target.type==='search'&&ev.target.value)){return;}ev.preventDefault();abbrechen();});
     /* Hub wird gesperrt: nur ausblenden (nach dem Entsperren geht es weiter); beim Abmelden verwerfen */
     d.addEventListener('cdse-schliessen',function(ev){if(ev.cancelable){ev.preventDefault();pause=true;return;}laeuft=false;zu({aktion:'',werte:werte()});});
     /* ohne unser Zutun geschlossen (z. B. zweimal Esc): wie Abbrechen – außer beim Sperren oder Speichern */
@@ -209,12 +228,13 @@ function seiteSchueler(neu){
 }
 var letzteListe=null;
 function meineDossier(d,me){return (d.verantwortlich||[]).indexOf(me.id)>=0||!!(d.rechte&&d.rechte[me.id]);}
-/* Suche: jedes Wort muss vorkommen (Groß-/Kleinschreibung und Akzente egal) */
-function suchNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+/* Suche: jedes Wort muss vorkommen (Groß-/Kleinschreibung und Akzente egal, ß wie ss) */
+function suchNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');}
 function suchWoerter(q){return suchNorm(q).split(/\s+/).filter(Boolean);}
+/* nur die Angaben des Kindes – nicht Stelle und Fallverantwortliche (sonst findet „muster“ alle Kinder von Mia Muster) */
 function passtSuche(d,w){
   if(!w.length){return true;}
-  var p=d.person||{}, h=suchNorm([p.nachname,p.vorname,p.klasse,p.schule,p.matricule,datum(p.geburtsdatum),team(d.stelle).name,(d.verantwortlich||[]).map(kname).join(' ')].join(' '));
+  var p=d.person||{}, h=suchNorm([p.nachname,p.vorname,p.klasse,p.schule,p.matricule,datum(p.geburtsdatum)].join(' '));
   return w.every(function(x){return h.indexOf(x)>=0;});
 }
 function listeZeichnen(l){
@@ -279,6 +299,7 @@ function neuerSchueler(){
   dialog('Neuer Schüler',inhalt,[{text:'Abbrechen',wert:''},{text:'Anlegen',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){
       if(!w.werte.nachname.trim()||!w.werte.vorname.trim()){return 'Bitte Vor- und Nachname eingeben.';}
+      if(zukunft(w.werte.geburtsdatum)){return GEB_ZUKUNFT;}
       var doppelt=(letzteListe||[]).filter(function(d){var p=d.person||{};return String(p.nachname).toLowerCase()===w.werte.nachname.trim().toLowerCase()&&String(p.vorname).toLowerCase()===w.werte.vorname.trim().toLowerCase()&&(!w.werte.geburtsdatum||!p.geburtsdatum||p.geburtsdatum===w.werte.geburtsdatum);})[0];
       if(doppelt&&!w.dialog.dataset.bestaetigt){w.dialog.dataset.bestaetigt='1';return 'Es gibt schon ein Dossier für '+schuelerName(doppelt.person)+'. Nochmal „Anlegen“ klicken, wenn es wirklich ein anderer Schüler ist.';}
       return '';
@@ -643,6 +664,12 @@ function einschaetzungDialog(d){
         Array.prototype.forEach.call(z.querySelectorAll('button'),function(x){x.classList.toggle('an',+x.dataset.r===gewaehlt[id]);});
       });
     },
+    /* nichts geändert: keine Kopie der alten Werte mit neuem Datum speichern */
+    pruefen:function(w){
+      var anders=Object.keys(gewaehlt).some(function(id){return (gewaehlt[id]||0)!==(b[id]||0);});
+      if(anders||String(w.werte.notiz||'').trim()){return '';}
+      return Object.keys(b).length?'Du hast keine Bewertung geändert. Klicke die Aussagen an, die jetzt anders zutreffen – oder „Abbrechen“.':'Bitte mindestens eine Aussage bewerten.';
+    },
     ausfuehren:function(w){
       /* alle Bereiche speichern, in denen etwas bewertet wurde – nicht nur den gerade gezeigten */
       function beruehrt(ber){return (DS_AUFBAU[ber].themen||[]).some(function(th){return th.aussagen.some(function(a){return gewaehlt[a[0]]!=null;});});}
@@ -693,6 +720,10 @@ function vorfallAus(w){
 }
 function formWerte(f){var o={};Array.prototype.forEach.call(f.elements,function(el){if(!el.name){return;}o[el.name]=el.type==='checkbox'?el.checked:el.value;});return o;}
 function vorfallMinuten(von,bis){var a=/^(\d\d):(\d\d)$/.exec(von||''), b=/^(\d\d):(\d\d)$/.exec(bis||'');if(!a||!b){return 0;}var m=(+b[1]*60+ +b[2])-(+a[1]*60+ +a[2]);return m>0?m:0;}
+/* Time-out: beide Zeiten oder keine, „bis“ nach „von“ – sonst fiele es still aus Anzeige und Summe */
+function timeoutFehler(w){var a=String(w.v_toVon||''), b=String(w.v_toBis||'');if(!a&&!b){return '';}if(!a||!b){return 'Bitte beim Time-out „von“ und „bis“ angeben.';}return vorfallMinuten(a,b)>0?'':'„Time-out bis“ muss nach „Time-out von“ liegen.';}
+/* Wiedervorlage: ab heute, höchstens zwei Jahre voraus (wie die Fristen im Begleitplan) */
+function wiedervorlageFehler(wv){if(!wv){return '';}if(wv<heuteIso()){return 'Die Wiedervorlage liegt in der Vergangenheit – bitte ein Datum ab heute wählen.';}return wv>plusTageIso(heuteIso(),730)?'Die Wiedervorlage liegt mehr als zwei Jahre voraus – bitte das Datum prüfen.':'';}
 function vorfallKopf(v){var m=vorfallMinuten(v.timeoutVon,v.timeoutBis);return [v.zeit?v.zeit+' Uhr':'',v.situation,v.ort,v.schwere?'Schwere: '+v.schwere:'',m?'Time-out '+v.timeoutVon+'–'+v.timeoutBis+' ('+m+' Min.)':''].filter(Boolean);}
 /* fürs Übergabeblatt: dieselben Angaben als schlichter Text */
 function vorfallDruck(v,text){
@@ -734,12 +765,12 @@ function tabEintraege(d,r){
   var h='';
   if(r.bearbeiten){
     var zo=zielOptionen(d);
-    h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag<span class="ar-entwurf" id="ar-entwurf-hinweis" hidden>ungespeicherter Entwurf</span></h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
+    h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag<span class="ar-entwurf" id="ar-entwurf-hinweis" hidden>ungespeicherter Entwurf</span></h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date',' max="'+heuteIso()+'"')+
       auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
       (zo.length?auswahl('ziel','Bezug zu einem Förderziel (optional)','',zo,'– kein Bezug –'):'')+
       '<div class="ar-vorfall-platz" hidden>'+vorfallFelder()+'</div>'+
       textfeld('text','Text','',4)+'<p class="ar-dialog-fehler" id="ar-eintrag-fehler" role="alert" hidden></p><div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button>'+
-      '<label class="ar-wv" title="Erscheint als Frist im Begleitplan und unter „Fällig diese Woche“"><span>Wiedervorlage am (optional)</span><input type="date" name="wiedervorlage" min="'+heuteIso()+'"></label></div></form>');
+      '<label class="ar-wv" title="Erscheint als Frist im Begleitplan und unter „Fällig diese Woche“"><span>Wiedervorlage am (optional)</span><input type="date" name="wiedervorlage" min="'+heuteIso()+'" max="'+plusTageIso(heuteIso(),730)+'"></label></div></form>');
   }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
   h+=vorfallAuswertung(d);
   var l=(d.eintraege||[]).slice().sort(function(a,b){return (b.datum+(b.z||''))<(a.datum+(a.z||''))?-1:1;});
@@ -750,6 +781,9 @@ function eintragSpeichern(d,f){
   var text=f.elements.text.value.trim(), fe=$('ar-eintrag-fehler');
   function fehlerZeigen(t){if(fe){fe.textContent=t;fe.hidden=!t;}else if(t){toast(t);}}
   if(!text){fehlerZeigen('Bitte einen Text eingeben.');f.elements.text.focus();return;}
+  if(zukunft(f.elements.datum.value)){fehlerZeigen(DATUM_ZUKUNFT);f.elements.datum.focus();return;}
+  var wvF=wiedervorlageFehler(f.elements.wiedervorlage?f.elements.wiedervorlage.value:'');if(wvF){fehlerZeigen(wvF);f.elements.wiedervorlage.focus();return;}
+  var toF=f.elements.art.value==='vorfall'?timeoutFehler(formWerte(f)):'';if(toF){fehlerZeigen(toF);f.elements.v_toVon.focus();return;}
   fehlerZeigen('');
   var b=f.querySelector('button[type=submit]');b.disabled=true;
   var art=f.elements.art.value, titel=f.elements.titel.value.trim(), dat=f.elements.datum.value||heuteIso(), wv=f.elements.wiedervorlage?f.elements.wiedervorlage.value:'';
@@ -810,7 +844,7 @@ function personDialog(d){
     auswahl('geschlecht','Geschlecht',p.geschlecht||'',[['m','Junge'],['w','Mädchen']],'–')+feld('schule','Schule',p.schule)+feld('klasse','Klasse / Cycle',p.klasse)+
     feld('matricule','Matricule',p.matricule)+feld('sprachen','Sprachen',p.sprachen)+'</div>'+textfeld('kontakt','Eltern / Kontakt (Namen, Telefon)',p.kontakt,2);
   dialog('Stammdaten',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
-    pruefen:function(w){return (w.werte.nachname.trim()&&w.werte.vorname.trim())?'':'Vor- und Nachname fehlen.';},
+    pruefen:function(w){return (w.werte.nachname.trim()&&w.werte.vorname.trim())?(zukunft(w.werte.geburtsdatum)?GEB_ZUKUNFT:''):'Vor- und Nachname fehlen.';},
     ausfuehren:function(w){function sauber(o){var v={};Object.keys(o||{}).forEach(function(k){v[k]=String(o[k]).trim();});return v;}return T.ops.person(d.id,sauber(w.werte),sauber(w.anfang));}
   }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Stammdaten gespeichert');}});
 }
@@ -828,12 +862,13 @@ function statusDialog(d){
 function eintragAendernDialog(d,eid){
   var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return;}
   var zo=zielOptionen(d,e.ziel);
-  var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+
+  var inhalt='<div class="ar-raster3">'+feld('datum','Datum',e.datum,'date',' max="'+heuteIso()+'"')+auswahl('art','Art',e.art,Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel',e.titel)+'</div>'+
     (zo.length?auswahl('ziel','Bezug zu einem Förderziel',e.ziel||'',zo,'– kein Bezug –'):'')+
     '<div class="ar-vorfall-platz"'+(e.art==='vorfall'?'':' hidden')+'>'+vorfallFelder(e.vorfall)+'</div>'+textfeld('text',e.art==='vorfall'?'Was ist passiert? (Verlauf)':'Text',e.text,6);
   dialog('Eintrag ändern',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){var a=dlg.querySelector('select[name="art"]'), p=dlg.querySelector('.ar-vorfall-platz'), t=dlg.querySelector('textarea[name="text"]'), lab=t&&t.closest('label');
       if(a&&p){a.addEventListener('change',function(){var v=a.value==='vorfall';p.hidden=!v;if(lab&&lab.querySelector('span')){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}});}},
+    pruefen:function(w){if(zukunft(w.werte.datum)){return DATUM_ZUKUNFT;}return w.werte.art==='vorfall'?timeoutFehler(w.werte):'';},
     ausfuehren:function(w){
       function bau(roh){var x=Object.assign({},roh);x.vorfall=roh.art==='vorfall'?vorfallAus(roh):null;Object.keys(x).forEach(function(k){if(k.indexOf('v_')===0){delete x[k];}});return x;}
       return T.ops.eintragAendern(d.id,eid,bau(w.werte),bau(w.anfang||{}));}}).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Eintrag geändert');}});
@@ -845,7 +880,7 @@ function zielEintragDialog(d,code){
     auswahl('art','Art','beobachtung',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+'</div>'+
     textfeld('text','Was hast du beobachtet? (Situation, was '+((d.person||{}).vorname||'das Kind')+' gemacht hat, was geholfen hat)','',5);
   dialog('Beobachtung zum Förderziel',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
-    pruefen:function(w){return w.werte.text.trim()?'':'Bitte beschreiben, was du beobachtet hast.';},
+    pruefen:function(w){return w.werte.text.trim()?(zukunft(w.werte.datum)?DATUM_ZUKUNFT:''):'Bitte beschreiben, was du beobachtet hast.';},
     ausfuehren:function(w){return T.ops.eintrag(d.id,{datum:w.werte.datum,art:w.werte.art,titel:'Zum Ziel '+code+(inf?' ('+inf.it.keyword+')':''),text:w.werte.text.trim(),ziel:code});}
   }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Beobachtung gespeichert');}});
 }
@@ -1345,8 +1380,13 @@ function zusatzDruck(d){
   return h;
 }
 function uebergabeHtml(d){
-  var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum);
+  var p=d.person||{}, b=aufEinenBlick(d), a=alter(p.geburtsdatum), f=d.fiche||{};
   function liste(t,l){return l&&l.length?'<h3>'+esc(t)+'</h3><ul>'+l.map(function(x){return '<li>'+esc(typeof x==='string'?x:x.s)+'</li>';}).join('')+'</ul>':'';}
+  /* Eltern und Sprachen: aus den Stammdaten, sonst aus der Fiche */
+  var kontakt=p.kontakt||ohneLeere(f.vertreter).map(function(v){return [(v.name||'')+(v.funktion?' ('+v.funktion+')':''),v.tel,v.mail].map(function(x){return String(x||'').trim();}).filter(Boolean).join(', ');}).filter(Boolean).join('; ');
+  var sprachen=p.sprachen||(f.ersteSprache?f.ersteSprache+' (Erstsprache)':'');
+  /* „Auf einen Blick“ nur mit Inhalt */
+  var blick=b?'<div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'';
   var letzte=(d.eintraege||[]).slice().sort(function(x,y){return x.datum<y.datum?1:-1;}).slice(0,5);
   var html='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Übergabeblatt – '+esc(schuelerName(p))+'</title><style>'+
     'body{font:10.5pt/1.45 Arial,Helvetica,sans-serif;color:#111;margin:0}main{max-width:17.5cm;margin:0 auto}h1{font-size:17pt;margin:0}h2{font-size:12pt;margin:14pt 0 4pt;color:#23307a;border-bottom:1px solid #c9cde0;padding-bottom:2pt}h3{font-size:10.5pt;margin:8pt 0 2pt}'+
@@ -1355,8 +1395,8 @@ function uebergabeHtml(d){
     'table.eldib{margin-top:4pt}table.eldib th{border:1px solid #bbb;padding:3pt 5pt;background:#e8eaf3;text-align:left;font-size:9.5pt}table.eldib td{font-size:9.5pt}table.eldib td:first-child{width:18%}'+
     '.ziel{margin:4pt 0;page-break-inside:avoid}.ziel small,li small{color:#444}.klein{font-size:8.5pt;color:#555;margin:2pt 0 0}</style></head><body><main>'+
     '<h1>Übergabeblatt: '+esc(schuelerName(p))+'</h1><p class="sub">'+esc([a!=null?a+' Jahre':'',p.klasse,p.schule].filter(Boolean).join(' · '))+' — Stelle: '+esc(team(d.stelle).name)+', fallverantwortlich: '+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
-    '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(p.kontakt||'')+'</td></tr><tr><td>Sprachen</td><td>'+esc(p.sprachen||'')+'</td></tr></table>'+
-    (b?'<h2>Auf einen Blick</h2><div class="raster"><div>'+liste('Stärken',b.staerken)+liste('Was hilft',b.hilft)+liste('Ressourcen',b.ressourcen)+liste('Interessen',b.interessen)+'</div><div>'+liste('Schwierigkeiten',b.schwierig)+liste('Wann es schwierig wird',b.wann)+liste('Was '+(p.vorname||'das Kind')+' braucht',b.beduerfnisse)+liste('Diagnosen',b.diagnosen)+'</div></div>'+liste('Empfehlungen',b.empfehlungen):'<p><i>Noch kein DS-Profil vorhanden.</i></p>')+
+    '<table><tr><td>Geburtsdatum</td><td>'+esc(datum(p.geburtsdatum))+'</td></tr><tr><td>Matricule</td><td>'+esc(p.matricule||'')+'</td></tr><tr><td>Eltern / Kontakt</td><td>'+esc(kontakt)+'</td></tr><tr><td>Sprachen</td><td>'+esc(sprachen)+'</td></tr></table>'+
+    (/<li>/.test(blick)?'<h2>Auf einen Blick</h2>'+blick:(b&&b.hatDaten?'':'<p><i>Noch kein DS-Profil vorhanden.</i></p>'))+
     zusatzDruck(d)+
     eldibDruck(d)+
     (letzte.length?'<h2>Letzte Einträge</h2>'+letzte.map(function(e){return '<div class="eintrag"><b>'+esc(datum(e.datum))+' – '+esc(ARTEN[e.art]||e.art)+(e.titel?': '+esc(e.titel):'')+'</b> <small>('+esc(kname(e.von))+')</small>'+(e.vorfall?vorfallDruck(e.vorfall,e.text):'<br>'+esc(e.text).replace(/\n/g,'<br>'))+'</div>';}).join(''):'')+
@@ -1436,7 +1476,7 @@ function einsatzZeichnen(){
   var el=$('ar-einsatz');if(!el){return;}
   var p=planEntwurf, me=K.ich(), tage=p.samstag?[1,2,3,4,5,6]:[1,2,3,4,5], s=planZu(p);
   var h='';
-  if(!me.responsable){h+=hinweis('Du hast noch keine/n <b>Responsable</b> eingetragen. Konto-Menü → <b>Profil ändern</b>. Solange sieht nur die Verwaltung deinen Plan.','info');}
+  if(!me.responsable&&!me.responsableGewaehlt){h+=hinweis('Du hast noch keine/n <b>Responsable</b> eingetragen. Konto-Menü → <b>Profil ändern</b>. Solange sieht nur die Verwaltung deinen Plan.','info');}
   h+='<div class="ar-jetzt '+esc(s.art)+'"><span class="ar-puls"></span><div><small>Laut deinem Plan jetzt ('+pad(new Date().getHours())+':'+pad(new Date().getMinutes())+' Uhr)</small><b>'+esc(statusText(s))+'</b></div>'+
     '<div class="ar-sicht">'+svg('lock')+'<span>Sichtbar für: du'+(sichtbarFuer().length?', '+esc(sichtbarFuer().join(', ')):'')+'</span></div></div>';
   h+='<div class="ar-karte"><div class="ar-kartenkopf"><h2>Wochenplan</h2><label class="ar-haken"><input type="checkbox" id="ar-samstag"'+(p.samstag?' checked':'')+'> Samstag</label></div>'+
@@ -1779,9 +1819,11 @@ function startZettelDialog(liste){
     '<p class="ar-klein"><b>Wichtig:</b> Die Startcodes gibt es nur jetzt. Wird ein Zettel nicht gedruckt oder geht verloren: Teamliste → „Neuer Code“.</p>'+fehlerTeil+
     '<p><button type="button" class="btn primary" data-zettel>'+svg('print')+'Zettel drucken</button></p>'+
     '<div class="ar-tl-vorschau"><table><thead><tr><th>Name</th><th>Team</th><th>Startcode</th><th>gültig bis</th></tr></thead><tbody>'+liste.map(function(x){return '<tr><td>'+esc(x.name)+'</td><td>'+esc(x.team?T_NAME(x.team):'')+'</td><td><code>'+esc(x.code)+'</code></td><td>'+esc(datum(x.bis))+'</td></tr>';}).join('')+'</tbody></table></div>';
+  /* dieselbe Rückfrage bei „Fertig“ und bei Esc – einmal gefragt, schließt das nächste Mal */
+  function frage(){if(!gedruckt){gedruckt=true;return 'Die Zettel sind noch nicht gedruckt. Ohne Druck sind die Codes weg – zum Schließen trotzdem noch einmal auf „Fertig“ (oder Esc).';}return '';}
   dialog('Startcodes drucken',inh,[{text:'Fertig',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){var b=dlg.querySelector('[data-zettel]');if(b){b.onclick=function(){gedruckt=true;zettelDrucken(liste);};}},
-    pruefen:function(){if(!gedruckt){gedruckt=true;return 'Die Zettel sind noch nicht gedruckt. Ohne Druck sind die Codes weg – zum Schließen trotzdem noch einmal auf „Fertig“.';}return '';}
+    pruefen:frage,vorAbbrechen:frage
   });
 }
 function zettelDrucken(liste){
@@ -1901,7 +1943,9 @@ document.addEventListener('click',function(ev){
   var det=t.closest('details');if(det){det.open=false;}
   switch(a){
     case 'einrichten':
-      t.disabled=true;T.einrichten().then(function(){toast('Schülerbereich eingerichtet – du bist Verwaltung');navNeu();seiteSchueler(true);},function(e){t.disabled=false;fehlerToast(e);});break;
+      t.disabled=true;T.einrichten().then(function(){toast('Schülerbereich eingerichtet – du bist Verwaltung');navNeu();seiteSchueler(true);},function(e){t.disabled=false;fehlerToast(e);
+        /* inzwischen an einem anderen PC eingerichtet: den neuen Stand zeigen statt „noch nicht eingerichtet“ */
+        bereichLaden(true).then(function(z){if(z.art!=='kein-bereich'){navNeu();zeigen(akt.seite,akt.param);}}).catch(function(){});});break;
     case 'neu-laden':geladen=false;T.vergessen().then(function(){zeigen(akt.seite,akt.param,true);});break;
     case 'neu':neuerSchueler();break;
     case 'fiche-hochladen':ficheHochladen(null);break;
@@ -1963,8 +2007,14 @@ function reiterInSicht(){
   if(oben<0){sc.scrollTop=Math.max(0,sc.scrollTop+oben-8);}
   var on=nav.querySelector('.on');if(on&&on.scrollIntoView){on.scrollIntoView({block:'nearest',inline:'nearest'});}
 }
-/* Ungespeicherten Einsatzplan nicht verlieren (auch wenn inzwischen eine App offen ist) */
-window.addEventListener('beforeunload',function(ev){if(planDirty){ev.preventDefault();ev.returnValue='';}});
+/* Ungespeicherten Einsatzplan nicht verlieren (auch wenn inzwischen eine App offen ist) – ebenso den Entwurf eines
+   Eintrags und ein offenes Formular mit Änderungen (Neuladen oder Schließen fragt nach) */
+function ungespeichert(){
+  if(planDirty){return true;}
+  if(Object.keys(entwuerfe).some(function(id){return entwurfInhalt(entwuerfe[id]);})){return true;}
+  return Array.prototype.some.call(document.querySelectorAll('dialog.ar-dialog'),function(dl){return typeof dl.ungespeichert==='function'&&dl.ungespeichert();});
+}
+window.addEventListener('beforeunload',function(ev){if(ungespeichert()){ev.preventDefault();ev.returnValue='';}});
 
 /* ---------- Screening: Übersicht aller Schüler (Modul CDSE_SCREENING) ---------- */
 function seiteScreening(neu){
@@ -2070,6 +2120,11 @@ function passendesDossier(p,liste){
   if(m){return {d:m,grund:'gleicher Name'+(p.geburtsdatum?' und Geburtsdatum':'')};}
   return namensGleich.length?{d:null,aehnlich:namensGleich[0]}:null;
 }
+/* Anderes Kind? Name verschieden (wenn die Fiche einen nennt) oder beide Geburtsdaten bekannt und verschieden */
+function kindAnders(a,b){
+  return ((a.nachname||a.vorname)&&(norm(a.nachname)!==norm(b.nachname)||norm(a.vorname)!==norm(b.vorname)))||!!(a.geburtsdatum&&b.geburtsdatum&&a.geburtsdatum!==b.geburtsdatum);
+}
+function kindText(p){return schuelerName(p)+(p.geburtsdatum?' (geb. '+datum(p.geburtsdatum)+')':'');}
 function ficheZusammenfassung(f){
   f=f||{};
   var z=[];
@@ -2090,6 +2145,8 @@ function ficheVorschau(erg,ziel,liste){
   if(treffer&&!treffer.d){aehnlich=treffer.aehnlich;treffer=null;}
   /* Aktualisieren nur mit Schreibrecht – sonst nicht aus Versehen ein zweites Dossier für dasselbe Kind */
   var darf=!treffer||T.rechte(treffer.d).bearbeiten;
+  /* Fiche eines anderen Kindes: nichts vorauswählen, warnen, auch „Neues Dossier“ anbieten */
+  var anders=!!(treffer&&kindAnders(p,treffer.d.person||{}));
   /* Im Dossier laufende Maßnahmen, die in dieser Datei nicht angekreuzt sind: nicht still beenden – einzeln wählen */
   var fc=(f&&f.cdse)||{}, altC=(treffer&&treffer.d&&treffer.d.fiche&&treffer.d.fiche.cdse)||{};
   var nichtMehr=treffer?F_MASSN.filter(function(m){return altC[m[0]]&&altC[m[0]].aktiv===true&&fc[m[0]]&&fc[m[0]].aktiv===false;}):[];
@@ -2098,11 +2155,12 @@ function ficheVorschau(erg,ziel,liste){
   var inhalt='<p class="ar-klein">'+svg('datei')+' '+esc(erg.datei||'Fiche')+'</p>'+
     (aehnlich?hinweis('Es gibt schon ein Dossier <b>'+esc(schuelerName(aehnlich.person))+'</b> mit gleichem Namen, aber einer <b>anderen Matricule</b>. Bitte prüfen, ob es wirklich ein anderes Kind ist.'):'')+
     (treffer&&!darf?hinweis('Für <b>'+esc(schuelerName(treffer.d.person))+'</b> gibt es schon ein Dossier ('+esc(treffer.grund)+'). Du hast dort nur Leserechte. Bitte '+esc((treffer.d.verantwortlich||[]).map(kname).join(', ')||'die Fallverantwortlichen')+' um ein Schreibrecht und lade die Fiche dann noch einmal hoch.'):'')+
+    (anders&&darf?hinweis('<b>Anderes Kind?</b> In der Fiche steht <b>'+esc(kindText(p))+'</b>, das Dossier ist von <b>'+esc(kindText(treffer.d.person||{}))+'</b>. Beim Aktualisieren würden Name und Angaben des Dossiers ersetzt. Gehört die Fiche zu einem anderen Kind, „Neues Dossier anlegen“ wählen.'):'')+
     (erg.hinweise||[]).map(function(h){return hinweis(esc(h),'info');}).join('')+
     ((erg.nichtZugeordnet||[]).length?hinweis('Einige Tabellen der Datei waren keinem Feld zuzuordnen. Bitte nach dem Übernehmen kurz prüfen.','info'):'')+
     (treffer?'<fieldset class="ar-wahlgruppe"><legend>Was soll passieren?</legend>'+
-      '<label class="ar-radio'+(darf?'':' aus')+'"><input type="radio" name="modus" value="aktualisieren"'+(darf?' checked':' disabled')+'><span><b>Dossier von '+esc(schuelerName(treffer.d.person))+' aktualisieren</b><small>'+esc(treffer.grund)+' – Angaben aus der Fiche ersetzen die alten, leere Felder der Fiche ändern nichts.</small></span></label>'+
-      (ziel?'':'<label class="ar-radio"><input type="radio" name="modus" value="neu"><span><b>Neues Dossier anlegen</b><small>Nur wählen, wenn es wirklich ein anderes Kind ist.</small></span></label>')+'</fieldset>':'<input type="hidden" name="modus" value="neu">')+
+      '<label class="ar-radio'+(darf?'':' aus')+'"><input type="radio" name="modus" value="aktualisieren"'+(darf?(anders?'':' checked'):' disabled')+'><span><b>Dossier von '+esc(schuelerName(treffer.d.person))+' aktualisieren</b><small>'+esc(treffer.grund)+' – Angaben aus der Fiche ersetzen die alten, leere Felder der Fiche ändern nichts.</small></span></label>'+
+      (ziel&&!anders?'':'<label class="ar-radio"><input type="radio" name="modus" value="neu"><span><b>Neues Dossier anlegen</b><small>Nur wählen, wenn es wirklich ein anderes Kind ist.</small></span></label>')+'</fieldset>':'<input type="hidden" name="modus" value="neu">')+
     '<h3 class="ar-zwischen">Personendaten – bitte prüfen</h3><div class="ar-raster2">'+
       feld('nachname','Nachname',p.nachname,'text',' required')+feld('vorname','Vorname',p.vorname,'text',' required')+
       feld('geburtsdatum','Geburtsdatum',p.geburtsdatum,'date')+auswahl('geschlecht','Geschlecht',p.geschlecht||'',[['m','Junge'],['w','Mädchen']],'–')+
@@ -2114,6 +2172,10 @@ function ficheVorschau(erg,ziel,liste){
     pruefen:function(w){
       if(!w.werte.modus){return 'Bitte wählen, was passieren soll.';}
       if(w.werte.modus==='aktualisieren'&&!darf){return 'Für dieses Dossier hast du nur Leserechte.';}
+      if(zukunft(w.werte.geburtsdatum)){return GEB_ZUKUNFT;}
+      var np={nachname:w.werte.nachname,vorname:w.werte.vorname,geburtsdatum:w.werte.geburtsdatum};
+      if(w.werte.modus==='aktualisieren'&&treffer&&kindAnders(np,treffer.d.person||{})&&!w.dialog.dataset.kindOk){
+        w.dialog.dataset.kindOk='1';return 'Die Fiche ist von '+kindText(np)+', das Dossier von '+kindText(treffer.d.person||{})+'. Nochmal „Übernehmen“, wenn die Fiche wirklich in dieses Dossier gehört – sonst „Neues Dossier anlegen“ wählen.';}
       if(w.werte.modus==='aktualisieren'&&treffer&&matriculeAnders(w.werte.matricule,(treffer.d.person||{}).matricule)&&!w.dialog.dataset.mOk){
         w.dialog.dataset.mOk='1';return 'Die Matricule in der Fiche ist eine andere als im Dossier. Nochmal „Übernehmen“, wenn es wirklich dasselbe Kind ist.';}
       return (String(w.werte.nachname).trim()&&String(w.werte.vorname).trim())?'':'Vor- und Nachname fehlen.';},
@@ -2280,7 +2342,7 @@ function ficheTeilDialog(d,teil){
         (m[0]==='cst'?'<h4>Responsable CST</h4>'+kontaktFelder(b+'.responsable',x.responsable)+'<h4>Personne de référence CDSE</h4>'+kontaktFelder(b+'.referent',x.referent):'')+'</fieldset>';}).join('');
   }else{return;}
   dialog(titel,inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:breit,
-    pruefen:function(w){if(teil==='person'&&!(String(w.werte['p.nachname']).trim()&&String(w.werte['p.vorname']).trim())){return 'Vor- und Nachname fehlen.';}return '';},
+    pruefen:function(w){if(teil==='person'&&!(String(w.werte['p.nachname']).trim()&&String(w.werte['p.vorname']).trim())){return 'Vor- und Nachname fehlen.';}if(teil==='person'&&zukunft(w.werte['p.geburtsdatum'])){return GEB_ZUKUNFT;}return '';},
     ausfuehren:function(w){
       /* aus den Formularwerten die Fiche-Teile bauen – einmal für die Eingabe, einmal für den Stand beim Öffnen:
          gespeichert wird nur, was sich dazwischen geändert hat */
@@ -2386,6 +2448,8 @@ function faelligKarte(){
 }
 
 return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLaden:bereichLaden, vorladen:vorladen, heuteKarte:heuteKarte, planZu:planZu,
+  /* vor dem Abmelden: ungespeicherten Einsatzplan nicht still verwerfen */
+  vorAbmelden:function(){return !planDirty||window.confirm('Dein Einsatzplan hat ungespeicherte Änderungen. Trotzdem abmelden?');},
   /* gemeinsame Bausteine für Zusatzmodule (Datenbank, Fiche) – gleiche Optik überall */
   neuLaden:function(){if(akt&&akt.seite){zeigen(akt.seite,akt.param,true);}},
   hilfen:{esc:esc, svg:svg, pad:pad, heuteIso:heuteIso, datum:datum, datumZeit:datumZeit, alter:alter, team:team, ava:ava, kname:kname,

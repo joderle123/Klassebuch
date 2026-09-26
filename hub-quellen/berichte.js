@@ -293,6 +293,7 @@ var TEST_WORT=/diagnostik|abklärung|abklaerung|screening|test|fragebogen|sprech
 var DIAG_SATZ=new RegExp('(?:^|[^'+BU+'])(?:diagnosen?\\s*:|diagnostiziert\\w*|die diagnose|eine diagnose|diagnos[ie]s\\s*:|diagnostics?\\s*:|diagnostic (?:de|d[\'’]|retenu|posé)|leidet (?:an|unter)|litt (?:an|unter)|souffre d|présente (?:un|une|des)(?!['+BU+'])|besteht (?:ein|eine|der|die)(?!['+BU+'])|es besteht|(?:liegt|liegen) .{0,50}[^'+BU+']vor(?!['+BU+'])|kriterien .{0,40}erfüllt|erfüllt .{0,25}kriterien|meets (?:the )?criteria|diagnosed)','i');
 var ICD=/(?:^|[^A-Za-z0-9])(?:[FZ]\d{2}(?:\.\d{1,2})?|6[A-E]\d{2})(?![0-9])/;
 var CODE_KLAMMER=/^\s*\(\s*(?:ICD[- ]?1[01]\s*:?\s*)?(?:[FZ]\d{2}(?:\.\d{1,2})?|6[A-E]\d{2}(?:\.[0-9A-Z]{1,2})?)\s*\)/i;
+var ICD_ANFANG=/^(?:[FZ]\d{2}|6[A-E]\d{2})/i;   /* Fundstelle ist ein ICD-Code (nicht ein Name) */
 /* Neuer Satzteil: Gegensatz („…, jedoch ADHS“), neues Subjekt („…, es besteht …“), „… und hat …“ */
 var GEGEN='jedoch|aber|sondern|allerdings|dagegen|hingegen|wohingegen|vielmehr|stattdessen|trotzdem|dennoch|mais|cependant|toutefois|par contre|en revanche|néanmoins|but|however|whereas|although';
 var TEIL_NEU=[wortRe(GEGEN),new RegExp(',\\s*(es|er|sie|das kind|zudem|außerdem|daneben|zusätzlich|ferner|il|elle|on|it|he|she|there)(?!['+BU+'])','gi'),
@@ -418,7 +419,9 @@ function analysieren(t,extra,S){
   S=S||saetze(t);
   var ana=t.replace(MASKE,function(m){return m.replace(/\S/g,'x');}).replace(/\s/g,' ');   /* Zeilenumbrüche und geschützte Leerzeichen → Leerzeichen (gleiche Länge) */
   funde=funde.map(function(f){
-    var we=wortEnde(t,f.index+f.text.length), x={id:f.id,index:f.index,wortEnde:we,ende:we,rest:t.slice(f.index+f.text.length,we).toLowerCase(),satz:satzBei(S,f.index)};
+    var code=ICD_ANFANG.test(f.text), we=wortEnde(t,f.index+f.text.length);
+    if(code){we+=(/^\.[0-9A-Z]{1,2}(?![0-9A-Za-z])/.exec(t.slice(we))||[''])[0].length;}   /* „F90.0“: der ganze Code */
+    var x={id:f.id,index:f.index,wortEnde:we,ende:we,rest:t.slice(f.index+f.text.length,we).toLowerCase(),satz:satzBei(S,f.index),code:code};
     var ck=CODE_KLAMMER.exec(t.slice(we,we+40));if(ck){x.ende=we+ck[0].length;x.mitCode=true;}   /* „ADHS (F90.0)“ ist eine Angabe */
     return x;
   }).sort(function(a,b){return (a.index-b.index)||(a.ende-b.ende);});
@@ -429,12 +432,27 @@ function analysieren(t,extra,S){
     for(j=k-1;j>=0;j--){g=frei[j];if(g.satz!==f.satz){break;}if(g.ende<=f.index){f.vor=g;break;}}
     for(j=k+1;j<frei.length;j++){g=frei[j];if(g.satz!==f.satz){break;}if(g.index>=f.ende){f.nach=g;break;}}
   });
+  /* ICD-Code mit Titel: „F90.0 Einfache Aktivitäts- und Aufmerksamkeitsstörung“ ist eine Angabe (wie „ADHS (F90.0)“) –
+     „Verdacht auf“ davor und „(Verdacht)“ dahinter gelten für Code und Titel. Titel = dasselbe Profil nach dem Code,
+     dazwischen kein Satzzeichen und kein Wort, das selbst etwas einordnet */
+  frei.forEach(function(c){
+    if(!c.code||c.kopf){return;}
+    var ende=c.ende;
+    frei.forEach(function(g){
+      if(g.index<ende||g.code||g.kopf||g.id!==c.id||g.satz!==c.satz){return;}
+      var zw=ana.slice(ende,g.index);
+      if(zw.length>80||/[,;:)\]!?]/.test(zw)||/verdacht/.test(g.rest)||TEST_WORT.test(g.rest)||[VERD_VOR,VERD_NACH,NEG_VOR,NEG_VOR_NG,TEST_VOR].some(function(re){return suche(re,zw);})){return;}
+      g.kopf=c;c.titel=g;ende=g.ende;
+    });
+  });
   /* Aufzählung: „ADHS und Autismus“, „Autismus, ADHS oder …“ – nach einer Angabe mit ICD-Code trennt das Komma */
-  function reihe(v,f){var zw=ana.slice(v.ende,f.index);return KOORD.test(zw)||(!v.mitCode&&/^\s*,\s*$/.test(zw));}
-  function vorStart(f,n){var v=f.vor;if(!v||n>20){return f.satz.a;}if(reihe(v,f)){return vorStart(v,n+1);}var k=ana.slice(v.ende,f.index).lastIndexOf(',');return k>=0?v.ende+k+1:v.ende;}
+  function reihe(v,f){var zw=ana.slice(v.ende,f.index);return KOORD.test(zw)||(!v.mitCode&&!v.kopf&&!v.titel&&/^\s*,\s*$/.test(zw));}
+  function vorStart(f,n){if(f.kopf&&n<20){return vorStart(f.kopf,n+1);}var v=f.vor;if(!v||n>20){return f.satz.a;}if(reihe(v,f)){return vorStart(v,n+1);}var k=ana.slice(v.ende,f.index).lastIndexOf(',');return k>=0?v.ende+k+1:v.ende;}
   function nachText(f,n){
+    if(f.titel&&n<20){return nachText(f.titel,n+1);}   /* hinter dem Titel weiterlesen */
     var g=f.nach;
-    if(g&&n<20){if(reihe(f,g)){return nachText(g,n+1);}var zw=ana.slice(f.ende,g.index), k=zw.lastIndexOf(',');return k>=0?zw.slice(0,k):zw;}
+    /* g gehört zum Titel eines Codes, der nicht nach f beginnt („F90.1 Hyperkinetische Störung des Sozialverhaltens“): dieselbe Angabe */
+    if(g&&n<20){if(reihe(f,g)||(g.kopf&&g.kopf.index<=(f.kopf||f).index)){return nachText(g,n+1);}var zw=ana.slice(f.ende,g.index), k=zw.lastIndexOf(',');return k>=0?zw.slice(0,k):zw;}
     var x=ana.slice(f.ende,Math.min(f.satz.e,f.ende+120)), c=x.indexOf(',');
     if(c>=0&&(f.mitCode||ICD.test(x.slice(0,c)))){x=x.slice(0,c);}   /* „ADHS (F90.0), Epilepsie ausgeschlossen“ */
     return x;
@@ -444,6 +462,7 @@ function analysieren(t,extra,S){
     return s.info;
   }
   function stand(f){
+    if(f.kopf){return f.kopf.stand||stand(f.kopf);}   /* Titel zum ICD-Code: wie der Code */
     var s=info(f.satz);if(s.familie){return 'familie';}
     var vor=teilVor(ana.slice(vorStart(f,0),f.index)), nach=teilNach(nachText(f,0)), nah=vor.slice(-70), x;
     if(suche(TEST_ZUERST,nah)){return 'test';}

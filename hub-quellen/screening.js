@@ -147,6 +147,8 @@ function liste(d,r){
   var l=screenings(d), alt=altListe(d);
   var h='<div class="ar-karte sc-einfuehrung"><div class="ar-kartenkopf"><div><h2>Screening</h2><p class="ar-leise">Strukturierte Beobachtung: Wo braucht '+esc((d.person||{}).vorname||'das Kind')+' Unterstützung, wo liegen die Stärken, was ist der nächste Schritt? Kein Test und keine Diagnose.</p></div>'+
     (r.bearbeiten?'<button class="btn primary" type="button" data-sc="neu">'+svg('plus')+'Neues Screening</button>':'')+'</div>'+
+    /* Nur lesen: sagen, wer ein Schreibrecht geben kann */
+    (r.bearbeiten?'':H.hinweis('Du kannst die Screenings lesen. Ein neues Screening eintragen dürfen die Zuständigen – frage die Fallverantwortlichen'+((d.verantwortlich||[]).length?' ('+esc((d.verantwortlich||[]).map(H.kname).join(', '))+')':'')+' nach einem Schreibrecht.','info'))+
     (l.length?'':'<p class="sc-leer">Noch kein Screening'+(alt.length?' mit dem neuen Bogen – die früheren Beobachtungen aus dem Klassenbuch stehen weiter unten':'')+'. Ein Bogen dauert etwa zehn Minuten. Am aussagekräftigsten wird es, wenn zwei Personen das Kind unabhängig voneinander einschätzen – zum Beispiel Lehrkraft und Éducateur.</p>')+
     (function(){
       if(!r.bearbeiten){return '';}
@@ -487,11 +489,13 @@ function standNeu(e){
    ===================================================================== */
 function aktuell(){var d=H&&H.aktDossier&&H.aktDossier();return d||null;}
 function neuZeichnen(d,fokus){H.dossierZeichnen(d);if(fokus){var el=document.querySelector(fokus);if(el){el.focus();}}}
+/* Nach oben: gescrollt wird der Arbeitsbereich (#v-arbeit), nicht das Fenster */
+function nachOben(){var b=document.getElementById('arbeit-body'), sc=b&&b.parentNode;if(sc){sc.scrollTop=0;}window.scrollTo(0,0);}
 document.addEventListener('click',function(ev){
   var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-sc]');if(!t||!bausteine()){return;}
   var d=aktuell();if(!d){return;}
   var a=t.getAttribute('data-sc'), zu=z(d.id);
-  if(a==='neu'){zu.entwurf=entwurfLaden(d.id)||neuerEntwurf(d);zu.modus='neu';neuZeichnen(d);window.scrollTo(0,0);return;}
+  if(a==='neu'){zu.entwurf=entwurfLaden(d.id)||neuerEntwurf(d);zu.modus='neu';neuZeichnen(d);nachOben();return;}
   if(a==='ds-weg'||a==='ds-rein'){
     var ed=zu.entwurf;if(!ed){return;}
     if(a==='ds-weg'){dsEntfernen(ed);ed.dsAus=true;}
@@ -503,8 +507,8 @@ document.addEventListener('click',function(ev){
     if(!leer&&!window.confirm('Den angefangenen Bogen verwerfen?')){return;}
     entwurfWeg(d.id);zu.entwurf=null;zu.modus='liste';neuZeichnen(d);return;
   }
-  if(a==='liste'){zu.modus='liste';neuZeichnen(d);window.scrollTo(0,0);return;}
-  if(a==='zeigen'){zu.modus='detail';zu.id=t.getAttribute('data-id');neuZeichnen(d);window.scrollTo(0,0);return;}
+  if(a==='liste'){zu.modus='liste';neuZeichnen(d);nachOben();return;}
+  if(a==='zeigen'){zu.modus='detail';zu.id=t.getAttribute('data-id');neuZeichnen(d);nachOben();return;}
   if(a==='drucken'){
     /* eingeklappte Bereiche für den Druck aufklappen, danach wieder zu */
     Array.prototype.forEach.call(document.querySelectorAll('#sc-ergebnis details.sc-weitere:not([open])'),function(x){x.open=true;x.setAttribute('data-sc-zu','1');});
@@ -552,7 +556,7 @@ document.addEventListener('click',function(ev){
       entwurfWeg(d.id);zu.entwurf=null;zu.modus='detail';
       var mein=screenings(neu).filter(function(x){return x.von===meineId();}).sort(function(a2,b2){return String(b2.z).localeCompare(String(a2.z));})[0];
       zu.id=mein?mein.id:null;if(!mein){zu.modus='liste';}
-      H.toast('Screening gespeichert');neuZeichnen(neu);window.scrollTo(0,0);
+      H.toast('Screening gespeichert');neuZeichnen(neu);nachOben();
     },function(err){t.disabled=false;H.toast((err&&err.message)||String(err));});
   }
 });

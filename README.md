@@ -61,11 +61,16 @@ Zu den Befehlen:
 - **`baue-hub.py`**: Die Schritte „8) Annexe Junglinster“ am Ende bleiben stehen.
 - **`datenbank.js` und `datenbank.css`** werden nicht übernommen.
 - **`README.md`** hat oben einen Hinweis auf die Annexe.
-- **`tests/annexe.js`** gibt es nur hier.
+- **`tests/annexe*.js`** gibt es nur hier (`annexe-weiche.js` lässt die Tests aus Unified gegen die Annexe laufen).
 
 Neue Fassungen der übrigen Dateien einfach hineinkopieren und `python3 hub-quellen/baue-hub.py` ausführen. Passt eine
 Ersetzung in `annexe.py` nicht mehr zum neuen Wortlaut, bricht der Bau mit einer Meldung ab. Er prüft außerdem, dass
 nirgends „ISA“, „Journal“ oder „CDSE Hub“ sichtbar wird.
+
+**Achtung, Korrekturen aus der Durchsicht (September 2026):** Sie stecken in gemeinsamen Dateien und fehlen in Unified
+noch – `arbeit.js`, `arbeit.css`, `berichte.js`, `begleitplan.js`, `screening.js`, `kompass.css`, `konto3.js` und
+`hub.vor-arbeit.html`. Einfaches Hineinkopieren aus Unified würde sie zurücknehmen. Deshalb zuerst nach Unified
+übernehmen oder beim Kopieren zusammenführen; `git log --oneline -- hub-quellen/<datei>` zeigt, was hier dazukam.
 
 **Klassenbuch.** `klassenbuch/quellen/` ist die Fassung der Annexe (mit den eingebauten Daten). Verbesserungen aus
 Unified werden hier eingearbeitet, nicht darübergeschrieben.
@@ -93,16 +98,20 @@ Unified werden hier eingearbeitet, nicht darübergeschrieben.
 Die Tests brauchen einen Webserver im Hauptordner, z. B. `npx http-server . -p 8099 -s`.
 
 ```bash
-node hub-quellen/tests/annexe.js        # Hub der Annexe: ein Team, ohne Datenbank/Journal, Teamliste, Übernahme der Klasse
-node klassenbuch/tests/rundgang.cjs     # Klassenbuch: Rundgang
-node klassenbuch/tests/fehler.cjs       # Klassenbuch: zwei Geräte, Team-Datei, Wochenziele, nichts löschen beim Start
-node klassenbuch/tests/heute.cjs        # Klassenbuch: Heute-Tafel
-node klassenbuch/tests/layout.cjs       # Klassenbuch: Anwesenheit auf Laptop, Tablet, Handy
+node hub-quellen/tests/annexe.js              # Hub der Annexe: ein Team, ohne Datenbank/Journal, Teamliste, Übernahme der Klasse
+node hub-quellen/tests/annexe-korrekturen.js  # Hub: Korrekturen aus der Durchsicht (Dialoge, Datum, Fiche, Berichte, Konto)
+node hub-quellen/tests/annexe-apps.js         # Lernen und Pathologien: kein „ISA“, Markierung, keine Platzhalter
+node klassenbuch/tests/rundgang.cjs           # Klassenbuch: Rundgang
+node klassenbuch/tests/fehler.cjs             # Klassenbuch: zwei Geräte, Team-Datei, Wochenziele, nichts löschen beim Start
+node klassenbuch/tests/heute.cjs              # Klassenbuch: Heute-Tafel
+node klassenbuch/tests/layout.cjs             # Klassenbuch: Anwesenheit auf Laptop, Tablet, Handy
+node klassenbuch/tests/korrekturen.cjs        # Klassenbuch: Korrekturen aus der Durchsicht
 ```
 
 Die übrigen Tests in `hub-quellen/tests/` stammen aus Unified. Sie setzen teils mehrere Teams, Stellen, das Journal
-oder die Datenbank voraus.
+oder die Datenbank voraus. Aufruf über den Adapter, der die Team-Wahl überspringt (im Ordner `hub-quellen`):
+`node tests/annexe-weiche.js tests/begleitplan.js`.
 
-- **Vollständig bestanden** (Team-Wahl im Test übersprungen): `berichte`, `begleitplan`, `bedienung`, `entwicklung`,
+- **Vollständig bestanden:** `berichte`, `begleitplan`, `bedienung`, `entwicklung`,
   `fristen`, `kompass`, `kindmodus`, `lernen`, `screening-ds`, `sperre`, `tageskarte`, `verlauf`, `gleichzeitig`.
 - **Nur zum Teil passend:** alle anderen.

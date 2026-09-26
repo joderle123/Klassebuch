@@ -36,7 +36,7 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ava.klein{width:26px;height:26px;font-size:11px;}
 .ar-stelle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:620;padding:3px 10px 3px 8px;border-radius:999px;background:color-mix(in srgb,var(--tc) 12%,white);color:color-mix(in srgb,var(--tc) 80%,black);white-space:nowrap;}
 .ar-stelle::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--tc);}
-.ar-mitglieder .ar-zeile{grid-template-columns:minmax(200px,1.6fr) minmax(180px,1.6fr) minmax(140px,1.2fr) 160px 150px;}
+.ar-mitglieder .ar-zeile{grid-template-columns:minmax(0,1.6fr) minmax(0,1.6fr) minmax(0,1.2fr) 160px 150px;}   /* Textspalten schrumpfen: Rolle und „Zugang entziehen“ bleiben sichtbar (1024 px) */
 .ar-mitglieder select{font:inherit;font-size:13.5px;padding:5px 8px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);}
 /* Dossier */
 .ar-zurueck{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:600;margin-bottom:14px;}
@@ -162,6 +162,8 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-skala button{width:30px;height:30px;border:1px solid var(--line-2);background:var(--surface);border-radius:7px;font:inherit;font-size:13px;font-weight:650;color:var(--muted);cursor:pointer;}
 .ar-skala button:hover{border-color:var(--accent);color:var(--accent);}
 .ar-skala button.an{background:var(--accent);border-color:var(--accent);color:#fff;}
+/* schmal: die Skala unter die Aussage (daneben wäre die 7 abgeschnitten) */
+@media (max-width:560px){.ar-einsch-zeile{grid-template-columns:minmax(0,1fr);gap:6px;}}
 .ar-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;box-shadow:var(--shadow-3);z-index:3000;transition:opacity .4s,transform .4s;}
 .ar-toast.weg{opacity:0;transform:translateX(-50%) translateY(10px);}
 .ar-toast.fehler{background:#8F2A16;cursor:pointer;max-width:min(560px,calc(100vw - 32px));}
@@ -484,7 +486,11 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-tl-stand{display:flex;flex-wrap:wrap;gap:6px 22px;margin:4px 0 12px;font-size:13.5px;color:var(--muted);}
 .ar-tl-stand b{font-family:var(--font-display,inherit);font-size:18px;color:var(--ink);margin-right:3px;font-variant-numeric:tabular-nums;}
 .ar-tl .catbar{margin-bottom:10px;}
-.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1.3fr) minmax(0,1.5fr) minmax(0,.8fr) minmax(0,1fr) 40px;}
+.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1.3fr) minmax(0,1.5fr) minmax(0,.8fr) minmax(0,1fr) 170px;}   /* Aktionen (Neuer Code, Löschen, ✎) nebeneinander; feste Breite, damit die Spalten aller Zeilen übereinanderstehen */
+@media (max-width:1150px){.ar-tl-tab .ar-zeile{grid-template-columns:minmax(0,1.3fr) minmax(0,1.5fr) minmax(0,.8fr) minmax(0,1fr) 96px;}}   /* wenig Platz: „Löschen ✎“ unter „Neuer Code“ */
+.ar-tl-tab .ar-zeile>span:last-child{text-align:right;}
+.ar-tl-tab .ar-link+.ar-link{margin-left:12px;}
+.ar-tl-tab .ar-tl-st{white-space:normal;}   /* langer Stand („Startcode ungültig …“) bricht um, statt über die Aktionen zu laufen */
 .ar-tl-st{display:inline-block;font-size:12px;font-weight:650;border-radius:999px;padding:2px 9px;white-space:nowrap;}
 .ar-tl-st.aktiv{background:#E6F4EC;color:#1E6B45;}
 .ar-tl-st.wartet{background:#FBF3E1;color:#6B4A0C;}

@@ -12,13 +12,109 @@ Was angepasst wird:
   1. Nur ein Team: keine Team-Wahl beim Konto, keine „Stelle“, kein „Weitergeben“
      an eine andere Stelle, Teamliste ohne Team-Spalte
   2. Ohne Datenbank: das Modul fehlt; Adresse, Titel und Texte dazu sind entfernt
-     (der Befundbericht ist dabei – für alle, nicht nur für ein Diagnostik-Team)
+     (der Befundbericht ist dabei – für alle, nicht nur für ein Diagnostik-Team);
+     Kompass und Begleitplan lesen die Angaben der Fiche über CDSE_FICHE_DATEN
   3. Ohne Journal: Übernahme und frühere Screenings nur aus dem Klassenbuch
   4. Texte: Annexe statt ganzes CDSE, nirgends „ISA“, Anleitung für die Annexe
      (Formulartexte der offiziellen Fiche de renseignement bleiben, wie sie sind)
 """
 
 TITEL = 'Annexe Junglinster'
+
+# Ohne Datenbank: Kompass und Begleitplan lesen Cycle, Ankunft, Erstsprache, Helfernetz und Kernangaben
+# direkt aus der Fiche (d.fiche, d.person) – nach denselben Regeln wie die Datenbank im gemeinsamen Stand.
+# Nur die beiden Funktionen, die Kompass und Begleitplan dort aufrufen (datensatz, kernFehlt).
+FICHE_DATEN_JS = r"""<script>
+/* =====================================================================
+   Annexe Junglinster — Angaben der Fiche für Kompass und Begleitplan
+   ---------------------------------------------------------------------
+   Die Datenbank fehlt in der Annexe. Kompass und Begleitplan lesen
+   Cycle, Ankunft, Erstsprache, Helfernetz, Sorgerecht und die
+   Kernangaben deshalb hier aus der Fiche de renseignement.
+   ===================================================================== */
+window.CDSE_FICHE_DATEN=(function(){
+'use strict';
+function txt(v){return v==null?'':String(v).trim();}
+function norm(s){return txt(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');}
+function pad2(n){return (n<10?'0':'')+n;}
+function iso(v){
+  var s=txt(v), m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if(m){return m[1]+'-'+m[2]+'-'+m[3];}
+  m=/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})$/.exec(s);
+  if(m&&+m[2]>=1&&+m[2]<=12&&+m[1]>=1&&+m[1]<=31){return m[3]+'-'+pad2(+m[2])+'-'+pad2(+m[1]);}
+  return '';
+}
+function istLeer(v){return v==null||v===''||(Array.isArray(v)&&!v.length);}
+function liste(v){return Array.isArray(v)?v:[];}
+/* Erstsprache vereinheitlichen: [Code, Wörter, Kürzel (nur als ganze Angabe)] */
+var SPRACHEN=[
+  ['LU',['luxemburgisch','luxembourgeois','luxembourgeoise','letzebuergesch','luxemburgish','luxembourgish','lux'],['lu','lb','ltz']],
+  ['FR',['franzosisch','francais','francaise','french'],['fr']],
+  ['DE',['deutsch','allemand','allemande','german'],['de']],
+  ['PT',['portugiesisch','portugais','portugaise','portuguese','portugues'],['pt']],
+  ['EN',['englisch','anglais','anglaise','english'],['en']],
+  ['IT',['italienisch','italien','italienne','italian','italiano'],['it']],
+  ['ES',['spanisch','espagnol','espagnole','spanish','espanol'],['es']],
+  ['CV',['kapverdisch','capverdien','capverdienne','cap-verdien','cap-verdienne','kriolu','crioulo','caboverdiano'],['cv','kea']],
+  ['SQ',['albanisch','albanais','albanaise','albanian','shqip'],['sq']],
+  ['BKS',['bosnisch','kroatisch','serbisch','serbokroatisch','montenegrinisch','bosniaque','croate','serbe','serbo-croate','bosnian','croatian','serbian'],['bks','bs','hr','sr']],
+  ['AR',['arabisch','arabe','arabic'],['ar']],
+  ['UK',['ukrainisch','ukrainien','ukrainienne','ukrainian'],['uk']],
+  ['RU',['russisch','russe','russian'],['ru']]
+];
+function spracheGruppe(v){
+  var s=norm(v);if(!s){return '';}
+  var ganz=s.replace(/[^a-z]/g,''), i, j;
+  for(j=0;j<SPRACHEN.length;j++){if(SPRACHEN[j][2].indexOf(ganz)>=0){return SPRACHEN[j][0];}}
+  var w=s.split(/[^a-z-]+/).filter(Boolean);
+  for(i=0;i<w.length;i++){for(j=0;j<SPRACHEN.length;j++){if(SPRACHEN[j][1].indexOf(w[i])>=0){return SPRACHEN[j][0];}}}
+  for(i=0;i<w.length;i++){for(j=0;j<SPRACHEN.length;j++){if(SPRACHEN[j][1].some(function(x){return x.length>4&&w[i].indexOf(x)===0;})){return SPRACHEN[j][0];}}}
+  return 'andere';
+}
+/* Cycle aus der Klasse: C1–C4, ES (Enseignement secondaire), sonst „andere“ */
+function cycleVon(k){
+  var s=txt(k);if(!s){return '';}
+  var u=norm(s).toUpperCase().replace(/\s+/g,'');
+  if(/^PRECOCE/.test(u)){return 'C1';}
+  var m=/^C(?:YCLE)?([1-4])/.exec(u)||/^([1-4])(?:[.\/-]?[1-3])?$/.exec(u);
+  if(m){return 'C'+m[1];}
+  if(/^S[1-7]$/.test(u)||/^[1-7](E|EME|IEME|ERE|RE|G|P|C|I|IEC|T|AD|BI|GCC|PRO|ES|ESC|ESG)?$/.test(u)||/(DAP|CCP|CIP|LYCEE|SECONDAIRE|ESG|ESC)/.test(u)){return 'ES';}
+  return 'andere';
+}
+function rolleNorm(f){
+  var s=norm(f);if(!s){return 'Rolle nicht angegeben';}
+  if(/grand|gross|\boma\b|\bopa\b|bomi|bopi/.test(s)){return 'Großeltern';}
+  if(/accueil|pflege|foster/.test(s)){return 'Pflegefamilie';}
+  if(/\b(mere|mutter|maman|mamm|mama|mother)\b/.test(s)){return 'Mutter';}
+  if(/\b(pere|vater|papa|papp|father)\b/.test(s)){return 'Vater';}
+  if(/tuteur|tutrice|vormund|tutelle|guardian/.test(s)){return 'Vormund';}
+  if(/foyer|heim/.test(s)){return 'Foyer';}
+  return txt(f);
+}
+var MASSNAHMEN=['diagnostic','cgPro','cgEltern','isa','atelier','reeducation','annexe','cdp','cst'];
+/* datensatz(d): die Angaben, die Kompass und Begleitplan brauchen (Namen wie in der Datenbank) */
+function datensatz(d){
+  d=d||{};
+  var p=d.person||{}, f=d.fiche||{}, c=f.cdse||{}, klasse=txt((f.schule||{}).klasse)||txt(p.klasse), dienste=[], sorge=[], ms=[];
+  function dienst(t){t=txt(t);if(t&&dienste.map(norm).indexOf(norm(t))<0){dienste.push(t);}}
+  liste(f.intervenants).forEach(function(i){if(i&&typeof i==='object'){dienst(i.institution);}});
+  var mr=(f.ef||{}).maisonRelais;if(mr&&typeof mr==='object'&&[mr.name,mr.adresse,mr.tel,mr.mail].some(txt)){dienst('Maison Relais');}
+  liste(f.vertreter).forEach(function(v){if(v&&v.autoritaet===true){var r=rolleNorm(v.funktion);if(sorge.indexOf(r)<0){sorge.push(r);}}});
+  MASSNAHMEN.forEach(function(k){if(c[k]&&c[k].aktiv===true){ms.push(k);}});
+  liste(c.sonstige).forEach(function(s){if(s&&typeof s==='object'&&(s.aktiv===true||(s.aktiv!==false&&(iso(s.von)||iso(s.bis))))){ms.push(txt(s.label)||'sonstige');}});
+  var scas=liste(f.intervenants).some(function(i){var t=norm(i&&i.institution);return /\bscas\b/.test(t)||/service central d.?assistance sociale/.test(t);});
+  return {name:[txt(p.nachname),txt(p.vorname)].filter(Boolean).length===2?txt(p.nachname)+', '+txt(p.vorname):'',geburtsdatum:iso(p.geburtsdatum),matricule:txt(p.matricule),
+    schule:txt((f.schule||{}).name)||txt(p.schule),klasse:klasse,cycle:cycleVon(klasse),ankunft:iso(f.ankunft),erstsprache:txt(f.ersteSprache),sprache:spracheGruppe(f.ersteSprache),
+    dienste:dienste,scas:scas?'ja':'',sorgerecht:sorge,vertreter:liste(f.vertreter).filter(function(v){return v&&txt(v.name);}).map(function(v){return txt(v.name);}),massnahmen:ms};
+}
+/* Kernangaben der Fiche, die noch fehlen: [{key, label, teil}] (für den Begleitplan) */
+var KERN=[['name','Name','person'],['geburtsdatum','Geburtsdatum','person'],['matricule','Matricule','person'],['vertreter','Erziehungsberechtigte','vertreter'],
+  ['schule','Schule','schule'],['klasse','Klasse','schule'],['massnahmen','Maßnahme des CDSE','cdse']];
+function kernFehlt(r){r=r||{};return KERN.filter(function(k){return istLeer(r[k[0]]);}).map(function(k){return {key:k[0],label:k[1],teil:k[2]};});}
+return {datensatz:datensatz,kernFehlt:kernFehlt};
+})();
+</script>
+"""
 
 
 def anpassen(s):
@@ -222,6 +318,16 @@ def anpassen(s):
     ersetze(",verwaltung:'Verwaltung',datenbank:'Datenbank'}[ar[1]]", ",verwaltung:'Verwaltung'}[ar[1]]", 'Seitentitel Datenbank')
     ersetze("'+(istResp()?', die Datenbank-Angaben':'')+'", "", 'Kompass: Datenbank-Angaben')
     ersetze("(DS'+(istResp()?', Datenbank':'')+', vom Team eingetragen)", "(DS, vom Team eingetragen)", 'Kompass: Datenbank')
+    # Kompass und Begleitplan: Angaben der Fiche ohne Datenbank (Cycle, Ankunft, Erstsprache, Helfernetz, Kernangaben)
+    ersetze("<script>\n/* =====================================================================\n   CDSE Hub — Kompass: Umgang",
+            FICHE_DATEN_JS + "<script>\n/* =====================================================================\n   CDSE Hub — Kompass: Umgang",
+            'Kompass: Angaben der Fiche (Modul)')
+    ersetze("var D=window.CDSE_DATENBANK;if(!D||!D.datensatz){return {};}",
+            "var D=window.CDSE_DATENBANK||window.CDSE_FICHE_DATEN;if(!D||!D.datensatz){return {};}",
+            'Kompass: Angaben der Fiche')
+    ersetze("S=window.CDSE_SCREENING, D=window.CDSE_DATENBANK, KO=window.CDSE_KOMPASS;",
+            "S=window.CDSE_SCREENING, D=window.CDSE_DATENBANK||window.CDSE_FICHE_DATEN, KO=window.CDSE_KOMPASS;",
+            'Begleitplan: Angaben der Fiche')
 
     # ------------------------------------------------------------------
     # 3. Ohne Journal

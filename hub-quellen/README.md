@@ -4,7 +4,9 @@
 
 > **Annexe Junglinster:** Diese Fassung baut den Hub nur für das Team der Annexe. `annexe.py` schneidet ihn beim Bauen
 > zu (ein Team, ohne Datenbank und Journal, keine sichtbaren „ISA“-Bezeichnungen); `datenbank.js`/`.css` fehlen absichtlich.
-> Test dazu: `tests/annexe.js`. Mehr im [README im Hauptordner](../README.md).
+> Kompass und Begleitplan lesen Cycle, Ankunft, Erstsprache, Helfernetz und Kernangaben deshalb direkt aus der Fiche
+> (`CDSE_FICHE_DATEN` in `annexe.py`). Tests dazu: `tests/annexe.js`, `tests/annexe-korrekturen.js` (Korrekturen aus der
+> Durchsicht). Mehr im [README im Hauptordner](../README.md).
 
 | Datei | Inhalt |
 |---|---|
@@ -58,10 +60,13 @@ Startcode nicht mehr zum Ring: Das Konto entsteht trotzdem, freigeschaltet wird 
 - **Formulare beim Sperren**: Offene Dialoge bekommen das Ereignis `cdse-schliessen`. Fangen sie es ab (`preventDefault`,
   so die Dialoge des Arbeitsbereichs), werden sie nur ausgeblendet und nach dem Entsperren wieder gezeigt – ein halb
   geschriebener Text geht nicht verloren. Beim Abmelden werden sie verworfen.
-- **Dialoge** (`dialog()` in arbeit.js): Während des Speicherns sind die Knöpfe gesperrt und Esc wirkt nicht; geschriebenen
-  Text verwirft Abbrechen/Esc erst nach einer Rückfrage; die Knöpfe bleiben bei langen Formularen sichtbar.
+- **Dialoge** (`dialog()` in arbeit.js): Während des Speicherns sind die Knöpfe gesperrt und Esc wirkt nicht; Änderungen
+  (Text, Datum, Auswahl, Haken, angeklickte Bewertungen und Punkte) verwirft Abbrechen/Esc erst nach einer Rückfrage; die
+  Knöpfe bleiben bei langen Formularen sichtbar.
 - **Entwurf je Dossier**: Der angefangene Eintrag bleibt beim Reiterwechsel, beim Wechsel zu einem anderen Kind und bei
-  „Neuen Stand anzeigen“ erhalten (nur im Arbeitsspeicher, beim Abmelden weg). Gezeichnet wird ein Dossier nur, wenn es
+  „Neuen Stand anzeigen“ erhalten (nur im Arbeitsspeicher, beim Abmelden weg). Neuladen oder Schließen des Tabs fragt
+  vorher nach – ebenso bei einem offenen Formular mit Änderungen oder einem ungespeicherten Einsatzplan (dieser auch beim
+  Abmelden). Gezeichnet wird ein Dossier nur, wenn es
   noch das gewählte ist – bei schnellem Wechseln landet nichts im falschen Dossier.
 - **Rollen und Zugang**: Freischalten, Entziehen und Rollen prüfen das eigene Recht auf dem neuesten Stand von
   `mitglieder.cdse`; es bleibt immer mindestens eine Verwaltung. Entzogene Konten stehen dort unter `entzogen` und

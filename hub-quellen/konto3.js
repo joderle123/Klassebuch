@@ -761,7 +761,9 @@ function tresorWiederaufnehmen(){
   if(!k){status({art:'fehler',text:'Dein Konto wurde im Hub-Ordner nicht gefunden.'});return Promise.resolve();}
   return pubGeprueft(k).then(function(pub){
     tresor={id:k.id,pub:pub,priv:null};status({art:'bereit'});
-    return idbGet('sitzung-schluessel').then(function(x){if(x&&x.priv&&x.sid&&sitzung&&x.sid===sitzung.sid&&x.konto===sitzung.id){tresor.priv=x.priv;}}).then(autoSichern);
+    return idbGet('sitzung-schluessel').then(function(x){if(x&&x.priv&&x.sid&&sitzung&&x.sid===sitzung.sid&&x.konto===sitzung.id){tresor.priv=x.priv;
+      /* nach dem Neuladen ist der Schlüssel erst jetzt da: Teile, die ihn brauchen (Übersicht), neu zeichnen */
+      if(cb.schluesselDa){try{cb.schluesselDa();}catch(e){}}}}).then(autoSichern);
   },
     function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});
 }
@@ -802,6 +804,8 @@ function ende(){
   status({art:'aus'});
   if(konten.length){kontenListe();}else{zeigeVerbinden(null,!!ordner);}
 }
+/* Ungespeichertes im Hub (z. B. Einsatzplan): vor dem Abmelden fragen */
+function abmeldenErlaubt(){try{return !cb.vorAbmelden||cb.vorAbmelden()!==false;}catch(e){return true;}}
 /* Abmelden: sichern, dann die App-Daten von diesem PC entfernen */
 function abmelden(){
   if(!sitzung){ende();return;}
@@ -924,6 +928,13 @@ function teamWahl(akt){return '<div class="teams" role="radiogroup" aria-label="
 function gewaehltesTeam(){var r=document.querySelector('input[name="g-team"]:checked');return r?r.value:'';}
 function pfadHinweis(){try{var p=decodeURIComponent(location.pathname).replace(/^\/([A-Za-z]:)/,'$1').replace(/\//g,'\\');return p.replace(/\\[^\\]*$/,'');}catch(e){return '';}}
 function formular(id,fn){var f=$(id);if(f){f.onsubmit=function(e){e.preventDefault();fn(f);};}}
+/* Nach einer Meldung: Eingaben behalten (Passwörter nur über .value, nie ins HTML) und das Feld mit dem Fehler fokussieren.
+   w: {'g-pw1':…, …, fokus:'g-pw2'} – was neu einzugeben ist, fehlt in w */
+function eingabenZurueck(w){
+  w=w||{};
+  ['g-name','g-start','g-code-in','g-alt','g-pw1','g-pw2'].forEach(function(id){var el=$(id);if(el&&w[id]){el.value=w[id];}});
+  var f=w.fokus&&$(w.fokus);if(f){setTimeout(function(){f.focus();},60);}
+}
 /* Anmelden abschließen: Schlüssel, Daten, fertig */
 function weiterMitDaten(s,fortschritt){
   return schluesselBereit(s).then(function(s2){
@@ -1009,7 +1020,7 @@ function zeigeAnmelden(k,hinweis,fehlerText){
       });
   });
   if($('g-zurueck')){$('g-zurueck').onclick=kontenListe;}
-  if($('g-ab')){$('g-ab').onclick=abmelden;}
+  if($('g-ab')){$('g-ab').onclick=function(){if(abmeldenErlaubt()){abmelden();}};}
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
 
@@ -1040,20 +1051,22 @@ function zeigeErstellen(erstes,fehlerText,werte){
     if(h){h.textContent='In der Teamliste: '+[team(e.team).name,e.funktion,e.rolle==='responsable'?'Responsable':''].filter(Boolean).join(' · ')+'. Bitte prüfen und ein eigenes Passwort wählen.';}
   }
   if($('g-tl')){$('g-name').addEventListener('input',tlVorfuellen);$('g-name').addEventListener('change',tlVorfuellen);if(werte.name){tlVorfuellen();}}
+  eingabenZurueck(werte);
   formular('g-form',function(){
     var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value;
     var fu=$('g-funktion').value.trim().replace(/\s+/g,' '), re=gewaehlterResponsable(), w={name:name,team:t,funktion:fu,responsable:re};
-    if(name.length<3){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',w);return;}
+    function mit(fokus,pw){return Object.assign({},w,pw||{'g-pw1':pw1,'g-pw2':pw2},{fokus:fokus});}
+    if(name.length<3||name.indexOf(' ')<0){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',mit('g-name'));return;}   /* „Tom“ allein reicht nicht */
     var vb=vorbereitetMitNamen(name);
     if(vb){zeigeStartcode(vb,null,'Für dich hat die Verwaltung schon ein Konto vorbereitet. Gib den Startcode von deinem Zettel ein und wähle dein Passwort.');return;}
-    if(kontoMitNamen(name)){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
-    if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',w);return;}
-    if(re===null){zeigeErstellen(erstes,'Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
-    var pr=pwProblem(pw1,name);if(pr){zeigeErstellen(erstes,pr,w);return;}
-    if(pw1!==pw2){zeigeErstellen(erstes,'Die beiden Passwörter sind nicht gleich.',w);return;}
+    if(kontoMitNamen(name)){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',mit('g-name'));return;}
+    if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',mit(null));return;}
+    if(re===null){zeigeErstellen(erstes,'Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',mit('g-resp'));return;}
+    var pr=pwProblem(pw1,name);if(pr){zeigeErstellen(erstes,pr,mit('g-pw1',{}));return;}
+    if(pw1!==pw2){zeigeErstellen(erstes,'Die beiden Passwörter sind nicht gleich.',mit('g-pw2',{'g-pw1':pw1}));return;}
     beschaeftigt($('g-los'),true,'Konto wird verschlüsselt …');
     ordnerBereit().then(function(){return kontoErstellen(name,t,pw1,{funktion:fu,responsable:re});}).then(zeigeCode).catch(function(e){
-      zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+text(e)+'. Ist der Server erreichbar?',w);
+      zeigeErstellen(erstes,'Das Konto konnte nicht gespeichert werden: '+text(e)+'. Ist der Server erreichbar?',mit(null));
     });
   });
   if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
@@ -1090,7 +1103,7 @@ function vorbereitungLoeschen(id){
     return unterordner(['konten']).then(function(dir){return nochmal(function(){return dir.removeEntry(id+'.json');});});
   }).then(function(){vorbereitete=vorbereitete.filter(function(x){return x.id!==id;});});
 }
-function zeigeStartcode(v,fehlerText,hinweis){
+function zeigeStartcode(v,fehlerText,hinweis,werte){
   tor(true);
   var r=v.responsable&&(kontoVon(v.responsable)||vorbereitetVon(v.responsable));
   var info=[team(v.team).name,v.funktion,r?'Responsable: '+r.name:''].filter(Boolean).join(' · ');
@@ -1103,17 +1116,19 @@ function zeigeStartcode(v,fehlerText,hinweis){
     (info?'<p class="hilfe">Aus der Teamliste: '+esc(info)+'. Das kannst du später unter „Profil ändern“ anpassen.</p>':'')+
     '<button class="btn primary voll" type="submit" id="g-los">Konto einrichten</button></form>'+
     '<div class="gate-links"><button type="button" id="g-zurueck">← Anderes Konto</button><span></span></div>');
+  eingabenZurueck(werte);
   formular('g-form',function(){
     var code=$('g-start').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, b=$('g-los'), warten=gebremst('start:'+v.id);
-    if(warten){zeigeStartcode(v,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
-    if(codeNorm(code).length!==12){zeigeStartcode(v,'Der Startcode hat 12 Zeichen, zum Beispiel 7KQ4-M2XP-9HT3.');return;}
-    var pr=pwProblem(pw1,v.name);if(pr){zeigeStartcode(v,pr);return;}
-    if(pw1!==pw2){zeigeStartcode(v,'Die beiden Passwörter sind nicht gleich.');return;}
+    function mit(fokus,w){return Object.assign({'g-start':code},w||{'g-pw1':pw1,'g-pw2':pw2},{fokus:fokus});}
+    if(warten){zeigeStartcode(v,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.',null,mit(null));return;}
+    if(codeNorm(code).length!==12){zeigeStartcode(v,'Der Startcode hat 12 Zeichen, zum Beispiel 7KQ4-M2XP-9HT3.',null,mit('g-start'));return;}
+    var pr=pwProblem(pw1,v.name);if(pr){zeigeStartcode(v,pr,null,mit('g-pw1',{}));return;}
+    if(pw1!==pw2){zeigeStartcode(v,'Die beiden Passwörter sind nicht gleich.',null,mit('g-pw2',{'g-pw1':pw1}));return;}
     beschaeftigt(b,true,'Prüfe den Startcode …');
     ordnerBereit().then(function(){return startEinloesen(v,code,pw1,knopfText(b));}).then(zeigeCode).catch(function(e){
-      if(e&&e.falsch){fehlversuch('start:'+v.id);zeigeStartcode(v,'Der Startcode stimmt nicht. Bitte genau abschreiben.');return;}
+      if(e&&e.falsch){fehlversuch('start:'+v.id);zeigeStartcode(v,'Der Startcode stimmt nicht. Bitte genau abschreiben.',null,mit('g-start'));return;}
       if(e&&e.eingerichtet){var k=kontoVon(v.id);if(k){zeigeAnmelden(k,'Dein Konto ist schon eingerichtet. Bitte melde dich mit deinem Passwort an.');return;}}
-      zeigeStartcode(v,text(e));
+      zeigeStartcode(v,text(e),null,mit(null));
     });
   });
   $('g-zurueck').onclick=zeigeKonten;
@@ -1174,7 +1189,7 @@ function zeigeCode(res){
   };
 }
 
-function zeigeVergessen(k,fehlerText){
+function zeigeVergessen(k,fehlerText,werte){
   tor(true);
   karte(kontoKopf(k)+'<h2>Neues Passwort setzen</h2><p class="sub">Gib deinen Wiederherstellungs-Code ein. Groß-/Kleinschreibung und Bindestriche sind egal.</p>'+
     (fehlerText?meldung(fehlerText):'')+
@@ -1184,18 +1199,20 @@ function zeigeVergessen(k,fehlerText){
     '<div class="feld"><label for="g-pw2">Neues Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
     '<button class="btn primary voll" type="submit" id="g-los">Passwort setzen und anmelden</button></form>'+
     '<div class="gate-links"><button type="button" id="g-zurueck">← Zurück</button><span></span></div>');
+  eingabenZurueck(werte);
   formular('g-form',function(){
     var code=$('g-code-in').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, warten=gebremst(k.id), b=$('g-los');
-    if(warten){zeigeVergessen(k,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
-    if(codeNorm(code).length!==20){zeigeVergessen(k,'Der Code hat 20 Zeichen (ohne Bindestriche).');return;}
-    var pr=pwProblem(pw1,k.name);if(pr){zeigeVergessen(k,pr);return;}
-    if(pw1!==pw2){zeigeVergessen(k,'Die beiden Passwörter sind nicht gleich.');return;}
+    function mit(fokus,w){return Object.assign({'g-code-in':code},w||{'g-pw1':pw1,'g-pw2':pw2},{fokus:fokus});}
+    if(warten){zeigeVergessen(k,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.',mit(null));return;}
+    if(codeNorm(code).length!==20){zeigeVergessen(k,'Der Code hat 20 Zeichen (ohne Bindestriche).',mit('g-code-in'));return;}
+    var pr=pwProblem(pw1,k.name);if(pr){zeigeVergessen(k,pr,mit('g-pw1',{}));return;}
+    if(pw1!==pw2){zeigeVergessen(k,'Die beiden Passwörter sind nicht gleich.',mit('g-pw2',{'g-pw1':pw1}));return;}
     beschaeftigt(b,true,'Prüfe den Code …');
     ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f||k;return anmeldenMit(k,code,'code');}).then(function(s){
       return passwortSetzen(k,s.roh,pw1).then(function(){return weiterMitDaten(s,knopfText(b));});
     }).catch(function(e){
-      if(e&&e.falsch){fehlversuch(k.id);zeigeVergessen(k,'Dieser Code passt nicht zu diesem Konto.');return;}
-      zeigeVergessen(k,'Das ging nicht: '+text(e)+'.');
+      if(e&&e.falsch){fehlversuch(k.id);zeigeVergessen(k,'Dieser Code passt nicht zu diesem Konto.',mit('g-code-in'));return;}
+      zeigeVergessen(k,'Das ging nicht: '+text(e)+'.',mit(null));
     });
   });
   $('g-zurueck').onclick=function(){zeigeAnmelden(k);};
@@ -1219,7 +1236,7 @@ function frageAltbestand(apps,seit){
 
 /* ---------- Konto-Menü (angemeldet) ---------- */
 function dialogZu(){if(gesperrt&&sitzung){sperrBildschirm();return;}tor(false);}
-function zeigePasswortAendern(fehlerText){
+function zeigePasswortAendern(fehlerText,werte){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
   tor(true,true);
   karte('<h2>Passwort ändern</h2>'+(fehlerText?meldung(fehlerText):'')+
@@ -1228,14 +1245,15 @@ function zeigePasswortAendern(fehlerText){
     '<div class="feld"><label for="g-pw1">Neues Passwort</label><input id="g-pw1" type="password" autocomplete="off"><span class="hilfe">Mindestens 10 Zeichen. Dein Wiederherstellungs-Code bleibt gültig.</span></div>'+
     '<div class="feld"><label for="g-pw2">Neues Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="off"></div>'+
     '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>');
+  eingabenZurueck(werte);
   formular('g-form',function(){
     var alt=$('g-alt').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value;
-    var pr=pwProblem(pw1,k.name);if(pr){zeigePasswortAendern(pr);return;}
-    if(pw1!==pw2){zeigePasswortAendern('Die beiden neuen Passwörter sind nicht gleich.');return;}
+    var pr=pwProblem(pw1,k.name);if(pr){zeigePasswortAendern(pr,{'g-alt':alt,fokus:'g-pw1'});return;}
+    if(pw1!==pw2){zeigePasswortAendern('Die beiden neuen Passwörter sind nicht gleich.',{'g-alt':alt,'g-pw1':pw1,fokus:'g-pw2'});return;}
     beschaeftigt($('g-los'),true,'Speichere …');
     ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f;return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1).then(function(){s.roh.fill(0);});})
       .then(function(){karte('<h2>Passwort geändert</h2><p class="sub">Ab jetzt meldest du dich mit dem neuen Passwort an.</p><button class="btn primary voll" type="button" id="g-fertig">Fertig</button>');$('g-fertig').onclick=dialogZu;})
-      .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.');});
+      .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.',e&&e.falsch?{'g-pw1':pw1,'g-pw2':pw2,fokus:'g-alt'}:{'g-alt':alt,'g-pw1':pw1,'g-pw2':pw2});});
   });
   $('g-abbruch').onclick=dialogZu;
 }
@@ -1248,14 +1266,15 @@ function zeigeProfilAendern(fehlerText,werte){
     funktionFeld(werte.funktion)+responsableFeld(werte.responsable,sitzung.id)+
     '<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>'+
     '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Speichern</button></div></form>',true);
+  eingabenZurueck(werte);
   formular('g-form',function(){
     var w={team:TEAMS.length?gewaehltesTeam():sitzung.team,funktion:$('g-funktion').value.trim().replace(/\s+/g,' '),responsable:gewaehlterResponsable()}, alt=$('g-alt').value;
-    if(!w.team){zeigeProfilAendern('Bitte wähle ein Team.',w);return;}
-    if(w.responsable===null){zeigeProfilAendern('Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
+    if(!w.team){zeigeProfilAendern('Bitte wähle ein Team.',Object.assign({'g-alt':alt},w));return;}
+    if(w.responsable===null){zeigeProfilAendern('Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',Object.assign({'g-alt':alt,fokus:'g-resp'},w));return;}
     beschaeftigt($('g-los'),true,'Speichere …');
     ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f;return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return profilSetzen(k,s.dek,s.prof,w);})
       .then(function(){sitzung.team=w.team;sitzung.funktion=w.funktion;sitzung.responsable=w.responsable;sitzung.rg=true;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
-      .catch(function(e){zeigeProfilAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.',w);});
+      .catch(function(e){zeigeProfilAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.',Object.assign(e&&e.falsch?{fokus:'g-alt'}:{'g-alt':alt},w));});
   });
   $('g-abbruch').onclick=dialogZu;
 }
@@ -1533,7 +1552,7 @@ return {
     else if(aktion==='team'||aktion==='profil'){zeigeProfilAendern();}
     else if(aktion==='staende'){zeigeStaende();}
     else if(aktion==='sperren'){sperren('Du hast den Hub gesperrt. Zum Weiterarbeiten dein Passwort eingeben.');}
-    else if(aktion==='abmelden'){abmelden();}
+    else if(aktion==='abmelden'){if(abmeldenErlaubt()){abmelden();}}
   },
   /* Hub sperren (z. B. Kindmodus „Code vergessen“): wie nach Inaktivität, die Arbeit bleibt erhalten */
   sperren:function(grund){sperren(grund);},
