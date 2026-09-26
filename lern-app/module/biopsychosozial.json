@@ -1,0 +1,514 @@
+{
+  "id": "biopsychosozial",
+  "bereich": "grundlagen",
+  "titel": "Das bio-psycho-soziale Modell",
+  "untertitel": "Warum Verhalten nie nur eine Ursache hat – und was daraus für die Förderplanung folgt",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können erklären, was das bio-psycho-soziale Modell besagt und warum es einfache Ein-Ursachen-Erklärungen ersetzt.",
+    "Sie können Einflüsse auf das Verhalten eines Kindes der biologischen, psychologischen und sozialen Ebene zuordnen und ihr Zusammenspiel beschreiben.",
+    "Sie können das Verhältnis von Anlage und Umwelt in eigenen Worten erklären, ohne in „Gene oder Erziehung“ zu denken.",
+    "Sie können die Lebenswelten eines Kindes nach Bronfenbrenner beschreiben und erkennen, welchen Anteil die Schule selbst hat.",
+    "Sie können eine Fallbeschreibung nach verletzlich machenden, auslösenden, aufrechterhaltenden und schützenden Faktoren ordnen und daraus Ansatzpunkte für einen Förderplan ableiten."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: warum es nie nur eine Ursache gibt",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Rafael, 10 Jahre, Cycle 3.2",
+          "text": "Seit den Herbstferien gerät Rafael fast täglich in der Pause in Streit, zweimal hat er zugeschlagen. Im Unterricht legt er beim Lesen oft den Kopf auf den Tisch. Im Lehrerzimmer kursieren drei Erklärungen. Die Klassenlehrerin sagt: „Das ist die Trennung der Eltern.“ Ein Kollege meint: „Zu Hause gibt es keine Grenzen, der ist einfach verzogen.“ Die Erzieherin aus der Maison Relais fragt: „Vielleicht hat er ADHS? Er kommt nie zur Ruhe.“ Jede Erklärung klingt plausibel – und jede führt zu einem anderen Vorgehen.",
+          "fragen": [
+            "Welche Informationen fehlen, um die drei Erklärungen zu prüfen?",
+            "Was geschieht, wenn sich das Team zu früh auf eine Erklärung festlegt?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Im Alltag suchen wir gern nach *der* einen Ursache: der Trennung, der Erziehung, der Diagnose. Das ist verständlich – eine klare Erklärung entlastet und scheint zu zeigen, was zu tun ist. Bei auffälligem Verhalten und psychischen Schwierigkeiten führt diese Suche aber fast immer in die Irre. Verhalten entsteht aus dem Zusammenspiel vieler Einflüsse, die sich gegenseitig verstärken oder abschwächen.\n\nDen Grundgedanken dazu hat der amerikanische Psychiater und Internist George L. Engel 1977 in einem viel beachteten Aufsatz formuliert. Er kritisierte das damals vorherrschende **biomedizinische Modell**, das Krankheit allein als messbare Abweichung im Körper versteht. Engel zeigte am Beispiel von Diabetes und Schizophrenie, dass ein biologischer Befund allein nicht erklärt, ob, wann und wie stark ein Mensch erkrankt, wie er seine Beschwerden erlebt und ob eine Behandlung gelingt. Dafür braucht es zusätzlich den Blick auf das Erleben der Person und auf ihre Lebensumstände (Engel, 1977). Diesen erweiterten Blick nannte er das **bio-psycho-soziale Modell**.\n\nEngel wollte die Biologie nicht abschaffen, sondern ergänzen. Für die Arbeit mit Kindern heißt das: Die Frage lautet nicht „Liegt es am Kind, an den Eltern oder an der Schule?“, sondern „Welche Einflüsse wirken hier zusammen – und an welchen können wir etwas ändern?“"
+        },
+        {
+          "art": "merke",
+          "text": "Hinter demselben Verhalten können ganz verschiedene Ursachen stehen, und fast immer wirken mehrere zusammen. Das bio-psycho-soziale Modell ist keine Theorie über eine bestimmte Störung, sondern eine Denkweise: Es fragt nach allen Einflüssen und nach ihrem Zusammenspiel."
+        }
+      ]
+    },
+    {
+      "titel": "Drei Ebenen und ihr Zusammenspiel",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das Modell ordnet Einflüsse drei Ebenen zu. Die Einteilung ist ein Werkzeug zum Ordnen der eigenen Gedanken. In der Wirklichkeit greifen die Ebenen ineinander, und manche Einflüsse gehören zu mehreren zugleich: Eine Leseschwäche hat eine biologische Grundlage, wird als Scheitern erlebt und verändert den Platz eines Kindes in der Klasse."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Ebenen im Schulalltag",
+          "spalten": [
+            "Ebene",
+            "Was dazugehört",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "Biologisch",
+              "Veranlagung, Temperament, Reifung des Nervensystems, körperliche Gesundheit, Sinnesorgane, Schlaf, Ernährung, Pubertät, Medikamente",
+              "Ein Kind hört auf einem Ohr schlecht. Eine Jugendliche schläft wegen Handy und verschobenem Schlafrhythmus nur sechs Stunden. Ein Kind kam sehr früh zur Welt."
+            ],
+            [
+              "Psychologisch",
+              "Gefühle, Gedanken, Selbstbild, Lerngeschichte, Bewältigungsstrategien, Bindungserfahrungen, Fähigkeiten und Schwächen",
+              "„Ich bin sowieso schlecht in Mathe.“ Große Angst vor Fehlern. Ein Kind hat gelernt, dass Schreien schneller zum Ziel führt als Fragen."
+            ],
+            [
+              "Sozial",
+              "Familie, Freundeskreis, Klasse, Schule, Maison Relais, Wohnsituation, finanzielle Lage, Sprache, Kultur, Migration, Gesellschaft",
+              "Trennung der Eltern. Beengte Wohnung ohne Platz für Hausaufgaben. Ausgrenzung in der Klasse. Die Unterrichtssprache ist noch nicht die Sprache des Kindes."
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Drei Kreisläufe aus dem Alltag",
+          "punkte": [
+            "Ein Kind schläft schlecht, weil es sich um die kranke Mutter sorgt (sozial → psychologisch → biologisch). Übermüdet ist es gereizt, gerät häufiger in Streit und wird gemieden (biologisch → psychologisch → sozial).",
+            "Eine unerkannte Hörschwäche führt dazu, dass ein Kind Anweisungen verpasst. Es wird oft ermahnt, hält sich für dumm und zieht sich zurück.",
+            "Ein sehr bewegungsfreudiges Temperament trifft auf lange Sitzphasen. Aus dem Zusammenprall entstehen Konflikte, Kritik und schließlich die Überzeugung „Ich bin der Böse“."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Solche Kreisläufe erklären, warum Schwierigkeiten sich oft selbst verstärken. Sie enthalten aber auch eine gute Nachricht: Ein Kreislauf lässt sich an mehreren Stellen unterbrechen – häufig auch dort, wo die Schule Einfluss hat.\n\nZwei Begriffe aus der Entwicklungspsychopathologie helfen, vorschnelle Schlüsse zu vermeiden. **Äquifinalität** heißt: Verschiedene Wege können zum gleichen Ergebnis führen. Rückzug im Unterricht kann aus Angst, Traurigkeit, einer Hörschwäche, Überforderung oder Sprachschwierigkeiten entstehen. **Multifinalität** heißt: Derselbe Ausgangspunkt kann zu sehr unterschiedlichen Entwicklungen führen. Von drei Kindern, deren Eltern sich trennen, reagiert eines mit Wut, eines mit Rückzug, und das dritte findet nach einer schwierigen Phase wieder gut in den Alltag. Vom Verhalten lässt sich also nicht sicher auf die Ursache schließen – und von einer Belastung nicht sicher auf die Folgen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn man die Ursache kennt, weiß man, was zu tun ist.",
+          "fakt": "Die ursprüngliche Ursache lässt sich oft gar nicht ändern – eine Veranlagung, eine Trennung, frühe Erfahrungen. Für die Förderung sind die Einflüsse wichtiger, die das Problem heute aufrechterhalten, und die Stärken, auf die sich bauen lässt."
+        }
+      ]
+    },
+    {
+      "titel": "Anlage und Umwelt: kein Entweder-oder",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die alte Frage „Anlage oder Umwelt?“ ist falsch gestellt. Fast alle Merkmale, die in der Schule eine Rolle spielen – Aufmerksamkeit, Temperament, Lesefähigkeit, Ängstlichkeit, Aggressivität –, werden sowohl von Genen als auch von Erfahrungen beeinflusst, und beide wirken zusammen (Rutter, 2015; Petermann, 2013).\n\n**Erblichkeit richtig verstehen.** Heißt es, ein Merkmal sei „zu 70 Prozent erblich“, bedeutet das nicht, dass es bei einem einzelnen Kind zu 70 Prozent aus den Genen stammt. Die Erblichkeit ist eine Aussage über eine Gruppe: Sie schätzt, wie viel der Unterschiede zwischen Menschen in einer bestimmten Bevölkerung mit genetischen Unterschieden zusammenhängt. Über die Veränderbarkeit sagt sie nichts. Die Körpergröße zum Beispiel ist stark erblich – und trotzdem sind die Menschen in Europa in den letzten hundert Jahren durch bessere Ernährung und Gesundheitsversorgung im Durchschnitt deutlich größer geworden."
+        },
+        {
+          "art": "liste",
+          "titel": "Wie Anlage und Umwelt zusammenwirken",
+          "punkte": [
+            "**Dieselbe Umwelt wirkt verschieden:** Ein Schulwechsel ist für ein ängstlich-zurückhaltendes Kind oft viel belastender als für ein Kind, das neugierig auf Neues zugeht. Einige Studien sprechen dafür, dass empfindliche Kinder umgekehrt auch besonders stark von einer guten Umgebung profitieren; ganz geklärt ist das noch nicht.",
+            "**Kinder prägen ihre Umwelt mit:** Ein impulsives, forderndes Kind löst bei Erwachsenen häufiger Ermahnungen und Strenge aus als ein ruhiges Kind. Ein Kind, das gern liest, bekommt Bücher geschenkt und sucht sich Freunde, die ebenfalls lesen. So verstärken sich Veranlagung und Umwelt gegenseitig – im Guten wie im Schlechten.",
+            "**Erfahrungen beeinflussen, welche Gene aktiv sind:** Diesen Forschungsbereich nennt man Epigenetik. Beim Menschen ist er noch jung. Aussagen wie „Stress schreibt sich für immer in die Gene“ gehen über das gesicherte Wissen hinaus."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Temperament und Passung.** Kinder bringen von Anfang an unterschiedliche Temperamente mit: Manche sind aktiv und laut, andere vorsichtig und zurückhaltend; manche reagieren heftig, andere gelassen; manche haben einen regelmäßigen Rhythmus, andere nicht. Die Psychiater Alexander Thomas und Stella Chess kamen in ihrer Langzeitstudie zu dem Schluss, dass nicht das Temperament allein über die Entwicklung entscheidet, sondern die **Passung** (englisch *goodness of fit*): Wie gut passen die Eigenschaften des Kindes zu den Erwartungen und Möglichkeiten seiner Umgebung (Thomas & Chess, 1977)? Ein Kind, das in neuen Situationen langsam auftaut, bekommt in einer Klasse, die ihm Zeit lässt, kaum Probleme. Wird es gedrängt, sofort vor allen zu sprechen, blockiert es.\n\n**Verletzlichkeit und Belastung.** Ein weiteres hilfreiches Bild ist das Vulnerabilitäts-Stress-Modell. Jeder Mensch bringt eine bestimmte Verletzlichkeit (Vulnerabilität) für bestimmte Schwierigkeiten mit – durch Veranlagung, frühe Erfahrungen oder Krankheit. Ob Probleme entstehen, hängt davon ab, wie viel Belastung hinzukommt und wie gut Schutzfaktoren sie abfedern. Ein wenig verletzliches Kind bewältigt auch schwere Zeiten; ein sehr verletzliches Kind gerät schon bei kleineren Belastungen aus dem Gleichgewicht."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn etwas erblich ist, kann man nichts machen.",
+          "fakt": "Auch bei stark erblichen Merkmalen hängt die Ausprägung von der Umwelt ab. Bei ADHS etwa ist die Erblichkeit hoch – und trotzdem machen Struktur, Beziehung und Unterstützung im Alltag einen großen Unterschied für den Verlauf."
+        },
+        {
+          "art": "merke",
+          "text": "Veranlagung ist kein Schicksal, und Umwelt ist keine Schuldfrage. Für die Praxis entscheidend ist die Passung: Was braucht gerade dieses Kind, damit seine Eigenschaften zur Stärke werden statt zum Problem?"
+        }
+      ]
+    },
+    {
+      "titel": "Das Kind in seinen Lebenswelten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Entwicklungspsychologe Urie Bronfenbrenner hat den sozialen Teil des Modells genauer ausgearbeitet. Er beschreibt die Umwelt eines Kindes als ineinander verschachtelte Systeme, ähnlich wie russische Puppen (Bronfenbrenner, 1979). Entwicklung geschieht in diesen Systemen und im ständigen Austausch mit ihnen. In späteren Arbeiten ergänzte Bronfenbrenner die Zeit als eigene Dimension: Übergänge und Veränderungen im Lebenslauf."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die Systeme nach Bronfenbrenner",
+          "spalten": [
+            "System",
+            "Was gemeint ist",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "Mikrosystem",
+              "Lebensbereiche, in denen das Kind selbst Beziehungen erlebt",
+              "Familie, Klasse, Maison Relais, Sportverein, Freundeskreis"
+            ],
+            [
+              "Mesosystem",
+              "Verbindungen zwischen diesen Lebensbereichen",
+              "Wie Eltern und Schule miteinander sprechen; ob Lehrerin und Maison Relais sich absprechen; ob Regeln zu Hause und in der Schule zusammenpassen"
+            ],
+            [
+              "Exosystem",
+              "Bereiche, zu denen das Kind nicht gehört, die aber sein Leben beeinflussen",
+              "Schichtarbeit oder Arbeitslosigkeit der Eltern, Entscheidungen von Schulleitung oder Kommissionen, Wartelisten für Therapien, Angebote der Gemeinde"
+            ],
+            [
+              "Makrosystem",
+              "Übergreifende Werte, Regeln und Bedingungen einer Gesellschaft",
+              "Das mehrsprachige Schulsystem Luxemburgs, Vorstellungen von Erziehung in verschiedenen Kulturen, Gesetze, wirtschaftliche Lage, Umgang mit Migration"
+            ],
+            [
+              "Zeit (später ergänzt)",
+              "Übergänge und Veränderungen im Lebenslauf",
+              "Einschulung, Wechsel vom Cycle 4 ins Lycée, Umzug, Trennung, Pubertät"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was das für die Schule bedeutet.** Für viele Kinder ist die Klasse nach der Familie das wichtigste Mikrosystem. Sie ist also nicht nur der Ort, an dem Probleme sichtbar werden, sondern selbst ein Einflussfaktor. Klassenklima, Sitzordnung, die Beziehung zur Lehrkraft, der Umgang mit Fehlern und die Frage, ob ein Kind in der Klasse einen Freund hat, können Schwierigkeiten verstärken oder abmildern.\n\nBesonders wirksam ist oft das **Mesosystem**. Wenn Eltern, Lehrkraft und Maison Relais sich abstimmen, erlebt das Kind verlässliche Erwachsene und einheitliche Erwartungen. Wenn sie übereinander klagen oder gegeneinander arbeiten, gerät das Kind in Loyalitätskonflikte, und keine Maßnahme wirkt richtig.\n\nAuch die äußeren Systeme sind im Alltag spürbar. Ein Vater, der nachts arbeitet, kann nicht zum Elterngespräch um 16 Uhr kommen – das ist kein Desinteresse. Eine Familie, die gerade nach Luxemburg gezogen ist, kennt das Schulsystem mit seinen Sprachen und Cycles noch nicht. Solche Bedingungen gehören zur Analyse, auch wenn die Schule sie nicht ändern kann."
+        },
+        {
+          "art": "fall",
+          "titel": "Aylin, 13 Jahre, 7e im Lycée",
+          "text": "Aylin kommt fast jeden Morgen zu spät und fehlt montags häufig. Die Klassenlehrerin schickt Mitteilungen nach Hause, doch es kommt keine Reaktion. Erst im Gespräch mit dem SePAS erzählt Aylin, dass ihre Mutter im Schichtdienst arbeitet und Nachrichten auf Deutsch kaum versteht. Aylin bringt morgens ihren kleinen Bruder in die Précoce, weil sonst niemand da ist. Montags passt sie auf ihn auf, wenn er krank ist.",
+          "fragen": [
+            "Welche Systeme nach Bronfenbrenner spielen hier eine Rolle?",
+            "Welche Lösung könnte die Schule anbieten, die nicht allein bei Aylin ansetzt?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Fragen Sie bei jedem Problem auch: Welchen Anteil hat die Situation in der Schule? Das ist keine Schuldzuweisung, sondern die Stelle, an der Sie am meisten verändern können."
+        }
+      ]
+    },
+    {
+      "titel": "Fallanalyse: ein Kind aus mehreren Blickwinkeln",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Belastungen summieren sich. In der bekannten ACE-Studie berichteten Erwachsene rückblickend über belastende Erfahrungen in ihrer Kindheit, etwa Misshandlung, Gewalt gegen die Mutter oder Sucht und psychische Erkrankung im Haushalt. Je mehr solcher Erfahrungen jemand gemacht hatte, desto häufiger zeigten sich im Erwachsenenalter riskantes Gesundheitsverhalten, seelische Probleme und körperliche Erkrankungen (Felitti et al., 1998). Die Studie zeigt eindrücklich, wie eng soziale Erfahrungen und körperliche Gesundheit zusammenhängen. Für ein einzelnes Kind sagt eine solche Zählung aber wenig voraus, denn Schutzfaktoren machen einen großen Unterschied.\n\nUm die vielen Einflüsse bei einem Kind zu ordnen, nutzen Fachleute in der Praxis oft ein einfaches Raster mit vier Fragen. Es verbindet die drei Ebenen mit der zeitlichen Entwicklung."
+        },
+        {
+          "art": "liste",
+          "titel": "Vier Fragen für die Fallanalyse",
+          "punkte": [
+            "**Was macht verletzlich?** Einflüsse, die schon länger bestehen und das Risiko erhöhen: Veranlagung, Frühgeburt, frühe Belastungen, eine Lernschwäche.",
+            "**Was hat ausgelöst?** Ereignisse kurz vor dem Beginn oder vor einer Verschlechterung: Trennung, Umzug, Klassenwechsel, Mobbing, Krankheit.",
+            "**Was hält das Problem aufrecht?** Was das Verhalten heute fortbestehen lässt: Schlafmangel, Konflikte, die das Kind „gewinnt“, Vermeidung, die kurzfristig entlastet, ständige Kritik, fehlende Absprachen.",
+            "**Was schützt und stärkt?** Eine verlässliche Bezugsperson, ein Freund, Humor, ein Hobby, eine Lehrkraft, die an das Kind glaubt."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Schutzfaktoren verdienen besondere Aufmerksamkeit. Die Resilienzforschung zeigt, dass Widerstandskraft keine feste Eigenschaft ist, die ein Kind hat oder nicht hat. Sie ist ein dynamischer Prozess, der sich mit Lebensphase, Belastung und Unterstützung verändert (Rutter, 2012). Eine verlässliche, zugewandte Beziehung zu mindestens einem Erwachsenen gehört zu den am besten belegten Schutzfaktoren – und dieser Erwachsene kann auch eine Fachkraft in der Schule sein."
+        },
+        {
+          "art": "fall",
+          "titel": "Rafael – die Analyse im Team",
+          "text": "Das Team trägt zusammen, was es weiß. Die Mutter berichtet, dass Rafael seit der Trennung im Sommer abwechselnd bei ihr und beim Vater wohnt und abends lange am Tablet spielt. Die Lehrerin aus dem Cycle 2 hatte eine Leseschwäche vermutet, abgeklärt wurde sie nie. Eine Pausenaufsicht erinnert sich, dass zwei ältere Schüler Rafael „Baby“ rufen. Rafael ist hilfsbereit, fußballbegeistert und hängt sehr an seiner früheren Lehrerin."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Rafaels Situation auf einen Blick",
+          "spalten": [
+            "Frage",
+            "Biologisch",
+            "Psychologisch",
+            "Sozial"
+          ],
+          "zeilen": [
+            [
+              "Was macht verletzlich?",
+              "vermutete Veranlagung zu einer Leseschwäche; lebhaftes Temperament",
+              "geringes Zutrauen in die eigenen Fähigkeiten beim Lesen",
+              "Streit zwischen den Eltern schon vor der Trennung"
+            ],
+            [
+              "Was hat ausgelöst?",
+              "–",
+              "Verlust des gewohnten Alltags",
+              "Trennung im Sommer; Hänseleien durch ältere Schüler"
+            ],
+            [
+              "Was hält aufrecht?",
+              "Schlafmangel durch langes Spielen am Tablet",
+              "„Ich bin dumm“ beim Lesen; Wut als Schutz vor Beschämung",
+              "Hänseleien werden nicht bemerkt; Eltern sprechen sich kaum ab; viel Kritik im Unterricht"
+            ],
+            [
+              "Was schützt?",
+              "gesund, Freude an Bewegung",
+              "hilfsbereit, begeisterungsfähig",
+              "enge Bindung an die frühere Lehrerin; die Mutter sucht den Kontakt zur Schule"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Analyse ersetzt keine Diagnose und muss nicht vollständig sein. Sie macht aber sichtbar, dass keine der drei Erklärungen aus dem Lehrerzimmer ganz falsch war – jede war nur ein Ausschnitt. Und sie zeigt, wo sich ansetzen lässt: bei den aufrechterhaltenden Faktoren und bei den Stärken."
+        },
+        {
+          "art": "lassen",
+          "titel": "Denkfallen bei der Fallanalyse",
+          "punkte": [
+            "Die erste plausible Erklärung übernehmen und danach nur noch sehen, was sie bestätigt.",
+            "Alles auf eine bekannte Diagnose schieben: Ein Kind mit ADHS kann trotzdem gemobbt werden oder schlecht schlafen.",
+            "Alles auf die Familie schieben – oder alles auf die Schule.",
+            "Vermutungen als Tatsachen weitergeben („Da ist bestimmt etwas zu Hause“).",
+            "Nur Schwierigkeiten sammeln und die Stärken vergessen."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Folgen für die Förderplanung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Aus dem bio-psycho-sozialen Blick ergeben sich einige Grundsätze für die Förderplanung.\n\n**Hypothesen statt Gewissheiten.** Die Fallanalyse liefert begründete Vermutungen, keine Wahrheiten. Formulieren Sie sie als Hypothesen („Wir vermuten, dass Rafaels Wutausbrüche mit Beschämung beim Lesen zusammenhängen“) und prüfen Sie sie durch Beobachtung: Treten die Ausbrüche tatsächlich vor allem rund ums Lesen auf?\n\n**Dort ansetzen, wo sich etwas ändern lässt.** Die Trennung der Eltern kann die Schule nicht rückgängig machen. Sie kann aber die Hänseleien beenden, das Lesen so gestalten, dass Rafael nicht bloßgestellt wird, und beiden Eltern dieselben Informationen geben.\n\n**Auf mehreren Ebenen zugleich.** Wirksame Pläne verbinden mehrere Bausteine: etwas in der Klasse, etwas mit dem Kind selbst, etwas mit der Familie und, wo nötig, eine Abklärung durch Fachleute.\n\n**Stärken nutzen.** Ressourcen sind keine Zugabe am Ende des Plans, sondern ein Hebel. Rafaels Hilfsbereitschaft und seine Fußballbegeisterung sind Wege, ihm Anerkennung und Zugehörigkeit zu verschaffen."
+        },
+        {
+          "art": "tun",
+          "titel": "Rafaels Förderplan – auf allen drei Ebenen",
+          "punkte": [
+            "Biologisch: mit den Eltern über Schlaf und Tabletzeit am Abend sprechen; klären, wann Hören und Sehen zuletzt geprüft wurden; eine Abklärung der Leseschwäche anregen.",
+            "Psychologisch: Lesen in geschütztem Rahmen üben, ohne lautes Vorlesen vor der Klasse; Fortschritte sichtbar machen; mit Rafael Worte für Wut und Scham finden.",
+            "Klasse und Pause: Pausenaufsicht informieren und Hänseleien konsequent unterbinden; Rafael eine verantwortungsvolle Aufgabe geben, etwa die Ballausgabe.",
+            "Familie und Netz: ein Gespräch mit beiden Eltern anbieten; den Kontakt zur früheren Lehrerin nutzen; bei Bedarf Beratung für die Familie vermitteln.",
+            "Nach vier bis sechs Wochen gemeinsam auswerten: Was hat sich verändert? Welche Hypothese hat sich bestätigt, welche nicht?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Zusammenarbeit gehört zum Modell.** Keine Berufsgruppe deckt alle drei Ebenen ab. Ärztinnen und Kinder- und Jugendpsychiater klären körperliche und psychiatrische Fragen, Psychologinnen und das Diagnostique-Team Fähigkeiten und seelisches Erleben. Lehrkräfte, Educateurs und ISA kennen das Kind in der Gruppe und im Alltag, die Familie kennt seine Geschichte. Der bio-psycho-soziale Blick gelingt deshalb nur gemeinsam – im Team, mit den Eltern und, so weit es sein Alter erlaubt, mit dem Kind selbst. Fragen Sie das Kind: Was macht es dir schwer? Was hilft dir?\n\nPädagogische Fachkräfte stellen dabei keine Diagnosen. Ihr Beitrag ist genauso wichtig: genaue Beobachtungen, das Wissen um die Situation in der Gruppe und die Umsetzung des Plans im Alltag."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn es Hinweise auf körperliche Ursachen gibt (etwa Hör- oder Sehprobleme, auffällige Müdigkeit, häufige Schmerzen), wenn sich trotz eines guten Plans nach einigen Wochen nichts verändert oder wenn Sie Anzeichen einer Gefährdung bemerken. Ansprechpersonen sind Ihre Leitung (Responsable), das Diagnostique-Team des CDSE und über die Eltern die Kinderärztin. Bei Verdacht auf Gefährdung gelten die internen Kinderschutzabläufe."
+        },
+        {
+          "art": "merke",
+          "text": "Niemand sieht das ganze Kind allein. Gute Förderplanung sammelt die Blickwinkel, prüft Vermutungen und setzt dort an, wo sich etwas bewegen lässt."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was war der Kern von George Engels Kritik am biomedizinischen Modell?",
+      "optionen": [
+        "Biologische Befunde seien für psychische Störungen unwichtig.",
+        "Psychische Störungen sollten nur noch psychologisch behandelt werden.",
+        "Ein biologischer Befund allein erklärt nicht, ob, wann und wie ein Mensch erkrankt und ob die Behandlung gelingt – Erleben und Lebensumstände gehören dazu.",
+        "Die Medizin solle durch Sozialarbeit ersetzt werden."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Engel wollte den biologischen Blick ergänzen, nicht abschaffen: Biologische Befunde bleiben wichtig, reichen aber allein nicht aus, um Erkrankung, Erleben und Verlauf zu verstehen. Eine rein psychologische oder rein soziale Sicht wäre genauso einseitig wie die rein biomedizinische."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Einflüsse gehören vor allem zur biologischen Ebene? (mehrere richtig)",
+      "optionen": [
+        "Schlafmangel",
+        "Eine Hörschwäche",
+        "Die Überzeugung „Ich kann das sowieso nicht“",
+        "Das Temperament",
+        "Ausgrenzung in der Klasse"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Schlaf, Hörvermögen und Temperament haben eine körperliche bzw. veranlagte Grundlage. Die Überzeugung „Ich kann das nicht“ gehört zur psychologischen, Ausgrenzung zur sozialen Ebene. Im Alltag wirken alle Ebenen zusammen – die Zuordnung hilft nur beim Ordnen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die Aussage „ADHS ist stark erblich“ bedeutet, dass Förderung und Umfeld am Verlauf wenig ändern können.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die Erblichkeit beschreibt, wie viel der Unterschiede zwischen Menschen in einer Bevölkerung mit genetischen Unterschieden zusammenhängt. Über die Veränderbarkeit sagt sie nichts. Auch bei stark erblichen Merkmalen machen Struktur, Beziehung und Unterstützung einen großen Unterschied."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was meinen Thomas und Chess mit „Passung“ (goodness of fit)?",
+      "optionen": [
+        "Wie gut die Eigenschaften eines Kindes zu den Anforderungen und Möglichkeiten seiner Umgebung passen",
+        "Ob ein Kind in die richtige Schulform eingeteilt wurde",
+        "Wie ähnlich ein Kind seinen Eltern im Temperament ist",
+        "Ob die Diagnose zu den beobachteten Symptomen passt"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Passung beschreibt das Verhältnis zwischen dem Temperament eines Kindes und seiner Umwelt. Probleme entstehen oft nicht aus dem Temperament allein, sondern aus einem schlechten Zusammenspiel, etwa bei einem sehr bewegungsfreudigen Kind in langen Sitzphasen. Schulform, Ähnlichkeit mit den Eltern oder Diagnosen sind damit nicht gemeint."
+    },
+    {
+      "art": "fall",
+      "fall": "Elternbriefe an die Familie von Joana (8) bleiben seit Monaten unbeantwortet. Ein Kollege sagt: „Die Eltern interessieren sich eben nicht.“ Sie erfahren, dass beide Eltern im Schichtdienst arbeiten und zu Hause Portugiesisch sprechen.",
+      "frage": "Welche Einschätzung passt am besten zum bio-psycho-sozialen Blick?",
+      "optionen": [
+        "Das Schweigen zeigt Desinteresse; weitere Kontaktversuche sind zwecklos.",
+        "Das Schweigen kann mit Arbeitszeiten und Sprache zusammenhängen; die Schule sollte andere Wege versuchen, etwa einen Anruf zu einer passenden Zeit oder eine Übersetzung.",
+        "Joana sollte künftig dafür sorgen, dass ihre Eltern die Briefe beantworten.",
+        "Man sollte abwarten, bis die Eltern von sich aus kommen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Arbeitszeiten und die Sprache der Briefe sind äußere Bedingungen (Exo- und Makrosystem), die den Kontakt erschweren, ohne dass Desinteresse dahinterstehen muss. Die Schule kann das Mesosystem stärken, indem sie andere Wege anbietet. Das Kind mit der Verantwortung zu belasten oder abzuwarten, lässt das Problem bestehen; Desinteresse anzunehmen, ist eine vorschnelle Deutung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt das Mesosystem nach Bronfenbrenner?",
+      "optionen": [
+        "Die Werte, Gesetze und Bedingungen einer Gesellschaft",
+        "Den Arbeitsplatz der Eltern",
+        "Die Familie des Kindes",
+        "Die Verbindungen zwischen den Lebensbereichen des Kindes, etwa die Zusammenarbeit von Eltern und Schule"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Das Mesosystem umfasst die Beziehungen zwischen den Mikrosystemen, etwa zwischen Familie, Klasse und Maison Relais. Werte und Gesetze gehören zum Makrosystem, der Arbeitsplatz der Eltern zum Exosystem, die Familie selbst ist ein Mikrosystem."
+    },
+    {
+      "art": "fall",
+      "fall": "Bei Kenan (11) wurde vor zwei Jahren ADHS festgestellt. Seit einigen Wochen weint er häufig, ist still und will morgens nicht in die Schule. Im Team heißt es: „Das ist eben sein ADHS.“",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Die neuen Beobachtungen genau beschreiben und mit Kenan und den Eltern nach weiteren Einflüssen suchen, etwa Konflikten in der Klasse, Veränderungen zu Hause oder anhaltender Traurigkeit.",
+        "Nichts unternehmen, da die Ursache bekannt ist.",
+        "Den Eltern empfehlen, die ADHS-Medikation zu erhöhen.",
+        "Mehr Konsequenzen setzen, damit Kenan regelmäßig kommt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Neue Veränderungen im Verhalten brauchen einen neuen Blick. Wer alles auf eine bekannte Diagnose schiebt, übersieht leicht zusätzliche Belastungen wie Mobbing, familiäre Veränderungen oder eine beginnende Depression. Über Medikamente entscheidet die Ärztin, nicht die Schule, und Konsequenzen gehen an möglichen Ursachen vorbei."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beispiele beschreiben aufrechterhaltende Faktoren? (mehrere richtig)",
+      "optionen": [
+        "Ein Kind darf nach jedem Wutausbruch das Arbeitsblatt weglegen.",
+        "Die Mutter war in der Schwangerschaft schwer krank.",
+        "Ein ängstliches Kind wird bei jeder Präsentation entschuldigt und vermeidet sie deshalb dauerhaft.",
+        "Ein Jugendlicher schläft wegen nächtlicher Handynutzung nur fünf Stunden.",
+        "Kurz bevor die Schwierigkeiten begannen, ist die Großmutter gestorben."
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Aufrechterhaltende Faktoren wirken heute und lassen ein Problem fortbestehen: Das Weglegen des Blattes belohnt den Ausbruch, Vermeidung hält Angst aufrecht, Schlafmangel senkt dauerhaft die Belastbarkeit. Die Erkrankung in der Schwangerschaft ist eher ein verletzlich machender, der Tod der Großmutter eher ein auslösender Faktor – beide lassen sich nicht mehr ändern."
+    },
+    {
+      "art": "fall",
+      "fall": "In einer Fallbesprechung zu Mila (9) sammelt das Team ausschließlich Probleme: Wutausbrüche, fehlende Hausaufgaben, Streit in der Maison Relais. Die Liste wird immer länger, die Stimmung immer gedrückter.",
+      "frage": "Was fehlt aus Sicht des bio-psycho-sozialen Modells vor allem?",
+      "optionen": [
+        "Eine Diagnose, damit die Probleme einen Namen haben",
+        "Die Frage nach Stärken und Schutzfaktoren – Beziehungen, Interessen und Situationen, in denen es gut läuft",
+        "Eine noch längere Liste, damit nichts vergessen wird",
+        "Eine Klärung, wer schuld ist"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Stärken und Schutzfaktoren sind ein fester Teil der Analyse und oft der wichtigste Hebel für die Förderung. Eine Diagnose stellt das Team nicht, und sie würde die Frage nach Ressourcen nicht ersetzen. Längere Problemlisten und Schuldfragen führen nicht zu einem Plan."
+    },
+    {
+      "art": "fall",
+      "fall": "Das Team vermutet, dass die Streitigkeiten von Dario (10) in der Pause mit Hänseleien durch ältere Schüler zusammenhängen. Beobachtet hat das bisher niemand direkt.",
+      "frage": "Wie gehen Sie mit dieser Vermutung am besten um?",
+      "optionen": [
+        "Sie als Tatsache in den Bericht schreiben.",
+        "Sie verwerfen, weil Dario selbst zuschlägt.",
+        "Die Pausen gezielt beobachten – wann, wo und mit wem es Streit gibt – und die Vermutung danach bestätigen oder verwerfen.",
+        "Die älteren Schüler sofort bestrafen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Eine Hypothese ist eine Vermutung, die man prüft, etwa durch gezielte Beobachtung. Sie als Tatsache weiterzugeben oder vorschnell danach zu handeln, kann Kindern Unrecht tun. Dass Dario selbst zuschlägt, widerlegt die Vermutung nicht – beides kann zusammengehören."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Resilienz ist eine angeborene Eigenschaft: Ein Kind hat sie oder hat sie nicht.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Resilienz wird heute als dynamischer Prozess verstanden, der von Belastungen, Unterstützung und Lebensphase abhängt (Rutter, 2012). Ein Kind kann in einer Phase gut zurechtkommen und in einer anderen nicht – und Erwachsene können Schutzfaktoren gezielt stärken."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Bio-psycho-soziales Modell",
+      "erklaerung": "Denkmodell, nach dem Gesundheit, Krankheit und Verhalten aus dem Zusammenspiel biologischer, psychologischer und sozialer Einflüsse entstehen (Engel, 1977)."
+    },
+    {
+      "begriff": "Erblichkeit (Heritabilität)",
+      "erklaerung": "Schätzung, wie viel der Unterschiede eines Merkmals in einer Bevölkerung mit genetischen Unterschieden zusammenhängt. Sie sagt nichts über einzelne Personen und nichts über die Veränderbarkeit."
+    },
+    {
+      "begriff": "Passung (goodness of fit)",
+      "erklaerung": "Übereinstimmung zwischen den Eigenschaften eines Kindes, etwa seinem Temperament, und den Anforderungen und Möglichkeiten seiner Umgebung."
+    },
+    {
+      "begriff": "Vulnerabilität",
+      "erklaerung": "Verletzlichkeit oder Anfälligkeit für bestimmte Schwierigkeiten, zum Beispiel durch Veranlagung, frühe Erfahrungen oder Krankheit."
+    },
+    {
+      "begriff": "Schutzfaktor",
+      "erklaerung": "Einfluss, der die Wirkung von Belastungen abmildert, zum Beispiel eine verlässliche Bezugsperson, Freundschaften oder ein gutes Selbstwertgefühl."
+    },
+    {
+      "begriff": "Resilienz",
+      "erklaerung": "Gute Entwicklung trotz erheblicher Belastung. Heute als dynamischer Prozess verstanden, nicht als feste Eigenschaft."
+    },
+    {
+      "begriff": "Aufrechterhaltende Faktoren",
+      "erklaerung": "Einflüsse, die ein Problem in der Gegenwart fortbestehen lassen. Sie sind meist der wichtigste Ansatzpunkt für Förderung."
+    },
+    {
+      "begriff": "Mesosystem",
+      "erklaerung": "Nach Bronfenbrenner die Verbindungen zwischen den Lebensbereichen eines Kindes, etwa zwischen Familie, Schule und Maison Relais."
+    },
+    {
+      "begriff": "Äquifinalität und Multifinalität",
+      "erklaerung": "Verschiedene Wege können zum gleichen Ergebnis führen (Äquifinalität); derselbe Ausgangspunkt kann zu unterschiedlichen Entwicklungen führen (Multifinalität)."
+    },
+    {
+      "begriff": "Hypothese",
+      "erklaerung": "Begründete Vermutung, die durch Beobachtung geprüft und dann bestätigt oder verworfen wird."
+    }
+  ],
+  "quellen": [
+    "engel1977",
+    "bronfenbrenner1979",
+    "thomasChess1977",
+    "rutter2012",
+    "felitti1998",
+    "rutter2015",
+    "petermann2013"
+  ],
+  "verwandt": [
+    "risiko-schutz",
+    "entwicklung-0-18",
+    "temperament-persoenlichkeit",
+    "stress-gehirn",
+    "beobachten-dokumentieren"
+  ],
+  "toolbox": [
+    "abc-beobachtung",
+    "mein-staerkenprofil",
+    "was-meine-stimmung-beeinflusst",
+    "mein-unterstuetzungsnetz",
+    "elterngespraech-vorbereiten"
+  ]
+}

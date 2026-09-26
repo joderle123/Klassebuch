@@ -1,0 +1,372 @@
+{
+  "id": "lernstoerungen",
+  "bereich": "stoerungen",
+  "titel": "Lese-Rechtschreib- und Rechenstörung",
+  "untertitel": "Wenn Lesen, Schreiben oder Rechnen trotz guter Förderung nicht gelingt – erkennen, abgrenzen, fördern",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Kernmerkmale einer Lese-Rechtschreibstörung und einer Rechenstörung beschreiben und im Schulalltag wiedererkennen.",
+    "Sie können eine Lernstörung von allgemeinen Lernschwierigkeiten und von den normalen Hürden beim Lernen in einer Zweit- oder Drittsprache unterscheiden – und wissen, wo diese Unterscheidung schwierig wird.",
+    "Sie können erklären, wie wiederholtes Scheitern Motivation, Selbstwert und Verhalten verändert.",
+    "Sie kennen wirksame Förderansätze und die Möglichkeiten des Nachteilsausgleichs und können beides im Unterricht umsetzen.",
+    "Sie wissen, wann eine fachliche Abklärung sinnvoll ist und was Sie dazu beitragen können."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Diogo, 10 Jahre, Cycle 3.2",
+          "text": "Diogo spricht zu Hause Portugiesisch, auf dem Schulhof Luxemburgisch. Im Unterricht erzählt er lebhaft und klug über Tiere und Technik, in Mathematik gehört er zu den Besten. Soll er vorlesen, muss er plötzlich dringend auf die Toilette oder macht Faxen, bis die Klasse lacht. Liest er doch, entziffert er Wort für Wort und rät ab der Mitte: Aus „Wasserfall“ wird „Wasserflasche“. In seinen Diktaten steht dasselbe Wort auf einer Seite in drei verschiedenen Schreibweisen. Seit einem Jahr bekommt er Förderung in Deutsch, doch der Abstand zu den anderen wächst. Die Mutter erzählt, dass er auch portugiesische Kinderbücher nur mühsam liest, obwohl er Portugiesisch fließend spricht. Seit Kurzem sagt Diogo: „Lesen ist sowieso was für Babys.“",
+          "fragen": [
+            "Welche Beobachtungen sprechen eher für eine Sprachhürde, welche eher für eine Lernstörung?",
+            "Wie könnten die Faxen beim Vorlesen mit dem Lesen selbst zusammenhängen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Lernstörungen – im DSM-5-TR „spezifische Lernstörung“, in der ICD-11 „entwicklungsbedingte Lernstörung“ genannt – sind anhaltende, erhebliche Schwierigkeiten beim Erwerb grundlegender schulischer Fertigkeiten: Lesen, Rechtschreiben und schriftlicher Ausdruck, Rechnen. **Spezifisch** heißt: Die Schwierigkeiten betreffen umschriebene Bereiche und lassen sich nicht besser durch eine allgemeine intellektuelle Beeinträchtigung, fehlenden Unterricht, Seh- oder Hörprobleme oder mangelnde Kenntnis der Unterrichtssprache erklären.\n\nDie beiden häufigsten Formen sind die **Lese-Rechtschreibstörung** (LRS, oft auch Legasthenie oder Dyslexie genannt) und die **Rechenstörung** (Dyskalkulie). Sie zeigen sich, sobald diese Fertigkeiten in der Grundschule gelernt werden, und bleiben meist bis ins Erwachsenenalter bestehen – mit guter Förderung allerdings in deutlich milderer Form. Schätzungen liegen für beide Störungen meist zwischen etwa 3 und 7 von 100 Kindern, je nachdem, wie streng die Kriterien gefasst werden. Statistisch sitzt also in vielen Klassen mindestens ein betroffenes Kind. Beide Störungen treten häufig gemeinsam auf."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Lernstörung ist weder eine Frage der Intelligenz noch der Anstrengung. Kinder mit LRS oder Rechenstörung strengen sich oft mehr an als andere – und erreichen trotzdem weniger. Genau diese Erfahrung macht sie auf Dauer mutlos."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: wie Lernstörungen sich zeigen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Lesen lernen heißt: Buchstaben mit Lauten verbinden, Laute zu Silben und Wörtern verschmelzen und häufige Wörter und Wortteile irgendwann „auf einen Blick“ erkennen. Bei einer LRS bleibt dieser Prozess mühsam. In Sprachen mit recht regelmäßiger Schreibung wie dem Deutschen lesen viele betroffene Kinder nach einigen Schuljahren zwar weitgehend richtig, aber auffallend **langsam und stockend**; die **Rechtschreibung** bleibt fehlerhaft. Weil alle Energie ins Entziffern geht, bleibt wenig für das Verstehen übrig – das Kind versteht einen Text, den man ihm vorliest, deutlich besser als einen, den es selbst liest."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Mögliche Hinweise auf eine LRS nach Alter",
+          "spalten": ["Alter", "Was auffallen kann"],
+          "zeilen": [
+            ["Précoce und Cycle 1 (vor dem Lesenlernen)", "Mühe mit Reimen, Silbenklatschen und dem Heraushören von Anfangslauten; Buchstaben und ihre Laute werden trotz Übung schlecht behalten. Das ist noch kein sicherer Hinweis, aber ein Grund, genauer hinzuschauen – besonders, wenn Eltern oder Geschwister Leseprobleme hatten."],
+            ["Cycle 2", "Liest Buchstabe für Buchstabe, verschmilzt Laute nur mühsam, rät nach dem ersten Buchstaben; beim Schreiben fehlen Laute oder werden vertauscht."],
+            ["Cycle 3–4", "Liest deutlich langsamer als die anderen und ohne Betonung; versteht Gelesenes schlechter als Gehörtes; viele und wechselnde Rechtschreibfehler, auch bei geübten Wörtern; vermeidet Vorlesen."],
+            ["Lycée", "Langsames Lesen bei langen Texten und in Prüfungen; Rechtschreibung in allen Sprachen fehleranfällig; Fremdsprachen und ihre Schreibung fallen sehr schwer; Erschöpfung, Vermeidung, Rückstand in textlastigen Fächern."]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Hinweise auf eine Rechenstörung",
+          "punkte": [
+            "Kleine Mengen (drei, vier Gegenstände) werden abgezählt statt auf einen Blick erfasst.",
+            "Zählendes Rechnen bleibt lange die einzige Strategie – auch in Cycle 3 noch an den Fingern, oft in Einerschritten.",
+            "Einfache Aufgaben wie 3 + 5 oder 7 × 8 werden nicht auswendig gewusst, sondern jedes Mal neu ausgezählt.",
+            "Das Stellenwertsystem wird nicht verstanden: 35 und 53 werden verwechselt, diktiert man „dreihundertfünf“, entsteht „3005“.",
+            "Wenig Gefühl für Größen: Ob 48 näher bei 40 oder bei 50 liegt, bleibt unklar; unsinnige Ergebnisse fallen nicht auf.",
+            "Große Unsicherheit und Angst vor Mathematik bei ordentlichen Leistungen in anderen Fächern."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Kriterien in Alltagssprache.** DSM-5-TR und ICD-11 beschreiben Lernstörungen ähnlich. Die Leistungen im Lesen, Schreiben oder Rechnen liegen – gemessen mit standardisierten Tests – **deutlich unter dem, was für das Alter zu erwarten ist**. Die Schwierigkeiten sind **anhaltend**: Das DSM-5-TR verlangt, dass sie mindestens sechs Monate bestehen, **obwohl gezielt gefördert wurde**. Sie beginnen in der Schulzeit, werden manchmal aber erst sichtbar, wenn die Anforderungen steigen, etwa im Lycée. Sie beeinträchtigen Schule oder Alltag deutlich. Und sie sind **nicht besser erklärt** durch eine intellektuelle Beeinträchtigung, Seh- oder Hörprobleme, fehlenden oder unzureichenden Unterricht, psychosoziale Belastungen oder mangelnde Kenntnis der Unterrichtssprache.\n\nFrüher wurde zusätzlich verlangt, dass die Leistung deutlich unter dem liegt, was nach dem Intelligenzquotienten zu erwarten wäre (Diskrepanzkriterium). Dieses Kriterium ist umstritten: Das DSM-5-TR verzichtet darauf, die ICD-11 bezieht das allgemeine intellektuelle Niveau weiterhin ein. In Berichten begegnen Ihnen deshalb beide Denkweisen."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Lernstörung zeigt sich nicht an einem schlechten Zeugnis, sondern an einem Muster: anhaltend, umschrieben, trotz guter Förderung – und nicht besser durch etwas anderes erklärt."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen und Folgen für Motivation und Verhalten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Veranlagung und Informationsverarbeitung.** Lernstörungen sind Entwicklungsstörungen mit einer starken biologischen Grundlage. Die LRS tritt in Familien gehäuft auf; Kinder, deren Eltern oder Geschwister betroffen sind, haben ein deutlich erhöhtes Risiko (Schulte-Körne, 2010). Bei den meisten Kindern mit LRS ist die **phonologische Verarbeitung** beeinträchtigt: Sie nehmen die Laute in Wörtern schlechter wahr, können sie schlechter im Kopf behalten und verändern und rufen Namen von Buchstaben oder Bildern langsamer ab. Bei der Rechenstörung sehen viele Forschende den Kern im **Mengen- und Zahlverständnis**: Betroffene Kinder erfassen schon kleine Mengen unsicherer und verbinden Zahlen weniger sicher mit den Mengen, für die sie stehen (Butterworth, 2005). Diskutiert werden zusätzlich allgemeinere Schwächen, etwa des Arbeitsgedächtnisses; hier ist die Forschung noch nicht einig.\n\n**Umwelt.** Unterricht und Übung verursachen keine Lernstörung, bestimmen aber stark, wie deutlich sie sich auswirkt. Früher, systematischer Unterricht schützt. Wer spät Hilfe bekommt, liest weniger, übt weniger und fällt weiter zurück – der Abstand zu den anderen wächst von Jahr zu Jahr."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder mit Legasthenie sehen Buchstaben spiegelverkehrt – es ist im Grunde ein Sehproblem.",
+          "fakt": "Buchstaben wie b und d verwechseln am Anfang fast alle Kinder. Bei den meisten Kindern mit LRS liegt das Kernproblem nicht im Sehen, sondern in der Verarbeitung der Sprachlaute und ihrer Verbindung mit Buchstaben."
+        },
+        {
+          "art": "text",
+          "text": "**Folgen für Motivation und Verhalten.** Stellen Sie sich vor, Sie müssten jeden Tag vor Publikum in einer Schrift vorlesen, die Sie nur mühsam entziffern. Kinder mit LRS erleben das über Jahre. Viele entwickeln nachvollziehbare Schutzstrategien: Sie vermeiden, lenken ab, spielen den Klassenclown, „vergessen“ Hausaufgaben oder werden vor Diktaten krank. Andere ziehen sich still zurück und halten sich für dumm. Mit der Zeit steigt das Risiko für Prüfungsangst, Schulunlust, gedrückte Stimmung und körperliche Beschwerden wie Bauchweh vor Klassenarbeiten (Schulte-Körne, 2010). Wer immer wieder erlebt, dass Anstrengung nichts bringt, hört irgendwann auf, sich anzustrengen – Fachleute sprechen von **erlernter Hilflosigkeit**."
+        },
+        {
+          "art": "liste",
+          "titel": "Wie aus einer Lernstörung ein Verhaltensproblem werden kann",
+          "punkte": [
+            "Das Kind strengt sich an und scheitert trotzdem – öfter und sichtbarer als andere.",
+            "Es zieht den Schluss: „Egal, was ich tue, es klappt nicht.“",
+            "Es vermeidet Lesen oder Rechnen, übt dadurch weniger, und der Rückstand wächst.",
+            "Um das Gesicht zu wahren, stört es oder gibt sich gleichgültig („Ist mir doch egal“).",
+            "Die Umgebung reagiert auf das Verhalten mit Kritik und Strafe – die Lernstörung dahinter bleibt unerkannt."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Hinter Stören, Verweigern oder Schulvermeidung kann eine nie erkannte Lernstörung stecken. Fragen Sie deshalb bei jedem Kind mit Verhaltensproblemen auch: Kann es altersgemäß lesen, schreiben und rechnen?"
+        },
+        {
+          "art": "text",
+          "text": "**Begleitprobleme und Verlauf.** LRS und Rechenstörung kommen häufig zusammen vor, ebenso gemeinsam mit ADHS oder mit einer Sprachentwicklungsstörung. Lernstörungen bleiben meist bestehen: Mit Förderung wird Lesen genauer, bleibt aber oft langsamer als bei anderen. Wie es weitergeht, hängt wesentlich davon ab, ob ein Kind früh gezielte Förderung, Verständnis und faire Prüfungsbedingungen bekommt – und ob sein Selbstvertrauen die Schulzeit übersteht. Viele Erwachsene mit LRS oder Rechenstörung finden ihren Weg, oft in Bereichen, in denen ihre Stärken zählen."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: Lernstörung, Lernschwierigkeit oder Sprachhürde?",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nicht jedes Kind, das schlecht liest oder rechnet, hat eine Lernstörung. Schwache Leistungen sind eine Beobachtung, keine Diagnose. Mehrere Erklärungen können einzeln oder gemeinsam vorliegen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht",
+          "punkte": [
+            { "wie": "Allgemeine Lernschwierigkeiten", "unterschied": "Die Schwierigkeiten betreffen viele Fächer und das Verstehen, Denken und Behalten allgemein – nicht nur Lesen, Schreiben oder Rechnen. Dann geht es um das allgemeine Lernniveau (siehe Modul „Intellektuelle Beeinträchtigung, Lernbehinderung und Hochbegabung“)." },
+            { "wie": "Lücken durch fehlenden Unterricht", "unterschied": "Viele Fehlzeiten, Schulwechsel, Flucht oder ein anderes Schulsystem: Die Grundlagen wurden nie vermittelt. Mit gezieltem Unterricht holen diese Kinder oft zügig auf." },
+            { "wie": "Lernen in einer Zweit- oder Drittsprache", "unterschied": "Das Kind liest langsam oder versteht wenig, weil ihm Wortschatz und Grammatik der Unterrichtssprache fehlen. In seiner stärkeren Sprache und bei sprachfreien Aufgaben zeigen sich keine vergleichbaren Schwierigkeiten." },
+            { "wie": "Seh- oder Hörprobleme", "unterschied": "Leicht zu prüfen und oft übersehen: Wann wurden Sehen und Hören zuletzt untersucht?" },
+            { "wie": "ADHS", "unterschied": "Das Kind kann lesen und rechnen, macht aber Flüchtigkeitsfehler, verliert den Faden und schwankt stark von Tag zu Tag. Beides kommt oft gemeinsam vor – dann braucht es beide Blickwinkel." },
+            { "wie": "Angst, Belastung, Trauma", "unterschied": "Die Leistungen brechen nach einem Ereignis oder in einer belastenden Lebensphase ein; vorher lief das Lernen gut. Bei einer Lernstörung bestehen die Schwierigkeiten dagegen seit Beginn des Lesen- oder Rechnenlernens." }
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Lernen in einer Zweit- oder Drittsprache – die Luxemburger Situation.** In Luxemburg lernen die meisten Kinder auf Deutsch lesen und schreiben (in manchen Schulen inzwischen auch auf Französisch), später kommt die jeweils andere Sprache dazu. Für Kinder mit Luxemburgisch als Familiensprache ist Deutsch eine nah verwandte Sprache, für Kinder mit Portugiesisch, Französisch, Serbisch oder Arabisch oft die zweite oder dritte. Dass ein Kind in dieser Sprache länger braucht, ist normal und **keine** Lernstörung. Beide Klassifikationssysteme schließen die Diagnose ausdrücklich aus, wenn die Schwierigkeiten besser durch mangelnde Kenntnis der Unterrichtssprache erklärt werden.\n\nDie Gefahr liegt auf beiden Seiten: Man kann normales Sprachenlernen für eine Störung halten – oder eine echte LRS jahrelang übersehen, weil man alles auf die Sprache schiebt. Mehrsprachige Kinder mit LRS bekommen Hilfe deshalb oft spät. Einen sicheren Einzeltest gibt es nicht; entscheidend ist das Gesamtbild."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Eher Sprachenlernen oder eher Lernstörung? Hinweise, keine Beweise",
+          "spalten": ["Spricht eher für normales Lernen in der Zweitsprache", "Spricht eher für eine Lernstörung"],
+          "zeilen": [
+            ["Das Kind entziffert Wörter recht sicher, versteht aber viele davon nicht.", "Schon das Entziffern ist mühsam – auch bei Wörtern, die das Kind mündlich gut kennt."],
+            ["Mit wachsendem Wortschatz werden die Schwierigkeiten deutlich kleiner.", "Trotz guter Förderung wenig Fortschritt; der Abstand zu Kindern mit ähnlicher Sprachgeschichte wächst."],
+            ["In der stärkeren Sprache klappt Lesen und Schreiben gut (wenn das Kind darin lesen gelernt hat).", "Auch in der stärkeren Sprache gibt es deutliche Mühe mit Lesen und Schreiben."],
+            ["Reime, Silben und Anlaute gelingen in der Familiensprache gut.", "Auch einfache Lautspiele fallen schwer – selbst in der Familiensprache."],
+            ["Rechnen mit Material und ohne viel Sprache gelingt; Probleme vor allem bei Textaufgaben.", "Auch spracharme Aufgaben (Mengen vergleichen, Zahlen am Zahlenstrahl einordnen) gelingen kaum."]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Auch Rechnen hängt an der Sprache.** Textaufgaben, Fachbegriffe und Zahlwörter werden in einer Sprache gelernt. Im Deutschen und Luxemburgischen werden zweistellige Zahlen „verdreht“ gesprochen – bei „einundzwanzig“ kommen erst die Einer, dann die Zehner –, im Französischen und Portugiesischen nicht (vingt et un, vinte e um). Das Französische hat dafür ab 70 eigene Hürden (soixante-dix, quatre-vingts). Zahlendreher beim Schreiben diktierter Zahlen können also sprachlich bedingt sein. Auf eine Rechenstörung weist eher hin, wenn das Verständnis von Mengen und Zahlen selbst unsicher ist – unabhängig davon, in welcher Sprache gerechnet wird."
+        },
+        {
+          "art": "merke",
+          "text": "Vergleichen Sie ein mehrsprachiges Kind nicht nur mit dem Klassendurchschnitt, sondern mit Kindern, die eine ähnliche Sprachgeschichte und ähnlich viel Unterricht hatten. Und fragen Sie immer nach der stärkeren Sprache."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Förderung, Nachteilsausgleich und Selbstwert",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine Lernstörung verschwindet nicht durch mehr vom Gleichen. Wirksam ist Förderung, die **am Kern ansetzt, systematisch aufbaut und regelmäßig** stattfindet. Für die LRS ist am besten belegt: das systematische Üben der Buchstaben-Laut-Zuordnung und des Zusammenziehens von Lauten und Silben, verbunden mit viel angeleitetem Lesen und einem Rechtschreibtraining, das Regeln Schritt für Schritt aufbaut (Schulte-Körne, 2010). Bei der Rechenstörung geht es darum, den Zahlbegriff aufzubauen: Mengen erfassen, Zahlen mit Mengen verbinden, Zahlenstrahl und Stellenwerte verstehen und von zählenden zu geschickten Rechenstrategien kommen – anfangs mit Material, das nach und nach weggelassen wird. Warten Sie mit der Förderung nicht auf eine Diagnose."
+        },
+        {
+          "art": "tun",
+          "titel": "Was im Unterricht hilft",
+          "punkte": [
+            "Nicht unvorbereitet vorlesen lassen. Wenn Vorlesen, dann einen kurzen, vorher geübten Abschnitt – oder das Kind entscheidet, ob es liest.",
+            "Arbeitsaufträge vorlesen und mündlich erklären; Texte in größerer Schrift, klar gegliedert, mit genug Zeilenabstand.",
+            "Mehr Zeit geben oder weniger Aufgaben stellen, die dasselbe prüfen.",
+            "In Sachaufgaben den Inhalt würdigen, nicht die Rechtschreibung; was in Prüfungen gilt, regelt der Nachteilsausgleich.",
+            "Fehler gezielt statt flächendeckend markieren: lieber an einer Rechtschreibregel arbeiten als 30 rote Striche setzen.",
+            "Beim Rechnen Anschauungsmaterial (Rechenrahmen, Stellenwertmaterial, Zahlenstrahl) auch in höheren Klassen erlauben.",
+            "Hilfsmittel nutzen: Vorlesefunktion, Hörbücher, Diktierfunktion, Rechtschreibprüfung. Sie ersetzen die Förderung nicht, sichern aber den Zugang zum Stoff.",
+            "Stärken sichtbar machen: mündliche Beiträge, Projekte, Sport, Kunst, Technik."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Vor der Klasse unvorbereitet vorlesen lassen oder Fehler öffentlich besprechen.",
+            "„Du musst einfach mehr üben“ – ohne zu sagen, wie. Mehr vom Gleichen bringt vor allem mehr Frust.",
+            "Strafarbeiten wie „Schreib das Wort zwanzigmal“.",
+            "Kopfrechenwettbewerbe unter Zeitdruck: Für ein Kind mit Rechenstörung sind sie eine regelmäßige Bloßstellung.",
+            "Sätze wie „Das ist doch ganz leicht“. Das Kind hört: Wer daran scheitert, ist dumm.",
+            "Hausaufgaben, die zu Hause täglich zu stundenlangen Kämpfen führen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Nachteilsausgleich.** Er soll verhindern, dass eine Lernstörung verdeckt, was ein Kind in anderen Bereichen kann: Eine Schülerin soll in Geschichte zeigen können, was sie weiß, auch wenn sie langsam liest. Typische Anpassungen sind mehr Zeit, vorgelesene Aufgaben, ein Computer mit Vorlesefunktion, größere Schrift oder eine mündliche statt einer schriftlichen Prüfung. Die Lernziele bleiben dieselben – angepasst wird der Weg dorthin. In Luxemburg heißen solche Anpassungen „aménagements raisonnables“. Welche möglich sind, wer sie beantragt und wer entscheidet, ist geregelt; klären Sie den Weg im Einzelfall mit der Leitung und dem zuständigen Unterstützungsteam, in der Grundschule etwa dem ESEB.\n\n**Selbstwert.** Für viele Kinder ist die Erklärung eine Erleichterung: „Ich bin nicht dumm – mein Gehirn lernt Lesen anders.“ Trennen Sie klar zwischen Leistung und Person. Loben Sie Anstrengung und Fortschritt im Vergleich mit dem Kind selbst („Letzte Woche hast du für die Seite zehn Minuten gebraucht, heute sieben“), nicht nur im Vergleich mit der Klasse.\n\n**Eltern.** Manche Eltern machen sich Vorwürfe oder hatten selbst ähnliche Schwierigkeiten. Hilfreich sind Klarheit über die nächsten Schritte, eine begrenzte, verabredete Übungszeit zu Hause (lieber kurz und regelmäßig als lang und im Streit) und die Ermutigung, in der Familiensprache weiter vorzulesen und zu erzählen. Das stärkt Wortschatz und Freude an Geschichten und schadet dem Lernen der Unterrichtssprache nicht."
+        },
+        {
+          "art": "fall",
+          "titel": "Diogos neuer Plan",
+          "text": "Die Abklärung bestätigt eine LRS; die allgemeinen kognitiven Fähigkeiten liegen im Durchschnitt, Sehen und Hören sind unauffällig. Das Team vereinbart zweimal pro Woche Einzelförderung mit einem systematischen Lese-Rechtschreibprogramm. Im Unterricht liest Diogo nur vorbereitete Abschnitte vor; in den Sachfächern werden ihm Aufgaben vorgelesen. Die Lehrerin erklärt ihm, was eine LRS ist. Diogo sagt: „Also bin ich nicht dumm.“ Die Faxen beim Vorlesen werden seltener. In Mathematik erklärt er inzwischen anderen Kindern Aufgaben.",
+          "fragen": [
+            "Welche Maßnahmen setzen an der Lernstörung an, welche an ihren Folgen?",
+            "Woran würden Sie nach sechs Wochen erkennen, ob der Plan wirkt?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Abklärung und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine Lernstörung stellen Fachleute fest: Psychologinnen und Psychologen der Schule oder eines Kompetenzzentrums, im CDSE das Diagnostique-Team, außerhalb der Schule Kinderpsychologinnen oder die Kinder- und Jugendpsychiatrie. Für Lernstörungen gibt es in Luxemburg ein eigenes Kompetenzzentrum, das Centre pour le développement des apprentissages (CDA). Zur Abklärung gehören in der Regel ein ausführliches Gespräch mit Eltern und Kind (Entwicklung, Sprachen, Schulgeschichte, Familie), standardisierte Lese-, Rechtschreib- oder Rechentests, eine Einschätzung der allgemeinen kognitiven Fähigkeiten, die Überprüfung von Sehen und Hören, Informationen aus der Schule und ein Blick auf seelische Belastungen und Begleitstörungen.\n\nViele Tests sind an einsprachigen Kindern normiert. Bei mehrsprachigen Kindern müssen die Ergebnisse deshalb mit Blick auf die Sprachgeschichte gedeutet werden (siehe Modul „Testwerte lesen“).\n\n**Ihr Beitrag** sind genaue Beobachtungen und Arbeitsproben: datierte Diktate, freie Texte und Rechenwege über mehrere Monate, eine Beschreibung, welche Förderung wie lange stattfand und was sie bewirkt hat, und Beobachtungen zu Motivation und Verhalten in Lese- und Rechensituationen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Farbige Brillen, Augentraining oder spezielle Bewegungsübungen können eine Legasthenie beheben.",
+          "fakt": "Für solche Verfahren gibt es keinen überzeugenden Wirksamkeitsnachweis. Wirksam ist systematischer Unterricht im Lesen und Rechtschreiben, der an Lauten und Buchstaben ansetzt (Schulte-Körne, 2010). Eltern sollten sich vor teuren Angeboten fachlich beraten lassen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Eine Lernstörung kann man erst ab Cycle 3 erkennen – vorher lohnt sich nichts.",
+          "fakt": "Eine Diagnose braucht Zeit, Förderung nicht. Kinder mit frühen Schwierigkeiten sollten sofort gezielte Unterstützung bekommen. Wie sie darauf ansprechen, ist zugleich eine wichtige Information für eine spätere Abklärung."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und den Eltern über eine Abklärung, wenn ein Kind trotz gezielter Förderung über mehrere Monate kaum Fortschritte im Lesen, Schreiben oder Rechnen macht, deutlich hinter Kindern mit ähnlicher Sprachgeschichte zurückbleibt oder wenn Vermeidung, Angst oder Verhaltensprobleme rund um das Lernen zunehmen. Kommen gedrückte Stimmung, starke Schulangst oder Fehlzeiten hinzu, beziehen Sie früh die Psychologin oder den Psychologen ein."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche Beschreibung trifft eine spezifische Lernstörung am besten?",
+      "optionen": [
+        "Schwache Noten in mehreren Fächern über ein ganzes Schuljahr",
+        "Anhaltende, deutliche Schwierigkeiten im Lesen, Schreiben oder Rechnen trotz gezielter Förderung, die sich nicht besser durch andere Ursachen erklären lassen",
+        "Eine deutlich unterdurchschnittliche Intelligenz",
+        "Fehlende Motivation für Lesen und Rechnen"
+      ],
+      "richtig": [1],
+      "erklaerung": "Eine Lernstörung betrifft umschriebene Fertigkeiten, besteht trotz Förderung fort und ist nicht besser durch Intelligenz, Unterricht, Sinnesprobleme oder Sprache erklärt. Schwache Noten in vielen Fächern sprechen eher für allgemeine Lernschwierigkeiten oder andere Ursachen. Fehlende Motivation ist oft Folge, nicht Ursache der Lernstörung."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können auf eine Rechenstörung hinweisen? (mehrere richtig)",
+      "optionen": [
+        "Drei oder vier Gegenstände werden immer abgezählt statt auf einen Blick erkannt.",
+        "Das Kind rechnet in Cycle 3 noch fast alles zählend an den Fingern.",
+        "Das Kind scheitert an Textaufgaben, weil es Wörter der Unterrichtssprache nicht kennt, rechnet reine Zahlaufgaben aber sicher.",
+        "Diktiert man „dreihundertfünf“, schreibt das Kind „3005“ und bemerkt nichts.",
+        "Das Kind rechnet langsam, aber sicher und mit geschickten Strategien."
+      ],
+      "richtig": [0, 1, 3],
+      "erklaerung": "Unsicheres Erfassen kleiner Mengen, dauerhaft zählendes Rechnen und Fehler im Stellenwertverständnis sind typische Hinweise. Scheitern nur an Textaufgaben bei sicherem Rechnen spricht eher für eine Sprachhürde. Langsames, aber sicheres Rechnen mit geschickten Strategien ist kein Hinweis auf eine Rechenstörung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein mehrsprachiges Kind in der Unterrichtssprache langsam liest, sollte man mit Förderung und Abklärung grundsätzlich warten, bis es die Sprache sicher beherrscht.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Wer grundsätzlich wartet, übersieht echte Lernstörungen bei mehrsprachigen Kindern oft über Jahre. Hinweise liefern die stärkere Sprache, einfache Lautspiele und der Vergleich mit Kindern ähnlicher Sprachgeschichte. Förderung sollte ohnehin sofort beginnen."
+    },
+    {
+      "art": "fall",
+      "fall": "Ana (9) lebt seit einem Jahr in Luxemburg. In Portugal konnte sie gut lesen und schreiben, wie ihre alten Hefte zeigen. Deutsche Wörter liest sie recht sicher vor, versteht aber vieles nicht. Von Monat zu Monat wird es besser.",
+      "frage": "Welche Einschätzung passt am besten?",
+      "optionen": [
+        "Wahrscheinlich eine LRS; eine Abklärung sollte sofort beantragt werden.",
+        "Ana sollte nicht mehr auf Portugiesisch lesen, damit sie sich ganz auf Deutsch konzentriert.",
+        "Das Muster passt zum normalen Lernen einer neuen Sprache: Sprachförderung fortsetzen und die Entwicklung beobachten.",
+        "Ana ist wenig motiviert; mehr Hausaufgaben würden helfen."
+      ],
+      "richtig": [2],
+      "erklaerung": "Ana liest in ihrer stärkeren Sprache gut, entziffert auch deutsche Wörter sicher und macht stetige Fortschritte – das spricht für normales Sprachenlernen, nicht für eine LRS. Die Familiensprache aufzugeben, schadet eher, als dass es hilft. Für mangelnde Motivation gibt es keinen Hinweis."
+    },
+    {
+      "art": "fall",
+      "fall": "Kevin (13, 7e) stört in Deutsch und Französisch ständig, macht Witze, wenn er vorlesen soll, und hat oft keine Hausaufgaben. In Mathematik und Sport ist er unauffällig. Bisher hat er dafür vor allem Strafarbeiten bekommen.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Prüfen, ob hinter dem Verhalten Schwierigkeiten beim Lesen und Schreiben stecken: Arbeitsproben ansehen, frühere Berichte erfragen und das Vorgehen mit Leitung und Eltern abstimmen.",
+        "Die Strafen erhöhen, weil er in Mathematik zeigt, dass er sich benehmen kann.",
+        "Ihn dauerhaft vom Vorlesen befreien und sonst nichts verändern.",
+        "Den Eltern mitteilen, dass Kevin eine Legasthenie hat."
+      ],
+      "richtig": [0],
+      "erklaerung": "Das Verhalten tritt gezielt in den Sprachfächern und beim Vorlesen auf – ein typisches Muster, wenn eine Lernstörung verdeckt wird. Sinnvoll ist, die Lernseite genauer anzuschauen und abgestimmt vorzugehen. Mehr Strafen verstärken die Vermeidung; eine Befreiung ohne Klärung verschiebt nur das Problem, und eine Diagnose stellen pädagogische Fachkräfte nicht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Förderung ist bei einer Lese-Rechtschreibstörung am besten belegt?",
+      "optionen": [
+        "Lesen mit farbigen Folien oder Brillen",
+        "Möglichst viele Diktate, damit sich die Wörter einprägen",
+        "Gleichgewichts- und Bewegungsübungen zur besseren Vernetzung der Gehirnhälften",
+        "Systematisches Üben der Buchstaben-Laut-Zuordnung, des Lesens von Silben und Wörtern und der Rechtschreibregeln"
+      ],
+      "richtig": [3],
+      "erklaerung": "Am besten belegt sind systematische, an Lauten und Buchstaben ansetzende Programme mit viel angeleitetem Lesen. Für farbige Folien oder Bewegungsprogramme fehlt ein überzeugender Wirksamkeitsnachweis. Viele Diktate ohne gezielten Aufbau sind mehr vom Gleichen und vermehren vor allem Misserfolge."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen sind typische Formen eines Nachteilsausgleichs? (mehrere richtig)",
+      "optionen": [
+        "Mehr Zeit bei Prüfungen",
+        "Aufgabenstellungen werden vorgelesen",
+        "Die Lernziele werden auf das Niveau einer tieferen Klasse gesenkt",
+        "Ein Computer mit Vorlesefunktion",
+        "Das Kind wird von allen Prüfungen befreit"
+      ],
+      "richtig": [0, 1, 3],
+      "erklaerung": "Ein Nachteilsausgleich passt den Weg an, nicht das Ziel: mehr Zeit, vorgelesene Aufgaben oder technische Hilfen sind typisch. Gesenkte Lernziele oder eine Befreiung von allen Prüfungen gehören nicht dazu. In Luxemburg laufen solche Anpassungen als „aménagements raisonnables“ über ein geregeltes Verfahren."
+    },
+    {
+      "art": "fall",
+      "fall": "Lina (8, Cycle 3.1) weint vor jedem Diktat und hat an Diktattagen morgens oft Bauchweh. Sie übt zu Hause täglich über eine Stunde mit ihrer Mutter, oft unter Tränen. Die Diktate bleiben voller Fehler.",
+      "frage": "Was ist am hilfreichsten?",
+      "optionen": [
+        "Der Mutter raten, die Übungszeit auf zwei Stunden zu verlängern.",
+        "Das Bauchweh nicht beachten, damit Lina nicht lernt, Diktaten auszuweichen.",
+        "Mit Eltern und Leitung besprechen: Übungszeit begrenzen, den Lernstand fachlich klären lassen, Druck aus den Diktaten nehmen und Fortschritte mit Lina selbst vergleichen.",
+        "Lina vorsorglich eine Klasse wiederholen lassen."
+      ],
+      "richtig": [2],
+      "erklaerung": "Anhaltende Rechtschreibprobleme trotz viel Übung und körperliche Angstzeichen verlangen eine fachliche Klärung und Entlastung. Mehr vom Gleichen verstärkt Frust und Streit. Das Bauchweh zu übergehen, übersieht die Angst, und eine Klassenwiederholung ersetzt keine gezielte Förderung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Im Deutschen und Luxemburgischen werden zweistellige Zahlen „verdreht“ gesprochen (einundzwanzig), im Französischen und Portugiesischen nicht. Was folgt daraus?",
+      "optionen": [
+        "Zahlendreher beweisen eine Rechenstörung.",
+        "Zahlendreher können auch sprachlich bedingt sein; wichtiger ist, ob das Kind Mengen und Stellenwerte versteht.",
+        "Kinder mit Französisch als Familiensprache können auf Deutsch nicht rechnen lernen.",
+        "Zahlwörter spielen beim Rechnen keine Rolle."
+      ],
+      "richtig": [1],
+      "erklaerung": "Die Sprechweise der Zahlen beeinflusst typische Fehler beim Schreiben diktierter Zahlen. Aussagekräftiger für eine Rechenstörung ist das Verständnis von Mengen, Zahlenstrahl und Stellenwerten. Mehrsprachige Kinder lernen sehr wohl rechnen, und Zahlwörter spielen durchaus eine Rolle."
+    },
+    {
+      "art": "fall",
+      "fall": "Samir (7, Cycle 2.2) kennt nach einem Jahr Leseunterricht erst wenige Buchstaben und kann kaum reimen, auch nicht in seiner Familiensprache Französisch. Sein Vater erzählt, er selbst habe in der Schule große Mühe mit dem Lesen gehabt. Die Lehrerin möchte bis Cycle 3 abwarten.",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Gezielte Förderung sofort beginnen, Fortschritte dokumentieren und mit Eltern, Leitung und Team über eine Abklärung sprechen.",
+        "Abwarten, weil vor Cycle 3 ohnehin nichts festgestellt werden kann.",
+        "Den Eltern raten, zu Hause nur noch Deutsch zu sprechen.",
+        "Samir das Jahr mit demselben Unterricht wiederholen lassen."
+      ],
+      "richtig": [0],
+      "erklaerung": "Schwierigkeiten auch in der Familiensprache, Mühe mit Lautspielen und ein familiäres Risiko sind ernst zu nehmende Hinweise. Förderung darf nicht auf eine Diagnose warten; ihr Verlauf hilft zugleich bei der Abklärung. Der Verzicht auf die Familiensprache hilft nicht, und dasselbe Programm noch einmal ist mehr vom Gleichen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Eine Lese-Rechtschreibstörung bleibt häufig bis ins Erwachsenenalter bestehen; mit guter Förderung werden ihre Auswirkungen aber meist deutlich geringer.",
+      "richtig": [0],
+      "erklaerung": "Richtig. Lernstörungen sind in der Regel dauerhaft; das Lesen bleibt oft langsamer als bei anderen. Frühe, systematische Förderung, faire Prüfungsbedingungen und ein geschütztes Selbstwertgefühl verbessern die Aussichten aber erheblich."
+    }
+  ],
+  "glossar": [
+    { "begriff": "Lese-Rechtschreibstörung (LRS)", "erklaerung": "Anhaltende, erhebliche Schwierigkeiten beim Lesen und/oder Rechtschreiben, die nicht besser durch Intelligenz, Unterricht, Sinnesprobleme oder die Unterrichtssprache erklärt sind. Auch Legasthenie oder Dyslexie genannt." },
+    { "begriff": "Rechenstörung (Dyskalkulie)", "erklaerung": "Anhaltende, erhebliche Schwierigkeiten beim Erwerb von Mengen- und Zahlverständnis, Rechenfakten und Rechenverfahren." },
+    { "begriff": "Phonologische Verarbeitung", "erklaerung": "Die Fähigkeit, Sprachlaute wahrzunehmen, im Gedächtnis zu halten und gedanklich zu verändern (z. B. Reimen, Anlaute heraushören). Bei den meisten Kindern mit LRS beeinträchtigt." },
+    { "begriff": "Leseflüssigkeit", "erklaerung": "Schnelles, genaues und betontes Lesen. Im Deutschen bleibt bei einer LRS oft vor allem das Lesetempo deutlich zurück." },
+    { "begriff": "Stellenwertsystem", "erklaerung": "Die Regel, dass der Wert einer Ziffer von ihrer Stelle abhängt (Einer, Zehner, Hunderter). Unsicherheit darin ist ein Kernproblem vieler Kinder mit Rechenstörung." },
+    { "begriff": "Nachteilsausgleich", "erklaerung": "Anpassung der Bedingungen (z. B. mehr Zeit, vorgelesene Aufgaben), damit eine Beeinträchtigung nicht verdeckt, was ein Kind kann. Die Lernziele bleiben gleich. In Luxemburg „aménagements raisonnables“." },
+    { "begriff": "Diskrepanzkriterium", "erklaerung": "Frühere Forderung, dass die Schulleistung deutlich unter dem nach dem IQ erwarteten Niveau liegt. Im DSM-5-TR entfallen; die ICD-11 berücksichtigt das allgemeine intellektuelle Niveau weiterhin, ohne feste Rechenregel." },
+    { "begriff": "Erlernte Hilflosigkeit", "erklaerung": "Die nach vielen Misserfolgen gewonnene Überzeugung, durch eigenes Handeln nichts bewirken zu können; führt zu Rückzug und nachlassender Anstrengung." }
+  ],
+  "quellen": ["dsm5tr", "icd11", "schulteKoerne2010", "butterworth2005", "rutter2015", "petermann2013"],
+  "verwandt": ["intelligenz", "sprache-mutismus", "adhs", "testwerte-lesen", "lernen-verhalten", "inklusion-luxemburg"],
+  "toolbox": ["noch-nicht", "fehler-sind-helfer", "mein-staerkenprofil", "pruefungsangst", "schritt-fuer-schritt"]
+}

@@ -1,0 +1,575 @@
+{
+  "id": "inklusion-luxemburg",
+  "bereich": "system",
+  "titel": "Inklusion und Unterstützung in Luxemburg",
+  "untertitel": "Grundgedanke, Rollen und Wege der Unterstützung – aus Sicht eines Kompetenzzentrums",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können den Grundgedanken schulischer Inklusion erklären und von bloßer Integration unterscheiden.",
+    "Sie können die Ebenen der Unterstützung in Luxemburg – Klasse, Schule, Region, nationale Ebene – und die Rollen der wichtigsten Beteiligten in Grundzügen beschreiben.",
+    "Sie können ein gestuftes Vorgehen von der Förderung für alle bis zur intensiven Einzelunterstützung an Beispielen erläutern.",
+    "Sie können die Zusammenarbeit mit Schule und Eltern so gestalten, dass Verantwortung geteilt statt abgegeben wird.",
+    "Sie erkennen typische Stolpersteine und klären Einzelheiten zu Abläufen und Zuständigkeiten mit Ihrer Leitung."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: der Grundgedanke der Inklusion",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Tom, 9 Jahre, Cycle 3.1",
+          "text": "Tom hat in dieser Woche dreimal im Unterricht geschrien, Material durch den Raum geworfen und ist einmal aus dem Schulgebäude gelaufen. Die Klassenlehrerin ist erschöpft und sagt zur I-EBS: „Ich habe noch 18 andere Kinder. Der gehört in eine Spezialklasse – wann holt ihn das Kompetenzzentrum endlich ab?“ Toms Eltern haben Angst, dass ihr Sohn „abgeschoben“ wird. Die I-EBS schlägt vor, zuerst gemeinsam anzuschauen, in welchen Situationen es gut geht und was Tom und seine Lehrerin jetzt brauchen.",
+          "fragen": [
+            "Wer ist in dieser Situation wofür verantwortlich?",
+            "Was bräuchten Tom, seine Lehrerin und seine Eltern, um wieder handlungsfähig zu werden?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Inklusion** bedeutet, dass alle Kinder und Jugendlichen gemeinsam lernen und am Schulleben teilhaben können – auch jene mit besonderem Förderbedarf (in Luxemburg spricht man von „besoins éducatifs particuliers ou spécifiques“). Der Kern ist ein Perspektivwechsel: Nicht das Kind muss beweisen, dass es in die Schule passt, sondern die Schule richtet sich so ein, dass möglichst alle Kinder darin Platz finden. Grundlage sind internationale Vereinbarungen wie die UN-Behindertenrechtskonvention, zu der sich auch Luxemburg verpflichtet hat, und die luxemburgische Schulgesetzgebung. In den vergangenen Jahren wurde die Unterstützung für Kinder mit besonderen Förderbedürfnissen neu geordnet: Neben der Hilfe in Klasse und Schule gibt es regionale Teams und nationale Kompetenzzentren wie das CDSE.\n\n**Teilhabe** ist dabei mehr als Anwesenheit. Ein Kind, das zwar in der Klasse sitzt, aber keine Freunde hat, wenig versteht oder täglich vor die Tür geschickt wird, ist dabei, aber nicht beteiligt. Teilhabe heißt: dazugehören, mitlernen, mitreden, mitgestalten.\n\n**Der Blick auf das ganze System.** Bronfenbrenner (1979) beschreibt die Entwicklung eines Kindes als eingebettet in mehrere Ebenen: die unmittelbaren Lebenswelten wie Klasse, Familie oder Maison Relais, die Verbindungen zwischen ihnen, Umfelder, die das Kind indirekt beeinflussen – etwa der Arbeitsplatz der Eltern oder Entscheidungen von Gremien –, und schließlich die Werte und Gesetze einer Gesellschaft. Für die Inklusion heißt das: Schwierigkeiten entstehen nicht allein „im Kind“, sondern im Zusammenspiel von Kind und Umfeld – und dort lassen sie sich auch beeinflussen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Integration oder Inklusion?",
+          "punkte": [
+            {
+              "wie": "Integration",
+              "unterschied": "Ein Kind mit Förderbedarf wird in eine bestehende Klasse aufgenommen und soll sich anpassen. Die Unterstützung hängt an ihm und findet oft außerhalb des Unterrichts statt."
+            },
+            {
+              "wie": "Inklusion",
+              "unterschied": "Vielfalt gilt als Normalfall. Unterricht, Räume und Abläufe werden so gestaltet, dass möglichst alle teilhaben können; Unterstützung findet so weit wie möglich im gemeinsamen Alltag statt."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Inklusion heißt nicht, dass jedes Kind zu jeder Zeit im selben Raum lernt. Sie heißt: so viel Gemeinsamkeit wie möglich, so viel spezialisierte Unterstützung wie nötig – mit dem Ziel, dass jedes Kind dazugehört."
+        }
+      ]
+    },
+    {
+      "titel": "Wer macht was? Rollen im Unterstützungssystem",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das luxemburgische Unterstützungssystem ist in Ebenen aufgebaut, die sich ergänzen. Die folgende Übersicht vereinfacht bewusst: Im Enseignement fondamental und im Lycée sind die Strukturen unterschiedlich organisiert, und Einzelheiten können sich ändern."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Ebenen der Unterstützung (vereinfacht)",
+          "spalten": [
+            "Ebene",
+            "Wer (Beispiele)",
+            "Typische Aufgaben"
+          ],
+          "zeilen": [
+            [
+              "Klasse",
+              "Lehrkraft, Educateurs, weitere Fachkräfte im Unterricht",
+              "Beziehung, Klassenführung, differenzierter Unterricht, Beobachtung, Kontakt zu den Eltern"
+            ],
+            [
+              "Schule",
+              "In der Grundschule die I-EBS und das Schulteam; im Lycée unter anderem der SePAS und die für Inklusion zuständigen Ansprechpersonen",
+              "Lehrkräfte beraten, Förderung an der Schule planen und abstimmen, Unterstützung vor Ort"
+            ],
+            [
+              "Region",
+              "Im Enseignement fondamental die ESEB der jeweiligen Direction de région",
+              "Abklärung und Begleitung, Beratung von Lehrkräften und Eltern, Unterstützung der Schulen"
+            ],
+            [
+              "National",
+              "Die Kompetenzzentren, darunter das CDSE, und die Commission nationale d’inclusion (CNI)",
+              "Spezialisierte Diagnostik, Beratung, Begleitung und spezialisierte Beschulung; Entscheidungen über weitergehende Unterstützung in festgelegten Verfahren"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Die Lehrkraft** bleibt auf allen Ebenen die wichtigste Person im Schulalltag des Kindes: Sie kennt die Klasse, gestaltet den Unterricht und trägt die Verantwortung für das Lernen in ihrer Gruppe. Zusätzliche Unterstützung ergänzt ihre Arbeit, sie ersetzt sie nicht. **Die I-EBS** ist in der Grundschule eine zentrale Ansprechperson für Kinder mit besonderen Förderbedürfnissen und berät die Lehrkräfte vor Ort. **Die ESEB** bringt auf regionaler Ebene weitere Fachkompetenz ein, etwa aus Psychologie und Sonderpädagogik.\n\n**Die Kompetenzzentren** sind jeweils auf einen Förderschwerpunkt spezialisiert – etwa Lernen, Sprache, Autismus, motorische oder intellektuelle Entwicklung. Das **CDSE** ist das Kompetenzzentrum für die sozial-emotionale Entwicklung. Die **Commission nationale d’inclusion (CNI)** befasst sich mit Kindern und Jugendlichen, deren Förderbedarf über die Möglichkeiten von Schule und Region hinausgeht, etwa wenn eine längerfristige Unterstützung durch ein Kompetenzzentrum in Frage kommt. Die Eltern sind an diesen Verfahren beteiligt."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Angebote des CDSE im Überblick",
+          "spalten": [
+            "Angebot",
+            "Worum es geht"
+          ],
+          "zeilen": [
+            [
+              "Diagnostique",
+              "Fachliche Abklärung der sozial-emotionalen Entwicklung und des Förderbedarfs (Diagnostic spécialisé) als Grundlage für Ziele und Empfehlungen"
+            ],
+            [
+              "ISA",
+              "Begleitung von Schülerinnen und Schülern in ihrem schulischen Umfeld, in Zusammenarbeit mit Lehrkräften und Eltern"
+            ],
+            [
+              "Beratung (Conseil et guidance)",
+              "Beratung von Fachkräften und von Eltern"
+            ],
+            [
+              "Annexe, Classes de participation, CST",
+              "Formen der spezialisierten Beschulung, jeweils mit eigenem Rahmen und Standort"
+            ]
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Welche Angebote für ein Kind in Frage kommen, wie sie angefragt werden und wer darüber entscheidet, ist in festgelegten Abläufen geregelt. Details zu Abläufen und Zuständigkeiten klären Sie mit Ihrer Leitung."
+        }
+      ]
+    },
+    {
+      "titel": "Wege der Unterstützung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Schulsysteme setzen auf eine **gestufte Unterstützung**: eine gute Grundlage für alle, zusätzliche Hilfe für einige, intensive und individuelle Unterstützung für wenige. Die Stufen bauen aufeinander auf – auch ein Kind, das intensiv begleitet wird, profitiert weiter von gutem Unterricht für alle. Ein bekanntes Beispiel für die mittlere Stufe ist Check-in/Check-out: Das Kind beginnt und beendet den Tag bei einer festen Bezugsperson und erhält über den Tag Rückmeldungen auf einer Tageskarte, die auch nach Hause geht (Crone et al., 2010)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Stufen der Unterstützung",
+          "spalten": [
+            "Stufe",
+            "Für wen",
+            "Beispiele"
+          ],
+          "zeilen": [
+            [
+              "1. Für alle",
+              "Alle Kinder einer Klasse oder Schule",
+              "Verlässliche Beziehungen, klare Abläufe und Regeln, Klassenrat, Programme zum sozial-emotionalen Lernen"
+            ],
+            [
+              "2. Für einige",
+              "Kinder, denen die Angebote für alle nicht reichen",
+              "Kleingruppen, Tageskarte mit Rückmeldung (Check-in/Check-out), gezielte Beratung der Lehrkraft"
+            ],
+            [
+              "3. Für wenige",
+              "Kinder mit großem, anhaltendem Förderbedarf",
+              "Individueller Förderplan, Begleitung durch ESEB oder Kompetenzzentrum, spezialisierte Beschulung"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Förderung für alle lohnt sich.** Eine große Übersichtsarbeit zeigt, dass Programme zum sozial-emotionalen Lernen, die im regulären Unterricht mit allen Kindern durchgeführt werden, soziale und emotionale Fähigkeiten, das Verhalten und sogar die Schulleistungen verbessern – und dass Lehrkräfte sie wirksam umsetzen können (Durlak et al., 2011). Stufe 1 ist also keine Vorstufe, die man überspringt, sondern das Fundament."
+        },
+        {
+          "art": "liste",
+          "titel": "Ein möglicher Weg bei anhaltenden Schwierigkeiten",
+          "punkte": [
+            "Genau beobachten und dokumentieren: Was genau geschieht, wann, wie oft, in welchen Situationen?",
+            "Anpassungen in der Klasse ausprobieren und nach einigen Wochen auswerten.",
+            "Früh mit den Eltern sprechen – mit Beobachtungen, nicht mit Etiketten.",
+            "Sich an der Schule beraten: in der Grundschule mit der I-EBS, im Lycée mit den zuständigen Ansprechpersonen.",
+            "Bei Bedarf regionale Unterstützung einbeziehen.",
+            "Reicht das nicht, kann auf dem vorgesehenen Weg und gemeinsam mit den Eltern eine Unterstützung durch ein Kompetenzzentrum angefragt werden.",
+            "Gemeinsame Ziele in einem Förderplan festhalten und regelmäßig überprüfen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Dieser Weg ist kein starres Nacheinander. In einer Krise oder bei einer Gefährdung wird sofort gehandelt, und manche Kinder brauchen von Anfang an mehr als die erste Stufe. Details zu Abläufen und Zuständigkeiten klären Sie mit Ihrer Leitung.\n\n**Der Förderplan als roter Faden.** Wo mehrere Fachleute beteiligt sind, braucht es wenige gemeinsame, konkret beschriebene Ziele, klare Zuständigkeiten und feste Termine zur Auswertung. Im CDSE werden Förderziele unter anderem aus einer entwicklungspädagogischen Einschätzung mit dem ELDiB abgeleitet (Bergsson & Luckfiel, 1998). Entscheidend ist, dass alle Beteiligten – Lehrkraft, Eltern, Fachkräfte und, wo möglich, das Kind selbst – die Ziele kennen und verstehen.\n\n**Angemessene Vorkehrungen.** Manche Kinder brauchen Anpassungen, um zeigen zu können, was sie wissen – etwa mehr Zeit, einen ruhigen Raum oder Aufgaben in Teilschritten bei Prüfungen. In Luxemburg heißen solche Anpassungen „aménagements raisonnables“; über sie wird in einem vorgesehenen Verfahren entschieden. Wie das im Einzelfall geht, weiß Ihre Leitung."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ohne Diagnose kann man einem Kind nicht helfen.",
+          "fakt": "Unterstützung in der Klasse beginnt mit genauer Beobachtung und passenden Anpassungen – sofort und ohne Diagnose. Eine fachliche Abklärung hilft, Schwierigkeiten zu verstehen und intensivere Maßnahmen zu planen; sie ist aber keine Voraussetzung dafür, dass Erwachsene handeln."
+        }
+      ]
+    },
+    {
+      "titel": "Zusammenarbeit mit Schule und Eltern",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Fachkräfte eines Kompetenzzentrums arbeiten oft in Schulen, die nicht ihre eigenen sind. Sie kommen als Partner – nicht als Kontrolleure und nicht als „Feuerwehr“, die das Problem mitnimmt. Die Verantwortung für das Kind im Schulalltag bleibt bei der Schule; das Kompetenzzentrum bringt zusätzliches Fachwissen, Zeit und einen Blick von außen ein. Das gelingt nur, wenn von Anfang an klar ist, wer was erwartet und wer was übernimmt. Diese gemeinsame Klärung nennt man **Auftragsklärung**."
+        },
+        {
+          "art": "tun",
+          "titel": "Fragen für die Auftragsklärung",
+          "punkte": [
+            "Wer hat die Unterstützung angefragt, und was erhofft sich jede Seite davon?",
+            "Welches Ziel soll in den nächsten Wochen erreicht werden – konkret und beobachtbar?",
+            "Wer übernimmt was: Lehrkraft, I-EBS, Fachkraft des Kompetenzzentrums, Eltern?",
+            "Wie und wie oft tauschen wir uns aus, und wer ist Ansprechperson?",
+            "Wann werten wir gemeinsam aus, ob die Unterstützung wirkt?"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Gute Zusammenarbeit mit der Schule",
+          "punkte": [
+            "Die Erfahrung der Lehrkraft würdigen und nach dem fragen, was schon gelingt.",
+            "Im Unterricht präsent sein, statt nur Berichte zu schicken.",
+            "Verständlich sprechen und schreiben: keine Abkürzungen und kein Fachjargon ohne Erklärung.",
+            "Empfehlungen machbar halten – lieber zwei umsetzbare Ideen als zehn.",
+            "Vertraulichkeit wahren: Informationen nur mit Einverständnis der Eltern und nur so viel wie nötig weitergeben."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Eltern als Partner.** Eltern kennen ihr Kind am längsten. Sie sind an Entscheidungen über besondere Unterstützung beteiligt, und viele Schritte – etwa eine Abklärung oder die Weitergabe von Informationen – sind nur mit ihrem Einverständnis möglich. Viele Eltern haben Sorgen, wenn ein Kompetenzzentrum ins Spiel kommt: dass ihr Kind „abgestempelt“ wird, dass es die Klasse verlassen muss, dass man ihnen die Schuld gibt. Diese Sorgen verdienen Respekt. Hilfreich ist, in einfachen Worten zu erklären, was eine Beratung, eine Abklärung oder eine Begleitung bedeutet – und was nicht –, bei Bedarf mit Dolmetschen.\n\n**Das Kind beteiligen.** Kinder und Jugendliche haben nach der UN-Kinderrechtskonvention das Recht, bei Entscheidungen, die sie betreffen, gehört zu werden. Fragen Sie altersgerecht, was ihnen hilft, was sie sich wünschen und was sie selbst beitragen wollen. Vereinbarungen, an denen ein Kind mitgewirkt hat, trägt es oft eher mit.\n\n**Weitere Dienste.** Viele Kinder haben weitere wichtige Erwachsene: Fachkräfte der Maison Relais, Therapeutinnen und Therapeuten, die Kinderärztin, manchmal Dienste der Kinder- und Jugendhilfe. Ein Austausch kann viel bewirken, etwa damit in Schule und Maison Relais dieselben Absprachen gelten. Er setzt das Einverständnis der Eltern voraus; Ausnahmen im Kinderschutz klärt die Leitung."
+        },
+        {
+          "art": "fall",
+          "titel": "Die erste Begegnung",
+          "text": "Leila, Fachkraft des CDSE, kommt zum ersten Mal an Toms Schule. Die Lehrerin begrüßt sie mit: „Endlich! Nehmen Sie ihn mit, wenn er wieder ausrastet?“ Leila fragt zuerst, was die Lehrerin schon ausprobiert hat und in welchen Momenten es mit Tom gut geht. Gemeinsam vereinbaren sie ein Ziel für die nächsten vier Wochen – Tom zeigt eine Karte, wenn er eine Pause braucht –, legen fest, wer was übernimmt, und planen ein kurzes Treffen mit den Eltern. Am Ende sagt die Lehrerin: „Ich dachte, Sie übernehmen ihn. Aber so ist es eigentlich besser.“",
+          "fragen": [
+            "Welche Elemente einer Auftragsklärung erkennen Sie?",
+            "Was hätte sich verändert, wenn Leila Tom bei jedem Ausbruch einfach „mitgenommen“ hätte?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Typische Stolpersteine",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Inklusion scheitert selten an bösem Willen, eher an Missverständnissen, fehlender Abstimmung und Überlastung. Einige Stolpersteine begegnen Fachkräften immer wieder – es hilft, sie zu kennen und früh anzusprechen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Stolpersteine – und was hilft",
+          "spalten": [
+            "Stolperstein",
+            "Woran Sie ihn erkennen",
+            "Was hilft"
+          ],
+          "zeilen": [
+            [
+              "Verantwortung abgeben",
+              "„Jetzt ist das Kompetenzzentrum zuständig.“",
+              "Auftragsklärung: Die Schule bleibt verantwortlich, das Zentrum unterstützt."
+            ],
+            [
+              "Warten auf die Diagnose",
+              "Bis zur Abklärung geschieht in der Klasse nichts.",
+              "Sofort mit Beobachtung und Anpassungen beginnen; die Abklärung ergänzt."
+            ],
+            [
+              "Etikett statt Verstehen",
+              "„Er ist halt ein CDSE-Kind.“",
+              "Konkret beschreiben, was das Kind kann und braucht; Stärken benennen."
+            ],
+            [
+              "Viele Helfer, kein roter Faden",
+              "Mehrere Fachleute mit eigenen Zielen; die Eltern verlieren den Überblick.",
+              "Wenige gemeinsame Ziele, eine feste Ansprechperson, gemeinsame Auswertung."
+            ],
+            [
+              "Förderung neben der Klasse",
+              "Einzelstunden im Nebenraum, die mit dem Unterricht nichts zu tun haben.",
+              "Was außerhalb geübt wird, gemeinsam mit der Lehrkraft in den Klassenalltag übertragen."
+            ],
+            [
+              "Brüche bei Übergängen",
+              "Beim Wechsel in einen neuen Cycle, ans Lycée oder zurück in die Regelklasse geht Wissen verloren.",
+              "Übergänge früh planen, mit Einverständnis der Eltern Informationen weitergeben, Ansprechpersonen benennen."
+            ],
+            [
+              "Zu hohe Erwartungen",
+              "„Nach drei Terminen muss es besser sein.“",
+              "Realistische Zwischenziele; bei stark belasteten Kindern braucht Veränderung Zeit."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Sprache nicht mit Förderbedarf verwechseln.** In Luxemburg lernen viele Kinder in Sprachen, die sie zu Hause nicht sprechen. Schwierigkeiten, die aus dem Sprachenlernen entstehen, sehen manchmal aus wie Lern- oder Verhaltensprobleme. Fragen Sie deshalb immer auch: Versteht das Kind die Unterrichtssprache? Wie zeigt es sich in seiner Erstsprache? Fachliche Abklärungen berücksichtigen das – Ihre Beobachtungen helfen dabei."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn ein Kind eine spezialisierte Beschulung braucht, ist Inklusion gescheitert.",
+          "fakt": "Für manche Kinder ist eine spezialisierte Beschulung der passende Rahmen, um wieder lernen zu können. Auch dort bleibt Teilhabe das Ziel: Kontakte zur Regelschule, gut vorbereitete Übergänge und die Frage, was ein Kind braucht, um wieder mehr gemeinsam mit anderen zu lernen."
+        }
+      ]
+    },
+    {
+      "titel": "Haltung: was inklusives Arbeiten trägt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Strukturen und Verfahren sind wichtig. Ob Inklusion im Alltag gelingt, entscheidet sich aber oft an der Haltung der Erwachsenen: daran, wie sie über Kinder sprechen, was sie ihnen zutrauen und wie sie miteinander umgehen."
+        },
+        {
+          "art": "liste",
+          "titel": "Leitgedanken für die Arbeit",
+          "punkte": [
+            "Jedes Kind gehört dazu – auch an schwierigen Tagen.",
+            "Barrieren statt Defizite: Was im Umfeld erschwert dem Kind Lernen und Teilhabe – und was können wir ändern?",
+            "Stärken zuerst: Jedes Kind kann etwas, und darauf lässt sich aufbauen.",
+            "Zutrauen mit Unterstützung: hohe, aber erreichbare Erwartungen und die Hilfe, sie zu erfüllen.",
+            "Verantwortung teilen, nicht abgeben: Schule, Familie und Fachdienste arbeiten zusammen.",
+            "Mit dem Kind sprechen, nicht nur über das Kind.",
+            "Vielfalt als Normalfall: Sprachen, Herkunft, Begabungen und Schwierigkeiten gehören zur Schule.",
+            "Bescheiden und neugierig bleiben: Niemand hat alle Antworten – auch das Kompetenzzentrum nicht."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Inklusion im Alltag untergräbt",
+          "punkte": [
+            "Über ein Kind in seinem Beisein sprechen, als wäre es nicht da",
+            "Sammelbegriffe wie „die Inklusionskinder“ oder „die CDSE-Kinder“",
+            "Ein Kind regelmäßig vor die Tür oder früher nach Hause schicken, statt nach Lösungen zu suchen",
+            "Die Schuld hin- und herschieben: Schule gegen Eltern, Eltern gegen Schule, alle gegen das Kompetenzzentrum"
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Tom, ein halbes Jahr später",
+          "text": "Tom geht weiter in seine Klasse. Er hat noch schwierige Tage, zeigt aber meist rechtzeitig seine Pausenkarte. Die Lehrerin, die I-EBS, Leila vom CDSE und die Eltern treffen sich alle sechs Wochen kurz; jedes Mal gibt es ein neues kleines Ziel. Im Klassenrat hat Tom vorgeschlagen, dass es für alle eine Ruhe-Ecke geben soll. Die Lehrerin sagt: „Ich habe gelernt, dass ich nicht alles allein schaffen muss.“",
+          "fragen": [
+            "Welche Leitgedanken inklusiven Arbeitens erkennen Sie?",
+            "Wie ginge es weiter, wenn Toms Schwierigkeiten trotz allem zunähmen?"
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit Ihrer Leitung, bevor Sie Eltern oder Schulen Zusagen zu Maßnahmen, Anfragen oder Beschulungsformen machen, wenn unklar ist, wer zuständig ist, wenn Beteiligte Ihnen widersprüchliche Aufträge geben oder wenn eine Begleitung trotz Anpassungen nicht wirkt. Abläufe und Zuständigkeiten können sich ändern; Ihre Leitung kennt den aktuellen Stand."
+        },
+        {
+          "art": "merke",
+          "text": "Inklusion ist keine Aufgabe, die eine einzelne Person oder ein einzelner Dienst lösen kann. Sie gelingt, wenn alle Beteiligten ihren Teil kennen, sich abstimmen – und das Kind im Mittelpunkt steht."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt den Grundgedanken schulischer Inklusion am besten?",
+      "optionen": [
+        "Kinder mit Förderbedarf werden in Regelklassen aufgenommen und müssen sich dort anpassen.",
+        "Die Schule richtet sich so ein, dass möglichst alle Kinder gemeinsam lernen und teilhaben können – mit so viel Unterstützung wie nötig.",
+        "Spezialisierte Klassen und Einrichtungen werden vollständig abgeschafft.",
+        "Jedes Kind mit Förderbedarf erhält eine eigene Begleitperson im Unterricht."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Inklusion bedeutet einen Perspektivwechsel: Die Schule passt sich an die Vielfalt der Kinder an, und das Ziel ist echte Teilhabe. Die bloße Aufnahme mit Anpassungsdruck beschreibt eher Integration. Spezialisierte Angebote gehören weiterhin dazu, wo sie nötig sind, und eine Einzelbegleitung ist nur für manche Kinder die passende Hilfe."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zu den Ebenen der Unterstützung treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Die Lehrkraft bleibt auch bei zusätzlicher Unterstützung für das Lernen des Kindes in ihrer Klasse verantwortlich.",
+        "In der Grundschule ist die I-EBS eine zentrale Ansprechperson für Kinder mit besonderen Förderbedürfnissen an der Schule.",
+        "Die ESEB ist ein regionales Team, das Schulen bei Kindern mit besonderen Förderbedürfnissen unterstützt.",
+        "Sobald ein Kompetenzzentrum beteiligt ist, ist die Schule nicht mehr zuständig.",
+        "Wer vom Kompetenzzentrum begleitet wird, bekommt an der Schule keine weitere Unterstützung."
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Die Ebenen ergänzen sich: Lehrkraft, I-EBS, ESEB und Kompetenzzentren arbeiten zusammen, und die Verantwortung für den Schulalltag bleibt bei der Schule. Ein Kompetenzzentrum ersetzt die Schule nicht, und Unterstützung auf einer höheren Ebene hebt die Hilfe vor Ort nicht auf."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach dem dritten Wutausbruch von Tom (9) in einer Woche sagt seine Klassenlehrerin zu Ihnen als Fachkraft des CDSE: „Der gehört in eine Spezialklasse. Wann holen Sie ihn endlich ab?“",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Sie sagen zu, dass Tom bald in eine spezialisierte Klasse wechselt.",
+        "Sie erklären ihr, dass Inklusion Pflicht ist und sie sich mehr anstrengen muss.",
+        "Sie nehmen Tom ab sofort regelmäßig aus der Klasse, damit sie entlastet ist.",
+        "Sie nehmen ihre Belastung ernst, klären gemeinsam, was bisher versucht wurde und was Tom braucht, vereinbaren nächste Schritte in der Klasse und besprechen mit Ihrer Leitung, welche weitere Unterstützung auf welchem Weg möglich ist."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Die Belastung der Lehrerin ist echt und verdient Anerkennung; daraus wird eine gemeinsame Auftragsklärung mit konkreten nächsten Schritten. Über Beschulungsformen entscheiden Sie nicht allein, Belehrungen verschärfen den Konflikt, und ein regelmäßiges Herausnehmen ohne Plan löst das Problem nicht, sondern verschiebt es."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Solange ein Kind keine Diagnose hat, kann man in der Klasse nichts Wirksames für es tun.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Genaue Beobachtung, Beziehung, klare Strukturen und passende Anpassungen wirken sofort und brauchen keine Diagnose. Eine fachliche Abklärung hilft, Schwierigkeiten besser zu verstehen und intensivere Unterstützung zu planen – sie ist aber keine Voraussetzung, um zu handeln."
+    },
+    {
+      "art": "einfach",
+      "frage": "Wozu dient eine Auftragsklärung zu Beginn einer Begleitung durch das Kompetenzzentrum?",
+      "optionen": [
+        "Zu klären, wer was erwartet, welches Ziel gilt, wer was übernimmt und wann gemeinsam ausgewertet wird.",
+        "Festzustellen, wer an den Schwierigkeiten des Kindes schuld ist.",
+        "Der Lehrkraft zu zeigen, was sie bisher falsch gemacht hat.",
+        "Die Diagnose des Kindes gleich zu Beginn festzulegen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Eine Auftragsklärung schafft gemeinsame Ziele und klare Rollen – die Grundlage jeder Zusammenarbeit. Schuldfragen und Belehrungen zerstören Vertrauen, und eine Diagnose ist weder Ziel einer Auftragsklärung noch Aufgabe pädagogischer Fachkräfte."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Eltern von Kim (7) lehnen ein Gespräch mit dem CDSE ab: „Wir wollen nicht, dass sie abgestempelt wird und in eine Sonderschule kommt.“",
+      "frage": "Was ist ein guter nächster Schritt?",
+      "optionen": [
+        "Sie erklären, dass die Schule auch ohne ihr Einverständnis alles Nötige einleiten wird.",
+        "Sie brechen den Kontakt ab, bis die Eltern einsichtig sind.",
+        "Sie nehmen die Sorgen ernst, erklären in einfachen Worten, was eine Beratung bedeutet und was nicht, betonen das gemeinsame Ziel und lassen Zeit – bei Bedarf mit Dolmetschen.",
+        "Sie versprechen, dass Kim niemals die Klasse wechseln muss."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Sorge vor Etikettierung ist verständlich und oft durch Erfahrungen begründet. Transparente Information, ein gemeinsames Ziel und Zeit schaffen Vertrauen. Drohungen oder ein Kontaktabbruch verhärten die Fronten, und Versprechen über künftige Entscheidungen können Sie nicht halten."
+    },
+    {
+      "art": "fall",
+      "fall": "Um Yanis (11) kümmern sich die Klassenlehrerin, die I-EBS, eine Psychologin der ESEB, eine Fachkraft des CDSE und eine Logopädin. Jede verfolgt eigene Ziele. Die Mutter hat drei Termine pro Woche und sagt: „Ich weiß nicht mehr, wer was macht.“",
+      "frage": "Was hilft jetzt am meisten?",
+      "optionen": [
+        "Weitere Fachleute hinzuziehen, damit nichts übersehen wird.",
+        "Jede Fachkraft arbeitet weiter für sich – das ist effizienter.",
+        "Der Mutter raten, einfach einige Termine ausfallen zu lassen.",
+        "Ein gemeinsames Gespräch aller Beteiligten mit der Mutter: wenige gemeinsame Ziele, klare Zuständigkeiten, eine feste Ansprechperson und ein Termin zur Auswertung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Viele Helfer ohne gemeinsamen Plan überfordern Familie und Kind. Ein roter Faden mit wenigen Zielen, klaren Rollen und einer festen Ansprechperson macht die Unterstützung wirksam. Noch mehr Fachleute und Einzelarbeit ohne Abstimmung verstärken das Durcheinander, und willkürlich ausgelassene Termine lösen das Grundproblem nicht."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen gehören zur Unterstützung für alle Kinder einer Klasse (erste Stufe)? (mehrere richtig)",
+      "optionen": [
+        "Klare Abläufe und Regeln, die alle kennen",
+        "Programme zum sozial-emotionalen Lernen für die ganze Klasse",
+        "Eine verlässliche, zugewandte Beziehung zu allen Kindern",
+        "Spezialisierte Beschulung in einem Kompetenzzentrum",
+        "Ein individueller Förderplan mit Einzelstunden für jedes Kind"
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "Klare Strukturen, Beziehung und soziales Lernen für alle bilden das Fundament; Programme zum sozial-emotionalen Lernen verbessern Fähigkeiten, Verhalten und Leistungen (Durlak et al., 2011). Spezialisierte Beschulung und individuelle Förderpläne gehören zur intensiven Stufe für wenige Kinder."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Kind eine spezialisierte Beschulung braucht, ist Inklusion gescheitert.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Für manche Kinder ist eine spezialisierte Beschulung der passende Rahmen, um wieder lernen zu können. Auch dort bleibt Teilhabe das Ziel – etwa durch Kontakte zur Regelschule und gut vorbereitete Übergänge."
+    },
+    {
+      "art": "fall",
+      "fall": "Noah (12) wechselt nach zwei Jahren in einer spezialisierten Klasse des CDSE ans Lycée.",
+      "frage": "Was ist für den Übergang am wichtigsten?",
+      "optionen": [
+        "Das Lycée erfährt nichts, damit Noah unbelastet neu anfangen kann.",
+        "Mit Einverständnis der Eltern und unter Beteiligung von Noah planen, welche Informationen und Hilfen das Lycée braucht, Ansprechpersonen festlegen und eine Nachbesprechung vereinbaren.",
+        "Das CDSE schickt dem Lycée die vollständige Akte.",
+        "Noah entscheidet allein, ob er Hilfe möchte; die Erwachsenen halten sich heraus."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Übergänge sind Bruchstellen, an denen Wissen und Unterstützung verloren gehen können. Eine geplante Übergabe mit Einverständnis der Eltern, Beteiligung des Jugendlichen und klaren Ansprechpersonen gibt Sicherheit. Schweigen verschenkt Hilfe, die ganze Akte widerspricht der Datensparsamkeit, und Noah allein entscheiden zu lassen, überfordert ihn."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Haltung entspricht inklusivem Arbeiten am besten?",
+      "optionen": [
+        "Wir fragen zuerst, welche Barrieren im Umfeld dem Kind Lernen und Teilhabe erschweren – und was wir verändern können.",
+        "Wir warten ab, bis das Kind bereit ist, sich an die Klasse anzupassen.",
+        "Wir konzentrieren uns vor allem auf die Defizite des Kindes, um sie gezielt zu beheben.",
+        "Wir überlassen schwierige Kinder den Spezialistinnen und Spezialisten."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Inklusives Arbeiten richtet den Blick auf das Zusammenspiel von Kind und Umfeld und damit auf das, was Erwachsene verändern können. Abwarten legt die Verantwortung allein auf das Kind, ein reiner Defizitblick übersieht Stärken, und das Abgeben an Spezialisten widerspricht der gemeinsamen Verantwortung."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Ilias (10) hat von den Classes de participation gehört und fragt Sie nach einem Elterngespräch: „Kann er nächste Woche dorthin wechseln?“",
+      "frage": "Wie antworten Sie am besten?",
+      "optionen": [
+        "„Ja, das organisiere ich für Sie.“",
+        "„Nein, das ist nur für sehr schwierige Kinder.“",
+        "„Das entscheide ich nicht allein. Über eine spezialisierte Beschulung wird in einem festgelegten Verfahren entschieden, an dem Sie beteiligt sind. Ich kläre mit meiner Leitung, wie der Weg aussieht, und dann besprechen wir es gemeinsam.“",
+        "„Da müssen Sie sich selbst beim Ministerium erkundigen.“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die ehrliche Antwort benennt Ihre Rolle, das festgelegte Verfahren und die Beteiligung der Mutter – und verspricht einen konkreten nächsten Schritt. Eine Zusage können Sie nicht geben, ein pauschales Nein wertet ab und ist fachlich nicht begründet, und das Weiterschicken lässt die Mutter allein."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Inklusion",
+      "erklaerung": "Gemeinsames Lernen und Teilhabe aller Kinder und Jugendlichen; die Schule passt sich an die Vielfalt der Kinder an, nicht umgekehrt."
+    },
+    {
+      "begriff": "Teilhabe",
+      "erklaerung": "Mehr als Anwesenheit: dazugehören, mitlernen, mitreden und mitgestalten können."
+    },
+    {
+      "begriff": "Förderbedarf",
+      "erklaerung": "Bedarf eines Kindes oder Jugendlichen an zusätzlicher Unterstützung, um lernen und teilhaben zu können. In Luxemburg spricht man von „besoins éducatifs particuliers ou spécifiques“."
+    },
+    {
+      "begriff": "I-EBS",
+      "erklaerung": "Lehrkraft an Grundschulen mit Spezialisierung auf Kinder mit besonderen Förderbedürfnissen (instituteur spécialisé dans la scolarisation des élèves à besoins éducatifs particuliers ou spécifiques); berät und unterstützt vor Ort."
+    },
+    {
+      "begriff": "ESEB",
+      "erklaerung": "Équipe de soutien des élèves à besoins éducatifs particuliers ou spécifiques: regionales, multiprofessionelles Team im Enseignement fondamental, das Schulen, Kinder und Eltern unterstützt."
+    },
+    {
+      "begriff": "Kompetenzzentrum",
+      "erklaerung": "Nationale Einrichtung für einen Förderschwerpunkt, die je nach Bedarf Diagnostik, Beratung, Begleitung und spezialisierte Beschulung anbietet. Das CDSE ist das Kompetenzzentrum für die sozial-emotionale Entwicklung."
+    },
+    {
+      "begriff": "CNI",
+      "erklaerung": "Commission nationale d’inclusion: nationales Gremium, das sich mit Kindern und Jugendlichen befasst, deren Förderbedarf über die Möglichkeiten von Schule und Region hinausgeht. Einzelheiten zum Verfahren kennt Ihre Leitung."
+    },
+    {
+      "begriff": "Angemessene Vorkehrungen",
+      "erklaerung": "Anpassungen, die einem Kind mit besonderen Bedürfnissen gleiche Chancen geben, etwa mehr Zeit oder ein ruhiger Raum bei Prüfungen; in Luxemburg „aménagements raisonnables“."
+    },
+    {
+      "begriff": "Gestufte Unterstützung",
+      "erklaerung": "Unterstützung auf mehreren Stufen: Angebote für alle, zusätzliche Hilfe für einige, intensive Einzelunterstützung für wenige. Die Stufen bauen aufeinander auf."
+    },
+    {
+      "begriff": "Auftragsklärung",
+      "erklaerung": "Gemeinsame Klärung zu Beginn einer Unterstützung: Wer erwartet was, welches Ziel gilt, wer übernimmt was, wann wird ausgewertet?"
+    }
+  ],
+  "quellen": [
+    "bronfenbrenner1979",
+    "durlak2011",
+    "crone2010",
+    "bergsson1998"
+  ],
+  "verwandt": [
+    "elternarbeit",
+    "beobachten-dokumentieren",
+    "etep",
+    "diagnostik-grundbegriffe",
+    "gespraechsfuehrung"
+  ],
+  "toolbox": [
+    "abc-beobachtung",
+    "check-in-check-out",
+    "elterngespraech-vorbereiten",
+    "klassenrat-protokoll"
+  ]
+}

@@ -1,0 +1,461 @@
+{
+  "id": "gespraechsfuehrung",
+  "bereich": "handeln",
+  "titel": "Gespräche führen",
+  "untertitel": "Lösungsorientiert und motivierend – mit Kindern und Jugendlichen im Schulalltag",
+  "dauer": 35,
+  "lernziele": [
+    "Sie können offene Fragen, Würdigen, Spiegeln und Zusammenfassen gezielt einsetzen und den eigenen Korrekturreflex bemerken.",
+    "Sie können lösungsorientierte Fragen – Ausnahmen, Skalen und die Frage nach dem Wunder – kindgerecht stellen.",
+    "Sie können erklären, was Ambivalenz ist, und in einem Gespräch Veränderungssprache hören und verstärken.",
+    "Sie können Gespräche an das Alter und die Sprache eines Kindes anpassen.",
+    "Sie kennen die Grenzen eines pädagogischen Gesprächs und wissen, wann Sicherheit und Weitervermittlung Vorrang haben."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Zweimal dasselbe Gespräch",
+          "text": "Timo (13) hat in drei Wochen fünfmal die erste Stunde verpasst. Seine Klassenlehrerin spricht ihn in der Pause an.\n\nVersion A: „Timo, so geht das nicht weiter. Fünfmal zu spät! Du weißt genau, dass das Folgen hat. Warum schaffst du es nicht, pünktlich zu sein? Ab morgen will ich dich um acht im Raum sehen.“ Timo zuckt mit den Schultern, sagt „Ja, ja“ und geht.\n\nVersion B: „Timo, hast du fünf Minuten? Mir ist aufgefallen, dass du morgens öfter fehlst. Wie ist das für dich?“ – „Keine Ahnung. Ich komm halt nicht aus dem Bett.“ – „Morgens ist es gerade schwer.“ – „Ja. Ich zock abends lang, dann bin ich total fertig.“ – „Gab es in letzter Zeit Tage, an denen es besser geklappt hat?“ – „Dienstag. Da hatte ich das Handy nicht, war beim Papa.“ Am Ende überlegt Timo selbst, das Handy abends in die Küche zu legen, und die beiden verabreden sich für nächste Woche.",
+          "fragen": [
+            "Was hat Timo in Version A gelernt, was in Version B?",
+            "Welche Sätze der Lehrerin haben in Version B das Gespräch geöffnet?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Gespräche gehören zu den wirksamsten Werkzeugen pädagogischer Arbeit – und zu den am wenigsten geübten. Im Alltag entstehen sie oft zwischen Tür und Angel, unter Zeitdruck, nach einem Konflikt. Dann liegt es nahe, zu ermahnen, zu erklären und Lösungen vorzugeben. Das fühlt sich verantwortungsvoll an, bewirkt aber oft das Gegenteil: Das Kind verteidigt sich, schweigt oder stimmt zu, um das Gespräch zu beenden.\n\nZwei gut erforschte Ansätze helfen, Gespräche anders zu führen. Die **lösungsorientierte Gesprächsführung** (de Shazer, 1985) richtet den Blick auf das, was schon gelingt, und auf kleine nächste Schritte. Die **motivierende Gesprächsführung** (Miller & Rollnick, 2013) hilft, wenn jemand zwischen Verändern und Beibehalten schwankt, und lässt die Gründe für eine Veränderung vom Gegenüber selbst aussprechen. Beide stammen aus der Beratung und Therapie, lassen sich aber gut auf kurze Gespräche im Schulalltag übertragen – ohne dass Sie dadurch zur Therapeutin oder zum Therapeuten werden."
+        },
+        {
+          "art": "merke",
+          "text": "Menschen lassen sich selten von Gründen überzeugen, die andere ihnen vortragen. Sie verändern sich eher, wenn sie ihre eigenen Gründe aussprechen und eigene Ideen entwickeln. Gute Gesprächsführung schafft dafür den Raum."
+        }
+      ]
+    },
+    {
+      "titel": "Grundhaltung: erst verstehen, dann lenken",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Grundlage beider Ansätze ist eine Haltung, die auf Carl Rogers (1951) zurückgeht: **Einfühlung** (versuchen zu verstehen, wie das Kind die Situation erlebt), **Wertschätzung** (die Person annehmen, auch wenn man ein Verhalten nicht gutheißt) und **Echtheit** (ehrlich bleiben, statt eine Technik abzuspulen). Wertschätzung heißt nicht, alles gutzuheißen. Sie können deutlich sagen, dass Zuspätkommen Folgen hat, und trotzdem ernsthaft wissen wollen, was dahintersteckt.\n\nDer größte Stolperstein ist ein gut gemeinter Impuls: der **Korrekturreflex**. Wer helfen will, möchte Fehler berichtigen, Gefahren aufzeigen und Lösungen anbieten. Im Gespräch führt das oft dazu, dass das Gegenüber die Gegenposition einnimmt – „Ja, aber …“. Den Reflex zu bemerken und kurz zurückzuhalten, ist der erste Schritt zu besseren Gesprächen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Grundwerkzeuge",
+          "spalten": [
+            "Werkzeug",
+            "Was es ist",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Offene Fragen",
+              "Fragen, die zum Erzählen einladen statt zu Ja oder Nein",
+              "„Wie war die Pause für dich?“ statt „War die Pause okay?“"
+            ],
+            [
+              "Würdigen",
+              "Echte Anerkennung von Stärken, Mühe oder guten Absichten",
+              "„Du bist heute gekommen, obwohl dir das schwerfällt.“"
+            ],
+            [
+              "Spiegeln (aktives Zuhören)",
+              "Das Gehörte oder das vermutete Gefühl in eigenen Worten zurückgeben",
+              "„Du bist sauer, weil du dich ungerecht behandelt fühlst.“"
+            ],
+            [
+              "Zusammenfassen",
+              "Mehrere Aussagen bündeln, besonders die, die in Richtung Veränderung zeigen",
+              "„Du willst den Abschluss schaffen, und gleichzeitig ist der Morgen gerade das Schwierigste. Am Dienstag hat es geklappt.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Spiegeln** ist das wichtigste und am meisten unterschätzte Werkzeug. Eine gute Spiegelung ist keine Frage, sondern eine Aussage, am Ende mit gesenkter Stimme: „Das hat dich getroffen.“ Sie zeigt, dass Sie zuhören, und lädt ein, weiterzusprechen. Liegt sie daneben, korrigiert das Kind meist von selbst – und Sie haben trotzdem etwas gelernt. Als Faustregel gilt: mehr spiegeln als fragen. Viele Fragen hintereinander wirken wie ein Verhör.\n\n**Warum-Fragen** sind heikel. „Warum hast du das gemacht?“ klingt nach Vorwurf, und oft wissen Kinder es selbst nicht. Hilfreicher sind Fragen nach dem Ablauf und dem Erleben: „Was ist passiert, bevor du den Stuhl umgeworfen hast?“ oder „Was ging dir da durch den Kopf?“"
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Gespräche verschließt",
+          "punkte": [
+            "Moralpredigten und lange Erklärungen, warum etwas wichtig ist.",
+            "Drohen und Ultimaten („Wenn du nicht …, dann …“) als Gesprächseinstieg.",
+            "Etiketten wie „Du bist faul“ oder „Du bist immer so“.",
+            "Diskutieren, wer recht hat – wer Argumente sammelt, stärkt die Gegenseite.",
+            "Vorschnelle Lösungen, bevor das Kind sich verstanden fühlt.",
+            "Bloßstellen vor anderen: Wichtige Gespräche gehören an einen ruhigen Ort."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Lösungsorientierte Fragen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die lösungsorientierte Gesprächsführung geht von einer einfachen Beobachtung aus: Auch wenn ein Problem groß ist, gibt es fast immer Zeiten, in denen es kleiner ist oder gar nicht auftritt. In diesen **Ausnahmen** steckt Wissen darüber, was hilft (de Shazer, 1985). Statt lange nach Ursachen zu suchen, fragt man nach dem, was schon funktioniert, und nach dem nächsten kleinen Schritt. Das stärkt zugleich das Gefühl, selbst etwas bewirken zu können."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Lösungsorientierte Fragen im Schulalltag",
+          "spalten": [
+            "Frage",
+            "Beispiel",
+            "Wofür"
+          ],
+          "zeilen": [
+            [
+              "Ausnahmefrage",
+              "„Wann war es in letzter Zeit ein bisschen besser? Was war da anders?“",
+              "Findet heraus, was schon hilft"
+            ],
+            [
+              "Skalenfrage",
+              "„Auf einer Skala von 0 bis 10: Wie gut klappt es gerade mit den Hausaufgaben? Und was bräuchte es, um einen Punkt höher zu kommen?“",
+              "Macht Fortschritte sichtbar und zerlegt Ziele in kleine Schritte"
+            ],
+            [
+              "Frage nach dem Wunder",
+              "„Stell dir vor, über Nacht passiert ein Wunder und das Problem ist weg. Woran merkst du morgen früh als Erstes, dass es passiert ist?“",
+              "Macht das Ziel konkret und beschreibbar"
+            ],
+            [
+              "Bewältigungsfrage",
+              "„Das klingt wirklich schwer. Wie hast du es trotzdem geschafft, heute hier zu sein?“",
+              "Würdigt Kräfte, wenn wenig gelingt"
+            ],
+            [
+              "Ressourcenfrage",
+              "„Wer oder was hilft dir, wenn es schwierig wird?“",
+              "Macht Unterstützung und Stärken bewusst"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die **Skalenfrage** ist im Schulalltag besonders nützlich. Wichtig ist die zweite Hälfte: nicht nur „Wo stehst du?“, sondern auch „Was hat dich schon auf die 4 gebracht und nicht auf die 0?“ und „Woran würdest du merken, dass du auf der 5 bist?“. Für jüngere Kinder eignen sich Gesichter, eine Treppe oder die Finger einer Hand statt Zahlen.\n\nDie **Frage nach dem Wunder** braucht Zeit und etwas Vorstellungskraft; bei jüngeren Kindern hilft eine einfachere Form: „Wenn ein Zauberer vorbeikäme – was wäre dann in der Schule anders?“ Achten Sie darauf, dass die Antwort in beobachtbares Verhalten übersetzt wird: nicht „Ich wäre nicht mehr traurig“, sondern „Ich würde mit Paul Fußball spielen und nicht allein auf der Bank sitzen“."
+        },
+        {
+          "art": "fall",
+          "titel": "Die Skalenfrage mit Ida (9)",
+          "text": "Ida weint fast jeden Morgen beim Abschied von der Mutter. Die Educatrice zeichnet eine Treppe mit fünf Stufen: „Die unterste Stufe heißt: Der Morgen ist ganz schlimm. Die oberste: Ich gehe fröhlich in die Klasse. Wo stehst du heute?“ Ida zeigt auf die zweite Stufe. „Auf der zweiten, nicht auf der ersten. Was hat dir heute geholfen?“ – „Dass Nele am Tor gewartet hat.“ – „Und was wäre auf der dritten Stufe anders?“ – „Wenn ich gleich die Fische füttern darf.“ Die beiden vereinbaren, dass Ida für eine Woche die Fische füttert, und schauen am Freitag wieder auf die Treppe.",
+          "fragen": [
+            "Welche Ausnahme und welcher kleine Schritt wurden in diesem Gespräch gefunden?",
+            "Warum fragt die Educatrice zuerst, warum Ida nicht auf der untersten Stufe steht?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Lösungsorientiert zu fragen heißt nicht, Probleme kleinzureden. Es heißt, neben dem Problem auch die Ausnahmen und Kräfte ernst zu nehmen – und mit kleinen, erreichbaren Schritten zu beginnen."
+        }
+      ]
+    },
+    {
+      "titel": "Motivierende Gesprächsführung: mit Ambivalenz arbeiten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Kinder und Jugendliche wollen etwas verändern und wollen es gleichzeitig nicht. Timo möchte den Schulabschluss schaffen und möchte abends weiterspielen. Dieser innere Zwiespalt heißt **Ambivalenz**. Er ist normal und kein Zeichen von Unwillen. Die motivierende Gesprächsführung (Miller & Rollnick, 2013) nimmt ihn ernst: Statt eine Seite zu vertreten, hilft sie dem Gegenüber, beide Seiten auszusprechen und selbst abzuwägen.\n\nDabei achtet man auf zwei Arten von Äußerungen. **Veränderungssprache** zeigt in Richtung Veränderung: Wünsche („Ich will eigentlich …“), Fähigkeiten („Ich könnte …“), Gründe („Weil sonst …“), Notwendigkeit („Ich muss …“) und erste Schritte („Ich probier mal …“). **Beibehaltungssprache** spricht für das Bisherige: „Das bringt eh nichts“, „Die anderen machen das auch“. Die Kunst besteht darin, Veränderungssprache zu hören, zu spiegeln und zusammenzufassen, ohne auf Beibehaltungssprache mit Gegenargumenten zu antworten."
+        },
+        {
+          "art": "tun",
+          "titel": "So fördern Sie Veränderungssprache",
+          "punkte": [
+            "Nach Gründen und Wünschen fragen: „Was wäre gut daran, wenn …?“ – „Was möchtest du eigentlich erreichen?“",
+            "Die Wichtigkeit einschätzen lassen: „Wie wichtig ist dir das, von 0 bis 10?“ – und dann: „Warum eine 6 und nicht eine 2?“",
+            "Veränderungssprache spiegeln und am Ende des Gesprächs zusammenfassen, sodass das Kind die eigenen Gründe noch einmal hört.",
+            "Vor einem Rat um Erlaubnis fragen: „Darf ich dir erzählen, was anderen in so einer Lage geholfen hat?“ – und danach: „Was davon könnte zu dir passen?“",
+            "Die Entscheidung beim Kind lassen, wo es möglich ist, und klar benennen, wo nicht („Die Schulpflicht gilt. Wie du es schaffst, pünktlich zu sein, kannst du mitbestimmen.“)."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer sich nicht ändern will, dem ist nicht zu helfen.",
+          "fakt": "Fehlende Veränderung bedeutet selten, dass jemand gar nicht will. Meist gibt es Gründe für beide Seiten. Wer diese Ambivalenz anerkennt, statt Druck zu machen, erhöht die Chance, dass sich jemand selbst für eine Veränderung entscheidet."
+        },
+        {
+          "art": "text",
+          "text": "Wenn ein Gespräch hakt, das Kind sich wehrt, abblockt oder angreift, spricht man in der motivierenden Gesprächsführung heute weniger von „Widerstand“ des Kindes als von einer **Dissonanz** in der Beziehung: einem Signal, dass das Gespräch gerade zu schnell, zu lenkend oder zu bedrohlich ist. Dann hilft es, einen Schritt zurückzugehen, zu spiegeln („Du hast keine Lust, schon wieder über das Thema zu reden“), Verantwortung zu übernehmen („Ich habe dich gerade mit Fragen überfahren“) und die Wahlfreiheit zu betonen."
+        }
+      ]
+    },
+    {
+      "titel": "Gespräche mit Kindern verschiedener Altersstufen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wie Kinder denken, sprechen und sich an Erlebtes erinnern, verändert sich mit dem Alter stark (Schneider & Lindenberger, 2018). Ein Gespräch, das bei einer Sechzehnjährigen gelingt, überfordert einen Sechsjährigen – und umgekehrt fühlt sich eine Jugendliche von kindlicher Ansprache nicht ernst genommen. Passen Sie deshalb Länge, Sprache, Hilfsmittel und Rahmen an."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Was in welchem Alter hilft",
+          "spalten": [
+            "Alter",
+            "Was hilft",
+            "Worauf achten"
+          ],
+          "zeilen": [
+            [
+              "Cycle 1: Précoce und Spillschoul (etwa 3–5 Jahre)",
+              "Kurze Sätze, ein Thema, Bilder, Figuren oder Malen; auf Augenhöhe gehen; Auswahl anbieten („Möchtest du malen oder erzählen?“)",
+              "Aufmerksamkeit reicht oft nur wenige Minuten; Kinder sagen leicht „ja“, um zu gefallen – keine Suggestivfragen"
+            ],
+            [
+              "Cycles 2–4 (etwa 6–12 Jahre)",
+              "Skalen mit Gesichtern oder Fingern, konkrete Beispiele, gemeinsames Aufschreiben oder Zeichnen, kleine Vereinbarungen",
+              "Nachfragen, ob das Kind die Frage verstanden hat; Vereinbarungen kurz und überprüfbar halten"
+            ],
+            [
+              "Jugendliche (ab etwa 12 Jahren)",
+              "Ernst nehmen, Wahlmöglichkeiten, Gespräche nebenbei (beim Gehen, bei einer Tätigkeit), motivierende Gesprächsführung",
+              "Grenzen der Vertraulichkeit von Anfang an erklären; keine Moralpredigten; Gleichaltrige sind oft wichtiger als Erwachsene"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "In Luxemburg wachsen viele Kinder mit mehreren Sprachen auf. Für ein Gespräch über Gefühle und Sorgen eignet sich meist die Sprache, in der das Kind sich am sichersten fühlt – auch wenn es im Unterricht eine andere spricht. Fragen Sie nach: „In welcher Sprache möchtest du lieber reden?“ Wenn Sie die Sprache nicht teilen, helfen einfache Sätze, Bilder und Gesten. Für wichtige Gespräche mit Eltern ziehen Sie eine Dolmetscherin oder einen Dolmetscher hinzu; Kinder sollten nicht für ihre Eltern übersetzen, wenn es um sie selbst oder um belastende Themen geht.\n\nAuch der Rahmen zählt: ein ruhiger Ort, genug Zeit, kein Publikum. Setzen Sie sich eher schräg oder nebeneinander als frontal gegenüber. Sagen Sie zu Beginn, worum es geht und wie lange das Gespräch dauert, und beenden Sie es mit einer kurzen Zusammenfassung und einer klaren Verabredung."
+        },
+        {
+          "art": "fall",
+          "titel": "Ein Gespräch mit Lina (15)",
+          "text": "Lina hat in einem Aufsatz geschrieben, dass sie „manchmal einfach verschwinden“ möchte. Der ISA-Mitarbeiter spricht sie nach der Stunde an, als die anderen gegangen sind: „Lina, ich habe deinen Text gelesen. Ein Satz ist mir nachgegangen, und ich wollte fragen, wie es dir geht.“ Lina sagt zuerst, das sei nur ein Text. Er antwortet: „Kann sein. Ich frage trotzdem, weil mir wichtig ist, wie es dir geht. Denkst du manchmal daran, dir etwas anzutun?“ Nach einer Pause erzählt Lina von Streit zu Hause und schlaflosen Nächten. Er hört zu, sagt ihr ehrlich, dass er bei Gefahr nicht schweigen darf, und bespricht mit ihr, wen sie gemeinsam einbeziehen.",
+          "fragen": [
+            "Warum ist die direkte Frage nach Gedanken, sich etwas anzutun, hier richtig?",
+            "Wie geht der Mitarbeiter mit dem Thema Vertraulichkeit um?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Grenzen und schwierige Momente",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein pädagogisches Gespräch ist keine Therapie. Es kann entlasten, Ideen entwickeln und Beziehungen stärken; es ersetzt aber keine Behandlung bei einer psychischen Erkrankung und keine Abklärung. Achten Sie auf Ihre Rolle: Sie hören zu, ordnen ein, vereinbaren kleine Schritte und vermitteln weiter, wenn es mehr braucht.\n\nVersprechen Sie nie absolute Verschwiegenheit. Viele Kinder beginnen ein wichtiges Gespräch mit „Du darfst es aber niemandem sagen“. Eine ehrliche Antwort ist: „Ich behalte vieles für mich. Wenn ich mir aber Sorgen um deine Sicherheit mache, muss ich mir Hilfe holen. Das würde ich vorher mit dir besprechen.“ Kinder verkraften diese Ehrlichkeit meist besser als ein gebrochenes Versprechen."
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn ein Kind im Gespräch von Gewalt, sexuellen Übergriffen, Vernachlässigung, Selbstverletzung oder Suizidgedanken berichtet, hat Sicherheit Vorrang vor jeder Gesprächstechnik. Bleiben Sie ruhig, hören Sie zu, stellen Sie keine bohrenden oder suggestiven Fragen und informieren Sie sofort Ihre Leitung nach den internen Abläufen. Die direkte Frage nach Suizidgedanken ist dabei hilfreich und bringt niemanden erst auf die Idee. Die Module „Kinderschutz“ und „Selbstverletzung und Suizidalität“ beschreiben das Vorgehen ausführlich."
+        },
+        {
+          "art": "text",
+          "text": "Wenn ein Gespräch eskaliert – das Kind schreit, droht oder ist so aufgewühlt, dass es nicht mehr zuhören kann –, ist nicht der Moment für Fragen und Vereinbarungen. Dann geht es zuerst um Beruhigung: weniger Worte, Abstand, ein ruhiger Ort, Zeit. Das eigentliche Gespräch folgt später, wenn sich alle beruhigt haben. Hinweise dazu finden Sie im Modul „Deeskalation“."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn Gespräche immer wieder an denselben Punkt kommen, wenn Sie Anzeichen einer psychischen Belastung bemerken (anhaltender Rückzug, große Ängste, Hoffnungslosigkeit), wenn Eltern und Schule sich nicht einigen oder wenn Sie selbst unsicher sind. Ansprechpersonen sind die Fallverantwortlichen, Ihre Leitung und die Fachdienste Ihrer Einrichtung. Bei jeder Sorge um die Sicherheit eines Kindes gilt sofort der interne Kinderschutz-Ablauf."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt den Korrekturreflex am besten?",
+      "optionen": [
+        "Die Fähigkeit, Fehler im Heft schnell zu erkennen",
+        "Der gut gemeinte Impuls, sofort zu berichtigen, zu warnen und Lösungen vorzugeben",
+        "Die Pflicht, jedes Fehlverhalten sofort zu bestrafen",
+        "Eine Technik, bei der man das Gesagte in eigenen Worten wiederholt"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Der Korrekturreflex ist der Wunsch zu helfen, indem man sofort erklärt und Lösungen anbietet. Im Gespräch führt er oft dazu, dass das Gegenüber die Gegenposition einnimmt. Mit Fehlerkorrektur im Heft oder mit Strafen hat der Begriff nichts zu tun; das Wiederholen in eigenen Worten heißt Spiegeln."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Frage ist eine offene Frage?",
+      "optionen": [
+        "„Hattest du Streit mit Paul?“",
+        "„Bist du wieder müde?“",
+        "„Hast du die Hausaufgaben vergessen?“",
+        "„Wie war der Morgen für dich?“"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Offene Fragen laden zum Erzählen ein und lassen sich nicht mit Ja oder Nein beantworten. Die anderen drei sind geschlossen und legen zudem eine Antwort nahe. Geschlossene Fragen sind nicht verboten, etwa zum Klären von Fakten, sie öffnen aber kein Gespräch."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Junge sagt nach einem Streit: „Alle hacken immer nur auf mir rum.“",
+      "frage": "Welche Antwort ist eine gute Spiegelung?",
+      "optionen": [
+        "„Das stimmt doch gar nicht. Gestern hat dich niemand kritisiert.“",
+        "„Du fühlst dich gerade ungerecht behandelt.“",
+        "„Warum glaubst du das?“",
+        "„Dann musst du dich eben besser benehmen.“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Eine Spiegelung gibt das Gehörte oder das vermutete Gefühl als Aussage zurück und lädt so ein, weiterzusprechen. Widersprechen und Ratschläge verschließen das Gespräch. Die Warum-Frage klingt leicht nach Vorwurf und verlangt eine Begründung, die das Kind vielleicht nicht hat."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Fragen sind typisch für die lösungsorientierte Gesprächsführung? (mehrere richtig)",
+      "optionen": [
+        "„Wann war es zuletzt ein bisschen besser?“",
+        "„Warum machst du immer so ein Theater?“",
+        "„Auf einer Skala von 0 bis 10 – wo stehst du, und was bräuchte es für einen Punkt mehr?“",
+        "„Wer ist schuld an dem Streit?“",
+        "„Stell dir vor, über Nacht ist das Problem verschwunden. Woran merkst du es als Erstes?“"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Ausnahmefrage, Skalenfrage und die Frage nach dem Wunder richten den Blick auf das, was schon gelingt, und auf ein konkretes Ziel. Fragen nach Schuld oder Warum-Fragen mit Vorwurf führen zurück ins Problem und lösen Verteidigung aus."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Mädchen sagt auf die Skalenfrage, ihre Motivation für Mathematik liege bei 2 von 10.",
+      "frage": "Was ist die hilfreichste nächste Frage?",
+      "optionen": [
+        "„Was bringt dich schon auf die 2 und nicht auf die 0?“",
+        "„Nur 2? Das ist aber wenig.“",
+        "„Warum ist es nicht mindestens eine 5?“",
+        "„Dann müssen wir wohl mit deinen Eltern reden.“"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Die Frage nach dem, was schon auf die 2 bringt, lässt das Mädchen eigene Gründe und Kräfte benennen – die Grundlage für einen nächsten Schritt. Die Frage „Warum nicht eine 5?“ lädt dazu ein, Gründe gegen eine Veränderung aufzuzählen. Bewerten oder Drohen beendet das Gespräch."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn jemand gleichzeitig etwas verändern und alles beim Alten lassen möchte, zeigt das, dass er eigentlich nicht will.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Dieser Zwiespalt heißt Ambivalenz und ist ein normaler Teil jeder Veränderung. Er zeigt, dass es Gründe auf beiden Seiten gibt. Wer ihn anerkennt und die Gründe für eine Veränderung aussprechen lässt, erhöht die Chance, dass sich jemand selbst entscheidet."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Äußerungen sind Veränderungssprache? (mehrere richtig)",
+      "optionen": [
+        "„Eigentlich will ich den Abschluss schaffen.“",
+        "„Das bringt doch eh alles nichts.“",
+        "„Ich könnte das Handy abends in die Küche legen.“",
+        "„Die anderen kommen auch zu spät.“",
+        "„Wenn ich so weitermache, muss ich die Klasse wiederholen.“"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Veränderungssprache drückt Wünsche, Fähigkeiten, Gründe, Notwendigkeit oder erste Schritte in Richtung Veränderung aus. „Das bringt eh nichts“ und „Die anderen auch“ sprechen für das Bisherige – das ist Beibehaltungssprache, auf die man besser nicht mit Gegenargumenten antwortet."
+    },
+    {
+      "art": "fall",
+      "fall": "Ein Kind beginnt: „Ich erzähl dir was, aber du musst mir versprechen, dass du es niemandem sagst.“",
+      "frage": "Welche Antwort ist richtig?",
+      "optionen": [
+        "„Versprochen, ich sage es niemandem.“",
+        "„Dann erzähl es mir lieber nicht, sonst bekomme ich Ärger.“",
+        "„Das hängt davon ab, was es ist. Erzähl erst mal.“",
+        "„Ich behalte vieles für mich. Wenn ich mir aber Sorgen um deine Sicherheit mache, muss ich mir Hilfe holen – und das bespreche ich vorher mit dir.“"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Absolute Verschwiegenheit dürfen Sie nicht versprechen, denn bei Gefahr müssen Sie handeln. Ein gebrochenes Versprechen beschädigt das Vertrauen stärker als eine ehrliche Antwort zu Beginn. Das Kind abzuweisen lässt es mit seiner Not allein; die ausweichende Antwort lässt offen, woran es ist."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was hilft am meisten in einem Gespräch mit einem fünfjährigen Kind?",
+      "optionen": [
+        "Viele Fragen hintereinander, damit nichts vergessen wird",
+        "Eine Skala von 0 bis 100",
+        "Kurze Sätze, ein Thema und Hilfsmittel wie Bilder, Figuren oder Malen",
+        "Das Kind nach den Gründen für sein Verhalten fragen"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Jüngere Kinder brauchen kurze, konkrete Sätze und anschauliche Hilfen; ihre Aufmerksamkeit reicht oft nur für wenige Minuten. Viele Fragen überfordern, feine Zahlenskalen sind zu abstrakt, und nach Gründen gefragt wissen Kinder in diesem Alter meist keine Antwort – sie fühlen sich eher beschuldigt."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wer ein Kind direkt fragt, ob es daran denkt, sich etwas anzutun, bringt es damit erst auf die Idee.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die direkte, ruhige Frage nach Suizidgedanken erhöht das Risiko nicht. Viele Betroffene sind entlastet, wenn jemand das Thema anspricht. Wichtig ist, danach nicht allein zu bleiben: sofort die Leitung informieren und den internen Ablauf einhalten."
+    },
+    {
+      "art": "einfach",
+      "frage": "Ein Jugendlicher reagiert auf Ihre Fragen zunehmend gereizt: „Lass mich doch einfach in Ruhe.“ Was ist nach der motivierenden Gesprächsführung sinnvoll?",
+      "optionen": [
+        "Einen Schritt zurückgehen, spiegeln („Du hast gerade keine Lust auf dieses Gespräch“) und seine Wahlfreiheit betonen",
+        "Deutlich machen, dass er sich im Ton vergreift, und weiterfragen",
+        "Das Gespräch mit einer Strafe beenden",
+        "Die Argumente noch einmal ausführlicher erklären"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Abwehr ist ein Signal, dass das Gespräch zu schnell, zu lenkend oder zu bedrohlich wurde. Zurückgehen, spiegeln und Wahlfreiheit betonen entspannt die Situation. Weiterfragen, Strafen oder mehr Argumente verstärken die Abwehr meist."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Korrekturreflex",
+      "erklaerung": "Der gut gemeinte Impuls, sofort zu berichtigen, zu warnen und Lösungen vorzugeben. Er löst beim Gegenüber oft Widerspruch aus."
+    },
+    {
+      "begriff": "Spiegeln (aktives Zuhören)",
+      "erklaerung": "Das Gehörte oder das vermutete Gefühl in eigenen Worten als Aussage zurückgeben. Zeigt Verständnis und lädt zum Weitersprechen ein."
+    },
+    {
+      "begriff": "Ausnahme",
+      "erklaerung": "Eine Zeit, in der ein Problem kleiner war oder nicht auftrat. In der lösungsorientierten Arbeit ein Hinweis darauf, was hilft."
+    },
+    {
+      "begriff": "Skalenfrage",
+      "erklaerung": "Frage nach einer Einschätzung auf einer Skala, meist von 0 bis 10, verbunden mit der Frage, was schon erreicht ist und was einen Schritt weiter bringt."
+    },
+    {
+      "begriff": "Frage nach dem Wunder",
+      "erklaerung": "Lösungsorientierte Frage, die ein Leben ohne das Problem vorstellen lässt, um das Ziel konkret und beobachtbar zu beschreiben."
+    },
+    {
+      "begriff": "Ambivalenz",
+      "erklaerung": "Innerer Zwiespalt: gleichzeitig etwas verändern und beibehalten wollen. Ein normaler Teil jeder Veränderung."
+    },
+    {
+      "begriff": "Veränderungssprache",
+      "erklaerung": "Äußerungen, die in Richtung Veränderung zeigen: Wünsche, Fähigkeiten, Gründe, Notwendigkeit, erste Schritte. Das Gegenteil heißt Beibehaltungssprache."
+    },
+    {
+      "begriff": "Motivierende Gesprächsführung",
+      "erklaerung": "Gesprächsansatz nach Miller und Rollnick, der Ambivalenz ernst nimmt und hilft, eigene Gründe für eine Veränderung zu finden."
+    }
+  ],
+  "quellen": [
+    "deShazer1985",
+    "millerRollnick2013",
+    "rogers1951",
+    "schneiderLindenberger2018"
+  ],
+  "verwandt": [
+    "beziehung-haltung",
+    "elternarbeit",
+    "deeskalation",
+    "kinderschutz",
+    "selbstverletzung-suizid"
+  ],
+  "toolbox": [
+    "loesungsorientiertes-gespraech",
+    "wie-geht-es-mir",
+    "nachgespraech-krise",
+    "elterngespraech-vorbereiten",
+    "staerken-karten"
+  ]
+}

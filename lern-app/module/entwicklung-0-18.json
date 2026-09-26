@@ -1,0 +1,487 @@
+{
+  "id": "entwicklung-0-18",
+  "bereich": "grundlagen",
+  "titel": "Entwicklung von 0 bis 18",
+  "untertitel": "Meilensteine, Bandbreiten und Warnzeichen – was wann normal ist",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können wichtige Entwicklungsschritte in Motorik, Sprache, Denken und sozial-emotionaler Entwicklung den Altersabschnitten von 0 bis 18 Jahren zuordnen.",
+    "Sie können erklären, warum Entwicklung in großen Bandbreiten verläuft und ein einzelner Rückstand noch keine Störung bedeutet.",
+    "Sie können beschreiben, wie sich das Gehirn im Jugendalter umbaut und was das für Risikoverhalten und Gefühle bedeutet.",
+    "Sie erkennen Warnzeichen, bei denen eine fachliche Abklärung angezeigt ist, und wissen, wie Sie dann vorgehen.",
+    "Sie können Ihre Erwartungen am Entwicklungsstand eines Kindes ausrichten statt nur an seinem Lebensalter."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Entwicklung verstehen",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Drei Kinder, ein Jahrgang",
+          "text": "In einer Klasse des Cycle 1 sind Lina, Tom und Amira alle fünf Jahre alt. Lina malt Menschen mit Händen, Fingern und Kleidern, spricht in der Gruppe aber kaum Luxemburgisch; zu Hause wird Portugiesisch gesprochen. Tom erzählt ohne Pause lange Geschichten, hält den Stift jedoch mit der Faust und gibt beim Schneiden schnell auf. Amira spricht und malt altersgemäß, weint aber jeden Morgen beim Abschied von ihrem Vater und braucht lange, bis sie mitspielt. Die Kollegin fragt: „Ist das noch normal – oder müssen wir etwas tun?“",
+          "fragen": [
+            "Welche Unterschiede halten Sie für normale Bandbreite?",
+            "Welche Informationen bräuchten Sie, um sicherer zu urteilen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Entwicklung** meint die Veränderungen, die ein Mensch im Laufe seines Lebens in Körper, Denken, Fühlen und Verhalten durchläuft. In Kindheit und Jugend geschehen sie schneller als in jeder späteren Lebensphase. Sie entstehen aus dem Zusammenspiel von **Reifung** – biologisch angelegten Abläufen, etwa im Nervensystem – und **Lernen** durch Erfahrung. Kinder sind dabei nicht passiv: Sie suchen sich Anregungen, probieren aus und rufen durch ihr Verhalten bestimmte Reaktionen ihrer Umwelt hervor (Schneider & Lindenberger, 2018).\n\nMan unterscheidet mehrere **Entwicklungsbereiche**: die Motorik (Grobmotorik wie Laufen und Klettern, Feinmotorik wie Greifen, Malen und Schreiben), die Sprache (Verstehen und Sprechen), die kognitive Entwicklung (Wahrnehmen, Denken, Gedächtnis, Aufmerksamkeit) und die sozial-emotionale Entwicklung (Gefühle, Selbstbild, Beziehungen). Die Bereiche hängen eng zusammen. Ein Kind, das laufen kann, erkundet mehr; ein Kind, das Gefühle in Worte fassen kann, muss seltener schlagen, um sich verständlich zu machen."
+        },
+        {
+          "art": "text",
+          "text": "**Meilensteine** beschreiben, in welchem Alter Kinder eine Fähigkeit *im Durchschnitt* erwerben. Für das einzelne Kind ist dieser Durchschnitt aber kein Maßstab, denn die Bandbreite des Normalen ist groß: Frei zu laufen ist irgendwann zwischen etwa 9 und 18 Monaten ganz normal. In der Kinderheilkunde arbeitet man deshalb zusätzlich mit **Grenzsteinen**. Das sind Fähigkeiten, die fast alle Kinder – rund 90 bis 95 von 100 – bis zu einem bestimmten Alter erreicht haben. Erreicht ein Kind einen Grenzstein nicht, ist das noch keine Diagnose, aber ein guter Grund, genauer hinzuschauen.\n\nEntwicklung verläuft außerdem selten gleichmäßig. Auf Schübe folgen Phasen, in denen scheinbar wenig passiert. Unter Belastung – nach einem Umzug, bei der Geburt eines Geschwisterkindes, in einer Familienkrise – fallen Kinder oft vorübergehend in frühere Verhaltensweisen zurück: Sie nässen wieder ein, sprechen in Babysprache oder klammern. Man nennt das **Regression**. Und ein Kind kann in einem Bereich weit voraus und in einem anderen deutlich zurück sein. Gerade bei Kindern mit sozial-emotionalem Förderbedarf klaffen **Lebensalter** und **Entwicklungsalter** in einzelnen Bereichen oft auseinander: Ein Zehnjähriger kann rechnen wie seine Klassenkameraden und zugleich Enttäuschungen verarbeiten wie ein Vierjähriger."
+        },
+        {
+          "art": "merke",
+          "text": "Entwicklung verläuft in großen Bandbreiten und selten gleichmäßig. Entscheidend ist das Gesamtbild: Macht das Kind Fortschritte? Sind mehrere Bereiche betroffen? Gehen Fähigkeiten verloren, die schon da waren?"
+        }
+      ]
+    },
+    {
+      "titel": "Die ersten Lebensjahre: 0 bis 6",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "In den ersten sechs Lebensjahren verändert sich ein Kind so schnell wie nie wieder. Für Fachkräfte im Précoce, in der Spillschoul und in der Maison Relais ist dieses Wissen unmittelbar praktisch. Aber auch wer mit älteren Kindern arbeitet, braucht es: Viele Kinder mit Förderbedarf zeigen in einzelnen Bereichen Bedürfnisse, die eigentlich zu einem jüngeren Alter gehören – und sie brauchen dann auch Antworten, die zu diesem Alter passen.\n\nDie folgende Übersicht nennt typische Entwicklungsschritte. Die Altersangaben sind grobe Orientierungen, keine Prüfsteine."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Typische Entwicklungsschritte der ersten Jahre",
+          "spalten": [
+            "Alter",
+            "Körper und Sprache",
+            "Denken, Gefühle, Miteinander"
+          ],
+          "zeilen": [
+            [
+              "0–12 Monate",
+              "Kopf halten, Drehen, freies Sitzen meist in der zweiten Hälfte des ersten Jahres, Krabbeln, Hochziehen. Gurren, dann Silbenketten („bababa“); versteht erste Wörter und Gesten.",
+              "Erkundet mit Mund und Händen; lernt, dass verdeckte Dinge weiter existieren. Soziales Lächeln ab etwa sechs Wochen, Fremdeln und Trennungsprotest meist ab etwa acht Monaten; erste feste Bindungen."
+            ],
+            [
+              "1–3 Jahre",
+              "Freies Laufen meist zwischen 9 und 18 Monaten, dann Rennen, Treppensteigen, Kritzeln. Erste Wörter um den ersten Geburtstag; mit zwei Jahren meist mindestens 50 Wörter und erste Zweiwortsätze („Papa weg“), danach rasches Wachstum.",
+              "Nachahmen, erstes So-tun-als-ob-Spiel. Autonomiephase („selber machen“) mit häufigen Wutanfällen; spielt eher neben anderen Kindern als mit ihnen; erste Anzeichen von Mitgefühl, etwa trösten."
+            ],
+            [
+              "3–6 Jahre",
+              "Hüpfen, Laufrad, Schere, zunehmend sichere Stifthaltung. Sätze aus mehreren Wörtern; mit etwa vier Jahren auch für Fremde meist gut verständlich; einzelne schwierige Laute (etwa „sch“) oft erst mit fünf.",
+              "Viele Warum-Fragen, Rollenspiele, erste Freundschaften. Zwischen etwa drei und fünf Jahren versteht das Kind, dass andere etwas anderes denken und wissen können als es selbst. Warten, Abwechseln und einfache Spielregeln gelingen zunehmend."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wutanfälle** gehören zwischen etwa einem und vier Jahren zur normalen Entwicklung. Das Kind will selbstständig sein, kann seine Gefühle und Wünsche aber noch kaum steuern oder in Worte fassen. Mit wachsender Sprache und Selbstregulation werden die Ausbrüche meist seltener. Aufmerksam werden sollte man, wenn sie im Schulalter noch sehr häufig und lang sind, zu Verletzungen führen oder das Kind danach kaum zu beruhigen ist.\n\nBei der **Sauberkeit** ist die Bandbreite ebenfalls groß. Tagsüber werden die meisten Kinder zwischen zwei und vier Jahren trocken, nachts oft später. Die Klassifikationssysteme sprechen deshalb frühestens ab fünf Jahren von einer Einnässstörung (Enuresis). Nässt ein Kind, das schon lange trocken war, plötzlich wieder ein, kann eine körperliche Ursache oder eine seelische Belastung dahinterstecken. Beides gehört ärztlich abgeklärt – und nicht bestraft."
+        },
+        {
+          "art": "text",
+          "text": "**Sprache und Mehrsprachigkeit.** In Luxemburg wachsen viele Kinder mit zwei, drei oder mehr Sprachen auf: Luxemburgisch, Französisch, Deutsch, Portugiesisch und viele andere. Mehrsprachigkeit ist kein Risiko für die Entwicklung. Typisch und unbedenklich ist, dass Kinder Sprachen mischen, dass der Wortschatz in der einzelnen Sprache anfangs kleiner ist als bei einsprachigen Kindern – zusammengenommen aber vergleichbar – und dass manche Kinder in einer neuen Sprachumgebung zunächst eine Weile schweigen.\n\nEine echte **Sprachentwicklungsstörung** zeigt sich dagegen in *allen* Sprachen des Kindes, also auch in der Familiensprache (Bishop et al., 2017). Die wichtigste Frage an die Eltern lautet deshalb: Wie spricht Ihr Kind zu Hause – verglichen mit Geschwistern oder Gleichaltrigen, die dieselbe Sprache sprechen?"
+        },
+        {
+          "art": "mythos",
+          "mythos": "Mehrere Sprachen überfordern kleine Kinder. Eltern sollten deshalb zu Hause die Schulsprache sprechen.",
+          "fakt": "Kinder können mehrere Sprachen gleichzeitig lernen. Eine gut entwickelte Familiensprache ist eine wichtige Grundlage, auch für weitere Sprachen. Eltern sollten mit ihrem Kind in der Sprache sprechen, die sie selbst am besten beherrschen."
+        },
+        {
+          "art": "liste",
+          "titel": "Häufig und meist unbedenklich – aber oft beunruhigend für Erwachsene",
+          "punkte": [
+            "Wutanfälle bei Kleinkindern, besonders bei Müdigkeit, Hunger oder Übergängen.",
+            "Trennungsangst in der Eingewöhnung, auch noch mit drei oder vier Jahren.",
+            "Unflüssiges Sprechen zwischen etwa zwei und fünf Jahren. Hält es über Monate an oder kommen Anspannung und Vermeiden hinzu, ist eine logopädische Abklärung sinnvoll.",
+            "Fantasiefreunde und magische Erklärungen („Der Stuhl hat mich gehauen“).",
+            "Rückschritte bei Sauberkeit oder Sprache nach belastenden Veränderungen – wenn sie nach einigen Wochen wieder abklingen."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Das Schulalter: 6 bis 12",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mit dem Schuleintritt verschieben sich die Entwicklungsaufgaben. Das Denken wird logischer und geordneter: Kinder können Dinge nach mehreren Merkmalen sortieren und verstehen, dass eine Menge gleich bleibt, wenn man sie nur anders anordnet. Der Entwicklungspsychologe Jean Piaget nannte diese Phase die Stufe der konkreten Operationen – konkret, weil das Denken noch an anschauliche Dinge und Erfahrungen gebunden ist.\n\nGleichzeitig reifen die **exekutiven Funktionen**: das Arbeitsgedächtnis, die Hemmung spontaner Impulse und das flexible Umschalten zwischen Aufgaben. Deshalb bleibt eine Achtjährige länger bei einer Aufgabe als ein Sechsjähriger, und eine Elfjährige kann schon ein wenig planen, wie sie für eine Probe lernt. Diese Fähigkeiten entwickeln sich bis ins junge Erwachsenenalter weiter; im Grundschulalter brauchen fast alle Kinder dabei noch viel Unterstützung von außen (Schneider & Lindenberger, 2018).\n\nSozial werden die **Gleichaltrigen** immer wichtiger. Freundschaften beruhen anfangs auf gemeinsamem Spielen, später zunehmend auf Vertrauen, Loyalität und dem Gefühl, verstanden zu werden. Kinder vergleichen sich ständig mit anderen. Ihr Selbstbild wird dadurch realistischer – und oft auch kritischer. Das Gefühl, etwas zu können und dazuzugehören, wird zur zentralen Quelle des Selbstwerts. Gerechtigkeit ist ein großes Thema: „Das ist unfair!“ gehört zu den häufigsten Sätzen in einer Grundschulklasse."
+        },
+        {
+          "art": "liste",
+          "titel": "Was Kinder im Schulalter emotional dazulernen",
+          "punkte": [
+            "Sie verstehen, dass man zwei Gefühle zugleich haben kann – etwa Freude über ein Geschenk und Enttäuschung, weil es nicht das gewünschte ist.",
+            "Sie lernen, Gefühle zu verbergen oder abzuschwächen, wenn die Situation es verlangt.",
+            "Sie nutzen mehr innere Strategien: sich ablenken, sich selbst gut zureden, eine Situation anders bewerten.",
+            "Scham, Stolz und Schuld werden differenzierter. Bloßstellen vor der Gruppe trifft sie deshalb besonders."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Die Unterschiede in einer Klasse sind groß.** In einer Klasse sitzen Kinder, die fast ein Jahr auseinander sind und deren Entwicklungsstand in einzelnen Bereichen deutlich voneinander abweichen kann. Die jüngsten Kinder eines Jahrgangs – in Luxemburg meist die im Sommer Geborenen – werden häufiger als unreif, unaufmerksam oder leistungsschwach eingeschätzt, obwohl sie sich altersgemäß verhalten. Die Organisation der Grundschule in Zyklen von zwei Jahren soll diesem unterschiedlichen Tempo Raum geben.\n\nFür viele Kinder in Luxemburg kommt hinzu, dass sie in einer Sprache lesen und schreiben lernen, die nicht ihre Familiensprache ist. Schwierigkeiten beim Lesen können dann zunächst eine Frage der Sprache sein. Bestehen sie trotz guter Förderung über längere Zeit und auch bei gut verstandenen Inhalten, kann eine Lernstörung dahinterstecken – das klären Fachleute."
+        },
+        {
+          "art": "merke",
+          "text": "Kinder im Schulalter wollen etwas können und dazugehören. Erfahrungen von Kompetenz und Zugehörigkeit stärken sie; wiederholtes Scheitern und Ausgrenzung sind in dieser Zeit besonders belastend."
+        }
+      ]
+    },
+    {
+      "titel": "Das Jugendalter: 12 bis 18",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mit der **Pubertät** beginnt die körperliche Reifung zum Erwachsenen. Bei Mädchen setzt sie meist zwischen etwa 8 und 13 Jahren ein, bei Jungen im Durchschnitt ein bis zwei Jahre später. In den unteren Klassen des Lycée sitzen deshalb Kinder und fast Erwachsene nebeneinander. Der Zeitpunkt hat Folgen: Mädchen, die deutlich früher reifen als ihre Altersgenossinnen, haben im Durchschnitt ein höheres Risiko für Niedergeschlagenheit, Essprobleme und riskantes Verhalten – auch weil sie von Älteren wie Ältere behandelt werden. Bei Jungen kann eine deutlich spätere Reifung am Selbstwert nagen.\n\nAuch der **Schlaf** verändert sich. Das Schlafhormon Melatonin wird in der Pubertät später am Abend ausgeschüttet; Jugendliche werden abends später müde und kommen morgens schwer aus dem Bett. Das ist zunächst biologisch und kein Zeichen von Faulheit. Kommt spätes Bildschirmlicht hinzu, entsteht leicht ein dauerhaftes Schlafdefizit, das Konzentration, Stimmung und Selbstkontrolle beeinträchtigt."
+        },
+        {
+          "art": "text",
+          "text": "**Das Gehirn im Umbau.** Im Jugendalter wird das Gehirn tiefgreifend umgebaut. Wenig genutzte Verbindungen zwischen Nervenzellen werden abgebaut, häufig genutzte gestärkt und durch **Myelinisierung** schneller gemacht. Casey und Kollegen (2008) beschreiben diese Phase als Zeit eines **Ungleichgewichts**: Tiefer liegende Hirnregionen, die Belohnung und Gefühle verarbeiten, reagieren in der Jugend besonders stark. Die Steuerungssysteme im **präfrontalen Kortex**, die Impulse bremsen und Folgen abwägen, reifen dagegen langsamer – bis ins junge Erwachsenenalter.\n\nDieses Modell erklärt einen scheinbaren Widerspruch: Kinder haben noch weniger Selbstkontrolle als Jugendliche, gehen aber weniger Risiken ein. Entscheidend ist das Zusammentreffen von starkem Belohnungsreiz und noch unfertiger Steuerung. In ruhigen, „kühlen“ Situationen können Jugendliche oft ähnlich gut abwägen wie Erwachsene. In aufgeladenen, „heißen“ Situationen – Aufregung, Kränkung, Aussicht auf Anerkennung – setzen sich die schnellen Systeme leichter durch. Gleichaltrige verstärken das: In Experimenten entscheiden Jugendliche riskanter, wenn Freunde zuschauen.\n\nDer Umbau ist aber nicht nur ein Risiko. Das jugendliche Gehirn ist besonders lernfähig und empfänglich für soziale Erfahrungen. Beziehungen, Verantwortung und Erfolgserlebnisse in dieser Zeit prägen nachhaltig."
+        },
+        {
+          "art": "text",
+          "text": "**Identität und Ablösung.** Jugendliche beschäftigen sich intensiv mit der Frage, wer sie sind und wer sie sein wollen. Sie lösen sich schrittweise von den Eltern; Gleichaltrige und Zugehörigkeit werden sehr wichtig, erste Liebesbeziehungen entstehen. Viele reagieren in dieser Zeit empfindlich auf die Bewertung durch andere und haben das Gefühl, ständig beobachtet zu werden. Das abstrakte Denken erlaubt neue Fragen – nach Gerechtigkeit, Sinn und Zukunft – und neue Kritik an Erwachsenen. Widerspruch ist deshalb oft ein Zeichen gesunder Entwicklung, nicht fehlenden Respekts."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Die Pubertät ist für alle Jugendlichen eine Zeit von Sturm und Drang – da muss man eben durch.",
+          "fakt": "Stimmungsschwankungen und Konflikte mit den Eltern nehmen zu, doch die meisten Jugendlichen kommen ohne schwere Krisen durch diese Zeit. Anhaltender Rückzug, starke Niedergeschlagenheit, Selbstverletzung oder ein deutlicher Leistungseinbruch sind nicht „nur Pubertät“. Viele psychische Störungen beginnen im Jugendalter und sollten früh erkannt werden."
+        },
+        {
+          "art": "fall",
+          "titel": "Leandro, 14 Jahre, Lycée",
+          "text": "In der Pause feuern drei Mitschüler Leandro an, vom Dach des Fahrradunterstands zu springen, und filmen ihn dabei. Er springt und verstaucht sich den Knöchel. Am nächsten Tag sagt er im Gespräch mit seiner Tutorin: „Ich wusste eigentlich, dass das bescheuert ist. Aber in dem Moment …“ Die Tutorin schimpft nicht. Sie fragt, woran er beim nächsten Mal merken könnte, dass er in so eine Situation gerät, und was er dann sagen könnte, ohne das Gesicht zu verlieren.",
+          "fragen": [
+            "Wie erklärt das Modell von Casey und Kollegen Leandros Verhalten?",
+            "Was können die Erwachsenen an solchen Situationen ändern – und was bleibt Leandros Verantwortung?"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was Jugendlichen hilft",
+          "punkte": [
+            "Konflikte nicht vor Publikum austragen: das Gespräch unter vier Augen und mit etwas zeitlichem Abstand führen.",
+            "Aufgeladenen Situationen Zeit zum Abkühlen geben, bevor Entscheidungen oder Konsequenzen besprochen werden.",
+            "Regeln begründen und Jugendliche an Vereinbarungen beteiligen; Mitsprache erhöht die Bereitschaft, sie einzuhalten.",
+            "Verantwortung übertragen und Vertrauen zeigen – mit klaren Absprachen, was geschieht, wenn es nicht klappt.",
+            "Verfügbar bleiben: Auch wenn Jugendliche Abstand suchen, brauchen sie verlässliche Erwachsene.",
+            "Schlaf und Mediennutzung ernsthaft zum Thema machen, ohne zu moralisieren."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Wann genauer hinschauen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die meisten Abweichungen vom Durchschnitt liegen innerhalb der normalen Bandbreite. Einige Beobachtungen sollten aber Anlass sein, mit den Eltern über eine fachliche Abklärung zu sprechen. Dabei gilt: Pädagogische Fachkräfte stellen keine Diagnosen. Sie beobachten genau, beschreiben sachlich und sorgen dafür, dass die richtigen Fachleute hinschauen."
+        },
+        {
+          "art": "merke",
+          "text": "Der **Verlust bereits erworbener Fähigkeiten** ist in jedem Alter ein Warnzeichen: Ein Kind spricht weniger als vorher, verlernt Spiel- oder Alltagsfähigkeiten oder zieht sich deutlich aus Kontakten zurück. Das sollte zeitnah ärztlich abgeklärt werden."
+        },
+        {
+          "art": "liste",
+          "titel": "Warnzeichen, die eine Abklärung nahelegen",
+          "punkte": [
+            "Mit etwa zwölf Monaten keine Silbenketten, kein Zeigen oder Winken.",
+            "Mit etwa 16 Monaten noch keine Wörter; mit zwei Jahren keine eigenen Zweiwortverbindungen.",
+            "Im zweiten Lebensjahr kaum Blickkontakt, keine Reaktion auf den eigenen Namen, kein Interesse daran, anderen etwas zu zeigen.",
+            "Mit 18 Monaten noch kein freies Laufen.",
+            "Mit etwa vier Jahren für fremde Menschen kaum verständliche Sprache.",
+            "Deutliche Rückstände in mehreren Bereichen zugleich.",
+            "Im Schulalter anhaltende Schwierigkeiten beim Lesen, Schreiben oder Rechnen trotz guter Förderung über mehrere Monate.",
+            "Pubertätszeichen bei Mädchen vor dem achten, bei Jungen vor dem neunten Geburtstag – oder noch keine Anzeichen mit etwa 13 (Mädchen) beziehungsweise 14 Jahren (Jungen).",
+            "In jedem Alter: deutliche Veränderungen von Stimmung, Schlaf, Essverhalten oder Leistung, die über Wochen anhalten."
+          ]
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Rückstand – oder etwas anderes?",
+          "punkte": [
+            {
+              "wie": "Hören und Sehen",
+              "unterschied": "Wiederholte Mittelohrentzündungen oder eine unerkannte Sehschwäche bremsen Sprache und Lernen. Ein aktueller Hör- und Sehtest gehört an den Anfang jeder Abklärung."
+            },
+            {
+              "wie": "Eine neue Sprache",
+              "unterschied": "In der Familiensprache altersgemäß, in der Schulsprache noch am Anfang – das ist kein Entwicklungsrückstand, sondern normaler Zweitspracherwerb."
+            },
+            {
+              "wie": "Belastung und Stress",
+              "unterschied": "Rückschritte nach Trennung, Umzug, Krankheit oder Gewalt in der Familie beginnen oft zeitgleich mit dem Ereignis. Das Kind braucht dann Sicherheit – manchmal auch Schutz."
+            },
+            {
+              "wie": "Fehlende Gelegenheiten",
+              "unterschied": "Ein Kind, das zu Hause kaum mit Stift oder Schere umgehen konnte, holt mit Übung oft schnell auf. Entscheidend ist, wie es auf Förderung anspricht."
+            },
+            {
+              "wie": "Temperament",
+              "unterschied": "Zurückhaltende Kinder brauchen länger, um in neuen Situationen aufzutauen. Im vertrauten Rahmen zeigen sie, was sie können."
+            },
+            {
+              "wie": "Relatives Alter",
+              "unterschied": "Das jüngste Kind der Klasse wirkt neben fast ein Jahr Älteren schnell „unreif“. Vergleichen Sie mit Gleichaltrigen, nicht mit dem Klassendurchschnitt."
+            }
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder, die spät sprechen, holen das von allein auf – man kann ruhig abwarten.",
+          "fakt": "Viele Kinder, die spät zu sprechen beginnen, holen auf, aber nicht alle – und im Einzelfall lässt sich das kaum vorhersagen. Ein Hörtest und eine logopädische Einschätzung schaden nie; verpasste Förderzeit dagegen schon."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie die Eltern an, wenn Warnzeichen vorliegen oder Ihre Beobachtungen über Wochen ein deutliches Bild ergeben. Bereiten Sie das Gespräch mit konkreten Beispielen vor und fragen Sie nach der Entwicklung zu Hause und in der Familiensprache. Erste Anlaufstelle ist meist die Kinderärztin oder der Kinderarzt. Besprechen Sie das Vorgehen vorher mit Ihrer Leitung; eine weitergehende Abklärung kann das Diagnostique-Team des CDSE übernehmen."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: entwicklungsgerecht begleiten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Für den Alltag ergibt sich aus all dem vor allem eine Haltung: **Erwartungen am Entwicklungsstand ausrichten, nicht nur am Lebensalter.** Ein Kind kann nur Schritte gehen, die an das anschließen, was es schon kann. Der Psychologe Lew Wygotski sprach von der **Zone der nächsten Entwicklung**: dem Bereich, den ein Kind mit Unterstützung schon schafft, allein aber noch nicht. Gute Förderung setzt genau dort an – nicht zu leicht, nicht unerreichbar.\n\nBei Kindern mit sozial-emotionalem Förderbedarf gilt das besonders für Gefühle und Beziehungen. Ein Neunjähriger, der Frustration wie ein Vierjähriger verarbeitet, braucht in diesen Momenten auch das, was ein Vierjähriger braucht: einen Erwachsenen in der Nähe, einfache Worte, klare Grenzen und Beruhigung von außen. Die Entwicklungspädagogik ETEP, die auf die amerikanische Pädagogin Mary Wood zurückgeht, macht diesen Gedanken zum Programm: Sie bestimmt den sozial-emotionalen Entwicklungsstand eines Kindes und leitet daraus Ziele und das passende Verhalten der Erwachsenen ab (Wood, 1996; Bergsson & Luckfiel, 1998)."
+        },
+        {
+          "art": "fall",
+          "titel": "Samuel, 8 Jahre, Cycle 3.1",
+          "text": "Samuel lebt seit einem halben Jahr in einer Pflegefamilie. Im Unterricht arbeitet er gern mit, rechnet sicher und liest flüssig. Verliert er ein Spiel oder wird er korrigiert, wirft er sich auf den Boden, schreit und ist minutenlang nicht ansprechbar. Die Lehrerin hat bisher mit Ermahnungen und Strafen reagiert – ohne Erfolg. Mit dem Team überlegt sie neu: In diesen Momenten verarbeitet Samuel Gefühle eher wie ein Kleinkind. Sie bleibt nun ruhig in seiner Nähe, spricht wenig und langsam, bietet ihm die Ruheecke an und bespricht das Geschehen erst, wenn er sich beruhigt hat. Verlieren üben die beiden zunächst in kurzen Spielen zu zweit.",
+          "fragen": [
+            "Welche Erwartungen an Samuel sind in diesen Momenten realistisch?",
+            "Woran würden Sie erkennen, dass Samuel emotional einen Schritt weiterkommt?"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Jedes Kind in mehreren Bereichen beobachten und Stärken ebenso notieren wie Schwierigkeiten – ein Entwicklungsprofil statt eines Gesamturteils.",
+            "Ziele setzen, die an das anschließen, was das Kind schon kann, und kleine Fortschritte sichtbar machen.",
+            "Jüngeren und emotional jüngeren Kindern mehr Struktur, Nähe und Hilfe von außen geben – und diese schrittweise zurücknehmen.",
+            "Ein Kind mit seiner eigenen Entwicklung vergleichen, nicht mit Geschwistern oder den Stärksten der Klasse.",
+            "Die Eltern als Fachleute für die Entwicklungsgeschichte ihres Kindes einbeziehen.",
+            "Jugendliche an Zielen und Regeln beteiligen und Raum für eigene Entscheidungen lassen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "„In deinem Alter muss man das können“ – das beschämt und hilft nicht beim nächsten Schritt.",
+            "Rückschritte unter Belastung bestrafen oder lächerlich machen.",
+            "Bei klaren Warnzeichen abwarten, weil „sich das auswächst“.",
+            "Aus einzelnen Beobachtungen vorschnell auf eine Störung schließen oder Etiketten verteilen.",
+            "Jugendliche wie kleine Kinder behandeln – oder wie Erwachsene, die keine Unterstützung mehr brauchen."
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt ein „Grenzstein“ der Entwicklung?",
+      "optionen": [
+        "Das Alter, in dem Kinder eine Fähigkeit im Durchschnitt erwerben",
+        "Eine Fähigkeit, die fast alle Kinder bis zu einem bestimmten Alter erreicht haben – fehlt sie, ist eine genauere Untersuchung angezeigt",
+        "Die Grenze, ab der eine Entwicklungsstörung sicher vorliegt",
+        "Der früheste Zeitpunkt, zu dem ein Kind eine Fähigkeit zeigen kann"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Ein Grenzstein ist eine Fähigkeit, die rund 90 bis 95 von 100 Kindern bis zu einem bestimmten Alter erreicht haben. Fehlt sie, ist das ein Anlass für eine genauere Untersuchung, aber noch keine Diagnose. Das Durchschnittsalter beschreibt dagegen der Meilenstein; eine sichere Grenze zur Störung oder einen „frühesten Zeitpunkt“ gibt es nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Lara (4) besucht seit drei Monaten den Précoce. In der Gruppe spricht sie kaum Luxemburgisch, meist nur einzelne Wörter. Die Familie spricht Portugiesisch. Die Mutter erzählt, dass Lara zu Hause lange Geschichten erzählt – ähnlich wie ihre gleichaltrige Cousine.",
+      "frage": "Was ist die fachlich beste Einschätzung?",
+      "optionen": [
+        "Lara hat vermutlich eine Sprachentwicklungsstörung; eine Therapie sollte sofort beginnen.",
+        "Die Eltern sollten zu Hause Luxemburgisch statt Portugiesisch sprechen.",
+        "Laras Sprache wirkt in der Familiensprache altersgemäß; im Luxemburgischen braucht sie Zeit und Anregung – weiter beobachten.",
+        "Lara ist schüchtern; das ist kein Thema für die Schule."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "In der Familiensprache erzählt Lara altersgemäß – eine Sprachentwicklungsstörung würde sich in allen Sprachen zeigen. Im Luxemburgischen steht sie nach drei Monaten erwartungsgemäß am Anfang und braucht Zeit, Anregung und Beziehung. Die Familiensprache aufzugeben, nähme ihr eine wichtige Grundlage; das Thema ganz zu übergehen, wäre aber ebenfalls falsch."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Kind bereits erworbene Fähigkeiten wie die Sprache über längere Zeit wieder verliert, sollte das zeitnah ärztlich abgeklärt werden.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Der Verlust bereits erworbener Fähigkeiten ist in jedem Alter ein Warnzeichen. Kurze Rückschritte unter Belastung kommen vor; ein deutlicher, anhaltender Verlust von Sprache, Spiel- oder Alltagsfähigkeiten gehört aber zeitnah in ärztliche Hände."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zur Gehirnentwicklung im Jugendalter treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Die Steuerungssysteme im präfrontalen Kortex reifen bis ins junge Erwachsenenalter.",
+        "Das Belohnungssystem reagiert im Jugendalter besonders stark.",
+        "Jugendliche können grundsätzlich nicht vernünftig abwägen.",
+        "In aufgeladenen Situationen, etwa vor Gleichaltrigen, fällt Selbstkontrolle schwerer als in ruhigen.",
+        "Mit etwa zwölf Jahren ist das Gehirn ausgereift."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Die Steuerungssysteme reifen bis ins junge Erwachsenenalter, während das Belohnungssystem in der Jugend besonders stark reagiert (Casey et al., 2008). In „heißen“ Situationen und vor Gleichaltrigen fällt Selbstkontrolle deshalb schwerer. In ruhigen Situationen können Jugendliche aber durchaus vernünftig abwägen, und mit zwölf Jahren ist das Gehirn noch längst nicht ausgereift."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Lehrerin spricht Kevin (15) vor der ganzen Klasse scharf an, weil er während einer Probe auf sein Handy schaut. Kevin wird laut, beleidigt sie und verlässt den Raum.",
+      "frage": "Welches Vorgehen passt am besten zum Wissen über das Jugendalter?",
+      "optionen": [
+        "Kevin sofort vor der Klasse eine Strafe verkünden, damit alle sehen, dass so etwas nicht geht.",
+        "Das Verhalten übergehen – das ist eben Pubertät.",
+        "Nach einer Abkühlphase unter vier Augen sprechen: das Verhalten klar benennen, Kevins Sicht hören, eine Wiedergutmachung vereinbaren – und Kritik künftig möglichst nicht vor Publikum äußern.",
+        "Die Eltern auffordern, ihm das Handy wegzunehmen, und in der Schule nichts weiter tun."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Vor Publikum ist eine Situation für Jugendliche besonders „heiß“; eine öffentliche Strafe verschärft sie meist. Ein Gespräch unter vier Augen nach dem Abkühlen macht die Grenze klar, lässt Kevin das Gesicht wahren und ermöglicht Wiedergutmachung. Übergehen würde die Beleidigung verharmlosen, und die Verantwortung nur an die Eltern abzugeben, löst den Konflikt in der Schule nicht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welches Verhalten ist bei einem zweieinhalbjährigen Kind am ehesten altersgemäß?",
+      "optionen": [
+        "Heftige Wutanfälle, wenn ein Wunsch nicht erfüllt wird",
+        "Kaum Blickkontakt und keine Reaktion auf den eigenen Namen",
+        "Verlust von Wörtern, die es schon gesprochen hat",
+        "Kein Interesse daran, anderen etwas zu zeigen"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Wutanfälle, wenn Wünsche nicht erfüllt werden, sind in der Autonomiephase zwischen etwa einem und vier Jahren typisch. Kaum Blickkontakt, keine Reaktion auf den Namen, kein Zeigen und der Verlust schon gesprochener Wörter gehören dagegen zu den Warnzeichen, die fachlich abgeklärt werden sollten."
+    },
+    {
+      "art": "fall",
+      "fall": "Jana (9) hat in ihrem Leben schon mehrere Bezugspersonen verloren. Sie liest gut und arbeitet gern mit. Gelingt eine Aufgabe nicht sofort, zerreißt sie das Blatt, schreit und weint danach lange.",
+      "frage": "Welche Haltung hilft Jana am meisten?",
+      "optionen": [
+        "Von Jana das Verhalten einer Neunjährigen verlangen und jeden Ausbruch konsequent bestrafen.",
+        "Jana erklären, dass sie wahrscheinlich eine Störung hat, damit sie sich besser versteht.",
+        "Abwarten, bis sie von selbst nachreift.",
+        "Die Erwartungen in diesen Momenten an ihrem emotionalen Entwicklungsstand ausrichten: Beruhigung anbieten, Aufgaben in kleinere Schritte teilen und den Umgang mit Frustration in kleinen Dosen üben."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Jana verarbeitet Frustration wie ein deutlich jüngeres Kind. Sie braucht dann, was jüngere Kinder brauchen: Beruhigung von außen, kleinere Schritte und Übung in kleinen Dosen. Strafen setzen eine Fähigkeit voraus, die ihr noch fehlt, Abwarten lässt sie allein, und Diagnosen stellen pädagogische Fachkräfte nicht."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen sind ein Anlass, mit den Eltern über eine Abklärung zu sprechen? (mehrere richtig)",
+      "optionen": [
+        "Ein Vierjähriger lispelt beim s-Laut.",
+        "Eine Vierjährige ist für fremde Erwachsene kaum zu verstehen.",
+        "Ein Siebenjähriger macht trotz gezielter Förderung über Monate kaum Fortschritte beim Lesen, obwohl er die Unterrichtssprache gut versteht.",
+        "Ein Zweijähriger hat heftige Wutanfälle, wenn er müde ist.",
+        "Ein Mädchen zeigt mit sieben Jahren deutliche Pubertätszeichen."
+      ],
+      "richtig": [
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Kaum verständliche Sprache mit vier Jahren, fehlende Lesefortschritte trotz Förderung und gutem Sprachverständnis sowie Pubertätszeichen vor dem achten Geburtstag sind Anlässe für eine Abklärung. Lispeln ist im Vorschulalter häufig und verliert sich oft von selbst; Wutanfälle bei Müdigkeit sind mit zwei Jahren alterstypisch."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die meisten Jugendlichen durchleben in der Pubertät eine schwere seelische Krise.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Stimmungsschwankungen und Konflikte nehmen zu, doch die meisten Jugendlichen kommen ohne schwere Krisen durch diese Zeit. Gerade deshalb sollte man anhaltenden Rückzug, starke Niedergeschlagenheit oder Selbstverletzung nicht als „normale Pubertät“ abtun."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage zum Zeitpunkt der Pubertät trifft zu?",
+      "optionen": [
+        "Früh reifende Mädchen haben im Durchschnitt ein höheres Risiko für Niedergeschlagenheit und riskantes Verhalten.",
+        "Der Zeitpunkt der Pubertät spielt für das Befinden keine Rolle.",
+        "Jungen kommen im Durchschnitt früher in die Pubertät als Mädchen.",
+        "Ein spätes Einsetzen der Pubertät ist immer ein Zeichen einer Krankheit."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Früh reifende Mädchen haben im Durchschnitt ein höheres Risiko für Niedergeschlagenheit, Essprobleme und riskantes Verhalten, unter anderem weil sie wie Ältere behandelt werden. Der Zeitpunkt spielt also eine Rolle. Jungen kommen im Durchschnitt später in die Pubertät als Mädchen; ein spätes Einsetzen ist oft eine Normvariante, sollte ohne Anzeichen mit etwa 13 beziehungsweise 14 Jahren aber ärztlich abgeklärt werden."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Meilenstein",
+      "erklaerung": "Fähigkeit, die Kinder in einem bestimmten Alter im Durchschnitt erwerben. Ein Meilenstein beschreibt einen Mittelwert, keine Grenze."
+    },
+    {
+      "begriff": "Grenzstein",
+      "erklaerung": "Fähigkeit, die fast alle Kinder (rund 90 bis 95 von 100) bis zu einem bestimmten Alter erreicht haben. Fehlt sie, ist eine genauere Untersuchung angezeigt."
+    },
+    {
+      "begriff": "Entwicklungsalter",
+      "erklaerung": "Der Entwicklungsstand eines Kindes in einem Bereich, ausgedrückt als das Alter, in dem Kinder diesen Stand üblicherweise erreichen. Kann deutlich vom Lebensalter abweichen."
+    },
+    {
+      "begriff": "Regression",
+      "erklaerung": "Rückfall in frühere Verhaltensweisen, etwa Einnässen oder Babysprache, häufig unter Belastung. Meist vorübergehend."
+    },
+    {
+      "begriff": "Theory of Mind",
+      "erklaerung": "Das Verständnis, dass andere Menschen eigene Gedanken, Wünsche und Überzeugungen haben, die sich von den eigenen unterscheiden. Entwickelt sich deutlich zwischen etwa drei und fünf Jahren."
+    },
+    {
+      "begriff": "Exekutive Funktionen",
+      "erklaerung": "Geistige Steuerungsfähigkeiten wie Arbeitsgedächtnis, Impulshemmung, Planen und flexibles Umschalten. Sie reifen bis ins junge Erwachsenenalter."
+    },
+    {
+      "begriff": "Präfrontaler Kortex",
+      "erklaerung": "Bereich im vorderen Stirnhirn, der Planen, Abwägen und das Bremsen von Impulsen unterstützt. Reift als einer der letzten Hirnbereiche."
+    },
+    {
+      "begriff": "Myelinisierung",
+      "erklaerung": "Umhüllung von Nervenfasern mit einer isolierenden Schicht, die die Weiterleitung von Signalen beschleunigt. Setzt sich bis ins junge Erwachsenenalter fort."
+    },
+    {
+      "begriff": "Zone der nächsten Entwicklung",
+      "erklaerung": "Nach Lew Wygotski der Bereich, den ein Kind mit Unterstützung schon bewältigt, allein aber noch nicht. Hier setzt wirksame Förderung an."
+    },
+    {
+      "begriff": "Sprachentwicklungsstörung",
+      "erklaerung": "Anhaltende, deutliche Schwierigkeiten beim Spracherwerb ohne andere ausreichende Erklärung. Zeigt sich bei mehrsprachigen Kindern in allen Sprachen."
+    }
+  ],
+  "quellen": [
+    "schneiderLindenberger2018",
+    "casey2008",
+    "petermann2013",
+    "rutter2015",
+    "bishop2017",
+    "wood1996",
+    "bergsson1998",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "bindung",
+    "emotionsregulation",
+    "sprache-mutismus",
+    "lernstoerungen",
+    "autismus",
+    "etep",
+    "persoenlichkeitsentwicklung"
+  ],
+  "toolbox": [
+    "das-kann-ich-schon",
+    "mein-staerkenprofil",
+    "mein-koerper-veraendert-sich",
+    "gut-schlafen",
+    "noch-nicht"
+  ]
+}

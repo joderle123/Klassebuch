@@ -1,0 +1,554 @@
+{
+  "id": "traumapaedagogik",
+  "bereich": "handeln",
+  "titel": "Traumapädagogik im Schulalltag",
+  "untertitel": "Sicherheit geben, Verhalten verstehen, Regulation unterstützen",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können erklären, wie belastende Erfahrungen das Alarmsystem eines Kindes prägen und warum Verhalten im Alarmzustand nicht bewusst gewählt ist.",
+    "Sie können die „Annahme des guten Grundes“ auf Alltagssituationen anwenden, ohne auf Grenzen zu verzichten.",
+    "Sie können Sicherheit, Vorhersehbarkeit und Selbstwirksamkeit in Klasse oder Gruppe gezielt fördern.",
+    "Sie können Über- und Untererregung erkennen und in einer Krise nach dem Grundsatz „Regulation vor Reflexion“ handeln.",
+    "Sie kennen die Grenzen Ihrer Rolle, wissen, wann Sie Unterstützung holen, und können sich selbst vor Überlastung schützen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Leo, 10 Jahre, Cycle 3.2",
+          "text": "Leo lebt seit einem Jahr bei seiner Großmutter. Vorher hat er zu Hause häufig Streit und Gewalt zwischen den Erwachsenen miterlebt. In der Klasse ist er an vielen Tagen fröhlich und hilfsbereit. Als die Lehrerin an einem Montagmorgen laut wird, weil die Klasse nicht zur Ruhe kommt, springt Leo auf, tritt gegen seinen Stuhl, schreit „Lass mich in Ruhe!“ und rennt aus dem Raum. Am nächsten Tag soll er vor der Klasse vorlesen. Er bleibt stumm, starrt auf das Blatt und reagiert nicht, als die Lehrerin ihn zweimal anspricht. Im Lehrerzimmer fällt der Satz: „Der macht doch, was er will.“",
+          "fragen": [
+            "Was könnte in Leo in diesen beiden Momenten vorgegangen sein?",
+            "Was könnte ihm vor, während und nach solchen Situationen helfen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Viele Kinder und Jugendliche, die das CDSE begleitet, haben schwer Belastendes erlebt: Gewalt in der Familie, Vernachlässigung, Missbrauch, den Verlust wichtiger Bezugspersonen, Flucht oder Krieg, häufige Wechsel von Wohnort und Betreuung. Solche Erfahrungen sind keine Seltenheit. In der bekannten ACE-Studie berichtete mehr als die Hälfte der befragten Erwachsenen von mindestens einer belastenden Kindheitserfahrung; je mehr solcher Erfahrungen zusammenkamen, desto höher war später das Risiko für körperliche und seelische Erkrankungen (Felitti et al., 1998). Für das einzelne Kind sagt eine solche Statistik jedoch nichts voraus: Widerstandskraft (Resilienz) ist kein festes Merkmal, sondern entsteht im Zusammenspiel von Kind und Umfeld (Rutter, 2012).\n\n**Was ist ein Trauma?** Die Klassifikationssysteme DSM-5-TR und ICD-11 meinen damit die Konfrontation mit einer extremen Bedrohung – etwa Gewalt, sexuellen Übergriffen, einem schweren Unfall oder Krieg –, selbst erlebt oder miterlebt. Ob daraus eine seelische Verletzung wird, hängt auch davon ab, ob die Erfahrung die Möglichkeiten des Kindes übersteigt, damit fertigzuwerden, und ob es Schutz und Trost fand. Besonders tiefgreifend wirken Belastungen, die früh beginnen, sich über lange Zeit wiederholen und von den Menschen ausgehen, die eigentlich schützen sollten. Van der Kolk (2005) hat dafür eine eigene Diagnose („Entwicklungstraumastörung“) vorgeschlagen; sie wurde nicht in die Klassifikationssysteme übernommen. Die ICD-11 kennt aber die **komplexe Posttraumatische Belastungsstörung**: Zu den typischen Traumafolgen kommen dort anhaltende Schwierigkeiten mit Gefühlen, dem Selbstbild und Beziehungen hinzu."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer Schlimmes erlebt hat, ist traumatisiert – und bleibt es.",
+          "fakt": "Belastende Erfahrungen erhöhen das Risiko, sie bestimmen aber nicht das Schicksal. Viele Kinder verarbeiten sie mit Hilfe verlässlicher Menschen gut. Umgekehrt kann ein Kind stark belastet sein, ohne dass in der Schule jemand davon weiß."
+        },
+        {
+          "art": "text",
+          "text": "**Traumapädagogik** ist keine Therapie. Sie ist eine Haltung und eine Sammlung pädagogischer Grundsätze, die im deutschsprachigen Raum vor allem in der stationären Kinder- und Jugendhilfe entstanden ist und heute auch in Schulen genutzt wird. Ihr Ziel ist ein Alltag, in dem sich ein belastetes Kind sicher genug fühlt, um zu lernen, Beziehungen einzugehen und neue, bessere Erfahrungen zu machen. Was diesen Kindern hilft – Sicherheit, Verlässlichkeit, Beziehung, Beteiligung –, schadet keinem anderen Kind der Klasse."
+        },
+        {
+          "art": "merke",
+          "text": "Die innere Leitfrage der Traumapädagogik lautet nicht „Was stimmt mit dir nicht?“, sondern „Was hast du erlebt, und was brauchst du jetzt, um dich sicher zu fühlen?“ Das ist eine Haltung, keine Frage an das Kind: Nach belastenden Erlebnissen forschen Sie nicht nach."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Alarm im Nervensystem",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Jeder Mensch hat ein Alarmsystem. Bei Gefahr springt es blitzschnell an, noch bevor wir nachdenken: Herz und Atem werden schneller, die Muskeln spannen sich, der Körper macht sich bereit zu kämpfen oder zu fliehen. Ist beides unmöglich, bleibt als letzter Ausweg das Erstarren – der Körper „schaltet ab“, Wahrnehmung und Gefühle werden gedämpft. Diese Reaktionen werden nicht gewählt; sie laufen automatisch ab.\n\nDas Gehirn entwickelt sich *nutzungsabhängig*: Was häufig gebraucht wird, wird stärker. Ein Kind, das lange in Angst gelebt hat, hat deshalb oft ein Alarmsystem, das schneller, heftiger und länger reagiert als bei anderen Kindern (Perry & Szalavitz, 2006). Dauerstress belastet zudem den ganzen Körper (McEwen, 1998). Im Alarmzustand übernehmen schnelle, einfache Reaktionsmuster; Nachdenken, Abwägen und Sprechen über Gefühle sind dann kaum möglich.\n\n**Auslöser (Trigger).** Belastende Erinnerungen sind oft nicht als zusammenhängende Geschichte gespeichert, sondern als Bruchstücke: Geräusche, Gerüche, Bilder, Körpergefühle (van der Kolk, 2014). Ein ähnlicher Reiz in der Gegenwart kann das Alarmsystem anwerfen, als wäre die Gefahr zurück. Leo hört dann nicht „die Lehrerin, die für Ruhe sorgt“ – sein Körper reagiert auf „Erwachsene schreien, gleich passiert etwas“. Oft kennt das Kind den Zusammenhang selbst nicht, und auch für Erwachsene ist er nicht immer erkennbar."
+        },
+        {
+          "art": "liste",
+          "titel": "Häufige Auslöser im Schulalltag",
+          "punkte": [
+            "Laute Stimmen, Schreien, zuschlagende Türen, plötzliche Geräusche",
+            "Berührung ohne Vorwarnung; jemand nähert sich von hinten oder kommt sehr nah",
+            "Das Gefühl, eingesperrt oder festgehalten zu werden; ein versperrter Ausgang",
+            "Kontrollverlust: unerwartete Änderungen, Vertretungsstunden, Ausflüge, Übergänge",
+            "Bloßstellung, Beschämung, erlebte Ungerechtigkeit – auch Kritik, die als Ablehnung ankommt",
+            "Bestimmte Unterrichtsthemen (Familie, Krieg, Tod), Jahrestage, Feiertage, Ferienbeginn",
+            "Gerüche, Uniformen, Gesten oder ein Tonfall, der an eine bestimmte Person erinnert"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Das Toleranzfenster.** Siegel (1999) beschreibt einen Bereich mittlerer Erregung, in dem ein Mensch Gefühle aushalten, klar denken und lernen kann – das *Toleranzfenster*. Darüber liegt die Übererregung, darunter die Untererregung. Bei vielen belasteten Kindern ist dieses Fenster schmal: Schon kleine Belastungen bringen sie hinaus. Pädagogisch geht es darum, Kindern zurück ins Fenster zu helfen und es mit der Zeit zu erweitern.\n\nDas innere Wegdriften bei Untererregung nennt man **Dissoziation**. Das Kind ist dann „nicht richtig da“: Es nimmt die Umgebung nur gedämpft wahr und weiß hinterher manchmal nicht, was gesagt wurde. Im Unterricht wird das leicht als Träumen, Desinteresse oder Trotz missverstanden."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Zustände – und was jeweils hilft",
+          "spalten": [
+            "Zustand",
+            "Was Sie sehen können",
+            "Was hilft"
+          ],
+          "zeilen": [
+            [
+              "Übererregung (Kampf oder Flucht)",
+              "Schneller Atem, rotes Gesicht, laute Stimme, geballte Fäuste, Drohen, Schlagen, Weglaufen, große Schreckhaftigkeit",
+              "Ruhe ausstrahlen, wenige Worte, Abstand und Sicherheit, Bewegung oder einen Rückzugsort anbieten"
+            ],
+            [
+              "Im Toleranzfenster",
+              "Ansprechbar, kann zuhören, nachdenken, lernen und auch Frust aushalten",
+              "Lernen, Gespräche führen, Beruhigungsstrategien üben"
+            ],
+            [
+              "Untererregung (Erstarrung)",
+              "Starrer Blick, wirkt abwesend, reagiert verzögert oder gar nicht, monotone Stimme, schlaffe Haltung",
+              "Mit Namen ansprechen, Orientierung geben, sanfte Sinnesreize, kein Leistungsdruck"
+            ]
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein Kind, das nach schlimmen Erlebnissen still und angepasst ist, hat alles gut verarbeitet.",
+          "fakt": "Rückzug, Überanpassung und Abschalten sind ebenfalls Antworten des Alarmsystems. Stille Kinder stören nicht und werden deshalb leicht übersehen, obwohl sie genauso belastet sein können wie Kinder, die laut werden."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was man leicht falsch deutet",
+          "punkte": [
+            {
+              "wie": "ADHS",
+              "unterschied": "Ständige Wachsamkeit, Unruhe und Schreckhaftigkeit können wie ADHS aussehen. Hinweise auf Belastung: Das Verhalten schwankt stark mit Auslösern oder hat sich nach belastenden Ereignissen verändert. Beides kann auch zusammen vorkommen."
+            },
+            {
+              "wie": "Oppositionelles Verhalten",
+              "unterschied": "Heftiger Widerstand kann eine Kampfreaktion sein, besonders bei Kontrollverlust, Druck oder Bloßstellung. Nach dem Ausbruch wirken manche Kinder erschöpft oder beschämt und erinnern sich kaum an Einzelheiten."
+            },
+            {
+              "wie": "Desinteresse oder Träumen",
+              "unterschied": "Kann Dissoziation sein: Das Kind ist für Momente „weg“, reagiert nicht auf Ansprache und weiß danach nicht, was besprochen wurde."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Welche Erklärung zutrifft, klären Fachleute. Ihre Aufgabe ist es, genau zu beobachten, für mehrere Erklärungen offen zu bleiben und im Alltag Sicherheit zu geben – das hilft in jedem Fall."
+        }
+      ]
+    },
+    {
+      "titel": "Die Grundhaltung: der gute Grund",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Im Zentrum der Traumapädagogik steht die **Annahme des guten Grundes**: Jedes Verhalten hat einen Sinn in der Lebensgeschichte des Kindes. Was heute stört, war oft einmal eine kluge Antwort auf eine gefährliche Umgebung – und das Kind hatte noch keine Gelegenheit zu lernen, dass es hier anders ist. Diese Annahme verändert den Blick: Aus „Er will provozieren“ wird „Wovor schützt er sich gerade?“. Das entlastet auch die Erwachsenen, denn das Verhalten richtet sich meist nicht gegen sie persönlich."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Verhalten verstehen",
+          "spalten": [
+            "Verhalten heute",
+            "Möglicher guter Grund",
+            "Was das Kind jetzt braucht"
+          ],
+          "zeilen": [
+            [
+              "Muss alles kontrollieren, explodiert bei Planänderungen",
+              "Unvorhersehbares bedeutete früher Gefahr",
+              "Verlässliche Abläufe, Ankündigungen, echte Wahlmöglichkeiten"
+            ],
+            [
+              "Lehnt jede Hilfe ab: „Ich brauch niemanden.“",
+              "Auf Erwachsene war kein Verlass",
+              "Geduldige, gleichbleibende Angebote ohne Druck"
+            ],
+            [
+              "Provoziert neue Bezugspersonen",
+              "Prüft, ob die Beziehung hält, wenn es schwierig wird",
+              "Klare Grenzen und die Botschaft: „Ich bleibe.“"
+            ],
+            [
+              "Hortet Essen oder Material",
+              "Erfahrung von Mangel",
+              "Verlässliche Versorgung, keine Beschämung"
+            ],
+            [
+              "Lächelt, wenn es zurechtgewiesen wird",
+              "Gefühle zu zeigen war gefährlich",
+              "Nicht als Frechheit deuten, später in Ruhe klären"
+            ]
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Verstehen heißt nicht einverstanden sein. Der gute Grund erklärt ein Verhalten, er erlaubt es nicht. Grenzen bleiben nötig – gesetzt werden sie ruhig, vorhersehbar und ohne Beschämung."
+        },
+        {
+          "art": "liste",
+          "titel": "Weitere Grundhaltungen der Traumapädagogik",
+          "punkte": [
+            "Wertschätzung: Das Kind wird als Person angenommen, auch wenn sein Verhalten Grenzen braucht.",
+            "Transparenz: Erwachsene erklären, was passiert und warum. Überraschungen und Heimlichkeiten erzeugen Unsicherheit.",
+            "Beteiligung (Partizipation): Wo immer möglich, hat das Kind eine Wahl. Wer Ohnmacht erlebt hat, braucht die Erfahrung, mitentscheiden zu dürfen.",
+            "Freude: Gemeinsames Lachen, Spiel und Erfolg sind keine Nebensache, sondern Gegenerfahrungen zu Angst und Ohnmacht."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Beziehung als Wirkfaktor.** Perry und Szalavitz (2006) beschreiben, dass belastete Kinder vor allem durch viele verlässliche, zugewandte Begegnungen im Alltag heilen – nicht allein durch eine Therapiestunde pro Woche. Jede ruhige Begrüßung, jede eingehaltene Zusage, jede Versöhnung nach einem Konflikt ist eine kleine Gegenerfahrung zu dem, was das Kind bisher über Erwachsene gelernt hat. Genau das kann die Schule leisten, jeden Tag."
+        },
+        {
+          "art": "fall",
+          "titel": "Jana, 14 Jahre, Lycée",
+          "text": "Jana lebt seit drei Monaten in einer Wohngruppe. In der Schule fragt sie ständig: „Was machen wir als Nächstes? Wie lange noch?“ Als der Sportunterricht wegen eines Gewitters kurzfristig in den Klassenraum verlegt wird, wirft sie ihre Tasche auf den Boden und beschimpft den Lehrer. Ein Kollege meint: „Die will uns nur manipulieren.“ Die Educatrice schlägt vor, Jana Änderungen künftig vorab persönlich mitzuteilen und ihr bei Planänderungen zwei Möglichkeiten anzubieten. Die Ausbrüche werden seltener, verschwinden aber nicht.",
+          "fragen": [
+            "Welcher gute Grund könnte hinter Janas Bedürfnis nach Kontrolle stehen?",
+            "Wie geben Sie ihr Sicherheit, ohne dass sie den Unterricht bestimmt?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Sicherheit und Vorhersehbarkeit gestalten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Sicherheit ist die Voraussetzung für alles Weitere. Ein Kind, dessen Alarmsystem ständig nach Gefahr sucht, hat wenig Kraft frei für Bruchrechnen oder Grammatik. Die Traumapädagogik unterscheidet den **äußeren sicheren Ort** – eine Umgebung, in der das Kind geschützt ist und sich auskennt – vom **inneren sicheren Ort**, dem Gefühl: „Hier bin ich sicher, hier kann ich mich beruhigen.“ Das innere Sicherheitsgefühl kann nur wachsen, wenn die äußere Sicherheit verlässlich da ist – Tag für Tag, auch nach schwierigen Tagen.\n\nDer wichtigste Baustein ist Vorhersehbarkeit. Wer weiß, was kommt, muss nicht ständig auf der Hut sein."
+        },
+        {
+          "art": "tun",
+          "titel": "Was Sicherheit schafft",
+          "punkte": [
+            "Ein fester Platz mit Überblick: Rücken zur Wand, Blick zur Tür, nicht im Durchgang.",
+            "Ein Rückzugsort, den das Kind kennt und selbst aufsuchen darf – mit einem vereinbarten Zeichen oder einer Karte.",
+            "Ein sichtbarer Tages- oder Wochenplan; Änderungen so früh wie möglich ankündigen, bei Bedarf persönlich.",
+            "Feste Rituale für Ankommen, Übergänge und Abschied, zum Beispiel eine Begrüßung an der Tür.",
+            "Wenige, klare Regeln, die für alle gelten und vorhersehbar umgesetzt werden.",
+            "Eine ruhige, freundliche Stimme – auch beim Grenzensetzen. Ankündigen, bevor Sie sich nähern oder das Kind berühren.",
+            "Besondere Situationen vorbereiten: Vertretung, Ausflug, Feueralarmprobe, Klassenwechsel. Absprachen dazu mit der Leitung treffen.",
+            "Eine feste Ansprechperson, an die sich das Kind wenden kann, wenn es schwierig wird."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Unsicherheit verstärkt",
+          "punkte": [
+            "Anschreien, Drohen, Ironie, Bloßstellen vor der Klasse",
+            "Beziehungsentzug als Strafe („Mit dir rede ich heute nicht mehr.“)",
+            "Überraschungen „zur Übung“, damit das Kind flexibler wird",
+            "Einschließen oder Festhalten – außer bei akuter Gefahr und dann nur nach den Regeln Ihres Dienstes",
+            "Die Geschichte des Kindes vor anderen ansprechen oder sie der Klasse als Erklärung anbieten",
+            "Häufig wechselnde Regeln und Bezugspersonen ohne Erklärung"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Selbstwirksamkeit stärken.** Trauma ist eine Erfahrung von Ohnmacht: Das Kind konnte nichts tun, um die Gefahr abzuwenden. Umso wichtiger ist die Gegenerfahrung, selbst etwas bewirken zu können. Bandura (1977) nennt die Überzeugung, durch eigenes Handeln etwas zu erreichen, *Selbstwirksamkeit*; sie wächst vor allem durch eigene Erfolgserlebnisse.\n\nIm Alltag heißt das: echte Wahlmöglichkeiten („Willst du mit Lesen oder mit Rechnen anfangen?“), kleine Verantwortungen wie Pflanzen gießen oder Material verwalten, Aufgaben, die mit etwas Anstrengung zu schaffen sind, und Lob, das konkret benennt, was das Kind getan hat. Dazu gehört auch, Beruhigungsstrategien in ruhigen Momenten zu üben – etwa Atmen, Bewegung oder den Weg in die Ruhe-Ecke. So erlebt das Kind: „Ich kann mich selbst wieder beruhigen.“"
+        }
+      ]
+    },
+    {
+      "titel": "In der Krise: Regulation vor Reflexion",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein Kind in Übererregung kann nicht nachdenken; sein Gehirn ist auf Überleben geschaltet. Fragen wie „Warum hast du das gemacht?“ und Belehrungen erreichen es in diesem Moment nicht, sie steigern die Erregung oft noch. Daraus ergibt sich eine einfache Reihenfolge: **erst beruhigen, dann die Beziehung wiederherstellen, dann nachdenken.**\n\nErwachsene helfen beim Beruhigen vor allem durch ihren eigenen Zustand. Eine ruhige, langsame, eher tiefe Stimme, eine entspannte Haltung und wenige Worte wirken auf das Kind ein – es „leiht“ sich gewissermaßen die Ruhe des Erwachsenen. Das nennt man **Ko-Regulation**. Sie gelingt nur, wenn Sie selbst einigermaßen ruhig sind. Wenn nicht, ist es professionell, eine Kollegin dazuzuholen."
+        },
+        {
+          "art": "tun",
+          "titel": "Bei Übererregung",
+          "punkte": [
+            "Auf die eigene Atmung und Haltung achten: langsamer werden, seitlich statt frontal stehen, die Hände sichtbar lassen.",
+            "Wenige, kurze Sätze: „Du bist sicher. Ich bin da. Wir kriegen das hin.“",
+            "Abstand geben, den Ausgang frei lassen, Zuschauer reduzieren – etwa die Klasse mit einer Kollegin kurz hinausschicken.",
+            "Angebote statt Befehle: „Möchtest du in die Ruhe-Ecke oder erst etwas trinken?“",
+            "Jetzt keine Diskussion über Regeln, Schuld oder Strafen.",
+            "Körperlich eingreifen nur bei Gefahr für das Kind oder andere – und nach den Regeln Ihres Dienstes."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Bei Erstarrung und Wegdriften",
+          "punkte": [
+            "Ruhig mit Namen ansprechen, auf Augenhöhe gehen, ohne das Kind zu berühren.",
+            "Orientierung geben: „Du bist in der Schule. Ich bin Frau Weber. Es ist Dienstag.“",
+            "Sanfte Sinnesreize anbieten: etwas Kühles in die Hand, die Füße fest auf den Boden stellen, aufstehen und ein paar Schritte gehen.",
+            "Keine Leistung verlangen, bis das Kind wieder ganz da ist."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Nach der Krise.** Wenn sich das Kind beruhigt hat, braucht es zuerst das Signal, dass die Beziehung hält: ein freundliches Wort, ein Glas Wasser, gemeinsames Aufräumen. Das Nachdenken folgt erst, wenn es wieder im Toleranzfenster ist – oft Stunden später oder am nächsten Tag. Dann geht es um Fragen wie: Was war los? Woran hätten wir es früher merken können? Was hat geholfen? Wie lässt sich der Schaden wiedergutmachen? Konsequenzen haben ihren Platz, aber als Wiedergutmachung und Lernschritt, nicht als Beschämung."
+        },
+        {
+          "art": "fall",
+          "titel": "Leo, drei Wochen später",
+          "text": "Beim Fußball auf dem Pausenhof gerät Leo in Streit, stößt einen Mitschüler zu Boden und kauert danach zitternd an der Wand. Die Educatrice bittet einen Kollegen, die anderen Kinder weiterspielen zu lassen, setzt sich mit etwas Abstand neben Leo und sagt nur: „Ich bin da. Du bist sicher.“ Nach einigen Minuten nimmt er die angebotene Wasserflasche. Am nächsten Morgen sprechen die beiden in Ruhe. Leo zeichnet, wie „heiß“ es in ihm wurde, und überlegt, wie er es beim anderen Kind wiedergutmachen kann. Sie vereinbaren eine Karte, die er zeigen darf, wenn es ihm zu viel wird.",
+          "fragen": [
+            "Welche Schritte der Reihenfolge „beruhigen – Beziehung – nachdenken“ erkennen Sie?",
+            "Was könnten Sie tun, wenn Leo die Karte in der nächsten Krise nicht benutzt?"
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Sicherheit geht vor. Gefährdet ein Kind sich oder andere ernsthaft, holen Sie Hilfe, informieren die Leitung und wählen bei akuter Gefahr den Notruf. Erzählt ein Kind – in einer Krise oder danach – von Gewalt oder Missbrauch, hören Sie ruhig zu, fragen nicht nach und informieren sofort Ihre Leitung (siehe Modul „Kinderschutz“)."
+        }
+      ]
+    },
+    {
+      "titel": "Grenzen der Rolle – und die eigenen Grenzen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Traumapädagogik und Traumatherapie ergänzen sich, sind aber nicht dasselbe. In der Schule geht es um Sicherheit, Beziehung, Stabilität und Lernen. Die Bearbeitung belastender Erinnerungen gehört in eine Psychotherapie bei einer dafür ausgebildeten Fachperson. Für Kinder und Jugendliche mit einer Posttraumatischen Belastungsstörung empfehlen Leitlinien eine traumafokussierte Psychotherapie, vor allem die traumafokussierte kognitive Verhaltenstherapie (NICE, 2018). Eine gute Zusammenarbeit zwischen Schule und Therapie – über die Eltern und mit deren Einverständnis – hilft beiden Seiten."
+        },
+        {
+          "art": "lassen",
+          "titel": "Was nicht zur pädagogischen Rolle gehört",
+          "punkte": [
+            "Nach Einzelheiten belastender Erlebnisse fragen oder das Kind zum Erzählen drängen",
+            "Das Kind gezielt mit Auslösern konfrontieren, damit es „sich daran gewöhnt“",
+            "Deutungen aussprechen: „Du bist nur so wütend wegen deines Vaters.“",
+            "Diagnosen stellen („Sie hat eine PTBS“) – auch nicht im Gespräch mit Eltern oder im Team",
+            "Allein die Verantwortung für die Heilung des Kindes übernehmen"
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn ein Kind über Wochen stark belastet wirkt: häufige Albträume oder große Müdigkeit, starkes Vermeiden bestimmter Orte oder Themen, anhaltende Schreckhaftigkeit, häufiges Wegdriften, wiederholtes Nachspielen belastender Szenen, zunehmender Rückzug, Selbstverletzung oder Äußerungen, nicht mehr leben zu wollen. Sprechen Sie mit Ihrer Leitung; eine Abklärung ist über das Diagnostique-Team des CDSE, die Kinderärztin oder die Kinder- und Jugendpsychiatrie möglich. Bei Suizidgedanken oder Hinweisen auf eine aktuelle Gefährdung handeln Sie sofort nach den internen Abläufen."
+        },
+        {
+          "art": "text",
+          "text": "**Selbstfürsorge.** Die Arbeit mit belasteten Kindern geht nicht spurlos an den Erwachsenen vorbei. Kinder bringen ihre Beziehungserfahrungen mit: Sie erwarten Ablehnung, testen, greifen an oder klammern. Das löst starke Gefühle aus – Ärger, Hilflosigkeit, Traurigkeit, manchmal den Wunsch, das Kind zu retten. Wer immer wieder vom Leid anderer hört, kann selbst Anzeichen von Belastung entwickeln: Grübeln, Schlafprobleme, Gereiztheit, das Gefühl, nicht mehr abschalten zu können. Figley (1995) beschreibt dies als Mitgefühlserschöpfung; man spricht auch von sekundärem traumatischem Stress. Das ist kein Zeichen von Schwäche, sondern ein bekanntes Risiko helfender Berufe."
+        },
+        {
+          "art": "tun",
+          "titel": "Was schützt",
+          "punkte": [
+            "Belastende Situationen im Team besprechen, statt sie allein zu tragen",
+            "Supervision und Intervision (kollegiale Beratung) regelmäßig nutzen",
+            "Die eigenen Auslöser kennen: Welche Situationen bringen mich aus meinem Toleranzfenster?",
+            "Die eigene Rolle klar halten: Ich begleite und stabilisiere – heilen muss ich nicht allein",
+            "Bewusste Übergänge zwischen Arbeit und Freizeit, Erholung, Bewegung, Menschen, die guttun",
+            "Früh Hilfe holen, wenn die Belastung anhält (siehe Modul „Selbstfürsorge und Grenzen im helfenden Beruf“)"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Sie können nur so viel Ruhe weitergeben, wie Sie selbst haben. Selbstfürsorge ist deshalb kein Luxus, sondern Teil professioneller Arbeit mit belasteten Kindern."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt die „Annahme des guten Grundes“ am besten?",
+      "optionen": [
+        "Wer Schlimmes erlebt hat, darf sich anders verhalten; Regeln gelten für dieses Kind nicht.",
+        "Man sucht im Gespräch mit dem Kind nach dem Erlebnis, das hinter seinem Verhalten steckt.",
+        "Verhalten, das heute stört, war oft eine sinnvolle Antwort auf frühere Gefahr – man versucht es zu verstehen und setzt trotzdem ruhig Grenzen.",
+        "Das Verhalten ist eine Phase, die man mit Geduld aussitzen kann."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Annahme des guten Grundes versteht Verhalten als einst sinnvolle Anpassung an eine gefährliche Umgebung. Verstehen heißt aber nicht einverstanden sein: Grenzen bleiben nötig. Nach belastenden Erlebnissen zu forschen, gehört nicht zur pädagogischen Rolle, und Aussitzen übersieht, dass das Kind neue, sichere Erfahrungen braucht."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Traumapädagogik bedeutet vor allem, mit dem Kind über seine belastenden Erlebnisse zu sprechen, damit es sie verarbeiten kann.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Traumapädagogik schafft Sicherheit, Verlässlichkeit und Beziehung im Alltag. Die Bearbeitung belastender Erinnerungen gehört in eine Therapie; Nachfragen ohne diesen Rahmen kann ein Kind überfluten. Erzählt ein Kind von sich aus, hören Sie ruhig zu, ohne nachzubohren."
+    },
+    {
+      "art": "fall",
+      "fall": "Sara (12) hat im Streit einen Stuhl umgeworfen. Sie steht mit geballten Fäusten da, atmet schnell und schreit. Die ganze Klasse schaut zu.",
+      "frage": "Was ist jetzt am hilfreichsten?",
+      "optionen": [
+        "Mit ruhiger Stimme und wenigen Worten sprechen, Abstand geben, die Zuschauer reduzieren, einen ruhigen Ort anbieten und das Gespräch über den Vorfall auf später verschieben.",
+        "Sofort fragen, warum sie das getan hat, und eine Entschuldigung beim Mitschüler verlangen.",
+        "Der Klasse erklären, dass Sara zu Hause Schlimmes erlebt hat, damit alle Verständnis haben.",
+        "Eine deutliche Strafe ankündigen, damit sie merkt, dass es ernst ist."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Sara ist in Übererregung; Nachdenken ist gerade kaum möglich. Zuerst braucht sie Sicherheit und Ko-Regulation, das Gespräch folgt, wenn sie ruhig ist. Warum-Fragen und Drohungen steigern die Erregung, und ihre Geschichte vor der Klasse offenzulegen, verletzt ihre Privatsphäre."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können auf Untererregung oder Wegdriften (Dissoziation) hinweisen? (mehrere richtig)",
+      "optionen": [
+        "Starrer Blick, keine Reaktion auf Ansprache",
+        "Das Kind weiß hinterher nicht, was in den letzten Minuten gesagt wurde.",
+        "Das Kind schreit und wirft mit Gegenständen.",
+        "Schlaffe Haltung, monotone Stimme, wirkt wie abgeschaltet",
+        "Das Kind lacht in der Pause laut mit Freunden."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Starrer Blick, fehlende Reaktion, Erinnerungslücken und ein „abgeschalteter“ Eindruck passen zur Untererregung. Schreien und Werfen sprechen für Übererregung, also Kampf oder Flucht. Lautes Lachen mit Freunden ist zunächst einfach ein gutes Zeichen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum reagiert ein belastetes Kind manchmal sehr heftig auf einen harmlosen Reiz, etwa eine zuschlagende Tür?",
+      "optionen": [
+        "Weil es gezielt die Aufmerksamkeit der Klasse sucht.",
+        "Weil das Kind überempfindlich ist und lernen muss, sich zusammenzureißen.",
+        "Weil das Kind in diesem Moment bewusst an das frühere Erlebnis denkt und sich darüber ärgert.",
+        "Weil der Reiz einem früheren Gefahrensignal ähnelt und das Alarmsystem anspringt, bevor das Nachdenken einsetzt – oft ohne dass das Kind den Zusammenhang kennt."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Belastende Erinnerungen sind oft als Bruchstücke wie Geräusche oder Körpergefühle gespeichert. Ein ähnlicher Reiz kann als Trigger das Alarmsystem auslösen – schneller, als das Kind nachdenken kann, und meist ohne bewusste Verknüpfung. Absicht, fehlende Selbstbeherrschung oder bewusstes Erinnern erklären die Reaktion nicht – und „Zusammenreißen“ ist im Alarmzustand kaum möglich."
+    },
+    {
+      "art": "fall",
+      "fall": "Leo (10) reagiert auf unerwartete Änderungen mit Wutausbrüchen. Morgen ist eine Feueralarmprobe geplant, und am Nachmittag unterrichtet eine Vertretung.",
+      "frage": "Wie bereiten Sie Leo am besten vor?",
+      "optionen": [
+        "Gar nicht – er muss lernen, mit Überraschungen umzugehen.",
+        "Sie kündigen ihm die Änderungen vorab in Ruhe an, zeigen den Ablauf, legen eine vertraute Ansprechperson und einen Rückzugsort fest und stimmen das Vorgehen bei der Probe mit der Leitung ab.",
+        "Sie schlagen den Eltern vor, Leo morgen zu Hause zu lassen, damit nichts passiert.",
+        "Sie sagen ihm, dass er sich nicht so anstellen soll, weil es nur eine Übung ist."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Vorhersehbarkeit senkt die Alarmbereitschaft: Wer weiß, was kommt, muss weniger kontrollieren. Überraschungen „zur Übung“ bestätigen dem Kind, dass die Welt unberechenbar ist. Zu Hause bleiben verhindert Teilhabe und neue Erfahrungen, und Abwerten verstärkt Scham und Stress."
+    },
+    {
+      "art": "fall",
+      "fall": "Am Ende einer Einzelstunde sagt Tom (8) plötzlich leise, sein Stiefvater habe ihn gestern mit dem Gürtel geschlagen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Sie fragen genau nach, wie oft das passiert und womit, damit Sie es vollständig aufschreiben können.",
+        "Sie versprechen Tom, es niemandem zu sagen, damit er Ihnen weiter vertraut.",
+        "Sie hören ruhig zu, nehmen ihn ernst, versprechen nichts, was Sie nicht halten können, notieren danach seine Worte und informieren sofort Ihre Leitung.",
+        "Sie rufen den Stiefvater am Nachmittag an, um die Sache zu klären."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Bei einer Offenbarung zählt: zuhören, ernst nehmen, nichts versprechen, wörtlich dokumentieren und sofort die Leitung informieren, damit der interne Kinderschutzablauf greift. Nachbohren kann die Aussage verfälschen und ist Aufgabe von Fachleuten. Geheimhaltung können Sie nicht zusagen, und eine Konfrontation des Stiefvaters kann Tom gefährden."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Maßnahme stärkt die Selbstwirksamkeit eines belasteten Kindes am ehesten?",
+      "optionen": [
+        "Das Kind erhält echte Wahlmöglichkeiten, eine kleine Verantwortung in der Klasse und Aufgaben, die es mit etwas Anstrengung schaffen kann.",
+        "Man nimmt dem Kind möglichst alle Anforderungen ab, damit es keinen Stress erlebt.",
+        "Man lobt das Kind häufig und allgemein („Du bist super“), unabhängig davon, was es getan hat.",
+        "Man stellt bewusst hohe Anforderungen, damit es lernt, sich durchzubeißen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Selbstwirksamkeit wächst vor allem durch eigene Erfolgserlebnisse (Bandura, 1977): Das Kind erlebt, dass es etwas bewirken und schaffen kann. Alles abzunehmen verhindert solche Erfahrungen, allgemeines Lob bleibt ohne Bezug zum eigenen Tun, und Überforderung führt eher zu neuer Ohnmacht."
+    },
+    {
+      "art": "fall",
+      "fall": "Mia (11) hatte vormittags einen heftigen Wutausbruch und hat sich in der Ruhe-Ecke beruhigt. Nach der Mittagspause wirkt sie wieder ausgeglichen.",
+      "frage": "Was ist jetzt ein guter nächster Schritt?",
+      "optionen": [
+        "Nichts mehr ansprechen – das würde sie nur wieder aufregen.",
+        "Vor der Klasse eine Entschuldigung verlangen, damit alle sehen, dass es Folgen hat.",
+        "Die Eltern anrufen und ihnen mitteilen, dass Mia vermutlich traumatisiert ist.",
+        "Kurz und freundlich Kontakt aufnehmen, dann in Ruhe gemeinsam überlegen, was los war, was helfen könnte und wie sie den Schaden wiedergutmachen kann."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Nach der Beruhigung kommt die Beziehung, dann das Nachdenken und die Wiedergutmachung – so lernt Mia etwas für das nächste Mal. Schweigen verschenkt diese Chance, eine öffentliche Entschuldigung beschämt, und die Vermutung eines Traumas ist eine Diagnose, die pädagogischen Fachkräften nicht zusteht."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was schützt Fachkräfte vor Mitgefühlserschöpfung? (mehrere richtig)",
+      "optionen": [
+        "Belastende Situationen regelmäßig im Team, in Supervision oder Intervision besprechen",
+        "Ständig erreichbar sein, damit man jederzeit eingreifen kann",
+        "Die eigenen Auslöser und Warnzeichen kennen",
+        "Sich allein für die Heilung des Kindes verantwortlich fühlen",
+        "Bewusste Übergänge zwischen Arbeit und Freizeit schaffen"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Austausch im Team, Supervision, die Kenntnis der eigenen Auslöser und bewusste Erholung sind bekannte Schutzfaktoren. Ständige Erreichbarkeit und das Gefühl, allein für die Heilung verantwortlich zu sein, erhöhen dagegen das Risiko, auszubrennen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein stilles, angepasstes Kind kann genauso stark belastet sein wie ein Kind, das häufig ausrastet.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Rückzug, Überanpassung und Erstarren sind ebenfalls Antworten des Alarmsystems. Weil diese Kinder nicht stören, werden sie leicht übersehen – deshalb lohnt der Blick auch auf die Stillen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Trauma",
+      "erklaerung": "Seelische Verletzung durch ein extrem bedrohliches Ereignis oder durch wiederholte schwere Belastungen, die die Bewältigungsmöglichkeiten eines Menschen übersteigen."
+    },
+    {
+      "begriff": "Komplexe Traumatisierung",
+      "erklaerung": "Folge früher, wiederholter Belastungen durch nahe Bezugspersonen, etwa Gewalt oder Vernachlässigung. Betrifft oft Gefühlsregulation, Selbstbild und Beziehungen. Die ICD-11 kennt dafür die Diagnose komplexe Posttraumatische Belastungsstörung."
+    },
+    {
+      "begriff": "Trigger (Auslöser)",
+      "erklaerung": "Reiz in der Gegenwart, der an Belastendes erinnert und das Alarmsystem auslöst – etwa ein Geräusch, ein Geruch oder ein Tonfall. Der Zusammenhang ist oft nicht bewusst."
+    },
+    {
+      "begriff": "Toleranzfenster",
+      "erklaerung": "Bereich mittlerer Erregung, in dem ein Mensch Gefühle aushalten, denken und lernen kann (Siegel, 1999). Darüber liegt Übererregung, darunter Untererregung."
+    },
+    {
+      "begriff": "Übererregung",
+      "erklaerung": "Zustand hoher Alarmbereitschaft mit Kampf- oder Fluchtreaktionen: Unruhe, Wut, Weglaufen, Schreckhaftigkeit."
+    },
+    {
+      "begriff": "Dissoziation",
+      "erklaerung": "Inneres Wegdriften bei Überforderung: Wahrnehmung und Gefühle werden gedämpft, das Kind wirkt abwesend und erinnert sich später oft nur lückenhaft."
+    },
+    {
+      "begriff": "Ko-Regulation",
+      "erklaerung": "Beruhigung durch ein ruhiges Gegenüber: Das Kind orientiert sich an Stimme, Tempo und Haltung des Erwachsenen und findet so zurück ins Toleranzfenster."
+    },
+    {
+      "begriff": "Annahme des guten Grundes",
+      "erklaerung": "Grundhaltung der Traumapädagogik: Jedes Verhalten hat einen Sinn in der Lebensgeschichte des Kindes – oft war es einmal eine sinnvolle Anpassung an Gefahr."
+    },
+    {
+      "begriff": "Selbstwirksamkeit",
+      "erklaerung": "Die Überzeugung, durch eigenes Handeln etwas bewirken zu können (Bandura, 1977). Sie wächst vor allem durch eigene Erfolgserlebnisse."
+    },
+    {
+      "begriff": "Mitgefühlserschöpfung",
+      "erklaerung": "Erschöpfung und Belastung von Helfenden durch die ständige Begegnung mit dem Leid anderer; auch sekundärer traumatischer Stress genannt (Figley, 1995)."
+    }
+  ],
+  "quellen": [
+    "perry2006",
+    "vanDerKolk2014",
+    "siegel1999",
+    "vanDerKolk2005",
+    "felitti1998",
+    "mcewen1998",
+    "rutter2012",
+    "bandura1977",
+    "figley1995",
+    "niceNG116",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "trauma",
+    "stress-gehirn",
+    "deeskalation",
+    "beziehung-haltung",
+    "kinderschutz",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "ruhe-ecke-karten",
+    "ruhig-werden-drei-uebungen",
+    "tagesplan-bildkarten",
+    "nachgespraech-krise",
+    "wer-ist-fuer-mich-da"
+  ]
+}

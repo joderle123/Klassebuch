@@ -1,0 +1,72 @@
+/* ==== Tageskarte (im Begleitplan) ==== */
+.tk-karte{border-top:3px solid #2F8A5B;}
+.tk-karte.beendet{border-top-color:var(--line-2);}
+.tk-karte .ar-kartenkopf{align-items:flex-start;}
+.tk-karte h3{margin:0 0 2px;font-size:16px;}
+.tk-karte .ar-knopfreihe{margin:0;align-items:center;}
+.tk-nr{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 auto;border-radius:50%;background:#2F8A5B;color:#fff;font-size:11.5px;font-weight:800;}
+.tk-ziele{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;}
+.tk-ziele li{display:flex;align-items:baseline;gap:10px;font-size:14.5px;line-height:1.45;}
+.tk-ziele li .tk-nr{transform:translateY(3px);}
+.tk-ziele.klein li{font-size:13.5px;}
+.tk-stand{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+.tk-stand p{margin:0;display:flex;flex-direction:column;gap:2px;font-size:14px;}
+.tk-stand p span{font-size:13px;color:var(--muted);}
+.tk-balken{width:240px;height:46px;flex:0 0 auto;}
+.tk-balken .tk-gut{fill:#2F8A5B;}
+.tk-balken .tk-knapp{fill:#D9A93A;}
+.tk-balken .tk-leer{fill:var(--line-2);}
+.tk-balken .tk-ziellinie{stroke:#1E6B45;stroke-width:1;stroke-dasharray:3 3;opacity:.7;}
+.tk-fokuslink{display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap;margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;}
+.bp-kurz-tk{margin:4px 0 0!important;font-size:13.5px;color:var(--ink-2);}
+
+/* Dialog: Ziele einrichten */
+.tk-zielfeld{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:0 10px;align-items:end;}
+.tk-zielfeld .tk-nr{margin-bottom:12px;}
+.tk-weg{display:grid;place-items:center;width:44px;height:44px;margin-bottom:9px;border:1px solid var(--line-2);border-radius:10px;background:var(--surface);color:var(--muted);cursor:pointer;}
+.tk-weg:hover{color:var(--ink);border-color:var(--accent-line);}
+.tk-weg:focus-visible{outline:none;box-shadow:var(--focus);}
+.tk-zielfeld:has(input:placeholder-shown) .tk-weg{visibility:hidden;}
+.tk-neuziel{grid-column:2 / -1;margin:-4px 0 12px;font-size:13.5px;}
+.tk-neuziel[hidden]{display:none;}
+/* Dialog: Tag eintragen */
+.tk-stimmung{display:flex;flex-wrap:wrap;gap:6px 14px;border:1px solid var(--line);border-radius:10px;padding:6px 12px 10px;margin:12px 0;}
+.tk-stimmung legend{font-weight:650;font-size:13.5px;padding:0 4px;}
+.tk-stimmung label{display:inline-flex;align-items:center;gap:6px;font-size:14px;cursor:pointer;}
+.tk-ziele li.aus{color:var(--muted);}
+.tk-ziele li.aus .tk-nr,.tk-tabelle tr.aus .tk-nr{background:#8C96A8;}
+.tk-aus{font-size:12.5px;color:var(--muted);}
+.tk-althinweis{margin:0 0 4px;font-size:12.5px;color:var(--muted);}
+.tk-rasterbox{overflow-x:auto;margin:4px 0 6px;}
+.tk-tabelle{border-collapse:separate;border-spacing:4px;min-width:100%;}
+.tk-tabelle th{font-size:12.5px;font-weight:650;color:var(--ink-2);text-align:center;padding:2px 4px;}
+/* lange Abschnittsnamen mit Trennstrich umbrechen („Vor-mittag“ statt „Vormitta g“) */
+.tk-tabelle thead th{-webkit-hyphens:auto;hyphens:auto;overflow-wrap:break-word;word-break:normal;line-height:1.2;vertical-align:bottom;}
+.tk-tabelle th[scope="row"]{width:28px;}
+.tk-tabelle td{text-align:center;padding:0;}
+/* Der nächste Abschnitt ist hervorgehoben */
+.tk-tabelle th.tk-naechst{color:var(--accent);background:var(--accent-soft);border-radius:8px;}
+.tk-tabelle td.tk-naechst{background:var(--accent-soft);border-radius:10px;}
+.tk-wahl{display:inline-flex;flex-direction:column;gap:3px;padding:2px;}
+/* Knöpfe groß genug für Finger auf dem Tablet (mindestens 44 px) */
+.tk-wahl button{width:44px;height:40px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);font:inherit;font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;touch-action:manipulation;}
+.tk-wahl button:hover{border-color:var(--accent-line);color:var(--ink);}
+.tk-wahl button:focus-visible{outline:none;box-shadow:var(--focus);}
+.tk-wahl button.p2.an{background:#2F8A5B;border-color:#2F8A5B;color:#fff;}
+.tk-wahl button.p1.an{background:#D9A93A;border-color:#D9A93A;color:#fff;}
+.tk-wahl button.p0.an{background:#8C96A8;border-color:#8C96A8;color:#fff;}
+@media (pointer:coarse){.tk-wahl button{height:44px;}}
+.tk-summe{font-size:14px;margin:6px 0 10px;}
+.tk-ja{color:#1E6B45;font-weight:650;}
+.tk-nein{color:#8A6414;font-weight:650;}
+.tk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+/* Dialog: Wochenkarte drucken */
+.tk-wochen{border:0;padding:0;margin:0 0 4px;}
+.tk-wochen legend{font-weight:650;margin-bottom:6px;padding:0;}
+.tk-wochen .ar-haken{margin:6px 0;}
+@media (max-width:640px){
+  .tk-balken{width:100%;}
+  .tk-tabelle{border-spacing:3px;}
+  .tk-tabelle thead th{font-size:11px;max-width:52px;}
+  .tk-wahl button{height:44px;}
+}

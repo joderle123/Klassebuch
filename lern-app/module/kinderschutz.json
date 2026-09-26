@@ -1,0 +1,505 @@
+{
+  "id": "kinderschutz",
+  "bereich": "handeln",
+  "titel": "Kinderschutz: Gefährdung erkennen und handeln",
+  "untertitel": "Formen und Anzeichen kennen, bei einer Offenbarung richtig reagieren, den internen Ablauf einhalten",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können die vier Formen der Kindesmisshandlung nach WHO beschreiben und an Alltagsbeispielen erkennen.",
+    "Sie können erklären, warum einzelne Anzeichen eine Gefährdung weder beweisen noch ausschließen.",
+    "Sie können angemessen reagieren, wenn ein Kind sich Ihnen anvertraut: zuhören, ernst nehmen, nichts versprechen, nicht selbst ermitteln.",
+    "Sie können eine Beobachtung oder Offenbarung sachlich dokumentieren und informieren sofort Ihre Leitung, um den internen Ablauf auszulösen.",
+    "Sie kennen Grundsätze professioneller Nähe und Distanz und wissen, wo Sie selbst Unterstützung finden."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Emma, 9 Jahre, Cycle 3.2",
+          "text": "Emma war eine fröhliche, eher laute Schülerin. Seit einigen Wochen ist sie still, kommt oft müde in die Schule und zuckt zusammen, wenn jemand die Stimme hebt. Beim Umziehen für den Sport will sie plötzlich nicht mehr mit den anderen in die Kabine. Als die Lehrerin fragt, ob alles in Ordnung ist, sagt Emma: „Ich darf nichts sagen.“ Eine Kollegin meint: „Das ist bestimmt eine Phase. Die Familie ist doch sehr nett.“",
+          "fragen": [
+            "Welche Beobachtungen würden Sie festhalten – und wie?",
+            "Was spricht dagegen, einfach abzuwarten?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Kinderschutz ist Aufgabe aller Erwachsenen, die mit Kindern arbeiten. Die Weltgesundheitsorganisation beschreibt Kindesmisshandlung als jede Form körperlicher oder seelischer Misshandlung, sexuellen Missbrauchs, Vernachlässigung oder Ausbeutung, die zu einem tatsächlichen oder möglichen Schaden für Gesundheit, Überleben, Entwicklung oder Würde des Kindes führt – im Rahmen einer Beziehung von Verantwortung, Vertrauen oder Macht (WHO & ISPCAN, 2006). Gefährdungen können von Eltern ausgehen, aber auch von anderen Erwachsenen, von älteren Kindern und Jugendlichen oder von Fachkräften in Einrichtungen.\n\nMisshandlung und Vernachlässigung sind keine seltenen Ausnahmen, und viele Fälle werden nie bekannt. Sie können die Entwicklung von Stresssystem und Gehirn beeinträchtigen (Glaser, 2000) und wirken oft bis ins Erwachsenenalter nach (Felitti et al., 1998). Kinder mit besonderen Bedürfnissen haben ein erhöhtes Risiko (WHO & ISPCAN, 2006) – und ihre Signale werden leichter übersehen oder mit ihren bekannten Schwierigkeiten erklärt.\n\n**Ihre Rolle.** Pädagogische Fachkräfte gehören zu den Erwachsenen außerhalb der Familie, die ein Kind am häufigsten sehen. Deshalb sind sie wichtig – aber nicht als Ermittler. Ihre Aufgabe ist es, **wahrzunehmen, ernst zu nehmen, zu dokumentieren und weiterzugeben**. Ob tatsächlich eine Gefährdung vorliegt und was dann geschieht, klären andere nach festgelegten Abläufen. Sie müssen nichts beweisen, um zu handeln."
+        },
+        {
+          "art": "merke",
+          "text": "Im Zweifel handeln Sie – und zwar über Ihre Leitung. Eine Sorge weiterzugeben, die sich später nicht bestätigt, ist kein Fehler. Eine Sorge für sich zu behalten, kann ein Kind im Stich lassen."
+        }
+      ]
+    },
+    {
+      "titel": "Formen von Gefährdung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die WHO unterscheidet vier Hauptformen der Kindesmisshandlung (WHO & ISPCAN, 2006). Sie kommen oft gemeinsam vor: Ein Kind, das geschlagen wird, wird meist auch abgewertet; Vernachlässigung und seelische Gewalt gehen häufig Hand in Hand."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Formen der Kindesmisshandlung",
+          "spalten": [
+            "Form",
+            "Was dazu gehört"
+          ],
+          "zeilen": [
+            [
+              "Körperliche Gewalt",
+              "Absichtliche Gewalt gegen den Körper des Kindes, etwa Schlagen, Treten, Schütteln oder Verbrennen – auch wenn sie als „Erziehung“ gemeint ist."
+            ],
+            [
+              "Seelische (emotionale) Gewalt",
+              "Wiederholtes Abwerten, Beschimpfen, Lächerlichmachen, Drohen, Ängstigen, Zurückweisen oder Einsperren. Viele Fachleute zählen auch das Miterleben von Gewalt zwischen Erwachsenen dazu."
+            ],
+            [
+              "Sexualisierte Gewalt",
+              "Jede sexuelle Handlung an, mit oder vor einem Kind, der es aufgrund seiner Entwicklung nicht zustimmen kann – mit oder ohne Körperkontakt, auch über Handy und Internet."
+            ],
+            [
+              "Vernachlässigung",
+              "Bezugspersonen sorgen nicht für grundlegende Bedürfnisse, obwohl sie es könnten: Ernährung, Kleidung, Hygiene, Gesundheit, Aufsicht und Schutz, Zuwendung, Bildung."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Sexualisierte Gewalt** bleibt besonders oft verborgen. Täter und Täterinnen sind meist keine Fremden, sondern Menschen aus dem Umfeld des Kindes: aus der Familie, dem Bekanntenkreis, dem Verein oder aus Einrichtungen – manchmal auch ältere Kinder und Jugendliche. Häufig bauen sie gezielt Vertrauen auf, schaffen Abhängigkeit, machen Geschenke und verpflichten das Kind zur Geheimhaltung („Das ist unser Geheimnis“). Diese gezielte Anbahnung nennt man *Grooming*; sie geschieht auch online, etwa über Spiele oder soziale Netzwerke. Viele Kinder schweigen aus Scham, Angst oder Loyalität – oder weil ihnen die Worte fehlen.\n\n**Übergriffe im Netz.** Sexualisierte Gewalt geschieht auch digital: Erwachsene oder Jugendliche fordern Nacktbilder, erpressen mit Bildern oder verbreiten sie weiter. Zeigt Ihnen ein Kind solche Bilder oder erzählt davon: Leiten Sie die Bilder nicht weiter, speichern Sie sie nicht und machen Sie keine Screenshots – auch nicht als Beweis; schon das kann strafbar sein. Informieren Sie die Leitung und beschreiben Sie nur, was Sie gesehen haben.\n\n**Gewalt ist kein Erziehungsmittel.** Familien erziehen unterschiedlich, und das ist legitim. Gewalt gegen Kinder ist es nicht – unabhängig von Herkunft oder Tradition. In Luxemburg ist Gewalt in der Erziehung gesetzlich verboten."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein Kind würde es sofort erzählen, wenn ihm jemand Gewalt antut.",
+          "fakt": "Viele Kinder erzählen lange niemandem davon oder nur in Andeutungen. Sie schämen sich, fühlen sich mitschuldig, wurden bedroht, wollen ihre Familie schützen oder wissen nicht, dass das Erlebte nicht in Ordnung ist. Manche nehmen Gesagtes wieder zurück, wenn sie Druck spüren."
+        }
+      ]
+    },
+    {
+      "titel": "Anzeichen – und ihre Grenzen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Es gibt kein Zeichen, das eine Misshandlung sicher beweist, und kein Fehlen von Zeichen, das sie ausschließt. Die meisten Hinweise sind *unspezifisch*: Rückzug, Aggression, Schlafprobleme, Leistungsabfall oder Konzentrationsschwierigkeiten können auf Gewalt hindeuten – ebenso aber auf eine Trennung der Eltern, eine Krankheit, Mobbing oder eine psychische Störung.\n\nDas gilt besonders für Kinder, die das CDSE begleitet: Sie zeigen solche Verhaltensweisen oft aus vielen Gründen. Die Gefahr ist dann, neue Auffälligkeiten vorschnell mit Bekanntem zu erklären („Das ist halt sein ADHS“). Achten Sie deshalb besonders auf **Veränderungen**: Was ist anders als früher, seit wann, in welchen Situationen?\n\n**Risikofaktoren – und ihre Grenze.** Die WHO beschreibt Risikofaktoren auf mehreren Ebenen: bei den Eltern (etwa Sucht, eigene Gewalterfahrungen in der Kindheit), in der Familie (etwa Gewalt zwischen Erwachsenen, fehlende Unterstützung), beim Kind (etwa sehr junges Alter oder besondere Bedürfnisse) und im Umfeld (etwa Armut, Arbeitslosigkeit, Isolation) (WHO & ISPCAN, 2006). Solche Faktoren erklären, warum manche Familien besondere Unterstützung brauchen. Ein Hinweis auf Misshandlung im Einzelfall sind sie nicht: Viele Familien mit solchen Belastungen sorgen gut für ihre Kinder."
+        },
+        {
+          "art": "liste",
+          "titel": "Hinweise, die Sie ernst nehmen sollten",
+          "punkte": [
+            "Was ein Kind selbst sagt oder andeutet – auch nebenbei, in Geschichten, Zeichnungen oder als Erzählung über „eine Freundin“",
+            "Verletzungen an ungewöhnlichen Stellen (Wangen, Ohren, Hals, Rumpf, Gesäß, Innenseite der Arme) oder mit erkennbarer Form, etwa wie eine Hand oder ein Gürtel",
+            "Erklärungen, die nicht zur Verletzung passen oder sich widersprechen",
+            "Deutliche Veränderungen ohne erkennbaren Grund, etwa plötzliche Angst vor einer bestimmten Person oder davor, nach Hause zu gehen",
+            "Sexuelles Wissen oder Verhalten, das nicht zum Alter passt",
+            "Anhaltender Hunger, dem Wetter nicht angepasste Kleidung, unbehandelte Krankheiten oder Zahnschmerzen, sehr häufiges Fehlen",
+            "Ein Kind, das regelmäßig lange ohne Aufsicht ist, obwohl es dafür zu jung ist"
+          ]
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussehen kann",
+          "punkte": [
+            {
+              "wie": "Unfall- und Spielverletzungen",
+              "unterschied": "Liegen meist an vorspringenden Körperstellen wie Knien, Schienbeinen, Ellbogen oder Stirn. Verletzungen an anderen Stellen sind auffälliger – beurteilen kann sie nur eine Ärztin oder ein Arzt."
+            },
+            {
+              "wie": "Hautveränderungen",
+              "unterschied": "Manche angeborenen Pigmentflecken oder Hauterkrankungen sehen aus wie Blutergüsse. Auch hier gilt: beschreiben, nicht deuten."
+            },
+            {
+              "wie": "Armut",
+              "unterschied": "Knappe Mittel sind keine Vernachlässigung. Von Vernachlässigung spricht man, wenn Bezugspersonen Grundbedürfnisse nicht erfüllen, obwohl sie es könnten. Familien in Armut brauchen Unterstützung."
+            },
+            {
+              "wie": "Kindliche Neugier",
+              "unterschied": "Interesse am eigenen Körper und gegenseitiges Anschauen unter etwa Gleichaltrigen gehören zur Entwicklung. Aufmerksam werden sollten Sie bei Zwang, großen Alters- oder Machtunterschieden, erwachsenenähnlichen sexuellen Handlungen oder wenn ein Kind nicht davon ablassen kann."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beobachten Sie genau, beschreiben Sie sachlich und geben Sie Ihre Sorge weiter. Die Einschätzung, ob eine Gefährdung vorliegt, treffen Sie nicht allein."
+        }
+      ]
+    },
+    {
+      "titel": "Wenn ein Kind sich anvertraut",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kinder vertrauen sich meist einer Person an, die sie mögen und der sie zutrauen, damit umzugehen – das kann auch eine Lehrkraft oder Educatrice sein. Selten geschieht das in einem geplanten Gespräch. Häufiger kommt es beiläufig: am Ende einer Stunde, beim Malen, auf dem Weg zum Bus. Viele Kinder testen zuerst mit einer Andeutung, wie der Erwachsene reagiert. Ihre Reaktion entscheidet mit darüber, ob das Kind weiterspricht – bei Ihnen oder bei jemand anderem."
+        },
+        {
+          "art": "tun",
+          "titel": "Im Gespräch",
+          "punkte": [
+            "Ruhig bleiben, auch wenn Sie erschrecken. Das Kind beobachtet Ihre Reaktion genau.",
+            "Zuhören und das Kind in seinen eigenen Worten erzählen lassen.",
+            "Ernst nehmen und glauben: „Gut, dass du es mir erzählst.“ Ob alles genau so war, müssen Sie nicht prüfen.",
+            "Entlasten: „Du bist nicht schuld daran.“",
+            "Höchstens offen nachfragen („Möchtest du mir noch mehr erzählen?“) – keine Fragen, die eine Antwort nahelegen.",
+            "Ehrlich sagen, wie es weitergeht: „Ich spreche mit jemandem, der sich damit auskennt und dir helfen kann.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie nicht tun",
+          "punkte": [
+            "Geheimhaltung versprechen – auch nicht, um das Kind zum Weitersprechen zu bewegen",
+            "Suggestivfragen stellen („Hat dein Vater dich geschlagen?“) oder nach Einzelheiten bohren",
+            "Das Kind drängen, das Erlebte mehreren Personen zu erzählen oder aufzuschreiben",
+            "Verletzungen untersuchen, das Kind entkleiden oder Fotos machen",
+            "Die verdächtigte Person oder die Eltern auf eigene Faust ansprechen",
+            "Das Gehörte bewerten („Das kann ich mir bei deiner Mama gar nicht vorstellen“)"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Nichts versprechen, was Sie nicht halten können.** Viele Kinder beginnen mit „Du darfst es aber niemandem sagen“. Geheimhaltung können Sie nicht zusagen. Ehrlich ist zum Beispiel: „Ich höre dir zu. Wenn es um etwas geht, bei dem du Hilfe brauchst, kann ich das nicht für mich behalten. Aber ich erzähle es nur Menschen, die helfen können, und ich sage dir, was ich tue.“ Das kann ein Kind enttäuschen. Ein gebrochenes Versprechen würde sein Vertrauen aber viel stärker verletzen.\n\n**Nicht selbst ermitteln.** Wiederholte oder suggestive Befragungen belasten das Kind und können seine Erinnerung und Aussage verfälschen. Das kann später seinen Schutz erschweren. Die Klärung übernehmen dafür ausgebildete Fachleute."
+        },
+        {
+          "art": "fall",
+          "titel": "Nora, 9 Jahre, Cycle 3.2",
+          "text": "Beim Aufräumen nach dem Kunstunterricht sagt Nora leise: „Bei Onkel Jeff will ich nicht mehr schlafen. Er macht komische Sachen.“ Die Educatrice legt den Pinsel weg, setzt sich zu ihr und sagt: „Gut, dass du mir das sagst. Möchtest du mir mehr erzählen?“ Nora schüttelt den Kopf. „Das ist in Ordnung. Ich möchte, dass es dir gut geht. Deshalb spreche ich mit Frau Klein, die sich mit so etwas auskennt. Du kannst jederzeit wieder zu mir kommen.“ Direkt danach schreibt die Educatrice Noras Worte auf und informiert die Leitung.",
+          "fragen": [
+            "Was hat die Educatrice bewusst nicht gefragt – und warum?",
+            "Was hätte sie sagen können, wenn Nora ein Versprechen verlangt hätte?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: der Weg nach einem Verdacht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wenn Sie sich Sorgen um ein Kind machen – weil es etwas erzählt hat, weil Sie etwas gesehen haben oder weil ein Gesamtbild Sie beunruhigt –, handeln Sie nicht allein. Das CDSE und die Schulen haben interne Abläufe für solche Situationen. Was im Einzelnen geschieht – wer entscheidet, wer welche Stelle einschaltet, wann und wie die Eltern einbezogen werden –, legt dieser Ablauf fest, nicht Ihr Einzelurteil. Für Fachkräfte gibt es auch rechtliche Pflichten, eine Gefährdung nicht zu verschweigen; welche Schritte daraus folgen, klärt Ihre Leitung."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die Schritte im Überblick",
+          "spalten": [
+            "Schritt",
+            "Was Sie tun"
+          ],
+          "zeilen": [
+            [
+              "1. Sicherheit",
+              "Besteht akute Gefahr? Dann sofort Hilfe holen: die Leitung, bei unmittelbarer Gefahr den Notruf 112 oder die Polizei 113."
+            ],
+            [
+              "2. Leitung informieren",
+              "Möglichst sofort, auf jeden Fall am selben Tag – vor Schulschluss, wenn das Kind danach nach Hause geht. Ist die Leitung nicht erreichbar: die Vertretung oder die im internen Ablauf genannte Person."
+            ],
+            [
+              "3. Dokumentieren",
+              "Zeitnah, sachlich, mit den Worten des Kindes."
+            ],
+            [
+              "4. Nicht selbst ermitteln",
+              "Keine Befragungen, keine Gespräche mit Verdächtigten oder Eltern ohne Absprache."
+            ],
+            [
+              "5. Beziehung halten",
+              "Dem Kind normal und zugewandt begegnen, Schulalltag und Routinen beibehalten."
+            ],
+            [
+              "6. Vertraulich bleiben",
+              "Nur mit den Personen sprechen, die es wissen müssen – nicht im Lehrerzimmer, nicht in Chats."
+            ]
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "So dokumentieren Sie",
+          "punkte": [
+            "Datum, Uhrzeit, Ort und wer anwesend war",
+            "Die Worte des Kindes möglichst wörtlich und in Anführungszeichen, in der Sprache, in der es gesprochen hat – dazu Ihre eigenen Fragen",
+            "Was Sie selbst gesehen haben, zum Beispiel Lage, Größe und Farbe einer ohnehin sichtbaren Verletzung – ohne zu untersuchen",
+            "Beobachtungen und eigene Einschätzungen getrennt halten und als solche kennzeichnen",
+            "Name, Datum, Unterschrift; die Notiz sicher aufbewahren und nur nach dem internen Ablauf weitergeben"
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Dokumentieren: eher nicht – besser",
+          "spalten": [
+            "Eher nicht",
+            "Besser"
+          ],
+          "zeilen": [
+            [
+              "„Sofia wird vom Vater geschlagen.“",
+              "„Sofia sagte am 12.3. um 10:15 im Klassenraum, nachdem ich gefragt hatte, warum sie weint: ‚Papa hat mich gestern wieder gehauen.‘ Ich antwortete: ‚Gut, dass du mir das sagst.‘“"
+            ],
+            [
+              "„Striemen, sieht nach Gürtel aus.“",
+              "„Am linken Oberarm zwei rote Streifen, je etwa fünf Zentimeter lang. Auf meine Frage ‚Was ist da passiert?‘ sagte er: ‚Weiß nicht.‘“"
+            ],
+            [
+              "„Die Familie kümmert sich nicht um ihn.“",
+              "„Kam diese Woche an vier von fünf Tagen ohne Frühstück und Pausenbrot. Sagte am Dienstag: ‚Bei uns ist nichts im Kühlschrank.‘“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Nach der Weitergabe.** Möglicherweise erfahren Sie nicht, was weiter geschieht. Das ist kein Misstrauen, sondern Schutz der Beteiligten. Für das Kind bleiben Sie eine wichtige, verlässliche Person: Begegnen Sie ihm normal und freundlich, fragen Sie nicht nach dem Stand der Dinge und halten Sie Routinen aufrecht. Erzählt das Kind von sich aus weiter, gehen Sie genauso vor wie beim ersten Mal. Fragt es, ob Sie etwas weitergesagt haben, antworten Sie ehrlich – ohne Versprechungen zum weiteren Verlauf."
+        },
+        {
+          "art": "achtung",
+          "text": "Sagt ein Kind, dass es Angst hat, nach Hause zu gehen, oder sehen Sie eine akute Gefahr, informieren Sie sofort die Leitung – bevor das Kind die Schule verlässt. Bei unmittelbarer Gefahr für Leib und Leben rufen Sie den Notruf 112 oder die Polizei 113. Äußert ein Kind Suizidgedanken, gilt ebenso: nicht allein lassen, sofort Hilfe holen."
+        }
+      ]
+    },
+    {
+      "titel": "Schützen im Alltag – und die eigene Belastung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Prävention.** Präventionsangebote vermitteln Kindern, dass ihr Körper ihnen gehört, dass sie Nein sagen dürfen, dass es gute und schlechte Geheimnisse gibt und an wen sie sich wenden können. Das kann ihnen helfen, Übergriffe einzuordnen und sich Hilfe zu holen. Arbeitsblätter wie „Mein Nein ist okay“ oder „Meine Helfer-Hand“ unterstützen das. Wichtig: Präventionsmaterial stärkt alle Kinder; es ist kein Werkzeug, um einzelne Kinder auszufragen. Und die Verantwortung für den Schutz liegt immer bei den Erwachsenen, nie beim Kind.\n\n**Schutz in der eigenen Einrichtung.** Gefährdung kann auch von Menschen ausgehen, die beruflich mit Kindern arbeiten. Klare, für alle geltende Regeln zu Nähe und Distanz schützen die Kinder – und die Fachkräfte vor falschem Verdacht."
+        },
+        {
+          "art": "tun",
+          "titel": "Professionelle Nähe und Distanz",
+          "punkte": [
+            "Einzelsituationen transparent gestalten: Kolleginnen wissen Bescheid, Türen bleiben nach Möglichkeit offen oder haben ein Fenster.",
+            "Körperkontakt nur, wenn das Kind ihn möchte und die Situation es erfordert, etwa beim Trösten oder bei Erster Hilfe.",
+            "Keine privaten Kontakte über soziale Medien, keine Geheimnisse mit Kindern, keine Geschenke, die einzelne Kinder bevorzugen.",
+            "Grenzverletzungen von Kolleginnen oder Kollegen nicht übergehen, sondern ansprechen oder der Leitung melden."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Ihre eigene Belastung.** Ein Verdacht auf Misshandlung löst bei Fachkräften oft starke Gefühle aus: Entsetzen, Wut, Traurigkeit, Zweifel („Was, wenn ich mich irre?“) oder die Angst, die Beziehung zur Familie zu zerstören. Manche Fachkräfte haben selbst Gewalt erlebt und werden an Eigenes erinnert. Suchen Sie sich Unterstützung – bei der Leitung, im Team, in der Supervision. Die Verantwortung für die weiteren Schritte tragen Sie nicht allein."
+        },
+        {
+          "art": "weiter",
+          "text": "Wenden Sie sich bei jeder Sorge um das Wohl eines Kindes an Ihre Leitung – auch wenn Sie unsicher sind, ob sie begründet ist. Lernen Sie den internen Kinderschutzablauf Ihrer Einrichtung am besten kennen, bevor Sie ihn brauchen: Wer ist Ansprechperson, wer vertritt sie, wie und wo wird dokumentiert?"
+        },
+        {
+          "art": "merke",
+          "text": "Kinderschutz braucht keine Gewissheit, sondern Aufmerksamkeit, Mut und einen klaren Weg: wahrnehmen, ernst nehmen, dokumentieren, weitergeben."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "mehrfach",
+      "frage": "Welche Situationen können eine Kindeswohlgefährdung darstellen? (mehrere richtig)",
+      "optionen": [
+        "Ein Kind wird zu Hause regelmäßig als „dumm und nutzlos“ beschimpft und mit Wegschicken bedroht.",
+        "Ein Achtjähriger bleibt häufig abends allein zu Hause und versorgt seine kleine Schwester.",
+        "Eltern erlauben ihrem Kind am Wochenende nur eine Stunde Spielzeit am Handy.",
+        "Ein Erwachsener schickt einer Zwölfjährigen über ein Onlinespiel sexuelle Nachrichten und bittet um Fotos.",
+        "Eine Familie kann sich keine Markenkleidung leisten."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Wiederholtes Abwerten und Drohen ist seelische Gewalt, ein Achtjähriger ohne Aufsicht mit Verantwortung für ein Geschwisterkind deutet auf Vernachlässigung hin, und sexuelle Nachrichten an ein Kind sind sexualisierte Gewalt. Klare Medienregeln sind Erziehung, keine Gefährdung, und knappe Mittel sind keine Vernachlässigung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was trifft auf Anzeichen von Kindeswohlgefährdung zu?",
+      "optionen": [
+        "Verhaltensauffälligkeiten wie Rückzug oder Aggression beweisen eine Misshandlung.",
+        "Die meisten Anzeichen sind unspezifisch: Sie können viele Ursachen haben, und ihr Fehlen schließt eine Gefährdung nicht aus.",
+        "Ohne sichtbare Verletzungen ist eine Gefährdung ausgeschlossen.",
+        "Nur Ärztinnen und Ärzte dürfen eine Sorge um ein Kind weitergeben."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Kein einzelnes Zeichen beweist eine Misshandlung, und viele Formen – etwa seelische oder sexualisierte Gewalt – hinterlassen keine sichtbaren Spuren. Deshalb zählen genaue Beobachtung und das Weitergeben von Sorgen. Das ist Aufgabe aller Fachkräfte, nicht nur der Medizin."
+    },
+    {
+      "art": "fall",
+      "fall": "In der Pause sagt Nora (9) zu Ihnen: „Ich muss dir was sagen, aber du darfst es niemandem erzählen.“",
+      "frage": "Wie antworten Sie am besten?",
+      "optionen": [
+        "„Versprochen, das bleibt unter uns.“",
+        "„Dann erzähl es mir lieber nicht.“",
+        "„Ich höre dir gern zu. Wenn es um etwas geht, bei dem du Hilfe brauchst, kann ich es nicht für mich behalten – aber ich erzähle es nur Menschen, die helfen können, und sage dir, was ich tue.“",
+        "„Was ist denn? Hat dir jemand wehgetan? War das dein Papa?“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Ehrlichkeit schützt das Vertrauen: Sie hören zu, ohne ein Versprechen zu geben, das Sie brechen müssten. Ein Geheimhaltungsversprechen können Sie nicht halten, das Abwimmeln kann dazu führen, dass Nora sich niemandem mehr anvertraut, und Suggestivfragen legen Antworten nahe und können die Aussage verfälschen."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach dem Sportunterricht sehen Sie bei Luca (7) mehrere Blutergüsse am Oberarm, die wie Fingerabdrücke aussehen. Auf Ihre Frage, woher sie kommen, sagt er: „Bin hingefallen“, und schaut weg.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Sie fotografieren die Blutergüsse, damit es Beweise gibt.",
+        "Sie rufen die Eltern an und fragen, woher die Flecken kommen.",
+        "Sie warten ab, ob noch mehr Flecken auftauchen, um sicher zu sein.",
+        "Sie notieren sachlich, was Sie gesehen und gehört haben (Datum, Stelle, Lucas Worte), und informieren sofort Ihre Leitung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Verletzungen an ungewöhnlichen Stellen mit erkennbarer Form und eine Erklärung, die nicht passt, sind ernst zu nehmende Hinweise. Ihre Aufgabe ist es, sachlich zu dokumentieren und sofort die Leitung zu informieren. Fotos und das Untersuchen von Verletzungen gehören nicht zu Ihrer Rolle, ein eigener Anruf bei den Eltern kann Luca gefährden, und Abwarten verzögert möglicherweise nötigen Schutz."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Sie sollten erst handeln, wenn Sie sicher sind, dass ein Kind misshandelt wird.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Gewissheit haben Fachkräfte in der Schule fast nie – und sie ist auch nicht ihre Aufgabe. Schon eine begründete Sorge geben Sie an die Leitung weiter; die Einschätzung erfolgt nach dem internen Ablauf durch dafür zuständige Fachleute."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum sollen pädagogische Fachkräfte ein Kind nach einer Offenbarung nicht ausführlich befragen?",
+      "optionen": [
+        "Weil wiederholte oder suggestive Befragungen das Kind belasten und seine Aussage verfälschen können – die Klärung ist Aufgabe dafür ausgebildeter Fachleute.",
+        "Weil Kinder in diesem Alter ohnehin nicht die Wahrheit sagen.",
+        "Weil sich Fachkräfte strafbar machen, sobald sie überhaupt eine Frage stellen.",
+        "Weil es besser ist, das Thema zu vermeiden, damit das Kind es vergisst."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Befragungen gehören in die Hände ausgebildeter Fachleute, weil suggestive oder wiederholte Fragen Kinder belasten und Aussagen verändern können. Kinder sagen nicht grundsätzlich die Unwahrheit, eine offene Frage wie „Möchtest du mir mehr erzählen?“ ist erlaubt, und Schweigen hilft dem Kind nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Sofia (9) hat Ihnen gestern von Schlägen zu Hause erzählt; Sie haben sofort die Leitung informiert. Heute fragt Sofia: „Hast du es jemandem gesagt? Kriegt Papa jetzt Ärger?“",
+      "frage": "Wie reagieren Sie?",
+      "optionen": [
+        "Sie sagen, dass Sie niemandem etwas erzählt haben, damit sie sich keine Sorgen macht.",
+        "Sie sagen ehrlich, dass Sie mit der Leitung gesprochen haben, damit Erwachsene ihr helfen können, und dass es richtig war, sich anzuvertrauen; Versprechungen zum weiteren Verlauf machen Sie nicht.",
+        "Sie versprechen ihr, dass ihr Vater keinen Ärger bekommt.",
+        "Sie fragen sie noch einmal genau, was passiert ist, damit Sie alles besser weitergeben können."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Ehrlichkeit erhält das Vertrauen, und die Bestätigung, dass Sich-Anvertrauen richtig war, entlastet Sofia. Eine Lüge würde das Vertrauen zerstören, sobald sie auffliegt. Wie es mit dem Vater weitergeht, können Sie nicht versprechen, und ein erneutes Befragen ist nicht Ihre Aufgabe."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was gehört in eine gute Dokumentation nach einer Offenbarung? (mehrere richtig)",
+      "optionen": [
+        "Datum, Uhrzeit, Ort und wer anwesend war",
+        "Die Worte des Kindes möglichst wörtlich, dazu Ihre eigenen Fragen",
+        "Ihre Vermutung, wer der Täter ist und warum er so handelt",
+        "Was Sie selbst gesehen haben, getrennt von Ihren Einschätzungen",
+        "Eine Kopie der Notiz für die Eltern"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Eine gute Dokumentation ist zeitnah, sachlich und nachvollziehbar: Rahmen, wörtliche Aussagen, eigene Fragen und Beobachtungen getrennt von Einschätzungen. Spekulationen über Täter und Motive gehören nicht hinein, und wer die Notiz erhält, regelt der interne Ablauf – nicht Sie allein."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Kollegin erzählt Ihnen, ein Educateur schreibe einem 13-jährigen Schüler privat über soziale Medien, treffe ihn am Wochenende und mache ihm Geschenke. Sie ist unsicher, ob das „schlimm“ ist.",
+      "frage": "Was ist angemessen?",
+      "optionen": [
+        "Nichts unternehmen – der Kollege ist beliebt und meint es sicher gut.",
+        "Den Kollegen selbst zur Rede stellen und ihn warnen.",
+        "Den Schüler befragen, ob etwas vorgefallen ist.",
+        "Die Beobachtungen sachlich festhalten und der Leitung melden – professionelle Nähe und Distanz zu schützen ist Aufgabe aller."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Private Kontakte, Treffen und Geschenke überschreiten professionelle Grenzen und können Teil einer Anbahnung sein – ob das hier zutrifft, klären andere. Deshalb gehört die Beobachtung zur Leitung. Wegsehen lässt den Schüler ungeschützt, eine Warnung an den Kollegen kann eine Klärung erschweren, und das Befragen des Schülers ist nicht Ihre Aufgabe."
+    },
+    {
+      "art": "einfach",
+      "frage": "Sie möchten in Ihrer Klasse das Arbeitsblatt „Mein Nein ist okay“ einsetzen. Was trifft zu?",
+      "optionen": [
+        "Das Blatt stärkt Kinder darin, Grenzen zu spüren und sich Hilfe zu holen; es ist aber kein Mittel, um einzelne Kinder auszufragen.",
+        "Sie nutzen das Blatt gezielt, um bei einem bestimmten Kind herauszufinden, ob es missbraucht wird.",
+        "Sie lassen alle Kinder aufschreiben, welche Geheimnisse es bei ihnen zu Hause gibt.",
+        "Präventionsmaterial ist unnötig, weil Kinder sich bei Gefahr ohnehin melden."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Prävention richtet sich an alle Kinder und vermittelt Wissen und Mut, sich Hilfe zu holen. Sie ist kein Ermittlungsinstrument, und das Aufschreiben familiärer Geheimnisse verletzt die Privatsphäre. Viele Kinder melden sich gerade nicht von selbst – deshalb ist Prävention sinnvoll."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Sexualisierte Gewalt geht meistens von Fremden aus, die Kinder auf der Straße ansprechen.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Täter und Täterinnen sind meist Menschen aus dem Umfeld des Kindes – aus Familie, Bekanntenkreis oder Einrichtungen, manchmal auch Jugendliche. Sie nutzen Vertrauen und Abhängigkeit und verpflichten Kinder oft zur Geheimhaltung. Prävention, die nur vor Fremden warnt, greift deshalb zu kurz."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Kindeswohlgefährdung",
+      "erklaerung": "Eine gegenwärtige oder absehbare Gefahr für die körperliche, seelische oder geistige Entwicklung eines Kindes, etwa durch Gewalt, Missbrauch oder Vernachlässigung."
+    },
+    {
+      "begriff": "Kindesmisshandlung",
+      "erklaerung": "Nach WHO jede Form körperlicher oder seelischer Misshandlung, sexuellen Missbrauchs, Vernachlässigung oder Ausbeutung, die einem Kind schadet oder schaden kann – in einer Beziehung von Verantwortung, Vertrauen oder Macht."
+    },
+    {
+      "begriff": "Seelische (emotionale) Gewalt",
+      "erklaerung": "Wiederholtes Abwerten, Beschimpfen, Drohen, Ängstigen oder Zurückweisen eines Kindes; oft wird auch das Miterleben von Gewalt zwischen Erwachsenen dazu gezählt."
+    },
+    {
+      "begriff": "Sexualisierte Gewalt",
+      "erklaerung": "Jede sexuelle Handlung an, mit oder vor einem Kind, der es aufgrund seiner Entwicklung nicht zustimmen kann – mit oder ohne Körperkontakt, auch online. Der Begriff betont, dass es um Gewalt und Macht geht."
+    },
+    {
+      "begriff": "Vernachlässigung",
+      "erklaerung": "Bezugspersonen erfüllen grundlegende Bedürfnisse eines Kindes nicht, obwohl sie es könnten – etwa Ernährung, Gesundheit, Aufsicht, Zuwendung oder Bildung."
+    },
+    {
+      "begriff": "Grooming",
+      "erklaerung": "Gezielte Anbahnung sexualisierter Gewalt: Vertrauen aufbauen, Geschenke machen, Geheimnisse schaffen, das Kind isolieren – auch über Onlinespiele und soziale Netzwerke."
+    },
+    {
+      "begriff": "Offenbarung",
+      "erklaerung": "Ein Kind vertraut sich jemandem an und erzählt – oft bruchstückhaft oder in Andeutungen – von Gewalt oder Missbrauch. Häufig ein Prozess über längere Zeit."
+    },
+    {
+      "begriff": "Suggestivfrage",
+      "erklaerung": "Frage, die eine bestimmte Antwort nahelegt („Hat dein Vater dich geschlagen?“). Sie kann die Erinnerung und Aussage eines Kindes verfälschen."
+    },
+    {
+      "begriff": "Interner Kinderschutzablauf",
+      "erklaerung": "Das festgelegte Vorgehen einer Einrichtung bei einer Sorge um ein Kind: wer informiert wird, wer entscheidet, wie dokumentiert wird und wer weitere Stellen einschaltet."
+    }
+  ],
+  "quellen": [
+    "whoMaltreatment2006",
+    "glaser2000",
+    "felitti1998",
+    "fegert2012",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "trauma",
+    "traumapaedagogik",
+    "elternarbeit",
+    "beobachten-dokumentieren",
+    "selbstverletzung-suizid",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "mein-nein-ist-okay",
+    "grenzen-spueren",
+    "stopp-das-will-ich-nicht",
+    "meine-helfer-hand",
+    "wer-ist-fuer-mich-da"
+  ]
+}

@@ -1,0 +1,145 @@
+/* ==== Begleitplan (Reiter im Dossier) ==== */
+.bp-kopf{border-top:3px solid var(--accent);}
+.bp-kopf .ar-kartenkopf{align-items:flex-start;}
+.bp-kopf .overline,.bp-naechster .overline{margin:0 0 2px;}
+.bp-kopf h2{margin:0;}
+.bp-fortschritt{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 0;font-size:14px;}
+.bp-balken{flex:1 1 180px;height:8px;border-radius:999px;background:var(--bg-2);overflow:hidden;}
+.bp-balken span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#4E5BC4);border-radius:999px;transition:width .3s;}
+.bp-zahlen{color:var(--ink-2);}
+.bp-z-dringend{color:#B23A24;font-weight:700;}
+.bp-z-faellig{color:#8A6414;font-weight:700;}
+
+/* Phasen */
+.bp-phasen{list-style:none;margin:16px 0 2px;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;counter-reset:none;}
+.bp-phasen li{position:relative;}
+.bp-phasen li:not(:last-child)::after{content:'';position:absolute;top:19px;right:-6px;width:6px;height:2px;background:var(--line-2);}
+.bp-phasen button{display:flex;align-items:center;gap:8px;width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);font:inherit;color:var(--ink);cursor:pointer;text-align:left;min-width:0;}
+.bp-phasen button:hover{border-color:var(--accent-line);background:var(--surface-2);}
+.bp-pnr{display:inline-grid;place-items:center;width:24px;height:24px;flex:0 0 auto;border-radius:50%;background:var(--bg-2);color:var(--ink-2);font-size:12.5px;font-weight:800;}
+.bp-pnr .ic{width:14px;height:14px;}
+.bp-ptext{display:flex;flex-direction:column;min-width:0;line-height:1.25;}
+.bp-pname{min-width:0;font-size:13.5px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.bp-ptext .bp-pzahl{font-size:11.5px;}
+.bp-pzahl{font-size:12px;color:var(--muted);font-weight:600;flex:0 0 auto;}
+.bp-phasen li.offen .bp-pnr{background:var(--accent-soft);color:var(--accent);}
+.bp-phasen li.fertig .bp-pnr{background:#DCEFE3;color:#1E6B45;}
+.bp-phasen li.fertig button{background:#F6FBF8;}
+
+/* Als Nächstes */
+.bp-naechster{border-left:5px solid var(--accent);background:linear-gradient(90deg,var(--accent-soft),var(--surface) 60%);}
+.bp-naechster.dringend{border-left-color:#C0543F;background:linear-gradient(90deg,#FCEDEA,var(--surface) 60%);}
+.bp-naechster.faellig{border-left-color:#D9A93A;background:linear-gradient(90deg,#FDF6E4,var(--surface) 60%);}
+.bp-naechster.fertig{border-left-color:#2F8A5B;background:linear-gradient(90deg,#EAF3EE,var(--surface) 60%);}
+.bp-naechster h3{font-family:var(--font-display);font-size:20px;letter-spacing:-.015em;margin:2px 0 6px;}
+.bp-naechster>p{max-width:80ch;color:var(--ink-2);}
+.bp-naechster .ar-knopfreihe{margin-top:12px;align-items:center;}
+.bp-naechster .bp-links{margin-top:6px;}
+
+/* Fokusziele */
+.bp-fokus h3{margin:0;font-size:15px;}
+.bp-fokus ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px;}
+.bp-fokus li{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-size:14.5px;line-height:1.45;}
+.bp-code{display:inline-block;flex:0 0 auto;padding:1px 8px;border-radius:6px;background:var(--accent-soft);color:var(--accent);font-size:12.5px;font-weight:800;}
+.bp-erreicht{font-size:12px;font-weight:700;color:#1E6B45;background:#EAF3EE;border-radius:999px;padding:1px 8px;}
+
+/* Phasen-Abschnitte und Schritte */
+.bp-phasekopf{display:flex;align-items:baseline;gap:6px 12px;flex-wrap:wrap;margin-bottom:6px;}
+.bp-phasekopf h3{display:flex;align-items:center;gap:8px;margin:0;font-size:16px;}
+.bp-phasekopf .bp-pzahl{margin-left:auto;}
+.bp-sofort{border-left:4px solid #C0543F;}
+.bp-sofort h3{display:flex;align-items:center;gap:8px;margin:0 0 4px;color:#9A3A26;font-size:16px;}
+.bp-sofort h3 .ic{width:18px;height:18px;}
+.bp-liste{list-style:none;margin:4px 0 0;padding:0;}
+.bp-schritt{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 12px;align-items:start;padding:11px 0;border-top:1px solid var(--line);}
+.bp-schritt:first-child{border-top:0;}
+.bp-punkt{display:inline-grid;place-items:center;width:22px;height:22px;margin-top:1px;border-radius:50%;border:2px solid var(--line-2);background:var(--surface);color:#fff;}
+.bp-punkt .ic{width:13px;height:13px;}
+.bp-punkt.erledigt,.bp-punkt.laufend{background:#2F8A5B;border-color:#2F8A5B;}
+.bp-punkt.dringend{background:#C0543F;border-color:#C0543F;}
+.bp-punkt.faellig{background:#D9A93A;border-color:#D9A93A;}
+.bp-punkt.spaeter{border-color:var(--line-2);color:var(--muted);}
+.bp-punkt.geplant{border-style:dashed;color:var(--muted);}
+.bp-punkt.passt-nicht{border-color:var(--line);color:var(--faint);}
+.bp-text{min-width:0;display:flex;flex-direction:column;gap:3px;}
+.bp-text b{font-size:14.5px;font-weight:650;line-height:1.4;}
+.bp-warum{font-size:13.5px;color:var(--ink-2);line-height:1.5;max-width:90ch;}
+.bp-meta{font-size:12.5px;color:var(--muted);font-weight:600;}
+.bp-schritt.faellig .bp-meta{color:#8A6414;}
+.bp-schritt.dringend .bp-meta{color:#9A3A26;}
+.bp-schritt.erledigt .bp-text b,.bp-schritt.passt-nicht .bp-text b{color:var(--muted);font-weight:600;}
+.bp-schritt.laufend .bp-text b{color:var(--ink-2);}
+.bp-schritt.geplant .bp-text b{color:var(--ink-2);font-weight:600;}
+.bp-links{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:2px;}
+.bp-links a{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--accent);text-decoration:none;font-weight:560;}
+.bp-links a:hover{text-decoration:underline;}
+.bp-links .ic{width:14px;height:14px;flex:0 0 auto;}
+.bp-akt{display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
+.bp-akt .btn{padding:6px 12px;font-size:13px;min-height:0;white-space:nowrap;}
+.bp-entscheid{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px 12px;}
+.bp-entscheid .ar-link{font-size:12.5px;}
+
+/* Überprüfungen, Weggeklicktes, Erklärung */
+.bp-reviews h3{margin:0 0 6px;font-size:15px;}
+.bp-reviews ol{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.bp-reviews li{padding:10px 14px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);font-size:14px;}
+.bp-reviews li p{margin:6px 0 0;}
+.bp-kz{display:block;margin-top:6px;font-size:12.5px;color:var(--muted);font-weight:600;}
+/* erledigte Schritte eingeklappt je Abschnitt */
+.bp-erledigt{margin-top:6px;border-top:1px solid var(--line);padding-top:8px;}
+.bp-erledigt>summary{cursor:pointer;list-style:none;font-size:13px;font-weight:650;color:var(--muted);}
+.bp-erledigt>summary::-webkit-details-marker{display:none;}
+.bp-erledigt>summary::before{content:'';display:inline-block;width:6px;height:6px;margin:0 9px 2px 2px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;}
+.bp-erledigt[open]>summary::before{transform:rotate(45deg);}
+.bp-erledigt>summary:focus-visible{outline:none;box-shadow:var(--focus);border-radius:6px;}
+.bp-weg>summary,.bp-wie>summary{cursor:pointer;list-style:none;}
+.bp-weg>summary::-webkit-details-marker,.bp-wie>summary::-webkit-details-marker{display:none;}
+.bp-weg h3,.bp-wie h3{display:inline;margin:0;font-size:15px;}
+.bp-weg>summary::before,.bp-wie>summary::before{content:'';display:inline-block;width:7px;height:7px;margin:0 10px 2px 2px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .15s;}
+.bp-weg[open]>summary::before,.bp-wie[open]>summary::before{transform:rotate(45deg);}
+.bp-wie p{font-size:14px;color:var(--ink-2);max-width:88ch;margin-top:10px;}
+
+/* Dialoge */
+.bp-vorlagen{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;}
+.bp-vorlagen .catchip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-2);padding:5px 11px;font-size:13px;}
+.bp-vorlagen .catchip:hover{border-color:var(--accent-line);color:var(--ink);}
+.bp-vorlagen .catchip.on{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent);box-shadow:none;}
+.bp-wahl{border:1px solid var(--line);border-radius:10px;padding:8px 12px 10px;margin:12px 0 0;}
+.bp-wahl legend{font-weight:650;font-size:13.5px;padding:0 4px;}
+.bp-wahl label{display:flex;align-items:baseline;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-size:14px;line-height:1.45;cursor:pointer;}
+.bp-wahl label:first-of-type{border-top:0;}
+.bp-wahl input{flex:0 0 auto;margin:0;transform:translateY(2px);}
+.bp-wahl small{color:var(--muted);}
+
+/* Kurzkarte im Überblick */
+.bp-kurzkarte{border-left:4px solid var(--accent);}
+.bp-kurzkarte.dringend{border-left-color:#C0543F;}
+.bp-kurzkarte.faellig{border-left-color:#D9A93A;}
+.bp-kurzkarte .ar-kartenkopf{margin-bottom:0;}
+.bp-kurzkarte .bp-fortschritt{margin-top:6px;}
+.bp-kurz-naechst{margin:10px 0 0!important;font-size:14.5px;}
+
+@media (max-width:900px){
+  .bp-phasen{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;}
+  .bp-phasen button{flex-direction:column;align-items:center;gap:3px;padding:8px 4px;text-align:center;}
+  .bp-pname{font-size:12px;white-space:normal;line-height:1.2;}
+  .bp-ptext{align-items:center;text-align:center;}
+  .bp-phasen li:not(:last-child)::after{display:none;}
+}
+@media (max-width:640px){
+  .bp-schritt{grid-template-columns:auto minmax(0,1fr);}
+  .bp-akt{grid-column:2;align-items:flex-start;}
+  .bp-entscheid{justify-content:flex-start;}
+  .bp-naechster h3{font-size:18px;}
+  .bp-pzahl{font-size:11px;}
+  .bp-phasen .bp-pname{display:none;}
+  .bp-phasen .bp-ptext{align-items:center;}
+}
+@media print{
+  body.bp-druck *{visibility:hidden!important;}
+  body.bp-druck #bp-plan,body.bp-druck #bp-plan *{visibility:visible!important;}
+  body.bp-druck #bp-plan{position:absolute;left:0;top:0;width:100%;}
+  body.bp-druck #bp-plan .keindruck,body.bp-druck #bp-plan .bp-akt{display:none!important;}
+  body.bp-druck #bp-plan .bp-erledigt>summary::before{display:none;}
+  body.bp-druck .ar-karte{break-inside:avoid;box-shadow:none;}
+}

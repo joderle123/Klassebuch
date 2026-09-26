@@ -1,0 +1,472 @@
+{
+  "id": "mentalisieren",
+  "bereich": "muster",
+  "titel": "Mentalisieren – das Innere des anderen verstehen",
+  "untertitel": "Wie Kinder lernen, Verhalten mit Gedanken und Gefühlen zu verbinden – und wie eine mentalisierende Haltung im Alltag hilft",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, was Mentalisieren bedeutet, und es von Empathie und Theory of Mind abgrenzen.",
+    "Sie können beschreiben, wie sich Mentalisieren in Beziehungen entwickelt, und die drei Vorstufen – Äquivalenzmodus, Als-ob-Modus, teleologischer Modus – im Alltag wiedererkennen.",
+    "Sie können erklären, warum Mentalisieren unter Stress zusammenbricht, und Anzeichen dafür bei Kindern und bei sich selbst erkennen.",
+    "Sie können Gespräche mit einer mentalisierenden Haltung führen: neugierig, nichtwissend, nachfragend.",
+    "Sie kennen die Grenzen des Konzepts und wissen, wann Kinder fachliche Unterstützung brauchen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Der Rempler in der Pause",
+          "text": "In der Pause rempelt Tom (9) im Vorbeirennen Ali (9) an. Ali ist sofort außer sich: „Der hat das mit Absicht gemacht! Der will mich fertigmachen!“ Er stürzt sich auf Tom, die Aufsicht trennt die beiden. Tom beteuert, er habe Ali gar nicht gesehen. Ali bleibt dabei: „Der lügt. Ich weiß genau, was der will.“ Die Aufsichtsperson ist genervt und denkt: „Ali sucht doch nur Streit.“",
+          "fragen": [
+            "Wie erklärt sich Ali Toms Verhalten – und wie erklärt sich die Aufsichtsperson Alis Verhalten?",
+            "Was haben beide Erklärungen gemeinsam?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Mentalisieren** bedeutet, das eigene Verhalten und das Verhalten anderer mit inneren Zuständen zu verbinden: mit Gefühlen, Gedanken, Wünschen, Absichten und Überzeugungen (Fonagy et al., 2002). Wer mentalisiert, fragt sich – meist ganz automatisch –: Was geht in ihm vor? Warum reagiere ich gerade so heftig? Was könnte sie gemeint haben? Eine bekannte Kurzformel lautet: sich selbst von außen und andere von innen sehen.\n\nMentalisieren ist eng verwandt mit Begriffen, die Sie vielleicht kennen. **Empathie** meint vor allem das Mitfühlen mit einem anderen Menschen. **Theory of Mind** meint das Verständnis dafür, dass andere andere Gedanken und anderes Wissen haben als man selbst; es entwickelt sich bei den meisten Kindern deutlich um das vierte Lebensjahr. Mentalisieren ist weiter gefasst: Es umfasst das Verstehen von sich selbst und von anderen, von Gefühlen und Gedanken – und es hängt stark davon ab, wie sicher und wie aufgewühlt ein Mensch gerade ist.\n\nIm Fallbeispiel sind sich beide – Ali und die Aufsichtsperson – der Absicht des anderen sicher. Genau diese Gewissheit ist ein typisches Zeichen dafür, dass gerade *nicht* mentalisiert wird."
+        },
+        {
+          "art": "merke",
+          "text": "Mentalisieren heißt nicht, Gedanken lesen zu können. Es heißt, neugierig zu bleiben auf das, was in einem selbst und im anderen vorgeht – und zu wissen, dass man sich dabei irren kann."
+        }
+      ]
+    },
+    {
+      "titel": "Wie Mentalisieren entsteht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nach Fonagy und Kollegen lernen Kinder Mentalisieren in verlässlichen Beziehungen (Fonagy et al., 2002). Ein Baby hat zunächst keine Vorstellung von seinen Gefühlen; es erlebt Unbehagen, Erregung, Wohlbehagen. Eine feinfühlige Bezugsperson nimmt diese Zustände wahr und spiegelt sie zurück: Sie zeigt mit Gesicht und Stimme, dass sie den Kummer des Kindes sieht. Entscheidend ist, dass sie das **markiert** tut – leicht übertrieben, mit einem mitfühlenden „Oje“ –, sodass das Kind merkt: Das ist *mein* Gefühl, das sie mir zeigt, nicht ihres. Geriete die Mutter selbst in Panik, würde die Angst des Kindes nur verdoppelt. Aus vielen solchen Erfahrungen bildet das Kind nach und nach innere Vorstellungen seiner Gefühle – eine Grundlage dafür, sie später selbst regulieren zu können. Auch die Entwicklungsneurobiologie betont, dass sich die Fähigkeit, das eigene und fremde Innenleben zu verstehen, in Beziehungen entwickelt (Siegel, 1999).\n\nBevor Kinder mit etwa vier bis fünf Jahren sicherer mentalisieren, erleben sie ihre innere Welt in **Vorstufen**. Diese verschwinden später nicht ganz: Auch Jugendliche und Erwachsene fallen unter Stress in sie zurück. Sie zu kennen, hilft deshalb im Alltag sehr."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Vorstufen des Mentalisierens",
+          "spalten": [
+            "Modus",
+            "Was dabei geschieht",
+            "So kann es bei älteren Kindern und Jugendlichen unter Stress klingen"
+          ],
+          "zeilen": [
+            [
+              "Äquivalenzmodus",
+              "Gedanken und Gefühle werden nicht als Vorstellungen erlebt, sondern als Wirklichkeit. Zweifel sind kaum möglich.",
+              "„Der hat mich angeschaut – der will Streit.“ „Ich fühle mich dumm, also bin ich dumm.“"
+            ],
+            [
+              "Als-ob-Modus",
+              "Gedanken und Gefühle sind von der Wirklichkeit abgekoppelt. Beim kleinen Kind ist das Spiel; später kann daraus leeres Reden über Gefühle werden.",
+              "Ein Jugendlicher redet lange und psychologisch klingend über seine Probleme, ohne dass etwas spürbar wird oder sich bewegt – Fachleute sprechen von Pseudomentalisieren."
+            ],
+            [
+              "Teleologischer Modus",
+              "Nur was sichtbar geschieht, zählt als Beweis für innere Zustände.",
+              "„Wenn Sie mich wirklich mögen, geben Sie mir die bessere Note.“ „Wenn du meine Freundin bist, leihst du mir dein Handy.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Schulalter und Jugend.** Im Grundschulalter lernen Kinder, gemischte Gefühle zu verstehen („Ich freue mich auf die neue Schule und habe trotzdem Angst“) und sich zunehmend in andere hineinzuversetzen. In der Jugend wird Mentalisieren komplexer – und zugleich störanfälliger. Jugendliche beschäftigen sich intensiv damit, was andere über sie denken. Das kann zu **Hypermentalisieren** führen: zu viel und zu schnell in das Verhalten anderer hineinlesen, meist mit negativer Färbung („Sie hat nicht zurückgeschrieben, also findet sie mich peinlich und lästert mit allen über mich“). Bei Jugendlichen mit Borderline-Mustern ist das besonders ausgeprägt (Sharp & Fonagy, 2015)."
+        },
+        {
+          "art": "merke",
+          "text": "Mentalisieren lernt man in Beziehungen, in denen man sich verstanden fühlt. Kinder, die davon wenig erlebt haben, brauchen Erwachsene, die ihnen immer wieder vormachen, wie man über Gefühle und Absichten nachdenkt."
+        }
+      ]
+    },
+    {
+      "titel": "Wenn Mentalisieren zusammenbricht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mentalisieren ist keine feste Eigenschaft, die man hat oder nicht hat. Es schwankt – mit der Beziehung, der Situation und vor allem mit der **Erregung**. Bei mäßiger Anspannung denken wir gut über uns und andere nach. Steigen Angst, Wut oder Scham stark an, übernehmen schnelle, automatische Reaktionen: Kampf, Flucht oder Erstarren. Das bewusste, abwägende Nachdenken über innere Zustände geht dann weitgehend verloren.\n\nDas gilt für alle Menschen. Bei Kindern mit belastenden Beziehungserfahrungen geschieht dieser Wechsel aber oft schon bei geringerem Stress – besonders dann, wenn sie sich bedroht, beschämt oder zurückgewiesen fühlen. Von außen sieht das aus wie eine „Überreaktion“. Von innen ist es ein Zustand, in dem die eigene Deutung sich wie die Wahrheit anfühlt."
+        },
+        {
+          "art": "liste",
+          "titel": "Anzeichen, dass Mentalisieren gerade nicht gelingt",
+          "punkte": [
+            "Schwarz-Weiß-Denken: alles oder nichts, gut oder böse, immer oder nie",
+            "Große Gewissheit über die Absichten anderer: „Der hat das absichtlich gemacht.“",
+            "Blick nur auf Äußeres: Regeln, Fakten, Schuldige – kaum Interesse an Gefühlen und Gründen",
+            "Etiketten statt Beschreibungen: „Die ist einfach so.“",
+            "Lange, glatt klingende Erklärungen ohne spürbares Gefühl (Pseudomentalisieren)",
+            "Forderungen nach sichtbaren Beweisen: „Wenn es dir leidtut, dann …“"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Auch Erwachsene verlieren das Mentalisieren.** Wenn eine Lehrerin an einem Morgen zum dritten Mal provoziert wird, denkt sie womöglich: „Der macht das nur, um mich fertigzumachen.“ Das ist derselbe Äquivalenzmodus wie bei Ali in der Pause. Mentalisieren beide Seiten nicht mehr, schaukelt sich der Konflikt hoch: Jeder ist sich der bösen Absicht des anderen sicher. Der wichtigste Schritt ist deshalb oft, zuerst die eigene Erregung zu senken. Ein Erwachsener, der mentalisierend bleibt, kann einem Kind helfen, wieder ins Nachdenken zu kommen – umgekehrt gelingt das selten."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn man einem aufgebrachten Kind nur gut genug erklärt, wie sich der andere fühlt, beruhigt es sich.",
+          "fakt": "In hoher Erregung erreichen Erklärungen ein Kind kaum; lange Reden wirken dann oft wie ein weiterer Angriff. Zuerst helfen Ruhe, wenige Worte, Sicherheit und etwas Abstand zur Situation. Das Nachdenken über die Sicht des anderen gelingt erst danach."
+        },
+        {
+          "art": "merke",
+          "text": "Erst beruhigen, dann verstehen. Mit einem Kind in heller Aufregung lässt sich nicht über Absichten und Gefühle nachdenken – weder mit Fragen noch mit Erklärungen. Wenn die Erregung sinkt, wird Mentalisieren wieder möglich."
+        }
+      ]
+    },
+    {
+      "titel": "Die mentalisierende Haltung: Neugier und Nichtwissen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mentalisieren lässt sich anregen – vor allem durch die Haltung der Erwachsenen. In der mentalisierungsbasierten Therapie wird eine Grundhaltung beschrieben, die sich gut auf den pädagogischen Alltag übertragen lässt. Ihr Kern sind **Neugier** und **Nichtwissen**: Sie gehen davon aus, dass Sie nicht wissen, was im Kind vorgeht, und interessieren sich ernsthaft dafür. Das klingt einfach, ist aber anspruchsvoll, weil wir im Alltag schnell zu wissen glauben, warum jemand etwas tut.\n\nNichtwissen bedeutet nicht, keine Meinung zu haben. Es bedeutet, die eigene Sicht als *eine* Sicht anzubieten, die falsch sein kann, und die Sicht des Kindes ernst zu nehmen, auch wenn Sie sie nicht teilen. Ebenso wichtig ist, eigene Missverständnisse offen zuzugeben: „Da habe ich dich falsch verstanden.“ Das zeigt dem Kind, dass man über innere Zustände nachdenken und sich dabei irren kann, ohne dass die Beziehung zerbricht."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Mentalisierende Fragen und Sätze",
+          "spalten": [
+            "Ziel",
+            "So kann es klingen"
+          ],
+          "zeilen": [
+            [
+              "Neugierig nachfragen",
+              "„Was ist dir in dem Moment durch den Kopf gegangen?“ – „Wie hast du dir erklärt, dass er das gemacht hat?“"
+            ],
+            [
+              "Nichtwissen zeigen",
+              "„Ich verstehe es noch nicht ganz. Hilfst du mir?“"
+            ],
+            [
+              "Gefühle vorsichtig benennen",
+              "„Kann es sein, dass du dich vor allen bloßgestellt gefühlt hast?“"
+            ],
+            [
+              "Zurückspulen",
+              "„Spulen wir kurz zurück: Was war, kurz bevor du so wütend wurdest?“"
+            ],
+            [
+              "Andere Sichtweisen anregen",
+              "„Gibt es noch eine andere Erklärung, warum sie nicht zurückgeschrieben hat?“ – „Was glaubst du, hat Tom gedacht, als du auf ihn losgegangen bist?“"
+            ],
+            [
+              "Eigenes Inneres zeigen",
+              "„Ich merke, dass ich gerade ungeduldig werde. Das liegt nicht nur an dir – ich bin heute selbst unter Druck.“"
+            ],
+            [
+              "Missverständnisse zugeben",
+              "„Da lag ich falsch. Ich dachte, du wolltest nicht mitmachen.“"
+            ]
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Mentalisieren eher verhindert",
+          "punkte": [
+            "Deuten statt fragen: „Du bist doch nur eifersüchtig.“",
+            "Warum-Fragen im Streit: „Warum hast du das gemacht?“ Sie klingen wie ein Vorwurf und überfordern gerade dann, wenn das Kind es selbst nicht weiß. Fragen nach dem Was und Wie öffnen mehr.",
+            "Lange Erklärungen in hoher Erregung.",
+            "Gefühle absprechen: „Da brauchst du doch keine Angst zu haben.“",
+            "Sich der eigenen Deutung sicher sein: „Ich weiß genau, was du vorhast.“"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Mentalisieren regt Mentalisieren an: Wer sich ernsthaft für das Innere eines Kindes interessiert, hilft ihm, sich selbst dafür zu interessieren."
+        }
+      ]
+    },
+    {
+      "titel": "Mentalisieren im Schulalltag: Beispiele",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Ali nach der Pause",
+          "text": "Die Klassenlehrerin wartet, bis Ali sich in der Leseecke beruhigt hat. Dann setzt sie sich neben ihn: „Das war eben ganz schön heftig. Magst du mir erzählen, was passiert ist?“ Ali: „Tom hat mich absichtlich geschubst.“ Lehrerin: „Du hattest das Gefühl, er wollte dir wehtun. Was hast du in dem Moment gedacht?“ Ali: „Dass er mich vor allen blamieren will. Das machen die immer.“ Lehrerin: „Das klingt, als würdest du dich oft so behandelt fühlen. Das ist hart. Tom sagt, er hat dich gar nicht gesehen. Könnte das auch sein?“ Ali zögert: „Vielleicht … er ist ja gerannt.“ Gemeinsam überlegen sie, was Ali tun kann, wenn er sich das nächste Mal angegriffen fühlt.",
+          "fragen": [
+            "An welchen Stellen zeigt die Lehrerin Neugier und Nichtwissen?",
+            "Warum wartet sie mit dem Gespräch, bis Ali sich beruhigt hat?"
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Lina und der Klassenchat",
+          "text": "Lina (14) sitzt in der Pause weinend im Treppenhaus. In der Klassengruppe hat niemand auf ihr Foto reagiert. „Alle finden mich peinlich. Die lachen bestimmt über mich.“ Die Educatrice widerspricht nicht sofort, sondern sagt: „Das fühlt sich gerade furchtbar an, als wären alle gegen dich.“ Nach einer Weile fragt sie: „Was könnte es noch für Gründe geben, dass niemand reagiert hat?“ Lina überlegt: Viele hatten gerade Sport, eine Freundin hat ihr Handy abgeben müssen. Lina ist nicht sofort beruhigt, aber sie kann wieder in den Unterricht gehen.",
+          "fragen": [
+            "Welche Vorstufe des Mentalisierens erkennen Sie in Linas ersten Sätzen?",
+            "Warum hätte „Das stimmt doch gar nicht“ vermutlich wenig geholfen?"
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Herr Bergmann und die Kapuze",
+          "text": "Herr Bergmann ärgert sich seit Wochen über Jeff (15), der im Unterricht mit Kapuze und dem Kopf auf dem Tisch sitzt. „Der zeigt mir damit, dass ihm mein Unterricht egal ist“, sagt er im Lehrerzimmer. Eine Kollegin fragt: „Bist du dir da sicher? Was könnte noch dahinterstecken?“ Nach der nächsten Stunde spricht Herr Bergmann Jeff an: „Mir fällt auf, dass du seit ein paar Wochen oft den Kopf auf dem Tisch hast. Ich habe gedacht, dass dich mein Unterricht langweilt – aber vielleicht liege ich da falsch.“ Jeff erzählt, dass er seit der Trennung seiner Eltern kaum schläft.",
+          "fragen": [
+            "Welche Rolle hat die Frage der Kollegin gespielt?",
+            "Wie hätte das Gespräch verlaufen können, wenn Herr Bergmann bei seiner ersten Deutung geblieben wäre?"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Mentalisieren im Unterricht fördern",
+          "punkte": [
+            "Gefühlswörter anbieten und benennen – auch gemischte Gefühle.",
+            "Bei Geschichten und Texten fragen: Was denkt die Figur? Was weiß sie, was die andere nicht weiß?",
+            "Konflikte mit einem Perspektivwechsel klären: Wie hast du es erlebt – und wie wohl der andere?",
+            "Laut denken: „Ich überlege gerade, warum ihr so unruhig seid. Vielleicht seid ihr müde vom Test?“",
+            "Im Klassenrat üben, einander zuzuhören und die Sicht anderer in eigenen Worten zusammenzufassen."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Grenzen des Konzepts und Weitervermittlung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mentalisieren ist ein hilfreiches Konzept, aber keine Erklärung für alles. Nicht jede Schwierigkeit, andere zu verstehen, hat mit Bindungserfahrungen oder Stress zu tun."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was anders zu verstehen ist",
+          "punkte": [
+            {
+              "wie": "Kinder im Autismus-Spektrum",
+              "unterschied": "Viele haben dauerhaft Schwierigkeiten, Absichten und Gefühle anderer intuitiv zu erfassen – unabhängig von Stress und Beziehung. Sie profitieren oft mehr von klaren, ausdrücklichen Erklärungen sozialer Situationen, etwa mit Sozialgeschichten (Gray, 2015), als von offenen Fragen nach dem Innenleben."
+            },
+            {
+              "wie": "Jüngere Kinder",
+              "unterschied": "Unter vier bis fünf Jahren ist Mentalisieren noch im Aufbau. Was bei einem Jugendlichen ein Zusammenbruch des Mentalisierens wäre, ist bei einem Kindergartenkind normal."
+            },
+            {
+              "wie": "Sprachliche Hürden",
+              "unterschied": "Kinder, die die Unterrichtssprache noch lernen, können ihr Inneres oft nicht in Worte fassen, obwohl sie es gut verstehen. Bilder, Gefühlskarten und die Erstsprache helfen."
+            },
+            {
+              "wie": "ADHS und Impulsivität",
+              "unterschied": "Das Kind versteht oft sehr wohl, was im anderen vorgeht, handelt aber, bevor es nachdenken kann. Hier hilft vor allem Unterstützung bei der Selbststeuerung."
+            }
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was Fachleute tun.** Die mentalisierungsbasierte Therapie (MBT) wurde für Erwachsene mit Borderline-Persönlichkeitsstörung entwickelt; für Jugendliche (MBT-A) und Familien gibt es angepasste Formen (Sharp & Fonagy, 2015). Auch viele andere Therapieansätze fördern das Verständnis für eigene und fremde Gefühle. Pädagogische Fachkräfte machen keine Therapie. Mit einer mentalisierenden Haltung können sie aber den Alltag zu einem Ort machen, an dem Kinder diese Fähigkeit üben."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung bei Ihrer Leitung (Responsable), beim Diagnostique-Team des CDSE oder – im Lycée – beim SePAS, wenn ein Kind oder Jugendlicher sich über längere Zeit sehr häufig verfolgt, beschämt oder angegriffen fühlt und Konflikte deshalb immer wieder eskalieren, wenn es wiederholt wie weggetreten wirkt, ungewöhnliche Wahrnehmungen oder Überzeugungen äußert oder wenn der Verdacht auf Autismus, Traumafolgen oder eine andere Störung besteht. Die Abklärung ist Sache von Fachleuten."
+        },
+        {
+          "art": "merke",
+          "text": "Mentalisieren ist keine Technik, sondern eine Haltung: interessiert, bescheiden und geduldig – mit Kindern und mit sich selbst."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet Mentalisieren?",
+      "optionen": [
+        "Die Gedanken anderer Menschen zuverlässig erraten können",
+        "Eigenes und fremdes Verhalten mit inneren Zuständen wie Gefühlen, Gedanken und Absichten verbinden",
+        "Sich in einer Stresssituation vollständig unter Kontrolle haben",
+        "Kindern ausführlich erklären, was sie falsch gemacht haben"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Mentalisieren heißt, Verhalten als Ausdruck innerer Zustände zu verstehen – bei sich und bei anderen. Es ist kein Gedankenlesen: Wer gut mentalisiert, weiß, dass er sich irren kann. Selbstkontrolle und Erklärungen können damit zusammenhängen, beschreiben den Begriff aber nicht."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Mentalisieren ist eine feste Fähigkeit: Wer sie einmal erworben hat, verfügt jederzeit gleich gut darüber.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Mentalisieren schwankt mit der Situation, der Beziehung und vor allem mit der Erregung. Unter starkem Stress geht es bei allen Menschen teilweise verloren – bei Kindern mit belastenden Beziehungserfahrungen oft schon bei geringerem Stress."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage beschreibt den Äquivalenzmodus?",
+      "optionen": [
+        "Nur sichtbare Handlungen zählen als Beweis für Gefühle.",
+        "Über Gefühle wird viel und klug geredet, ohne dass sich etwas bewegt.",
+        "Was jemand denkt oder fühlt, wird als Wirklichkeit erlebt: „Ich fühle mich dumm, also bin ich dumm.“",
+        "Das Kind kann gemischte Gefühle gut benennen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Im Äquivalenzmodus sind Gedanken und Gefühle keine Vorstellungen, sondern Tatsachen – Zweifel sind kaum möglich. Die erste Option beschreibt den teleologischen Modus, die zweite den Als-ob-Modus beziehungsweise Pseudomentalisieren. Gemischte Gefühle benennen zu können, ist ein Zeichen gelingenden Mentalisierens."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Streit sagt Samuel (13) zu Ihnen: „Wenn Sie mich wirklich mögen würden, würden Sie mir die Strafarbeit erlassen.“",
+      "frage": "Wie ordnen Sie die Aussage ein, und wie antworten Sie am besten?",
+      "optionen": [
+        "Äquivalenzmodus – ich erkläre ihm ausführlich, dass er sich irrt.",
+        "Teleologischer Modus – ich erlasse die Strafarbeit, damit er sich gemocht fühlt.",
+        "Als-ob-Modus – ich übergehe die Aussage.",
+        "Teleologischer Modus – ich nehme das Gefühl ernst („Du hast gerade das Gefühl, dass ich dich nicht mag“), mache deutlich, dass die Strafarbeit nichts an meiner Wertschätzung ändert, und bleibe bei der Absprache."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Samuel macht Zuneigung an einer sichtbaren Handlung fest – typisch für den teleologischen Modus. Hilfreich ist, das Gefühl dahinter anzuerkennen und zugleich zu zeigen, dass Beziehung und Regel nebeneinander bestehen. Nachgeben bestätigt die Logik „Zuneigung zeigt sich nur durch Taten“, lange Erklärungen erreichen ihn in der Erregung kaum, und Übergehen ignoriert das Gefühl."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Woran erkennen Sie, dass Mentalisieren gerade nicht gelingt – beim Kind oder bei sich selbst? (mehrere richtig)",
+      "optionen": [
+        "Große Gewissheit über die Absichten anderer: „Der hat das absichtlich gemacht.“",
+        "Neugierige Fragen wie „Was ist dir da durch den Kopf gegangen?“",
+        "Schwarz-Weiß-Denken: immer, nie, alle, keiner",
+        "Etiketten statt Beschreibungen: „Die ist einfach so.“",
+        "Die Bereitschaft, eine eigene Deutung zu korrigieren"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Gewissheit über fremde Absichten, Schwarz-Weiß-Denken und Etiketten sind typische Zeichen, dass das Nachdenken über innere Zustände gerade ausgesetzt hat – bei Kindern wie bei Erwachsenen. Neugierige Fragen und die Bereitschaft, sich zu korrigieren, kennzeichnen dagegen gelingendes Mentalisieren."
+    },
+    {
+      "art": "fall",
+      "fall": "Ali (9) kommt wutentbrannt aus der Pause: „Tom hat mich absichtlich geschubst!“ Er zittert, schreit und will zurück auf den Hof.",
+      "frage": "Was ist der beste erste Schritt?",
+      "optionen": [
+        "Ali sofort fragen, warum er so überreagiert.",
+        "Ali ausführlich erklären, dass Tom ihn vermutlich gar nicht gesehen hat.",
+        "Ruhig bleiben, mit wenigen Worten für Sicherheit sorgen und Ali Zeit geben, sich zu beruhigen – das Gespräch über Toms Absichten folgt später.",
+        "Ali sagen, dass er sich nicht so anstellen soll."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "In hoher Erregung ist Mentalisieren kaum möglich; Fragen und Erklärungen erreichen Ali jetzt nicht. Zuerst braucht er Sicherheit und Beruhigung. Warum-Fragen klingen wie ein Vorwurf, lange Erklärungen überfordern, und Abwerten steigert die Erregung weiter."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist mit der Haltung des Nichtwissens gemeint?",
+      "optionen": [
+        "Die eigene Sicht als eine mögliche Sicht anbieten, die falsch sein kann, und sich ernsthaft für die Sicht des Kindes interessieren",
+        "Keine eigene Meinung haben und dem Kind in allem recht geben",
+        "So tun, als wüsste man nichts, um das Kind zu testen",
+        "Fachliches Wissen bewusst nicht anwenden"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Nichtwissen heißt nicht, meinungslos zu sein, sondern bescheiden mit der eigenen Deutung umzugehen und neugierig auf das Innere des anderen zu bleiben. Es ist weder ein Trick noch ein Verzicht auf Fachwissen. Wer so fragt, regt das Kind an, selbst über sich und andere nachzudenken."
+    },
+    {
+      "art": "fall",
+      "fall": "Lina (14) sagt weinend: „Niemand hat auf mein Foto reagiert. Alle finden mich peinlich.“",
+      "frage": "Welche Antwort ist am ehesten mentalisierend?",
+      "optionen": [
+        "„Das stimmt doch gar nicht, du bist nicht peinlich.“",
+        "„Das fühlt sich gerade furchtbar an, als wären alle gegen dich.“ – und etwas später: „Was könnte es noch für Gründe geben, dass niemand reagiert hat?“",
+        "„Dann lösch das Foto halt.“",
+        "„Ich weiß genau, warum die nicht reagiert haben: Die sind neidisch.“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die zweite Antwort erkennt Linas Gefühl an und lädt sie danach ein, andere Erklärungen zu erwägen. Sofortiger Widerspruch fühlt sich an wie Nicht-verstanden-Werden, ein schneller Ratschlag übergeht das Gefühl, und eine eigene sichere Deutung ist genauso wenig mentalisierend wie Linas."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Sätze fördern Mentalisieren im Gespräch? (mehrere richtig)",
+      "optionen": [
+        "„Was ist dir in dem Moment durch den Kopf gegangen?“",
+        "„Warum hast du das gemacht?“ – mitten im Streit",
+        "„Ich merke, dass ich ungeduldig werde. Das liegt nicht nur an dir.“",
+        "„Du bist doch nur eifersüchtig.“",
+        "„Da habe ich dich falsch verstanden.“"
+      ],
+      "richtig": [
+        0,
+        2,
+        4
+      ],
+      "erklaerung": "Offene Fragen nach dem Inneren, das Zeigen eigener innerer Zustände und das Eingestehen von Missverständnissen laden zum Nachdenken ein. Warum-Fragen im Streit klingen wie ein Vorwurf und führen eher zu Rechtfertigungen; eine Deutung wie „Du bist nur eifersüchtig“ sagt dem Kind, was es fühlt, statt es zu fragen."
+    },
+    {
+      "art": "fall",
+      "fall": "Jeff (15) sitzt seit Wochen mit Kapuze und dem Kopf auf dem Tisch im Unterricht. Sein Lehrer ist überzeugt: „Er will mir zeigen, dass ihm mein Unterricht egal ist.“",
+      "frage": "Was wäre ein mentalisierender nächster Schritt für den Lehrer?",
+      "optionen": [
+        "Jeff vor der Klasse auffordern, sich endlich ordentlich hinzusetzen.",
+        "Jeff einen Eintrag geben, weil er den Unterricht missachtet.",
+        "Nichts tun, weil Jeff sich offensichtlich nicht für das Fach interessiert.",
+        "Die eigene Deutung als Vermutung behandeln: Jeff nach der Stunde ansprechen, die Beobachtung beschreiben und offen nachfragen, was los ist."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Die Überzeugung des Lehrers ist eine ungeprüfte, sichere Deutung – ein Zeichen, dass sein eigenes Mentalisieren unter dem Ärger gelitten hat. Die Beobachtung zu beschreiben und offen zu fragen, eröffnet andere Erklärungen wie Schlafmangel, Sorgen oder Traurigkeit. Bloßstellen, Strafen oder Aufgeben bestätigen dagegen nur die erste Deutung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Bei Kindern im Autismus-Spektrum sind offene Fragen nach dem Innenleben die wichtigste Hilfe, um soziale Situationen zu verstehen.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Viele Kinder im Autismus-Spektrum haben unabhängig von Stress und Beziehung dauerhaft Schwierigkeiten, soziale Absichten intuitiv zu erfassen. Sie profitieren oft mehr von klaren, ausdrücklichen Erklärungen sozialer Situationen, etwa mit Bildern oder Sozialgeschichten. Das Konzept des Mentalisierens ersetzt weder eine fachliche Abklärung noch autismusspezifische Unterstützung."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Mentalisieren",
+      "erklaerung": "Fähigkeit, eigenes und fremdes Verhalten mit inneren Zuständen wie Gefühlen, Gedanken, Wünschen und Absichten zu verbinden – im Wissen, dass man sich dabei irren kann."
+    },
+    {
+      "begriff": "Theory of Mind",
+      "erklaerung": "Verständnis dafür, dass andere Menschen andere Gedanken, Überzeugungen und anderes Wissen haben als man selbst. Entwickelt sich deutlich um das vierte Lebensjahr."
+    },
+    {
+      "begriff": "Markierte Spiegelung",
+      "erklaerung": "Eine Bezugsperson zeigt das Gefühl des Kindes leicht übertrieben und mitfühlend zurück, sodass das Kind es als sein eigenes erkennt – eine Grundlage für das Verstehen eigener Gefühle."
+    },
+    {
+      "begriff": "Äquivalenzmodus",
+      "erklaerung": "Vorstufe des Mentalisierens: Gedanken und Gefühle werden als Wirklichkeit erlebt („Ich fühle mich dumm, also bin ich dumm“)."
+    },
+    {
+      "begriff": "Als-ob-Modus",
+      "erklaerung": "Vorstufe des Mentalisierens: Gedanken und Gefühle sind von der Wirklichkeit abgekoppelt – im Spiel normal, später als leeres Reden über Gefühle (Pseudomentalisieren)."
+    },
+    {
+      "begriff": "Teleologischer Modus",
+      "erklaerung": "Vorstufe des Mentalisierens: Nur sichtbare Handlungen gelten als Beweis für innere Zustände („Wenn du mich magst, dann gib mir …“)."
+    },
+    {
+      "begriff": "Hypermentalisieren",
+      "erklaerung": "Übermäßiges, vorschnelles Hineinlesen von Absichten in das Verhalten anderer, oft mit negativer Färbung. In der Jugend häufig, bei Borderline-Mustern besonders ausgeprägt."
+    },
+    {
+      "begriff": "Nichtwissen (Haltung)",
+      "erklaerung": "Grundhaltung, die eigene Sicht als eine mögliche anzubieten, sich ernsthaft für die Sicht des anderen zu interessieren und eigene Irrtümer zuzugeben."
+    }
+  ],
+  "quellen": [
+    "fonagy2002",
+    "sharpFonagy2015",
+    "siegel1999",
+    "gray2015"
+  ],
+  "verwandt": [
+    "bindungsmuster",
+    "emotionsregulation",
+    "persoenlichkeitsentwicklung",
+    "gespraechsfuehrung",
+    "deeskalation",
+    "autismus"
+  ],
+  "toolbox": [
+    "gefuehle-detektiv",
+    "in-den-schuhen-des-anderen",
+    "drei-sichtweisen",
+    "wie-fuehlt-sich-das-an",
+    "was-ist-passiert"
+  ]
+}

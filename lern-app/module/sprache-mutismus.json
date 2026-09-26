@@ -1,0 +1,397 @@
+{
+  "id": "sprache-mutismus",
+  "bereich": "stoerungen",
+  "titel": "Sprachentwicklungsstörungen und selektiver Mutismus",
+  "untertitel": "Wenn Worte fehlen oder nicht herauskommen – erkennen, von Mehrsprachigkeit unterscheiden, Brücken bauen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Merkmale einer Sprachentwicklungsstörung nach dem CATALISE-Konsens beschreiben und im Schulalltag erkennen.",
+    "Sie können eine Sprachentwicklungsstörung vom normalen Lernen einer Zweit- oder Drittsprache unterscheiden und Eltern mehrsprachiger Kinder gut beraten.",
+    "Sie können den Unterricht sprachsensibel gestalten und wissen, wie Sprachprobleme und Verhalten zusammenhängen.",
+    "Sie können selektiven Mutismus als Angststörung erklären und von Schüchternheit und der stillen Phase beim Sprachenlernen abgrenzen.",
+    "Sie können einem Kind mit selektivem Mutismus ohne Druck Brücken zum Sprechen bauen und wissen, wann Fachleute nötig sind."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Mathis, 7 Jahre, Cycle 2.1",
+          "text": "Mathis wächst mit Luxemburgisch auf. Er hat spät zu sprechen begonnen und spricht bis heute in kurzen, oft unvollständigen Sätzen: „Gestern ich Oma gegangen.“ Sagt die Lehrerin: „Nimm dein blaues Heft, schlag Seite zwölf auf und schreib das Datum oben rechts hin“, holt er sein Mäppchen und schaut, was die anderen tun. Im Sitzkreis erzählt er nie. In der Pause schubst er andere Kinder, sobald ein Streit beginnt. Die Educatrice sagt: „Ihm fehlen die Worte, also nimmt er die Hände.“"
+        },
+        {
+          "art": "fall",
+          "titel": "Yara, 5 Jahre, Spillschoul",
+          "text": "Yara hat seit Schulbeginn vor fünf Monaten in der Spillschoul kein Wort gesprochen – weder Luxemburgisch noch Portugiesisch, auch nicht mit ihrer Cousine in derselben Gruppe. Wird sie angesprochen, erstarrt sie und schaut zu Boden. Die Mutter zeigt ein Video auf dem Handy: Zu Hause redet Yara ununterbrochen, singt und kommandiert ihre kleine Schwester herum.",
+          "fragen": [
+            "Was unterscheidet Mathis und Yara – und was haben sie gemeinsam?",
+            "Welche Reaktionen der Erwachsenen könnten Yaras Schweigen ungewollt verstärken?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Sprache ist das wichtigste Werkzeug der Schule: zum Verstehen, Lernen, Erzählen, Streiten und Befreunden. Zwei sehr unterschiedliche Schwierigkeiten werden im Alltag leicht verwechselt. Bei einer **Sprachentwicklungsstörung** (SES) sind die sprachlichen Fähigkeiten selbst beeinträchtigt: Das Kind versteht Sprache schlechter und/oder kann sich schlechter ausdrücken – in allen Situationen. Beim **selektiven Mutismus** sind die sprachlichen Fähigkeiten meist vorhanden, aber das Kind kann in bestimmten Situationen vor Angst nicht sprechen. Beide Schwierigkeiten können auch gemeinsam vorkommen."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Sprachentwicklungsstörung betrifft das sprachliche Können, der selektive Mutismus das Sprechen-Trauen. Beides wird leicht als Unwillen missverstanden – und bei beiden macht Druck es schlimmer."
+        }
+      ]
+    },
+    {
+      "titel": "Sprachentwicklungsstörungen erkennen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine internationale Fachgruppe hat sich im **CATALISE-Konsens** auf gemeinsame Begriffe geeinigt (Bishop et al., 2017). Von einer Sprachentwicklungsstörung (englisch „developmental language disorder“) spricht man, wenn Sprachschwierigkeiten voraussichtlich bis weit ins Schulalter und darüber hinaus bestehen, Alltag oder Lernen deutlich beeinträchtigen und nicht durch eine bekannte Grunderkrankung erklärt sind – etwa eine Hörstörung, eine Autismus-Spektrum-Störung, eine intellektuelle Beeinträchtigung oder ein genetisches Syndrom. Liegt eine solche Ursache vor, spricht man von einer Sprachstörung im Zusammenhang mit dieser Erkrankung. Die ICD-11 kennt ebenfalls die entwicklungsbedingte Sprachstörung; das DSM-5-TR spricht von Sprachstörung.\n\nZwei Punkte des Konsenses sind für die Praxis wichtig. Erstens ist ein großer Abstand zwischen sprachlichen und nichtsprachlichen Fähigkeiten **keine** Voraussetzung: Auch Kinder mit eher schwachen nichtsprachlichen Fähigkeiten können eine SES haben. Zweitens schließen ADHS, eine Lese-Rechtschreibstörung oder motorische Schwierigkeiten eine SES nicht aus; sie kommen häufig zusätzlich vor.\n\nSprachentwicklungsstörungen sind häufig. Schätzungen gehen von etwa 7 von 100 Kindern im Einschulungsalter aus – rund zwei Kinder pro Klasse. In der Öffentlichkeit sind sie trotzdem wenig bekannt und werden oft übersehen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Bereiche der Sprache und wie Schwierigkeiten aussehen können",
+          "spalten": ["Bereich", "Was auffallen kann"],
+          "zeilen": [
+            ["Sprachverständnis", "Versteht längere Anweisungen, Nebensätze („bevor“, „außer“, „nachdem“), Warum- und Wie-Fragen und Fachbegriffe schlecht; orientiert sich an den anderen; nickt, ohne verstanden zu haben."],
+            ["Wortschatz und Wortabruf", "Kleiner Wortschatz, ungenaue Wörter („das Ding da“, „machen“), lange Suchpausen; neue Wörter werden nur mühsam behalten."],
+            ["Grammatik", "Kurze, einfache Sätze, fehlende Wörter und Endungen, falsche Wortstellung – deutlich mehr als bei Gleichaltrigen mit ähnlicher Sprachgeschichte."],
+            ["Erzählen und Gespräch", "Erzählt ungeordnet und ohne roten Faden; versteht Ironie, Redewendungen und Andeutungen schlecht; hat Mühe, sich im Gespräch abzuwechseln oder beim Thema zu bleiben."]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Worauf Sie nach Alter achten können",
+          "punkte": [
+            "Vor der Schule: Manche Kinder sprechen mit zwei Jahren kaum Wörter und noch keine Zweiwortsätze (sogenannte Late Talker). Viele holen auf, ein Teil nicht – besonders, wenn es in der Familie Sprachprobleme gab.",
+            "Précoce und Cycle 1: spricht deutlich weniger und in kürzeren Sätzen als Kinder mit ähnlicher Sprachgeschichte, versteht einfache Aufforderungen im Gruppenalltag nicht, zieht sich in Gesprächsrunden zurück.",
+            "Cycle 2–4: Mühe mit Anweisungen und Textaufgaben, mit dem Leseverständnis und dem Schreiben; wirkt „verträumt“ oder „unaufmerksam“; Konflikte, weil Worte fehlen.",
+            "Lycée: einsilbige Antworten, meidet mündliche Beiträge, versteht komplexe Texte und Fachsprache schlecht; wird schnell als desinteressiert, unhöflich oder „schwierig“ wahrgenommen."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Kinder mit Sprachentwicklungsstörung lernen früh, ihre Schwierigkeiten zu verbergen: Sie nicken, machen nach, was andere tun, und sagen „Ja“ auf „Hast du verstanden?“. Probleme mit dem Sprachverständnis werden deshalb besonders leicht übersehen."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen und abgrenzen: Ursachen, Folgen, Mehrsprachigkeit",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Ursachen.** Sprachentwicklungsstörungen haben eine starke erbliche Komponente und treten in Familien gehäuft auf; Jungen sind etwas häufiger betroffen. Sie entstehen nicht durch Erziehungsfehler, zu wenig Zuwendung oder Mehrsprachigkeit. Ein sprachlich anregendes Umfeld und frühe Förderung können ihre Auswirkungen aber mildern.\n\n**Verlauf und Folgen.** Bei vielen Kindern bleiben Schwierigkeiten bis ins Jugend- und Erwachsenenalter bestehen, auch wenn sie weniger auffallen. Häufige Folgen sind Probleme mit Leseverständnis und Schreiben, Schwierigkeiten mit Freundschaften, Rückzug, Ängste und Frust, der sich in Wut entladen kann. Bei Kindern und Jugendlichen, die wegen ihres Verhaltens auffallen, bleiben Sprachstörungen besonders oft unerkannt."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Kind, das schlägt statt zu reden, „nicht hört“ oder „frech“ antwortet, versteht manchmal schlicht nicht genug oder findet die Worte nicht. Fragen Sie bei Verhaltensproblemen immer auch nach der Sprache."
+        },
+        {
+          "art": "text",
+          "text": "**Mehrsprachigkeit ist kein Risiko.** In Luxemburg wachsen die meisten Kinder mit mehreren Sprachen auf. Mehrsprachigkeit verursacht keine Sprachentwicklungsstörung, und auch Kinder mit SES können mehrere Sprachen lernen – jede Sprache kostet sie aber mehr Mühe. Typisch und unbedenklich beim Lernen einer neuen Sprache sind eine anfängliche **stille Phase**, in der ein Kind vor allem zuhört; das **Mischen** von Sprachen in einem Satz; Fehler, die aus der Erstsprache übertragen werden; und ein Wortschatz, der sich auf die Sprachen verteilt – manche Wörter kennt das Kind nur auf Portugiesisch, andere nur auf Luxemburgisch. Die Alltagssprache sitzt oft nach ein bis zwei Jahren, die Bildungssprache des Unterrichts braucht meist deutlich länger.\n\nDas wichtigste Unterscheidungsmerkmal: Eine SES zeigt sich in **allen** Sprachen des Kindes, auch in der stärksten. Fragen Sie deshalb die Eltern, wie das Kind in der Familiensprache spricht und versteht, etwa im Vergleich mit Geschwistern oder Cousins. Und vergleichen Sie es mit Kindern, die ähnlich lange und ähnlich viel Kontakt mit der Unterrichtssprache hatten."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht",
+          "punkte": [
+            { "wie": "Normales Lernen einer Zweit- oder Drittsprache", "unterschied": "Schwierigkeiten nur in der neuen Sprache, in der Familiensprache altersgemäß; stetige Fortschritte. Bei einer SES sind alle Sprachen betroffen." },
+            { "wie": "Hörstörung", "unterschied": "Auch leichte oder schwankende Hörminderungen erschweren das Verstehen. Vor jeder weiteren Abklärung steht deshalb ein Hörtest." },
+            { "wie": "Aussprachestörung und Stottern", "unterschied": "Das Kind bildet einzelne Laute falsch oder stockt im Redefluss, versteht und formuliert aber altersgemäß. Beides kann zusammen mit einer SES vorkommen, ist aber etwas anderes." },
+            { "wie": "Autismus-Spektrum-Störung", "unterschied": "Schwierigkeiten in der sozialen Kommunikation zusammen mit eingeschränkten, sich wiederholenden Interessen und Verhaltensweisen. Sprachprobleme können dazugehören." },
+            { "wie": "Intellektuelle Beeinträchtigung", "unterschied": "Nicht nur die Sprache, sondern das Lernen und Denken insgesamt ist deutlich verlangsamt." },
+            { "wie": "Selektiver Mutismus", "unterschied": "Das Kind schweigt in bestimmten Situationen, spricht in anderen aber altersgemäß. Manche Kinder mit selektivem Mutismus haben zusätzlich sprachliche Schwierigkeiten." }
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Kinder mit Sprachentwicklungsstörung unterstützen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Was Kindern mit SES hilft, hilft auch vielen mehrsprachigen Kindern und der ganzen Klasse. Man spricht von **sprachsensiblem Unterricht**: Sprache wird bewusst so eingesetzt, dass alle folgen können, und Fachsprache wird ausdrücklich aufgebaut statt vorausgesetzt."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Erst Aufmerksamkeit sichern, dann sprechen: Blickkontakt, Namen nennen, kurze Sätze, eine Information nach der anderen.",
+            "Visualisieren: Bilder, Gesten, Tafelanschrieb, Ablaufpläne, Wortspeicher mit Bildern.",
+            "Wichtige Fachwörter vorab einführen und oft wiederholen, in verschiedenen Zusammenhängen.",
+            "Verstehen prüfen, ohne bloßzustellen: „Zeig mir, womit du anfängst“ statt „Alles klar?“",
+            "Zeit zum Antworten und zur Wortsuche lassen – nicht sofort einspringen.",
+            "Fehlerhafte Sätze nicht verbessern lassen, sondern richtig und erweitert zurückgeben: „Gestern ich Oma gegangen.“ – „Ah, du bist gestern zu deiner Oma gegangen. Was habt ihr gemacht?“",
+            "Erzählen stützen: Wer? Wo? Was ist passiert? Wie ging es aus? – als Bildkarten.",
+            "Konflikte mit Worten üben: Satzanfänge wie „Ich will das nicht, weil …“ bereitstellen.",
+            "Sprechanlässe in kleinen Gruppen statt vor der ganzen Klasse."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Jeden Fehler verbessern oder Sätze korrekt nachsprechen lassen – das beschämt und bremst das Sprechen.",
+            "Lange, verschachtelte Anweisungen, Ironie und bildhafte Redewendungen ohne Erklärung.",
+            "„Hast du verstanden?“ als einzige Verständnisprüfung.",
+            "Verhalten bestrafen, ohne zu klären, ob das Kind die Situation sprachlich überhaupt erfasst hat.",
+            "Eltern raten, zu Hause auf die Unterrichtssprache umzusteigen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Eltern.** Ermutigen Sie Eltern, mit ihrem Kind in der Sprache zu sprechen, die sie selbst am besten beherrschen: viel erzählen, vorlesen, gemeinsam spielen und Dinge benennen. Eine gut entwickelte Familiensprache stützt jede weitere Sprache. Wechseln Eltern auf eine Sprache, die sie nur unsicher sprechen, verliert das Kind sein bestes Sprachvorbild.\n\n**Fachliche Hilfe.** Die Behandlung einer SES ist Aufgabe von Logopädinnen und Logopäden – in der Schule über das zuständige Unterstützungsteam oder Kompetenzzentrum, außerhalb in freier Praxis. Therapie wirkt am besten, wenn sie gezielt und regelmäßig ist und eng mit Schule und Eltern abgestimmt wird, damit Geübtes im Alltag ankommt. Behalten Sie auch Lesen und Schreiben im Blick: Kinder mit SES haben ein erhöhtes Risiko für eine Lese-Rechtschreibstörung und vor allem für Schwierigkeiten im Leseverständnis."
+        },
+        {
+          "art": "fall",
+          "titel": "Mathis, ein halbes Jahr später",
+          "text": "Die Logopädin hat eine SES festgestellt; Mathis hat zweimal pro Woche Therapie. In der Klasse hängt ein Ablaufplan mit Bildern, die Lehrerin gibt Anweisungen in kurzen Schritten und zeigt dabei mit. Vor jedem neuen Thema bekommt Mathis fünf wichtige Wörter mit Bildern nach Hause. Für Streit in der Pause hat die Educatrice mit ihm drei Sätze geübt. Das Schubsen ist seltener geworden. Im Sitzkreis erzählt er inzwischen mit Bildkarten, was er am Wochenende gemacht hat.",
+          "fragen": [
+            "Welche Maßnahmen richten sich auf das Verstehen, welche auf das Sprechen?",
+            "Warum lohnt sich die Abstimmung mit der Logopädin?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Selektiver Mutismus: verstehen und erkennen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Beim **selektiven Mutismus** spricht ein Kind in bestimmten Situationen beständig nicht – meist in der Schule, bei fremden Erwachsenen oder in der Gruppe –, obwohl es in anderen Situationen, meist zu Hause, normal spricht. DSM-5-TR und ICD-11 ordnen den selektiven Mutismus den **Angststörungen** zu. Das Schweigen ist keine Entscheidung, sondern Folge starker Angst: Viele Kinder möchten sprechen, können aber nicht. Manche erstarren zusätzlich, vermeiden Blickkontakt, essen nicht vor anderen oder gehen in der Schule nicht zur Toilette; manche verständigen sich nicht einmal mit Gesten.\n\nDer selektive Mutismus ist selten – Schätzungen liegen unter 1 von 100 Kindern – und beginnt meist vor dem Alter von fünf Jahren; auffällig wird er oft erst mit dem Eintritt in die Spillschoul oder die Grundschule. In einer großen Schweizer Fallserie waren Schüchternheit und Ängstlichkeit sehr häufig, Mädchen etwas häufiger betroffen als Jungen, Kinder aus eingewanderten Familien überdurchschnittlich vertreten, und ein Teil der Kinder hatte zusätzlich Sprach- oder Sprechprobleme (Steinhausen & Juzi, 1996)."
+        },
+        {
+          "art": "liste",
+          "titel": "Kriterien in Alltagssprache (nach DSM-5-TR)",
+          "punkte": [
+            "Das Kind spricht in bestimmten Situationen, in denen Sprechen erwartet wird (etwa in der Schule), beständig nicht – in anderen aber schon.",
+            "Das dauert mindestens einen Monat; der erste Monat in einer neuen Schule zählt nicht mit.",
+            "Es beeinträchtigt das Lernen oder die Kontakte mit anderen.",
+            "Es lässt sich nicht damit erklären, dass das Kind die geforderte Sprache noch nicht ausreichend beherrscht.",
+            "Es ist nicht besser durch etwas anderes erklärt, etwa Stottern, eine Autismus-Spektrum-Störung oder eine Psychose."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wie das Schweigen sich festigt.** Wenn das Kind schweigt, springen andere ein: Die Lehrerin fragt jemand anderen, die Freundin antwortet für es, die Mutter bestellt im Restaurant. Das Kind erlebt Erleichterung, die Angst sinkt. Genau diese Erleichterung verstärkt das Schweigen – Fachleute sprechen von **negativer Verstärkung**. Je länger es besteht, desto mehr wird das Kind zu „dem Kind, das nicht spricht“, und desto schwerer wird der erste Satz, weil alle darauf achten würden. Deshalb ist frühe Hilfe wichtig."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinder mit selektivem Mutismus sind trotzig und wollen die Erwachsenen kontrollieren.",
+          "fakt": "Das Schweigen ist Ausdruck von Angst, nicht von Trotz. Der Eindruck von Sturheit entsteht, weil das Kind unter Druck erstarrt. Machtkämpfe verfestigen das Schweigen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Hinter selektivem Mutismus steckt immer ein Trauma.",
+          "fakt": "Meist nicht. Häufig finden sich ein ängstliches, gehemmtes Temperament, Schüchternheit oder soziale Ängste in der Familie und belastende Übergänge wie der Schulbeginn. Verstummt ein Kind nach einem schweren Ereignis plötzlich überall, ist das ein anderes Bild und muss gesondert abgeklärt werden."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht",
+          "punkte": [
+            { "wie": "Stille Phase beim Lernen einer neuen Sprache", "unterschied": "Das Kind spricht die neue Sprache noch kaum, spricht aber mit Kindern der eigenen Sprache, nutzt Gesten und wirkt entspannt; die Phase klingt mit der Zeit ab. Beim selektiven Mutismus schweigt das Kind auch in der Sprache, die es sicher beherrscht, und wirkt angespannt." },
+            { "wie": "Schüchternheit", "unterschied": "Ein schüchternes Kind braucht Zeit zum Auftauen, spricht dann aber – vielleicht leise und wenig." },
+            { "wie": "Sprachentwicklungsstörung", "unterschied": "Das Kind spricht in allen Situationen, aber mit sprachlichen Schwierigkeiten. Beides kann zusammen vorkommen: Wer Mühe mit der Sprache hat, fürchtet das Sprechen oft mehr." },
+            { "wie": "Autismus-Spektrum-Störung", "unterschied": "Die Schwierigkeiten in der Kommunikation bestehen in allen Situationen, auch zu Hause, zusammen mit weiteren typischen Merkmalen." },
+            { "wie": "Plötzliches Verstummen", "unterschied": "Hört ein Kind, das vorher normal sprach, plötzlich und überall auf zu sprechen, gehört das zeitnah ärztlich abgeklärt." }
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Handeln bei selektivem Mutismus: nicht drängen, Brücken bauen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Zwei Fehler liegen nah beieinander. Druck („Sag doch einfach Hallo!“) steigert die Angst. Völliges Schonen – das Kind wird nie mehr angesprochen, andere antworten immer für es – hält die Vermeidung aufrecht. Der Weg dazwischen heißt: **Druck herausnehmen und zugleich kleine, machbare Schritte anbieten.** Das Kind soll erleben, dass es in der Schule sicher ist, dass es dazugehört, ohne sprechen zu müssen, und dass Sprechen Schritt für Schritt möglich wird."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Beziehung zuerst: Zeit mit dem Kind verbringen, ohne Sprechen zu erwarten – gemeinsam spielen, malen, bauen.",
+            "Beteiligung ohne Sprechen ermöglichen: zeigen, nicken, Karten hochhalten, aufschreiben, auf ein Bild tippen.",
+            "Fragen zunächst so stellen, dass eine Antwort ohne Worte reicht; später Auswahlfragen („Rot oder Blau?“) statt offener Fragen.",
+            "Nach einer Frage einige Sekunden warten und dann ruhig weitermachen – ohne Kommentar, wenn keine Antwort kommt.",
+            "Wenn das Kind etwas sagt: freundlich und ganz normal weitermachen – kein großes Aufheben, kein Applaus der Klasse.",
+            "Kleine Schritte gemeinsam mit Eltern und Fachleuten planen, etwa: erst mit der Mutter im leeren Klassenraum sprechen, dann kommt die Lehrerin dazu – zuerst in Hörweite, dann näher.",
+            "Mit Einverständnis des Kindes eine Sprachaufnahme von zu Hause mitbringen lassen: So hört die Lehrerin seine Stimme zum ersten Mal ohne Druck.",
+            "Die Klasse kurz und sachlich informieren, mit Einverständnis von Kind und Eltern: „Lea spricht in der Schule noch nicht. Sie hört alles und macht mit. Bitte nicht drängen.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Das Kind vor der Gruppe zum Sprechen auffordern oder eine Belohnung für das erste Wort ankündigen.",
+            "Sätze wie „Ich weiß doch, dass du sprechen kannst“ oder „Bei deiner Mama redest du doch auch“.",
+            "Mündliche Leistungen bestrafen oder schlecht bewerten, ohne andere Wege anzubieten.",
+            "Das Kind heimlich aufnehmen oder „belauschen“ lassen.",
+            "Alles für das Kind erledigen und es aus dem Unterrichtsgeschehen herausnehmen."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Yara, drei Monate später",
+          "text": "Die Lehrerin verbringt jeden Morgen zehn Minuten mit Yara und ihrer Mutter im Klassenraum, bevor die anderen kommen. Yara spielt mit der Mutter Memory und nennt die Bilder – erst flüsternd, dann in normaler Lautstärke. Die Lehrerin sitzt anfangs am Pult und korrigiert Hefte, später setzt sie sich dazu. In der dritten Woche sagt Yara zur Lehrerin: „Du bist dran.“ Die Lehrerin antwortet nur: „Stimmt, danke“, und dreht eine Karte um. Im Morgenkreis darf Yara weiter mit einer Bildkarte antworten. Ihre Cousine ist das erste Kind, das zum Morgenspiel dazukommt.",
+          "fragen": [
+            "Warum reagiert die Lehrerin so unaufgeregt auf Yaras ersten Satz?",
+            "Was könnte der nächste kleine Schritt sein?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Fachliche Hilfe.** Am besten untersucht ist eine verhaltenstherapeutische Behandlung, die das Sprechen in kleinen Schritten aufbaut und Eltern und Schule eng einbezieht. Je früher sie beginnt, desto besser sind die Aussichten; ein über Jahre verfestigtes Schweigen ist schwerer zu lösen. Bei älteren Kindern mit schwerer oder lang bestehender Symptomatik erwägen Kinder- und Jugendpsychiaterinnen manchmal zusätzlich ein Medikament. Oft bestehen daneben soziale Ängste, die ebenfalls Aufmerksamkeit brauchen. Die Schule ist dabei kein Nebenschauplatz: Weil das Schweigen vor allem dort auftritt, finden viele Übungsschritte genau dort statt."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und den Eltern über eine fachliche Abklärung, wenn ein Kind nach der Eingewöhnung länger als einen Monat in der Schule nicht spricht, zu Hause aber schon – oder wenn Sprachverständnis oder Ausdruck deutlich hinter Kindern mit ähnlicher Sprachgeschichte zurückbleiben, auch in der Familiensprache. Anlaufstellen sind je nach Frage das Diagnostique-Team des CDSE, die Logopädie, Kinderpsychologinnen oder die Kinder- und Jugendpsychiatrie. Am Anfang steht immer ein Hörtest. Verstummt ein Kind, das vorher normal sprach, plötzlich und überall, warten Sie nicht ab: Dann ist eine zeitnahe ärztliche Abklärung nötig."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist nach dem CATALISE-Konsens eine Sprachentwicklungsstörung?",
+      "optionen": [
+        "Schwierigkeiten mit der Unterrichtssprache bei Kindern, die diese erst seit Kurzem lernen",
+        "Jede Aussprachestörung, zum Beispiel Lispeln",
+        "Anhaltende Sprachschwierigkeiten, die Alltag oder Lernen deutlich beeinträchtigen und nicht durch eine bekannte Grunderkrankung wie Hörstörung oder Autismus erklärt sind",
+        "Sprachliche Rückstände, die nur dann vorliegen, wenn die nichtsprachlichen Fähigkeiten deutlich besser sind"
+      ],
+      "richtig": [2],
+      "erklaerung": "Eine SES besteht anhaltend, beeinträchtigt deutlich und ist nicht durch eine bekannte Grunderkrankung erklärt. Schwierigkeiten nur in einer neuen Sprache sind normales Sprachenlernen, Aussprachestörungen sind etwas anderes. Ein Abstand zwischen sprachlichen und nichtsprachlichen Fähigkeiten ist nach CATALISE ausdrücklich keine Voraussetzung."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können bei einem Grundschulkind auf eine Sprachentwicklungsstörung hinweisen? (mehrere richtig)",
+      "optionen": [
+        "Es mischt Luxemburgisch und Portugiesisch in einem Satz.",
+        "Es versteht längere Anweisungen auch dann nicht, wenn sie in seiner stärksten Sprache gegeben werden.",
+        "Es erzählt Erlebnisse ungeordnet und schwer nachvollziehbar.",
+        "Es spricht in den ersten Monaten in der neuen Sprache kaum.",
+        "Es sucht häufig nach Wörtern und umschreibt („das Ding da“)."
+      ],
+      "richtig": [1, 2, 4],
+      "erklaerung": "Verständnisprobleme auch in der stärksten Sprache, ungeordnetes Erzählen und häufige Wortsuche sind typische Hinweise. Sprachmischung ist bei mehrsprachigen Kindern normal und kein Warnzeichen. Eine stille Phase zu Beginn des Lernens einer neuen Sprache ist ebenfalls unbedenklich."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn in der Familie mehrere Sprachen gesprochen werden, kann das eine Sprachentwicklungsstörung verursachen.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Mehrsprachigkeit verursacht keine SES. Kinder mit SES können mehrere Sprachen lernen, auch wenn es sie mehr Mühe kostet. Eine gut entwickelte Familiensprache ist eher eine Stütze als ein Hindernis."
+    },
+    {
+      "art": "fall",
+      "fall": "Rafael (9) gilt als „schwierig“: Er reagiert in der Pause schnell mit Schlägen, „hört nicht zu“ und gibt Antworten, die nicht zur Frage passen. Er spricht zu Hause Portugiesisch; die Mutter erzählt, dass er auch dort oft falsch versteht und kaum erzählen kann. Das Team denkt an oppositionelles Verhalten.",
+      "frage": "Was ist der sinnvollste nächste Schritt?",
+      "optionen": [
+        "Das Sprachverständnis in den Blick nehmen: Beobachtungen sammeln, Anweisungen kurz und mit Bildern geben und mit Eltern und Leitung eine logopädische Abklärung besprechen.",
+        "Die Konsequenzen für die Schläge verschärfen, damit er Grenzen lernt.",
+        "Den Eltern raten, zu Hause nur noch Deutsch zu sprechen.",
+        "Abwarten, weil er Deutsch ja noch lernt."
+      ],
+      "richtig": [0],
+      "erklaerung": "Rafael hat auch in seiner Familiensprache Mühe zu verstehen und zu erzählen – ein wichtiger Hinweis auf eine mögliche SES, die sein Verhalten mit erklären kann. Schärfere Strafen ändern am Verstehen nichts. Ein Sprachwechsel nimmt ihm das beste Sprachvorbild, und Abwarten übersieht, dass die Schwierigkeiten nicht nur das Deutsche betreffen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Unterstützung hilft einem Kind mit Sprachentwicklungsstörung im Unterricht am meisten?",
+      "optionen": [
+        "Lauter sprechen und dieselbe lange Anweisung mehrmals wiederholen",
+        "Kurze Sätze, wichtige Wörter vorab mit Bildern einführen und das Verstehen prüfen lassen („Zeig mir, womit du anfängst“)",
+        "Jeden sprachlichen Fehler sofort verbessern und den Satz richtig nachsprechen lassen",
+        "Das Kind von allen mündlichen Aufgaben befreien"
+      ],
+      "richtig": [1],
+      "erklaerung": "Kurze Sätze, vorab eingeführter Wortschatz, Bilder und das Prüfen des Verstehens setzen genau an den Schwierigkeiten an. Lauteres Wiederholen derselben langen Anweisung hilft nicht beim Verstehen. Ständiges Korrigieren beschämt, und eine völlige Befreiung nimmt dem Kind Übungsmöglichkeiten."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was kennzeichnet einen selektiven Mutismus?",
+      "optionen": [
+        "Ein Kind verweigert aus Trotz das Sprechen, um Erwachsene zu kontrollieren.",
+        "Ein Kind spricht in den ersten Monaten in einer neuen Sprache wenig.",
+        "Ein Kind spricht wegen einer Hörstörung kaum.",
+        "Ein Kind spricht in bestimmten Situationen beständig nicht, obwohl es in anderen normal spricht – meist aus Angst."
+      ],
+      "richtig": [3],
+      "erklaerung": "Selektiver Mutismus ist eine Angststörung: Das Kind kann in bestimmten Situationen nicht sprechen, spricht aber in anderen normal. Trotz ist nicht die Ursache. Eine stille Phase beim Sprachenlernen und eine Hörstörung sind andere Erklärungen, die man abgrenzen muss."
+    },
+    {
+      "art": "fall",
+      "fall": "Nora (5) spricht seit vier Monaten in der Spillschoul kein Wort, auch nicht mit dem Nachbarskind, das wie sie zu Hause Portugiesisch spricht. Zu Hause redet sie viel. Die Lehrerin plant, Nora vor der Gruppe einen Sticker zu versprechen, wenn sie im Morgenkreis „Moien“ sagt.",
+      "frage": "Was ist der beste Rat an die Lehrerin?",
+      "optionen": [
+        "Den Sticker vor der Gruppe ankündigen – der Anreiz wird Nora zum Sprechen bringen.",
+        "Den Druck herausnehmen, Beteiligung ohne Worte ermöglichen, die Beziehung stärken und mit Eltern und Fachleuten einen Plan mit kleinen Schritten erarbeiten.",
+        "Abwarten – das ist die normale stille Phase beim Lernen einer neuen Sprache.",
+        "Nora nicht mehr ansprechen, damit sie sich sicher fühlt."
+      ],
+      "richtig": [1],
+      "erklaerung": "Nora schweigt auch in ihrer sicheren Sprache und seit Monaten – das spricht gegen eine stille Phase und für einen möglichen selektiven Mutismus. Öffentlicher Druck, auch in Form einer Belohnung, steigert die Angst. Völliges Schonen hält die Vermeidung aufrecht; hilfreich sind Sicherheit und kleine, geplante Schritte."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was hilft einem Kind mit selektivem Mutismus? (mehrere richtig)",
+      "optionen": [
+        "Antworten ohne Worte zulassen, etwa Zeigen, Nicken oder Karten",
+        "Die Mitschülerinnen und Mitschüler bitten, das Kind möglichst oft zum Sprechen zu bringen",
+        "Kein großes Aufheben machen, wenn das Kind doch etwas sagt",
+        "Das Kind vor der Klasse direkt auffordern, laut zu antworten",
+        "Kleine Schritte planen, etwa zuerst mit einer vertrauten Person im leeren Klassenraum sprechen"
+      ],
+      "richtig": [0, 2, 4],
+      "erklaerung": "Nonverbale Beteiligung, eine unaufgeregte Reaktion auf erste Worte und geplante kleine Schritte senken die Angst und bauen Brücken zum Sprechen. Mitschüler als „Sprechtrainer“ und direkte Aufforderungen vor der Klasse erhöhen den Druck und verfestigen das Schweigen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Selektiver Mutismus ist meist Folge eines Traumas.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Meist stehen ein ängstliches, gehemmtes Temperament, Schüchternheit oder soziale Ängste in der Familie und belastende Übergänge im Vordergrund. Plötzliches Verstummen nach einem schweren Ereignis ist ein anderes Bild und muss gesondert abgeklärt werden."
+    },
+    {
+      "art": "fall",
+      "fall": "Dylan (15, Lycée) gilt als unhöflich und desinteressiert. Er antwortet einsilbig, versteht Aufgabenstellungen oft falsch und gerät in Streit, weil er Ironie wörtlich nimmt. In seiner Akte steht, dass er in Cycle 1 und 2 Logopädie hatte.",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Eine Disziplinarmaßnahme wegen respektlosen Verhaltens einleiten.",
+        "Davon ausgehen, dass das Sprachproblem mit der Logopädie in der Grundschule erledigt ist.",
+        "Die Schwierigkeiten als mögliche Folge einer fortbestehenden Sprachstörung einordnen: Aufgaben klar und schriftlich geben, Verstehen prüfen, mit Dylan besprechen, was ihm hilft, und SePAS oder Team einbeziehen.",
+        "Dylan von allen mündlichen Prüfungen befreien."
+      ],
+      "richtig": [2],
+      "erklaerung": "Sprachentwicklungsstörungen bleiben oft bis ins Jugendalter bestehen und zeigen sich dann als Missverständnisse, einsilbige Antworten oder wörtliches Verstehen. Eine Strafe trifft nicht die Ursache, und die frühere Logopädie beweist nicht, dass die Störung vorbei ist. Eine pauschale Befreiung ohne Klärung hilft Dylan nicht beim Lernen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Kinder mit Sprachentwicklungsstörung haben ein erhöhtes Risiko für Schwierigkeiten beim Leseverständnis und im Umgang mit Gleichaltrigen.",
+      "richtig": [0],
+      "erklaerung": "Richtig. Wer Sprache schlechter versteht, versteht auch Texte schlechter. Missverständnisse und fehlende Worte erschweren zudem Freundschaften und Konfliktlösung. Deshalb gehören Lesen und soziale Entwicklung bei einer SES immer mit in den Blick."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Tim (7, SES) spricht mit ihm Luxemburgisch, der Vater Französisch. Sie fragt Sie, ob die Eltern mit ihm besser nur noch Deutsch sprechen sollten, weil er in der Schule auf Deutsch lesen lernt.",
+      "frage": "Was raten Sie?",
+      "optionen": [
+        "Weiter in den Sprachen sprechen, die die Eltern am besten beherrschen, viel erzählen und vorlesen; die gezielte Förderung übernehmen Schule und Logopädie.",
+        "Ab sofort nur noch Deutsch sprechen, damit Mathis nicht verwirrt wird.",
+        "Französisch ganz weglassen, damit Mathis nur eine Familiensprache hat.",
+        "Weniger mit Mathis sprechen, um ihn nicht zu überfordern."
+      ],
+      "richtig": [0],
+      "erklaerung": "Die Eltern sind die besten Sprachvorbilder in den Sprachen, die sie sicher beherrschen. Mehrsprachigkeit verursacht und verschlimmert eine SES nach heutigem Wissen nicht. Ein Wechsel in eine unsichere Sprache oder weniger Sprechen nimmt Tim genau das, was er am meisten braucht: reichhaltigen Sprachkontakt."
+    }
+  ],
+  "glossar": [
+    { "begriff": "Sprachentwicklungsstörung (SES)", "erklaerung": "Anhaltende Schwierigkeiten beim Verstehen und/oder Gebrauch von Sprache, die Alltag oder Lernen deutlich beeinträchtigen und nicht durch eine bekannte Grunderkrankung erklärt sind (englisch „developmental language disorder“)." },
+    { "begriff": "CATALISE", "erklaerung": "Internationaler Konsens von Fachleuten verschiedener Berufe (2016/2017) zu Begriffen und Kriterien für Sprachentwicklungsstörungen." },
+    { "begriff": "Sprachverständnis", "erklaerung": "Die Fähigkeit, gesprochene Sprache zu verstehen – von Wörtern über Sätze bis zu Texten. Schwierigkeiten hier werden besonders leicht übersehen." },
+    { "begriff": "Pragmatik", "erklaerung": "Der Gebrauch von Sprache im Gespräch: sich abwechseln, beim Thema bleiben, Andeutungen und Ironie verstehen." },
+    { "begriff": "Bildungssprache", "erklaerung": "Die genauere, abstraktere Sprache von Unterricht und Texten. Sie braucht deutlich länger als die Alltagssprache." },
+    { "begriff": "Stille Phase", "erklaerung": "Zeit zu Beginn des Lernens einer neuen Sprache, in der ein Kind vor allem zuhört und wenig spricht. Normal und vorübergehend." },
+    { "begriff": "Selektiver Mutismus", "erklaerung": "Angststörung, bei der ein Kind in bestimmten Situationen beständig nicht spricht, obwohl es in anderen normal spricht." },
+    { "begriff": "Negative Verstärkung", "erklaerung": "Ein Verhalten wird häufiger, weil es etwas Unangenehmes beendet – etwa wenn Schweigen die Angst sofort senkt." }
+  ],
+  "quellen": ["bishop2017", "steinhausenJuzi1996", "dsm5tr", "icd11", "beesdo2009", "rutter2015", "schneiderMargraf2019"],
+  "verwandt": ["angst", "lernstoerungen", "autismus", "oppositionell-aggressiv", "inklusion-luxemburg"],
+  "toolbox": ["mut-leiter", "ich-kann-mutig-sein", "signalkarten", "gefuehle-gesichter", "tagesplan-bildkarten"]
+}

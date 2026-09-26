@@ -1,0 +1,443 @@
+{
+  "id": "beziehung-haltung",
+  "bereich": "handeln",
+  "titel": "Beziehungsgestaltung und professionelle Haltung",
+  "untertitel": "Warum Beziehung wirkt, welche Haltung sie trägt und wie sie auch mit „schwierigen“ Kindern gelingt",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können erklären, warum eine tragfähige Beziehung Voraussetzung für Lernen und Verhaltensänderung ist.",
+    "Sie können die Grundhaltungen Echtheit, Wertschätzung und Empathie beschreiben und im Schulalltag umsetzen.",
+    "Sie können Zurückweisung und Provokation von Kindern mit belastenden Beziehungserfahrungen einordnen, ohne sie persönlich zu nehmen.",
+    "Sie können Beziehungsangebote planen, verlässlich gestalten und nach Konflikten die Beziehung wiederherstellen.",
+    "Sie können professionelle Grenzen von Nähe und Distanz wahren und wissen, wann Sie Unterstützung brauchen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Enzo, 12 Jahre, Cycle 4.2",
+          "text": "Enzo ist an seiner dritten Schule. Schon in der ersten Woche sagt er zu seinem neuen Lehrer, Herrn Bergmann: „Sie sind wie alle anderen. Sie wollen mich doch auch nur loswerden.“ Herr Bergmann antwortet ruhig: „Ich bin gespannt, dich kennenzulernen.“ Er begrüßt Enzo jeden Morgen an der Tür mit Namen, fragt nach seinem Fußballverein und lässt ihn die Technik für den Beamer aufbauen. Grenzen setzt er trotzdem klar. Nach einem Streit über eine nicht erledigte Aufgabe schreit Enzo: „Ich hasse Sie!“ Am nächsten Morgen steht Herr Bergmann wieder an der Tür: „Guten Morgen, Enzo. Schön, dass du da bist.“ Enzo schaut ihn verblüfft an. Nach einigen Wochen kommt er vor dem Unterricht von sich aus zu ihm, um vom Wochenende zu erzählen.",
+          "fragen": [
+            "Was könnte Enzo mit dem Satz „Sie wollen mich doch auch nur loswerden“ ausdrücken?",
+            "Was hat Herr Bergmann getan – und was hat er bewusst nicht getan?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Beziehung ist in der Pädagogik kein weicher Zusatz, sondern ein Wirkfaktor. Kinder lernen besser, trauen sich mehr zu und nehmen Grenzen eher an, wenn sie sich von Erwachsenen gesehen und gewollt fühlen. Die Forschung zur Beziehung zwischen Lehrkräften und Schülerinnen und Schülern kommt immer wieder zum selben Ergebnis: Eine gute Beziehung geht mit mehr Lernfreude, besserer Mitarbeit und weniger Verhaltensproblemen einher, eine konflikthafte Beziehung mit dem Gegenteil. Gerade Kinder, die es ohnehin schwer haben, profitieren davon.\n\nDie Bindungsforschung erklärt, warum: Kinder erkunden die Welt dann mutig, wenn sie sich auf eine **sichere Basis** verlassen können (Bowlby, 1969; Grossmann & Grossmann, 2012). Eine Lehrerin oder ein Educateur ersetzt keine Eltern, kann aber in der Schule oder in der Maison Relais zu einer solchen sicheren Basis werden. Die Resilienzforschung ergänzt: Widerstandskraft ist kein festes Merkmal eines Kindes, sondern entsteht im Zusammenspiel mit seiner Umwelt (Rutter, 2012) – und verlässliche Beziehungen zu zugewandten Erwachsenen sind ein wichtiger Teil dieser Umwelt, auch außerhalb der Familie.\n\nBeziehung wirkt auch auf das Zutrauen in die eigenen Fähigkeiten. Bandura (1977) beschreibt, dass **Selbstwirksamkeit** – die Überzeugung, etwas bewirken zu können – vor allem aus eigenen Erfolgserfahrungen und aus der Ermutigung durch andere wächst. Ein Kind, dem ein Erwachsener etwas zutraut und Erfolge ermöglicht, wagt sich eher an Neues; ein Kind, das nur Misserfolge und Kritik erlebt, gibt schneller auf."
+        },
+        {
+          "art": "merke",
+          "text": "Beziehung ist die Voraussetzung dafür, dass Kinder Anforderungen und Grenzen annehmen können – nicht deren Gegenteil. Wer nur auf Regeln setzt, erreicht Kinder mit schwierigen Beziehungserfahrungen kaum; wer nur auf Beziehung setzt, lässt sie mit ihrem Verhalten allein."
+        }
+      ]
+    },
+    {
+      "titel": "Grundhaltungen: Echtheit, Wertschätzung, Empathie",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Welche Haltungen tragen eine helfende Beziehung? Die bekannteste Antwort geht auf den Psychologen Carl Rogers zurück (Rogers, 1951). Er beschrieb sie für die Beratung und Psychotherapie; sie lassen sich aber auf jede pädagogische Beziehung übertragen und sind bis heute Grundlage vieler Ansätze, etwa der motivierenden Gesprächsführung.\n\n**Echtheit (Kongruenz):** Was ich sage und tue, stimmt mit dem überein, was ich denke und fühle. Kinder – gerade solche mit schwierigen Erfahrungen – spüren sehr genau, ob ein Erwachsener nur eine Rolle spielt. Echt sein heißt nicht, alles auszusprechen, was man fühlt; aber was man sagt, sollte stimmen. „Das hat mich geärgert“ ist echter und hilfreicher als ein gepresstes „Alles gut“.\n\n**Wertschätzung (bedingungsfreie Akzeptanz):** Das Kind wird als Person angenommen – unabhängig von seinem Verhalten und seinen Leistungen. Wertschätzung heißt nicht, jedes Verhalten gutzuheißen. Die Unterscheidung zwischen Person und Verhalten ist der Kern: „Ich mag dich, und ich lasse nicht zu, dass du andere schlägst.“\n\n**Empathie (einfühlendes Verstehen):** Ich versuche, die Welt mit den Augen des Kindes zu sehen, und zeige ihm, was ich verstanden habe. Empathie heißt verstehen, nicht zustimmen. „Du bist enttäuscht, weil du nicht mitspielen durftest“ bedeutet nicht, dass das Kind deshalb schlagen durfte."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Grundhaltungen im Alltag",
+          "spalten": [
+            "Haltung",
+            "So kann sie sich zeigen",
+            "Häufiges Missverständnis"
+          ],
+          "zeilen": [
+            [
+              "Echtheit",
+              "Ich sage offen, was mich freut oder ärgert, und gebe zu, wenn ich einen Fehler gemacht habe.",
+              "Echt sein heißt, alles ungefiltert zu zeigen, auch Wut und Abneigung."
+            ],
+            [
+              "Wertschätzung",
+              "Ich begrüße jedes Kind mit Namen, auch nach einem schwierigen Vortag, und interessiere mich für seine Stärken und Anliegen.",
+              "Wertschätzung heißt, keine Grenzen zu setzen und alles zu loben."
+            ],
+            [
+              "Empathie",
+              "Ich benenne, was das Kind vermutlich fühlt, und frage nach, ob ich richtig liege.",
+              "Empathie heißt, dem Kind recht zu geben oder mitzuleiden."
+            ]
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer Kinder mit Verhaltensproblemen wertschätzend behandelt, belohnt ihr Verhalten.",
+          "fakt": "Wertschätzung gilt der Person, nicht dem Verhalten. Klare Grenzen und eine zugewandte Beziehung schließen sich nicht aus, sie wirken zusammen: Kinder nehmen Grenzen eher von Erwachsenen an, von denen sie sich respektiert fühlen."
+        },
+        {
+          "art": "text",
+          "text": "**Die Annahme des guten Grundes.** In der Traumapädagogik hat sich ein Leitsatz bewährt: Jedes Verhalten hat aus Sicht des Kindes einen guten Grund – auch wenn das Verhalten selbst nicht in Ordnung ist. Ein Kind, das jede Aufgabe verweigert, schützt sich vielleicht vor der Erfahrung, wieder zu versagen. Ein Kind, das ständig kontrolliert, hat vielleicht gelernt, dass Kontrollverlust gefährlich ist. Diese Annahme entschuldigt nichts, aber sie verändert die Frage: von „Warum tut er mir das an?“ zu „Wozu braucht er dieses Verhalten?“. Fonagy und Kollegen (2002) nennen die Fähigkeit, Verhalten als Ausdruck innerer Zustände – Gefühle, Gedanken, Absichten – zu verstehen, **Mentalisieren**. Unter Stress fällt das allen schwer, auch Erwachsenen."
+        }
+      ]
+    },
+    {
+      "titel": "Wenn Kinder Beziehung schwer machen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Manche Kinder machen es Erwachsenen schwer, sie zu mögen. Sie weisen Nähe zurück, provozieren gerade die, die freundlich zu ihnen sind, oder klammern sich an eine Person und reagieren heftig, wenn diese einmal nicht da ist. Einen Schlüssel zum Verstehen bietet das Konzept der **inneren Arbeitsmodelle** aus der Bindungstheorie (Bowlby, 1969): Aus ihren frühen Erfahrungen bilden Kinder Erwartungen darüber, wie Beziehungen funktionieren – ob Erwachsene verlässlich sind, ob man selbst liebenswert ist, ob Nähe sicher oder gefährlich ist.\n\nEin Kind, das erlebt hat, dass Erwachsene weggehen, schlagen oder unberechenbar sind, erwartet dasselbe auch von Ihnen. Sein Verhalten kann dann wie ein **Beziehungstest** wirken: „Bleibst du auch, wenn ich unausstehlich bin?“ Wer auf die Provokation mit Rückzug oder Ablehnung antwortet, bestätigt – ungewollt – das alte Modell. Wer ruhig, klar und freundlich bleibt, schafft eine neue Erfahrung. Solche **korrigierenden Beziehungserfahrungen** wirken nicht nach einem Mal, sondern durch Wiederholung über Monate.\n\nDas ist keine fromme Hoffnung. Langzeitstudien zeigen, dass frühe Bindungserfahrungen die weitere Entwicklung prägen, aber nicht festlegen: Auch spätere Beziehungen verändern Entwicklungswege (Sroufe, 2005)."
+        },
+        {
+          "art": "liste",
+          "titel": "Beziehungsmuster – und was dahinterstehen kann",
+          "punkte": [
+            "Das Kind stößt gerade die Erwachsenen weg, die sich um es bemühen – vielleicht, weil Nähe bisher mit Enttäuschung verbunden war.",
+            "Das Kind klammert, will Sie für sich allein und reagiert verzweifelt auf Abschiede – vielleicht, weil Beziehungen bisher unsicher waren.",
+            "Das Kind ist zu allen Erwachsenen gleich zutraulich, auch zu Fremden – das kann auf fehlende sichere Bindungserfahrungen hinweisen und verdient Aufmerksamkeit.",
+            "Das Kind wirkt unberührt und braucht angeblich niemanden – oft ein Schutz vor erneuter Zurückweisung."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Wie Sie Beziehungstests bestehen",
+          "punkte": [
+            "Das Verhalten nicht persönlich nehmen: Es gilt oft der Rolle des Erwachsenen, nicht Ihnen als Person.",
+            "Jeden Tag neu beginnen: nach einem Konflikt am nächsten Morgen freundlich grüßen – als Zeichen, dass die Beziehung weiterbesteht.",
+            "Die Versöhnung selbst anstoßen: Nach einem Streit sind die Erwachsenen für die Wiederannäherung verantwortlich, nicht das Kind.",
+            "Grenze und Beziehung zugleich zeigen: „Das war nicht in Ordnung. Und ich bin morgen wieder für dich da.“",
+            "Ankündigen statt verschwinden: Abwesenheiten, Vertretungen und Wechsel vorher besprechen und Übergänge gestalten.",
+            "Die Beziehung auf mehrere Schultern verteilen: Das Kind soll im Team mehrere verlässliche Erwachsene erleben, nicht nur eine einzige Person."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Beziehung beschädigt",
+          "punkte": [
+            "Bloßstellen vor anderen, Sarkasmus, Vergleiche mit Geschwistern oder Mitschülern.",
+            "Zuwendung als Belohnung oder Liebesentzug als Strafe („So mag ich dich nicht“).",
+            "Nachtragen: den Konflikt von gestern bei jeder Gelegenheit wieder hervorholen.",
+            "Etiketten wie „der Schwierige“ – sie prägen den Blick aller, die sie hören.",
+            "In Anwesenheit des Kindes über es sprechen, als wäre es nicht da."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Eigene Fehler reparieren.** Auch Erwachsene verlieren manchmal die Geduld, werden laut oder sind ungerecht. Das beschädigt eine Beziehung weniger als der Umgang danach. Eine kurze, ehrliche Entschuldigung – „Ich war gestern zu laut. Das tut mir leid. Die Regel gilt trotzdem.“ – schwächt Ihre Autorität nicht. Sie zeigt dem Kind, wie man Verantwortung übernimmt, ohne das Gesicht zu verlieren, und dass Beziehungen Fehler aushalten. Für viele Kinder mit belastenden Erfahrungen ist es neu, dass ein Erwachsener sich entschuldigt."
+        }
+      ]
+    },
+    {
+      "titel": "Beziehung im Alltag: Verlässlichkeit, Interesse, Humor",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Beziehung entsteht selten in großen Gesprächen, sondern in vielen kleinen Momenten: im Gruß an der Tür, in der Frage nach dem Fußballspiel am Wochenende, in dem Satz „Ich habe gesehen, wie du dich angestrengt hast“. Für Kinder, die am Tag viel Kritik hören, sind solche Momente besonders wichtig, weil sie ein Gegengewicht bilden.\n\n**Verlässlichkeit** ist das Fundament. Kinder, die Erwachsene als unberechenbar erlebt haben, achten sehr genau darauf, ob Ankündigungen eingehalten werden – im Positiven wie bei Konsequenzen. Versprechen Sie nur, was Sie halten können. Wiederkehrende Rituale geben Sicherheit: die gleiche Begrüßung, ein fester Wochenabschluss, ein kurzer Blickkontakt am Morgen.\n\n**Humor** kann Spannung lösen und Nähe schaffen – wenn er mit dem Kind lacht, nicht über das Kind. Ironie und Sarkasmus werden von vielen Kindern wörtlich genommen oder als Herabsetzung erlebt, besonders von Kindern mit Autismus, mit Sprachschwierigkeiten oder mit Kränkungserfahrungen. Selbstironie der Erwachsenen („Da habe ich mich wohl verrechnet“) ist dagegen meist unproblematisch und zeigt: Fehler sind erlaubt."
+        },
+        {
+          "art": "tun",
+          "titel": "Konkrete Beziehungsangebote",
+          "punkte": [
+            "Jedes Kind beim Ankommen mit Namen begrüßen – auch das, mit dem es gestern Streit gab.",
+            "Interesse an der Welt des Kindes zeigen: Hobbys, Haustiere, Lieblingsserie, Familie. Ein paar Worte in seiner Erstsprache, etwa auf Portugiesisch oder Türkisch, sagen: Deine Sprache zählt hier.",
+            "Regelmäßig kurze Zeit ohne Leistungsbezug: zum Beispiel an mehreren Tagen hintereinander je zwei Minuten über etwas reden, das dem Kind wichtig ist.",
+            "Stärken sichtbar machen und nutzen: Aufgaben geben, bei denen das Kind etwas kann und gebraucht wird – Technik, Tiere, Sport, Helferdienste.",
+            "Positive Rückmeldungen deutlich häufiger geben als Korrekturen – konkret und ehrlich.",
+            "Kleine Rituale pflegen: ein vereinbarter Gruß, ein Daumen hoch, eine kurze Notiz auf dem Tisch."
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Beziehung gestalten – je nach Alter",
+          "spalten": [
+            "Alter",
+            "Was Kinder vor allem brauchen",
+            "Passende Beziehungsangebote"
+          ],
+          "zeilen": [
+            [
+              "Précoce und Cycle 1",
+              "Sicherheit, feste Bezugspersonen, Rituale, Spiel, Trost",
+              "Auf Augenhöhe mitspielen, Gefühle benennen, trösten, Ankommen und Abholen begleiten"
+            ],
+            [
+              "Cycles 2–4",
+              "Anerkennung für Können, Gerechtigkeit, Zugehörigkeit zur Gruppe",
+              "Stärken zeigen lassen, verlässliche und faire Regeln, Verantwortung übertragen, Interesse an Hobbys und Freundschaften"
+            ],
+            [
+              "Jugendliche (Lycée)",
+              "Eigenständigkeit, Respekt, Privatsphäre, ernst genommen werden; Gleichaltrige werden zentral",
+              "Meinung erfragen, nicht vor anderen bloßstellen, Humor, Gespräche nebenbei (auf dem Weg, bei einer Tätigkeit), Vertraulichkeit im Rahmen des Möglichen"
+            ]
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Aylin, 7 Jahre, Maison Relais",
+          "text": "Aylin lebt seit drei Monaten in Luxemburg und spricht zu Hause Türkisch. In der Maison Relais sitzt sie meist allein und malt Pferde. Spricht ein Erwachsener sie an, schaut sie weg. Der Educateur setzt sich täglich für einige Minuten neben sie, malt selbst und beschreibt nur, was er sieht: „Dein Pferd hat eine lange Mähne.“ Er lernt, wie man auf Türkisch „Guten Morgen“ sagt, und bringt ein Bilderbuch über Pferde mit. Nach einigen Wochen schiebt Aylin ihm wortlos ein Bild hinüber: ein Pferd und daneben ein Mann mit Brille.",
+          "fragen": [
+            "Warum stellt der Educateur kaum Fragen?",
+            "Woran erkennen Sie, dass die Beziehung wächst – und was wäre ein nächster behutsamer Schritt?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Professionelle Nähe und Distanz",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Professionelle Beziehungen unterscheiden sich von privaten: Sie haben einen Auftrag, sie sind ungleich – Erwachsene haben mehr Macht und tragen die Verantwortung –, und sie enden, wenn der Auftrag endet. Daraus folgen Grenzen, die das Kind und Sie selbst schützen.\n\n**Nähe ohne Vereinnahmung:** Ein Kind darf Ihnen wichtig sein, aber es darf nicht Ihr Bedürfnis nach Anerkennung erfüllen müssen. Vorsicht bei Gedanken wie „Nur ich verstehe dieses Kind“ oder „Die anderen machen alles falsch“. Solche Rettungsfantasien sind menschlich, führen aber leicht zu Konkurrenz im Team und zu Loyalitätskonflikten beim Kind.\n\n**Klare Regeln im Umgang:** keine privaten Handynummern und keine Freundschaften in sozialen Netzwerken, keine Geheimnisse mit einzelnen Kindern, keine Geschenke, die ein Kind bevorzugen. Körperkontakt nur so, wie es die Situation und die Regeln Ihrer Einrichtung erlauben, und immer so, dass das Kind ihn ablehnen kann. Viele Einrichtungen haben dafür ein Schutzkonzept – kennen Sie es.\n\n**Eigene Grenzen zeigen:** Auch Sie haben Grenzen, und Kinder dürfen sie kennen. „So lasse ich nicht mit mir sprechen“ ist eine klare, respektvolle Botschaft. Grenzen gehören zur Beziehung: Sie zeigen dem Kind, dass Sie es ernst nehmen."
+        },
+        {
+          "art": "merke",
+          "text": "Versprechen Sie einem Kind nie, ein Geheimnis für sich zu behalten, bevor Sie wissen, worum es geht. Sagen Sie ehrlich: „Du kannst mir alles erzählen. Wenn ich mir Sorgen um deine Sicherheit mache, muss ich Hilfe holen – und ich sage dir vorher, was ich tue.“"
+        },
+        {
+          "art": "text",
+          "text": "**Wenn Sie ein Kind nicht mögen.** Jede Fachkraft kennt Kinder, die sie besonders ärgern, verunsichern oder hilflos machen. Das ist kein Zeichen mangelnder Professionalität, sondern menschlich. Professionell ist, es zu bemerken und nicht unreflektiert danach zu handeln. Hilfreiche Fragen sind: Was genau löst dieses Kind in mir aus? Erinnert es mich an jemanden? Welche Gefühle löst es vermutlich bei vielen Erwachsenen aus – und was sagt das über seine Erfahrungen? Solche Fragen gehören in die kollegiale Beratung (Intervision) oder in die Supervision. Oft verändert schon das Aussprechen den Blick. Ein bewährter nächster Schritt: gezielt positive Kontakte mit diesem Kind planen, um den Kreislauf aus Ärger und Ermahnung zu durchbrechen."
+        }
+      ]
+    },
+    {
+      "titel": "Haltung braucht Rahmen: Team, Reflexion, Selbstfürsorge",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine professionelle Haltung ist keine Charaktereigenschaft, die man hat oder nicht hat. Sie muss unter Druck immer wieder neu hergestellt werden – nach einer Beleidigung, am Ende einer langen Woche, beim dritten Konflikt an einem Tag. Das gelingt nicht allein, sondern nur mit einem Rahmen: einem Team, das ähnliche Haltungen teilt und sich gegenseitig unterstützt, einer Leitung, die schwierige Situationen mitträgt, und Räumen zur Reflexion.\n\nBeziehungsarbeit mit belasteten Kindern ist emotional anstrengend. Maslach und Leiter (2016) beschreiben Burnout mit drei Kennzeichen: Erschöpfung, eine zynische, distanzierte Haltung gegenüber den Menschen, mit denen man arbeitet, und das Gefühl, nichts mehr zu bewirken. Ein frühes Warnsignal kann sein, dass Sie über bestimmte Kinder nur noch mit Sarkasmus sprechen oder innerlich aufgegeben haben. Das ist kein persönliches Versagen, sondern ein Zeichen, dass Sie Entlastung brauchen."
+        },
+        {
+          "art": "tun",
+          "titel": "Was die eigene Haltung stärkt",
+          "punkte": [
+            "Regelmäßige Fallbesprechungen im Team: Was wissen wir über dieses Kind? Welche Hypothesen haben wir? Was probieren wir als Nächstes?",
+            "Gemeinsame Absprachen: Wenn alle Erwachsenen ähnlich reagieren, erlebt das Kind Verlässlichkeit.",
+            "Kleine Erfolge festhalten – beim Kind und bei sich selbst.",
+            "Nach belastenden Situationen kurz nachbesprechen, statt sie allein mit nach Hause zu nehmen.",
+            "Supervision und Fortbildung nutzen, auch wenn gerade „nichts Besonderes“ ist."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie sich Unterstützung bei der Leitung, im Team oder in der Supervision, wenn die Beziehung zu einem Kind dauerhaft von Konflikten geprägt ist, wenn Sie starke Gefühle wie Angst, Ekel oder Wut bei sich bemerken, wenn ein Kind sich ausschließlich an Sie bindet oder wenn Sie merken, dass eine Beziehung zu privat wird. Erzählt ein Kind von Gewalt, Vernachlässigung oder Übergriffen, folgen Sie den internen Kinderschutz-Abläufen Ihrer Einrichtung und informieren Sie umgehend die Leitung. Grenzverletzungen durch Erwachsene – auch durch Kolleginnen und Kollegen – werden ebenfalls der Leitung gemeldet."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet Wertschätzung im Sinne von Carl Rogers im Schulalltag?",
+      "optionen": [
+        "Jedes Verhalten des Kindes wird akzeptiert, damit die Beziehung nicht leidet.",
+        "Das Kind wird als Person angenommen, auch wenn einzelnes Verhalten nicht in Ordnung ist.",
+        "Das Kind wird für jede Leistung ausdrücklich und ausführlich gelobt.",
+        "Die Lehrkraft verzichtet auf Kritik, solange sich das Kind gut verhält."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Wertschätzung gilt der Person, nicht jedem Verhalten. Man kann ein Kind annehmen und zugleich klar sagen, dass Schlagen nicht in Ordnung ist. Alles zu akzeptieren oder alles zu loben, verwechselt Wertschätzung mit Grenzenlosigkeit; eine Wertschätzung, die vom Wohlverhalten abhängt, ist gerade nicht bedingungsfrei."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Streit ruft Milan (12) Ihnen zu: „Ich hasse Sie! Sie wollen mich doch auch nur loswerden wie alle anderen!“ Am nächsten Morgen steht er zögernd vor der Klassentür.",
+      "frage": "Was ist die hilfreichste Reaktion?",
+      "optionen": [
+        "Ihn zunächst nicht beachten, damit er spürt, wie sehr er Sie verletzt hat.",
+        "Ihn sofort auf seine Worte von gestern ansprechen und eine Entschuldigung verlangen.",
+        "Ihn wie immer freundlich mit Namen begrüßen und später in Ruhe auf den Streit zurückkommen.",
+        "Ihn fragen, ob er lieber zu einer anderen Lehrkraft in die Klasse wechseln möchte."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Milans Satz wirkt wie ein Beziehungstest: Er erwartet, dass auch Sie ihn fallen lassen. Ein freundlicher Gruß zeigt, dass die Beziehung weiterbesteht; der Konflikt wird trotzdem besprochen – später und in Ruhe. Ihn zu ignorieren oder sofort eine Entschuldigung zu verlangen, bestätigt seine Erwartung von Ablehnung, und ein Wechselangebot sendet die Botschaft „Du bist mir zu viel“."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Empathie bedeutet, dem Kind recht zu geben, wenn man seine Gefühle nachvollziehen kann.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Empathie heißt, die Sicht und die Gefühle des Kindes zu verstehen und ihm das zu zeigen. Das bedeutet nicht, sein Verhalten gutzuheißen: „Du warst enttäuscht“ und „Schlagen ist nicht in Ordnung“ passen zusammen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum provozieren manche Kinder gerade die Erwachsenen, die sich besonders um sie bemühen?",
+      "optionen": [
+        "Weil sie grundsätzlich keine Beziehung wollen und man das respektieren sollte.",
+        "Weil freundliche Erwachsene in der Regel weniger klare Grenzen setzen.",
+        "Weil Provokationen fast immer ein Zeichen von Langeweile im Unterricht sind.",
+        "Weil sie aus früheren Erfahrungen Ablehnung erwarten und unbewusst prüfen, ob der Erwachsene bleibt."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Nach dem Konzept der inneren Arbeitsmodelle erwarten Kinder mit schwierigen Beziehungserfahrungen, dass auch neue Erwachsene sie enttäuschen. Provokation kann dann ein unbewusster Test sein. Das heißt nicht, dass sie keine Beziehung wollen – oft ist das Gegenteil der Fall. Langeweile oder unklare Grenzen können mitspielen, erklären das Muster aber nicht."
+    },
+    {
+      "art": "fall",
+      "fall": "Nico (15) fragt Sie nach einem guten Gespräch, ob er Ihnen auf Instagram folgen und Ihre private Handynummer haben darf, „falls mal was ist“.",
+      "frage": "Wie reagieren Sie professionell?",
+      "optionen": [
+        "Freundlich ablehnen, die Trennung von privat und beruflich erklären und sagen, wie er Sie in der Schule erreicht und wer im Notfall hilft.",
+        "Zusagen, weil diese Bitte Vertrauen zeigt und ein privater Kontakt die Beziehung stärkt.",
+        "Ihm die Nummer geben, aber ihn bitten, sie niemandem weiterzugeben und nur im Notfall zu nutzen.",
+        "Ihm deutlich sagen, dass solche Fragen unangemessen sind, und das Gespräch damit beenden."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Private Kontakte über Handy und soziale Netzwerke verwischen die Grenze zwischen beruflicher und privater Beziehung – mit Risiken für beide Seiten. Wichtig ist, die Bitte nicht zu beschämen, sondern das Beziehungsbedürfnis anzuerkennen und verlässliche Wege in der Schule sowie Hilfe für Notfälle zu nennen. Eine Zusage mit Geheimhaltung wäre besonders problematisch."
+    },
+    {
+      "art": "fall",
+      "fall": "Lina (10) kommt in der Pause zu Ihnen: „Ich muss Ihnen was erzählen, aber Sie müssen versprechen, dass Sie es niemandem sagen.“",
+      "frage": "Was antworten Sie?",
+      "optionen": [
+        "„Versprochen, das bleibt ganz sicher unter uns beiden.“",
+        "„Wenn es so geheim ist, erzähl es lieber deiner Mutter.“",
+        "„Du kannst mir alles erzählen. Wenn ich mir Sorgen um deine Sicherheit mache, muss ich Hilfe holen – das besprechen wir dann zusammen.“",
+        "„In der Schule gibt es keine Geheimnisse, also erzähl es mir einfach.“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Ein Versprechen, das Sie vielleicht nicht halten können, würde das Vertrauen später zerstören – etwa wenn Lina von Gewalt erzählt. Ehrlichkeit über die Grenzen der Verschwiegenheit schützt beide. Das Kind an die Mutter zu verweisen, kann gefährlich sein, wenn es um die Familie geht, und Druck passt nicht zu einem sicheren Gesprächsangebot."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Handlungen stärken die Beziehung zu einem Kind mit schwierigen Beziehungserfahrungen? (mehrere richtig)",
+      "optionen": [
+        "Abwesenheiten und Vertretungen vorher ankündigen",
+        "Nach einem Konflikt selbst den ersten Schritt zur Versöhnung machen",
+        "Zuwendung nur als Belohnung nach gutem Verhalten geben",
+        "Regelmäßig kurz über die Interessen des Kindes sprechen",
+        "Das Kind vor der Klasse als Beispiel für Fehlverhalten nennen"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Angekündigte Abwesenheiten, die Initiative zur Versöhnung nach Konflikten und regelmäßiges Interesse an der Person bauen Verlässlichkeit auf. Zuwendung nur als Belohnung macht die Beziehung vom Verhalten abhängig – genau das kennen viele dieser Kinder schon. Bloßstellen beschädigt Beziehung und Selbstwert."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welcher Umgang mit Humor ist in der Beziehung zu Kindern am ehesten hilfreich?",
+      "optionen": [
+        "Mit dem Kind lachen und über eigene kleine Fehler schmunzeln",
+        "Ironische Bemerkungen über Fehler, damit das Kind weniger empfindlich wird",
+        "Witze über die Eigenheiten eines Kindes, solange die Klasse mitlacht",
+        "Sarkasmus bei Jugendlichen, weil sie ihn besser verstehen als jüngere Kinder"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Humor verbindet, wenn er mit dem Kind lacht und niemanden herabsetzt; Selbstironie zeigt, dass Fehler erlaubt sind. Ironie und Sarkasmus werden oft wörtlich genommen oder als Kränkung erlebt – auch von Jugendlichen, die nach außen gelassen wirken. Witze auf Kosten eines Kindes beschädigen seine Stellung in der Gruppe."
+    },
+    {
+      "art": "fall",
+      "fall": "Sie merken, dass Sie sich über Jason (13) schon ärgern, bevor er etwas getan hat. Sie ertappen sich dabei, ihn schneller zu ermahnen als andere.",
+      "frage": "Was ist der professionellste Umgang damit?",
+      "optionen": [
+        "Die Gefühle übergehen, weil sie in der Arbeit keine Rolle spielen dürfen.",
+        "Jason möglichst bald an eine Kollegin abgeben, damit es keinen Konflikt gibt.",
+        "Jason offen sagen, dass Sie ihn nicht mögen, weil Echtheit wichtig ist.",
+        "Die eigenen Reaktionen in Intervision oder Supervision reflektieren und bewusst positive Kontakte mit Jason planen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Abneigung ist menschlich; professionell ist, sie zu bemerken und zu reflektieren, statt unbewusst danach zu handeln. Kollegiale Beratung hilft zu verstehen, was das Kind auslöst, und geplante positive Kontakte durchbrechen den Kreislauf. Übergangene Gefühle wirken unbemerkt weiter; Jason abzugeben oder ihm die Abneigung mitzuteilen, würde ihn erneut zurückweisen – Echtheit heißt nicht, alles auszusprechen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Nach einem Konflikt liegt es in der Verantwortung des Erwachsenen, die Beziehung wieder aufzunehmen – nicht in der Verantwortung des Kindes.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. In der pädagogischen Beziehung tragen die Erwachsenen die Verantwortung. Kinder mit schwierigen Beziehungserfahrungen können oft nicht selbst den ersten Schritt machen; wenn der Erwachsene die Versöhnung anbietet, lernen sie, dass Beziehungen Konflikte überstehen. Das Verhalten wird trotzdem besprochen."
+    },
+    {
+      "art": "fall",
+      "fall": "Emma (8) will seit Wochen nur noch mit Ihnen arbeiten. Sie weint, wenn Sie in einer anderen Gruppe sind, und lehnt andere Erwachsene ab.",
+      "frage": "Was ist sinnvoll?",
+      "optionen": [
+        "Die enge Beziehung nutzen und Emma möglichst immer selbst betreuen.",
+        "Emma schrittweise mit weiteren verlässlichen Erwachsenen vertraut machen, Abwesenheiten ankündigen und sich im Team abstimmen.",
+        "Den Kontakt zu Emma deutlich verringern, damit sie sich nicht zu sehr an Sie bindet.",
+        "Emma erklären, dass ihr Verhalten kindisch ist und sie groß genug für andere Erwachsene ist."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Emmas Klammern zeigt, wie wichtig ihr die Beziehung ist – und wie unsicher sie sich ohne Sie fühlt. Ziel ist, die Sicherheit behutsam und angekündigt auf mehrere verlässliche Erwachsene zu verteilen. Exklusive Betreuung verstärkt die Abhängigkeit, ein plötzlicher Rückzug wäre eine erneute Verlusterfahrung, und Beschämung hilft ihr nicht, sich sicherer zu fühlen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Echtheit (Kongruenz)",
+      "erklaerung": "Übereinstimmung zwischen dem, was eine Fachkraft denkt und fühlt, und dem, was sie sagt und tut. Heißt nicht, alles auszusprechen, sondern nichts vorzuspielen."
+    },
+    {
+      "begriff": "Wertschätzung",
+      "erklaerung": "Bedingungsfreie Annahme eines Menschen als Person, unabhängig von Verhalten und Leistung. Schließt klare Grenzen für Verhalten nicht aus."
+    },
+    {
+      "begriff": "Empathie",
+      "erklaerung": "Einfühlendes Verstehen: die Welt aus der Sicht des Kindes wahrnehmen und ihm zeigen, was man verstanden hat. Verstehen heißt nicht zustimmen."
+    },
+    {
+      "begriff": "Inneres Arbeitsmodell",
+      "erklaerung": "Aus frühen Bindungserfahrungen entstandene Erwartungen darüber, ob andere verlässlich sind und ob man selbst liebenswert ist. Prägt, wie ein Kind neue Beziehungen erlebt (Bowlby, 1969)."
+    },
+    {
+      "begriff": "Beziehungstest",
+      "erklaerung": "Verhalten, mit dem ein Kind – meist unbewusst – prüft, ob ein Erwachsener auch dann bleibt, wenn es sich schwierig verhält."
+    },
+    {
+      "begriff": "Korrigierende Beziehungserfahrung",
+      "erklaerung": "Wiederholte Erfahrung, dass ein Erwachsener anders reagiert als erwartet – verlässlich statt abweisend. Kann alte Beziehungserwartungen allmählich verändern."
+    },
+    {
+      "begriff": "Selbstwirksamkeit",
+      "erklaerung": "Überzeugung, durch eigenes Handeln etwas bewirken zu können. Sie wächst vor allem durch eigene Erfolge und durch die Ermutigung anderer (Bandura, 1977)."
+    },
+    {
+      "begriff": "Annahme des guten Grundes",
+      "erklaerung": "Leitsatz aus der Traumapädagogik: Jedes Verhalten hat aus Sicht des Kindes einen guten Grund, auch wenn das Verhalten selbst nicht in Ordnung ist."
+    },
+    {
+      "begriff": "Professionelle Nähe und Distanz",
+      "erklaerung": "Balance zwischen zugewandter Beziehung und klaren Grenzen, die sich aus dem beruflichen Auftrag und dem Machtgefälle zwischen Erwachsenen und Kindern ergibt."
+    },
+    {
+      "begriff": "Intervision und Supervision",
+      "erklaerung": "Intervision ist die kollegiale Fallberatung unter Gleichgestellten, Supervision die Reflexion der eigenen Arbeit mit einer externen, dafür ausgebildeten Fachperson."
+    }
+  ],
+  "quellen": [
+    "rogers1951",
+    "bowlby1969",
+    "grossmann2012",
+    "sroufe2005",
+    "rutter2012",
+    "bandura1977",
+    "fonagy2002",
+    "maslach2016"
+  ],
+  "verwandt": [
+    "bindung",
+    "bindungsmuster",
+    "mentalisieren",
+    "uebertragung",
+    "traumapaedagogik",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "staerken-karten",
+    "wer-ist-fuer-mich-da",
+    "mein-unterstuetzungsnetz",
+    "was-diese-woche-gut-war"
+  ]
+}

@@ -1,0 +1,531 @@
+{
+  "id": "bindung",
+  "bereich": "grundlagen",
+  "titel": "Bindung – warum Beziehung zuerst kommt",
+  "untertitel": "Bindungstheorie verstehen und im Schulalltag eine sichere Basis bieten",
+  "dauer": 40,
+  "lernziele": [
+    "Sie können die Grundgedanken der Bindungstheorie erklären: Bindungs- und Erkundungssystem, sichere Basis und sicherer Hafen.",
+    "Sie können die vier Bindungsmuster beschreiben und begründen, warum sie Anpassungen und keine Diagnosen sind.",
+    "Sie können die vier Schritte der Feinfühligkeit auf Situationen im Schulalltag übertragen.",
+    "Sie können erklären, wie Lehrkräfte und Educateurs zu sekundären Bindungspersonen werden – und wo die Grenzen dieser Rolle liegen.",
+    "Sie wissen, was Kinder mit unsicheren Bindungserfahrungen im Alltag brauchen und wann Sie Unterstützung holen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Bindung als Schutzsystem",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Mika, 7 Jahre, Cycle 2.2",
+          "text": "Mika ist neu in der Klasse. In den ersten Wochen arbeitet er kaum, schaut ständig zur Tür und fragt mehrmals am Tag, ob seine Mutter ihn wirklich abholt. Als die Lehrerin eine Woche krank ist, zerstört er in der Vertretungsstunde die Bastelarbeit eines Mitschülers. Nach ihrer Rückkehr begrüßt er sie mit: „Du bist doof. Ich brauche dich nicht.“ – und bleibt den ganzen Vormittag in ihrer Nähe.",
+          "fragen": [
+            "Was könnte Mikas Verhalten mit Sicherheit und Beziehung zu tun haben?",
+            "Wie würden Sie auf seine Begrüßung reagieren?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Der britische Kinderpsychiater John Bowlby (1969) beschrieb **Bindung** als angeborenes Verhaltenssystem, das dem Schutz des Kindes dient. Ein Säugling kann allein nicht überleben. Deshalb ist er darauf ausgerichtet, bei Angst, Schmerz, Erschöpfung oder Trennung die Nähe einer vertrauten, stärkeren Person zu suchen: Er weint, ruft, klammert, folgt ihr. Diese Person nennt man **Bindungsperson**. Im Laufe des ersten Lebensjahres entwickeln Kinder Bindungen an wenige bestimmte Menschen – meist die Eltern, oft auch Großeltern, ältere Geschwister oder Erzieherinnen in der Crèche. Ab etwa acht Monaten zeigt sich das deutlich: Die Kinder protestieren bei Trennungen und fremdeln.\n\nBindung ist dabei mehr als Zuneigung. Gemeint ist die besondere Beziehung zu einer Person, bei der das Kind in Not Schutz und Trost sucht. Dem **Bindungssystem** steht das **Erkundungssystem** gegenüber: der Wunsch, die Welt zu entdecken, zu spielen und zu lernen. Beide Systeme arbeiten wie eine Wippe. Fühlt sich das Kind sicher, ist das Bindungssystem ruhig, und es kann erkunden. Wird es verunsichert, springt das Bindungssystem an, und die Erkundung kommt zum Erliegen. Mary Ainsworth prägte dafür das Bild der **sicheren Basis**, von der aus ein Kind die Welt erkundet (Ainsworth et al., 1978). Kehrt es bei Gefahr oder Kummer zu ihr zurück, spricht man vom **sicheren Hafen**."
+        },
+        {
+          "art": "text",
+          "text": "Aus unzähligen Alltagserfahrungen bildet das Kind **innere Arbeitsmodelle**: Erwartungen darüber, ob andere verfügbar und verlässlich sind und ob es selbst Zuwendung verdient (Bowlby, 1969). Diese Erwartungen nimmt es mit – auch in die Schule. Ein Kind, das erlebt hat, dass Erwachsene helfen, bittet um Hilfe. Ein Kind, das erlebt hat, dass Hilfe ausbleibt oder mit Ärger verbunden ist, versucht es lieber allein – oder prüft, ob der neue Erwachsene bleibt, wenn es schwierig wird. Mikas „Ich brauche dich nicht“ kann genau so eine Prüfung sein."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Kind, das sich nicht sicher fühlt, kann nicht gut lernen. Ist das Bindungssystem aktiviert, hat Sicherheit Vorrang vor Erkundung – und damit vor Rechnen, Lesen und Gruppenarbeit. Deshalb kommt Beziehung zuerst."
+        }
+      ]
+    },
+    {
+      "titel": "Bindungsmuster: vier Strategien",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Mary Ainsworth entwickelte die **Fremde Situation**, ein standardisiertes Beobachtungsverfahren für Kinder von etwa 12 bis 18 Monaten (Ainsworth et al., 1978). In rund 20 Minuten erlebt das Kind in einem unbekannten Raum eine fremde Person und zwei kurze Trennungen von seiner Bindungsperson. Besonders aufschlussreich ist das Verhalten bei der **Wiedervereinigung**: Sucht das Kind Trost? Lässt es sich beruhigen? Kehrt es danach zum Spiel zurück? Aus diesen Beobachtungen beschrieb Ainsworth drei Muster; Mary Main und Judith Solomon ergänzten ein viertes (Main & Solomon, 1990)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die vier Bindungsmuster im Überblick",
+          "spalten": [
+            "Muster",
+            "Bei der Wiedervereinigung",
+            "Was das Kind gelernt hat"
+          ],
+          "zeilen": [
+            [
+              "Sicher",
+              "Zeigt Kummer bei der Trennung, sucht bei der Rückkehr Nähe, lässt sich trösten und spielt bald weiter.",
+              "„Wenn es mir schlecht geht, ist jemand da und hilft.“ Gefühle dürfen gezeigt werden."
+            ],
+            [
+              "Unsicher-vermeidend",
+              "Zeigt wenig Kummer, wendet sich bei der Rückkehr eher ab und spielt scheinbar unbeeindruckt weiter – körperlich ist es oft dennoch deutlich gestresst.",
+              "„Wenn ich Kummer zeige, werde ich zurückgewiesen.“ Bindungswünsche werden heruntergeregelt."
+            ],
+            [
+              "Unsicher-ambivalent",
+              "Ist sehr aufgewühlt, sucht Nähe und wehrt sie zugleich ärgerlich ab, lässt sich schwer beruhigen und kehrt kaum zum Spiel zurück.",
+              "„Ob jemand da ist, ist unberechenbar.“ Bindungssignale werden verstärkt, um Zuwendung zu sichern."
+            ],
+            [
+              "Desorganisiert",
+              "Zeigt widersprüchliches Verhalten: nähert sich mit abgewandtem Blick, erstarrt, wirkt verwirrt oder ängstlich gegenüber der Bindungsperson.",
+              "Die Person, die Schutz geben soll, ist zugleich Quelle von Angst oder Verwirrung. Eine stimmige Strategie gelingt nicht."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Entscheidend ist der Blick auf die Funktion: **Unsichere Muster sind keine Störungen**, sondern sinnvolle Anpassungen an die Erfahrungen, die ein Kind gemacht hat. Wer mit seinem Kummer zurückgewiesen wurde, zeigt ihn weniger; wer unberechenbare Zuwendung erlebt hat, macht lauter auf sich aufmerksam. In Studien aus der Allgemeinbevölkerung ist meist gut die Hälfte der Kinder sicher gebunden – unsichere Muster sind also häufig und für sich genommen kein Grund zur Sorge.\n\nDesorganisiertes Bindungsverhalten ist in stark belasteten Familien häufiger, etwa bei Misshandlung, aber auch wenn Eltern eigene Verluste oder Traumata nicht verarbeitet haben und für das Kind unberechenbar oder ängstigend wirken. Es ist aber **kein Beweis** für Misshandlung und darf nie als solcher verwendet werden."
+        },
+        {
+          "art": "liste",
+          "titel": "Was man über Bindungsmuster wissen sollte",
+          "punkte": [
+            "Bindung ist beziehungsspezifisch: Ein Kind kann mit dem Vater sicher und mit der Mutter unsicher gebunden sein.",
+            "Muster sind recht stabil, solange die Lebensumstände stabil bleiben. Sie können sich verändern, wenn sich Beziehungen und Belastungen verändern.",
+            "Frühe Bindungssicherheit hängt mit späterer sozialer Kompetenz und Gefühlsregulation zusammen, ist aber kein Schicksal. In der Minnesota-Langzeitstudie prägten auch spätere Erfahrungen den weiteren Weg (Sroufe, 2005).",
+            "Die Fremde Situation wurde für Kleinkinder entwickelt. Bei älteren Kindern und Jugendlichen setzen geschulte Fachleute andere, aufwendige Verfahren ein.",
+            "Bindungsmuster sind keine Diagnosen. **Bindungsstörungen** (DSM-5-TR, ICD-11) sind etwas anderes: seltene, schwere Störungen nach extremer Vernachlässigung oder sehr häufig wechselnden Betreuungspersonen (Zeanah & Gleason, 2015)."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Die Bindung ist mit drei Jahren festgelegt – danach lässt sich nichts mehr ändern.",
+          "fakt": "Frühe Erfahrungen prägen, aber sie legen nicht fest. Neue, verlässliche Beziehungen können Erwartungen an andere Menschen verändern – in der Familie, in Pflegefamilien und auch mit Lehrkräften und Educateurs (Sroufe, 2005)."
+        }
+      ]
+    },
+    {
+      "titel": "Feinfühligkeit: die Grundlage sicherer Bindung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Was macht Bindung sicher? Ainsworth fand, dass vor allem die **Feinfühligkeit** der Bindungsperson eine Rolle spielt (Ainsworth et al., 1978). Feinfühligkeit gehört zu den am besten untersuchten Einflüssen auf Bindungssicherheit, ist aber nicht der einzige: Auch das Temperament des Kindes und die Lebensumstände der Familie wirken mit. Ainsworth beschrieb Feinfühligkeit in vier Schritten. Sie lassen sich gut auf die Schule übertragen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die vier Schritte der Feinfühligkeit – übertragen auf die Schule",
+          "spalten": [
+            "Schritt",
+            "Bedeutung",
+            "Im Schulalltag"
+          ],
+          "zeilen": [
+            [
+              "1. Wahrnehmen",
+              "Die Signale des Kindes bemerken – auch leise.",
+              "Bemerken, dass ein Kind seit der Pause den Kopf auf den Tisch legt oder auffällig laut ist."
+            ],
+            [
+              "2. Richtig deuten",
+              "Das Signal aus der Sicht des Kindes verstehen, nicht aus der eigenen.",
+              "Nicht „Er hat keine Lust“, sondern: „Vielleicht ist die Aufgabe zu schwer, oder in der Pause ist etwas passiert.“"
+            ],
+            [
+              "3. Prompt reagieren",
+              "Zeitnah antworten, damit das Kind den Zusammenhang erlebt.",
+              "Kurz hingehen, statt bis zum Stundenende zu warten."
+            ],
+            [
+              "4. Angemessen reagieren",
+              "So antworten, wie es dem Kind, seinem Alter und der Situation entspricht.",
+              "Leise nachfragen oder Hilfe anbieten, ohne das Kind vor der Klasse bloßzustellen."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Feinfühligkeit heißt nicht Perfektion.** Auch sehr feinfühlige Eltern verstehen ihr Kind in vielen Momenten nicht auf Anhieb. Entscheidend ist, dass Missverständnisse und Konflikte **repariert** werden: Der Erwachsene merkt, dass etwas schiefgelaufen ist, und stellt die Verbindung wieder her. Kinder lernen daraus, dass Beziehungen Belastungen aushalten. Für die Schule heißt das: Nach einem Konflikt geht die Wiederannäherung vom Erwachsenen aus – etwa mit einem freundlichen Wort am nächsten Morgen, ohne das Geschehene zu verschweigen.\n\nFeinfühlig sein heißt auch nicht, jedem Wunsch nachzugeben. Eine klare Grenze, die ruhig und ohne Abwertung gesetzt wird, ist ebenfalls eine feinfühlige Antwort – sie gibt dem Kind Orientierung und Sicherheit."
+        },
+        {
+          "art": "fall",
+          "titel": "Aylin, 10 Jahre, Cycle 4.1",
+          "text": "Aylin knüllt ihr Arbeitsblatt zusammen und legt den Kopf auf den Tisch. Die Lehrerin will schon „Aylin, so nicht!“ rufen. Stattdessen geht sie hin, hockt sich neben sie und sagt leise: „Das sieht nach einem blöden Moment aus. Brauchst du Hilfe beim Anfang oder erst eine Minute für dich?“ Aylin murmelt: „Ich kapier das nicht.“ Die Lehrerin zeigt ihr die erste Aufgabe noch einmal. Nach zwei Minuten arbeitet Aylin weiter.",
+          "fragen": [
+            "Welche der vier Schritte der Feinfühligkeit erkennen Sie?",
+            "Was hätte eine öffentliche Ermahnung bei Aylin vermutlich ausgelöst?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Die Schule als sichere Basis",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kinder bauen nicht nur zu ihren Eltern Bindungen auf. Auch Erzieherinnen, Educateurs und Lehrkräfte können zu wichtigen Bezugspersonen werden, von denen ein Kind im Alltag Schutz und Orientierung erwartet. Man spricht dann von **sekundären Bindungspersonen**. Sie ersetzen die Eltern nicht, können aber während des Schultages die Funktion einer sicheren Basis übernehmen: Das Kind wagt sich an schwierige Aufgaben, weil es weiß, dass jemand da ist, wenn es nicht klappt.\n\nEine warme, verlässliche und wenig konfliktreiche Beziehung zur Lehrkraft geht mit mehr Lernbereitschaft, weniger Verhaltensproblemen und höherem Wohlbefinden einher. Kinder mit belasteten Beziehungserfahrungen profitieren davon besonders. Für sie kann eine solche Beziehung eine neue Erfahrung sein: Erwachsene können verlässlich sein. Das verändert innere Arbeitsmodelle nicht über Nacht, aber es trägt dazu bei."
+        },
+        {
+          "art": "text",
+          "text": "**Warum Beziehung zuerst kommt.** Für Kinder mit unsicheren Erfahrungen ist der Schulalltag voller Auslöser für das Bindungssystem: Vertretungen, Wechsel von Lehrkräften, Kritik, Gruppenarbeit, Ausflüge, das Ende der Ferien. Jede dieser Situationen kann die Frage wecken: Bin ich hier sicher? Achtet jemand auf mich? Solange diese Frage offen ist, bleibt wenig Kraft für das Lernen. Zeit in die Beziehung zu investieren, ist deshalb keine Ablenkung vom Unterricht, sondern seine Voraussetzung."
+        },
+        {
+          "art": "tun",
+          "titel": "Was eine sichere Basis im Schulalltag ausmacht",
+          "punkte": [
+            "Jedes Kind morgens persönlich begrüßen – mit Namen und Blickkontakt.",
+            "Vorhersehbarkeit schaffen: feste Abläufe, angekündigte Übergänge, frühzeitig angekündigte Abwesenheiten und Vertretungen.",
+            "Erreichbar sein: Das Kind weiß, wann und wie es Hilfe bekommt, etwa über ein vereinbartes Zeichen.",
+            "Kurze persönliche Kontakte über Nicht-Schulisches: zwei Minuten über Fußball, das Haustier oder das Lieblingsspiel.",
+            "Nach Konflikten die Beziehung aktiv wiederherstellen: „Gestern war schwierig. Heute fangen wir neu an.“",
+            "Nur versprechen, was man halten kann – und es dann halten."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Beziehungsentzug als Strafe: „Mit dir rede ich heute nicht mehr.“",
+            "Kinder vor der Klasse bloßstellen oder ihre Schwierigkeiten öffentlich besprechen.",
+            "Vermeidbare, unangekündigte Wechsel und Abwesenheiten.",
+            "Sich als „bessere Mutter“ oder „besserer Vater“ verstehen und in Konkurrenz zu den Eltern treten."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Grenzen der Rolle.** Eine Lehrkraft oder ein Educateur ist eine Bindungsperson auf Zeit, in einer professionellen Rolle. Das Schuljahr endet, Teams wechseln, Kolleginnen gehen in Elternzeit. Für Kinder mit vielen Beziehungsabbrüchen sind solche Abschiede schwer. Sie sollten früh angekündigt und bewusst gestaltet werden – mit einem Abschiedsritual und einer guten Übergabe an die nächste Bezugsperson, möglichst mit einem ersten Kennenlernen vorher. Außerdem sollte ein Kind nicht an einer einzigen Person hängen: Ein Team, in dem mehrere Erwachsene verlässlich sind, schützt das Kind und die einzelne Fachkraft."
+        }
+      ]
+    },
+    {
+      "titel": "Was Kinder mit unsicheren Bindungserfahrungen brauchen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Im Schulalltag sehen Sie keine Bindungsmuster, sondern Verhalten. Manches Verhalten lässt sich aber besser verstehen, wenn man es als Bindungsstrategie liest. Dabei gilt: Sie ordnen Kinder keinem Muster zu und schreiben nicht „Er ist unsicher-vermeidend gebunden“ in einen Bericht. Eine solche Einschätzung erfordert standardisierte Verfahren und geschulte Fachleute. Hilfreich ist stattdessen die Frage: Was hat dieses Kind vermutlich über Erwachsene gelernt – und welche neue Erfahrung kann ich ihm ermöglichen?"
+        },
+        {
+          "art": "tabelle",
+          "titel": "Bindungsstrategien im Schulalltag – und was hilft",
+          "spalten": [
+            "Was Sie beobachten",
+            "Mögliche Bedeutung",
+            "Was hilft"
+          ],
+          "zeilen": [
+            [
+              "Wirkt übertrieben selbstständig, bittet nie um Hilfe, sagt nach einem Sturz „Geht schon“, zieht sich bei Kummer zurück.",
+              "Das Kind hat womöglich gelernt, dass es besser ist, Bedürfnisse nicht zu zeigen.",
+              "Hilfe unaufdringlich anbieten, Nähe dosieren, gemeinsam an einer Sache arbeiten statt großer Gefühlsgespräche; Gefühle beiläufig benennen."
+            ],
+            [
+              "Klammert, fordert ständig Aufmerksamkeit, reagiert heftig auf Übergänge und Zurückweisung, beruhigt sich schwer.",
+              "Das Kind hat womöglich gelernt, dass Zuwendung unberechenbar ist und man laut sein muss, um sie zu bekommen.",
+              "Verlässliche Zuwendung zu vorhersehbaren Zeiten; ankündigen und einhalten („Ich helfe jetzt Tom, danach komme ich zu dir“); Übergänge vorbereiten."
+            ],
+            [
+              "Bestimmt über Erwachsene, erteilt Befehle, bestraft oder umsorgt Erwachsene auffällig; wechselt schnell zwischen Nähe und Ablehnung.",
+              "Das Kind hat womöglich erlebt, dass Erwachsene Angst machen oder selbst Hilfe brauchen – Kontrolle gibt ihm Sicherheit.",
+              "Freundlich und ruhig die Führung behalten, klare Struktur, begrenzte Wahlmöglichkeiten; Machtkämpfe vermeiden; Unterstützung im Team holen."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Bindungsbedürfnisse sind oft verkleidet.** Kinder zeigen sie selten offen. Ein Kind, das Sie wegstößt, braucht Sie oft am meisten – es prüft, ob Sie bleiben. Ein Kind, das ständig Aufmerksamkeit fordert, braucht nicht einfach mehr davon, sondern Verlässlichkeit, damit es nicht mehr darum kämpfen muss.\n\nHilfreich ist es, **Person und Verhalten zu trennen**: Das Verhalten kann eine klare Grenze brauchen, die Beziehung bleibt davon unberührt. „Ich lasse nicht zu, dass du Ana wehtust. Und ich bin trotzdem für dich da.“ Rechnen Sie damit, dass Kinder neue Beziehungsangebote zunächst testen, manchmal über Wochen. Ein Rückfall nach guten Tagen ist kein Zeichen des Scheiterns, sondern oft ein Hinweis darauf, dass die Beziehung wichtig geworden ist."
+        },
+        {
+          "art": "merke",
+          "text": "Nicht das Muster behandeln, sondern neue Erfahrungen ermöglichen: Erwachsene, die verlässlich bleiben, Grenzen ohne Beziehungsabbruch setzen und nach Konflikten wieder auf das Kind zugehen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussieht, aber einen anderen Hintergrund haben kann",
+          "punkte": [
+            {
+              "wie": "Temperament",
+              "unterschied": "Manche Kinder sind von Natur aus zurückhaltend und brauchen Zeit, um mit neuen Menschen warm zu werden (Thomas & Chess, 1977). Mit der Zeit tauen sie auf und suchen dann auch Hilfe."
+            },
+            {
+              "wie": "Autismus",
+              "unterschied": "Kinder im Autismus-Spektrum gestalten Kontakt anders, etwa mit weniger Blickkontakt oder wenig Interesse an gemeinsamen Gesprächen. Das beruht auf einer anderen sozialen Wahrnehmung, nicht auf Beziehungserfahrungen, und gehört fachlich abgeklärt."
+            },
+            {
+              "wie": "ADHS",
+              "unterschied": "Stürmisches, distanzloses Zugehen auf Erwachsene kann Ausdruck von Impulsivität sein, nicht von Bindungssuche."
+            },
+            {
+              "wie": "Trauma",
+              "unterschied": "Heftige Reaktionen auf bestimmte Auslöser wie Geräusche, Berührungen oder einen Tonfall können mit belastenden Erlebnissen zusammenhängen. Bindung und Trauma überschneiden sich häufig."
+            },
+            {
+              "wie": "Kulturelle Gewohnheiten",
+              "unterschied": "Wie viel Nähe, Blickkontakt und Gefühlsausdruck gegenüber Erwachsenen üblich ist, unterscheidet sich zwischen Familien und Kulturen."
+            }
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer ein weinendes Kind tröstet, verwöhnt es und macht es unselbstständig.",
+          "fakt": "Das Gegenteil ist der Fall: Kinder, die verlässlich Trost erfahren, erkunden die Welt mutiger und werden selbstständiger. Sicherheit ist die Voraussetzung für Selbstständigkeit, nicht ihr Hindernis."
+        }
+      ]
+    },
+    {
+      "titel": "Eltern, Team und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Mit Eltern zusammenarbeiten.** Hat ein Kind unsichere Bindungserfahrungen gemacht, liegt der Gedanke nahe, die Eltern hätten versagt. Dieser Schluss ist fast immer zu einfach. Eltern bringen eigene Geschichten mit: Manche haben selbst wenig Sicherheit erlebt, sind psychisch belastet, leben in Armut, haben eine Flucht hinter sich oder stehen unter großem Druck. Bindung entsteht in einem Geflecht aus Belastungen und Ressourcen. Für die Schule ist entscheidend, die Eltern als Partner zu gewinnen. Sie kennen ihr Kind am längsten und bleiben seine wichtigsten Bindungspersonen. Eine gute Beziehung zwischen Schule und Familie entlastet das Kind, weil es sich nicht zwischen zwei Welten entscheiden muss."
+        },
+        {
+          "art": "tun",
+          "titel": "Im Gespräch mit Eltern",
+          "punkte": [
+            "Mit dem beginnen, was gelingt und was Sie am Kind schätzen.",
+            "Verhalten beschreiben statt Bindungsbegriffe verwenden: „Er fragt oft, ob Sie ihn wirklich abholen“ statt „Er ist unsicher gebunden“.",
+            "Nach Veränderungen fragen: Umzug, Trennung, Krankheit, Verlust.",
+            "Unterstützungsangebote kennen und vermitteln, ohne zu drängen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Im Team denken.** Kinder mit belasteten Beziehungserfahrungen lösen bei Erwachsenen starke Gefühle aus: den Wunsch, sie zu retten, Ärger, Hilflosigkeit oder das Gefühl, persönlich gemeint zu sein. Solche Reaktionen sind normal und enthalten oft wichtige Hinweise darauf, wie das Kind Beziehungen erlebt. Besprechen Sie sie im Team, vereinbaren Sie ein gemeinsames Vorgehen und achten Sie darauf, dass nicht eine einzelne Person alles trägt."
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn ein Kind trotz verlässlicher Beziehungsangebote über lange Zeit keinerlei Trost annimmt, mit fremden Erwachsenen wahllos und ohne Zögern mitgehen würde, deutliche Angst vor dem Nachhauseweg zeigt oder wenn sein Verhalten Sie und das Team dauerhaft überfordert. Sprechen Sie mit der Leitung; eine Abklärung kann über das Diagnostique-Team des CDSE, die Kinder- und Jugendpsychiatrie oder die Kinderärztin erfolgen. Die Einschätzung und Behandlung von Bindungsstörungen gehört in fachliche Hände (Zeanah & Gleason, 2015; NICE, 2015)."
+        },
+        {
+          "art": "achtung",
+          "text": "Bemerken Sie Anzeichen von Misshandlung oder Vernachlässigung oder erzählt ein Kind davon, folgen Sie den internen Kinderschutz-Abläufen und informieren Sie umgehend die Leitung. Hören Sie ruhig zu, versprechen Sie keine Geheimhaltung und stellen Sie keine bohrenden oder suggestiven Fragen."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was meint der Begriff „sichere Basis“ in der Bindungstheorie?",
+      "optionen": [
+        "Eine feste Sitzordnung, die dem Kind Halt gibt",
+        "Einen Erwachsenen, der alle Probleme für das Kind löst",
+        "Eine vertraute Person, von der aus das Kind die Welt erkundet und zu der es bei Verunsicherung zurückkehren kann",
+        "Die angeborene Fähigkeit eines Kindes, sich selbst zu beruhigen"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die sichere Basis ist eine vertraute Person, deren Verfügbarkeit dem Kind erlaubt, zu erkunden – und zu der es bei Kummer zurückkehrt. Struktur wie eine Sitzordnung kann Sicherheit unterstützen, ist aber keine Bindungsperson. Eine sichere Basis löst nicht alle Probleme, sondern ermöglicht dem Kind, selbst tätig zu werden; Selbstberuhigung entwickelt sich erst mit Hilfe anderer."
+    },
+    {
+      "art": "einfach",
+      "frage": "Ein Kind hat große Angst, weil morgen eine unbekannte Vertretung kommt. Es kann sich heute kaum auf die Aufgaben einlassen. Was erklärt das am besten?",
+      "optionen": [
+        "Das Bindungssystem ist aktiviert und hat Vorrang vor dem Erkundungssystem.",
+        "Das Kind will die Lehrkraft provozieren.",
+        "Angst senkt die Intelligenz dauerhaft.",
+        "Das Kind hat grundsätzlich keine Lust zu lernen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Verunsicherung aktiviert das Bindungssystem; dann tritt die Erkundung – und damit das Lernen – in den Hintergrund. Das ist keine Provokation und kein Motivationsproblem. Angst beeinträchtigt die Leistung vorübergehend, senkt aber nicht dauerhaft die Intelligenz."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Schritte gehören zur Feinfühligkeit nach Mary Ainsworth? (mehrere richtig)",
+      "optionen": [
+        "Die Signale des Kindes wahrnehmen",
+        "Jedes Signal sofort mit Lob beantworten",
+        "Die Signale aus der Sicht des Kindes richtig deuten",
+        "Prompt reagieren",
+        "Angemessen reagieren"
+      ],
+      "richtig": [
+        0,
+        2,
+        3,
+        4
+      ],
+      "erklaerung": "Feinfühligkeit umfasst vier Schritte: wahrnehmen, richtig deuten, prompt und angemessen reagieren. Lob ist nicht auf jedes Signal die passende Antwort – ein Kind, das Kummer zeigt, braucht Trost oder Hilfe, keine Bewertung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Desorganisiertes Bindungsverhalten beweist, dass ein Kind misshandelt wurde.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Desorganisiertes Bindungsverhalten ist in stark belasteten Familien häufiger, kommt aber auch aus anderen Gründen vor, etwa wenn Eltern eigene Traumata nicht verarbeitet haben. Es ist kein Beweis für Misshandlung und darf nie als solcher verwendet werden. Konkrete Hinweise auf Gefährdung werden über die Kinderschutz-Abläufe geklärt."
+    },
+    {
+      "art": "fall",
+      "fall": "Rayan (8) ist auf dem Pausenhof gestürzt und blutet am Knie. Als Sie hinzukommen, dreht er sich weg und sagt: „Geht schon, ich brauch nix.“ Er humpelt zur Bank.",
+      "frage": "Wie reagieren Sie am feinfühligsten?",
+      "optionen": [
+        "„Stell dich nicht so an, du bist doch ein großer Junge.“",
+        "Ihn in den Arm nehmen, auch wenn er sich wegdreht, damit er merkt, dass er getröstet werden darf.",
+        "Ihn in Ruhe lassen – er hat ja gesagt, dass er nichts braucht.",
+        "Sich in seiner Nähe hinsetzen, sachlich Hilfe anbieten („Ich hab ein Pflaster – magst du es selbst draufkleben?“) und bleiben, ohne zu drängen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Rayan zeigt eine Strategie, bei der Bedürfnisse heruntergespielt werden. Hilfreich ist ein unaufdringliches, sachliches Angebot, bei dem er selbst entscheiden kann, und ein Erwachsener, der bleibt. Nähe gegen seinen Willen überfordert ihn, Weggehen bestätigt seine Erfahrung, allein klarkommen zu müssen, und Abwertung beschämt ihn."
+    },
+    {
+      "art": "fall",
+      "fall": "Chiara (7) folgt ihrer Educatrice in der Maison Relais auf Schritt und Tritt, ruft ständig ihren Namen und weint heftig, wenn diese sich einem anderen Kind zuwendet.",
+      "frage": "Was hilft Chiara am ehesten?",
+      "optionen": [
+        "Verlässliche, angekündigte Zuwendung: „Ich helfe jetzt Tom, danach komme ich zu dir“ – und dieses Versprechen einhalten.",
+        "Chiara konsequent übergehen, damit sie lernt, selbstständig zu werden.",
+        "Chiara ständig bei sich behalten, damit sie nie weinen muss.",
+        "Chiara in eine andere Gruppe setzen, damit sie sich nicht so an eine Person bindet."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Chiara scheint Zuwendung als unberechenbar erlebt zu haben. Sie braucht Vorhersehbarkeit: Zuwendung, die angekündigt und verlässlich eingehalten wird. Übergehen verstärkt ihre Unsicherheit, ständige Nähe nimmt ihr die Erfahrung, dass die Beziehung auch Abstand übersteht, und ein Gruppenwechsel wäre ein weiterer Beziehungsabbruch."
+    },
+    {
+      "art": "fall",
+      "fall": "Mehdi (10) kommandiert seine Lehrerin herum („Setz dich hierhin! Du darfst jetzt nicht reden!“), straft sie mit Schweigen, wenn sie nicht mitmacht, und ist am nächsten Tag auffällig fürsorglich.",
+      "frage": "Welche Haltung ist am hilfreichsten?",
+      "optionen": [
+        "Mehdi seinen Willen lassen, damit er sich sicher fühlt.",
+        "Freundlich und ruhig die Führung behalten, klare Abläufe und begrenzte Wahlmöglichkeiten anbieten und Machtkämpfe vermeiden.",
+        "Ihm deutlich zeigen, wer das Sagen hat, und jeden Versuch sofort hart bestrafen.",
+        "Den Eltern mitteilen, dass Mehdi desorganisiert gebunden ist."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Kontrollierendes Verhalten kann eine Strategie sein, in unsicheren Beziehungen Sicherheit herzustellen. Hilfreich ist ein Erwachsener, der ruhig und freundlich führt und dem Kind begrenzte Wahlmöglichkeiten lässt. Nachgeben bestätigt, dass Mehdi die Erwachsenen steuern muss; harte Machtkämpfe verstärken seine Angst; Bindungsdiagnosen stellen pädagogische Fachkräfte nicht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage über Lehrkräfte und Educateurs als Bezugspersonen trifft zu?",
+      "optionen": [
+        "Sie sollten enge Beziehungen vermeiden, um professionell zu bleiben.",
+        "Sie können als sekundäre Bindungspersonen eine sichere Basis bieten, ohne die Eltern zu ersetzen.",
+        "Eine gute Lehrkraft ersetzt einem Kind mit schwierigen Eltern die Familie.",
+        "Bindung spielt nach dem Kindergarten keine Rolle mehr."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Fachkräfte können im Schulalltag eine sichere Basis sein und damit Lernen ermöglichen – als Bindungspersonen auf Zeit und in einer professionellen Rolle. Beziehung zu vermeiden, verschenkt diese Wirkung. Die Eltern bleiben die wichtigsten Bindungspersonen, und Bindung bleibt in allen Altersstufen bedeutsam."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach den Sommerferien bekommt Ihre Klasse eine andere Lehrkraft. Für Léa (9), die schon in mehreren Pflegefamilien gelebt hat, sind Sie eine wichtige Bezugsperson geworden.",
+      "frage": "Was ist das beste Vorgehen?",
+      "optionen": [
+        "Den Wechsel erst am letzten Schultag erwähnen, um Léa nicht zu beunruhigen.",
+        "Léa versprechen, dass Sie immer für sie da sein werden.",
+        "Den Wechsel früh ankündigen, den Abschied bewusst gestalten und die Übergabe an die neue Lehrkraft vorbereiten, möglichst mit einem Kennenlernen vor den Ferien.",
+        "Sich in den letzten Wochen bewusst zurückziehen, damit der Abschied weniger wehtut."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Für Kinder mit vielen Beziehungsabbrüchen ist ein vorbereiteter, gestalteter Abschied eine wichtige neue Erfahrung. Ein überraschender Wechsel oder ein schleichender Rückzug wiederholt dagegen das Muster früherer Abbrüche. Ein Versprechen, das Sie nicht halten können, würde Léas Vertrauen später enttäuschen."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Aussagen zu Bindungsmustern treffen zu? (mehrere richtig)",
+      "optionen": [
+        "Unsichere Muster sind Anpassungen an bisherige Beziehungserfahrungen.",
+        "Ein Kind kann zu verschiedenen Personen unterschiedlich gebunden sein.",
+        "Bindungsmuster sind Diagnosen, die Lehrkräfte im Bericht vermerken sollten.",
+        "Frühe Bindungserfahrungen prägen, legen die weitere Entwicklung aber nicht fest.",
+        "Unsicher gebundene Kinder haben eine Bindungsstörung."
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Unsichere Muster sind sinnvolle Anpassungen, Bindung ist beziehungsspezifisch, und spätere Erfahrungen können viel verändern (Sroufe, 2005). Bindungsmuster sind aber keine Diagnosen und werden von pädagogischen Fachkräften nicht zugeordnet. Bindungsstörungen sind seltene, schwere Störungen nach extremer Vernachlässigung – etwas anderes als ein unsicheres Muster."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Ein Kind hält Abstand zu Erwachsenen und sucht selten Hilfe. Welche Erklärungen sollten Sie neben Bindungserfahrungen bedenken? (mehrere richtig)",
+      "optionen": [
+        "Ein zurückhaltendes Temperament",
+        "Eine Besonderheit aus dem Autismus-Spektrum",
+        "Kulturelle Gewohnheiten im Umgang mit Nähe und Blickkontakt",
+        "Keine – Abstand zu Erwachsenen zeigt immer eine unsichere Bindung.",
+        "Die Erfahrung, dass Nachfragen in der Klasse Spott auslöst"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Zurückhaltung kann mit Temperament, einer anderen sozialen Wahrnehmung wie im Autismus-Spektrum, kulturellen Gewohnheiten oder schlechten Erfahrungen in der Klasse zusammenhängen. Abstand ist deshalb kein sicheres Zeichen für eine unsichere Bindung. Beschreiben Sie das Verhalten genau und besprechen Sie es im Team, statt es vorschnell zu deuten."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Bindung",
+      "erklaerung": "Besondere, dauerhafte Beziehung eines Kindes zu einer vertrauten Person, bei der es in Not Schutz und Trost sucht."
+    },
+    {
+      "begriff": "Sichere Basis",
+      "erklaerung": "Eine Bindungsperson, deren Verfügbarkeit dem Kind erlaubt, die Welt zu erkunden. Bei Kummer dient sie als sicherer Hafen, zu dem das Kind zurückkehrt."
+    },
+    {
+      "begriff": "Erkundungssystem",
+      "erklaerung": "Das Bedürfnis, die Umwelt zu entdecken, zu spielen und zu lernen. Es ist aktiv, wenn das Kind sich sicher fühlt, und tritt zurück, wenn das Bindungssystem anspringt."
+    },
+    {
+      "begriff": "Innere Arbeitsmodelle",
+      "erklaerung": "Aus Erfahrungen gebildete Erwartungen darüber, ob andere verfügbar und verlässlich sind und ob man selbst Zuwendung verdient."
+    },
+    {
+      "begriff": "Feinfühligkeit",
+      "erklaerung": "Die Fähigkeit, die Signale eines Kindes wahrzunehmen, richtig zu deuten sowie prompt und angemessen darauf zu reagieren."
+    },
+    {
+      "begriff": "Fremde Situation",
+      "erklaerung": "Standardisiertes Beobachtungsverfahren nach Mary Ainsworth, mit dem Bindungsmuster bei Kindern von etwa 12 bis 18 Monaten eingeschätzt werden."
+    },
+    {
+      "begriff": "Desorganisierte Bindung",
+      "erklaerung": "Bindungsmuster ohne stimmige Strategie, mit widersprüchlichem, erstarrtem oder ängstlichem Verhalten gegenüber der Bindungsperson. Kein Beweis für Misshandlung."
+    },
+    {
+      "begriff": "Sekundäre Bindungsperson",
+      "erklaerung": "Eine Bezugsperson außerhalb der Familie, etwa eine Lehrkraft oder ein Educateur, die im Alltag die Funktion einer sicheren Basis übernehmen kann, ohne die Eltern zu ersetzen."
+    },
+    {
+      "begriff": "Bindungsstörung",
+      "erklaerung": "Seltene, schwere Störung (DSM-5-TR, ICD-11) nach extremer Vernachlässigung oder sehr häufig wechselnden Betreuungspersonen. Nicht gleichzusetzen mit einem unsicheren Bindungsmuster."
+    }
+  ],
+  "quellen": [
+    "bowlby1969",
+    "ainsworth1978",
+    "mainSolomon1990",
+    "grossmann2012",
+    "sroufe2005",
+    "zeanah2015",
+    "niceNG26",
+    "thomasChess1977",
+    "dsm5tr",
+    "icd11"
+  ],
+  "verwandt": [
+    "bindungsmuster",
+    "bindungsstoerungen",
+    "beziehung-haltung",
+    "traumapaedagogik",
+    "emotionsregulation",
+    "mentalisieren",
+    "elternarbeit",
+    "kinderschutz"
+  ],
+  "toolbox": [
+    "wer-ist-fuer-mich-da",
+    "meine-helfer-hand",
+    "trost-koffer",
+    "neue-klasse",
+    "wer-hilft-mir"
+  ]
+}

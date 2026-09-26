@@ -1,0 +1,547 @@
+{
+  "id": "angst",
+  "bereich": "stoerungen",
+  "titel": "Angststörungen bei Kindern und Jugendlichen",
+  "untertitel": "Normale Ängste, Angststörungen und der Teufelskreis der Vermeidung – Mut in kleinen Schritten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können alterstypische Ängste von Angststörungen unterscheiden und die häufigsten Angststörungen im Schulalltag erkennen.",
+    "Sie können den Teufelskreis der Vermeidung erklären und begründen, warum Schonung Angst oft verstärkt.",
+    "Sie erkennen, wie Erwachsene Angst ungewollt aufrechterhalten, und können anders reagieren.",
+    "Sie können gemeinsam mit Kind, Eltern und Fachleuten eine Mutleiter mit kleinen Schritten planen und begleiten.",
+    "Sie wissen, was eine wirksame Behandlung ausmacht und wann Sie Unterstützung holen – besonders, wenn die Angst einen realen Grund hat."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Laura, 11 Jahre, Cycle 4.2",
+          "text": "Laura hat montags oft Bauchweh. Zweimal im Monat ruft das Sekretariat die Mutter an, die sie früher abholt. Im Unterricht meldet sie sich nie, obwohl ihre Hefte ordentlich und ihre Antworten richtig sind. Wird sie aufgerufen, wird sie rot, ihre Stimme zittert, und sie sagt: „Ich weiß nicht.“ Vor Proben fragt sie die Lehrerin mehrmals: „Was, wenn ich alles vergesse?“ In der Pause steht sie meist neben ihrer einzigen Freundin. Die Lehrerin mag Laura und will sie nicht quälen – deshalb ruft sie sie nicht mehr auf.",
+          "fragen": [
+            "Welche Anzeichen von Angst erkennen Sie – im Körper, in den Gedanken, im Verhalten?",
+            "Was bewirkt die freundliche Entscheidung der Lehrerin, Laura nicht mehr aufzurufen, auf Dauer?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Angst ist ein lebenswichtiges Gefühl. Sie ist das **Alarmsystem** des Körpers: Bei Gefahr schlägt das Herz schneller, die Atmung wird flach, die Muskeln spannen sich an, die Verdauung wird gedrosselt. Der Körper bereitet sich auf Kampf, Flucht oder Erstarren vor. Deshalb klagen ängstliche Kinder so oft über Bauchweh, Übelkeit, Kopfschmerzen oder Schwindel – die Beschwerden sind echt, auch wenn keine Gefahr besteht.\n\nBei einer **Angststörung** ist dieses Alarmsystem zu empfindlich eingestellt: Es schlägt zu oft, zu stark und in Situationen an, die nicht wirklich gefährlich sind, und es beruhigt sich nur schwer. Das Kind beginnt, die gefürchteten Situationen zu meiden – und genau das hält die Angst am Leben. Angststörungen gehören zu den häufigsten psychischen Störungen im Kindes- und Jugendalter. Weil ängstliche Kinder selten stören, werden sie in der Schule leicht übersehen (Beesdo et al., 2009)."
+        },
+        {
+          "art": "merke",
+          "text": "Das Problem ist weniger die Angst selbst als die Vermeidung. Kinder überwinden Angst nicht, indem man sie vor allem Beängstigenden schützt, sondern indem sie – gut begleitet und in kleinen Schritten – erleben: Ich schaffe das."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: normale Angst oder Angststörung?",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Normale Ängste im Lauf der Entwicklung",
+          "spalten": [
+            "Alter",
+            "Typische, normale Ängste",
+            "Wenn sie übermäßig werden"
+          ],
+          "zeilen": [
+            [
+              "Säuglings- und Kleinkindalter",
+              "Fremdeln, Angst vor Trennung von den Bezugspersonen, vor lauten Geräuschen",
+              "Trennungsangst"
+            ],
+            [
+              "Vorschulalter",
+              "Dunkelheit, Monster, Gewitter, Tiere, allein sein",
+              "spezifische Phobien, Trennungsangst"
+            ],
+            [
+              "Grundschulalter",
+              "Verletzung, Krankheit, Tod, Naturkatastrophen, Einbrecher, schlechte Noten",
+              "spezifische Phobien, generalisierte Angst"
+            ],
+            [
+              "Jugendalter",
+              "Blamage, Ablehnung durch Gleichaltrige, Aussehen, Leistung, Zukunft",
+              "soziale Angst, Panikstörung, generalisierte Angst"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Tabelle zeigt ein Muster, auf das Beesdo und Kolleginnen (2009) hinweisen: Die einzelnen Angststörungen beginnen oft in genau dem Alter, in dem die entsprechenden normalen Ängste auftreten. Ob Angst noch normal ist, entscheidet deshalb nicht ihr Inhalt, sondern **Stärke, Dauer und Folgen**. Von einer Angststörung sprechen Fachleute, wenn die Angst deutlich stärker ist, als es der Situation und dem Alter entspricht, über längere Zeit anhält – je nach Störung Wochen bis Monate –, zu Vermeidung führt und das Kind in Schule, Familie oder Freundschaften beeinträchtigt oder stark leiden lässt. Kinder erkennen ihre Angst oft nicht als übertrieben. Bei ihnen zeigt sie sich häufig durch Weinen, Wutausbrüche, Anklammern oder Erstarren."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die häufigsten Angststörungen im Schulalltag",
+          "spalten": [
+            "Störung",
+            "Worum sich die Angst dreht",
+            "Was Sie in der Schule sehen können"
+          ],
+          "zeilen": [
+            [
+              "Trennungsangst",
+              "dass den Eltern oder dem Kind selbst etwas zustößt, wenn sie getrennt sind",
+              "Klammern und Weinen beim Abschied, Bauchweh am Morgen, Anrufe nach Hause, Angst vor Ausflügen und Übernachtungen"
+            ],
+            [
+              "Spezifische Phobie",
+              "ein bestimmtes Tier, ein Objekt oder eine Situation: Hunde, Insekten, Spritzen, Erbrechen, Höhe, Dunkelheit",
+              "heftige Reaktion schon beim Gedanken daran, Vermeidung von Ausflügen, Weigerung beim Schwimmen oder Impfen"
+            ],
+            [
+              "Soziale Angst",
+              "von anderen negativ bewertet zu werden, sich zu blamieren",
+              "meldet sich nicht, spricht leise oder gar nicht, errötet, meidet Vorlesen, Referate, Tafel, Kantine und Sport, bleibt am Rand"
+            ],
+            [
+              "Generalisierte Angst",
+              "viele Alltagsdinge: Noten, Pünktlichkeit, Gesundheit, Familie, Weltgeschehen",
+              "ständiges Nachfragen und Rückversichern, Perfektionismus, Anspannung, Müdigkeit, Konzentrations- und Schlafprobleme"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Seltener, meist erst ab der Jugend, treten **Panikattacken** auf: plötzliche Wellen heftiger Angst mit Herzrasen, Atemnot, Schwindel und der Überzeugung, zu sterben oder die Kontrolle zu verlieren. Auch der **selektive Mutismus** – ein Kind spricht in bestimmten Situationen, etwa in der Schule, dauerhaft nicht – zählt in DSM-5-TR und ICD-11 zu den Angststörungen. Zwangsstörungen und Traumafolgestörungen haben dort dagegen eigene Kapitel.\n\n**Häufigkeit.** Zu jedem Zeitpunkt sind etwa 5 bis 10 von 100 Kindern und Jugendlichen betroffen; bis zum Ende der Jugend hatten deutlich mehr irgendwann eine Angststörung. Mädchen sind häufiger betroffen als Jungen, besonders ab der Pubertät (Beesdo et al., 2009)."
+        },
+        {
+          "art": "liste",
+          "titel": "Hinweise, die man leicht übersieht",
+          "punkte": [
+            "Häufige Bauch- oder Kopfschmerzen, vor allem morgens, am Sonntagabend oder vor bestimmten Fächern",
+            "Viele Toilettengänge, Besuche im Krankenzimmer, Anrufe nach Hause",
+            "Sehr ordentliche, perfektionistische Arbeiten, die ewig dauern oder nie abgegeben werden, weil sie nicht gut genug erscheinen",
+            "Ständiges Nachfragen: „Ist das so richtig?“, „Was, wenn …?“",
+            "Wut oder Weinen, wenn eine gefürchtete Situation bevorsteht – das kann wie Trotz aussehen",
+            "Fehlzeiten, die sich häufen (siehe Modul „Schulangst und Schulvermeidung“)"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: wie Angst entsteht und warum sie bleibt",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Angststörungen entstehen aus einem Zusammenspiel mehrerer Einflüsse. Manche Kinder bringen ein **ängstlich-gehemmtes Temperament** mit: Schon als Kleinkinder sind sie in neuen Situationen und bei fremden Menschen auffallend vorsichtig und zurückhaltend. Fachleute sprechen von **Verhaltenshemmung**; sie erhöht das Risiko für spätere Angststörungen, besonders für soziale Angst. Die Veranlagung spielt eine mittlere Rolle. Kinder ängstlicher Eltern sind häufiger betroffen – durch die Gene, aber auch, weil sie am Vorbild lernen. Dazu kommen belastende Erlebnisse (ein Hundebiss, eine Blamage, Krankheit oder Trennung in der Familie), ein sehr behütender oder kontrollierender Erziehungsstil und die Neigung, Gefahren zu überschätzen und mehrdeutige Situationen als bedrohlich zu deuten (Beesdo et al., 2009)."
+        },
+        {
+          "art": "liste",
+          "titel": "Der Teufelskreis der Vermeidung",
+          "punkte": [
+            "Eine Situation löst Angst aus: Laura soll vorlesen.",
+            "Das Kind vermeidet oder flüchtet: Es sagt „Ich weiß nicht“, geht zur Toilette, bleibt zu Hause.",
+            "Die Angst sinkt sofort – das fühlt sich wie eine Lösung an.",
+            "Das Kind erlebt aber nicht, dass es die Situation hätte bewältigen können. Beim nächsten Mal ist die Angst größer.",
+            "Die Vermeidung breitet sich aus: vom Vorlesen auf das Antworten, auf Gruppenarbeiten, schließlich auf den Schulbesuch."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Vermeidung wirkt wie eine Belohnung, weil sie die unangenehme Angst sofort beendet. Bleibt ein Kind dagegen in einer machbaren Angstsituation, erlebt es, dass die Angst ihren Höhepunkt erreicht und dann von selbst wieder sinkt, dass das Befürchtete meist nicht eintritt – und dass es auch mit Angst handeln kann. Jede solche Erfahrung stellt den Alarm ein Stück leiser."
+        },
+        {
+          "art": "liste",
+          "titel": "Wie Erwachsene Angst ungewollt verstärken",
+          "punkte": [
+            "Vermeiden ermöglichen: das Kind vom Vorlesen befreien, früher abholen, zu Hause lassen, für es sprechen.",
+            "Ständig beruhigen: auf die zehnte Frage „Geht das wirklich gut?“ die zehnte Beruhigung geben. Das hilft für Minuten, festigt aber das Nachfragen.",
+            "Übernehmen: Aufgaben erledigen, Konflikte für das Kind lösen, Nachrichten für es schreiben.",
+            "Überbehüten und warnen („Pass bloß auf!“): Das Kind lernt, dass die Welt gefährlich ist und es ihr nicht gewachsen ist.",
+            "Die eigene Angst vorleben: Erwachsene, die sichtbar angespannt reagieren, signalisieren Gefahr.",
+            "Druck und Abwertung („Stell dich nicht so an“) oder unvorbereitetes Hineinwerfen in die Situation: Das beschämt und verstärkt die Angst meist, statt Mut aufzubauen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "All das geschieht aus Zuneigung und Fürsorge. Fachleute sprechen von **Anpassung an die Angst**: Familie oder Schule richten sich so sehr nach der Angst, dass sie den Alltag bestimmt. Die Alternative ist nicht Härte, sondern eine andere Botschaft: „Ich sehe, dass du Angst hast – und ich traue dir zu, dass du es schaffst.“\n\n**Verlauf.** Unbehandelt halten Angststörungen oft über Jahre an; manchmal wechselt nur ihre Form, etwa von der Trennungsangst im Grundschulalter zur sozialen Angst in der Jugend. Sie erhöhen das Risiko für spätere Depressionen und Suchtprobleme und können Schullaufbahnen und Freundschaften stark einschränken (Beesdo et al., 2009). Zugleich gehören Angststörungen zu den am besten behandelbaren psychischen Störungen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Kinderängste wachsen sich von selbst aus.",
+          "fakt": "Viele alterstypische Ängste vergehen tatsächlich. Eine Angststörung dagegen hält ohne Hilfe häufig an oder verändert nur ihre Form. Frühe Unterstützung verhindert, dass sich die Vermeidung ausbreitet."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Angst ist nicht immer eine Störung – und nicht alles, was nach Angst aussieht, ist eine Angststörung. Die wichtigste Frage steht am Anfang: **Ist die Angst vielleicht berechtigt?** Die Abklärung selbst ist Sache von Fachleuten; Ihre genauen Beobachtungen helfen dabei."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Andere mögliche Erklärungen",
+          "punkte": [
+            {
+              "wie": "Realistische Angst",
+              "unterschied": "Ein Kind, das gemobbt wird, zu Hause Gewalt erlebt oder auf dem Schulweg bedroht wird, hat einen echten Grund für seine Angst. Das ist keine Störung, sondern ein Warnsignal: Hier geht es um Schutz, nicht um Mutübungen."
+            },
+            {
+              "wie": "Schüchternheit",
+              "unterschied": "Schüchterne Kinder brauchen Anlaufzeit, tauen dann aber auf und leiden nicht stark. Bei sozialer Angst bleibt die Angst bestehen, führt zu Vermeidung und schränkt deutlich ein."
+            },
+            {
+              "wie": "Neue Sprache, neues Land",
+              "unterschied": "Kinder, die die Unterrichtssprache noch lernen, sprechen oft aus Unsicherheit wenig; das bessert sich mit wachsender Sprachsicherheit. Nach Flucht oder Migration ist außerdem an belastende Erfahrungen zu denken."
+            },
+            {
+              "wie": "Traumafolgen",
+              "unterschied": "Die Angst ist an ein schlimmes Erlebnis gebunden; dazu kommen sich aufdrängende Erinnerungen, Albträume, Schreckhaftigkeit und das Meiden von allem, was daran erinnert."
+            },
+            {
+              "wie": "ADHS",
+              "unterschied": "Unruhe und Unkonzentriertheit zeigen sich in allen Situationen, nicht nur vor gefürchteten. Ängste können zusätzlich vorkommen."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Im Vordergrund stehen Traurigkeit oder Gereiztheit, Freudlosigkeit und Rückzug. Angst und Depression treten häufig gemeinsam auf."
+            },
+            {
+              "wie": "Autismus",
+              "unterschied": "Ängste sind bei autistischen Kindern sehr häufig, oft verbunden mit Veränderungen und Sinnesreizen. Hier braucht es zusätzlich Vorhersehbarkeit und angepasste Hilfen."
+            },
+            {
+              "wie": "Zwang",
+              "unterschied": "Das Kind wird von quälenden Gedanken bedrängt und muss Handlungen wiederholen (waschen, kontrollieren, zählen), um die Anspannung zu neutralisieren."
+            },
+            {
+              "wie": "Körperliche Ursachen",
+              "unterschied": "Häufige Bauch- oder Kopfschmerzen, Herzklopfen oder Atemnot sollten ärztlich abgeklärt werden, bevor man sie der Angst zuschreibt – etwa wegen Asthma, einer Schilddrüsenerkrankung oder viel Koffein aus Energydrinks."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Klären Sie bei jeder Angst zuerst, ob etwas Reales dahintersteckt – Mobbing, Gewalt, dauerhafte Überforderung. Erst wenn das Kind sicher ist, sind Mutschritte der richtige Weg."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Mut in kleinen Schritten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das Grundprinzip wirksamer Hilfe heißt **schrittweise Konfrontation** (Exposition): Das Kind nähert sich dem Gefürchteten in kleinen, machbaren Schritten, bleibt in der Situation, bis es merkt, dass es sie bewältigt, und geht erst dann zum nächsten Schritt. In der Schule lässt sich das gut mit einer **Mutleiter** planen – gemeinsam mit dem Kind, den Eltern und, falls vorhanden, der Therapeutin, damit alle am selben Strang ziehen (Kendall & Hedtke, 2006)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Beispiel: Lauras Mutleiter zum Sprechen in der Klasse",
+          "spalten": [
+            "Stufe",
+            "Schritt",
+            "Angst (0–10)"
+          ],
+          "zeilen": [
+            [
+              "1",
+              "Der Lehrerin nach der Stunde eine Antwort leise sagen",
+              "2"
+            ],
+            [
+              "2",
+              "In der Kleingruppe eine vorbereitete Antwort sagen",
+              "4"
+            ],
+            [
+              "3",
+              "Vor der Klasse eine vorher abgesprochene Frage beantworten",
+              "5"
+            ],
+            [
+              "4",
+              "Einen zu Hause geübten Satz aus dem Lesebuch vorlesen",
+              "6"
+            ],
+            [
+              "5",
+              "Sich einmal pro Stunde von selbst melden",
+              "8"
+            ],
+            [
+              "6",
+              "Ein kurzes Referat vor der Klasse halten",
+              "10"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Jede Stufe wird so oft geübt, bis sie sich deutlich leichter anfühlt. Anerkannt wird der **Mut**, nicht die perfekte Leistung: „Du warst aufgeregt und hast es trotzdem gemacht.“ Rückschritte sind normal, etwa nach Ferien oder Krankheit; dann geht man eine Stufe zurück und steigt wieder auf."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Angst ernst nehmen und benennen, ohne sie zu dramatisieren: „Ich sehe, dass du aufgeregt bist. Das geht vorbei, und ich bin da.“",
+            "Vorhersehbarkeit schaffen: ankündigen, wer wann vorliest oder vorträgt; Proben früh ankündigen und das Aufgabenformat zeigen.",
+            "Kleine, vereinbarte Schritte statt Befreiung: nicht dauerhaft vom Vorlesen befreien, sondern die Schwierigkeit anpassen.",
+            "Mut sofort und konkret anerkennen – bei Jugendlichen eher unter vier Augen.",
+            "Beruhigung üben, wenn das Kind ruhig ist (langsames Ausatmen, Muskeln an- und entspannen), und in der Situation daran erinnern – als Hilfe zum Bleiben, nicht zum Flüchten.",
+            "Auf Rückversicherungsfragen einmal antworten, dann zurückgeben: „Was denkst du selbst?“",
+            "Bei Trennungsangst: ein kurzer, warmer, immer gleicher Abschied; die Eltern sagen, wann sie wiederkommen, und gehen zügig, nicht heimlich; eine vertraute Person übernimmt mit einer festen Aufgabe.",
+            "Bei vielen Sorgen: eine feste, kurze „Sorgenzeit“ vereinbaren, in der Sorgen aufgeschrieben und besprochen werden dürfen."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Dauerhafte Befreiung von allem, was Angst macht.",
+            "Das Kind ohne Vorbereitung in die schwerste Situation drängen („Jetzt liest du vor, basta“).",
+            "Beschämen oder kleinreden („Stell dich nicht so an“, „Das ist doch lächerlich“).",
+            "Bei jedem Bauchweh nach Hause schicken – ohne Plan und ohne Absprache mit den Eltern.",
+            "Die eigene Nervosität übertragen: hektische Vorbereitung, dramatische Warnungen vor Proben."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Prüfungsangst** ist in DSM-5-TR und ICD-11 keine eigene Diagnose. Sie kann Teil einer sozialen oder generalisierten Angst sein oder für sich allein stehen. Etwas Aufregung vor Proben ist normal. Wird die Angst so groß, dass das Kind blockiert und nichts mehr abrufen kann, kaum schläft oder Proben meidet, helfen dieselben Grundsätze: Vorbereitung in kleinen Portionen, Üben unter ähnlichen Bedingungen (Probetests mit Zeitvorgabe), ein fester Ablauf zu Beginn (ausatmen, Aufgaben überfliegen, mit einer leichten Aufgabe anfangen), klare Zeitangaben während der Probe und kein öffentliches Vergleichen von Noten."
+        },
+        {
+          "art": "text",
+          "text": "**Wenn ein Kind bekanntermaßen Panikattacken hat** und eine Attacke im Unterricht auftritt: ruhig bleiben, das Kind an einen ruhigeren Ort begleiten, langsam und klar sprechen („Das ist die Angst. Sie ist unangenehm, aber sie geht vorbei“), gemeinsam langsam ausatmen und nach einigen Minuten, wenn möglich, in die Klasse zurückkehren. So lernt das Kind, dass es die Attacke übersteht, ohne den Ort dauerhaft meiden zu müssen. Tritt eine solche Attacke zum ersten Mal auf oder sind Sie unsicher, ob eine körperliche Ursache vorliegt, holen Sie medizinische Hilfe."
+        },
+        {
+          "art": "fall",
+          "titel": "Laura – drei Monate später",
+          "text": "Die Lehrerin bespricht mit Laura und ihrer Mutter die Idee der Mutleiter. Laura ist skeptisch, stimmt aber den ersten beiden Stufen zu. Nach zwei Wochen sagt sie in der Kleingruppe regelmäßig vorbereitete Antworten. Bauchweh hat sie montags noch manchmal. Die Mutter holt sie aber nur noch bei Fieber ab, und nach zehn Minuten Ruhe im Nebenraum geht Laura zurück in die Klasse. Beim ersten Vorlesen zittert ihre Stimme. Danach sagt sie: „Es war schlimm, aber nicht so schlimm, wie ich dachte.“",
+          "fragen": [
+            "An welchen Stellen wurde der Teufelskreis der Vermeidung unterbrochen?",
+            "Woran würden Sie erkennen, dass Laura zusätzlich eine Therapie braucht?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Abklärung übernehmen die Kinder- und Jugendpsychiatrie, psychotherapeutische Praxen oder das Diagnostique-Team des CDSE. Sie befragen Kind und Eltern, nutzen Fragebögen und klären körperliche Ursachen und Begleitstörungen.\n\nMittel der ersten Wahl ist die **kognitive Verhaltenstherapie** (KVT) mit schrittweiser Konfrontation. Für die soziale Angst empfiehlt NICE CG159 (2013) eine darauf ausgerichtete KVT einzeln oder in der Gruppe, bei jüngeren Kindern unter Einbezug der Eltern. Ein bekanntes Programm für ängstliche Kinder (Kendall & Hedtke, 2006) arbeitet in zwei Teilen: Zuerst lernen die Kinder Fertigkeiten, danach üben sie diese Schritt für Schritt in angstauslösenden Situationen. Die Fertigkeiten fasst das Programm im sogenannten FEAR-Plan zusammen."
+        },
+        {
+          "art": "liste",
+          "titel": "Der FEAR-Plan (sinngemäß übersetzt)",
+          "punkte": [
+            "*Feeling frightened?* – Habe ich Angst? Woran merke ich sie im Körper?",
+            "*Expecting bad things to happen?* – Was befürchte ich gerade?",
+            "*Attitudes and actions that will help* – Welche Gedanken und Handlungen helfen mir jetzt?",
+            "*Results and rewards* – Wie ist es gelaufen? Ich lobe mich für den Versuch, auch wenn nicht alles perfekt war."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Mehr als die Hälfte der Kinder profitiert von einer solchen Behandlung deutlich. **Medikamente** (vor allem sogenannte SSRI) sind bei Kindern und Jugendlichen nicht die erste Wahl; bei sozialer Angst rät NICE von ihrem routinemäßigen Einsatz ab. Bei schweren Angststörungen, wenn Psychotherapie allein nicht ausreicht, kann eine Fachärztin sie im Einzelfall einsetzen – mit engmaschiger Kontrolle.\n\nDie Schule ist für die Behandlung oft entscheidend, weil viele gefürchtete Situationen hier stattfinden. Stimmen Sie Mutschritte deshalb – mit Einverständnis der Eltern – mit der Therapeutin ab. So übt das Kind in der Schule dieselben Schritte wie in der Therapie."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit den Eltern und der Leitung, wenn Ängste über Wochen anhalten, sich ausbreiten oder das Kind beim Lernen, in Freundschaften oder beim Schulbesuch deutlich einschränken – besonders, wenn Fehlzeiten zunehmen. Eine Abklärung erfolgt über die Kinderärztin, die Kinder- und Jugendpsychiatrie, psychotherapeutische Praxen oder das Diagnostique-Team des CDSE; im Lycée ist der SePAS eine erste Anlaufstelle. Geben Sie konkrete Beobachtungen weiter: Wann, wo und wie zeigt sich die Angst, was vermeidet das Kind, was hilft?"
+        },
+        {
+          "art": "achtung",
+          "text": "Äußert ein Kind oder Jugendlicher Hoffnungslosigkeit, Todeswünsche oder Gedanken, sich etwas anzutun, hat das Vorrang vor allem anderen: Nehmen Sie es ernst, lassen Sie den jungen Menschen nicht allein und informieren Sie noch am selben Tag die Leitung. Angststörungen und Depressionen treten häufig gemeinsam auf."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was unterscheidet eine Angststörung am deutlichsten von normaler Angst?",
+      "optionen": [
+        "Der Inhalt der Angst: Angst vor Monstern ist immer eine Störung.",
+        "Dass körperliche Beschwerden auftreten.",
+        "Stärke, Dauer und Folgen: Die Angst ist unangemessen stark, hält an, führt zu Vermeidung und schränkt das Leben ein.",
+        "Dass das Kind die Angst selbst als übertrieben erkennt."
+      ],
+      "richtig": [2],
+      "erklaerung": "Entscheidend sind Stärke, Dauer, Vermeidung und Beeinträchtigung. Die Inhalte sind oft dieselben wie bei normalen Ängsten, körperliche Beschwerden gehören auch zu normaler Angst, und Kinder erkennen ihre Angst häufig nicht als übertrieben – das ist bei ihnen keine Voraussetzung für die Diagnose."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Reaktionen von Erwachsenen können Angst ungewollt aufrechterhalten? (mehrere richtig)",
+      "optionen": [
+        "Ein Kind dauerhaft vom Vorlesen befreien",
+        "Auf dieselbe Sorgenfrage immer wieder beruhigend antworten",
+        "Mutige Schritte konkret anerkennen",
+        "Für ein Kind antworten, wenn es gefragt wird",
+        "Gemeinsam eine Mutleiter mit kleinen Stufen planen"
+      ],
+      "richtig": [0, 1, 3],
+      "erklaerung": "Befreien, ständiges Rückversichern und Für-das-Kind-Antworten sind Formen der Anpassung an die Angst: Sie bringen kurzfristig Erleichterung, verhindern aber neue Erfahrungen. Mut anzuerkennen und kleine Schritte zu planen, hilft dagegen, die Angst zu überwinden."
+    },
+    {
+      "art": "fall",
+      "fall": "Jeden Morgen klammert sich Enzo (6) an seinen Vater und weint. Der Vater bleibt oft zwanzig Minuten in der Klasse und geht dann heimlich, wenn Enzo abgelenkt ist.",
+      "frage": "Was raten Sie?",
+      "optionen": [
+        "Der Vater soll noch länger bleiben, bis Enzo ganz ruhig ist.",
+        "Ein kurzer, warmer, immer gleicher Abschied: Der Vater sagt, wann er wiederkommt, und geht zügig; eine vertraute Person begleitet Enzo in eine feste Aufgabe.",
+        "Der Vater soll weiter heimlich gehen, damit Enzo den Abschied nicht bemerkt.",
+        "Enzo sollte erst wiederkommen, wenn die Angst vorbei ist."
+      ],
+      "richtig": [1],
+      "erklaerung": "Ein vorhersehbarer, kurzer Abschied gibt Sicherheit, und Enzo erlebt, dass er die Trennung bewältigt. Langes Bleiben verlängert die Anspannung, heimliches Gehen untergräbt das Vertrauen und verstärkt das Klammern. Zu Hause zu bleiben wäre Vermeidung – die Angst würde dadurch wachsen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum hält Vermeidung die Angst am Leben?",
+      "optionen": [
+        "Weil sie die Angst sofort senkt und das Kind so nie erlebt, dass es die Situation bewältigen könnte.",
+        "Weil vermeidende Kinder sich nicht genug anstrengen.",
+        "Weil Vermeidung die Angst langfristig immer verringert.",
+        "Weil Vermeidung nur bei Jugendlichen eine Rolle spielt."
+      ],
+      "richtig": [0],
+      "erklaerung": "Vermeidung wirkt wie eine Belohnung: Die Angst sinkt sofort. Dadurch fehlt die Erfahrung, dass die Situation bewältigbar ist, und die Angst wächst beim nächsten Mal. Mit mangelnder Anstrengung hat das nichts zu tun, und der Mechanismus wirkt in jedem Alter."
+    },
+    {
+      "art": "fall",
+      "fall": "Nina (14) hat seit Monaten große Angst, vor der Klasse zu sprechen. Nächste Woche steht ein benotetes Referat an. Sie bittet Sie, es ihr zu erlassen.",
+      "frage": "Welches Vorgehen ist am besten?",
+      "optionen": [
+        "Das Referat streichen, damit Nina nicht leidet.",
+        "Auf dem Referat vor der ganzen Klasse bestehen – da muss sie durch.",
+        "Das Referat ohne weiteren Plan durch eine schriftliche Arbeit ersetzen.",
+        "Mit Nina einen Zwischenschritt vereinbaren, etwa das Referat zuerst nur vor Ihnen oder in einer Kleingruppe zu halten, und das weitere Vorgehen mit ihr und den Eltern planen, bei Bedarf mit dem SePAS."
+      ],
+      "richtig": [3],
+      "erklaerung": "Eine angepasste, machbare Stufe verbindet Entlastung mit Mut: Nina macht eine Bewältigungserfahrung, statt auszuweichen. Streichen oder Ersetzen ohne Plan verstärkt die Vermeidung, und das Hineindrängen in die schwerste Situation überfordert sie. Weil die Angst seit Monaten besteht, ist außerdem eine fachliche Abklärung sinnvoll."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Entspannungsübungen allein reichen in der Regel aus, um eine Angststörung zu überwinden.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Entspannung kann helfen, in einer schwierigen Situation zu bleiben. Der wirksame Kern der Behandlung ist aber die schrittweise Konfrontation mit dem Gefürchteten, verbunden mit hilfreichen Gedanken – so arbeitet die kognitive Verhaltenstherapie."
+    },
+    {
+      "art": "fall",
+      "fall": "Kevin (10) hat seit zwei Wochen jeden Morgen Bauchweh und will nicht mehr in die Pause. Auf Nachfrage erzählt er, dass drei ältere Schüler ihm auf dem Pausenhof auflauern und ihn schubsen.",
+      "frage": "Was hat jetzt Vorrang?",
+      "optionen": [
+        "Eine Mutleiter für die Pause planen.",
+        "Ihm erklären, dass sein Bauchweh von der Angst kommt und harmlos ist.",
+        "Seine Sicherheit herstellen: den Bericht ernst nehmen, die Pausenaufsicht informieren, mit der Leitung das Vorgehen gegen das Mobbing klären und die Eltern einbeziehen.",
+        "Abwarten, ob sich das von allein legt."
+      ],
+      "richtig": [2],
+      "erklaerung": "Kevins Angst hat einen realen Grund. Das ist keine Angststörung, sondern ein Warnsignal – jetzt geht es um Schutz. Mutübungen wären fehl am Platz, weil die Gefahr echt ist, und Abwarten oder Beschwichtigen lässt ihn mit der Bedrohung allein."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können auf eine generalisierte Angst hindeuten? (mehrere richtig)",
+      "optionen": [
+        "Das Kind macht sich über viele verschiedene Dinge Sorgen – Noten, Gesundheit, Familie, Nachrichten.",
+        "Das Kind fragt sehr oft nach, ob etwas richtig ist.",
+        "Das Kind hat ausschließlich Angst vor Hunden.",
+        "Das Kind ist oft angespannt, müde und schläft schlecht.",
+        "Das Kind arbeitet perfektionistisch und gibt Arbeiten nicht ab, weil sie ihm nicht gut genug erscheinen."
+      ],
+      "richtig": [0, 1, 3, 4],
+      "erklaerung": "Generalisierte Angst zeigt sich in vielen, schwer kontrollierbaren Sorgen, Rückversicherung, Anspannung, Müdigkeit, Schlafproblemen und häufig Perfektionismus. Eine Angst, die sich nur auf Hunde richtet, spricht dagegen für eine spezifische Phobie."
+    },
+    {
+      "art": "fall",
+      "fall": "Vor jeder Probe fragt Sara (9) Sie mindestens fünfmal: „Und wenn ich eine schlechte Note bekomme?“ Sie beruhigen sie jedes Mal, doch die Fragen werden mehr.",
+      "frage": "Wie reagieren Sie am sinnvollsten?",
+      "optionen": [
+        "Einmal ruhig antworten, dann freundlich zurückgeben („Was denkst du selbst?“), eine kurze Sorgenzeit anbieten und anerkennen, wenn sie trotz Sorge weiterarbeitet.",
+        "Jede Frage ausführlich beantworten, bis sie beruhigt ist.",
+        "Sara sagen, dass ihr Fragen nervt.",
+        "Sara von Proben befreien, bis die Angst vorbei ist."
+      ],
+      "richtig": [0],
+      "erklaerung": "Ständiges Beruhigen hilft nur kurz und verstärkt das Nachfragen. Hilfreich ist, einmal zu antworten, Sara zu eigenen Gedanken anzuregen und den Sorgen einen begrenzten Platz zu geben. Abwertung beschämt, und eine Befreiung von Proben ist Vermeidung, die die Angst wachsen lässt."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Normale Ängste verändern sich mit dem Alter: Jüngere Kinder fürchten eher Dunkelheit und Monster, Jugendliche eher Blamage und Ablehnung.",
+      "richtig": [0],
+      "erklaerung": "Richtig. Ängste folgen der Entwicklung: vom Fremdeln und der Trennungsangst im Kleinkindalter über Dunkelheit, Tiere und Fantasiewesen im Vorschulalter bis zu sozialen Ängsten in der Jugend. Angststörungen beginnen oft in genau dem Alter, in dem die entsprechenden normalen Ängste auftreten (Beesdo et al., 2009)."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Eltern von Tim (11) erzählen, dass er aus Angst vor dem Erbrechen kaum noch isst und alle Ausflüge meidet. Sie fragen Sie, ob es dagegen ein Medikament gibt.",
+      "frage": "Was antworten Sie am ehesten?",
+      "optionen": [
+        "Dass ein Medikament die schnellste und beste Lösung ist.",
+        "Dass Sie keine Behandlung empfehlen können, bei Angststörungen aber meist eine kognitive Verhaltenstherapie die erste Wahl ist – und dass Sie ihnen, abgestimmt mit der Leitung, Wege zu einer baldigen fachlichen Abklärung zeigen.",
+        "Dass solche Ängste normal sind und sie abwarten sollen.",
+        "Dass die Schule das mit Mutübungen allein lösen kann."
+      ],
+      "richtig": [1],
+      "erklaerung": "Über eine Behandlung entscheiden Fachleute; Ihre Rolle ist, zu informieren und Wege zur Abklärung zu zeigen. Kognitive Verhaltenstherapie mit schrittweiser Konfrontation ist die erste Wahl, Medikamente kommen nur im Einzelfall hinzu. Weil Tim kaum noch isst, ist Abwarten keine Option, und die Schule allein kann eine so ausgeprägte Angst nicht behandeln."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Angststörung",
+      "erklaerung": "Angst, die deutlich stärker ist, als es Situation und Alter entspricht, länger anhält, zu Vermeidung führt und den Alltag beeinträchtigt."
+    },
+    {
+      "begriff": "Trennungsangst",
+      "erklaerung": "Übermäßige Angst vor der Trennung von Bezugspersonen, oft mit der Sorge, ihnen oder dem Kind selbst könnte etwas zustoßen."
+    },
+    {
+      "begriff": "Spezifische Phobie",
+      "erklaerung": "Starke, anhaltende Angst vor einem bestimmten Tier, Objekt oder einer Situation, etwa Hunden, Spritzen oder Erbrechen."
+    },
+    {
+      "begriff": "Soziale Angststörung",
+      "erklaerung": "Anhaltende Angst, von anderen negativ bewertet zu werden oder sich zu blamieren, mit Vermeidung sozialer Situationen."
+    },
+    {
+      "begriff": "Generalisierte Angststörung",
+      "erklaerung": "Übermäßige, schwer kontrollierbare Sorgen über viele Alltagsthemen, begleitet von Anspannung, Müdigkeit oder Schlafproblemen."
+    },
+    {
+      "begriff": "Verhaltenshemmung",
+      "erklaerung": "Temperamentsmerkmal: auffallende Vorsicht und Zurückhaltung in neuen Situationen und bei fremden Menschen, schon im Kleinkindalter. Erhöht das Risiko für Angststörungen."
+    },
+    {
+      "begriff": "Vermeidung",
+      "erklaerung": "Ausweichen vor angstauslösenden Situationen. Senkt die Angst kurzfristig, hält sie aber langfristig aufrecht."
+    },
+    {
+      "begriff": "Anpassung an die Angst",
+      "erklaerung": "Wenn Familie oder Schule ihr Verhalten nach der Angst des Kindes ausrichten (befreien, beruhigen, übernehmen) – gut gemeint, aber angsterhaltend."
+    },
+    {
+      "begriff": "Exposition",
+      "erklaerung": "Schrittweise, geplante Konfrontation mit dem Gefürchteten, bis das Kind erlebt, dass es die Situation bewältigt. Kern der Angstbehandlung."
+    },
+    {
+      "begriff": "Kognitive Verhaltenstherapie",
+      "erklaerung": "Psychotherapie, die an Gedanken und Verhalten ansetzt; bei Angststörungen mit Exposition die Behandlung der ersten Wahl."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "beesdo2009",
+    "kendallHedtke2006",
+    "niceCG159",
+    "schneiderMargraf2019",
+    "petermann2013"
+  ],
+  "verwandt": [
+    "schulvermeidung",
+    "depression",
+    "sprache-mutismus",
+    "zwang-tics",
+    "stress-gehirn",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "angst-verstehen",
+    "mut-leiter",
+    "ich-kann-mutig-sein",
+    "was-hilft-bei-angst",
+    "pruefungsangst"
+  ]
+}

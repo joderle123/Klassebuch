@@ -1,0 +1,397 @@
+{
+  "id": "intelligenz",
+  "bereich": "stoerungen",
+  "titel": "Intelligenz: Beeinträchtigung, Lernbehinderung, Hochbegabung",
+  "untertitel": "Was Intelligenz ist und was Tests messen – von der intellektuellen Beeinträchtigung bis zur Hochbegabung",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, was Intelligenztests messen, wie ein IQ-Wert zu verstehen ist und wo seine Grenzen liegen.",
+    "Sie können die Merkmale einer intellektuellen Beeinträchtigung beschreiben und die Bedeutung der adaptiven Fähigkeiten im Alltag erklären.",
+    "Sie können Kinder und Jugendliche mit intellektueller Beeinträchtigung oder allgemeinen Lernschwierigkeiten im Alltag gezielt unterstützen.",
+    "Sie erkennen Hinweise auf Hochbegabung, Underachievement und doppelte Außergewöhnlichkeit und können passende Schritte einleiten."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: Was Intelligenz ist und was Tests messen",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Luan, 10 Jahre, Cycle 3.2",
+          "text": "Im Bericht der Psychologin steht: „Gesamt-IQ 78 (95 %-Konfidenzintervall 73–84). Sprachverständnis deutlich unter dem Durchschnitt, visuell-räumliche Verarbeitung und fluides Schlussfolgern im Durchschnitt.“ Luan spricht zu Hause Albanisch und lebt seit drei Jahren in Luxemburg. Im Werken ist er geschickt und findet bei Knobelaufgaben oft als Erster eine Lösung; bei Sachtexten versteht er wenig. Seine Lehrerin fragt im Teamgespräch: „Heißt das jetzt, Luan ist lernbehindert?“",
+          "fragen": [
+            "Welche Informationen im Bericht sind für diese Frage wichtig?",
+            "Was müsste man über Luan noch wissen, bevor man ein Urteil fällt?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Intelligenz** bezeichnet die allgemeine Fähigkeit, zu verstehen, zu schlussfolgern, Probleme zu lösen, zu planen, abstrakt zu denken und aus Erfahrung zu lernen. Ähnlich beschreibt es das DSM-5-TR. Intelligenztests erfassen diese Fähigkeit über viele kleine Aufgaben. Ein verbreiteter Test für Schulkinder ist die WISC-V (Wechsler, 2014). Sie ergibt neben dem Gesamt-IQ fünf Bereiche: **Sprachverständnis**, **visuell-räumliche Verarbeitung**, **fluides Schlussfolgern** (neue Probleme logisch lösen), **Arbeitsgedächtnis** und **Verarbeitungsgeschwindigkeit**.\n\nDer IQ ist ein Vergleichswert: Er zeigt, wie ein Kind im Vergleich mit Gleichaltrigen abschneidet. Der Durchschnitt liegt bei 100. Etwa zwei Drittel aller Menschen liegen zwischen 85 und 115."
+        },
+        {
+          "art": "tabelle",
+          "titel": "IQ-Bereiche (Bezeichnungen je nach Test leicht verschieden)",
+          "spalten": ["IQ-Bereich", "Übliche Bezeichnung", "Anteil der Altersgruppe (etwa)"],
+          "zeilen": [
+            ["unter 70", "weit unterdurchschnittlich", "2 von 100"],
+            ["70–84", "unterdurchschnittlich (Grenzbereich)", "14 von 100"],
+            ["85–115", "durchschnittlich", "68 von 100"],
+            ["116–129", "überdurchschnittlich", "14 von 100"],
+            ["ab 130", "weit überdurchschnittlich", "2 von 100"]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was ein IQ-Wert nicht ist.** Er ist kein exaktes Maß, sondern eine Schätzung mit Messfehler; deshalb nennen gute Berichte ein **Konfidenzintervall** (etwa 73–84), also einen Bereich, in dem der „wahre“ Wert mit hoher Wahrscheinlichkeit liegt. Er ist bei jüngeren Kindern weniger stabil als bei älteren. Er sagt nichts über Kreativität, Fleiß, Humor, soziale Wärme oder praktische Geschicklichkeit. Und er hängt davon ab, ob das Kind die Testsprache und die Art der Aufgaben kennt. Bei mehrsprachigen Kindern und Kindern mit wenig Schulerfahrung unterschätzen sprachlastige Aufgaben die Fähigkeiten leicht; Fachleute berücksichtigen das bei der Auswahl und Deutung der Tests (AERA, APA & NCME, 2014).\n\nWie man Testwerte, Prozentränge und Konfidenzintervalle genau liest, erklärt das Modul „Testwerte lesen“."
+        },
+        {
+          "art": "text",
+          "text": "**Anlage und Umwelt.** Unterschiede in der Intelligenz gehen sowohl auf Erbanlagen als auch auf die Umwelt zurück. Anregung, Sprache, Gesundheit und vor allem der Schulbesuch wirken sich messbar aus; schwere Vernachlässigung oder lange Schulausfälle drücken die Werte. Intelligenz ist also kein Schicksal, das bei der Geburt feststeht – aber auch nicht beliebig formbar."
+        },
+        {
+          "art": "merke",
+          "text": "Ein IQ-Wert beschreibt, wie ein Kind an einem bestimmten Tag in bestimmten Aufgaben im Vergleich mit Gleichaltrigen abgeschnitten hat. Er ist eine wichtige Information – aber kein Urteil über den Wert oder die Zukunft eines Menschen."
+        }
+      ]
+    },
+    {
+      "titel": "Intellektuelle Beeinträchtigung erkennen und verstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Eine **intellektuelle Beeinträchtigung** (DSM-5-TR: intellektuelle Entwicklungsstörung; ICD-11: Störung der Intelligenzentwicklung) liegt vor, wenn drei Bedingungen zusammenkommen: Die **intellektuellen Fähigkeiten** sind deutlich eingeschränkt – in standardisierten Tests etwa zwei Standardabweichungen unter dem Durchschnitt, also ungefähr bei einem IQ von 70 oder darunter, unter Berücksichtigung des Messfehlers. Die **adaptiven Fähigkeiten**, also das, was ein Mensch im Alltag selbstständig bewältigt, sind deutlich eingeschränkt. Und beides **beginnt in der Entwicklungszeit**. Etwa 1 von 100 Menschen ist betroffen, die große Mehrheit im leichten Bereich.\n\nWichtig: Ein niedriger Testwert allein reicht nicht. Das DSM-5-TR bestimmt auch den Schweregrad (leicht, mittelgradig, schwer, schwerst) vor allem über die adaptiven Fähigkeiten – also danach, wie viel Unterstützung ein Mensch im Alltag braucht."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die drei Bereiche adaptiver Fähigkeiten",
+          "spalten": ["Bereich", "Was dazugehört", "Beispiele im Schulalltag"],
+          "zeilen": [
+            ["Konzeptuell", "Lesen, Schreiben, Rechnen, Umgang mit Zeit und Geld, Gedächtnis, Problemlösen", "Kann die Uhr nicht lesen, braucht für jede neue Aufgabe eine Vorführung, überträgt Gelerntes schwer auf neue Situationen"],
+            ["Sozial", "Verstehen anderer, Kommunikation, Freundschaften, soziales Urteilsvermögen", "Versteht Ironie und Anspielungen nicht, wird leicht ausgenutzt, glaubt Versprechen von Fremden"],
+            ["Praktisch", "Selbstversorgung, Hygiene, Organisation, Wege, Umgang mit Geld, später Arbeit", "Findet sich im neuen Schulgebäude nicht zurecht, braucht Hilfe beim Packen der Tasche oder beim Einkaufen"]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Ursachen.** Bei schwereren Formen findet sich häufig eine erkennbare Ursache: genetische Besonderheiten wie das Down-Syndrom (Trisomie 21) oder das Fragile-X-Syndrom, Alkohol in der Schwangerschaft (fetale Alkoholspektrumstörung), Komplikationen rund um die Geburt, schwere Infektionen oder Verletzungen des Gehirns. Bei leichten Formen bleibt die Ursache oft unklar; hier wirken meist viele Erbanlagen und Umweltbedingungen zusammen, darunter auch Armut und fehlende Anregung.\n\n**Begleitprobleme.** Kinder und Jugendliche mit intellektueller Beeinträchtigung haben deutlich häufiger zusätzliche psychische Probleme: Ängste, ADHS, Autismus, Depression oder herausforderndes Verhalten. Diese werden leicht übersehen, weil man jede Auffälligkeit „der Behinderung“ zuschreibt. Fachleute nennen das **diagnostische Überschattung**."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Bei einer intellektuellen Beeinträchtigung ist der Entwicklungsstand fest – Förderung ändert daran wenig.",
+          "fakt": "Die intellektuellen Grenzen bleiben meist bestehen, aber adaptive Fähigkeiten lassen sich lebenslang erweitern. Mit guter Förderung lernen viele Menschen mit leichter intellektueller Beeinträchtigung lesen, rechnen, selbstständig Wege gehen und arbeiten."
+        }
+      ]
+    },
+    {
+      "titel": "Unterstützung im Alltag",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kinder und Jugendliche mit intellektueller Beeinträchtigung lernen langsamer, brauchen mehr Wiederholung und tun sich mit Abstraktem, mit langen Anweisungen und mit dem Übertragen auf neue Situationen schwer. Sie lernen aber – besonders gut, wenn der Stoff konkret, anschaulich und für ihr Leben bedeutsam ist. Viel herausforderndes Verhalten entsteht aus Überforderung oder aus fehlenden Worten: Wer nicht sagen kann „Das verstehe ich nicht“ oder „Mir ist das zu laut“, zeigt es anders."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Kurze Sätze, ein Auftrag nach dem anderen; zeigen statt nur erklären (vormachen, Bildkarten, Fotos der Arbeitsschritte).",
+            "Verstehen prüfen: „Erzähl mir, was du jetzt machst“ statt „Hast du verstanden?“ – die Antwort auf die zweite Frage ist fast immer Ja.",
+            "Feste Abläufe, sichtbare Tagespläne, Übergänge ankündigen.",
+            "Viel Wiederholung in wechselnden, alltagsnahen Situationen: Geld abzählen im Schulkiosk statt nur auf dem Arbeitsblatt.",
+            "Mehr Zeit zum Antworten lassen – mindestens einige Sekunden aushalten, bevor Sie nachhelfen.",
+            "Selbstständigkeit gezielt üben: Wege, Einkaufen, Tasche packen, um Hilfe bitten.",
+            "Soziale Situationen konkret besprechen: Wer ist ein Freund? Was darf ein Fremder? Wann sage ich Nein?",
+            "Stärken und Interessen nutzen: Viele Jugendliche sind zuverlässig, hilfsbereit und ausdauernd bei praktischen Aufgaben."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Mit älteren Jugendlichen wie mit Kleinkindern sprechen – Sprache vereinfachen heißt nicht, kindlich zu werden.",
+            "Hilfe, die alles abnimmt: Was ein Kind selbst kann, sollte es auch selbst tun.",
+            "Herausforderndes Verhalten nur bestrafen, ohne nach der Überforderung dahinter zu fragen.",
+            "In Anwesenheit des Kindes über seine Defizite sprechen, als verstünde es nichts."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Mit Eltern zusammenarbeiten.** Eltern eines Kindes mit intellektueller Beeinträchtigung haben oft einen langen Weg hinter sich – von der ersten Sorge über viele Untersuchungen bis zur Diagnose. Manche haben die Einschränkung gut angenommen, andere hoffen noch, dass ihr Kind „aufholt“. Begegnen Sie beidem mit Respekt. Sprechen Sie konkret über Fortschritte und die nächsten Ziele und nutzen Sie das Wissen der Eltern: Sie wissen oft am besten, wie ihr Kind sich verständigt und was es beruhigt.\n\n**Den Blick nach vorn richten.** Ziel der Förderung ist ein möglichst selbstständiges Leben mit Arbeit, Freundschaften und Freizeit. Alltagsfähigkeiten, die heute geübt werden – Wege, Geld, Zeit, um Hilfe bitten –, entscheiden später mit darüber, wie viel Unterstützung ein Mensch braucht."
+        },
+        {
+          "art": "achtung",
+          "text": "Kinder und Jugendliche mit intellektueller Beeinträchtigung sind häufiger von Mobbing, Ausnutzung und sexuellen Übergriffen betroffen – auch im Internet. Sie erkennen Gefahren schlechter und vertrauen schneller. Nehmen Sie Andeutungen ernst, fragen Sie ruhig und offen nach und folgen Sie bei jedem Verdacht den internen Kinderschutzabläufen; informieren Sie die Leitung."
+        },
+        {
+          "art": "fall",
+          "titel": "Mara, 14 Jahre, Voie de préparation",
+          "text": "Mara hat eine leichte intellektuelle Beeinträchtigung. Sie ist fröhlich, hilfsbereit und hält sich gern an feste Abläufe. Ihrer Educatrice erzählt sie stolz, ein „neuer Freund“ aus einem Chat, 19 Jahre alt, schenke ihr Guthaben fürs Handy und wolle sie am Samstag allein treffen. Die Educatrice bleibt ruhig, fragt nach, was Mara über ihn weiß, und bespricht die Situation noch am selben Tag mit der Leitung, wie es die internen Kinderschutzabläufe vorsehen. Abgestimmt mit der Leitung werden die Eltern einbezogen. Später übt Mara mit ihr anhand konkreter Beispiele, woran man erkennt, ob jemand es gut mit einem meint.",
+          "fragen": [
+            "Welcher Bereich der adaptiven Fähigkeiten zeigt sich hier?",
+            "Warum ist konkretes Üben hier wirksamer als eine allgemeine Warnung?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Lernbehinderung und Grenzbereich: zwischen den Stühlen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Begriff **Lernbehinderung** stammt aus der deutschsprachigen Sonderpädagogik. Er ist keine Diagnose in DSM-5-TR oder ICD-11 und wird in Luxemburg kaum verwendet – dort spricht man meist von Schülerinnen und Schülern mit besonderem oder spezifischem Förderbedarf (élèves à besoins éducatifs particuliers ou spécifiques). Gemeint sind Kinder mit **umfassenden und lang andauernden Lernschwierigkeiten in vielen Fächern**. Ihre intellektuellen Fähigkeiten liegen häufig im unteren Durchschnitt oder im Grenzbereich (IQ etwa 70–84), also über der Schwelle zur intellektuellen Beeinträchtigung. Das DSM-5-TR nennt die grenzwertige intellektuelle Leistungsfähigkeit (englisch „borderline intellectual functioning“) nur unter den weiteren Umständen, die klinisch beachtet werden können – nicht als Störung.\n\nRechnerisch liegt etwa jedes siebte Kind in diesem Bereich. Diese Kinder fallen oft zwischen die Stühle: Für spezialisierte Hilfen sind sie „zu gut“, im Regelunterricht geraten sie bei steigenden Anforderungen immer weiter ins Hintertreffen. Häufig kommen ungünstige Lebensbedingungen, wenig Förderung in der frühen Kindheit oder sprachliche Hürden dazu."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was man unterscheiden sollte",
+          "punkte": [
+            { "wie": "Spezifische Lernstörung (LRS, Rechenstörung)", "unterschied": "Umschriebene Schwierigkeiten im Lesen, Schreiben oder Rechnen bei sonst durchschnittlichem Denken und Verstehen. Bei allgemeinen Lernschwierigkeiten ist das Lernen dagegen in vielen Bereichen verlangsamt." },
+            { "wie": "Sprache und Mehrsprachigkeit", "unterschied": "Niedrige Werte vor allem in sprachlichen Aufgaben, durchschnittliche Werte in sprachfreien. Das spricht eher für eine Sprachhürde als für eine allgemein niedrige Begabung." },
+            { "wie": "Fehlende Lerngelegenheiten", "unterschied": "Unterbrochene Schullaufbahn, Flucht, lange Krankheit: Mit gezieltem Unterricht holen diese Kinder oft deutlich auf. Ein einmaliger Test unterschätzt sie leicht." },
+            { "wie": "Seelische Belastung", "unterschied": "Angst, Depression oder Trauma beeinträchtigen Konzentration und Gedächtnis – auch in Tests. Die Leistungen waren früher oft besser." },
+            { "wie": "ADHS", "unterschied": "Schwankende Leistungen und niedrige Werte vor allem bei Arbeitsgedächtnis und Tempo; bei Aufgaben, die gut strukturiert sind, zeigt das Kind mehr." }
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was Kindern im Grenzbereich hilft",
+          "punkte": [
+            "Grundlagen sichern, bevor Neues kommt: lieber weniger Stoff, dafür wirklich verstanden.",
+            "Anschauliche Zugänge und Material auch in höheren Klassen.",
+            "Lernstrategien ausdrücklich zeigen und üben, statt sie vorauszusetzen.",
+            "Leistung am eigenen Fortschritt messen und Erfolge sichtbar machen.",
+            "Praktische Stärken ernst nehmen und bei der Orientierung nach der Grundschule einbeziehen."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Zurück zu Luan",
+          "text": "Im Teamgespräch erklärt die Psychologin: Luans niedriger Gesamt-IQ kommt vor allem durch die sprachlichen Aufgaben zustande, die er in seiner dritten Sprache gelöst hat. In den spracharmen Bereichen liegt er im Durchschnitt. Das Etikett „lernbehindert“ wäre deshalb vorschnell. Das Team vereinbart gezielte Sprachförderung in Deutsch, Hilfen beim Verstehen von Sachtexten (Bilder, Schlüsselwörter, Vorbesprechen des Themas) und eine erneute Einschätzung in einem Jahr.",
+          "fragen": [
+            "Welche Folgen hätte das Etikett „lernbehindert“ für Luans Schullaufbahn haben können?",
+            "Woran würden Sie in einem Jahr erkennen, ob die Einschätzung richtig war?"
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Ein Testwert im Grenzbereich ist kein Etikett, sondern ein Hinweis auf Unterstützungsbedarf. Prüfen Sie immer, ob Sprache, fehlende Schulerfahrung oder seelische Belastung den Wert gedrückt haben könnten."
+        }
+      ]
+    },
+    {
+      "titel": "Hochbegabung und Underachievement",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Von **Hochbegabung** spricht man meist ab einem IQ von etwa 130; das betrifft rechnerisch rund 2 von 100 Kindern. Die Grenze ist eine Übereinkunft, keine Naturtatsache. Andere Modelle beziehen zusätzlich Kreativität, Motivation und besondere Leistungen in einzelnen Bereichen ein, etwa Musik oder Mathematik. Hochbegabung ist keine Störung und steht nicht in den Klassifikationssystemen.\n\nEntgegen einem verbreiteten Bild sind hochbegabte Kinder als Gruppe im Durchschnitt **nicht häufiger** sozial oder emotional auffällig als andere. Schwierig wird es für einen Teil von ihnen, wenn Umfeld und Fähigkeiten nicht zusammenpassen – etwa bei dauerhafter Unterforderung.\n\nLeicht übersehen werden hochbegabte Mädchen, die sich unauffällig anpassen, Kinder, die in einer Zweit- oder Drittsprache lernen, und Kinder aus Familien mit wenig Bildungserfahrung. Ihre Begabung zeigt sich oft nicht in fehlerfreiem Deutsch oder Französisch, sondern in ungewöhnlichen Fragen, schnellen Lösungen oder Spezialwissen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Hochbegabte Kinder setzen sich ohnehin durch – sie brauchen keine Unterstützung.",
+          "fakt": "Auch hochbegabte Kinder brauchen passende Herausforderungen und Erwachsene, die sie begleiten. Ohne sie verlieren manche die Freude am Lernen, entwickeln keine Arbeitsstrategien oder passen sich nach unten an."
+        },
+        {
+          "art": "text",
+          "text": "**Underachievement** bedeutet: Die Schulleistungen liegen über längere Zeit deutlich unter dem, was die Fähigkeiten erwarten lassen. Häufige Hintergründe sind jahrelange Unterforderung, bei der das Kind nie gelernt hat, sich anzustrengen und mit Schwierigkeiten umzugehen; fehlende Lern- und Arbeitsstrategien, die erst gebraucht werden, wenn der Stoff anspruchsvoll wird; Perfektionismus und Angst vor Fehlern („Lieber gar nicht versuchen als scheitern“); der Wunsch, nicht als Streberin oder Streber zu gelten; eine unerkannte Lernstörung oder ADHS; Belastungen in der Familie."
+        },
+        {
+          "art": "liste",
+          "titel": "Hinweise, die auf eine unerkannte Hochbegabung deuten können",
+          "punkte": [
+            "Schnelles Auffassen, ungewöhnlich tiefe Fragen, großer Wortschatz oder Spezialwissen weit über dem Alter.",
+            "Langeweile, Stören oder Verweigern bei Wiederholungen – aber Feuer und Ausdauer bei anspruchsvollen Aufgaben.",
+            "Flüchtigkeitsfehler bei leichten Aufgaben, während schwierige gelöst werden.",
+            "Starker Gerechtigkeitssinn, Diskussionen über Regeln, die nicht begründet sind.",
+            "Rückzug oder Anpassung nach unten, um dazuzugehören – häufiger bei Mädchen und im Jugendalter."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Anreicherung: anspruchsvollere statt mehr Aufgaben, offene Fragestellungen, eigene Projekte.",
+            "Beschleunigung, wo es passt: Stoff schneller durchnehmen, ein Fach in einer höheren Klasse, im Einzelfall eine Klasse überspringen – sorgfältig vorbereitet und begleitet.",
+            "Lernen lernen: Planen, Üben, Umgang mit Fehlern – gerade für Kinder, denen früher alles zugeflogen ist.",
+            "Kontakt zu Gleichgesinnten, etwa über Kurse, Wettbewerbe oder Arbeitsgemeinschaften.",
+            "Anstrengung und Vorgehen loben, nicht „Du bist so klug“ – sonst kann jeder Fehler das Selbstbild bedrohen."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Tom, 8 Jahre, Cycle 2.2",
+          "text": "Tom liest seit dem Précoce, erklärt der Klasse, wie Vulkane entstehen, und zeichnet in jeder Stunde Maschinen an den Heftrand. Arbeitsblätter lässt er halb leer, bei Wiederholungen ruft er dazwischen oder schaukelt mit dem Stuhl. Die Lehrerin denkt an ADHS. Als sie ihm eine Knobelaufgabe für Cycle 3 gibt, arbeitet er zwanzig Minuten konzentriert und ruhig.",
+          "fragen": [
+            "Was spricht in Toms Verhalten eher für Unterforderung, was könnte dennoch zu ADHS passen?",
+            "Welche Beobachtungen würden Sie sammeln, bevor Sie mit den Eltern sprechen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Doppelte Außergewöhnlichkeit, Abklärung und Hilfe",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Manche Kinder sind hochbegabt **und** haben zugleich eine Störung, zum Beispiel ADHS, eine LRS oder eine Autismus-Spektrum-Störung. Man spricht von **doppelter Außergewöhnlichkeit** (englisch „twice exceptional“). Das Tückische: Begabung und Schwierigkeit können sich gegenseitig verdecken. Die Begabung gleicht die Schwäche lange aus, und die Schwäche drückt die Leistungen auf ein unauffälliges Mittelmaß. So wird oft keines von beiden erkannt – das Kind gilt als „faul“ oder „bequem“.\n\nBei Hochbegabung und ADHS kommt eine weitere Schwierigkeit hinzu: Unruhe und Unaufmerksamkeit können Folge von Unterforderung sein – oder Zeichen einer ADHS, die auch bei anspruchsvollen Aufgaben und außerhalb der Schule besteht. Beides kann gleichzeitig vorliegen. Diese Unterscheidung gehört in die Hände von Fachleuten."
+        },
+        {
+          "art": "liste",
+          "titel": "Hinweise auf doppelte Außergewöhnlichkeit",
+          "punkte": [
+            "Sehr große Unterschiede zwischen mündlichen Ideen und schriftlichen Leistungen.",
+            "Im Test sehr hohe Werte in einzelnen Bereichen (etwa Sprachverständnis) neben durchschnittlichen oder niedrigen (etwa Arbeitsgedächtnis, Verarbeitungsgeschwindigkeit).",
+            "Hohe Frustration, Wutausbrüche oder Rückzug bei Aufgaben, die anderen leichtfallen.",
+            "Leistungseinbruch, sobald Organisation und Selbstständigkeit gefragt sind, etwa beim Wechsel ins Lycée."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wer klärt ab?** Intelligenz- und Begabungsdiagnostik machen Psychologinnen und Psychologen – in der Schule, im CDSE über das Diagnostique-Team, in spezialisierten Kompetenzzentren oder in freier Praxis. In Luxemburg gibt es eigene Kompetenzzentren für die intellektuelle Entwicklung (Centre pour le développement intellectuel, CDI) und für Kinder und Jugendliche mit hohem Potenzial (Centre pour enfants et jeunes à haut potentiel). Zu einer guten Abklärung gehören neben dem Test die Entwicklungsgeschichte, die Sprachen des Kindes, Einschätzungen der Alltagsfähigkeiten und Beobachtungen aus der Schule.\n\n**Ihr Beitrag:** Beschreiben Sie konkret, was ein Kind kann und wo es scheitert, bei welchen Aufgaben es aufblüht und wann es abschaltet. Bewahren Sie Arbeitsproben auf. Und lesen Sie Berichte als Arbeitsgrundlage: Was bedeuten die Werte für den Unterricht morgen?"
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und den Eltern über eine psychologische Abklärung, wenn ein Kind trotz Unterstützung in vielen Bereichen deutlich langsamer lernt und im Alltag viel Hilfe braucht, wenn Sie eine Hochbegabung vermuten und das Kind unter Langeweile, Leistungsabfall oder Außenseiterrolle leidet, oder wenn auffällige Unterschiede zwischen Stärken und Schwächen bestehen. Bei Hinweisen auf Ausnutzung oder Übergriffe gelten sofort die internen Kinderschutzabläufe."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet ein IQ-Wert von 100?",
+      "optionen": [
+        "Das Kind hat alle Aufgaben des Tests richtig gelöst.",
+        "Das Kind hat im Vergleich mit Gleichaltrigen genau durchschnittlich abgeschnitten.",
+        "Das Kind ist geistig auf dem Stand eines Zehnjährigen.",
+        "Der Wert bleibt ein Leben lang unverändert."
+      ],
+      "richtig": [1],
+      "erklaerung": "Der IQ ist ein Vergleichswert mit dem Durchschnitt 100 in der jeweiligen Altersgruppe. Er gibt weder einen Anteil richtiger Aufgaben noch ein „geistiges Alter“ an. Er ist ab dem Schulalter recht stabil, aber nicht unveränderlich und immer mit einem Messfehler behaftet."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was gehört zu den Voraussetzungen für die Diagnose einer intellektuellen Beeinträchtigung? (mehrere richtig)",
+      "optionen": [
+        "Deutlich eingeschränkte intellektuelle Fähigkeiten, erfasst mit standardisierten Tests und klinischer Einschätzung",
+        "Deutliche Einschränkungen der adaptiven Fähigkeiten im Alltag",
+        "Beginn in der Entwicklungszeit",
+        "Ein IQ-Wert unter 85",
+        "Eine nachgewiesene genetische Ursache"
+      ],
+      "richtig": [0, 1, 2],
+      "erklaerung": "Nötig sind eingeschränkte intellektuelle Fähigkeiten (etwa zwei Standardabweichungen unter dem Mittel, also um 70 oder darunter), eingeschränkte Alltagsfähigkeiten und ein Beginn in der Entwicklungszeit. Ein IQ zwischen 70 und 84 liegt im Grenzbereich und ist keine intellektuelle Beeinträchtigung. Eine Ursache muss nicht bekannt sein – bei leichten Formen bleibt sie oft unklar."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Im DSM-5-TR wird der Schweregrad einer intellektuellen Beeinträchtigung vor allem nach den adaptiven Fähigkeiten bestimmt und nicht allein nach dem IQ.",
+      "richtig": [0],
+      "erklaerung": "Richtig. Maßgeblich ist, wie viel Unterstützung ein Mensch im Alltag braucht – in den Bereichen konzeptuell, sozial und praktisch. Der IQ ist eine wichtige, aber nicht die einzige Information."
+    },
+    {
+      "art": "fall",
+      "fall": "Jonas (14) hat eine leichte intellektuelle Beeinträchtigung. Im Werkunterricht erklärt der Lehrer mündlich eine neue Aufgabe mit fünf Arbeitsschritten. Jonas beginnt, stockt, wirft dann das Werkzeug hin und schreit: „Das ist scheiße!“",
+      "frage": "Welche Reaktion ist am hilfreichsten?",
+      "optionen": [
+        "Eine Strafe verhängen, damit Jonas lernt, dass Werkzeug nicht geworfen wird.",
+        "Nichts unternehmen, weil solches Verhalten zur Beeinträchtigung gehört.",
+        "Nach der Beruhigung die Aufgabe in einzelnen Schritten vormachen, mit Bildern stützen und Jonas erzählen lassen, was er als Nächstes tut.",
+        "Jonas künftig nur noch einfache Aufräumarbeiten geben."
+      ],
+      "richtig": [2],
+      "erklaerung": "Fünf mündliche Schritte auf einmal überfordern das Arbeitsgedächtnis; der Ausbruch ist sehr wahrscheinlich Ausdruck dieser Überforderung. Hilfreich sind Beruhigung, dann Vormachen, Bildstützen und das Prüfen des Verstehens. Strafe allein ändert die Ursache nicht, das Verhalten einfach „der Behinderung“ zuzuschreiben ist diagnostische Überschattung, und nur noch Aufräumarbeiten nehmen Jonas Lernchancen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist mit „diagnostischer Überschattung“ gemeint?",
+      "optionen": [
+        "Zusätzliche psychische Probleme werden übersehen, weil man alle Auffälligkeiten der intellektuellen Beeinträchtigung zuschreibt.",
+        "Ein Testergebnis wird durch Müdigkeit am Testtag verfälscht.",
+        "Eine Diagnose wird geheim gehalten, um das Kind zu schützen.",
+        "Eine Hochbegabung verdeckt eine Lernstörung."
+      ],
+      "richtig": [0],
+      "erklaerung": "Diagnostische Überschattung bedeutet, dass etwa Angst, Depression oder ADHS nicht erkannt werden, weil man jedes auffällige Verhalten „der Behinderung“ zuordnet. Müdigkeit am Testtag ist ein Messfehler. Dass Begabung und Störung sich gegenseitig verdecken, beschreibt die doppelte Außergewöhnlichkeit."
+    },
+    {
+      "art": "fall",
+      "fall": "Tom (8) liest seit dem Précoce, stört aber bei Wiederholungen und lässt Arbeitsblätter halb leer. Bei einer anspruchsvollen Knobelaufgabe arbeitet er zwanzig Minuten ruhig und konzentriert. Eine Kollegin sagt: „Das ist doch eindeutig ADHS.“",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Den Eltern empfehlen, beim Kinderarzt nach ADHS-Medikamenten zu fragen.",
+        "Tom zusätzlich dieselben Arbeitsblätter als Hausaufgabe geben, damit er lernt, auch Langweiliges zu erledigen.",
+        "Abwarten – hochbegabte Kinder kommen allein zurecht.",
+        "Tom gezielt anspruchsvollere Aufgaben geben, beobachten, wie sich sein Verhalten verändert, und bei anhaltenden Fragen mit den Eltern über eine Abklärung sprechen."
+      ],
+      "richtig": [3],
+      "erklaerung": "Toms Muster passt gut zu Unterforderung, schließt ADHS aber nicht sicher aus. Passende Herausforderungen und genaues Beobachten liefern die nötigen Informationen; eine Abklärung kann Begabung und Aufmerksamkeit gemeinsam betrachten. Eine Medikamentenempfehlung steht pädagogischen Fachkräften nicht zu, mehr vom Gleichen verstärkt die Langeweile, und Abwarten lässt Toms Lernfreude verkümmern."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was kann zu Underachievement bei hochbegabten Jugendlichen beitragen? (mehrere richtig)",
+      "optionen": [
+        "Jahrelange Unterforderung, bei der das Kind nie gelernt hat, sich anzustrengen",
+        "Fehlende Lern- und Arbeitsstrategien",
+        "Perfektionismus und Angst vor Fehlern",
+        "Eine unerkannte LRS oder ADHS",
+        "Ein zu hoher IQ, der das Gedächtnis überlastet"
+      ],
+      "richtig": [0, 1, 2, 3],
+      "erklaerung": "Unterforderung, fehlende Strategien, Angst vor Fehlern und unerkannte Störungen sind typische Hintergründe von Underachievement. Dazu kommen oft der Wunsch, nicht aufzufallen, und familiäre Belastungen. Dass ein hoher IQ das Gedächtnis „überlastet“, ist ein Mythos."
+    },
+    {
+      "art": "fall",
+      "fall": "Léa (13, 6e) galt in der Grundschule als Überfliegerin, ohne je zu lernen. Seit dem Wechsel ins Lycée sind ihre Noten stark gefallen, Hausaufgaben fehlen, und sie sagt: „Ich bin wohl doch nicht so schlau, wie alle dachten.“",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Léa klarmachen, dass sie einfach faul geworden ist.",
+        "Mit Léa über ihre Sicht sprechen, Lern- und Arbeitsstrategien gezielt aufbauen, anspruchsvolle Aufgaben mit Aussicht auf Erfolg anbieten und die Eltern einbeziehen.",
+        "Abwarten, das ist die Pubertät.",
+        "Ihr eine niedrigere Klasse empfehlen, um den Druck zu nehmen."
+      ],
+      "richtig": [1],
+      "erklaerung": "Léa hat vermutlich nie gelernt, wie man lernt, und erlebt die ersten Schwierigkeiten als Beweis, nicht begabt zu sein. Sie braucht Strategien, Erfolgserlebnisse bei echter Herausforderung und Menschen, die ihr Selbstbild auffangen. „Faul“ verstärkt die Scham, Abwarten verschenkt Zeit, und eine niedrigere Klasse verschärft die Unterforderung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Hochbegabte Kinder sind als Gruppe häufiger sozial und emotional auffällig als andere Kinder.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Große Studien zeigen, dass hochbegabte Kinder im Durchschnitt nicht häufiger belastet sind. Probleme entstehen bei einem Teil von ihnen, wenn Umfeld und Fähigkeiten nicht zusammenpassen – etwa bei dauerhafter Unterforderung oder einer zusätzlichen Störung."
+    },
+    {
+      "art": "fall",
+      "fall": "Maxime (12) hat im Unterricht originelle Ideen und diskutiert auf hohem Niveau. Seine schriftlichen Arbeiten sind aber kurz, unordentlich und voller Fehler. Im Testbericht stehen ein sehr hohes Sprachverständnis und eine deutlich niedrigere Verarbeitungsgeschwindigkeit.",
+      "frage": "Welche Einschätzung passt am besten?",
+      "optionen": [
+        "Der Test ist ungültig, weil die Werte nicht zusammenpassen.",
+        "Maxime kann nicht hochbegabt sein, weil seine schriftlichen Leistungen schwach sind.",
+        "Das Profil kann auf doppelte Außergewöhnlichkeit hinweisen: Stärken fördern und die Schwierigkeiten fachlich genauer abklären lassen.",
+        "Maxime ist bequem und sollte mehr schreiben üben."
+      ],
+      "richtig": [2],
+      "erklaerung": "Große Unterschiede zwischen Stärken und Schwächen sind bei doppelter Außergewöhnlichkeit typisch und machen einen Test nicht ungültig. Schwache schriftliche Leistungen schließen eine Hochbegabung nicht aus. Ob eine LRS, ADHS oder etwas anderes dahintersteckt, klären Fachleute; „bequem“ übersieht die mögliche Störung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was unterscheidet allgemeine Lernschwierigkeiten (Lernbehinderung) von einer spezifischen Lernstörung?",
+      "optionen": [
+        "Bei allgemeinen Lernschwierigkeiten ist das Lernen in vielen Bereichen verlangsamt; bei einer spezifischen Lernstörung sind umschriebene Fertigkeiten betroffen.",
+        "Allgemeine Lernschwierigkeiten betreffen nur Mathematik.",
+        "Eine spezifische Lernstörung bedeutet immer einen IQ unter 70.",
+        "Es gibt keinen Unterschied; beide Begriffe meinen dasselbe."
+      ],
+      "richtig": [0],
+      "erklaerung": "Allgemeine Lernschwierigkeiten zeigen sich in vielen Fächern und im Denken und Verstehen insgesamt, oft bei Werten im Grenzbereich. Bei einer spezifischen Lernstörung sind Lesen, Schreiben oder Rechnen betroffen, während das allgemeine Denken meist im Durchschnitt liegt. Ein IQ unter 70 spricht für eine intellektuelle Beeinträchtigung, nicht für eine spezifische Lernstörung."
+    }
+  ],
+  "glossar": [
+    { "begriff": "Intelligenzquotient (IQ)", "erklaerung": "Vergleichswert aus einem standardisierten Intelligenztest. Der Durchschnitt der Altersgruppe liegt bei 100; etwa zwei Drittel liegen zwischen 85 und 115." },
+    { "begriff": "Konfidenzintervall", "erklaerung": "Bereich, in dem der „wahre“ Testwert mit hoher Wahrscheinlichkeit liegt. Macht sichtbar, dass jeder Test einen Messfehler hat." },
+    { "begriff": "Adaptive Fähigkeiten", "erklaerung": "Fähigkeiten, den Alltag altersgemäß selbstständig zu bewältigen – in drei Bereichen: konzeptuell, sozial und praktisch." },
+    { "begriff": "Intellektuelle Beeinträchtigung", "erklaerung": "Deutlich eingeschränkte intellektuelle und adaptive Fähigkeiten mit Beginn in der Entwicklungszeit (DSM-5-TR: intellektuelle Entwicklungsstörung; ICD-11: Störung der Intelligenzentwicklung)." },
+    { "begriff": "Lernbehinderung", "erklaerung": "Pädagogischer Begriff aus dem deutschsprachigen Raum für umfassende, lang andauernde Lernschwierigkeiten, oft bei intellektuellen Fähigkeiten im Grenzbereich. Keine klinische Diagnose." },
+    { "begriff": "Diagnostische Überschattung", "erklaerung": "Zusätzliche psychische Probleme werden übersehen, weil alle Auffälligkeiten einer bekannten Beeinträchtigung zugeschrieben werden." },
+    { "begriff": "Hochbegabung", "erklaerung": "Weit überdurchschnittliche intellektuelle Fähigkeiten, meist definiert ab einem IQ von etwa 130. Keine Störung." },
+    { "begriff": "Underachievement", "erklaerung": "Schulleistungen, die über längere Zeit deutlich unter den Fähigkeiten eines Kindes liegen." },
+    { "begriff": "Doppelte Außergewöhnlichkeit", "erklaerung": "Hochbegabung zusammen mit einer Störung wie ADHS, LRS oder Autismus; beides kann sich gegenseitig verdecken (englisch „twice exceptional“)." }
+  ],
+  "quellen": ["dsm5tr", "icd11", "wechsler2014", "aeraStandards2014", "rutter2015", "petermann2013", "schneiderLindenberger2018"],
+  "verwandt": ["testwerte-lesen", "lernstoerungen", "adhs", "diagnostik-grundbegriffe", "inklusion-luxemburg", "kinderschutz"],
+  "toolbox": ["mein-staerkenprofil", "tagesplan-bildkarten", "schritt-fuer-schritt", "fehler-sind-helfer", "wie-lerne-ich-am-besten"]
+}

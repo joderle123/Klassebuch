@@ -1,0 +1,533 @@
+{
+  "id": "selbstverletzung-suizid",
+  "bereich": "stoerungen",
+  "titel": "Selbstverletzung und Suizidalität – erkennen und handeln",
+  "untertitel": "Warnzeichen erkennen, direkt und ruhig ansprechen, Sicherheit herstellen, weiterleiten und nachsorgen",
+  "dauer": 55,
+  "lernziele": [
+    "Sie können nichtsuizidale Selbstverletzung und Suizidalität unterscheiden und erklären, warum beides immer ernst genommen wird.",
+    "Sie kennen die Funktionen von Selbstverletzung sowie Risikofaktoren und Warnzeichen für Suizidalität.",
+    "Sie können einen jungen Menschen direkt und ruhig auf Selbstverletzung und Suizidgedanken ansprechen.",
+    "Sie wissen, was in einer akuten Situation zu tun ist: Sicherheit zuerst, nicht allein lassen, nach den internen Abläufen weiterleiten, bei akuter Gefahr Notruf 112.",
+    "Sie kennen den Sicherheitsplan, wissen, wie Nachsorge in der Schule gelingt, und wie Sie sich selbst schützen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Aylin, 14 Jahre, Lycée",
+          "text": "Im Sportunterricht bemerkt die Lehrerin frische Verletzungen an Aylins Unterarm. Seit Wochen trägt Aylin auch bei warmem Wetter lange Ärmel. Sie hat sich aus ihrer Freundesgruppe zurückgezogen, seit in einem Klassenchat Fotos von ihr kursieren. In einem Aufsatz schreibt sie: „Manchmal wäre es einfacher, gar nicht mehr da zu sein.“ Die Lehrerin ist erschrocken und unsicher: Soll sie Aylin darauf ansprechen – oder macht sie damit alles schlimmer?",
+          "fragen": [
+            "Was beunruhigt Sie an dieser Situation am meisten?",
+            "Was würden Sie heute noch tun – und in welcher Reihenfolge?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Selbstverletzung und Suizidalität gehören zu den Situationen, die Fachkräfte am meisten verunsichern. Beide Begriffe hängen zusammen, bedeuten aber nicht dasselbe.\n\nBei der **nichtsuizidalen Selbstverletzung** (NSSV) fügt sich ein junger Mensch absichtlich Verletzungen zu, ohne sterben zu wollen – am häufigsten durch Schneiden oder Ritzen der Haut, aber auch durch Kratzen, Schlagen oder Verbrennen (Nock, 2010). **Suizidalität** umfasst alle Gedanken, Pläne und Handlungen, die darauf gerichtet sind, das eigene Leben zu beenden: vom passiven Wunsch, nicht mehr da zu sein, über Suizidgedanken und konkrete Pläne bis zum Suizidversuch. Die NICE-Leitlinie verwendet den Begriff **Selbstverletzung** bewusst für jede absichtliche Selbstverletzung oder Selbstvergiftung, unabhängig vom Motiv – denn die Absicht ist von außen oft nicht erkennbar und kann sich ändern (NICE, 2022).\n\nSelbstverletzung ist unter Jugendlichen häufig: In Befragungen berichtet – je nach Studie und Definition – etwa jede oder jeder zehnte Jugendliche oder mehr, sich schon einmal selbst verletzt zu haben, Mädchen häufiger als Jungen. Suizid gehört weltweit zu den häufigsten Todesursachen junger Menschen, und eine frühere Selbstverletzung ist einer der stärksten Risikofaktoren dafür (Hawton et al., 2012). Bei Kindern unter zwölf Jahren sind Suizide sehr selten; Suizidgedanken kommen aber auch bei Kindern vor und werden genauso ernst genommen.\n\nSelbstverletzung und Suizidalität sind keine eigenen Diagnosen. Sie können bei vielen Belastungen und Störungen auftreten – etwa bei Depression, Traumafolgen, Essstörungen, Sucht oder emotional instabilen Entwicklungen im Jugendalter (Kaess et al., 2014) –, manchmal auch ohne erkennbare Störung. DSM-5-TR erfasst Suizidverhalten und nichtsuizidale Selbstverletzung deshalb als eigene Merkmale, die unabhängig von einer Diagnose dokumentiert werden."
+        },
+        {
+          "art": "merke",
+          "text": "Ihre Rolle ist klar umrissen: **hinsehen, ansprechen, Sicherheit herstellen, weiterleiten.** Sie müssen weder ein Risiko berechnen noch behandeln. Aber Sie sind oft die erste erwachsene Person, die etwas bemerkt – und das kann entscheidend sein."
+        }
+      ]
+    },
+    {
+      "titel": "Selbstverletzung verstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die meisten Jugendlichen verletzen sich, um unerträgliche Gefühle zu beenden (Nock, 2010). Das wirkt – kurzfristig. Genau deshalb ist Selbstverletzung schwer aufzugeben: Die schnelle Erleichterung verstärkt das Verhalten, während langfristig Scham, Heimlichkeit und neue Belastungen entstehen. Auch wenn andere Menschen dabei eine Rolle spielen, ist Selbstverletzung kein „Theater“, sondern ein Zeichen echter Not."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wozu Selbstverletzung dienen kann",
+          "spalten": [
+            "Funktion",
+            "Wie Jugendliche es beschreiben"
+          ],
+          "zeilen": [
+            [
+              "Unerträgliche Gefühle beenden (am häufigsten)",
+              "„Danach ist der Druck endlich weg.“"
+            ],
+            [
+              "Sich wieder spüren",
+              "„Ich fühle sonst gar nichts mehr, alles ist wie in Watte.“"
+            ],
+            [
+              "Sich bestrafen",
+              "„Ich habe es nicht anders verdient.“"
+            ],
+            [
+              "Not zeigen, für die Worte fehlen",
+              "„Sonst merkt ja niemand, wie schlecht es mir geht.“"
+            ],
+            [
+              "Belastendem entgehen",
+              "„Dann lassen mich alle in Ruhe.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Risiken.** Selbstverletzung beginnt meist im frühen Jugendalter. Das Risiko steigt bei großen Schwierigkeiten, Gefühle zu regulieren, starker Selbstkritik, belastenden Erfahrungen wie Gewalt oder Missbrauch, Mobbing, Depression und Essstörungen. Auch Freundinnen und Freunde, die sich selbst verletzen, und entsprechende Inhalte in sozialen Medien erhöhen das Risiko – Selbstverletzung kann sich in Gruppen ausbreiten (Nock, 2010; Hawton et al., 2012)."
+        },
+        {
+          "art": "liste",
+          "titel": "Mögliche Hinweise auf Selbstverletzung",
+          "punkte": [
+            "Unerklärte Verletzungen, Kratzer, Narben oder Verbände, oft an Unterarmen oder Oberschenkeln",
+            "Lange Kleidung auch bei Hitze, Meiden von Sport, Schwimmen und Umkleiden",
+            "Ausweichende Erklärungen für Verletzungen („Das war die Katze.“)",
+            "Rückzug, Stimmungsschwankungen, starke Selbstabwertung",
+            "Hinweise von Mitschülerinnen und Mitschülern oder Inhalte in sozialen Medien"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer sich selbst verletzt, will nur Aufmerksamkeit.",
+          "fakt": "Die meisten Jugendlichen verletzen sich heimlich und schämen sich dafür. Selbstverletzung dient vor allem dazu, unerträgliche Gefühle zu regulieren. Auch wenn sie Aufmerksamkeit bewirkt, zeigt sie echte Not – und verdient eine ernsthafte Reaktion."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer sich ritzt, will sich umbringen.",
+          "fakt": "Meist besteht bei Selbstverletzung keine Absicht zu sterben. Trotzdem ist sie ein wichtiger Risikofaktor für spätere Suizidversuche. Deshalb gilt: Bei jeder Selbstverletzung auch nach Suizidgedanken fragen."
+        }
+      ]
+    },
+    {
+      "titel": "Suizidalität verstehen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Suizidale Krisen entstehen selten aus einem einzigen Grund. Meist treffen länger bestehende Belastungen und ein akuter Auslöser zusammen. Zu den wichtigsten Risikofaktoren gehören frühere Selbstverletzungen oder Suizidversuche, psychische Erkrankungen wie Depression, Substanzkonsum, belastende Kindheitserfahrungen, Suizide in Familie oder Umfeld, Mobbing und schwere Konflikte mit Eltern oder Gleichaltrigen (Hawton et al., 2012). Auch Jugendliche, die wegen ihrer sexuellen Orientierung oder geschlechtlichen Identität Ablehnung erfahren, sind stärker gefährdet. Akute Auslöser sind oft Kränkungen und Verluste: eine Trennung, eine Bloßstellung im Netz, eine drohende Strafe, ein schulisches Scheitern.\n\nEin hilfreiches Modell stammt von Joiner (2005). Nach seiner interpersonalen Theorie entsteht der Wunsch zu sterben vor allem dann, wenn zwei Erfahrungen zusammenkommen: das Gefühl, **nicht dazuzugehören**, und das Gefühl, **anderen nur zur Last zu fallen**. Damit aus dem Wunsch eine Handlung wird, braucht es nach Joiner zusätzlich eine erworbene „Fähigkeit“: Durch wiederholte schmerzhafte oder beängstigende Erfahrungen – etwa wiederholte Selbstverletzung – geht ein Teil der natürlichen Scheu vor Schmerz und Tod verloren. Die Theorie ist ein Modell, keine Gewissheit. Sie hat aber zwei praktische Folgen: Zugehörigkeit und das Gefühl, gebraucht zu werden, schützen – und Selbstverletzung ist immer ein Anlass, auch nach Suizidgedanken zu fragen."
+        },
+        {
+          "art": "liste",
+          "titel": "Warnzeichen für eine akute Krise – ernst nehmen und handeln",
+          "punkte": [
+            "Sprechen, Schreiben oder Posten über Tod, Sterben oder Suizid; der Wunsch, nicht mehr da zu sein",
+            "Hoffnungslosigkeit: „Es wird sowieso nie besser.“ – „Es hat alles keinen Sinn.“",
+            "Das Gefühl, eine Last zu sein: „Ohne mich wärt ihr besser dran.“",
+            "Abschied nehmen, wichtige Dinge verschenken, Abschiedsbriefe oder -nachrichten",
+            "Hinweise, dass jemand nach Möglichkeiten sucht, sich das Leben zu nehmen",
+            "Plötzliche auffällige Ruhe nach einer langen, sehr belasteten Zeit",
+            "Starker Rückzug, mehr Alkohol oder Drogen, riskantes Verhalten",
+            "Frische Selbstverletzungen oder ein kürzlich zurückliegender Suizidversuch"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was schützt.** Das Gefühl, dazuzugehören und gebraucht zu werden, mindestens eine vertrauenswürdige erwachsene Person, tragfähige Beziehungen in Familie und Schule, die Fähigkeit, sich Hilfe zu holen, Hoffnung und Pläne für die Zukunft – und ein erschwerter Zugang zu gefährlichen Mitteln. Vieles davon kann die Schule stärken."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer über Suizid spricht, tut es nicht.",
+          "fakt": "Viele Menschen, die sich das Leben genommen haben, haben vorher darüber gesprochen oder Hinweise gegeben. Jede Äußerung verdient eine ernsthafte Reaktion."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer sich wirklich das Leben nehmen will, lässt sich nicht aufhalten.",
+          "fakt": "Suizidale Krisen sind oft vorübergehend, und die meisten Betroffenen sind hin- und hergerissen zwischen Leben und Sterben. Hilfe in der Krise, Behandlung und ein erschwerter Zugang zu gefährlichen Mitteln retten Leben."
+        }
+      ]
+    },
+    {
+      "titel": "Ansprechen: direkt und ruhig",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Fachkräfte fürchten, mit einer Frage nach Suizidgedanken etwas auszulösen. Die Forschung zeigt das Gegenteil: Direktes Nachfragen erhöht das Risiko nicht, und viele Betroffene erleben es als Entlastung, endlich darüber sprechen zu können. Umschreibungen wie „Du machst doch keine Dummheiten, oder?“ laden dagegen zum Verneinen ein. Klare Worte zeigen, dass Sie das Thema aushalten. Begegnen Sie dem jungen Menschen mit Respekt und Mitgefühl und ohne zu werten (NICE, 2022)."
+        },
+        {
+          "art": "liste",
+          "titel": "So können Sie fragen",
+          "punkte": [
+            "Einstieg mit Beobachtung und Sorge: „Mir ist aufgefallen, dass du dich zurückziehst und sehr traurig wirkst. Ich mache mir Sorgen um dich.“",
+            "Selbstverletzung: „Manche Jugendliche verletzen sich selbst, wenn der Druck zu groß wird. Kennst du das auch?“",
+            "Suizidgedanken: „Denkst du manchmal daran, nicht mehr leben zu wollen?“ – „Denkst du daran, dir das Leben zu nehmen?“",
+            "Wenn ja: „Wie oft sind diese Gedanken da?“ – „Gibt es schon einen Plan, oder hast du etwas vorbereitet?“",
+            "Anerkennen: „Danke, dass du mir das anvertraust. Du musst damit nicht allein bleiben.“"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Haltung im Gespräch",
+          "punkte": [
+            "Ruhe bewahren und ausstrahlen, auch wenn Sie innerlich erschrecken.",
+            "Zuhören, Gefühle ernst nehmen, nicht beschwichtigen („Das wird schon wieder“) und nicht bewerten.",
+            "Bei Selbstverletzung sachlich und freundlich bleiben: fragen, ob die Wunden versorgt sind, ohne Einzelheiten zu erfragen.",
+            "Ehrlich über die Grenzen der Vertraulichkeit sprechen: „Das kann ich nicht für mich behalten, weil es um deine Sicherheit geht. Ich sage dir, mit wem ich spreche.“",
+            "Den jungen Menschen beteiligen: Wer soll informiert werden, wer soll dabei sein, was braucht er jetzt?"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie vermeiden sollten",
+          "punkte": [
+            "Schock, Ekel oder Ärger zeigen; Vorwürfe („Wie kannst du deinen Eltern das antun?“).",
+            "Moralisieren oder kleinreden („Anderen geht es viel schlechter.“).",
+            "Verlangen, die Verletzungen zu zeigen, oder nach Einzelheiten der Methode fragen.",
+            "Versprechen erzwingen („Versprich mir, dass du das nie wieder tust.“): Es gibt keinen Nachweis, dass solche Abmachungen schützen, und sie können dazu führen, dass Selbstverletzung verheimlicht wird.",
+            "Geheimhaltung zusagen oder allein weitermachen.",
+            "Selbstverletzung bestrafen, etwa mit Ausschluss oder Sanktionen."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Das Gespräch mit Aylin",
+          "text": "Die Lehrerin bittet Aylin nach dem Unterricht in einen ruhigen Raum. Sie spricht ihre Sorge an, erwähnt die Verletzungen und den Satz im Aufsatz und fragt direkt: „Denkst du daran, dir das Leben zu nehmen?“ Aylin weint und sagt: „Manchmal schon. Aber ich weiß nicht, ob ich es wirklich tun würde.“ Einen Plan habe sie nicht. Die Lehrerin bleibt ruhig, dankt ihr für die Offenheit und erklärt, dass sie das nicht für sich behalten kann. Sie fragt, wen Aylin dabeihaben möchte, und lässt die Psychologin des SePAS holen; bis diese kommt, bleibt sie bei Aylin. Gemeinsam rufen sie Aylins Mutter an. Noch am selben Tag wird Aylin in der Kinder- und Jugendpsychiatrie vorgestellt. Die Lehrerin informiert die Direktion und hält das Gespräch schriftlich fest.",
+          "fragen": [
+            "Welche Schritte hat die Lehrerin eingehalten?",
+            "Was hätte sie anders machen müssen, wenn Aylin einen konkreten Plan genannt hätte?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Sicherheit zuerst",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ob und wann ein junger Mensch sich etwas antut, lässt sich nicht sicher vorhersagen. Die NICE-Leitlinie rät ausdrücklich davon ab, Risikoskalen oder eine Einteilung in niedriges, mittleres oder hohes Risiko zu verwenden, um Suizid oder weitere Selbstverletzung vorherzusagen (NICE, 2022). Entscheidend ist, was der junge Mensch jetzt braucht, um sicher zu sein. Für Sie heißt das: Sie schätzen kein Suizidrisiko ein, sondern sorgen für Sicherheit und holen Fachleute dazu."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Was tun – je nach Situation",
+          "spalten": [
+            "Situation",
+            "Was Sie tun"
+          ],
+          "zeilen": [
+            [
+              "Akute Gefahr: eine Verletzung, die ärztlich versorgt werden muss; Tabletten oder andere Substanzen wurden eingenommen, um sich zu schaden – auch wenn es scheinbar gut geht; die Absicht, sich jetzt oder bald zu töten; ein konkreter Plan oder Vorbereitungen; der junge Mensch ist nicht mehr erreichbar",
+              "Notruf 112 wählen. Nicht allein lassen. Gefährliche Gegenstände, soweit gefahrlos möglich, außer Reichweite bringen. Leitung informieren, Eltern benachrichtigen."
+            ],
+            [
+              "Suizidgedanken ohne Zeichen akuter Gefahr",
+              "Noch am selben Tag handeln: Leitung und zuständige Fachperson einbeziehen (z. B. Psychologin oder Psychologe, SePAS, Diagnostique), Eltern informieren, fachliche Abklärung vereinbaren. Bis zur Übergabe nicht allein lassen."
+            ],
+            [
+              "Selbstverletzung ohne Suizidgedanken",
+              "Wunden versorgen lassen. Am selben Tag die zuständige Fachperson und die Leitung informieren; die Eltern werden nach den internen Abläufen einbezogen. Ruhig und ohne Strafe reagieren."
+            ],
+            [
+              "Hinweise, dass die Gefahr von zu Hause ausgeht",
+              "Eltern nicht eigenmächtig informieren. Sofort die Leitung einschalten; es gelten die internen Kinderschutzabläufe."
+            ]
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "**Nicht allein lassen.** Äußert ein junger Mensch Suizidgedanken oder ist er akut gefährdet, bleiben Sie oder eine andere erwachsene Person bei ihm, bis er an Eltern, Fachleute oder den Rettungsdienst übergeben ist – auch auf dem Weg ins Büro. Schicken Sie ihn nicht allein nach Hause. **Notruf 112**, **Polizei 113**. Telefonische Hilfe für Kinder und Jugendliche: **Kanner- a Jugendtelefon 116 111**. Für Menschen in seelischer Not: **SOS Détresse 45 45 45**."
+        },
+        {
+          "art": "text",
+          "text": "**Weiterleiten und dokumentieren.** Jede Einrichtung hat eigene Abläufe für Krisen. Informieren Sie sich **vor** dem Ernstfall, wer in Ihrem Team zuständig ist und wie die Informationskette läuft. Halten Sie nach einer Krise sachlich fest: Datum und Uhrzeit, was Sie beobachtet haben, die Worte des jungen Menschen möglichst wörtlich, was Sie getan und wen Sie wann informiert haben. Bei Minderjährigen werden die Eltern in der Regel einbezogen – mit Wissen des jungen Menschen und, wenn möglich, gemeinsam mit ihm.\n\n**Nachahmung vermeiden, ohne zu schweigen.** Selbstverletzung und Suizid können Nachahmung auslösen (Hawton et al., 2012). Sprechen Sie einzeln mit Betroffenen, nicht vor der Klasse, und nennen Sie nie Einzelheiten zu Methoden – weder im Gespräch noch im Unterricht. Bitten Sie freundlich darum, Wunden in der Schule bedeckt zu halten, um andere zu schützen, ohne zu beschämen."
+        },
+        {
+          "art": "weiter",
+          "text": "Leiten Sie immer weiter – über die internen Abläufe und in Absprache mit der Leitung: bei jeder Selbstverletzung an die zuständige Fachperson (Psychologin oder Psychologe, SePAS im Lycée, Diagnostique des CDSE), bei Suizidgedanken noch am selben Tag an Fachleute (Kinder- und Jugendpsychiatrie, Kinderärztin oder Kinderarzt), bei akuter Gefahr an den Rettungsdienst (112). Fragen Sie in den folgenden Tagen nach, ob die Hilfe angekommen ist."
+        }
+      ]
+    },
+    {
+      "titel": "Sicherheitsplan und Nachsorge",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ein **Sicherheitsplan** ist eine kurze, schriftliche Liste von Schritten und Kontakten, auf die ein junger Mensch in einer suizidalen Krise zurückgreifen kann (Stanley & Brown, 2012). Er wird gemeinsam mit einer Fachperson erstellt, in den eigenen Worten des jungen Menschen formuliert und ist immer greifbar, etwa auf dem Handy. Auch die NICE-Leitlinie empfiehlt, nach Selbstverletzung gemeinsam einen Sicherheitsplan zu entwickeln (NICE, 2022). Viele Vorlagen fragen zusätzlich, was dem jungen Menschen wichtig ist und wofür es sich zu leben lohnt."
+        },
+        {
+          "art": "liste",
+          "titel": "Die sechs Schritte des Sicherheitsplans",
+          "punkte": [
+            "Meine Warnzeichen: Gedanken, Gefühle und Situationen, an denen ich merke, dass eine Krise beginnt",
+            "Was ich selbst tun kann, um mich zu beruhigen oder abzulenken",
+            "Menschen und Orte, die mich auf andere Gedanken bringen",
+            "Menschen, die ich um Hilfe bitten kann – mit Telefonnummer",
+            "Fachleute und Notrufnummern: Notruf 112, Kanner- a Jugendtelefon 116 111, SOS Détresse 45 45 45",
+            "Meine Umgebung sicherer machen: den Zugang zu gefährlichen Mitteln verringern – gemeinsam mit Eltern und Fachleuten"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Die Schule kann ein Teil dieses Plans sein: eine vertraute Ansprechperson, ein Ort, an den sich der junge Mensch zurückziehen darf, eine vereinbarte Karte, mit der er den Unterricht verlassen kann, ohne sich zu erklären – und eine klare Regel, wer ihn dann begleitet. Mit seinem Einverständnis sollten die zuständigen Personen den schulischen Teil des Plans kennen.\n\n**Nach einer Krise.** Die Zeit nach einem Suizidversuch und nach der Entlassung aus einer Klinik ist besonders verletzlich. Eine gute Rückkehr in die Schule wird deshalb geplant. Normalität und Zugehörigkeit sind dabei ebenso wichtig wie Aufmerksamkeit: Der junge Mensch soll spüren, dass er willkommen ist – nicht, dass er überwacht wird."
+        },
+        {
+          "art": "tun",
+          "titel": "Rückkehr in die Schule",
+          "punkte": [
+            "Vor dem ersten Schultag ein Rückkehrgespräch mit dem jungen Menschen, den Eltern und – wenn möglich – den Behandelnden führen.",
+            "Eine feste Ansprechperson und einen Rückzugsort vereinbaren.",
+            "Gemeinsam klären, was Mitschülerinnen und Mitschüler erfahren – und was nicht.",
+            "Leistungsanforderungen und Fehlzeitenregeln vorübergehend anpassen.",
+            "In den ersten Wochen regelmäßig kurz nachfragen, wie es geht.",
+            "Warnzeichen weiter im Blick behalten und den schulischen Teil des Sicherheitsplans kennen."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wenn sich in der Schulgemeinschaft jemand das Leben genommen hat**, sind viele Menschen erschüttert, und besonders gefährdete Jugendliche sind in dieser Zeit verletzlicher. Das Vorgehen koordinieren Leitung und Krisenteam nach den internen Abläufen. Wichtig ist, sachlich und ohne Einzelheiten zur Methode zu informieren, den Tod weder zu verklären noch als Lösung darzustellen, Gesprächsangebote zu machen und auf nahestehende und bereits belastete Jugendliche besonders zu achten."
+        }
+      ]
+    },
+    {
+      "titel": "Sich selbst schützen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Begegnung mit Selbstverletzung und Suizidalität löst bei Fachkräften starke Gefühle aus: Erschrecken, Angst, Hilflosigkeit, manchmal Ärger oder Ekel und die Sorge, etwas falsch zu machen. Diese Reaktionen sind normal. Wichtig ist, dass sie nicht Ihr Handeln bestimmen und dass Sie damit nicht allein bleiben. Die NICE-Leitlinie betont, dass Fachkräfte, die Menschen nach Selbstverletzung begleiten, Schulung, Supervision und Unterstützung brauchen (NICE, 2022).\n\nMachen Sie sich die Grenzen Ihrer Rolle bewusst: Sie sind nicht allein für das Leben eines anderen Menschen verantwortlich. Ihre Aufgabe ist es, hinzusehen, anzusprechen, für Sicherheit zu sorgen und weiterzuleiten; die Behandlung übernehmen Fachleute. Wer über lange Zeit mit schwer belasteten jungen Menschen arbeitet, kann eine Mitgefühlserschöpfung entwickeln (Figley, 1995). Rechtzeitige Entlastung schützt davor."
+        },
+        {
+          "art": "tun",
+          "titel": "Was Sie für sich tun können",
+          "punkte": [
+            "Nie allein bleiben: sofort eine Kollegin, einen Kollegen oder die Leitung dazuholen – vier Augen, geteilte Verantwortung.",
+            "Nach einer Krise ein kurzes Nachgespräch im Team führen.",
+            "Supervision und kollegiale Beratung nutzen.",
+            "Die eigenen Grenzen achten; Erholung gehört zur Professionalität.",
+            "Wenn Sie selbst stark betroffen sind, etwa nach dem Suizid einer Schülerin oder eines Schülers, Hilfe annehmen – auch außerhalb der Arbeit."
+          ]
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was beschreibt die nichtsuizidale Selbstverletzung am besten?",
+      "optionen": [
+        "Absichtliche, direkte Verletzung des eigenen Körpers ohne die Absicht zu sterben – meist, um unerträgliche Gefühle zu beenden",
+        "Ein misslungener Suizidversuch",
+        "Ein Verhalten, das ausschließlich der Aufmerksamkeit dient",
+        "Eine unter Jugendlichen übliche Mutprobe ohne tiefere Bedeutung"
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Bei der nichtsuizidalen Selbstverletzung fehlt die Absicht zu sterben; meist geht es darum, unerträgliche Gefühle zu regulieren. Sie ist kein misslungener Suizidversuch, aber ein Risikofaktor für spätere Suizidversuche. Sie dient nicht bloß der Aufmerksamkeit und ist keine harmlose Mutprobe, sondern Ausdruck echter Not."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Funktionen kann Selbstverletzung für Jugendliche haben? (mehrere richtig)",
+      "optionen": [
+        "Unerträgliche Anspannung oder Gefühle beenden",
+        "Sich aus Leere oder Taubheit heraus wieder spüren",
+        "Andere gezielt manipulieren, ohne selbst belastet zu sein",
+        "Not zeigen, für die Worte fehlen",
+        "Freude am Schmerz"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Nach Nock (2010) dient Selbstverletzung vor allem dazu, unerträgliche Gefühle zu beenden, sich wieder zu spüren, sich zu bestrafen, Not zu zeigen oder Belastendem zu entgehen. Auch soziale Funktionen sind Ausdruck echter Not und keine kalte Manipulation. Freude am Schmerz ist kein typisches Motiv; die meisten Jugendlichen schämen sich für ihr Verhalten."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn man einen Jugendlichen direkt fragt, ob er an Suizid denkt, kann man ihn erst auf die Idee bringen.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Direktes Nachfragen erhöht das Risiko nicht; viele Betroffene erleben es als Entlastung. Umschreibungen oder Schweigen lassen junge Menschen dagegen mit ihren Gedanken allein. Klare, ruhige Fragen sind der erste Schritt zur Hilfe."
+    },
+    {
+      "art": "fall",
+      "fall": "In einem Aufsatz schreibt Aylin (14): „Manchmal wäre es einfacher, gar nicht mehr da zu sein.“ Seit Wochen zieht sie sich zurück, und im Sport haben Sie frische Verletzungen an ihrem Unterarm gesehen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Den Satz als literarische Übertreibung werten und nichts unternehmen.",
+        "Die Klasse fragen, ob jemand etwas über Aylins Probleme weiß.",
+        "Den Eltern schriftlich mitteilen, dass Aylin depressiv sei, und abwarten.",
+        "Aylin noch heute in Ruhe ansprechen, direkt nach Suizidgedanken fragen und die Leitung und die zuständige Fachperson noch am selben Tag einbeziehen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Ein Satz über den Wunsch, nicht mehr da zu sein, zusammen mit Rückzug und Selbstverletzung ist ein ernstes Warnzeichen. Richtig ist, noch am selben Tag direkt nachzufragen und Fachleute einzubeziehen. Wegschauen verschenkt wertvolle Zeit, eine Befragung der Klasse verletzt Aylins Vertrauen, und eine schriftliche Ferndiagnose ersetzt weder das Gespräch noch die Weiterleitung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Frage ist am besten geeignet, um Suizidgedanken anzusprechen?",
+      "optionen": [
+        "„Du machst doch keine Dummheiten, oder?“",
+        "„Denkst du daran, dir das Leben zu nehmen?“",
+        "„Du willst dich doch nicht etwa umbringen – denk an deine Familie!“",
+        "„Alles okay bei dir?“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Eine direkte, ruhige Frage mit klaren Worten zeigt, dass Sie das Thema aushalten, und macht eine ehrliche Antwort möglich. Umschreibungen und allgemeine Fragen laden zum Verneinen ein. Vorwürfe und Appelle an das schlechte Gewissen erzeugen Scham und verschließen das Gespräch."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Streit mit seiner Freundin sagt Jonas (16) zu Ihnen: „Heute Abend mache ich Schluss. Die Tabletten habe ich schon.“ Dann will er gehen.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Ihn versprechen lassen, dass er nichts tut, und ihn dann nach Hause gehen lassen.",
+        "Ihm raten, morgen mit der Schulpsychologin zu sprechen.",
+        "Ruhig bleiben, bei ihm bleiben, sofort Hilfe holen (Notruf 112, Leitung) und ihn erst an Rettungsdienst oder Eltern übergeben.",
+        "Seine Mutter anrufen und ihn allein nach Hause schicken, wo sie auf ihn wartet."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Eine geäußerte Absicht, ein Zeitpunkt und verfügbare Mittel sind Zeichen akuter Gefahr: Jetzt gilt Notruf 112 und nicht allein lassen. Versprechen schützen nicht, ein Termin am nächsten Tag kommt zu spät, und auf dem Heimweg wäre Jonas allein – genau das muss verhindert werden."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können Warnzeichen für eine suizidale Krise sein? (mehrere richtig)",
+      "optionen": [
+        "Äußerungen wie „Ohne mich wärt ihr besser dran“",
+        "Verschenken wichtiger persönlicher Dinge und Abschiedsnachrichten",
+        "Ärger über eine schlechte Note, der am nächsten Tag verflogen ist",
+        "Plötzliche auffällige Ruhe nach einer langen, sehr belasteten Zeit",
+        "Vorfreude auf die Klassenfahrt in der nächsten Woche"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Das Gefühl, eine Last zu sein, Abschiedsverhalten und eine plötzliche Ruhe nach langer Not können auf eine akute Krise hinweisen – Letztere manchmal, weil eine Entscheidung gefallen ist. Kurzer, vorübergehender Ärger und Vorfreude auf Kommendes sind dagegen keine Warnzeichen."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Schwimmunterricht bemerken Sie bei Sven (13) mehrere frische, oberflächliche Verletzungen am Oberschenkel. Er zieht schnell das Handtuch darüber.",
+      "frage": "Wie gehen Sie vor?",
+      "optionen": [
+        "Nach der Stunde unter vier Augen ruhig ansprechen, Sorge ausdrücken, nach Wundversorgung und nach Suizidgedanken fragen, erklären, dass Sie Unterstützung holen, und am selben Tag die zuständige Fachperson informieren.",
+        "Ihn vor der Gruppe fragen, was passiert ist.",
+        "Ihn für den Rest des Schuljahres vom Schwimmen befreien, damit niemand die Verletzungen sieht.",
+        "Ihn eine Vereinbarung unterschreiben lassen, dass er sich nicht mehr verletzt."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ein ruhiges Gespräch unter vier Augen, die Frage nach Suizidgedanken und die Weiterleitung am selben Tag sind die richtigen Schritte. Ansprechen vor der Gruppe beschämt, eine Befreiung vom Schwimmen versteckt das Problem nur, und für schriftliche Abmachungen gibt es keinen Nachweis, dass sie schützen – sie können zur Heimlichkeit beitragen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Die NICE-Leitlinie empfiehlt, das Suizidrisiko mit einer Skala in niedrig, mittel oder hoch einzuteilen und danach zu entscheiden, wer Hilfe bekommt.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die NICE-Leitlinie rät ausdrücklich davon ab, Risikoskalen oder eine Einteilung in niedrig, mittel oder hoch zur Vorhersage oder als Grundlage für Behandlungsentscheidungen zu verwenden. Entscheidend sind die Bedürfnisse und die Sicherheit des jungen Menschen – für die Schule heißt das: bei jedem Hinweis handeln und weiterleiten."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was gehört zu einem Sicherheitsplan nach Stanley und Brown?",
+      "optionen": [
+        "Ein schriftliches Versprechen, sich nichts anzutun",
+        "Persönliche Warnzeichen, eigene Beruhigungsstrategien, Menschen und Orte zur Ablenkung, Menschen, die man um Hilfe bitten kann, Fachleute und Notrufnummern sowie Schritte, um die Umgebung sicherer zu machen",
+        "Eine Liste der Regeln, gegen die der junge Mensch verstoßen hat",
+        "Eine Einschätzung des Suizidrisikos in Prozent"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Der Sicherheitsplan enthält sechs Schritte, die ein junger Mensch in einer Krise nacheinander nutzen kann – in seinen eigenen Worten und gemeinsam mit einer Fachperson erstellt. Er ist kein Versprechen, keine Regelliste und keine Risikoberechnung, sondern ein konkreter Handlungsplan."
+    },
+    {
+      "art": "fall",
+      "fall": "Mira (15) kehrt nach drei Wochen in der Kinder- und Jugendpsychiatrie, wo sie nach einem Suizidversuch behandelt wurde, in die Schule zurück.",
+      "frage": "Was ist am hilfreichsten?",
+      "optionen": [
+        "Alles wie früher handhaben und das Thema nicht ansprechen, um sie nicht zu belasten.",
+        "Die Klasse ausführlich über den Suizidversuch informieren, damit alle Bescheid wissen.",
+        "Vor dem ersten Schultag ein Rückkehrgespräch mit Mira und den Eltern führen, eine Ansprechperson und einen Rückzugsort vereinbaren, mit ihr klären, was die Klasse erfährt, und in den ersten Wochen regelmäßig kurz nachfragen.",
+        "Mira in den ersten Wochen keine Aufgaben geben und sie im Unterricht nicht mehr aufrufen."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Die Zeit nach einem Klinikaufenthalt ist besonders verletzlich. Eine geplante Rückkehr mit Ansprechperson, Rückzugsort und regelmäßigem Nachfragen verbindet Sicherheit mit Normalität. Schweigen lässt Mira allein, eine ausführliche Information der Klasse verletzt ihre Privatsphäre, und völlige Schonung vermittelt, dass sie nicht mehr dazugehört."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Nach einem Kriseneinsatz kann eine Lehrerin nachts nicht schlafen und fragt sich, ob sie alles richtig gemacht hat. Was hilft ihr? (mehrere richtig)",
+      "optionen": [
+        "Ein Nachgespräch im Team",
+        "Supervision oder kollegiale Beratung",
+        "Alles für sich behalten, um professionell zu wirken",
+        "Sich bewusst machen, dass ihre Aufgabe Hinsehen, Ansprechen, Sichern und Weiterleiten war",
+        "Solche Gespräche künftig meiden"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Starke Reaktionen nach einer Krise sind normal. Nachgespräche, Supervision und ein klares Rollenverständnis entlasten und helfen, weiter gut zu handeln. Schweigen verstärkt die Belastung, und wer solche Gespräche künftig meidet, fehlt jungen Menschen, die Hilfe brauchen."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Nichtsuizidale Selbstverletzung (NSSV)",
+      "erklaerung": "Absichtliche, direkte Verletzung des eigenen Körpers ohne die Absicht zu sterben, meist um unerträgliche Gefühle zu beenden."
+    },
+    {
+      "begriff": "Selbstverletzung (im Sinne der NICE-Leitlinie)",
+      "erklaerung": "Jede absichtliche Selbstverletzung oder Selbstvergiftung, unabhängig vom Motiv – weil die Absicht oft nicht erkennbar ist und sich ändern kann."
+    },
+    {
+      "begriff": "Suizidalität",
+      "erklaerung": "Alle Gedanken, Pläne und Handlungen, die darauf gerichtet sind, das eigene Leben zu beenden – vom passiven Todeswunsch bis zum Suizidversuch."
+    },
+    {
+      "begriff": "Passiver Todeswunsch",
+      "erklaerung": "Der Wunsch, nicht mehr da zu sein oder nicht mehr aufzuwachen, ohne konkrete Absicht, sich das Leben zu nehmen. Wird ernst genommen und angesprochen."
+    },
+    {
+      "begriff": "Risikofaktor und Warnzeichen",
+      "erklaerung": "Risikofaktoren erhöhen die Gefährdung über längere Zeit (z. B. frühere Suizidversuche, Depression). Warnzeichen weisen auf eine akute Krise hin (z. B. Abschied nehmen, Hoffnungslosigkeit)."
+    },
+    {
+      "begriff": "Interpersonale Theorie (Joiner)",
+      "erklaerung": "Modell, nach dem der Wunsch zu sterben aus fehlender Zugehörigkeit und dem Gefühl, eine Last zu sein, entsteht; für eine Handlung braucht es zusätzlich eine erworbene Gewöhnung an Schmerz und Angst."
+    },
+    {
+      "begriff": "Sicherheitsplan",
+      "erklaerung": "Kurzer, gemeinsam mit einer Fachperson erstellter Plan mit Warnzeichen, eigenen Strategien, Kontakten, Notrufnummern und Schritten, um die Umgebung sicherer zu machen (Stanley & Brown)."
+    },
+    {
+      "begriff": "Ambivalenz",
+      "erklaerung": "Gleichzeitiges Bestehen gegensätzlicher Wünsche. Die meisten Menschen in einer suizidalen Krise wollen nicht nur sterben, sondern auch, dass der unerträgliche Schmerz aufhört – und leben."
+    },
+    {
+      "begriff": "Mitgefühlserschöpfung",
+      "erklaerung": "Erschöpfung von Helfenden durch die dauerhafte Begleitung schwer belasteter Menschen (Figley). Supervision und Entlastung schützen davor."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "niceNG225",
+    "nock2010",
+    "hawton2012",
+    "joiner2005",
+    "stanleyBrown2012",
+    "kaess2014",
+    "figley1995"
+  ],
+  "verwandt": [
+    "depression",
+    "trauma",
+    "essstoerungen",
+    "kinderschutz",
+    "gespraechsfuehrung",
+    "selbstfuersorge"
+  ],
+  "toolbox": [
+    "sicherheitsplan",
+    "nachgespraech-krise",
+    "wer-ist-fuer-mich-da",
+    "mein-unterstuetzungsnetz",
+    "wenn-es-laenger-schwer-ist"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+ "stamm": { "schueler_name": "Muster, Tom", "geburtsdatum": "2017-03-14", "klasse": "C3.2", "foerderort": "École fondamentale Musterdorf", "periodenTyp": "trimester" },
+ "eldib": { "erreicht": ["V-1","V-2","V-3","V-4","V-5","V-6","V-7","V-8","V-9","V-10","V-11","V-12","K-1","K-2","K-3","K-4","K-5","K-6","K-7","K-8","K-9","K-10","K-11","K-12","K-13","K-14","K-15","K-16","SOZ-1","SOZ-2","SOZ-3","SOZ-4","SOZ-5","SOZ-6","SOZ-7","SOZ-8","SOZ-9","SOZ-10","KOG-1","KOG-2","KOG-3","KOG-4","KOG-5","KOG-6","KOG-7","KOG-8","KOG-9","KOG-10","KOG-11","KOG-12","KOG-13","KOG-14","KOG-15","KOG-16","KOG-17","KOG-18","KOG-19","KOG-20","KOG-21","KOG-22","KOG-23","KOG-24","KOG-25","KOG-26","KOG-27","KOG-28","KOG-29","KOG-30"],
+           "ziele": ["V-13","V-14","K-17","SOZ-11","SOZ-12","KOG-31"] },
+ "ds": {
+  "geschlecht": "m",
+  "f": { "auftrag_datum": "2026-06-18", "auftraggeber": "cni", "schwangerschaft": "unauffaellig", "geburt": "unauffaellig", "motorik": "altersgerecht", "sprache": "verzoegert", "erste_worte": "20",
+         "lebt_bei": "mutter", "familienstand": "getrennt", "kontakt": "eingeschraenkt_vater", "geschwister_anzahl": "1", "geschwister_position": "aeltestes", "zeit_mutter": "teilzeit", "zeit_vater": "vollzeit",
+         "ereignis_details": { "trennung": "2023" }, "schule_quelle": "lehrerin", "schule_datum": "2026-09-10", "kind_datum": "2026-09-15", "eltern_quelle": "mutter", "eltern_datum": "2026-09-12",
+         "beobachtungen": [ { "datum": "2026-09-16", "setting": "klasse", "dauer": "45" }, { "datum": "2026-09-19", "setting": "pause", "dauer": "20" } ],
+         "abgestimmt": "ja", "diagnosen_details": { "adhs": "2025, Kinderpsychiater" } },
+  "frei": { "beruf_mutter": "Verkäuferin", "beruf_vater": "Handwerker", "lehrperson": "Frau Weber", "eseb_referenz": "Herr Klein", "anlass_details": "Laut CI-Dokument kommt es mehrmals pro Woche zu Wutausbrüchen, bei denen Tom Material wirft und den Klassenraum verlässt." },
+  "chips": { "anlass": ["verhalten_schule", "aggression", "aufmerksamkeit"], "anliegen": ["isa"], "empfohlen": ["lehrperson", "eseb", "eltern"], "diagnosen": ["adhs"], "ereignisse": ["trennung"], "betreuung": ["maison_relais"], "sprachen": ["lb", "pt"],
+             "s_staerken": ["hilfsbereit", "kreativ", "sportlich"], "s_hilft": ["einzelansprache", "bewegung", "vorwarnung"], "s_erwartung": ["strategien", "stabilitaet"],
+             "k_interessen": ["sport", "gaming", "tiere"], "k_wuensche": ["freunde", "streit"], "e_staerken": ["hilfsbereit", "liebevoll"], "e_erwartung": ["strategien", "verstehen"],
+             "ressourcen": ["kreativ", "sportlich", "hilfsbereit", "familie"], "verfahren": ["eldib", "sdq"],
+             "empf_familie": ["step", "tagesstruktur", "austausch"], "empf_schule": ["sitzplatz", "verstaerker", "auszeit", "uebergaenge"], "empf_region": ["isa", "ergotherapie"], "cni": ["isa"] },
+  "bewertungen": { "s_motiv": 6, "s_konz": 2, "s_selbst": 3, "s_leistung": 4, "s_unruhe": 6, "s_regeln": 4, "s_frust": 2, "s_wut": 6, "s_aggr": 5, "s_rueckzug": 1, "s_angst": 2, "s_peers": 4, "s_konflikt": 5, "s_erwachsene": 6, "s_hilfe": 5,
+                   "k_offen": 5, "k_wohl": 4, "k_klasse": 3, "k_lehrer": 6, "k_ungerecht": 6, "k_selbstwert": 3, "k_druck": 5, "k_einsicht": 4, "k_veraenderung": 6, "k_freunde": 3, "k_familie": 6,
+                   "e_alltag": 4, "e_regeln": 3, "e_wut": 5, "e_geschwister": 5, "e_rueckzug": 1, "e_angst": 2, "e_medien": 6, "e_beziehung": 6, "e_struktur": 4, "e_konsequenz": 3, "e_belastung": 6, "e_sicht_schule": 6, "e_kooperation": 7,
+                   "b_start": 3, "b_konz": 2, "b_anweisung": 5, "b_unruhe": 6, "b_ablenk": 6, "b_regeln": 4, "b_frust": 2, "b_lob": 7, "b_stoer": 5, "b_peers": 5, "b_isol": 1, "b_provo": 3,
+                   "i_uebereinstimmung": 6, "i_beobachtung": 6, "i_eldib": 5, "i_unstrukturiert": 6, "i_anforderung": 5, "i_einzel": 7, "i_angst_unzul": 6, "i_angst_konflikt": 4, "i_abw_aggression": 6, "i_abw_vermeidung": 5, "i_abw_clown": 4,
+                   "i_hyp_regulation": 7, "i_hyp_aufmerksamkeit": 6, "i_hyp_belastung": 5,
+                   "n_struktur": 7, "n_beziehung": 6, "n_regulation": 7, "n_erfolg": 5, "n_familie": 4 }
+ }
+}

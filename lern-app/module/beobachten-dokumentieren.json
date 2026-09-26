@@ -1,0 +1,499 @@
+{
+  "id": "beobachten-dokumentieren",
+  "bereich": "handeln",
+  "titel": "Beobachten und dokumentieren",
+  "untertitel": "Sachlich, hilfreich und datensparsam – festhalten, was Sie sehen, und es sinnvoll nutzen",
+  "dauer": 35,
+  "lernziele": [
+    "Sie können Beobachtungen von Deutungen unterscheiden und Verhalten so beschreiben, dass andere die Situation wiedererkennen.",
+    "Sie können mit der ABC-Beobachtung Auslöser, Verhalten und Folgen festhalten und daraus eine vorsichtige Vermutung zur Funktion eines Verhaltens ableiten.",
+    "Sie können Häufigkeit, Dauer und Stärke eines Verhaltens einfach erfassen und einen Verlauf sichtbar machen.",
+    "Sie können Einträge sachlich, respektvoll und datensparsam formulieren und wissen, was nicht in ein Dossier gehört.",
+    "Sie wissen, wie Ihre Beobachtungen Förderplanung, Gespräche und Diagnostik unterstützen – und wo ihre Grenzen liegen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Zwei Einträge über denselben Morgen",
+          "text": "Nach einem unruhigen Montag schreiben zwei Kolleginnen über dieselbe Situation mit Jonas (10) ins Dossier.\n\nEintrag A: „Jonas war heute wieder extrem aggressiv und respektlos, total unmöglich. Zu Hause läuft da sicher etwas schief.“\n\nEintrag B: „9:40 Uhr, Mathematik, Aufgabe: Textaufgaben still bearbeiten. Nach etwa fünf Minuten schiebt Jonas das Heft vom Tisch und ruft: ‚Das ist Babykram.‘ Auf die Bitte, das Heft aufzuheben, tritt er gegen den Stuhl und verlässt den Raum. Nach zehn Minuten kommt er mit der Educatrice zurück und löst mit ihr zwei Aufgaben. Vorher: Streit in der Pause, laut Jonas wurde ihm der Ball weggenommen.“",
+          "fragen": [
+            "Welcher Eintrag hilft in drei Wochen bei der Frage, ob sich etwas verändert hat?",
+            "Welche Angaben aus Eintrag B könnten zu einer Förderidee führen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Beobachtungen und Einträge sind das Gedächtnis des Teams. Sie zeigen, ob ein Verhalten häufiger oder seltener wird, in welchen Situationen es auftritt und was hilft. Sie sind Grundlage für Gespräche mit Eltern, für Übergaben zwischen Kolleginnen und Kollegen und für die Arbeit von Fachleuten, etwa bei einer Abklärung durch das Diagnostique-Team. Und sie schützen: das Kind, weil Entscheidungen auf Fakten statt auf Eindrücken beruhen, und Sie selbst, weil nachvollziehbar bleibt, was geschehen ist und wie Sie gehandelt haben.\n\nEintrag A enthält vor allem Bewertungen („aggressiv“, „respektlos“, „unmöglich“) und eine Vermutung über die Familie. Er sagt mehr über die Stimmung der schreibenden Person als über das Kind. Eintrag B beschreibt, was zu sehen und zu hören war, wann und bei welcher Aufgabe, was vorausging und was folgte. Daraus lassen sich Fragen ableiten, die weiterführen: Sind Textaufgaben für Jonas zu schwer? Wirkt der Streit aus der Pause nach? Hilft ihm die Begleitung durch eine vertraute Erwachsene?"
+        },
+        {
+          "art": "merke",
+          "text": "Gute Dokumentation beschreibt, was man sehen und hören konnte – so genau, dass jemand anderes die Situation wiedererkennt. Deutungen sind erlaubt, aber als solche gekennzeichnet und von den Beobachtungen getrennt."
+        }
+      ]
+    },
+    {
+      "titel": "Beobachten oder deuten?",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Beobachten heißt: wahrnehmen und beschreiben, was ein Mensch tut und sagt. Deuten heißt: dem Gesehenen eine Bedeutung geben – ein Motiv, ein Gefühl, eine Eigenschaft, eine Ursache. Beides gehört zur pädagogischen Arbeit. Schwierig wird es, wenn Deutungen wie Tatsachen aufgeschrieben werden. Dann lässt sich später nicht mehr prüfen, worauf sie beruhten, und aus einer ersten Vermutung wird unbemerkt ein Etikett, das dem Kind lange folgt.\n\nEine einfache Probe: Könnte eine Videokamera es aufzeichnen? „Er schreit“, „sie legt den Kopf auf den Tisch“, „er sagt: ‚Ich bin dumm‘“ – das kann eine Kamera festhalten. „Er ist wütend“, „sie ist faul“, „er hat ein schlechtes Selbstbild“ – das kann sie nicht. Solche Aussagen sind Schlussfolgerungen, die mehr oder weniger gut begründet sein können."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Von der Deutung zur Beschreibung",
+          "spalten": [
+            "Deutung oder Etikett",
+            "Beobachtbare Beschreibung"
+          ],
+          "zeilen": [
+            [
+              "„Er ist aggressiv.“",
+              "„Er stößt ein anderes Kind zweimal mit der Schulter an und sagt: ‚Geh weg.‘“"
+            ],
+            [
+              "„Sie ist faul.“",
+              "„Sie beginnt die Aufgabe nach zehn Minuten nicht; auf Nachfrage sagt sie: ‚Ich weiß nicht, wie.‘“"
+            ],
+            [
+              "„Er ist heute depressiv.“",
+              "„Er sitzt die ganze Pause allein, antwortet auf Fragen mit ‚weiß nicht‘ und isst sein Brot nicht.“"
+            ],
+            [
+              "„Sie provoziert absichtlich.“",
+              "„Sie summt während der Erklärung weiter, nachdem sie zweimal gebeten wurde aufzuhören.“"
+            ],
+            [
+              "„Chaotisches Elternhaus.“",
+              "„Das Turnzeug fehlt zum dritten Mal in zwei Wochen; die Unterschrift im Hausaufgabenheft fehlt seit Montag.“"
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Eine gute Beschreibung enthält",
+          "punkte": [
+            "Wann und wo: Datum, Uhrzeit, Fach oder Situation (Unterricht, Pause, Bus, Übergang).",
+            "Was genau: das Verhalten in Verben, wörtliche Äußerungen in Anführungszeichen.",
+            "Wie oft, wie lange, wie stark: so genau wie möglich, gern auch mit „etwa“.",
+            "Was vorausging: Aufgabe, Anforderung, Streit, Wechsel, Geräusch, Wartezeit.",
+            "Was folgte: Ihre Reaktion, die Reaktion anderer, wie sich das Kind danach verhielt.",
+            "Wer beobachtet hat – und ob Sie selbst dabei waren oder es erzählt bekommen haben."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Auch sorgfältige Fachleute nehmen nicht neutral wahr. Einige gut bekannte Verzerrungen: Beim **Halo-Effekt** färbt ein auffälliges Merkmal, etwa ein freches Auftreten, das Urteil über alles andere. Beim **Bestätigungsfehler** bemerkt man vor allem, was zur bestehenden Meinung passt, und übersieht die Ausnahmen. **Erwartungseffekte** entstehen, wenn ein Kind als „schwierig“ angekündigt wird: Mehrdeutiges Verhalten wird dann eher negativ gedeutet. Und das zuletzt Erlebte sowie die eigene Tagesform prägen den Eindruck oft stärker als der Durchschnitt der Woche.\n\nGegen diese Fehler hilft kein guter Vorsatz, sondern Methode: zeitnah aufschreiben, konkret beschreiben statt urteilen, zu festen Zeiten beobachten, zählen statt schätzen und eine zweite Person hinzuziehen. Halten Sie ausdrücklich auch fest, wann ein Verhalten **nicht** auftritt und was gut gelingt. Solche Ausnahmen sind oft der wichtigste Hinweis darauf, was einem Kind hilft."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Erfahrene Fachkräfte erkennen auf einen Blick, was mit einem Kind los ist.",
+          "fakt": "Erfahrung schärft den Blick, schützt aber nicht vor Wahrnehmungsfehlern. Ein erster Eindruck ist eine Hypothese. Erst mehrere Beobachtungen in verschiedenen Situationen und von verschiedenen Personen ergeben ein verlässliches Bild."
+        }
+      ]
+    },
+    {
+      "titel": "Die ABC-Beobachtung: Auslöser, Verhalten, Folgen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Verhalten geschieht nicht im luftleeren Raum. Es hängt mit dem zusammen, was vorher passiert, und mit dem, was danach folgt. Dass Folgen Verhalten formen, gehört zu den am besten belegten Grundsätzen der Lernpsychologie (Skinner, 1953). Die ABC-Beobachtung macht diesen Zusammenhang im Alltag sichtbar. Der Name kommt aus dem Englischen: **A** steht für *Antecedent* (was vorausging), **B** für *Behavior* (das Verhalten) und **C** für *Consequence* (die Folge). Die Methode ist einfach und in Schulen weit verbreitet (Crone, Hawken & Horner, 2010).\n\nFür jedes Ereignis notieren Sie in drei Spalten: Was geschah unmittelbar davor? Was genau tat das Kind? Was geschah direkt danach – was taten Sie, was taten die anderen Kinder, was änderte sich für das Kind? Eine einzelne Notiz sagt wenig. Nach zehn bis fünfzehn Einträgen über zwei bis drei Wochen werden oft deutliche Muster sichtbar."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Beispiel: ABC-Notizen zu Jonas",
+          "spalten": [
+            "A – was vorausging",
+            "B – Verhalten",
+            "C – was folgte"
+          ],
+          "zeilen": [
+            [
+              "Mo, 9:40, Mathematik: Textaufgaben still bearbeiten",
+              "Schiebt das Heft vom Tisch, ruft „Das ist Babykram“",
+              "Verlässt den Raum, kommt nach zehn Minuten mit Begleitung zurück"
+            ],
+            [
+              "Di, 10:15, Deutsch: einen Aufsatz beginnen",
+              "Zerknüllt das Blatt, legt den Kopf auf den Tisch",
+              "Die Lehrerin setzt sich dazu und schreibt den ersten Satz mit ihm"
+            ],
+            [
+              "Mi, 8:30, Sport: freies Spiel",
+              "Kein Vorfall; spielt zwanzig Minuten mit zwei Kindern",
+              "–"
+            ],
+            [
+              "Do, 9:50, Mathematik: Textaufgaben",
+              "Wirft den Bleistift, sagt „Ich mach das nicht“",
+              "Wird ermahnt, verweigert weiter, geht in den Ruheraum"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Aus solchen Mustern lässt sich eine Vermutung über die **Funktion** des Verhaltens ableiten: Wozu dient es dem Kind, was bewirkt es? Meist werden drei große Gruppen unterschieden: etwas **bekommen** (Aufmerksamkeit von Erwachsenen oder Kindern, einen Gegenstand, eine Tätigkeit), etwas **vermeiden oder beenden** (eine Aufgabe, eine Anforderung, eine unangenehme Situation) und **innere Zustände regulieren** (Anspannung, Langeweile, zu viele Reize). Bei Jonas fällt auf: Die Vorfälle häufen sich bei schriftlichen Aufgaben, und oft endet das Verhalten damit, dass er die Aufgabe nicht mehr allein bearbeiten muss. Naheliegend ist die Vermutung, dass ihm das Verhalten hilft, einer Anforderung zu entgehen, die ihn überfordert.\n\nEntscheidend ist das Wort **Vermutung**. Die ABC-Beobachtung liefert eine Hypothese – keine Diagnose und keine Aussage über den Charakter. Geprüft wird sie, indem man gezielt etwas verändert: Jonas bekommt Textaufgaben in kleinen Schritten, mit einem gelösten Beispiel und dem Angebot, um Hilfe zu bitten, bevor es zu schwer wird. Gehen die Vorfälle zurück, stützt das die Vermutung. Bleiben sie gleich, braucht es eine neue."
+        },
+        {
+          "art": "merke",
+          "text": "Dasselbe Verhalten kann bei zwei Kindern ganz verschiedene Funktionen haben. Wer die Funktion kennt, kann dem Kind einen besseren Weg anbieten, dasselbe Ziel zu erreichen – etwa um Hilfe zu bitten, statt das Heft vom Tisch zu schieben."
+        },
+        {
+          "art": "tun",
+          "titel": "So gelingt die ABC-Beobachtung",
+          "punkte": [
+            "Ein Verhalten auswählen und genau festlegen, was dazu zählt („verlässt ohne Erlaubnis den Platz“ statt „stört“).",
+            "Direkt nach dem Ereignis notieren, spätestens am selben Tag – aus der Erinnerung am Freitag entsteht kein verlässliches Bild.",
+            "Auch Situationen notieren, in denen das Verhalten zu erwarten war, aber ausblieb.",
+            "Die eigene Reaktion ehrlich festhalten: Sie ist Teil der Folge.",
+            "Nach zwei bis drei Wochen im Team auswerten: Wann häuft es sich? Was geht fast immer voraus? Was folgt fast immer?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Zählen, messen, Verläufe sichtbar machen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Fragen im Schulalltag sind Fragen nach dem Mehr oder Weniger: Wird es besser? Hilft der neue Sitzplatz? Ist das Kind seit den Ferien unruhiger? Eindrücke beantworten solche Fragen schlecht, weil sie von den letzten Tagen und der eigenen Tagesform geprägt sind. Zahlen helfen – nicht, weil sie klüger wären als ein fachlicher Blick, sondern weil sie vergleichbar sind.\n\nDie wichtigste Regel lautet: **erst den Ausgangswert erheben, dann etwas verändern.** Ohne diese Baseline, meist über ein bis zwei Wochen, lässt sich später nicht sagen, ob eine Maßnahme etwas bewirkt hat."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Einfache Verfahren für den Alltag",
+          "spalten": [
+            "Verfahren",
+            "Wofür geeignet",
+            "Beispiel"
+          ],
+          "zeilen": [
+            [
+              "Häufigkeit (Strichliste)",
+              "Kurze, klar abgrenzbare Verhaltensweisen",
+              "Wie oft ruft ein Kind in einer Mathematikstunde hinein?"
+            ],
+            [
+              "Dauer",
+              "Verhalten mit deutlichem Anfang und Ende",
+              "Wie viele Minuten vergehen, bis Jonas mit einer Aufgabe beginnt? Wie viele Minuten Time-out pro Woche?"
+            ],
+            [
+              "Stärke (Skala)",
+              "Wenn die Heftigkeit wichtiger ist als die Anzahl",
+              "Wutausbruch: 1 = schimpft, bleibt am Platz; 2 = verlässt den Platz, schreit; 3 = wirft Gegenstände oder verletzt jemanden"
+            ],
+            [
+              "Zeitstichprobe",
+              "Häufiges Verhalten, das schwer zu zählen ist",
+              "Alle fünf Minuten ankreuzen: arbeitet gerade an der Aufgabe – ja oder nein"
+            ],
+            [
+              "Tagesbogen",
+              "Tägliche Rückmeldung zu wenigen Zielen",
+              "Drei Ziele, je Stunde 0 bis 2 Punkte, Summe pro Tag (etwa Check-in/Check-out)"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Eine Skala ist nur so gut wie ihre Beschreibungen. Legen Sie für jede Stufe fest, was genau dazugehört, am besten mit Beispielen. Dann schätzen zwei Kolleginnen dieselbe Situation ähnlich ein, und die Werte bleiben über Wochen vergleichbar. Das entspricht einem Grundsatz jeder Messung: Das Ergebnis soll möglichst wenig davon abhängen, wer misst (AERA, APA & NCME, 2014).\n\nErfassen Sie wenig, aber regelmäßig. Eine Strichliste für ein einziges Verhalten, jeden Tag in denselben zwei Stunden, ist wertvoller als ein umfangreicher Bogen, der nach drei Tagen liegen bleibt. Tragen Sie die Werte wöchentlich in eine einfache Grafik ein. Ein Verlauf über sechs bis acht Wochen zeigt, ob sich etwas bewegt, und macht auch kleine Fortschritte sichtbar, die im Alltag leicht untergehen.\n\nIm CDSE Hub gibt es dafür die Eintragsart „Vorfall / Krise“ mit Uhrzeit, Situation, Auslöser, Maßnahme und Time-out-Dauer. Ab zwei Vorfällen zeigt das Dossier, an welchen Wochentagen und in welchen Situationen sie sich häufen – eine einfache Auswertung, die Sie im Team nutzen können."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wenn ein Verhalten nach einer Maßnahme seltener wird, ist bewiesen, dass die Maßnahme wirkt.",
+          "fakt": "Ein Rückgang ist ein gutes Zeichen, aber kein Beweis. Auch anderes kann sich geändert haben: Ferien, ein neues Medikament, eine Entlastung zu Hause, eine andere Sitzordnung. Beobachten Sie weiter, sprechen Sie im Team über mögliche andere Gründe und prüfen Sie, ob der Effekt über mehrere Wochen anhält."
+        }
+      ]
+    },
+    {
+      "titel": "Dokumentieren: sachlich, respektvoll, datensparsam",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Was im Dossier steht, begleitet ein Kind oft über Jahre. Es wird von Kolleginnen und Kollegen gelesen, die das Kind nicht kennen, und kann Grundlage wichtiger Entscheidungen sein. Die Datenschutz-Grundverordnung (DSGVO, französisch RGPD) gilt auch in Luxemburg; betroffene Personen haben grundsätzlich ein Recht auf Auskunft über die Daten, die über sie gespeichert sind. Wie solche Anfragen beantwortet werden, regeln die internen Vorgaben. Eine gute Probe für jeden Eintrag lautet deshalb: **Könnte ich diesen Satz den Eltern vorlesen, und würde er einer sachlichen Prüfung standhalten?**"
+        },
+        {
+          "art": "tun",
+          "titel": "So dokumentieren Sie gut",
+          "punkte": [
+            "Zeitnah schreiben, mit Datum, Uhrzeit und Ihrem Namen.",
+            "Beobachtung und Einschätzung trennen und kennzeichnen: „Beobachtung: …“ – „Meine Einschätzung: …“.",
+            "Äußerungen wörtlich und in Anführungszeichen wiedergeben, auch Schimpfwörter – nicht umschreiben und nicht deuten.",
+            "Stärken und gelungene Momente ebenso festhalten wie Schwierigkeiten.",
+            "Nur aufschreiben, was für die Arbeit mit dem Kind nötig ist.",
+            "Andere Kinder möglichst nicht mit vollem Namen nennen, etwa „ein Mitschüler“ oder Initialen.",
+            "Fehler nicht löschen oder überschreiben, sondern mit Datum ergänzen oder berichtigen – so bleibt nachvollziehbar, was wann bekannt war."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was nicht in einen Eintrag gehört",
+          "punkte": [
+            "Diagnosen oder Verdachtsdiagnosen ohne fachliche Abklärung („autistisch“, „traumatisiert“, „ADHS-Kind“).",
+            "Urteile über Charakter oder Familie („verwöhnt“, „asozial“, „die Mutter ist überfordert“).",
+            "Gerüchte und Angaben aus zweiter Hand ohne Quelle („man hört, dass …“).",
+            "Ironie, Ärger und Abkürzungen, die nur Sie verstehen.",
+            "Einzelheiten, die für die Förderung nicht nötig sind, etwa zu Konflikten der Eltern, die das Kind nicht betreffen.",
+            "Notizen über Kinder auf privaten Geräten, in Messengern oder privaten E-Mail-Konten."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Datenschutz bedeutet nicht, möglichst wenig aufzuschreiben, sondern das Richtige an der richtigen Stelle. Einträge gehören in die dafür vorgesehenen Systeme – im CDSE in das verschlüsselte Dossier, nicht auf Zettel im Lehrerzimmer und nicht in eine private Chatgruppe. Weitergegeben wird nur, was die Empfängerin oder der Empfänger für die eigene Aufgabe braucht, und nur auf den vorgesehenen Wegen. Wie lange Unterlagen aufbewahrt und wann sie gelöscht werden, regeln die internen Vorgaben. Fragen Sie im Zweifel Ihre Leitung."
+        },
+        {
+          "art": "achtung",
+          "text": "Wenn eine Beobachtung oder eine Äußerung des Kindes auf eine mögliche Gefährdung hinweist – Gewalt, Vernachlässigung, sexuelle Übergriffe, Selbstverletzung oder Suizidgedanken –, geht Sicherheit vor Dokumentation. Informieren Sie sofort Ihre Leitung nach den internen Abläufen. Halten Sie danach möglichst wörtlich fest, was das Kind gesagt hat, wann und in welchem Zusammenhang, und was Sie geantwortet und getan haben. Stellen Sie keine suggestiven Fragen und führen Sie keine eigenen Ermittlungen; das ist Aufgabe der zuständigen Stellen. Das Modul „Kinderschutz“ beschreibt das Vorgehen ausführlicher."
+        }
+      ]
+    },
+    {
+      "titel": "Beobachtungen nutzen: Förderung, Gespräche, Diagnostik",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Ihre Beobachtungen sind kein Nebenprodukt, sondern eine wichtige Informationsquelle. Wer ein Kind im Alltag erlebt, sieht, was in keinem Test sichtbar wird: wie es mit Übergängen, Gruppen, Frustration und Lob umgeht, zu welcher Tageszeit es gut lernt und was ihm hilft. In der Diagnostik werden deshalb mehrere Quellen zusammengeführt: Gespräche, Fragebögen für Eltern und Lehrpersonen, standardisierte Tests und Beobachtungen in unterschiedlichen Situationen (Petermann, 2013). Je genauer Ihre Beschreibungen sind, desto besser kann das Diagnostique-Team sie nutzen.\n\nZugleich haben Beobachtungen Grenzen. Sie zeigen einen Ausschnitt: eine Klasse, eine Tageszeit, eine Beziehung. Verhalten hängt stark vom Umfeld ab (Bronfenbrenner, 1979) – dasselbe Kind kann in der Kleingruppe konzentriert arbeiten und in der großen Klasse scheitern. Außerdem verhalten sich Kinder oft anders, wenn sie merken, dass sie beobachtet werden. Aus Beobachtungen allein ergibt sich deshalb keine Diagnose. Sie sind ein Baustein, den Fachleute mit anderen Informationen zusammenfügen."
+        },
+        {
+          "art": "liste",
+          "titel": "Wofür Ihre Beobachtungen gebraucht werden",
+          "punkte": [
+            "Förderplanung: Aus dem Ausgangswert werden erreichbare Ziele („statt fünfmal nur noch zweimal pro Stunde hineinrufen“), und der Verlauf zeigt, ob sie erreicht werden.",
+            "Fallbesprechung im Team: Konkrete Beispiele und Zahlen machen Gespräche sachlicher und lösungsorientierter.",
+            "Elterngespräche: Beschreibungen statt Urteile helfen Eltern, zuzuhören statt sich zu verteidigen – besonders, wenn auch Gelungenes berichtet wird.",
+            "Abklärung und Berichte: Das Diagnostique-Team und andere Fachleute brauchen Beobachtungen aus dem Alltag, möglichst aus verschiedenen Situationen.",
+            "Übergaben: Wer ein Kind übernimmt, erfährt aus guten Einträgen, was bisher versucht wurde und was geholfen hat."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Vom Eintrag zur Förderidee",
+          "text": "Im Team wird über Mira (8) gesprochen, die oft hineinruft. Statt „sie stört ständig“ legt ihre Lehrerin eine Strichliste aus zwei Wochen vor: im Durchschnitt sieben Zwischenrufe pro Mathematikstunde, zwei im Sport, fast keine, wenn Mira in der Kleingruppe mit der Educatrice arbeitet. Die ABC-Notizen zeigen, dass die meisten Zwischenrufe kommen, während die Lehrerin anderen Kindern hilft – und dass Mira dann sofort Aufmerksamkeit bekommt, wenn auch in Form von Ermahnungen. Das Team vereinbart: Mira bekommt eine Karte, die sie hochhalten kann, wenn sie etwas sagen möchte. Die Lehrerin geht in den ersten Minuten jeder Stunde zweimal von sich aus zu ihr, und ruhiges Melden wird sofort beachtet. Nach drei Wochen wird die Strichliste erneut ausgewertet.",
+          "fragen": [
+            "Welche Funktion des Hineinrufens vermutet das Team?",
+            "Woran würden Sie in drei Wochen erkennen, ob die Vereinbarung hilft – und was täten Sie, wenn nicht?"
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Holen Sie Unterstützung, wenn sich trotz sorgfältiger Beobachtung und angepasster Maßnahmen nichts verändert, wenn Ihre Beobachtungen auf Schwierigkeiten hinweisen, die über den Unterricht hinausgehen – etwa starker Rückzug, große Ängste oder Hinweise auf Entwicklungsauffälligkeiten –, oder wenn Sie unsicher sind, wie Sie etwas einordnen sollen. Ansprechpersonen sind Ihre Leitung, die Fallverantwortlichen und das Diagnostique-Team. Bei Hinweisen auf eine Gefährdung gilt immer sofort der interne Kinderschutz-Ablauf."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche Notiz ist eine Beobachtung und keine Deutung?",
+      "optionen": [
+        "„Lea war heute sehr provokant.“",
+        "„Lea wollte mit ihrem Verhalten die Lehrerin ärgern.“",
+        "„Lea rief in Mathematik dreimal ‚Ich mach das nicht‘ und klappte das Heft zu.“",
+        "„Lea hatte offensichtlich einen schlechten Tag.“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Nur die dritte Notiz beschreibt, was man sehen und hören konnte: wann, was genau und wie oft. „Provokant“ ist eine Bewertung, „wollte ärgern“ unterstellt ein Motiv, „schlechter Tag“ ist eine Vermutung. Solche Deutungen dürfen vorkommen, müssen aber als Einschätzung gekennzeichnet sein."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was gehört zu einem ABC-Eintrag? (mehrere richtig)",
+      "optionen": [
+        "Was unmittelbar vor dem Verhalten geschah",
+        "Eine Einschätzung, ob das Kind eine Störung hat",
+        "Das Verhalten, genau beschrieben",
+        "Was direkt nach dem Verhalten geschah – auch die eigene Reaktion",
+        "Ein Urteil über die Erziehung zu Hause"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "A steht für den Auslöser, B für das Verhalten, C für die Folge – einschließlich der Reaktion der Erwachsenen, die oft Teil des Musters ist. Diagnosen und Urteile über die Familie gehören nicht in eine ABC-Beobachtung; sie würden die Beschreibung verfälschen und lassen sich aus solchen Notizen auch nicht ableiten."
+    },
+    {
+      "art": "fall",
+      "fall": "Jonas (10) stört fast jede Stunde, sobald eine schriftliche Aufgabe beginnt. Die ABC-Notizen aus drei Wochen zeigen: In acht von zehn Fällen endet der Vorfall damit, dass er den Raum verlässt oder die Aufgabe nicht mehr allein bearbeiten muss.",
+      "frage": "Welche Schlussfolgerung und welcher nächste Schritt passen am besten?",
+      "optionen": [
+        "Jonas hat vermutlich ADHS; die Eltern sollten eine Diagnose veranlassen.",
+        "Das Verhalten könnte ihm helfen, einer überfordernden Aufgabe zu entgehen. Schriftliche Aufgaben in kleine Schritte teilen, Hilfe anbieten und beobachten, ob die Vorfälle zurückgehen.",
+        "Die Folgen müssen härter werden, damit Jonas lernt, dass Stören sich nicht lohnt.",
+        "Vor jeder Veränderung braucht es noch ein halbes Jahr Beobachtung."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Das Muster spricht für eine Vermeidungsfunktion: Das Verhalten beendet die unangenehme Aufgabe. Sinnvoll ist, die Anforderung zu verändern, dem Kind einen besseren Weg zu zeigen (um Hilfe bitten) und dann zu prüfen, ob sich etwas ändert. Eine Diagnose lässt sich aus ABC-Notizen nicht ableiten, härtere Folgen übersehen die Funktion, und monatelanges Abwarten ist nicht nötig."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wenn ein Verhalten seltener wird, nachdem das Team etwas verändert hat, ist damit bewiesen, dass die Veränderung gewirkt hat.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Ein Rückgang ist ein gutes Zeichen, aber auch anderes kann sich geändert haben – Ferien, Medikamente, die Situation zu Hause. Deshalb weiter beobachten, andere Gründe im Team besprechen und prüfen, ob der Effekt über mehrere Wochen anhält."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum sollte vor einer neuen Maßnahme ein Ausgangswert (Baseline) erhoben werden?",
+      "optionen": [
+        "Damit sich später vergleichen lässt, ob sich das Verhalten verändert hat.",
+        "Weil die Eltern einer Maßnahme sonst nicht zustimmen können.",
+        "Damit das Kind merkt, dass es beobachtet wird.",
+        "Weil ohne Baseline keine Diagnose gestellt werden darf."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ohne Ausgangswert lässt sich nicht sagen, ob es besser oder schlechter wird – man vergleicht dann nur Eindrücke. Die Baseline ist eine Vergleichsgrundlage, keine rechtliche Voraussetzung und kein diagnostisches Verfahren. Dass sich Kinder beobachtet fühlen, ist eher ein Störfaktor als ein Ziel."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Telefonat mit der Mutter von Elias schreibt eine Kollegin ins Dossier: „Mutter wirkt psychisch krank und trinkt vermutlich. Kein Wunder, dass das Kind so ist.“",
+      "frage": "Wie sollte mit dem Eintrag umgegangen werden?",
+      "optionen": [
+        "Er kann so bleiben, weil er ehrlich ist und die Kollegin nur ihren Eindruck schildert.",
+        "Er sollte gelöscht werden, und über das Telefonat wird nichts festgehalten.",
+        "Er sollte allgemeiner lauten: „Die Familie hat offensichtlich große Probleme.“",
+        "Beschreiben, was im Gespräch geschah (Uhrzeit, Anliegen, wörtliche Aussagen, Abbruch), die eigene Sorge als Einschätzung kennzeichnen und bei Sorge um das Kind mit der Leitung sprechen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Vermutungen über Krankheiten Dritter und abwertende Kommentare gehören nicht ins Dossier: Sie sind nicht belegt, verletzen die Würde der Familie und können dem Kind schaden. Festgehalten wird, was im Gespräch tatsächlich geschah, dazu eine gekennzeichnete, sachliche Einschätzung. Wer sich Sorgen um das Kind macht, bespricht das mit der Leitung. Löschen wäre falsch, weil das Gespräch selbst wichtig ist; eine allgemeine Formulierung bleibt ein Urteil ohne Inhalt."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Grundsätze gehören zu einer datensparsamen und respektvollen Dokumentation? (mehrere richtig)",
+      "optionen": [
+        "Nur festhalten, was für die Arbeit mit dem Kind nötig ist.",
+        "Andere Kinder möglichst nicht mit vollem Namen nennen.",
+        "Alte Einträge spurlos überschreiben, wenn sie nicht mehr stimmen.",
+        "Kurze Notizen im privaten Messenger teilen, damit alle schnell informiert sind.",
+        "Einschätzungen ausdrücklich als solche kennzeichnen."
+      ],
+      "richtig": [
+        0,
+        1,
+        4
+      ],
+      "erklaerung": "Datensparsamkeit, der Schutz Dritter und die Trennung von Beobachtung und Einschätzung sind der Kern guter Dokumentation. Einträge werden nicht spurlos überschrieben, sondern mit Datum berichtigt, damit nachvollziehbar bleibt, was wann bekannt war. Private Messenger sind für Informationen über Kinder nicht vorgesehen."
+    },
+    {
+      "art": "fall",
+      "fall": "In der Pause sagt ein Kind leise zu Ihnen: „Zu Hause schlägt mich mein Onkel. Aber sag es niemandem.“",
+      "frage": "Was ist richtig?",
+      "optionen": [
+        "Sofort genau nachfragen, was passiert ist, damit der Eintrag vollständig wird.",
+        "Dem Kind versprechen, es niemandem zu sagen, damit es das Vertrauen behält.",
+        "Ruhig zuhören, nichts versprechen, was Sie nicht halten können, sofort die Leitung nach den internen Abläufen informieren und die Worte des Kindes wörtlich mit Datum, Uhrzeit und Situation festhalten.",
+        "Zuerst die Eltern anrufen und fragen, ob das stimmt."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Bei Hinweisen auf Gewalt geht Sicherheit vor. Sie hören zu, versprechen keine Geheimhaltung, informieren sofort die Leitung und halten die Aussage wörtlich fest. Bohrende Fragen können die Aussage beeinflussen und spätere Abklärungen erschweren. Ein Anruf bei den Eltern kann das Kind gefährden; über solche Schritte entscheiden die zuständigen Stellen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Zwei Kolleginnen bewerten die Wutausbrüche eines Kindes auf einer Skala von 1 bis 3 sehr unterschiedlich. Was hilft am meisten?",
+      "optionen": [
+        "Nur noch eine Person bewerten lassen.",
+        "Statt der Skala wieder freie Eindrücke aufschreiben.",
+        "Eine feinere Skala von 1 bis 10 verwenden.",
+        "Für jede Stufe genau beschreiben, was dazugehört, mit Beispielen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Das Ergebnis einer Messung soll möglichst wenig davon abhängen, wer misst. Das gelingt mit klar beschriebenen Stufen („1 = schimpft, bleibt am Platz; 2 = verlässt den Platz, schreit; 3 = wirft Gegenstände“). Eine feinere Skala vergrößert die Unterschiede eher, und nur eine Person bewerten zu lassen verdeckt das Problem, statt es zu lösen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Beobachtungen von Lehrkräften und Educateurs sind für die Diagnostik wertlos, weil sie nicht standardisiert sind.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Beobachtungen aus dem Alltag sind eine wichtige Informationsquelle, weil sie zeigen, wie ein Kind in echten Situationen zurechtkommt. Fachleute führen sie mit Tests, Fragebögen und Gesprächen zusammen. Sie ersetzen keine Diagnostik, ergänzen sie aber – umso besser, je genauer sie beschrieben sind."
+    },
+    {
+      "art": "einfach",
+      "frage": "Eine Kollegin sagt: „Seit ich weiß, dass Timo als schwierig gilt, fällt mir jeden Tag etwas auf.“ Welche Verzerrung spielt hier am wahrscheinlichsten mit?",
+      "optionen": [
+        "Erwartungseffekt und Bestätigungsfehler: Man bemerkt vor allem, was zur Erwartung passt.",
+        "Halo-Effekt: Ein einzelnes Merkmal färbt das Urteil über alle anderen.",
+        "Das zuletzt Erlebte prägt das Urteil am stärksten.",
+        "Keine: Wer mehr über ein Kind weiß, beobachtet automatisch genauer."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Die Ankündigung „schwierig“ erzeugt eine Erwartung, und man nimmt bevorzugt wahr, was dazu passt. Halo-Effekt und die Wirkung des zuletzt Erlebten sind ebenfalls häufige Verzerrungen, erklären diese Situation aber weniger gut. Vorwissen macht Beobachtung nicht automatisch genauer – deshalb helfen Zählen, konkrete Beschreibungen und der Blick einer zweiten Person."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Beobachtung",
+      "erklaerung": "Wahrnehmen und Beschreiben dessen, was ein Mensch sichtbar tut und hörbar sagt – ohne Bewertung."
+    },
+    {
+      "begriff": "Deutung (Interpretation)",
+      "erklaerung": "Schlussfolgerung über Motive, Gefühle oder Ursachen eines Verhaltens. Sie wird als Einschätzung gekennzeichnet und begründet."
+    },
+    {
+      "begriff": "ABC-Beobachtung",
+      "erklaerung": "Notiz in drei Teilen: was vorausging (A, *Antecedent*), das Verhalten (B, *Behavior*) und was folgte (C, *Consequence*). Über mehrere Einträge werden Muster sichtbar."
+    },
+    {
+      "begriff": "Funktion eines Verhaltens",
+      "erklaerung": "Wozu ein Verhalten dem Kind dient, etwa etwas bekommen, etwas vermeiden oder innere Anspannung regulieren. Sie wird aus Beobachtungen vermutet und durch gezielte Veränderungen geprüft."
+    },
+    {
+      "begriff": "Baseline (Ausgangswert)",
+      "erklaerung": "Häufigkeit, Dauer oder Stärke eines Verhaltens vor einer Maßnahme. Grundlage, um später Veränderungen zu erkennen."
+    },
+    {
+      "begriff": "Zeitstichprobe",
+      "erklaerung": "Beobachtung in festen Abständen, etwa alle fünf Minuten: Liegt das Verhalten gerade vor oder nicht? Geeignet für häufiges, schwer zählbares Verhalten."
+    },
+    {
+      "begriff": "Halo-Effekt",
+      "erklaerung": "Wahrnehmungsfehler, bei dem ein auffälliges Merkmal das Urteil über andere Eigenschaften färbt."
+    },
+    {
+      "begriff": "Bestätigungsfehler",
+      "erklaerung": "Neigung, vor allem Informationen zu bemerken und zu erinnern, die zur eigenen Meinung passen."
+    },
+    {
+      "begriff": "Datensparsamkeit",
+      "erklaerung": "Grundsatz des Datenschutzes: nur die Daten erheben und speichern, die für den Zweck nötig sind."
+    }
+  ],
+  "quellen": [
+    "crone2010",
+    "skinner1953",
+    "aeraStandards2014",
+    "petermann2013",
+    "bronfenbrenner1979",
+    "nolting2002"
+  ],
+  "verwandt": [
+    "verstaerkung",
+    "diagnostik-grundbegriffe",
+    "kinderschutz",
+    "elternarbeit",
+    "deeskalation"
+  ],
+  "toolbox": [
+    "abc-beobachtung",
+    "verhalten-zaehlen",
+    "check-in-check-out",
+    "nachgespraech-krise",
+    "elterngespraech-vorbereiten"
+  ]
+}

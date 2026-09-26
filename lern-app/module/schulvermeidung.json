@@ -1,0 +1,551 @@
+{
+  "id": "schulvermeidung",
+  "bereich": "stoerungen",
+  "titel": "Schulangst und Schulvermeidung",
+  "untertitel": "Formen, Funktionen und Warnzeichen – rasche Rückkehr in kleinen Schritten, gemeinsam mit Familie und Fachstellen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können Schulangst, Trennungsangst, Schulschwänzen und das Zurückhalten durch die Eltern unterscheiden.",
+    "Sie können die vier Funktionen von Schulvermeidung nach Kearney erklären und daraus passende Hilfen ableiten.",
+    "Sie erkennen frühe Warnzeichen und wissen, warum frühes Handeln entscheidend ist.",
+    "Sie können gemeinsam mit Familie und Fachleuten einen Plan für eine rasche, schrittweise Rückkehr erarbeiten und begleiten.",
+    "Sie wissen, wann Sie Leitung, Fachdienste oder den Kinderschutz einbeziehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Rafael, 12 Jahre, 7e im Lycée",
+          "text": "Rafael ist seit September im Lycée. Anfangs fehlte er nur montags mit Bauchweh, dann an den Tagen mit Sport, inzwischen seit zwei Wochen ganz. Die Mutter schreibt Entschuldigungen. Sie beginnt früh mit der Arbeit und findet Rafael abends oft noch am Computer. Seinem früheren Lehrer aus der Grundschule schreibt Rafael, die anderen hätten ihn beim Umziehen ausgelacht; zu Hause sei es „eh besser“. Die Eltern sind ratlos: „Wir können ihn doch nicht zur Schule tragen.“",
+          "fragen": [
+            "Welche Gründe könnten bei Rafael zusammenwirken?",
+            "Was hätte man in den ersten Wochen bemerken können?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Fehlzeiten gehören zum Schulalltag. Ein Kind hat Grippe, in der Familie gibt es einen Todesfall – das ist kein Grund zur Sorge. Aufmerksam werden sollten Schule und Familie, wenn ein Kind **wiederholt oder dauerhaft** fehlt, morgens nur unter großer Not in die Schule kommt oder den Unterricht regelmäßig vorzeitig verlässt. Fachleute sprechen dann von **Schulvermeidung**, englisch *school refusal behavior* (Kearney, 2008).\n\nSchulvermeidung ist keine Diagnose, sondern ein Verhalten mit sehr unterschiedlichen Gründen: Angst, Niedergeschlagenheit, Mobbing, Überforderung, familiäre Belastungen oder schlicht Alternativen, die attraktiver sind als die Schule. Oft wirken mehrere Gründe zusammen. Allen Formen gemeinsam ist: **Je länger das Fernbleiben dauert, desto schwerer wird die Rückkehr.** Lernstoff geht verloren, der Anschluss an die Klasse reißt ab, und die Angst vor dem Wiederkommen wächst mit jedem Tag."
+        },
+        {
+          "art": "merke",
+          "text": "Schulvermeidung ist ein Notsignal und immer auch eine Frage der Zeit. Früh hinschauen, die Gründe verstehen und rasch einen gemeinsamen Rückkehrplan machen – das ist der Kern der Hilfe."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: Formen und frühe Warnzeichen",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Formen des Fernbleibens",
+          "spalten": [
+            "Form",
+            "Was dahintersteht",
+            "Typisch"
+          ],
+          "zeilen": [
+            [
+              "Schulangst",
+              "Angst vor etwas in der Schule: Proben, Lehrkräfte, Mitschüler, Sport, Referate",
+              "Beschwerden vor bestimmten Fächern oder Tagen; das Kind ist zu Hause, die Eltern wissen davon"
+            ],
+            [
+              "Trennungsangst (früher „Schulphobie“)",
+              "Angst, von zu Hause und den Eltern wegzugehen",
+              "eher jüngere Kinder; Klammern und Weinen am Morgen, Sorge, den Eltern könnte etwas zustoßen"
+            ],
+            [
+              "Schulschwänzen",
+              "Unlust, attraktivere Alternativen, oft Konflikte mit Regeln",
+              "eher Jugendliche; fehlen oft ohne Wissen der Eltern, verbringen die Zeit außer Haus, wenig Angst"
+            ],
+            [
+              "Zurückhalten durch die Eltern",
+              "Die Eltern lassen das Kind zu Hause: zur Betreuung von Geschwistern, zum Übersetzen, aus eigener Angst oder Krankheit, manchmal, um etwas zu verbergen",
+              "Entschuldigungen ohne erkennbare Krankheit; das Kind möchte eigentlich kommen"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Mischformen sind häufig: Ein Jugendlicher, der aus sozialer Angst angefangen hat zu fehlen, entdeckt bald die Vorzüge langer Tage am Bildschirm. Auch die Schule selbst kann zu Fehlzeiten beitragen – etwa durch wiederholte Ausschlüsse vom Unterricht oder verkürzte Stundenpläne ohne Plan für die Rückkehr.\n\nKearney (2008) beschreibt Schulvermeidung als **Spektrum**. Es reicht vom Kind, das zwar zur Schule geht, aber jeden Tag darum kämpft, zu Hause bleiben zu dürfen, bis zum Jugendlichen, der seit Monaten nicht mehr erschienen ist. Die frühen Stufen sind die beste Gelegenheit, gegenzusteuern."
+        },
+        {
+          "art": "liste",
+          "titel": "Vom Zögern bis zum Fernbleiben – ein Spektrum",
+          "punkte": [
+            "Das Kind geht zur Schule, aber unter großer Not und mit ständigen Bitten, zu Hause bleiben zu dürfen.",
+            "Heftige Szenen am Morgen: Weinen, Klammern, Weigerung, sich anzuziehen oder ins Auto zu steigen.",
+            "Wiederholtes Zuspätkommen.",
+            "Einzelne Stunden oder Tage fehlen, früher nach Hause gehen.",
+            "Häufiges Fehlen im Wechsel mit Anwesenheit.",
+            "Vollständiges Fernbleiben über Wochen oder Monate."
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Frühe Warnzeichen",
+          "punkte": [
+            "Häufige Bauch- oder Kopfschmerzen, besonders morgens, am Sonntagabend oder vor bestimmten Fächern",
+            "Wiederholtes Zuspätkommen, Bitten, nach Hause zu telefonieren oder früher gehen zu dürfen, viele Besuche im Krankenzimmer",
+            "Fehlen an bestimmten Tagen: montags, bei Sport, Schwimmen, Proben oder Ausflügen",
+            "Fehlzeiten nach Ferien, Krankheit oder Wochenenden, die immer länger werden",
+            "Entschuldigungen ohne klare Krankheit, oft in Serie",
+            "Rückzug von Freunden, sinkende Leistungen, fehlende Hausaufgaben",
+            "Einschnitte kurz vorher: Schulwechsel, Umzug, Trennung der Eltern, Krankheit oder Tod in der Familie, Mobbing"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Schulvermeidung häuft sich an **Übergängen**: beim Schuleintritt, beim Wechsel ins Lycée, nach langen Ferien oder nach einer Krankheit. Wie häufig sie insgesamt ist, lässt sich schwer beziffern, weil Studien Fehlzeiten sehr unterschiedlich erfassen."
+        },
+        {
+          "art": "merke",
+          "text": "Führen Sie genau Buch: Welche Tage, welche Stunden, welche Begründungen? Ein Muster, das in der Liste sofort ins Auge fällt, bleibt im Alltag oft unsichtbar."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: welche Funktion das Fernbleiben hat",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Christopher Kearney schlägt vor, Schulvermeidung nicht nur nach ihrer Form, sondern nach ihrer **Funktion** zu verstehen: Was gewinnt oder vermeidet das Kind, wenn es nicht in die Schule geht? Er unterscheidet vier Funktionen (Kearney, 2008). Bei den ersten beiden entkommt das Kind etwas Unangenehmem – Fachleute sprechen von **negativer Verstärkung**. Bei den beiden anderen wartet zu Hause oder draußen etwas Angenehmes – **positive Verstärkung**. Jüngere Kinder zeigen eher die erste und dritte Funktion, Jugendliche eher die zweite und vierte. Viele Kinder zeigen mehrere Funktionen zugleich. Die Funktion ist entscheidend, weil sie bestimmt, welche Hilfe passt."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Vier Funktionen der Schulvermeidung (nach Kearney, 2008)",
+          "spalten": [
+            "Funktion",
+            "Worum es geht",
+            "Typisches Bild",
+            "Was vor allem hilft"
+          ],
+          "zeilen": [
+            [
+              "1. Belastende Gefühle vermeiden",
+              "Etwas an der Schule löst diffuse Angst oder Niedergeschlagenheit aus: Bus, Lärm, Kantine, Gebäude",
+              "eher jüngere Kinder; Bauchweh, Weinen; das Kind kann oft nicht sagen, was genau so schlimm ist",
+              "Beruhigung üben, schrittweise Annäherung an die Schule"
+            ],
+            [
+              "2. Bewertung und soziale Situationen meiden",
+              "Proben, Referate, Sport, Mitschüler, Angst vor Blamage",
+              "eher ältere Kinder und Jugendliche; Fehlen an bestimmten Tagen",
+              "Umgang mit ängstlichen Gedanken, soziale Fertigkeiten, schrittweise Konfrontation – und Mobbing ausschließen"
+            ],
+            [
+              "3. Nähe und Aufmerksamkeit der Eltern",
+              "bei Mutter oder Vater sein",
+              "eher jüngere Kinder; Klammern, Wutausbrüche am Morgen, Anrufe nach Hause",
+              "klare Morgenroutine und kurzer Abschied; Elternberatung: wenig Aufmerksamkeit für das Verweigern, viel für den Schulbesuch"
+            ],
+            [
+              "4. Angenehmes außerhalb der Schule",
+              "Ausschlafen, Bildschirm, Freunde, Freiheit",
+              "eher Jugendliche; wenig Angst, Fehlen oft ohne Wissen der Eltern",
+              "Vereinbarungen in der Familie, mehr Aufsicht, Anreize für Anwesenheit; Fehlen darf sich nicht lohnen"
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Die Funktion erkunden – Fragen für das Gespräch mit dem Kind",
+          "punkte": [
+            "Was ist für dich das Schwierigste an der Schule?",
+            "Wann ist es am schlimmsten – morgens zu Hause, auf dem Weg, in bestimmten Stunden, in der Pause?",
+            "Gibt es jemanden, vor dem du Angst hast oder der dich ärgert?",
+            "Was machst du an Tagen, an denen du zu Hause bist? Wer ist dann bei dir?",
+            "Was müsste anders sein, damit du eine Stunde schaffst?",
+            "Was hat dir früher geholfen, wenn etwas schwer war?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Fachleute ergänzen solche Gespräche durch Fragebögen für Kind und Eltern, etwa die *School Refusal Assessment Scale* von Kearney, und durch genaue Fehlzeitenlisten.\n\n**Hintergründe.** Hinter jeder Funktion stehen Belastungen, die mitbedacht werden müssen. Beim Kind: Angststörungen, Depression, Lern- oder Sprachschwierigkeiten, ADHS, Autismus, eine chronische Krankheit. In der Familie: Konflikte, Trennung, Krankheit oder Sucht eines Elternteils, sehr behütende oder wenig strukturierte Abläufe, finanzielle Not. In der Schule: Mobbing, Konflikte mit Lehrkräften, Über- oder Unterforderung, ein unruhiges Klassenklima, ein Schulwechsel. Viele Kinder mit Schulvermeidung haben keine psychiatrische Diagnose – bei anderen steht eine Angststörung oder Depression dahinter (Kearney, 2008).\n\n**Folgen.** Kurzfristig drohen Lernrückstände, der Verlust von Freundschaften, Streit in der Familie und oft auch Ärger wegen der Schulpflicht. Langfristig erhöht anhaltendes Fehlen das Risiko für Schulabbruch, Arbeitslosigkeit und psychische Probleme im Erwachsenenalter (Kearney, 2008)."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Man sollte das Kind in Ruhe lassen – es kommt von selbst zurück, sobald es sich besser fühlt.",
+          "fakt": "Je länger ein Kind zu Hause bleibt, desto schwerer wird die Rückkehr: Die Vermeidung festigt sich, Lernstoff und Anschluss an die Klasse gehen verloren. Rasch handeln – mit Verständnis und einem Plan – wirkt besser als Abwarten."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was hinter dem Fernbleiben stecken kann",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Weil Schulvermeidung ein Verhalten und keine Diagnose ist, lautet die wichtigste Frage: Was steckt dahinter? Manche Ursachen verlangen ganz andere Schritte als einen Rückkehrplan – oder zusätzliche. Die Klärung ist Aufgabe von Fachleuten; Sie tragen mit genauen Beobachtungen und Gesprächen dazu bei."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Mögliche Hintergründe",
+          "punkte": [
+            {
+              "wie": "Körperliche Krankheit",
+              "unterschied": "Echte Krankheiten brauchen Behandlung und Ruhe. Häufige, unklare Beschwerden sollten einmal ärztlich abgeklärt werden. Danach hilft eine gemeinsame Regel von Eltern, Ärztin und Schule: Ohne Fieber, Erbrechen oder eine andere klare Krankheit geht das Kind zur Schule, und die Beschwerden werden dort begleitet."
+            },
+            {
+              "wie": "Angststörung",
+              "unterschied": "Trennungsangst, soziale Angst oder Panikattacken stehen hinter vielen Fällen. Der Rückkehrplan wird dann mit einer Angstbehandlung verbunden."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Antriebslosigkeit, Rückzug, Schlafprobleme, Hoffnungslosigkeit: Das Kind fehlt nicht aus Angst vor der Schule, sondern weil ihm die Kraft fehlt. Das braucht fachliche Behandlung – und die Frage nach Suizidgedanken."
+            },
+            {
+              "wie": "Mobbing und Gewalt",
+              "unterschied": "Die Angst ist berechtigt. Vorrang hat der Schutz: Das Mobbing muss gestoppt werden, bevor Mutschritte sinnvoll sind."
+            },
+            {
+              "wie": "Lern- und Leistungsprobleme",
+              "unterschied": "Ein Kind, das täglich scheitert, meidet den Ort des Scheiterns. Hier helfen eine Abklärung, etwa einer Lese-Rechtschreibstörung, und Aufgaben, die es bewältigen kann."
+            },
+            {
+              "wie": "Autismus",
+              "unterschied": "Lärm, Gedränge und ständige Veränderungen können so erschöpfen, dass das Kind nicht mehr kommen kann. Anpassungen der Umgebung sind dann Teil der Lösung."
+            },
+            {
+              "wie": "Familiäre Krise oder Vernachlässigung",
+              "unterschied": "Kranke oder überlastete Eltern, die Pflege von Angehörigen, fehlende Struktur am Morgen – oder ein Kind, das zu Hause gehalten wird, damit Verletzungen nicht auffallen. Hier geht es um Unterstützung der Familie und gegebenenfalls um Kinderschutz."
+            },
+            {
+              "wie": "Substanzkonsum und riskante Freundeskreise",
+              "unterschied": "Vor allem bei Jugendlichen, die schwänzen, können Fehlzeiten mit Cannabis, Alkohol oder dem Anschluss an ältere Jugendliche zusammenhängen."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Ein Rückkehrplan ersetzt nicht die Klärung der Ursachen – und die Klärung der Ursachen ersetzt nicht den Rückkehrplan. Beides läuft parallel."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: rasche Rückkehr in kleinen Schritten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Unabhängig von der Funktion gilt: **so früh wie möglich, so viel Schule wie möglich – in machbaren Schritten.** Ein Rückkehrplan wird gemeinsam mit dem Kind, den Eltern, der Schule und den Fachleuten erarbeitet und schriftlich festgehalten: Wer bringt das Kind? Wer empfängt es? Wie lange bleibt es? Was passiert, wenn es schwierig wird? Wann wird ausgewertet? Das Tempo richtet sich nach dem Kind – aber es geht voran. Auch eine einzige Stunde in der Schule ist ein Fortschritt."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Beispiel: Rafaels Rückkehrplan",
+          "spalten": [
+            "Woche",
+            "Umfang",
+            "Vereinbarungen"
+          ],
+          "zeilen": [
+            [
+              "1",
+              "täglich die ersten beiden Stunden (Lieblingsfächer)",
+              "Der Vater bringt ihn; die Tutorin empfängt ihn am Eingang"
+            ],
+            [
+              "2",
+              "vormittags bis zur großen Pause",
+              "Hausaufgaben vorübergehend reduziert; ein Mitschüler begleitet ihn in der Pause"
+            ],
+            [
+              "3",
+              "ganzer Vormittag",
+              "Umziehen in einer eigenen Kabine; in der ersten Sportstunde hilft er beim Aufbau und macht einen Teil mit"
+            ],
+            [
+              "4",
+              "ganzer Tag",
+              "Auswertung mit Rafael, den Eltern und dem SePAS; nächste Schritte vereinbaren"
+            ]
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Früh reagieren: bei wiederkehrenden Fehlzeiten oder einem Muster das Gespräch suchen, nicht erst nach Wochen.",
+            "Die Gründe verstehen: mit dem Kind allein sprechen – was genau ist schwer? Mit den Eltern sprechen – was passiert am Morgen, was tagsüber zu Hause?",
+            "Eine feste Ansprechperson benennen, die das Kind morgens empfängt und im Laufe des Tages kurz nachfragt.",
+            "Einen Ruheort und eine Pausenkarte mit Zeitbegrenzung vereinbaren – als Hilfe zum Bleiben, nicht zum Gehen.",
+            "Lernstoff dosieren: Nachholen in kleinen Portionen, vorübergehend weniger Aufgaben, Proben gegebenenfalls verschieben.",
+            "Jede Anwesenheit anerkennen, auch eine kurze – ohne großes Aufheben vor der Klasse.",
+            "Hinweise auf Mobbing aktiv prüfen und Mobbing stoppen.",
+            "Eltern stärken: eine ruhige, feste Morgenroutine; zu Hause während der Schulzeit kein Bildschirm und keine Vergünstigungen; eine gemeinsame Botschaft: „Du schaffst das, und wir helfen dir.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Abwarten, bis die Angst ganz verschwunden ist.",
+            "Lange Krankschreibungen oder Unterricht zu Hause als Dauerlösung ohne Rückkehrplan.",
+            "Tage zu Hause, die sich wie Ferien anfühlen: ausschlafen, spielen, Bildschirm.",
+            "Drohungen und Vorwürfe – an das Kind oder an die Eltern.",
+            "Kommentare vor der Klasse wie „Na, auch mal wieder da?“.",
+            "Widersprüchliche Botschaften: Die Schule drängt, die Eltern entschuldigen – oder umgekehrt."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Der erste Tag zurück** entscheidet viel. Das Kind wird kurz, freundlich und ohne Aufhebens begrüßt; über die Abwesenheit wird vor der Klasse nicht gesprochen. Mitschülerinnen und Mitschüler brauchen nur eine knappe, mit dem Kind abgesprochene Erklärung – oder gar keine. Die Ansprechperson bespricht unter vier Augen, was heute geplant ist und was das Kind tun kann, wenn es schwierig wird.\n\n**Bei jüngeren Kindern** mit Trennungsangst oder dem Wunsch nach Nähe zu den Eltern ist der Morgen der Schlüssel: gleiche Abläufe, rechtzeitiges Aufstehen, ein kurzer, warmer Abschied an der Tür, eine vertraute Person, die das Kind übernimmt. **Bei Jugendlichen**, die schwänzen, helfen klare Vereinbarungen mit Anreizen, mehr Aufsicht in der Familie und manchmal Begleitung auf dem Schulweg."
+        },
+        {
+          "art": "fall",
+          "titel": "Rafael – sechs Wochen später",
+          "text": "Im Gespräch mit dem SePAS erzählt Rafael, dass zwei Mitschüler ihn seit Wochen in der Umkleide und im Klassenchat verspotten. Die Leitung geht dem nach, spricht mit den Beteiligten und ihren Eltern und vereinbart Maßnahmen gegen das Mobbing. Rafael kehrt nach dem Rückkehrplan zurück. In der zweiten Woche fehlt er zwei Tage – die Eltern hatten nach einem Streit nachgegeben. Beim Auswertungsgespräch vereinbaren sie, dass das WLAN während der Schulzeit ausgeschaltet bleibt. Nach sechs Wochen ist Rafael fast jeden Tag ganz in der Schule. Er hat mit einer Therapie gegen seine Angst vor Gruppen begonnen.",
+          "fragen": [
+            "Welche Funktionen hatte Rafaels Fernbleiben?",
+            "Warum war es richtig, Mobbing und Rückkehrplan gleichzeitig anzugehen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Zusammenarbeit: Familie, Schule, Fachstellen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Schulvermeidung lässt sich selten von einer Seite allein lösen. Eltern fühlen sich oft beschämt und hilflos, manchmal auch von der Schule angeklagt. Lehrkräfte erleben Entschuldigungen, die nicht zusammenpassen, und sind unsicher, wie viel Druck richtig ist. Hilfreich ist ein gemeinsames Gespräch, in dem alle dasselbe Ziel formulieren – die Rückkehr – und in dem klar ist, wer was übernimmt."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wer macht was?",
+          "spalten": [
+            "Wer",
+            "Aufgaben"
+          ],
+          "zeilen": [
+            [
+              "Klassenlehrerin, Régent, Tutor",
+              "Fehlzeiten genau erfassen, früh das Gespräch suchen, das Ankommen gestalten, Lernstoff dosieren"
+            ],
+            [
+              "Leitung",
+              "Abläufe bei Fehlzeiten und Schulpflicht, Einbezug der Fachdienste, Entscheidung über vorübergehende Anpassungen"
+            ],
+            [
+              "SePAS, ESEB, Teams des CDSE",
+              "Gespräche mit Kind und Familie, Klärung der Gründe, Rückkehrplan, Begleitung, Vermittlung weiterer Hilfen"
+            ],
+            [
+              "Eltern",
+              "Morgenroutine, gemeinsame Botschaft, Bringen und Abholen, keine Vergünstigungen zu Hause während der Schulzeit, Information über Veränderungen"
+            ],
+            [
+              "Kinderärztin, Kinder- und Jugendpsychiatrie, Psychotherapie",
+              "körperliche Abklärung, Diagnostik, Behandlung von Angst, Depression oder anderen Störungen; Absprache über Atteste, damit sie die Vermeidung nicht ungewollt verlängern"
+            ],
+            [
+              "Das Kind oder der Jugendliche",
+              "an Plan und Zielen beteiligt; sagt, was schwer ist und was hilft"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Behandlung.** Für angstbedingte Schulvermeidung ist eine kognitive Verhaltenstherapie mit schrittweiser Rückkehr gut untersucht. Bei jüngeren Kindern werden die Eltern eng einbezogen, etwa durch Beratung zu Morgenroutinen, Anweisungen und Aufmerksamkeit; bei Jugendlichen oft die ganze Familie, zum Beispiel über Vereinbarungen mit klaren Anreizen. Liegen eine Depression, eine andere psychische Störung oder Substanzkonsum zugrunde, werden diese mitbehandelt (Kearney, 2008). Die Schule bleibt dabei der Ort, an dem die Fortschritte stattfinden – deshalb ist der Austausch mit den Behandelnden, mit Einverständnis der Eltern, so wertvoll."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung, sobald sich Fehlzeiten häufen oder ein Muster erkennbar wird – nicht erst nach Wochen. Holen Sie den SePAS oder die zuständigen Teams (ESEB, CDSE) dazu, wenn ein Gespräch mit Kind und Eltern nicht reicht, wenn es Hinweise auf Angst, Depression, Mobbing oder eine familiäre Krise gibt oder wenn das Kind bereits ganz fernbleibt. Beachten Sie die internen Abläufe zu Fehlzeiten und Schulpflicht."
+        },
+        {
+          "art": "achtung",
+          "text": "Denken Sie bei Fehlzeiten auch an Kinderschutz: Wird ein Kind zu Hause gehalten, um Verletzungen zu verbergen, wird es vernachlässigt oder muss es dauerhaft Aufgaben von Erwachsenen übernehmen, informieren Sie die Leitung und folgen Sie den Kinderschutzabläufen. Äußert ein Kind Hoffnungslosigkeit oder Todeswünsche, hat das Vorrang: nicht allein lassen und noch am selben Tag die Leitung informieren."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was kennzeichnet Schulschwänzen im Unterschied zu angstbedingter Schulvermeidung?",
+      "optionen": [
+        "Das Kind ist zu Hause, und die Eltern wissen davon.",
+        "Das Kind hat am Morgen starke körperliche Beschwerden.",
+        "Das Kind bleibt meist ohne Wissen der Eltern fern, verbringt die Zeit außer Haus und zeigt wenig Angst.",
+        "Das Kind klammert sich morgens an die Eltern."
+      ],
+      "richtig": [2],
+      "erklaerung": "Schwänzen geschieht typischerweise ohne Wissen der Eltern, außerhalb des Hauses und ohne ausgeprägte Angst; oft geht es um attraktivere Alternativen. Bei angstbedingter Vermeidung ist das Kind meist zu Hause, die Eltern wissen davon, und Beschwerden am Morgen oder Klammern sind häufig."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen sind frühe Warnzeichen für Schulvermeidung? (mehrere richtig)",
+      "optionen": [
+        "Häufiges Bauchweh am Montagmorgen",
+        "Fehlen vor allem an Tagen mit Sport oder Proben",
+        "Regelmäßiges Zuspätkommen und häufige Bitten, nach Hause telefonieren zu dürfen",
+        "Ein einzelner Fehltag wegen Grippe",
+        "Sinkende Noten und Rückzug von Freunden"
+      ],
+      "richtig": [0, 1, 2, 4],
+      "erklaerung": "Beschwerden an bestimmten Tagen, Fehlen bei bestimmten Fächern, Zuspätkommen, Anrufe nach Hause sowie Rückzug und Leistungsabfall sind typische frühe Hinweise. Ein einzelner Fehltag wegen einer klaren Krankheit ist dagegen unauffällig."
+    },
+    {
+      "art": "fall",
+      "fall": "Lucie (7) weint jeden Morgen, klammert sich an ihre Mutter und fragt mehrmals am Tag, ob sie zu Hause anrufen darf. Zu Hause folgt sie der Mutter von Zimmer zu Zimmer.",
+      "frage": "Welche Funktion steht vermutlich im Vordergrund?",
+      "optionen": [
+        "Flucht vor Proben und Bewertung",
+        "Nähe und Aufmerksamkeit der Bezugsperson",
+        "Angenehme Aktivitäten außerhalb der Schule",
+        "Vermeidung eines bestimmten Fachs"
+      ],
+      "richtig": [1],
+      "erklaerung": "Lucie sucht vor allem die Nähe ihrer Mutter – typisch für die dritte Funktion bei jüngeren Kindern. Hilfreich sind eine klare Morgenroutine, ein kurzer Abschied und wenig Aufmerksamkeit für das Verweigern, viel für den Schulbesuch. Bewertungsangst, Freizeitangebote oder ein bestimmtes Fach passen nicht zum beschriebenen Bild."
+    },
+    {
+      "art": "fall",
+      "fall": "Rafael (12) ist seit zwei Wochen zu Hause. Die Mutter sagt: „Wir warten, bis er sich besser fühlt, dann kommt er von selbst wieder.“",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Zustimmen – Druck würde nur schaden.",
+        "Ihm Aufgaben per E-Mail schicken, bis er von selbst zurückkommen möchte.",
+        "Rasch ein Gespräch mit Rafael, den Eltern, der Leitung und dem SePAS vereinbaren, die Gründe klären und einen Plan für eine baldige, schrittweise Rückkehr erarbeiten.",
+        "Ihm vorschlagen, erst nach den Ferien neu anzufangen."
+      ],
+      "richtig": [2],
+      "erklaerung": "Jeder weitere Tag zu Hause festigt die Vermeidung. Deshalb braucht es rasch ein gemeinsames Gespräch, eine Klärung der Gründe und einen konkreten Rückkehrplan. Abwarten, Aufgaben per E-Mail ohne Plan oder ein Aufschub bis nach den Ferien verlängern das Fernbleiben und erschweren die Rückkehr."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum ist eine rasche Rückkehr so wichtig?",
+      "optionen": [
+        "Weil jeder weitere Tag zu Hause die Vermeidung verstärkt – Lernrückstand, Abstand zur Klasse und Angst vor dem Wiederkommen wachsen.",
+        "Weil die Schule sonst Schwierigkeiten mit der Verwaltung bekommt.",
+        "Weil Angst ohnehin nach wenigen Tagen verschwindet.",
+        "Weil lange Fehlzeiten immer Schwänzen bedeuten."
+      ],
+      "richtig": [0],
+      "erklaerung": "Fernbleiben verstärkt sich selbst: Mit jedem Tag wachsen Lernrückstand, Abstand zur Klasse und Angst vor der Rückkehr. Verwaltungsfragen sind nicht der Kern, Angst verschwindet nicht von selbst, und lange Fehlzeiten können sehr unterschiedliche Gründe haben."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Kind sollte erst in die Schule zurückkehren, wenn seine Angst vollständig verschwunden ist.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Die Angst sinkt gerade dadurch, dass das Kind in machbaren Schritten zurückkehrt und erlebt, dass es die Schule bewältigt. Wer wartet, bis die Angst weg ist, verlängert meist das Fernbleiben."
+    },
+    {
+      "art": "fall",
+      "fall": "Nelson (15) fehlt immer häufiger, vor allem vormittags. Er schläft bis mittags, spielt nachts online und trifft sich nachmittags mit älteren Freunden. Von Angst berichtet er nicht.",
+      "frage": "Welches Vorgehen passt am besten?",
+      "optionen": [
+        "Entspannungsübungen gegen Angst anbieten.",
+        "Mit Nelson und den Eltern klare Vereinbarungen treffen: feste Schlafens- und Bildschirmzeiten, bei Bedarf Begleitung zur Schule, Anreize für Anwesenheit, keine Vergünstigungen bei Fehlen – mit Unterstützung des SePAS.",
+        "Ihn für den Rest des Schuljahres vom Unterricht freistellen.",
+        "Abwarten, bis er die Lust auf Schule wiederfindet."
+      ],
+      "richtig": [1],
+      "erklaerung": "Das Bild passt zur vierten Funktion: Außerhalb der Schule wartet Angenehmes. Hilfreich sind klare Vereinbarungen, mehr Aufsicht und Anreize – Fehlen darf sich nicht lohnen. Entspannungsübungen gehen an der Funktion vorbei, und Freistellen oder Abwarten verfestigen das Muster."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was gehört zu einem guten Rückkehrplan? (mehrere richtig)",
+      "optionen": [
+        "Eine feste Ansprechperson, die das Kind morgens empfängt",
+        "Ein Einstieg mit einem Teil des Tages und schrittweise Steigerung",
+        "Ein Gespräch vor der Klasse darüber, warum das Kind so lange gefehlt hat",
+        "Ein vereinbarter Ruheort mit klarer Zeitbegrenzung für schwierige Momente",
+        "Abgestimmte Botschaften von Eltern und Schule"
+      ],
+      "richtig": [0, 1, 3, 4],
+      "erklaerung": "Eine feste Ansprechperson, schrittweise Steigerung, ein zeitlich begrenzter Ruheort und eine gemeinsame Botschaft von Eltern und Schule tragen die Rückkehr. Ein Gespräch vor der Klasse über die Abwesenheit stellt das Kind bloß und erhöht die Angst vor dem Wiederkommen."
+    },
+    {
+      "art": "fall",
+      "fall": "Joana (9) fehlt oft einzelne Tage. Die Mutter erklärt, Joana müsse ihr bei Behördengängen übersetzen und auf den kleinen Bruder aufpassen, wenn sie arbeitet.",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Das ist Familiensache; die Schule sollte sich heraushalten.",
+        "Die Mutter beim Elternabend vor anderen Eltern darauf ansprechen.",
+        "Joana für die Fehltage eine Strafarbeit geben.",
+        "Die Mutter wertschätzend ansprechen, Joanas Recht auf Bildung und die Schulpflicht erklären, mit der Leitung nach Entlastung suchen, etwa Übersetzungshilfen oder Betreuung, und bei anhaltenden Fehlzeiten die internen Abläufe beachten."
+      ],
+      "richtig": [3],
+      "erklaerung": "Hier hält die Familie das Kind zurück, weil sie überlastet ist – nicht, weil Joana die Schule meidet. Hilfreich ist ein wertschätzendes Gespräch, das Joanas Recht auf Bildung klar macht und Entlastung sucht. Wegschauen lässt Joana allein, öffentliches Ansprechen beschämt, und eine Strafe trifft das Kind für eine Entscheidung der Erwachsenen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Körperliche Beschwerden bei Schulvermeidung sind meist eingebildet.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Angst und Anspannung verursachen echte körperliche Beschwerden wie Bauch- oder Kopfschmerzen. Sie sollten einmal ärztlich abgeklärt werden; danach helfen eine gemeinsame Regel für den Schulbesuch und Begleitung in der Schule."
+    },
+    {
+      "art": "fall",
+      "fall": "Rafael kommt nach drei Wochen zum ersten Mal wieder für zwei Stunden. Ein Lehrer begrüßt ihn vor der Klasse mit: „Na, auch mal wieder da?“",
+      "frage": "Was wäre besser gewesen?",
+      "optionen": [
+        "Eine kurze, freundliche Begrüßung ohne Kommentar zur Abwesenheit und ein kurzes Gespräch unter vier Augen über den Plan für die Stunde.",
+        "Ihn nicht beachten, damit er sich nicht beobachtet fühlt.",
+        "Ihm vor der Klasse erklären, was er alles nachholen muss.",
+        "Die Klasse fragen, ob jemand weiß, warum Rafael so lange gefehlt hat."
+      ],
+      "richtig": [0],
+      "erklaerung": "Eine freundliche, unaufgeregte Begrüßung und Absprachen unter vier Augen erleichtern das Ankommen. Ironische Kommentare, Nachholforderungen vor der Klasse oder Fragen an die Mitschüler stellen Rafael bloß. Ihn gar nicht zu beachten, kann wie Ablehnung wirken."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Schulvermeidung",
+      "erklaerung": "Oberbegriff für wiederholtes oder dauerhaftes Fernbleiben vom Unterricht und für den Schulbesuch unter großer Not (engl. school refusal behavior). Keine Diagnose, sondern ein Verhalten mit verschiedenen Gründen."
+    },
+    {
+      "begriff": "Schulangst",
+      "erklaerung": "Angst vor etwas in der Schule, etwa Proben, Lehrkräften, Mitschülern oder Referaten."
+    },
+    {
+      "begriff": "Schulphobie",
+      "erklaerung": "Älterer Begriff für Fernbleiben aus Trennungsangst: Das Kind fürchtet nicht die Schule, sondern die Trennung von zu Hause."
+    },
+    {
+      "begriff": "Schulschwänzen",
+      "erklaerung": "Fernbleiben ohne ausgeprägte Angst, oft ohne Wissen der Eltern und mit attraktiveren Alternativen außer Haus."
+    },
+    {
+      "begriff": "Zurückhalten durch die Eltern",
+      "erklaerung": "Die Eltern lassen das Kind zu Hause, etwa zur Betreuung von Geschwistern, aus eigener Angst oder Überlastung – manchmal auch, um etwas zu verbergen."
+    },
+    {
+      "begriff": "Funktion des Verhaltens",
+      "erklaerung": "Was ein Verhalten dem Kind bringt oder erspart. Bei Schulvermeidung unterscheidet Kearney vier Funktionen, aus denen sich passende Hilfen ergeben."
+    },
+    {
+      "begriff": "Negative Verstärkung",
+      "erklaerung": "Ein Verhalten wird häufiger, weil es etwas Unangenehmes beendet – etwa die Angst vor der Schule."
+    },
+    {
+      "begriff": "Positive Verstärkung",
+      "erklaerung": "Ein Verhalten wird häufiger, weil ihm etwas Angenehmes folgt – etwa Ausschlafen oder Bildschirmzeit an Tagen zu Hause."
+    },
+    {
+      "begriff": "Rückkehrplan",
+      "erklaerung": "Schriftlich vereinbarter, schrittweiser Plan für die Rückkehr in die Schule: wer bringt, wer empfängt, wie lange, was bei Schwierigkeiten gilt und wann ausgewertet wird."
+    }
+  ],
+  "quellen": [
+    "kearney2008",
+    "beesdo2009",
+    "schneiderMargraf2019",
+    "petermann2013",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "angst",
+    "depression",
+    "elternarbeit",
+    "kinderschutz",
+    "sucht-medien",
+    "beobachten-dokumentieren"
+  ],
+  "toolbox": [
+    "meine-morgenroutine",
+    "mut-leiter",
+    "neustart",
+    "mein-unterstuetzungsnetz",
+    "elterngespraech-vorbereiten"
+  ]
+}

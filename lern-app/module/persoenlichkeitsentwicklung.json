@@ -1,0 +1,544 @@
+{
+  "id": "persoenlichkeitsentwicklung",
+  "bereich": "muster",
+  "titel": "Persönlichkeitsentwicklung in der Jugend",
+  "untertitel": "Wenn Muster sich verfestigen – Borderline-, narzisstische und dissoziale Muster verstehen und gut begleiten",
+  "dauer": 50,
+  "lernziele": [
+    "Sie können erklären, was ein Persönlichkeitsmuster ist, und normale Turbulenzen der Jugend von Mustern unterscheiden, die sich verfestigen.",
+    "Sie können die Kernmerkmale von Borderline-Mustern im Jugendalter beschreiben und begründen, warum frühe Hilfe wichtig ist.",
+    "Sie können narzisstische und dissoziale Muster in Grundzügen beschreiben und kennen die Bedeutung von wenig Schuldgefühl und Mitgefühl (callous-unemotional traits).",
+    "Sie können begründen, warum Etiketten schaden, und Warnzeichen trotzdem ernst nehmen und weitergeben.",
+    "Sie können Validierung, klare Grenzen und Konsistenz im Team im Umgang mit Jugendlichen anwenden."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Jana, 15 Jahre, Lycée",
+          "text": "Jana erlebt ihre Beziehungen wie eine Achterbahn. Die neue Tutorin ist für sie zuerst „die Einzige, die mich versteht“; drei Wochen später, nach einer verschobenen Sprechstunde, ist sie „die Schlimmste von allen“. Jana hat heftige Wutausbrüche, sagt, sie fühle sich oft „leer“, und trägt auch im Sommer lange Ärmel. Im Team gehen die Meinungen weit auseinander: Die einen finden, man müsse sie schonen, die anderen, sie brauche endlich klare Konsequenzen. Eine Kollegin sagt: „Das ist doch Borderline.“",
+          "fragen": [
+            "Welche Beobachtungen machen Ihnen Sorgen, welche könnten auch zur Jugend gehören?",
+            "Was könnte die Uneinigkeit im Team mit Janas Art, Beziehungen zu erleben, zu tun haben?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Jeder Mensch hat typische Arten, zu fühlen, zu denken und Beziehungen zu gestalten. Von einer **Persönlichkeitsstörung** sprechen Fachleute erst, wenn solche Muster **ausgeprägt, starr und anhaltend** sind, sich in vielen Lebensbereichen zeigen und zu deutlichem Leiden oder erheblichen Beeinträchtigungen führen – für die Person selbst oder für andere. So beschreibt es das DSM-5-TR. Die ICD-11 stellt Probleme im Erleben des eigenen Selbst (Identität, Selbstwert, Selbststeuerung) und in Beziehungen in den Mittelpunkt und stuft Persönlichkeitsstörungen nach Schweregrad ein: leicht, mittel oder schwer. Zusätzlich können auffällige Merkmalsbereiche benannt werden, etwa ein **Borderline-Muster**.\n\nHier ist bewusst von *Mustern* die Rede. Bei Jugendlichen ist vieles noch in Entwicklung, und eine Diagnose ist Sache von Fachleuten. Trotzdem begegnen Ihnen Jugendliche, bei denen sich belastende Erlebens- und Beziehungsmuster abzeichnen. Diese früh zu bemerken und gut zu begleiten, kann viel verändern."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Persönlichkeitsstörung ist mehr als ein „schwieriger Charakter“: Gemeint sind tief verankerte Muster im Erleben von sich selbst und von Beziehungen, die über lange Zeit und in vielen Lebensbereichen Leid verursachen. Sie entstehen nicht über Nacht – und sie sind veränderbar, besonders wenn früh geholfen wird."
+        }
+      ]
+    },
+    {
+      "titel": "Jugend: Umbau, nicht automatisch Störung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Jugend ist eine Zeit großer Veränderungen. Das Gehirn wird umgebaut: Systeme, die auf Belohnung, Gefühle und soziale Bewertung reagieren, sind früh sehr aktiv, während die Bereiche im Stirnhirn für Planung, Impulskontrolle und Abwägen bis ins junge Erwachsenenalter reifen. Dieses Ungleichgewicht erklärt zum Teil, warum Jugendliche intensiver fühlen, stärker auf Gleichaltrige reagieren und mehr Risiken eingehen (Casey et al., 2008). Gleichzeitig ringen sie um ihre Identität: Wer bin ich, wozu gehöre ich, was ist mir wichtig?\n\nStimmungsschwankungen, heftige Konflikte mit Erwachsenen, Ausprobieren und Grenzüberschreitungen gehören deshalb bis zu einem gewissen Grad zur normalen Entwicklung. Die meisten Jugendlichen kommen ohne dauerhafte Probleme durch diese Zeit. Bedenklich wird es, wenn Muster **ausgeprägt**, **starr** und **anhaltend** sind, sich in vielen Lebensbereichen zeigen und das Leben des Jugendlichen oder anderer deutlich belasten."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Normale Turbulenz oder sich verfestigendes Muster?",
+          "spalten": [
+            "Eher normale Entwicklung",
+            "Eher Anlass zur Sorge"
+          ],
+          "zeilen": [
+            [
+              "Stimmungsschwankungen, die zu Anlässen passen und sich wieder legen",
+              "Heftige, schnell wechselnde Gefühle, die sich kaum beruhigen lassen – über Monate und in vielen Situationen"
+            ],
+            [
+              "Streit mit Eltern und Lehrkräften, dazwischen gute Phasen",
+              "Beziehungen, die immer wieder zwischen Idealisierung und völliger Entwertung kippen"
+            ],
+            [
+              "Ausprobieren von Stilen, Meinungen und Gruppen",
+              "Ein anhaltendes Gefühl innerer Leere oder die quälende Frage „Wer bin ich überhaupt?“"
+            ],
+            [
+              "Gelegentliches Risikoverhalten mit Freunden",
+              "Wiederholte Selbstverletzung, gefährliches Risikoverhalten oder Suiziddrohungen, oft nach Beziehungskrisen"
+            ],
+            [
+              "Regelverstöße, die den Jugendlichen danach sichtbar beschäftigen",
+              "Wiederholtes Verletzen anderer ohne erkennbare Reue oder Mitgefühl"
+            ],
+            [
+              "Empfindlichkeit gegenüber Kritik in Maßen",
+              "Starke Kränkbarkeit: Kritik mündet regelmäßig in Wut, Entwertung anderer oder völligen Rückzug"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Diagnosen im Jugendalter.** Lange galt die Regel, vor dem 18. Geburtstag keine Persönlichkeitsstörung zu diagnostizieren. Heute sehen DSM-5-TR und ICD-11 das differenzierter: Eine Diagnose ist auch bei Jugendlichen möglich, wenn die Muster ausgeprägt, übergreifend und anhaltend sind und sich nicht besser durch eine Entwicklungsphase oder eine andere Störung erklären lassen. Das DSM-5-TR verlangt bei unter 18-Jährigen, dass die Merkmale seit mindestens einem Jahr bestehen. Eine Ausnahme ist die antisoziale Persönlichkeitsstörung: Sie wird erst ab 18 Jahren diagnostiziert; bei Jüngeren sprechen Fachleute von einer Störung des Sozialverhaltens."
+        },
+        {
+          "art": "merke",
+          "text": "Nicht jede heftige Jugend ist eine Störung – und nicht jede Störung ist „nur Pubertät“. Entscheidend sind Ausprägung, Dauer, Starrheit und das Ausmaß des Leidens."
+        }
+      ]
+    },
+    {
+      "titel": "Borderline-Muster im Jugendalter",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Das Borderline-Muster ist das im Jugendalter am besten untersuchte Persönlichkeitsmuster. Im Kern geht es um **Instabilität** – der Gefühle, der Beziehungen und des Selbstbildes –, verbunden mit Impulsivität (Sharp & Fonagy, 2015; Kaess et al., 2014). In der Allgemeinbevölkerung erfüllen etwa 1 bis 3 von 100 Jugendlichen die Kriterien; in kinder- und jugendpsychiatrischen Einrichtungen ist der Anteil deutlich höher. In der ICD-10 hieß das Bild „emotional instabile Persönlichkeitsstörung, Borderline-Typ“ – ein Begriff, der Ihnen in Berichten noch begegnen kann."
+        },
+        {
+          "art": "liste",
+          "titel": "Kernmerkmale in Alltagssprache",
+          "punkte": [
+            "Gefühle schlagen schnell und heftig aus und brauchen lange, um sich zu beruhigen – Wut, Verzweiflung, Scham, Angst.",
+            "Große Angst, verlassen zu werden: Schon eine abgesagte Verabredung kann wie eine Katastrophe erlebt werden.",
+            "Beziehungen kippen zwischen Idealisierung („Sie sind die Beste“) und Entwertung („Sie sind wie alle anderen“).",
+            "Ein unklares, schwankendes Bild von sich selbst, oft ein quälendes Gefühl innerer Leere.",
+            "Impulsives, selbstschädigendes Verhalten: Selbstverletzung, Substanzkonsum, riskante Sexualität, Essanfälle, gefährliche Mutproben.",
+            "Wiederholte Suizidgedanken, Suiziddrohungen oder Suizidversuche.",
+            "Unter starkem Stress vorübergehend misstrauische Gedanken oder das Gefühl, neben sich zu stehen (Dissoziation)."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Wie entsteht ein Borderline-Muster?** Es gibt nicht *die* eine Ursache. Die Forschung beschreibt ein Zusammenspiel: Eine angeborene hohe Gefühlsempfindlichkeit und Impulsivität trifft auf ein Umfeld, in dem Gefühle nicht verstanden, abgewertet oder bestraft werden, oder auf belastende Erfahrungen wie Vernachlässigung, Gewalt oder Missbrauch. Viele Betroffene haben solche Erfahrungen gemacht, aber keineswegs alle. Ein einflussreiches Modell sieht zudem eine Schwäche im **Mentalisieren**: Unter Stress gelingt es kaum noch, das eigene Innere und das anderer zutreffend zu verstehen. Manche Jugendliche lesen dann zu viel und vor allem zu Negatives in das Verhalten anderer hinein (Sharp & Fonagy, 2015).\n\n**Verlauf.** Die Merkmale schwanken und werden bei vielen im Lauf der Zeit schwächer. Die Probleme im Alltag – in Schule, Ausbildung und Beziehungen – bleiben aber oft länger bestehen als die auffälligen Symptome. Deshalb ist es wichtig, früh zu helfen, statt abzuwarten (Kaess et al., 2014)."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Jugendliche mit Borderline-Muster wollen nur manipulieren und Aufmerksamkeit bekommen.",
+          "fakt": "Hinter dramatisch wirkendem Verhalten steht meist echte, schwer auszuhaltende Not und der Versuch, mit überwältigenden Gefühlen fertigzuwerden. Das Wort „manipulativ“ führt dazu, dass Warnsignale übersehen werden – auch bei Selbstverletzung und Suizidgedanken. Hilfreicher ist die Haltung: Dieser Mensch braucht Aufmerksamkeit – und wir entscheiden bewusst, wie wir sie geben."
+        }
+      ]
+    },
+    {
+      "titel": "Narzisstische und dissoziale Muster",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Narzisstische Muster.** Ein gewisses Maß an Selbstbezogenheit gehört zur Jugend: Jugendliche fühlen sich oft beobachtet, reagieren empfindlich auf Kritik und über- oder unterschätzen sich. Bei einem narzisstischen Muster kreisen Selbstwert und Beziehungen dagegen dauerhaft um die Frage, ob man bewundert wird. Typisch sind ein Anspruch auf Sonderbehandlung, wenig Einfühlung in andere, Entwertung anderer und eine auffällige **Kränkbarkeit**: Kritik oder Misserfolg lösen Wut, Verachtung oder völligen Rückzug aus. Manche Jugendliche zeigen eher die verletzliche Seite: Sie wirken scheu und empfindlich und fühlen sich zugleich insgeheim zu wenig gewürdigt. Klinisch beschreiben viele Fachleute hinter der großspurigen Fassade einen brüchigen Selbstwert und große Angst vor Beschämung; die Forschung dazu ist nicht einheitlich. Über narzisstische Muster im Jugendalter weiß man insgesamt deutlich weniger als über Borderline-Muster.\n\n**Dissoziale Muster.** Regelverletzungen sind im Jugendalter häufig und meist vorübergehend. Bei einem kleineren Teil zeigen sich aber anhaltende Muster: wiederholte Aggression gegen Menschen oder Tiere, Zerstörung von Eigentum, Betrug und Diebstahl, schwere Regelverstöße. Fachleute sprechen dann von einer **Störung des Sozialverhaltens**. Beginnen die Probleme schon in der Kindheit, ist der Verlauf meist ungünstiger als bei einem Beginn erst in der Jugend."
+        },
+        {
+          "art": "text",
+          "text": "Eine besonders wichtige Untergruppe zeigt **wenig Schuldgefühl und Mitgefühl** (englisch *callous-unemotional traits*): Die Jugendlichen wirken kühl, zeigen kaum Reue, das Leid anderer scheint sie wenig zu berühren, und Leistung oder Folgen wirken ihnen gleichgültig. DSM-5-TR und ICD-11 halten dies als Zusatz „mit eingeschränkten prosozialen Emotionen“ fest. Diese Jugendlichen handeln häufiger geplant und zielgerichtet aggressiv und lernen wenig aus Strafen. Auf Belohnung und auf warme, verlässliche Beziehungen sprechen sie dagegen durchaus an, und die Merkmale sind veränderbar (Frick et al., 2014). Für die Schule heißt das: andere zuverlässig schützen, klare Regeln konsequent umsetzen – und zugleich lohnende Wege zu regelkonformem Verhalten eröffnen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Drei Muster im Überblick",
+          "spalten": [
+            "Muster",
+            "Im Schulalltag kann auffallen",
+            "Was oft dahinterliegt",
+            "Was eher hilft"
+          ],
+          "zeilen": [
+            [
+              "Borderline",
+              "heftige Gefühlsausbrüche, Idealisierung und Entwertung von Erwachsenen, Selbstverletzung, Krisen nach Zurückweisung",
+              "überwältigende Gefühle, Angst vor dem Verlassenwerden, brüchiges Selbstbild",
+              "Validierung, Verlässlichkeit, klare Absprachen, Wechsel früh ankündigen, ein abgestimmtes Team"
+            ],
+            [
+              "Narzisstisch",
+              "Entwertung anderer, Anspruch auf Sonderrechte, Wut oder Rückzug bei Kritik, kann Fehler kaum zugeben",
+              "große Schamempfindlichkeit, schwankender Selbstwert",
+              "Kritik unter vier Augen und konkret, ehrliche Anerkennung echter Leistung, Gesicht wahren lassen, klare Grenzen bei Entwertung anderer"
+            ],
+            [
+              "Dissozial",
+              "wiederholte Regelverstöße, Einschüchtern anderer, Lügen, wenig Reue",
+              "früh gelernte Muster, oft belastete Lebensumstände, bei manchen wenig Angst und Mitgefühl",
+              "klare, vorhersehbare Regeln und Folgen, viel Anerkennung für prosoziales Verhalten, Schutz der anderen, enge Zusammenarbeit mit Fachdiensten"
+            ]
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer früh dissoziales Verhalten zeigt, wird zwangsläufig kriminell.",
+          "fakt": "Die meisten Jugendlichen mit Regelverstößen werden keine dauerhaft dissozialen Erwachsenen. Auch bei früh beginnenden Problemen können wirksame Hilfen den Verlauf verändern – vor allem Elterntrainings bei jüngeren Kindern und Programme, die Familie, Schule und Umfeld einbeziehen, bei Jugendlichen (NICE, 2013)."
+        }
+      ]
+    },
+    {
+      "titel": "Vorsicht mit Etiketten – aber früh helfen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Begriffe wie „Borderline“ oder „Narzisst“ lösen bei vielen Menschen – auch bei Fachkräften – sofort Bilder aus: schwierig, manipulativ, hoffnungslos. Solche Bilder schaden. Wer einen Jugendlichen für „einen Borderliner“ hält, deutet jede Krise als Inszenierung, zieht sich innerlich zurück und übersieht echte Gefahr. Jugendliche, die sich im Internet selbst eine Diagnose zuschreiben, können sich zudem so mit dem Etikett identifizieren, dass es ihr Selbstbild verengt.\n\nGleichzeitig darf die Sorge vor Etiketten nicht dazu führen, Probleme kleinzureden. „Das wächst sich aus“ ist bei verfestigten Mustern keine gute Strategie. Fachleute sprechen sich heute deutlich für **Früherkennung und frühe Hilfe** aus: Je früher Jugendliche passende Unterstützung bekommen, desto besser sind die Aussichten (Kaess et al., 2014; Sharp & Fonagy, 2015). Der Weg dazwischen ist klar: beobachten und beschreiben statt benennen – und Beobachtungen an die richtigen Stellen weitergeben."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Was ähnlich aussehen kann – die Abklärung ist Sache von Fachleuten",
+          "punkte": [
+            {
+              "wie": "Heftige Stimmungsschwankungen",
+              "unterschied": "Bei einer Depression ist die Stimmung über Wochen anhaltend gedrückt oder gereizt. Bei einer bipolaren Störung gibt es abgrenzbare Phasen von Tagen bis Wochen mit gehobener oder gereizter Stimmung – nicht Wechsel innerhalb von Stunden."
+            },
+            {
+              "wie": "Impulsivität und Wutausbrüche",
+              "unterschied": "ADHS beginnt in der Kindheit und zeigt sich unabhängig von Beziehungskrisen. Bei Borderline-Mustern hängen Krisen oft eng mit Beziehungen und erlebter Zurückweisung zusammen."
+            },
+            {
+              "wie": "Misstrauen, Übererregung und Selbstverletzung nach belastenden Erlebnissen",
+              "unterschied": "Traumafolgestörungen, in der ICD-11 auch die komplexe Posttraumatische Belastungsstörung, können sehr ähnlich aussehen und treten oft gemeinsam mit Borderline-Mustern auf."
+            },
+            {
+              "wie": "Schwierigkeiten mit Beziehungen und Gefühlen, besonders bei Mädchen",
+              "unterschied": "Bei Autismus beruhen Beziehungsschwierigkeiten auf einer anderen sozialen Wahrnehmung, oft verbunden mit festen Interessen und Routinen. Verwechslungen mit Borderline-Mustern kommen vor."
+            },
+            {
+              "wie": "Rücksichtsloses Verhalten in einer Clique",
+              "unterschied": "Kann Gruppendruck, Substanzkonsum oder eine vorübergehende Phase sein. Ein dissoziales Muster zeigt sich über lange Zeit und in vielen Situationen."
+            }
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie vermeiden sollten",
+          "punkte": [
+            "Diagnosen in den Raum stellen: „Die ist doch Borderline“, „Das ist ein Narzisst“, „Aus dem wird mal ein Psychopath“.",
+            "Krisen als „nur Aufmerksamkeit“ oder „Theater“ abtun.",
+            "Beobachtungen für sich behalten, um den Jugendlichen nicht zu „stigmatisieren“.",
+            "Selbstdiagnosen aus dem Internet bestätigen oder ungeprüft übernehmen."
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Keine Etiketten – aber auch kein Wegschauen: beschreiben, ernst nehmen, weitergeben."
+        }
+      ]
+    },
+    {
+      "titel": "Umgang im Alltag: Validierung, Grenzen, Konsistenz",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Drei Haltungen haben sich im Umgang mit Jugendlichen mit verfestigten Mustern bewährt. Sie stammen aus Therapieansätzen wie der Dialektisch-Behavioralen Therapie (DBT) und der mentalisierungsbasierten Therapie und lassen sich gut in den pädagogischen Alltag übertragen.\n\n**Validierung.** Validieren heißt, das Erleben eines Menschen als nachvollziehbar anzuerkennen – aus seiner Sicht, in seiner Lage. Es heißt nicht, das Verhalten gutzuheißen: „Ich kann verstehen, dass du wütend bist, wenn du dich vor der Klasse bloßgestellt fühlst. Den Stuhl zu werfen, ist trotzdem nicht in Ordnung.“ Validierung beruhigt, weil sich der Jugendliche verstanden fühlt. Das Gefühl, nicht ernst genommen zu werden, steigert dagegen die Erregung."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Entwerten oder validieren?",
+          "spalten": [
+            "Entwertend",
+            "Validierend"
+          ],
+          "zeilen": [
+            [
+              "„Jetzt stell dich nicht so an.“",
+              "„Das hat dich richtig getroffen.“"
+            ],
+            [
+              "„Das ist doch kein Grund, so auszuflippen.“",
+              "„So wie du es erlebt hast, verstehe ich, dass du wütend bist.“"
+            ],
+            [
+              "„Du willst doch nur Aufmerksamkeit.“",
+              "„Ich sehe, dass es dir gerade sehr schlecht geht. Ich bin da.“"
+            ],
+            [
+              "„Das bildest du dir ein.“",
+              "„Für dich hat es sich angefühlt, als würden dich alle auslachen. Erzähl mir, was du gesehen hast.“"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Klare Grenzen.** Jugendliche mit heftigen Gefühlen brauchen Erwachsene, die Grenzen ruhig, vorhersehbar und ohne Beziehungsabbruch halten. Gute Grenzen sind wenige, klar und vorher bekannt – ebenso wie die Folgen, wenn sie überschritten werden. Sie werden umgesetzt, ohne zu drohen, zu moralisieren oder die Person abzuwerten: „Die Regel gilt, und ich bin weiter für dich da.“ Grenzen schützen auch den Jugendlichen selbst und seine Mitschülerinnen und Mitschüler.\n\n**Konsistenz im Team.** Jugendliche mit Borderline-Mustern erleben Menschen oft als ganz gut oder ganz schlecht. Im Team zeigt sich das nicht selten als **Spaltung**: Eine Kollegin wird idealisiert, ein anderer entwertet, und bald streiten die Erwachsenen darüber, wer „richtig“ mit dem Jugendlichen umgeht. Meist sieht jede Seite einen wahren Teil. Hilfreich sind regelmäßige Fallbesprechungen, gemeinsame Absprachen, die alle mittragen, keine Sonderabsprachen am Team vorbei und Offenheit gegenüber dem Jugendlichen: „Wir sprechen im Team miteinander.“"
+        },
+        {
+          "art": "tun",
+          "titel": "Was im Alltag hilft",
+          "punkte": [
+            "In der akuten Krise ruhig bleiben, langsam sprechen, wenige Worte – jetzt wird nicht diskutiert.",
+            "Erst beruhigen, dann besprechen: das Gespräch in eine ruhige Phase verlegen.",
+            "Verlässlich sein: Termine einhalten, Abwesenheiten und Wechsel früh ankündigen.",
+            "Absprachen schriftlich festhalten, damit alle dieselben kennen – auch der Jugendliche.",
+            "Stärken und gesunde Anteile ansprechen: Was gelingt? Was ist dem Jugendlichen wichtig?",
+            "Kritik unter vier Augen, konkret und auf Verhalten bezogen – besonders bei großer Kränkbarkeit.",
+            "Keine Geheimhaltung versprechen, wenn es um Sicherheit geht: „Wenn du in Gefahr bist, muss ich das weitergeben – und ich sage dir, an wen.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Typische Fallen",
+          "punkte": [
+            "Die Retterrolle: „Nur ich verstehe sie.“ Sonderrechte, private Nachrichten und Treffen überfordern beide Seiten.",
+            "Die Gegenbewegung: sich kühl zurückziehen oder mit Beziehungsentzug strafen.",
+            "Machtkämpfe vor der Klasse, besonders mit sehr kränkbaren Jugendlichen.",
+            "Regeln, die je nach Person und Tagesform wechseln."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Jana und die abgesagte Sprechstunde",
+          "text": "Die Tutorin muss Janas Sprechstunde kurzfristig absagen. Am Abend schreibt Jana ihr eine wütende Nachricht: Sie sei „genau wie alle anderen“. Am nächsten Morgen sucht die Tutorin das Gespräch: „Ich kann verstehen, dass dich die Absage sehr getroffen hat, gerade weil dir das Gespräch wichtig war. Ich hole es morgen um zehn nach. Nachrichten am Abend beantworte ich nicht – das gilt für alle.“ Im Team vereinbaren alle eine feste Ansprechperson und schriftliche Absprachen. Wegen der langen Ärmel spricht die Tutorin Jana behutsam an und bezieht nach den internen Abläufen den SePAS ein.",
+          "fragen": [
+            "Wo sehen Sie Validierung, wo eine klare Grenze?",
+            "Warum ist die Abstimmung im Team bei Jana besonders wichtig?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Weitervermittlung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Diagnostik eines Persönlichkeitsmusters erfolgt durch die Kinder- und Jugendpsychiatrie oder -psychotherapie, meist mit ausführlichen Gesprächen, strukturierten Interviews und Informationen aus mehreren Lebensbereichen. Für Jugendliche mit Borderline-Mustern gibt es wirksame Behandlungen. Die **Dialektisch-Behaviorale Therapie für Adoleszente (DBT-A)** trainiert Fertigkeiten im Umgang mit Gefühlen, Stress und Beziehungen und bezieht die Familie ein. Die **mentalisierungsbasierte Therapie für Jugendliche (MBT-A)** stärkt das Verständnis für eigene und fremde innere Zustände (Sharp & Fonagy, 2015). Bei dissozialen Mustern wirken vor allem Hilfen, die Familie und Umfeld einbeziehen (NICE, 2013).\n\nEs gibt keine Medikamente, die ein Persönlichkeitsmuster selbst behandeln. Bei begleitenden Störungen können Medikamente sinnvoll sein; darüber entscheidet die Ärztin gemeinsam mit dem Jugendlichen und der Familie. Die Schule trägt zur Behandlung bei, indem sie verlässlich bleibt, Absprachen einhält und – mit Einverständnis – mit den Behandelnden zusammenarbeitet."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Borderline ist unbehandelbar.",
+          "fakt": "Für Borderline-Muster im Jugendalter gibt es wirksame Therapien wie DBT-A und MBT-A. Viele Jugendliche entwickeln sich mit Unterstützung deutlich positiv; die auffälligen Merkmale werden bei vielen mit der Zeit schwächer."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit Ihrer Leitung (Responsable) und je nach Setting mit dem SePAS, dem Diagnostique-Team des CDSE oder den zuständigen Fachdiensten, wenn Sie bei einem Jugendlichen über Monate heftige Gefühlsschwankungen, instabile Beziehungen, selbstschädigendes Verhalten oder wiederholtes Verletzen anderer ohne Reue beobachten – besonders, wenn Leistungen, Beziehungen und Alltag deutlich leiden. Bringen Sie Beobachtungen mit: Was genau, wie oft, in welchen Situationen, was hat geholfen? Eine Diagnose stellen pädagogische Fachkräfte nicht."
+        },
+        {
+          "art": "achtung",
+          "text": "Selbstverletzung, Suizidgedanken und Suiziddrohungen werden immer ernst genommen – auch wenn sie wiederholt auftreten oder „dramatisch“ wirken. Sprechen Sie den Jugendlichen ruhig und direkt an, lassen Sie ihn bei akuter Gefahr nicht allein und informieren Sie sofort Ihre Leitung nach den internen Abläufen. Bei unmittelbarer Lebensgefahr wählen Sie den Notruf 112."
+        },
+        {
+          "art": "merke",
+          "text": "Validierung, klare Grenzen und ein Team, das mit einer Stimme spricht: Das hilft Jugendlichen mit verfestigten Mustern mehr als jedes Etikett."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Wann sprechen Fachleute von einer Persönlichkeitsstörung?",
+      "optionen": [
+        "Wenn ein Jugendlicher in einer Krise einmal heftig und unangemessen reagiert",
+        "Wenn Erlebens- und Beziehungsmuster ausgeprägt, starr und anhaltend sind, sich in vielen Lebensbereichen zeigen und deutliches Leiden oder Beeinträchtigungen verursachen",
+        "Wenn ein Jugendlicher sehr eigenwillig ist und anders denkt als die meisten",
+        "Wenn mehrere Lehrkräfte einen Jugendlichen übereinstimmend als schwierig erleben"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Persönlichkeitsstörungen sind durch ausgeprägte, unflexible und lang anhaltende Muster gekennzeichnet, die viele Lebensbereiche betreffen und zu Leid oder Beeinträchtigung führen. Eine einzelne Krise, Eigenwilligkeit oder die Einschätzung von Lehrkräften reichen nicht aus – die Diagnose stellen Fachleute nach sorgfältiger Abklärung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Nach DSM-5-TR darf eine Persönlichkeitsstörung vor dem 18. Geburtstag grundsätzlich nie diagnostiziert werden.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Das DSM-5-TR erlaubt die Diagnose auch bei Jugendlichen, wenn die Merkmale ausgeprägt, übergreifend und seit mindestens einem Jahr vorhanden sind und sich nicht besser durch eine Entwicklungsphase oder eine andere Störung erklären lassen. Nur die antisoziale Persönlichkeitsstörung setzt ein Alter von mindestens 18 Jahren voraus."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Merkmale gehören zum Kern eines Borderline-Musters? (mehrere richtig)",
+      "optionen": [
+        "Heftige, schnell wechselnde Gefühle",
+        "Große Angst, verlassen zu werden",
+        "Ausgeprägte Spezialinteressen und feste Routinen",
+        "Beziehungen zwischen Idealisierung und Entwertung",
+        "Wiederholtes selbstschädigendes Verhalten"
+      ],
+      "richtig": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "erklaerung": "Instabile Gefühle, Angst vor dem Verlassenwerden, schwankende Beziehungen und impulsives, selbstschädigendes Verhalten gehören zu den Kernmerkmalen. Spezialinteressen und feste Routinen sind dagegen typisch für Autismus – eine wichtige Abgrenzung, weil beides gelegentlich verwechselt wird."
+    },
+    {
+      "art": "fall",
+      "fall": "Eine Kollegin sagt über Jana (15), die sich selbst verletzt und heftige Stimmungsschwankungen hat: „Das ist Borderline. Die will nur Aufmerksamkeit – am besten ignorieren wir das.“",
+      "frage": "Wie reagieren Sie fachlich am besten?",
+      "optionen": [
+        "Ich stimme zu: Ignorieren verhindert, dass Jana das Verhalten verstärkt.",
+        "Ich schlage vor, Jana zu erklären, dass sie wahrscheinlich Borderline hat, damit sie Bescheid weiß.",
+        "Ich widerspreche und kümmere mich ab sofort allein um Jana, weil ich sie besser verstehe.",
+        "Ich gebe zu bedenken, dass hinter dem Verhalten echte Not stehen kann und Selbstverletzung immer ernst genommen wird, und schlage vor, die Beobachtungen mit der Leitung zu besprechen und nach den internen Abläufen weiterzugeben."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Selbstverletzung wird immer ernst genommen, auch wenn sie wiederholt auftritt; dahinter steht meist schwer auszuhaltende Not. Diagnosen stellen Fachleute, deshalb gehören Beobachtungen zur Leitung und zu den zuständigen Diensten. Ignorieren übersieht Gefahr, eine Verdachtsdiagnose gegenüber Jana kann schaden, und ein Alleingang fördert die Spaltung im Team."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was bedeutet Validierung im Umgang mit Jugendlichen?",
+      "optionen": [
+        "Dem Jugendlichen in allem recht geben, damit er sich beruhigt",
+        "Das Verhalten des Jugendlichen mit einem Punktesystem bewerten",
+        "Das Erleben des Jugendlichen als aus seiner Sicht nachvollziehbar anerkennen, ohne sein Verhalten gutzuheißen",
+        "Dem Jugendlichen erklären, warum seine Gefühle übertrieben sind"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Validieren heißt, Gefühle und Sichtweise als verständlich anzuerkennen – nicht, jedem Verhalten zuzustimmen. Das beruhigt und macht Grenzen oft erst annehmbar. In allem recht zu geben, ist keine Validierung, ein Bewertungssystem ist etwas anderes, und Gefühle als übertrieben hinzustellen, ist das Gegenteil: Entwertung."
+    },
+    {
+      "art": "fall",
+      "fall": "Mehdi (16) beschimpft im Unterricht einen Mitschüler, weil der ihm „die Idee geklaut“ habe, und wirft sein Heft auf den Boden. Er ist sichtlich aufgebracht.",
+      "frage": "Welche Antwort verbindet Validierung und Grenze am besten?",
+      "optionen": [
+        "„Beruhig dich, das ist doch keine große Sache.“",
+        "„Ich sehe, dass dich das richtig ärgert – es ist bitter, wenn man sich um die eigene Idee gebracht fühlt. Beschimpfen geht trotzdem nicht. Wir klären das nach der Stunde.“",
+        "„Raus hier, so ein Verhalten dulde ich nicht.“",
+        "„Du hast völlig recht, er hätte das nicht tun dürfen.“"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Die zweite Antwort erkennt Mehdis Gefühl an, setzt eine klare Grenze beim Verhalten und verlegt die Klärung in eine ruhigere Situation. Kleinreden entwertet und steigert die Erregung, ein Rauswurf ohne jede Anerkennung eskaliert leicht, und Mehdi pauschal recht zu geben, übergeht den Mitschüler und die Regel."
+    },
+    {
+      "art": "fall",
+      "fall": "Seit einigen Wochen schwärmt Sofia (15) von ihrer Educatrice: „Sie sind die Einzige, die mich versteht.“ Die Klassenlehrerin nennt sie „eiskalt“. Die Educatrice fühlt sich geschmeichelt, die Klassenlehrerin gekränkt. Im Team wachsen die Spannungen.",
+      "frage": "Was ist der beste nächste Schritt?",
+      "optionen": [
+        "Die Educatrice übernimmt künftig alle Gespräche mit Sofia, weil sie offenbar den besten Zugang hat.",
+        "Die Klassenlehrerin hält sich von Sofia fern, um Konflikte zu vermeiden.",
+        "Das Team bespricht die Dynamik in einer Fallbesprechung, vereinbart gemeinsame Absprachen und vermeidet Sonderregeln – beide Sichtweisen enthalten einen wahren Teil.",
+        "Die Educatrice bestätigt Sofia, dass die Klassenlehrerin manchmal wirklich hart ist, um die Beziehung zu stärken."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Idealisierung und Entwertung spiegeln sich im Team oft als Spaltung wider. Hilfreich ist, die Dynamik gemeinsam zu besprechen und mit einer Stimme zu handeln. Exklusive Rollen, der Rückzug einer Kollegin oder Allianzen gegen andere verstärken die Spaltung und belasten am Ende auch Sofia."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist über Jugendliche mit ausgeprägten callous-unemotional traits (wenig Schuldgefühl und Mitgefühl) bekannt?",
+      "optionen": [
+        "Sie zeigen häufiger geplante, zielgerichtete Aggression und lernen wenig aus Strafen, sprechen aber auf Belohnung und warme, verlässliche Beziehungen an.",
+        "Sie sind in der Regel sehr ängstlich und reagieren besonders stark auf Strafen.",
+        "Ihre Merkmale sind unveränderlich, Hilfe ist deshalb zwecklos.",
+        "Sie werden meist gemobbt und ziehen sich zurück."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Diese Untergruppe zeigt schwerere und stabilere Probleme, oft mit geplanter Aggression, und lernt wenig aus Strafen. Belohnungsorientierte Ansätze und warme, konsequente Beziehungen können aber wirken, und die Merkmale sind veränderbar. Große Ängstlichkeit und starke Reaktionen auf Strafe passen gerade nicht zu diesem Profil."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Erklärungen sollten Fachleute prüfen, bevor sie bei einem Jugendlichen ein Borderline-Muster annehmen? (mehrere richtig)",
+      "optionen": [
+        "Traumafolgestörungen wie eine komplexe Posttraumatische Belastungsstörung",
+        "ADHS",
+        "Eine bipolare Störung oder eine Depression",
+        "Autismus, besonders bei Mädchen",
+        "Eine Lese-Rechtschreibstörung"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "erklaerung": "Traumafolgen, ADHS, affektive Störungen und Autismus können einem Borderline-Muster ähneln oder gemeinsam damit auftreten; deshalb ist eine sorgfältige fachliche Abklärung nötig. Eine Lese-Rechtschreibstörung kann zwar belasten, erklärt aber keine instabilen Beziehungen, kein brüchiges Selbstbild und keine heftigen Gefühlsschwankungen."
+    },
+    {
+      "art": "fall",
+      "fall": "Leon (14) prahlt ständig und wertet Mitschüler ab. Auf jede Korrektur vor der Klasse reagiert er mit Spott oder verlässt den Raum. Nach einer schlechten Note zerreißt er das Blatt: „Diese Probe war sowieso lächerlich.“",
+      "frage": "Welches Vorgehen ist am hilfreichsten?",
+      "optionen": [
+        "Leon vor der Klasse deutlich zeigen, dass er nicht so gut ist, wie er glaubt.",
+        "Leon übertrieben loben, damit sein Selbstwert stabil wird.",
+        "Leon nicht mehr korrigieren, um Konflikte zu vermeiden.",
+        "Korrekturen möglichst unter vier Augen und konkret geben, echte Leistungen ehrlich anerkennen, ihm Wege lassen, das Gesicht zu wahren – und Entwertungen anderer klar begrenzen."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Bei großer Kränkbarkeit eskalieren öffentliche Korrekturen leicht. Kritik unter vier Augen, ehrliche Anerkennung echter Leistungen und die Möglichkeit, das Gesicht zu wahren, senken den Druck, ohne auf Grenzen zu verzichten. Bloßstellen verstärkt Scham und Abwehr, übertriebenes Lob kann ein unrealistisches Selbstbild eher verstärken, und fehlende Korrektur lässt Leon und die Klasse allein."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Für Borderline-Muster im Jugendalter gibt es keine wirksamen Behandlungen; man kann nur abwarten, bis die Jugendlichen erwachsen sind.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Es gibt wirksame Behandlungen, etwa die DBT-A und die mentalisierungsbasierte Therapie für Jugendliche. Fachleute empfehlen ausdrücklich frühe Hilfe, weil Beeinträchtigungen im Alltag sonst oft länger bestehen bleiben als die auffälligen Symptome."
+    },
+    {
+      "art": "fall",
+      "fall": "Nach einem Streit mit ihrem Freund sagt Chiara (16) zu Ihnen: „Ich halte das nicht mehr aus. Ich will nicht mehr leben. Aber sagen Sie es niemandem.“",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Ich nehme die Aussage ernst, frage ruhig und direkt nach, lasse Chiara nicht allein, erkläre ihr, dass ich Hilfe holen muss, und informiere sofort die Leitung nach den internen Abläufen.",
+        "Ich verspreche Verschwiegenheit, damit sie mir weiter vertraut.",
+        "Ich warte ab, ob sie es wiederholt, weil solche Aussagen nach einem Beziehungsstreit häufig sind.",
+        "Ich rate ihr, sich mit dem Freund zu versöhnen, dann wird es besser."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Suizidäußerungen werden immer ernst genommen, auch nach einem Beziehungsstreit und auch bei Jugendlichen, die häufiger Krisen haben. Direktes Nachfragen erhöht das Risiko nicht, sondern entlastet. Verschwiegenheit darf nicht versprochen werden, wenn es um Sicherheit geht; Abwarten oder Ratschläge zur Beziehung übergehen die Gefahr."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Persönlichkeitsstörung",
+      "erklaerung": "Ausgeprägte, starre und lang anhaltende Muster im Erleben von sich selbst und in Beziehungen, die in vielen Lebensbereichen zu Leid oder Beeinträchtigung führen. Die Diagnose stellen Fachleute."
+    },
+    {
+      "begriff": "Borderline-Muster",
+      "erklaerung": "Muster mit instabilen Gefühlen, Beziehungen und Selbstbild sowie Impulsivität. In der ICD-11 eine Zusatzbeschreibung der Persönlichkeitsstörung, in der ICD-10 „emotional instabile Persönlichkeitsstörung, Borderline-Typ“."
+    },
+    {
+      "begriff": "Validierung",
+      "erklaerung": "Anerkennen, dass Gefühle und Sichtweise eines Menschen aus seiner Lage heraus nachvollziehbar sind – ohne jedes Verhalten gutzuheißen."
+    },
+    {
+      "begriff": "Spaltung",
+      "erklaerung": "Menschen als ganz gut oder ganz schlecht erleben. Im Team zeigt sie sich, wenn Fachkräfte idealisiert oder entwertet werden und darüber in Streit geraten."
+    },
+    {
+      "begriff": "Callous-unemotional traits",
+      "erklaerung": "Merkmale wie fehlende Reue, wenig Mitgefühl und flacher Gefühlsausdruck. Sie kennzeichnen eine Untergruppe von Jugendlichen mit schweren Problemen im Sozialverhalten und sind veränderbar."
+    },
+    {
+      "begriff": "Störung des Sozialverhaltens",
+      "erklaerung": "Wiederholtes, anhaltendes Muster, bei dem Rechte anderer oder wichtige altersgemäße Regeln verletzt werden, etwa durch Aggression, Zerstörung, Betrug oder Diebstahl."
+    },
+    {
+      "begriff": "DBT-A",
+      "erklaerung": "Dialektisch-Behaviorale Therapie für Adoleszente: wirksame Therapie bei Borderline-Mustern und Selbstverletzung, die Fertigkeiten im Umgang mit Gefühlen, Stress und Beziehungen trainiert."
+    },
+    {
+      "begriff": "Kränkbarkeit",
+      "erklaerung": "Starke Empfindlichkeit gegenüber Kritik, Zurückweisung oder Beschämung, oft mit heftiger Wut oder Rückzug als Reaktion."
+    }
+  ],
+  "quellen": [
+    "sharpFonagy2015",
+    "kaess2014",
+    "frick2014",
+    "casey2008",
+    "niceCG158",
+    "dsm5tr",
+    "icd11",
+    "fegert2012"
+  ],
+  "verwandt": [
+    "selbstverletzung-suizid",
+    "mentalisieren",
+    "uebertragung",
+    "emotionsregulation",
+    "oppositionell-aggressiv",
+    "trauma"
+  ],
+  "toolbox": [
+    "sicherheitsplan",
+    "gefuehle-genau-benennen",
+    "stress-werkzeugkoffer",
+    "nachgespraech-krise",
+    "ruhig-werden-drei-uebungen"
+  ]
+}

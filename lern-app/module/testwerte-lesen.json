@@ -1,0 +1,615 @@
+{
+  "id": "testwerte-lesen",
+  "bereich": "grundlagen",
+  "titel": "Testergebnisse lesen: IQ, T-Werte, Prozentränge",
+  "untertitel": "Normwerte, Messfehler und Profile verstehen – und einen Befundbericht sicher einordnen",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können erklären, wie aus einem Rohwert durch den Vergleich mit Gleichaltrigen ein Normwert wird.",
+    "Sie können IQ- und Indexwerte, T-Werte, Wertpunkte, Stanine und Prozentränge ineinander übersetzen und auf der Normalverteilung verorten.",
+    "Sie können Konfidenzintervalle und Bezeichnungen wie „durchschnittlich“ richtig lesen und vermeiden typische Fehldeutungen.",
+    "Sie können ein Indexprofil des WISC-V vorsichtig deuten und daraus Hinweise für den Unterricht ableiten.",
+    "Sie können einen Befundbericht in sinnvoller Reihenfolge lesen und wissen, welche Fragen Sie an das Diagnostique-Team richten."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht: vom Rohwert zum Normwert",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Lucas, 10 Jahre, Cycle 4.1",
+          "text": "Nach einer Abklärung beim Diagnostique liegt der Bericht über Lucas vor. Die Klassenlehrerin liest: „Gesamt-IQ 88 (PR 21), Sprachverständnis 78 (PR 7), fluides Schlussfolgern 106 (PR 66).“ Sie ist unsicher: Ist 88 schlecht? Ist ein Prozentrang von 7 eine Katastrophe? Und was soll sie morgen im Unterricht anders machen? Beim Elterngespräch am nächsten Tag möchte sie nichts Falsches sagen.",
+          "fragen": [
+            "Welche Angaben im Bericht verstehen Sie schon, welche nicht?",
+            "Was müssten Sie wissen, um die Zahlen richtig einzuordnen?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Jedes Testergebnis beginnt als **Rohwert**: die Zahl der gelösten Aufgaben oder der erreichten Punkte. Für sich allein sagt er wenig. 25 Punkte in einem Wortschatztest können für eine Siebenjährige hervorragend und für einen Vierzehnjährigen schwach sein. Aussagekraft bekommt ein Rohwert erst durch den Vergleich mit einer **Normstichprobe** – einer großen, möglichst repräsentativen Gruppe von Kindern gleichen Alters (bei manchen Schulleistungstests derselben Klassenstufe), die den Test unter denselben Bedingungen bearbeitet hat.\n\nAus diesem Vergleich entsteht der **Normwert**. Er sagt nicht, wie viele Aufgaben ein Kind gelöst hat, sondern **wo es im Vergleich zu Gleichaltrigen steht**. Deshalb enthalten Berichte fast nur Normwerte: IQ- und Indexwerte, T-Werte, Wertpunkte, Stanine oder Prozentränge. Sie sehen verschieden aus, beruhen aber alle auf derselben Idee.\n\nDamit der Vergleich trägt, müssen die Normen zum Kind passen. Sie sollten aktuell sein, denn die Testleistungen einer Bevölkerung verändern sich über Jahrzehnte; mit veralteten Normen fielen Ergebnisse in der Vergangenheit meist zu günstig aus. Und die Vergleichsgruppe sollte dem Kind ähneln. Für mehrsprachige Kinder in Luxemburg, die oft nicht in ihrer Erstsprache getestet werden, ist das nicht immer gegeben (mehr dazu im Modul „Diagnostik verstehen“)."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Normwert beantwortet eine einzige Frage: Wo steht dieses Kind im Vergleich zu Gleichaltrigen? Warum es dort steht und was es braucht, klärt erst die Deutung im Zusammenhang."
+        }
+      ]
+    },
+    {
+      "titel": "Die Normalverteilung: Mittelwert und Standardabweichung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Viele Fähigkeiten verteilen sich in einer großen Gruppe ähnlich: Die meisten Menschen liegen nahe am Durchschnitt, und je weiter man sich davon entfernt, desto seltener werden die Werte. Aufgezeichnet ergibt sich eine Glockenkurve, die **Normalverteilung**.\n\nZwei Kennzahlen beschreiben sie. Der **Mittelwert** ist der Durchschnitt der Vergleichsgruppe. Die **Standardabweichung** (abgekürzt SD) gibt an, wie weit die Werte typischerweise um diesen Mittelwert streuen. Sie ist die Maßeinheit für Abstände vom Durchschnitt: „Eine Standardabweichung unter dem Mittelwert“ bedeutet auf jeder Skala dasselbe. Für die Normalverteilung gilt eine einfache Faustregel."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wie viele Gleichaltrige liegen wo?",
+          "spalten": [
+            "Bereich",
+            "Anteil der Vergleichsgruppe"
+          ],
+          "zeilen": [
+            [
+              "Zwischen −1 und +1 SD",
+              "etwa 68 von 100"
+            ],
+            [
+              "Zwischen −2 und +2 SD",
+              "etwa 95 von 100"
+            ],
+            [
+              "Zwischen −2 und −1 SD (ebenso zwischen +1 und +2 SD)",
+              "jeweils etwa 14 von 100"
+            ],
+            [
+              "Unter −2 SD (ebenso über +2 SD)",
+              "jeweils etwa 2 von 100"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Ein Wert eine Standardabweichung unter dem Mittelwert ist also nichts Ungewöhnliches: Etwa 16 von 100 Gleichaltrigen liegen dort oder darunter. Selten wird ein Wert erst ab etwa zwei Standardabweichungen.\n\nNicht alle Merkmale sind normalverteilt. Bei Verhaltensfragebögen zeigen die meisten Kinder wenige Probleme und nur wenige Kinder viele; die Verteilung ist schief. Solche Skalen werden deshalb oft anders umgerechnet, und manche beginnen erst bei einem T-Wert von 50. Das Grundprinzip bleibt: Der Normwert zeigt die Stellung im Vergleich zu Gleichaltrigen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "„Unterdurchschnittlich“ heißt „schlecht“.",
+          "fakt": "„Unterdurchschnittlich“ ist ein statistischer Begriff: Der Wert liegt deutlich unter dem Mittel der Vergleichsgruppe. Über den Wert eines Menschen, seine Entwicklungsmöglichkeiten oder seine übrigen Fähigkeiten sagt er nichts."
+        }
+      ]
+    },
+    {
+      "titel": "Die Skalen: IQ, T-Werte, Wertpunkte, Stanine, Prozentränge",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "In Berichten begegnen Ihnen verschiedene Skalen. Sie unterscheiden sich nur darin, welche Zahl für den Mittelwert und welche für die Standardabweichung steht.\n\n**IQ- und Indexwerte** (Mittelwert 100, SD 15) werden vor allem in Intelligenztests verwendet, etwa für den Gesamt-IQ und die Indizes des WISC-V. **Wertpunkte** (Mittelwert 10, SD 3, meist von 1 bis 19) beschreiben die einzelnen Untertests. **T-Werte** (Mittelwert 50, SD 10) sind typisch für Fragebögen wie CBCL, TRF und YSR, kommen aber auch in Leistungstests vor. **Stanine** (Mittelwert 5, SD etwa 2) teilen die Verteilung in neun Stufen; sie werden zum Beispiel beim DISYPS-III verwendet. **Prozentränge** (PR) geben an, wie viel Prozent der Vergleichsgruppe gleich viel oder weniger erreicht haben: PR 30 heißt, 30 von 100 Gleichaltrigen liegen gleich oder darunter, 70 darüber."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Umrechnung auf einen Blick",
+          "spalten": [
+            "Abstand vom Mittelwert",
+            "IQ / Index",
+            "T-Wert",
+            "Wertpunkte",
+            "Stanine",
+            "Prozentrang"
+          ],
+          "zeilen": [
+            [
+              "−2 SD",
+              "70",
+              "30",
+              "4",
+              "1",
+              "2"
+            ],
+            [
+              "−1 SD",
+              "85",
+              "40",
+              "7",
+              "3",
+              "16"
+            ],
+            [
+              "Mittelwert",
+              "100",
+              "50",
+              "10",
+              "5",
+              "50"
+            ],
+            [
+              "+1 SD",
+              "115",
+              "60",
+              "13",
+              "7",
+              "84"
+            ],
+            [
+              "+2 SD",
+              "130",
+              "70",
+              "16",
+              "9",
+              "98"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**So rechnen Sie selbst um:** Ziehen Sie den Mittelwert ab und teilen Sie durch die Standardabweichung. IQ 80 liegt (80 − 100) : 15 = 1,33 SD unter dem Mittelwert, ein T-Wert von 35 liegt (35 − 50) : 10 = 1,5 SD darunter – also etwas weiter vom Durchschnitt entfernt.\n\n**Prozentränge täuschen leicht.** Sie verteilen sich nicht gleichmäßig. In der Mitte der Verteilung bewirken kleine Unterschiede große Sprünge im Prozentrang: IQ 95 entspricht PR 37, IQ 105 PR 63 – ein scheinbar großer Abstand, tatsächlich nur 10 Punkte innerhalb des Durchschnittsbereichs. An den Rändern ist es umgekehrt: IQ 70 entspricht PR 2, IQ 65 PR 1. Für Vergleiche und Veränderungen sind deshalb Standardwerte besser geeignet als Prozentränge.\n\n**Achten Sie auf die Richtung der Skala.** Bei Leistungstests bedeutet ein hoher Wert eine gute Leistung. Bei Problemskalen von Verhaltensfragebögen bedeutet ein hoher T-Wert dagegen, dass *mehr* Schwierigkeiten beschrieben werden. Bei Kompetenzskalen, etwa zu sozialen Fähigkeiten, sind wiederum niedrige Werte ungünstig. Ein T-Wert von 65 kann also je nach Skala eine Stärke oder ein Warnsignal sein. Ab welchem Wert ein Ergebnis als grenzwertig oder auffällig gilt, legt das Handbuch des jeweiligen Verfahrens fest; im Bericht steht es meist dabei."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Prozentrang 30 heißt: 30 Prozent der Aufgaben richtig.",
+          "fakt": "Der Prozentrang sagt nichts über den Anteil gelöster Aufgaben. Er gibt an, wie viel Prozent der Vergleichsgruppe gleich viel oder weniger erreicht haben. Ein Kind kann mit PR 30 die meisten Aufgaben gelöst haben – wenn sie für Gleichaltrige leicht sind."
+        }
+      ]
+    },
+    {
+      "titel": "Messfehler, Vertrauensbereich und Bezeichnungen",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Kein Test misst exakt. Müdigkeit, Nervosität, Glück beim Raten oder eine ablenkende Situation beeinflussen jedes Ergebnis ein wenig. Die Testtheorie unterscheidet deshalb den gemessenen Wert vom **wahren Wert**, den man bei einer fehlerfreien Messung erhielte. Wie groß der Messfehler ist, hängt von der Reliabilität des Verfahrens ab.\n\nSeriöse Berichte geben ein **Konfidenzintervall** (Vertrauensbereich) an, meist mit 90 oder 95 Prozent Sicherheit. „Gesamt-IQ 88 (95 %-Konfidenzintervall 83–94)“ bedeutet: Der wahre Wert des Kindes liegt mit hoher Wahrscheinlichkeit zwischen 83 und 94. Bei den Wechsler-Tests liegt das Intervall oft nicht symmetrisch um den gemessenen Wert. Das ist kein Fehler, sondern beabsichtigt, weil es um den geschätzten wahren Wert gebildet wird.\n\nFür die Praxis folgt daraus: **Lesen Sie Bereiche, nicht Punkte.** Ein Kind mit 84 und ein Kind mit 86 unterscheiden sich nicht bedeutsam, auch wenn das eine unter und das andere über der Grenze von 85 liegt. Einzelne Untertests schwanken stärker als Indexwerte und Indexwerte stärker als der Gesamt-IQ, weil sie auf weniger Aufgaben beruhen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Eine verbreitete Einteilung von IQ- und Indexwerten",
+          "spalten": [
+            "Wert",
+            "Bezeichnung",
+            "Anteil der Gleichaltrigen"
+          ],
+          "zeilen": [
+            [
+              "unter 70",
+              "weit unterdurchschnittlich",
+              "etwa 2 von 100"
+            ],
+            [
+              "70–84",
+              "unterdurchschnittlich",
+              "etwa 14 von 100"
+            ],
+            [
+              "85–115",
+              "durchschnittlich",
+              "etwa 68 von 100"
+            ],
+            [
+              "116–130",
+              "überdurchschnittlich",
+              "etwa 14 von 100"
+            ],
+            [
+              "über 130",
+              "weit überdurchschnittlich",
+              "etwa 2 von 100"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Diese Einteilung in Schritten von einer Standardabweichung ist im deutschsprachigen Raum verbreitet, aber nicht die einzige. Die amerikanische Ausgabe des WISC-V unterteilt feiner: Dort gilt 90–109 als durchschnittlich, 80–89 als unterer und 110–119 als oberer Durchschnittsbereich, 70–79 als sehr niedrig (Wechsler, 2014). Derselbe Wert kann also je nach System „durchschnittlich“ oder „unterer Durchschnitt“ heißen. Maßgeblich ist die Einteilung, die im Bericht angegeben ist.\n\n**Zur Einordnung sehr niedriger Werte.** Eine Störung der Intelligenzentwicklung (früher „geistige Behinderung“) setzt nach DSM-5-TR und ICD-11 nicht nur Testwerte von etwa zwei Standardabweichungen unter dem Mittelwert voraus, sondern auch deutliche Einschränkungen in den Alltagsfertigkeiten, die in der Entwicklungszeit beginnen. Ein Testwert allein reicht für diese Diagnose nie. Werte zwischen 70 und 84 sind keine Diagnose; sie zeigen, dass ein Kind beim Lernen wahrscheinlich mehr Zeit, Wiederholung und Anschaulichkeit braucht."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Testwert ist eine Schätzung mit Unschärfe. Denken Sie in Bereichen, und prüfen Sie, welche Einteilung der Bericht verwendet."
+        }
+      ]
+    },
+    {
+      "titel": "Profile lesen: Stärken und Schwächen im WISC-V",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der WISC-V (Wechsler, 2014) gehört zu den am häufigsten eingesetzten Intelligenztests; die deutsche Fassung ist für Kinder und Jugendliche von 6;0 bis 16;11 Jahren normiert. Neben dem **Gesamt-IQ** beschreibt er fünf Bereiche, die **Indizes**. Jeder dieser Indizes beruht auf zwei Untertests. Andere Verfahren, etwa KABC-II, SON-R oder CFT 20-R, nutzen dieselben Skalenprinzipien, erfassen aber andere Bereiche und verwenden andere Bezeichnungen."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Die fünf Indizes des WISC-V",
+          "spalten": [
+            "Index",
+            "Was er erfasst",
+            "Was ihn außerdem beeinflusst",
+            "Was im Unterricht auffallen kann"
+          ],
+          "zeilen": [
+            [
+              "Sprachverständnis",
+              "Wortschatz, sprachliches Wissen, Begriffe erklären und vergleichen",
+              "Kenntnis der Testsprache, Bildungserfahrungen",
+              "versteht mündliche Erklärungen schwer, drückt sich knapp aus"
+            ],
+            [
+              "Visuell-räumliche Verarbeitung",
+              "Räumliche Beziehungen erfassen, Muster nachbauen, Teile zu einem Ganzen fügen",
+              "Sehen, Feinmotorik, Arbeitstempo",
+              "Mühe mit Geometrie, Karten, Tabellen oder der Heftgestaltung"
+            ],
+            [
+              "Fluides Schlussfolgern",
+              "Regeln und Zusammenhänge in neuem Material erkennen, logisch schließen",
+              "Ausdauer, Aufmerksamkeit",
+              "braucht bei neuen Aufgabentypen viel Anleitung – oder erkennt Muster auffallend schnell"
+            ],
+            [
+              "Arbeitsgedächtnis",
+              "Informationen kurz behalten und damit arbeiten",
+              "Aufmerksamkeit, Angst, Sprache",
+              "vergisst mehrteilige Anweisungen, verliert beim Kopfrechnen den Faden"
+            ],
+            [
+              "Verarbeitungsgeschwindigkeit",
+              "Einfache Aufgaben schnell und genau erledigen",
+              "Feinmotorik, Sorgfalt bis Perfektionismus, Aufmerksamkeit, Motivation",
+              "wird mit Arbeitsblättern und Proben nicht fertig, braucht für Abschriften lange"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Profilunterschiede richtig einordnen.** Oft sind die Unterschiede zwischen den Indizes aufschlussreicher als der Gesamtwert. Zwei Fragen helfen dabei.\n\n*Ist der Unterschied statistisch bedeutsam?* Die Handbücher geben an, ab welcher Differenz ein Unterschied nicht mehr durch den Messfehler erklärbar ist. Unterschiede von wenigen Punkten sind bedeutungslos.\n\n*Ist der Unterschied ungewöhnlich?* Auch bedeutsame Unterschiede sind nicht selten: Bei vielen Kindern der Vergleichsgruppe liegen einzelne Bereiche 15 Punkte und mehr auseinander. Ein ungleichmäßiges Profil ist für sich genommen kein Zeichen einer Störung.\n\nWie viel die einzelnen Indizes über den Gesamt-IQ hinaus aussagen, ist in der Forschung umstritten. Profilunterschiede sind deshalb **Hypothesen**, die man mit Beobachtungen aus dem Alltag prüft – keine Diagnosen. Für die Unterrichtsplanung sind sie trotzdem wertvoll: Sie zeigen, über welche Wege ein Kind gut lernt und wo es Entlastung braucht. Liegen die Indizes weit auseinander, beschreibt der Gesamt-IQ das Kind nur ungenau; gute Berichte weisen darauf hin."
+        },
+        {
+          "art": "fall",
+          "titel": "Lucas’ Profil",
+          "text": "Lucas spricht zu Hause Portugiesisch und lernt in der Schule Luxemburgisch, Deutsch und Französisch. Getestet wurde auf Deutsch. Die Diagnostikerin beschreibt ihn als freundlich und anstrengungsbereit, unter Zeitdruck aber nervös. Sie hält die Ergebnisse für aussagekräftig, weist aber darauf hin, dass die sprachgebundenen Werte seine Fähigkeiten unterschätzen können.",
+          "fragen": [
+            "Wo liegen Lucas’ Stärken, wo braucht er Entlastung?",
+            "Warum beschreibt der Gesamt-IQ ihn nur ungenau?"
+          ]
+        },
+        {
+          "art": "tabelle",
+          "titel": "Auszug aus Lucas’ Bericht (erfundenes Beispiel)",
+          "spalten": [
+            "Bereich",
+            "Indexwert",
+            "Prozentrang",
+            "95 %-Konfidenzintervall"
+          ],
+          "zeilen": [
+            [
+              "Sprachverständnis",
+              "78",
+              "7",
+              "72–88"
+            ],
+            [
+              "Visuell-räumliche Verarbeitung",
+              "100",
+              "50",
+              "92–108"
+            ],
+            [
+              "Fluides Schlussfolgern",
+              "106",
+              "66",
+              "98–113"
+            ],
+            [
+              "Arbeitsgedächtnis",
+              "88",
+              "21",
+              "81–97"
+            ],
+            [
+              "Verarbeitungsgeschwindigkeit",
+              "82",
+              "12",
+              "75–94"
+            ],
+            [
+              "Gesamt-IQ",
+              "88",
+              "21",
+              "83–94"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Was folgt daraus für den Unterricht?** Lucas denkt mit anschaulichem Material im Durchschnitt, beim Schlussfolgern sogar etwas über dem Mittelwert. Sein Sprachverständnis im Deutschen ist deutlich schwächer – bei einem Kind, das Deutsch als weitere Sprache lernt, vor allem ein Hinweis auf den Sprachstand und nicht auf seine Denkfähigkeit. Arbeitsgedächtnis und Verarbeitungsgeschwindigkeit liegen im unteren Bereich; Zeitdruck macht ihn nervös. Der Gesamt-IQ von 88 fasst diese unterschiedlichen Bereiche zusammen und beschreibt Lucas deshalb nur ungenau.\n\nHilfreich sind Anschauung und Beispiele zu neuen Begriffen, gezielte Wortschatzarbeit, Anweisungen in einzelnen Schritten und zusätzlich schriftlich, etwas mehr Zeit und weniger Zeitdruck – bei vollen Anforderungen an sein Denken. Seine Stärke im Schlussfolgern ist eine Ressource: Knobelaufgaben und Muster können ihm Erfolgserlebnisse verschaffen."
+        },
+        {
+          "art": "merke",
+          "text": "Das Profil sagt mehr als der Gesamtwert – aber nur im Zusammenhang mit Sprache, Verhalten in der Testsituation und Ihren Beobachtungen aus dem Alltag."
+        }
+      ]
+    },
+    {
+      "titel": "Einen Befundbericht lesen – und was daraus folgt",
+      "bloecke": [
+        {
+          "art": "liste",
+          "titel": "Typischer Aufbau eines Befundberichts",
+          "punkte": [
+            "Anlass und Fragestellung",
+            "Vorgeschichte und Informationen aus Gesprächen",
+            "Eingesetzte Verfahren",
+            "Verhaltensbeobachtung während der Untersuchung",
+            "Ergebnisse mit Normwerten, Prozenträngen und Konfidenzintervallen",
+            "Zusammenfassung, Einordnung und gegebenenfalls Diagnose",
+            "Empfehlungen"
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "In dieser Reihenfolge lesen",
+          "punkte": [
+            "**Fragestellung:** Was sollte geklärt werden? Nur darauf gibt der Bericht eine Antwort.",
+            "**Verhaltensbeobachtung:** War das Kind ausgeruht, motiviert und konzentriert? Wurde in einer Sprache getestet, die es gut beherrscht? Meist steht hier, ob die Diagnostikerin die Ergebnisse für aussagekräftig hält.",
+            "**Zusammenfassung und Empfehlungen:** Was bedeutet das Ergebnis für das Kind, und was soll sich ändern?",
+            "**Erst dann die Zahlen:** Bereiche statt Einzelwerte, Konfidenzintervalle, Stärken und Schwächen im Profil.",
+            "**Mit eigenen Beobachtungen abgleichen:** Passt das Bild zu dem, was Sie im Alltag sehen? Was überrascht Sie?",
+            "**Fragen notieren** und mit der Diagnostikerin klären."
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein IQ von 85 heißt: Das Kind ist dumm.",
+          "fakt": "85 ist die untere Grenze des breiten Durchschnittsbereichs; etwa 16 von 100 Gleichaltrigen erreichen einen gleichen oder niedrigeren Wert. Viele Menschen mit Werten in diesem Bereich schließen Schule und Ausbildung erfolgreich ab. Ein IQ-Wert sagt zudem nichts über Motivation, Kreativität, soziale Fähigkeiten oder praktisches Geschick."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Der IQ ist eine feste Zahl fürs Leben.",
+          "fakt": "Bei Schulkindern sind die Werte im Durchschnitt recht stabil. Im Einzelfall können sie sich über die Jahre aber deutlich verändern – vor allem bei jüngeren Kindern, bei Kindern, die die Testsprache erst lernen, und nach großen Veränderungen der Lebensumstände. Ein Testergebnis beschreibt einen Zeitpunkt."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein sprachfreier Test ist kulturfrei.",
+          "fakt": "Sprachfreie Tests verringern den Einfluss der Sprache. Aufgaben, Material und Testsituation sind aber nicht allen Kindern gleich vertraut, und solche Tests erfassen nur einen Teil der Fähigkeiten, meist das schlussfolgernde Denken."
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie vermeiden sollten",
+          "punkte": [
+            "Einzelne Zahlen ohne Zusammenhang weitergeben („Er hat einen IQ von 78“).",
+            "Den IQ als Etikett verwenden oder niedrige Erwartungen damit begründen.",
+            "Werte auf eigene Faust neu deuten oder Ergebnisse verschiedener Tests gleichsetzen.",
+            "Berichte kopieren oder im Kollegium weiterreichen – sie enthalten besonders geschützte Gesundheitsdaten."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Fragen Sie beim Diagnostique-Team nach, wenn Sie Werte oder Begriffe nicht verstehen, wenn der Bericht nicht zu Ihren Beobachtungen passt oder wenn unklar ist, was die Empfehlungen im Unterricht konkret bedeuten. Wenn Eltern Sie zu den Ergebnissen fragen, erklären Sie, was Sie selbst sicher verstehen, und verweisen Sie für die Deutung an die Diagnostikerin – am besten mit dem Angebot eines gemeinsamen Gesprächs."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Übung: Ein Kind hat einen Indexwert von 115. Wie viele von 100 Gleichaltrigen haben etwa gleich viel oder weniger erreicht?",
+      "optionen": [
+        "etwa 50",
+        "etwa 68",
+        "etwa 84",
+        "etwa 98"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "115 liegt eine Standardabweichung über dem Mittelwert von 100. Darunter liegen etwa 84 von 100: die 50 unterhalb des Mittelwerts plus etwa 34 zwischen Mittelwert und +1 SD. 68 beschreibt den Anteil zwischen −1 und +1 SD, 98 gehört zu +2 SD, also zu einem Wert von 130."
+    },
+    {
+      "art": "einfach",
+      "frage": "Übung: Welcher Wert liegt am weitesten unter dem Durchschnitt?",
+      "optionen": [
+        "IQ 80",
+        "T-Wert 35",
+        "Wertpunkt 7",
+        "Prozentrang 20"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Umgerechnet in Standardabweichungen: IQ 80 liegt 1,33 SD unter dem Mittelwert (20 : 15), T 35 liegt 1,5 SD darunter (15 : 10), Wertpunkt 7 genau 1 SD (3 : 3). Prozentrang 20 entspricht etwa 0,84 SD darunter. Am weitesten entfernt ist also T 35."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Prozentrang von 30 bedeutet, dass das Kind 30 Prozent der Aufgaben richtig gelöst hat.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Der Prozentrang sagt, wie viel Prozent der Vergleichsgruppe gleich viel oder weniger erreicht haben – hier 30 von 100. Wie viele Aufgaben das Kind gelöst hat, zeigt der Rohwert; mit PR 30 kann ein Kind durchaus die meisten Aufgaben richtig haben."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Übung: Welche Werte liegen genau eine Standardabweichung unter dem Mittelwert? (mehrere richtig)",
+      "optionen": [
+        "IQ 85",
+        "T-Wert 40",
+        "Wertpunkt 7",
+        "Prozentrang 40",
+        "Stanine 4"
+      ],
+      "richtig": [
+        0,
+        1,
+        2
+      ],
+      "erklaerung": "IQ 85 (100 − 15), T 40 (50 − 10) und Wertpunkt 7 (10 − 3) liegen jeweils genau eine Standardabweichung unter dem Mittelwert; das entspricht etwa Prozentrang 16. Prozentrang 40 liegt nur knapp unter dem Mittelwert, und Stanine 4 umfasst den Bereich von etwa einer Viertel- bis Dreiviertel-Standardabweichung darunter."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Bericht zu Emma (9) steht: „Gesamt-IQ 84 (95 %-Konfidenzintervall 79–90)“. Die Klassenlehrerin sagt: „Also ist sie eindeutig unterdurchschnittlich intelligent.“",
+      "frage": "Welche Aussage trifft am besten zu?",
+      "optionen": [
+        "Die Lehrerin hat recht: 84 liegt unter 85 und damit eindeutig im unterdurchschnittlichen Bereich.",
+        "Emmas wahrer Wert liegt mit hoher Wahrscheinlichkeit zwischen 79 und 90, also im Übergang zwischen unterdurchschnittlichem und durchschnittlichem Bereich; eine eindeutige Zuordnung ist nicht möglich.",
+        "Das Konfidenzintervall zeigt, dass der Test fehlerhaft durchgeführt wurde.",
+        "Emma kann dem Unterricht grundsätzlich nicht folgen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Jede Messung hat einen Messfehler; das Konfidenzintervall zeigt den Bereich, in dem der wahre Wert mit hoher Wahrscheinlichkeit liegt. Hier reicht er vom unterdurchschnittlichen bis in den durchschnittlichen Bereich, und ein Punkt Abstand zur Grenze 85 ist bedeutungslos. Ein Konfidenzintervall ist kein Zeichen für einen Fehler, und aus einem einzelnen Wert folgt nicht, dass Emma dem Unterricht nicht folgen kann."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Bericht zu Lucas (10), der zu Hause Portugiesisch spricht und auf Deutsch getestet wurde, steht: Sprachverständnis 78, fluides Schlussfolgern 106, visuell-räumliche Verarbeitung 100.",
+      "frage": "Welche Schlussfolgerung ist für den Unterricht am sinnvollsten?",
+      "optionen": [
+        "Lucas ist insgesamt schwach begabt; die Anforderungen sollten gesenkt werden.",
+        "Der Wert im Sprachverständnis beweist eine Sprachentwicklungsstörung.",
+        "Da der Gesamt-IQ im Durchschnittsbereich liegt, braucht Lucas keine Anpassungen.",
+        "Lucas denkt logisch und räumlich gut; die sprachlichen Anforderungen sind (noch) die Hürde. Hilfreich sind Anschauung, Beispiele und gezielte Sprachförderung – bei vollen Anforderungen an das Denken."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Das Profil zeigt durchschnittliche bis gute Fähigkeiten beim Denken mit anschaulichem Material und eine deutliche Schwäche im sprachlichen Bereich, die bei einem Kind, das Deutsch als weitere Sprache lernt, vor allem den Sprachstand widerspiegeln kann. Die Anforderungen an das Denken zu senken, wäre falsch. Eine Sprachentwicklungsstörung lässt sich aus einem Testwert nicht ableiten, und ein Gesamtwert kann Unterschiede verdecken, die für den Unterricht wichtig sind."
+    },
+    {
+      "art": "einfach",
+      "frage": "In einem Elternfragebogen (CBCL) hat ein Kind auf der Skala „Ängstlich/Depressiv“ einen T-Wert von 68. Was bedeutet das?",
+      "optionen": [
+        "Das Kind ist ungewöhnlich gut gelaunt.",
+        "Das Kind hat eine Depression.",
+        "68 Prozent der Aussagen wurden angekreuzt.",
+        "Die Eltern beschreiben deutlich mehr ängstlich-depressive Merkmale als bei den meisten Gleichaltrigen – ein Anlass für eine genauere Abklärung."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Bei Problemskalen von Verhaltensfragebögen bedeuten hohe T-Werte mehr beschriebene Schwierigkeiten. T 68 liegt knapp zwei Standardabweichungen über dem Mittelwert, also höher als bei etwa 96 von 100 Gleichaltrigen. Eine Diagnose ist das nicht, und ein T-Wert ist kein Prozentsatz angekreuzter Aussagen. Ob das Handbuch den Wert als grenzwertig oder auffällig einstuft, steht im Bericht."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Noé (8) hat den Bericht gelesen und ist verzweifelt: „Da steht IQ 86 – mein Sohn ist dumm.“ Sie bittet Sie um Ihre Meinung.",
+      "frage": "Was ist die beste Reaktion?",
+      "optionen": [
+        "Ihr zustimmen, dass die Schulzeit schwierig werden wird.",
+        "Ihr sagen, dass Tests ohnehin nichts aussagen.",
+        "Ihr erklären, dass 86 im Durchschnittsbereich liegt und der Wert nur einen Teil der Fähigkeiten erfasst, und ein gemeinsames Gespräch mit der Diagnostikerin vorschlagen.",
+        "Die Werte selbst neu berechnen und ihr eine eigene Deutung geben."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "86 liegt nach der verbreiteten Einteilung (85–115) im Durchschnittsbereich, wenn auch in dessen unterem Teil. Ein IQ-Wert erfasst wichtige, aber nicht alle Fähigkeiten, und Worte wie „dumm“ haben in der Deutung keinen Platz. Tests pauschal abzuwerten hilft der Mutter nicht, eigene Neuberechnungen stiften Verwirrung; die ausführliche Erklärung gehört zur Diagnostikerin."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was sollten Sie in einem Befundbericht lesen, bevor Sie die Zahlen deuten? (mehrere richtig)",
+      "optionen": [
+        "Die Fragestellung der Untersuchung",
+        "Die Verhaltensbeobachtung während der Testung",
+        "Angaben zur Testsprache und zur Sprachbiografie",
+        "Die Rohwerte der einzelnen Aufgaben",
+        "Die Zusammenfassung und die Empfehlungen"
+      ],
+      "richtig": [
+        0,
+        1,
+        2,
+        4
+      ],
+      "erklaerung": "Fragestellung, Verhaltensbeobachtung, Sprachsituation und Zusammenfassung zeigen, wofür die Werte stehen und wie verlässlich sie in diesem Fall sind: Ein müdes, ängstliches oder unmotiviertes Kind zeigt im Test weniger, als es kann. Rohwerte sind ohne Normtabelle nicht deutbar und für den Unterricht nicht nötig."
+    },
+    {
+      "art": "fall",
+      "fall": "Bei einem Kind liegt der Index Arbeitsgedächtnis bei 76, alle anderen Bereiche liegen im Durchschnitt. Die Diagnostikerin empfiehlt Anpassungen im Unterricht.",
+      "frage": "Welche Anpassung passt am besten zu diesem Profil?",
+      "optionen": [
+        "Mehrteilige Anweisungen in einzelne Schritte teilen und zusätzlich schriftlich oder als Bild zur Verfügung stellen.",
+        "Mehr Kopfrechnen unter Zeitdruck, um das Arbeitsgedächtnis zu trainieren.",
+        "Längere mündliche Erklärungen, damit das Kind alles auf einmal hört.",
+        "Keine Anpassung, weil die übrigen Bereiche durchschnittlich sind."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Ein schwaches Arbeitsgedächtnis bedeutet, dass nur wenige Informationen gleichzeitig behalten und verarbeitet werden können. Einzelne Schritte und sichtbare Hilfen entlasten sofort. Zeitdruck und lange mündliche Erklärungen erhöhen die Belastung, und ob allgemeines Gedächtnistraining sich auf den Unterricht überträgt, ist nach heutigem Wissen fraglich. Durchschnittliche übrige Werte machen die gezielte Schwäche nicht unwichtig."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein Intelligenztestwert bleibt ein Leben lang gleich.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Bei Schulkindern sind die Werte im Durchschnitt recht stabil, im Einzelfall können sie sich über Jahre aber deutlich verändern – vor allem bei jüngeren Kindern, bei Kindern, die die Testsprache erst lernen, und nach großen Veränderungen der Lebensumstände. Ein Testergebnis beschreibt einen Zeitpunkt."
+    },
+    {
+      "art": "einfach",
+      "frage": "Bei einem Kind liegt das Sprachverständnis bei 92, das fluide Schlussfolgern bei 97. Die Lehrkraft fragt, ob das ein bedeutsamer Unterschied ist. Was ist die beste Antwort?",
+      "optionen": [
+        "Nein. Fünf Punkte liegen im Bereich des Messfehlers, und beide Werte liegen im Durchschnittsbereich.",
+        "Ja, jeder Unterschied zwischen zwei Indexwerten ist bedeutsam.",
+        "Ja, das spricht für eine Sprachstörung.",
+        "Das lässt sich nur anhand der Rohwerte beurteilen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Kleine Unterschiede zwischen Indexwerten sind normal und liegen meist im Bereich des Messfehlers. Ab welcher Differenz ein Unterschied statistisch bedeutsam ist, geben die Handbücher an; fünf Punkte reichen dafür in der Regel nicht. Eine Sprachstörung lässt sich daraus nicht ableiten, und Rohwerte eignen sich für diesen Vergleich nicht."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Rohwert",
+      "erklaerung": "Unbearbeitetes Testergebnis, etwa die Zahl gelöster Aufgaben. Erst der Vergleich mit einer Normstichprobe macht ihn deutbar."
+    },
+    {
+      "begriff": "Normstichprobe",
+      "erklaerung": "Große, möglichst repräsentative Vergleichsgruppe, meist Gleichaltriger, mit der ein Ergebnis verglichen wird."
+    },
+    {
+      "begriff": "Normalverteilung",
+      "erklaerung": "Glockenförmige Verteilung, bei der die meisten Werte nahe am Mittelwert liegen und extreme Werte selten sind."
+    },
+    {
+      "begriff": "Standardabweichung (SD)",
+      "erklaerung": "Maß für die typische Streuung der Werte um den Mittelwert; bei IQ-Werten 15 Punkte, bei T-Werten 10, bei Wertpunkten 3."
+    },
+    {
+      "begriff": "Standardwert",
+      "erklaerung": "Normwert auf einer Skala mit festgelegtem Mittelwert und festgelegter Standardabweichung, etwa IQ-, T- oder Wertpunkte-Skala."
+    },
+    {
+      "begriff": "Prozentrang (PR)",
+      "erklaerung": "Anteil der Vergleichsgruppe in Prozent, der gleich viel oder weniger erreicht hat."
+    },
+    {
+      "begriff": "Stanine",
+      "erklaerung": "Neunstufige Skala mit Mittelwert 5 und einer Standardabweichung von etwa 2."
+    },
+    {
+      "begriff": "Konfidenzintervall",
+      "erklaerung": "Vertrauensbereich, in dem der wahre Wert eines Kindes mit hoher Wahrscheinlichkeit liegt, meist mit 90 oder 95 Prozent Sicherheit angegeben."
+    },
+    {
+      "begriff": "Index",
+      "erklaerung": "Zusammengefasster Wert aus mehreren Untertests für einen Fähigkeitsbereich, zum Beispiel Arbeitsgedächtnis."
+    },
+    {
+      "begriff": "Profil",
+      "erklaerung": "Das Muster der Stärken und Schwächen über mehrere Bereiche eines Tests. Unterschiede im Profil sind Hypothesen, keine Diagnosen."
+    }
+  ],
+  "quellen": [
+    "wechsler2014",
+    "aeraStandards2014",
+    "dsm5tr",
+    "icd11",
+    "petermann2013"
+  ],
+  "verwandt": [
+    "diagnostik-grundbegriffe",
+    "intelligenz",
+    "lernstoerungen",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "elterngespraech-vorbereiten",
+    "mein-staerkenprofil",
+    "schritt-fuer-schritt"
+  ]
+}

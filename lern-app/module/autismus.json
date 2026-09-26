@@ -1,0 +1,531 @@
+{
+  "id": "autismus",
+  "bereich": "stoerungen",
+  "titel": "Autismus-Spektrum",
+  "untertitel": "Soziale Kommunikation, Routinen und Sinneswahrnehmung – verstehen, strukturieren, begleiten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die Kernmerkmale von Autismus beschreiben und an Beispielen aus dem Schulalltag erkennen.",
+    "Sie können erklären, warum Autismus so unterschiedlich aussieht und weshalb er bei Mädchen häufig übersehen wird.",
+    "Sie können Überlastung, Meltdown und Shutdown von einem Wutanfall unterscheiden und angemessen reagieren.",
+    "Sie können Struktur und Visualisierung nach dem TEACCH-Ansatz sowie Sozialgeschichten gezielt einsetzen.",
+    "Sie wissen, was Fachleute tun, welche Verfahren nicht empfohlen werden und wie Sie mit Familie und Fachdiensten zusammenarbeiten."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Tom, 8 Jahre, Cycle 3.1",
+          "text": "Tom weiß alles über Züge. Er kennt die Fahrpläne mehrerer CFL-Linien auswendig und erzählt davon, auch wenn niemand fragt. Im Morgenkreis unterbricht er die Lehrerin, wenn sie „gleich“ sagt und dann doch zehn Minuten vergehen. In der Kantine hält er sich die Ohren zu und isst fast nichts. Als an einem Montag eine Vertretungslehrerin kommt und der Sport ausfällt, kriecht er unter den Tisch und schreit, als ein Mitschüler ihn herausziehen will. In Mathematik gehört er zu den Besten. In der Pause läuft er allein am Zaun entlang.",
+          "fragen": [
+            "Welche Beobachtungen betreffen die soziale Kommunikation, welche eher Routinen, Interessen und Sinneswahrnehmung?",
+            "Was könnte Tom an diesem Montag so aus der Fassung gebracht haben?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Autismus ist eine **neuronale Entwicklungsstörung**: Das Gehirn entwickelt sich von Anfang an etwas anders, vor allem in der Art, wie soziale Informationen und Sinnesreize verarbeitet werden. DSM-5-TR und ICD-11 fassen frühere Diagnosen wie frühkindlicher Autismus oder Asperger-Syndrom unter dem Begriff **Autismus-Spektrum-Störung** zusammen. Kennzeichnend sind zwei Bereiche: dauerhafte Schwierigkeiten in der **sozialen Kommunikation und Interaktion** und **eingeschränkte, sich wiederholende Verhaltensweisen, Interessen und Aktivitäten**, zu denen auch Besonderheiten der Sinneswahrnehmung gehören.\n\n„Spektrum“ heißt: Die Unterschiede zwischen autistischen Menschen sind groß. Manche Kinder sprechen nicht oder kaum und brauchen in fast allen Bereichen Unterstützung. Andere sprechen gewählt, sind sehr begabt und haben vor allem in Gruppen, bei Veränderungen und mit unausgesprochenen Regeln Mühe. Viele zeigen ein ungleichmäßiges Profil: ausgeprägte Stärken – Gedächtnis, Genauigkeit, Wissen in einem Interessengebiet, visuelles Denken – neben erstaunlichen Schwierigkeiten im Alltag, etwa beim Umziehen für den Sport, in der Pause oder bei einer Gruppenarbeit.\n\nZur Sprache: Viele autistische Erwachsene bezeichnen sich lieber als „autistisch“ statt als „Menschen mit Autismus“, andere sehen es umgekehrt. Beides ist respektvoll gemeint; fragen Sie im Zweifel die Familie oder die Jugendlichen selbst."
+        },
+        {
+          "art": "merke",
+          "text": "Autismus ist kein Erziehungsfehler und keine Krankheit, die man wegtherapiert. Ziel ist, dass das Kind sich verständigen, lernen und dazugehören kann – mit einer Umgebung, die sich ein Stück an das Kind anpasst und nicht nur umgekehrt."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: wie Autismus im Alltag aussieht",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Die Kernmerkmale im Schulalltag",
+          "spalten": [
+            "Bereich",
+            "Was Sie beobachten können"
+          ],
+          "zeilen": [
+            [
+              "Gegenseitigkeit im Kontakt",
+              "Mühe, ein Gespräch hin und her zu führen; spricht lange über das eigene Thema; reagiert wenig, wenn andere etwas zeigen oder erzählen; sucht Kontakt eher, um etwas zu bekommen, als um etwas zu teilen"
+            ],
+            [
+              "Nonverbale Verständigung",
+              "wenig oder ungewöhnlicher Blickkontakt, wenig Mimik und Gestik; Mühe, Gesichtsausdruck, Tonfall, Ironie und Andeutungen zu deuten; wörtliches Verstehen"
+            ],
+            [
+              "Beziehungen",
+              "findet schwer ins gemeinsame Spiel, Freundschaften halten schwer; ungeschriebene Regeln (Abstand, Themenwechsel, Pausenspiele) werden nicht von selbst verstanden"
+            ],
+            [
+              "Wiederholungen",
+              "gleichförmige Bewegungen (Flattern mit den Händen, Schaukeln), Dinge in Reihen legen, Nachsprechen gehörter Sätze (Echolalie), feststehende Redewendungen"
+            ],
+            [
+              "Gleichförmigkeit",
+              "starkes Bedürfnis nach festen Abläufen; große Not bei kleinen Änderungen (anderer Weg, anderer Raum, Vertretung); starres Denken in Regeln"
+            ],
+            [
+              "Spezialinteressen",
+              "sehr intensive, oft eng umgrenzte Interessen: Fahrpläne, Tiere, Flaggen, ein Computerspiel, eine Buchreihe"
+            ],
+            [
+              "Sinneswahrnehmung",
+              "Überempfindlichkeit (Lärm, Licht, Berührung, Etiketten in Kleidung, Gerüche, Beschaffenheit von Essen) oder Unterempfindlichkeit (spürt Schmerz oder Kälte wenig); Suche nach bestimmten Reizen (Drehen, Druck, an Dingen riechen)"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Nach DSM-5-TR müssen für eine Diagnose Schwierigkeiten in allen drei Bereichen der sozialen Kommunikation und mindestens zwei der vier Formen eingeschränkten, sich wiederholenden Verhaltens vorliegen – aktuell oder in der Vorgeschichte. Die Merkmale beginnen in der frühen Entwicklung, werden aber manchmal erst deutlich, wenn die sozialen Anforderungen die Fähigkeiten übersteigen, etwa im Cycle 4 oder im Lycée. Das DSM-5-TR beschreibt zusätzlich den Unterstützungsbedarf in drei Stufen und vermerkt, ob eine Intelligenzminderung oder eine Sprachbeeinträchtigung dazukommt; die ICD-11 unterscheidet ähnlich nach intellektueller Entwicklung und funktionaler Sprache.\n\n**Häufigkeit.** Heute wird bei etwa 1 bis 2 von 100 Kindern Autismus festgestellt, in manchen Ländern auch bei mehr. Der Anstieg der Zahlen in den letzten Jahrzehnten geht vor allem auf breitere Kriterien, mehr Wissen und bessere Erkennung zurück (Lord et al., 2018). Jungen werden etwa drei- bis viermal so oft diagnostiziert wie Mädchen."
+        },
+        {
+          "art": "liste",
+          "titel": "Wie es sich nach Alter zeigen kann",
+          "punkte": [
+            "Kleinkind- und Vorschulalter (Précoce, Spillschoul): zeigt wenig mit dem Finger, um etwas zu teilen; reagiert kaum auf den eigenen Namen; wenig Als-ob-Spiel; verspätete Sprache oder Verlust schon erworbener Wörter; reiht Gegenstände auf; heftige Reaktionen auf Geräusche.",
+            "Grundschule: findet schwer ins Spiel; spricht viel über das eigene Thema; versteht Anweisungen wörtlich; gerät bei Änderungen in Not; hält sich im Lärm von Kantine oder Turnhalle die Ohren zu; Gruppenarbeiten gelingen kaum.",
+            "Jugend: Freundschaften werden komplexer, ungeschriebene Regeln zahlreicher; viele strengen sich sehr an, unauffällig zu wirken, und sind erschöpft; Rückzug, Ängste, Niedergeschlagenheit; Mühe mit Selbstorganisation und offenen Aufgaben; erhöhtes Risiko, gemobbt zu werden."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Mädchen und Autismus.** Bei Mädchen wird Autismus häufiger übersehen oder erst spät erkannt. Viele beobachten andere genau und ahmen sie nach, lernen Gesprächsfloskeln auswendig und halten sich an eine Freundin, die sie mitnimmt. Fachleute sprechen von **Maskieren** (engl. *camouflaging*); es kommt bei allen Geschlechtern vor, wird bei Mädchen aber besonders oft beschrieben. Ihre Interessen sind im Thema oft weniger ungewöhnlich – Tiere, Bücher, eine Band –, aber ungewöhnlich in ihrer Intensität. Nicht selten fallen sie erst durch Ängste, Essprobleme, Erschöpfung oder Zusammenbrüche zu Hause auf. Die Forschung zu diesen Unterschieden ist noch jung, die Beobachtungen aus der Praxis sind aber sehr beständig."
+        },
+        {
+          "art": "merke",
+          "text": "Ein Kind, das in der Schule „funktioniert“, kann trotzdem autistisch sein und große Not haben. Wenn Eltern von täglichen Zusammenbrüchen nach der Schule berichten, nehmen Sie das ernst – auch wenn Sie in der Klasse nichts davon sehen."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen, Wahrnehmung und Überlastung",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Autismus hat eine starke erbliche Grundlage: In Zwillings- und Familienstudien erklärt die Veranlagung einen großen Teil der Unterschiede. Beteiligt sind viele Gene; bei einem Teil der Kinder findet sich eine bestimmte genetische Veränderung oder ein Syndrom, etwa das Fragile-X-Syndrom. Hinzu kommen Einflüsse vor und um die Geburt, zum Beispiel eine sehr frühe Geburt oder bestimmte Medikamente in der Schwangerschaft (Lord et al., 2018). Erziehung verursacht keinen Autismus – die frühere Vorstellung von der „kalten Mutter“ ist widerlegt. Auch Impfungen verursachen keinen Autismus; das ist sehr gründlich untersucht.\n\n**Anders wahrnehmen und denken.** Viele autistische Kinder achten stark auf Einzelheiten, brauchen mehr Zeit, um soziale Signale zu deuten, und denken eher in klaren Regeln. Unausgesprochenes – was die Lehrerin mit einem Blick meint oder warum man sich für ein Geschenk bedankt, das man nicht mag – bleibt ihnen oft verborgen. Gesprochene Sprache ist flüchtig, Bilder und Schrift bleiben stehen; deshalb verstehen viele über das Auge besser als über das Ohr. Weil die Welt schwer vorhersehbar ist, geben Routinen, Wiederholungen und Spezialinteressen Sicherheit. Gleichförmige Bewegungen wie Flattern oder Schaukeln (oft *Stimming* genannt) helfen vielen, sich zu beruhigen, sich zu konzentrieren oder Freude auszudrücken.\n\n**Begleitprobleme** sind häufig: Ängste, ADHS, Sprachentwicklungsstörungen, bei einem Teil der Kinder eine Intelligenzminderung, Schlafprobleme, sehr wählerisches Essen, Epilepsie und im Jugendalter Depressionen (Lord et al., 2018). Gerade Ängste werden leicht übersehen, weil sie sich anders zeigen – etwa als noch stärkeres Festhalten an Routinen."
+        },
+        {
+          "art": "text",
+          "text": "**Überlastung.** Wenn Reize, Veränderungen, soziale Anforderungen und Anspannung sich über den Tag summieren, kann das Fass überlaufen. Das Kind verliert dann die Kontrolle über sein Verhalten: Es schreit, wirft Dinge, schlägt um sich oder läuft weg (**Meltdown**) – oder es verstummt, erstarrt und reagiert kaum noch (**Shutdown**). Beides ist kein Trotz, sondern eine Reaktion auf ein überfordertes Nervensystem. Die Begriffe stammen aus der Praxis und aus Berichten autistischer Menschen, nicht aus den Klassifikationssystemen, und im Einzelfall sind die Übergänge fließend. Auch autistische Kinder können natürlich einen gewöhnlichen Wutanfall haben."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Wutanfall, Meltdown, Shutdown",
+          "spalten": [
+            "",
+            "Wutanfall",
+            "Meltdown",
+            "Shutdown"
+          ],
+          "zeilen": [
+            [
+              "Auslöser",
+              "ein Wunsch wird nicht erfüllt, eine Grenze gesetzt",
+              "Überlastung durch Reize, Veränderungen, Anforderungen",
+              "Überlastung, oft nach langem Durchhalten"
+            ],
+            [
+              "Wie es aussieht",
+              "Schreien, Stampfen, Verhandeln; das Kind achtet oft darauf, wie andere reagieren",
+              "Schreien, Weinen, Werfen, Weglaufen, manchmal Selbstverletzung; kaum ansprechbar",
+              "Verstummen, Erstarren, Rückzug, leerer Blick"
+            ],
+            [
+              "Steuerbarkeit",
+              "teilweise; endet oft, wenn das Ziel erreicht ist",
+              "kaum; endet erst, wenn die Überlastung abklingt",
+              "kaum; das Kind braucht Zeit und Ruhe"
+            ],
+            [
+              "Was hilft",
+              "ruhig bleiben, die Grenze freundlich halten",
+              "Sicherheit, Reize verringern, wenige Worte, Zeit – keine Strafe",
+              "Ruhe, keine Fragen, sicherer Rückzugsort, Zeit"
+            ]
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Vorboten einer Überlastung",
+          "punkte": [
+            "mehr gleichförmige Bewegungen oder Geräusche (Flattern, Schaukeln, Summen)",
+            "Ohren zuhalten, Augen zukneifen, Kapuze aufsetzen",
+            "dieselbe Frage immer wieder stellen",
+            "Hin- und Herlaufen, zunehmende Unruhe",
+            "weniger Sprache oder plötzlich sehr laute Stimme",
+            "starreres Beharren auf Regeln, Gereiztheit"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Autistische Menschen haben kein Mitgefühl.",
+          "fakt": "Viele haben Mühe, Gefühle anderer an feinen Signalen abzulesen. Gleichgültig sind sie deshalb nicht: Wenn sie verstehen, dass jemand traurig ist, fühlen viele stark mit – sie zeigen es nur oft anders als erwartet."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Einzelne autistische Merkmale kommen auch bei anderen Kindern vor. Die Diagnose stützt sich auf das Gesamtbild und auf die Entwicklung seit der frühen Kindheit – und sie gehört in fachliche Hände. Zugleich kann mehreres gemeinsam vorliegen: Ein autistisches Kind kann auch ADHS, eine Angststörung oder Traumafolgen haben."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Andere mögliche Erklärungen",
+          "punkte": [
+            {
+              "wie": "Mehrsprachigkeit und neue Sprache",
+              "unterschied": "Kinder, die neu in einer Sprache sind, sprechen anfangs oft wenig und wirken zurückgezogen. In der Familiensprache sind Austausch, Mimik und Spiel aber unauffällig. Auch Blickkontakt und Nähe folgen je nach Kultur unterschiedlichen Regeln."
+            },
+            {
+              "wie": "Selektiver Mutismus",
+              "unterschied": "Das Kind spricht zu Hause flüssig, schweigt aber in der Schule – aus Angst. Im vertrauten Rahmen ist sein Kontaktverhalten gegenseitig und flexibel."
+            },
+            {
+              "wie": "Sprachentwicklungsstörung",
+              "unterschied": "Soziale Schwierigkeiten entstehen aus den Sprachproblemen. Das Kind nutzt aber Blick, Zeigen und Mimik, um sich mitzuteilen, und zeigt meist keine ausgeprägten Routinen oder Spezialinteressen."
+            },
+            {
+              "wie": "ADHS",
+              "unterschied": "Auch hier gibt es soziale Probleme, aber eher durch Impulsivität und Unaufmerksamkeit: Das Kind kennt die sozialen Regeln, hält sie im Moment nur nicht ein. Beides kommt häufig gemeinsam vor."
+            },
+            {
+              "wie": "Soziale Angst",
+              "unterschied": "Das Kind versteht soziale Signale gut, fürchtet aber, sich zu blamieren. Mit vertrauten Menschen ist der Austausch unauffällig."
+            },
+            {
+              "wie": "Frühe schwere Vernachlässigung",
+              "unterschied": "Kinder, die sehr früh schwer vernachlässigt wurden, können autismusähnliche Auffälligkeiten zeigen. Diese bessern sich oft deutlich in einer sicheren, zugewandten Umgebung."
+            },
+            {
+              "wie": "Intelligenzminderung",
+              "unterschied": "Die soziale Verständigung entspricht dem allgemeinen Entwicklungsstand des Kindes. Bei Autismus liegt sie deutlich darunter – auch gemessen an diesem Entwicklungsstand."
+            },
+            {
+              "wie": "Hörprobleme",
+              "unterschied": "Ein Kind, das schlecht hört, reagiert kaum auf seinen Namen und spricht verzögert. Ein Hörtest gehört zu jeder Abklärung."
+            },
+            {
+              "wie": "Schüchternheit und Eigenheiten",
+              "unterschied": "Zurückhaltende Kinder oder Kinder mit ausgefallenen Hobbys sind nicht autistisch, solange Verständigung, Beziehungen und Flexibilität altersgemäß gelingen."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beobachten Sie auch, was gelingt: Mit wem, in welcher Sprache und in welcher Situation zeigt das Kind Austausch, Humor und Flexibilität? Das ist für die Abklärung genauso wichtig wie die Schwierigkeiten."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: Struktur, Verständigung und Sinne",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die meisten Hilfen für autistische Kinder im Schulalltag verfolgen dasselbe Ziel: die Welt **vorhersehbar und verständlich** machen. Der TEACCH-Ansatz (Mesibov et al., 2004) nennt das strukturiertes Lernen. Er baut auf Stärken vieler autistischer Kinder auf – visuelles Verstehen, Vorliebe für Routinen, intensive Interessen – und gestaltet die Umgebung so, dass das Kind möglichst selbstständig arbeiten kann. Der Ansatz ist in Schulen weit verbreitet; Studien zeigen positive, aber unterschiedlich große Effekte."
+        },
+        {
+          "art": "liste",
+          "titel": "Strukturiertes Lernen nach TEACCH",
+          "punkte": [
+            "Räumliche Struktur: klar erkennbare Bereiche für Arbeit, Pause und Rückzug; möglichst wenig Ablenkung am Arbeitsplatz.",
+            "Zeitliche Struktur: ein visueller Tagesplan (Fotos, Piktogramme oder Wörter), der der Reihe nach abgearbeitet wird; Änderungen werden im Plan gezeigt.",
+            "Arbeitssystem: Das Kind sieht, welche Aufgaben es gibt, wie viele, woran es merkt, dass es fertig ist, und was danach kommt.",
+            "Visuelle Aufgabenstruktur: Die Aufgabe selbst zeigt, was zu tun ist – durch ein Beispiel, Farbmarkierungen oder getrennte Arbeitsschritte."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Verständigung erleichtern",
+          "punkte": [
+            "Das Kind mit Namen ansprechen, bevor Sie eine Anweisung geben; kurze, eindeutige Sätze.",
+            "Sagen, was Sie meinen: „Setz dich bitte auf deinen Platz“ statt „Willst du dich nicht mal hinsetzen?“ – Ironie und Redewendungen vermeiden oder erklären.",
+            "Zeit konkret machen: „in fünf Minuten“ mit Timer statt „gleich“.",
+            "Gesprochenes durch Bilder, Schrift oder Zeigen ergänzen und Zeit zum Antworten lassen.",
+            "Blickkontakt nicht erzwingen – viele hören besser zu, wenn sie nicht anschauen müssen.",
+            "Änderungen so früh wie möglich ankündigen und im Plan zeigen; eine Vertretung mit Foto vorstellen.",
+            "Spezialinteressen als Brücke nutzen (Rechnen mit Fahrplänen, Lesen über Tiere) und als Belohnung."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "Sinne schonen, Überlastung vorbeugen",
+          "punkte": [
+            "Reize prüfen: Wo ist es laut, grell oder eng? Ruhiger Sitzplatz, Kapselgehörschutz oder Kopfhörer, Pausen an einem ruhigen Ort.",
+            "Einen Rückzugsort vereinbaren und eine Pausenkarte, mit der das Kind ohne Worte eine Pause anzeigen kann.",
+            "Vorboten ernst nehmen: Anforderungen senken und eine Pause anbieten, bevor es zu viel wird.",
+            "Im Meltdown: für Sicherheit sorgen, Publikum und Reize verringern, wenige ruhige Worte, nicht diskutieren; festhalten nur bei akuter Gefahr und nach den Regeln der Einrichtung.",
+            "Danach: Ruhe und Zeit. Später – mit Bildern oder schriftlich – besprechen, was zu viel war und was beim nächsten Mal helfen kann."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was eher schadet",
+          "punkte": [
+            "Überraschungen und kurzfristige Planänderungen ohne Vorbereitung.",
+            "Ein Kind im Meltdown bestrafen oder ausfragen („Warum machst du das?“).",
+            "Gleichförmige Bewegungen ohne Not verbieten – solange sie niemandem schaden, helfen sie dem Kind.",
+            "Blickkontakt, Händeschütteln oder Umarmungen einfordern.",
+            "Gruppenarbeit ohne klare Rollen und Regeln.",
+            "Das Kind vor der Klasse für etwas bloßstellen, das es nicht verstanden hat."
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Sozialgeschichten** (Gray, 2015) erklären eine konkrete Situation in kurzen, wörtlich zutreffenden Sätzen, oft mit Bildern: was passiert, warum, was andere denken oder fühlen und was das Kind tun kann. Sie beschreiben deutlich mehr, als sie anweisen, und sind positiv formuliert. Ein Ausschnitt: „Manchmal ist meine Lehrerin krank. Dann kommt eine Vertretungslehrerin. Sie kennt unseren Tagesplan. Manche Dinge macht sie anders. Das ist in Ordnung. Wenn ich unsicher bin, darf ich meine Pausenkarte zeigen. Meistens kommt meine Lehrerin nach ein paar Tagen wieder.“ Das Wort „meistens“ ist Absicht: Die Geschichte verspricht nichts, was vielleicht nicht eintritt. Die Forschung zu Sozialgeschichten zeigt uneinheitliche Ergebnisse; sie wirken am ehesten als Teil eines Gesamtplans und wenn sie genau auf das einzelne Kind zugeschnitten sind."
+        },
+        {
+          "art": "fall",
+          "titel": "Tom – ein neuer Plan",
+          "text": "Die Lehrerin hängt einen Tagesplan mit Piktogrammen an Toms Platz und bespricht jeden Morgen kurz mit ihm, was heute anders ist. Vertretungen kündigt sie mit Foto an. In der Kantine sitzt Tom mit Kapselgehörschutz an einem Tisch am Rand. Bei Gruppenarbeiten hat er eine feste Rolle: Er ist „Zeitwächter“ mit der Sanduhr. Mit seinem Wissen über Züge gestaltet er ein Plakat für die Klasse, das die anderen beeindruckt. Ausbrüche gibt es noch, aber seltener; wenn es zu viel wird, zeigt er seine Pausenkarte und geht in die Leseecke.",
+          "fragen": [
+            "Welche Maßnahmen betreffen die Vorhersehbarkeit, welche die Sinne und welche die Beziehungen zu den anderen Kindern?",
+            "Was könnten Toms nächste Ziele sein – und wie würden Sie ihn daran beteiligen?"
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung, Hilfe und Zusammenarbeit",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Diagnose stellt ein spezialisiertes Team, etwa in der Kinder- und Jugendpsychiatrie. Dazu gehören ein ausführliches Gespräch über die Entwicklung seit der frühen Kindheit, eine standardisierte Verhaltensbeobachtung (zum Beispiel ADOS-2), Informationen aus Kindergarten und Schule, eine Untersuchung von Sprache und kognitiven Fähigkeiten, ein Hörtest und die Suche nach Begleitstörungen. In Luxemburg unterstützen zudem das auf Autismus spezialisierte Kompetenzzentrum (CTSA) und die Teams des CDSE die Schulen.\n\nEine Behandlung, die Autismus „heilt“, gibt es nicht – und sie ist auch nicht das Ziel. Es geht darum, Verständigung, Selbstständigkeit und Teilhabe zu stärken und Begleitprobleme zu behandeln. Die Leitlinie NICE CG170 (2013) empfiehlt unter anderem:"
+        },
+        {
+          "art": "liste",
+          "titel": "Was nach Leitlinien empfohlen wird – und was nicht",
+          "punkte": [
+            "Förderung der sozialen Kommunikation durch spielbasierte Ansätze, die Eltern und Lehrkräfte einbeziehen; im Mittelpunkt stehen gemeinsame Aufmerksamkeit, Austausch und wechselseitige Verständigung.",
+            "Bei herausforderndem Verhalten: zuerst mögliche Ursachen klären, dann gezielte verhaltensorientierte Unterstützung.",
+            "Bei Ängsten: eine an Autismus angepasste kognitive Verhaltenstherapie für Kinder, die sprachlich und kognitiv dazu in der Lage sind.",
+            "Keine Medikamente gegen die Kernmerkmale. Medikamente können aber bei Begleitstörungen wie ADHS sinnvoll sein und bei schwerem herausforderndem Verhalten, wenn andere Hilfen nicht ausreichen.",
+            "Ausdrücklich nicht empfohlen: Ausschlussdiäten (etwa gluten- oder kaseinfrei), Chelat-Therapie, Sekretin und Sauerstoffüberdruck-Behandlung."
+          ]
+        },
+        {
+          "art": "liste",
+          "titel": "Was hinter herausforderndem Verhalten stecken kann",
+          "punkte": [
+            "Schmerzen oder körperliche Beschwerden (Zähne, Verdauung, Ohren), die das Kind nicht mitteilen kann",
+            "Verständigungsprobleme: Das Kind versteht nicht, was verlangt wird, oder kann nicht sagen, was es braucht",
+            "Sinnesbelastung in der Umgebung",
+            "Veränderungen in Abläufen oder im Leben des Kindes, die Pubertät",
+            "Ängste oder andere psychische Probleme",
+            "Mobbing, Ausnutzung oder Misshandlung",
+            "Ungewollte Verstärkung, etwa wenn das Verhalten zuverlässig eine Aufgabe beendet"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Zusammenarbeit.** Eltern sind Expertinnen und Experten für ihr Kind: Sie wissen, was beruhigt, was überfordert und wie sich Not ankündigt. Ein kurzer, regelmäßiger Austausch – ein Heft oder eine Nachricht zum Tagesverlauf – verhindert, dass Schule und Familie nur von Krisen erfahren. Beziehen Sie auch das Kind selbst ein: Was ist schwer, was hilft? Viele autistische Jugendliche können sehr genau beschreiben, was sie brauchen. Planen Sie Übergänge wie ein neues Schuljahr oder den Wechsel ins Lycée früh: Besuche vorab, Fotos von Räumen und Personen, eine feste Ansprechperson. In Prüfungen können angemessene Vorkehrungen (aménagements raisonnables) helfen, etwa ein ruhiger Raum oder klar gegliederte Aufgaben; die Entscheidung liegt bei der zuständigen Kommission.\n\nAutistische Kinder werden überdurchschnittlich oft gemobbt. Achten Sie auf Pausen und unbeaufsichtigte Zeiten, erklären Sie der Klasse – in Absprache mit Familie und Kind – Unterschiede so, dass Verständnis entsteht, und stärken Sie Kontakte über gemeinsame Interessen.\n\n**Mehrsprachige Familien** fragen oft, ob sie zu Hause nur noch eine Sprache sprechen sollen. Bisherige Studien geben keinen Hinweis darauf, dass Mehrsprachigkeit autistischen Kindern schadet. Eltern sollten die Sprache sprechen, in der sie sich am wohlsten fühlen und am natürlichsten mit ihrem Kind spielen."
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und regen Sie über die Eltern eine Abklärung an, wenn soziale Verständigung, Flexibilität und Sinneswahrnehmung über längere Zeit deutlich auffallen und das Kind leidet oder nicht gut lernen kann. Holen Sie Unterstützung (Diagnostique-Team des CDSE, CTSA, I-EBS), wenn Ausbrüche häufiger werden, das Kind sich verletzt, sich stark zurückzieht oder nicht mehr zur Schule kommen will. Eine Diagnose stellen pädagogische Fachkräfte nicht – ihre Beobachtungen sind für die Abklärung aber unverzichtbar."
+        },
+        {
+          "art": "achtung",
+          "text": "Manche autistische Kinder laufen bei Überlastung weg, ohne Gefahren wie den Straßenverkehr einzuschätzen: Klären Sie Aufsicht und Abläufe für solche Situationen im Voraus. Autistische Jugendliche haben außerdem ein erhöhtes Risiko für Depressionen und Suizidgedanken und zeigen Not oft anders als erwartet. Nehmen Sie Äußerungen über Todeswünsche immer ernst und holen Sie noch am selben Tag Unterstützung über die Leitung."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Welche beiden Bereiche kennzeichnen Autismus nach DSM-5-TR und ICD-11?",
+      "optionen": [
+        "Unaufmerksamkeit und Hyperaktivität",
+        "Verminderte Intelligenz und verzögerte Sprache",
+        "Schwierigkeiten in sozialer Kommunikation und Interaktion sowie eingeschränkte, sich wiederholende Verhaltensweisen, Interessen und Aktivitäten einschließlich Sinnesbesonderheiten",
+        "Mangelndes Mitgefühl und aggressives Verhalten"
+      ],
+      "richtig": [2],
+      "erklaerung": "Die beiden Kernbereiche sind soziale Kommunikation und Interaktion sowie eingeschränkte, sich wiederholende Verhaltensweisen, zu denen auch Sinnesbesonderheiten zählen. Unaufmerksamkeit und Hyperaktivität kennzeichnen ADHS. Intelligenz und Sprache sind sehr unterschiedlich und werden nur als Zusatz vermerkt; mangelndes Mitgefühl oder Aggression gehören nicht zu den Kriterien."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Hinweise können bei einem Mädchen auf einen bisher übersehenen Autismus deuten? (mehrere richtig)",
+      "optionen": [
+        "Sie ahmt andere genau nach und hat sich Gesprächsfloskeln angeeignet.",
+        "Sie hat ein Interesse an Pferden, das an Intensität alles andere verdrängt.",
+        "Sie wechselt mühelos zwischen verschiedenen Freundesgruppen.",
+        "Sie ist nach der Schule regelmäßig völlig erschöpft oder bricht zu Hause zusammen.",
+        "Sie fällt zuerst durch starke Ängste auf."
+      ],
+      "richtig": [0, 1, 3, 4],
+      "erklaerung": "Maskieren durch Nachahmen, Interessen mit ungewöhnlicher Intensität bei gewöhnlichem Thema, Erschöpfung nach dem Schultag und Ängste sind typische Hinweise bei Mädchen. Müheloses Wechseln zwischen Freundesgruppen spricht dagegen eher gegen Autismus. Kein Hinweis genügt allein – zusammen sind sie Anlass für genaue Beobachtung und eine fachliche Abklärung."
+    },
+    {
+      "art": "fall",
+      "fall": "In der lauten Kantine hält sich Tom (8) die Ohren zu, schreit plötzlich und wirft sein Tablett vom Tisch. Als Sie ihn ansprechen, reagiert er nicht.",
+      "frage": "Was tun Sie zuerst?",
+      "optionen": [
+        "Für Sicherheit sorgen, Reize und Publikum verringern, mit wenigen ruhigen Worten einen ruhigen Ort anbieten und Zeit geben.",
+        "Ihn auffordern, sich sofort zu entschuldigen und das Tablett aufzuheben.",
+        "Ihm ankündigen, dass er morgen keinen Nachtisch bekommt.",
+        "Ihn fragen, warum er das gemacht hat, und nachfragen, bis er antwortet."
+      ],
+      "richtig": [0],
+      "erklaerung": "Die Situation deutet auf eine Überlastung (Meltdown) hin: Tom kann gerade weder zuhören noch sich steuern. Zuerst geht es um Sicherheit und darum, Reize zu verringern. Entschuldigung, Strafe oder Fragen überfordern ihn weiter; das Gespräch kommt später, wenn er ruhig ist – am besten mit Bildern oder schriftlich."
+    },
+    {
+      "art": "fall",
+      "fall": "Morgen fällt der Sport aus, und eine Vertretungslehrerin übernimmt die Klasse. Lina (9), ein autistisches Mädchen, gerät bei Änderungen leicht in große Not.",
+      "frage": "Welche Vorbereitung ist am sinnvollsten?",
+      "optionen": [
+        "Nichts sagen, damit Lina sich nicht schon am Vorabend Sorgen macht.",
+        "Lina erst morgen früh beim Hereinkommen kurz informieren.",
+        "Die Eltern bitten, Lina an diesem Tag zu Hause zu lassen.",
+        "Heute die Änderung im Tagesplan zeigen, die Vertretung mit Foto vorstellen, sagen, was gleich bleibt, und an die Pausenkarte erinnern."
+      ],
+      "richtig": [3],
+      "erklaerung": "Vorhersehbarkeit senkt Stress: Die Änderung wird rechtzeitig und sichtbar angekündigt, das Gleichbleibende betont und ein Ausweg angeboten. Eine Information in letzter Minute oder gar keine erhöht das Risiko einer Überlastung. Lina zu Hause zu lassen, vermeidet die Situation, statt ihr zu helfen, sie zu bewältigen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Warum helfen visuelle Tagespläne vielen autistischen Kindern?",
+      "optionen": [
+        "Weil autistische Kinder gesprochene Sprache grundsätzlich nicht verstehen.",
+        "Weil sie Abläufe vorhersehbar machen und – anders als gesprochene Worte – sichtbar bleiben.",
+        "Weil sie die Beziehung zu den Erwachsenen ersetzen.",
+        "Weil sie vor allem als Belohnung wirken."
+      ],
+      "richtig": [1],
+      "erklaerung": "Bilder und Schrift bleiben stehen, während gesprochene Worte verfliegen, und sie zeigen, was kommt und was sich ändert. Das senkt Unsicherheit und ermöglicht selbstständiges Arbeiten. Viele autistische Kinder verstehen Sprache durchaus; Pläne ersetzen weder Beziehung, noch sind sie eine Belohnung."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Impfungen können Autismus auslösen.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Dieser Zusammenhang wurde in großen Studien gründlich untersucht und nicht gefunden. Autismus hat eine starke erbliche Grundlage; hinzu kommen Einflüsse vor und um die Geburt (Lord et al., 2018)."
+    },
+    {
+      "art": "fall",
+      "fall": "Sie fragen Samir (12): „Kannst du bitte das Fenster zumachen?“ Er antwortet „Ja“ und bleibt sitzen. Eine Kollegin meint, er wolle Sie vorführen.",
+      "frage": "Welche Einschätzung und Reaktion ist am ehesten hilfreich?",
+      "optionen": [
+        "Samir provoziert; eine Verwarnung ist angebracht.",
+        "Samir hat nicht zugehört; die Frage sollte lauter wiederholt werden.",
+        "Samir hat die Frage vermutlich wörtlich verstanden – als Frage nach seinem Können. Eine direkte Bitte („Mach bitte das Fenster zu“) ist klarer.",
+        "Samir ist überfordert und sollte keine Aufträge mehr bekommen."
+      ],
+      "richtig": [2],
+      "erklaerung": "Viele autistische Kinder verstehen Sprache wörtlich; eine höfliche Frage wird dann als echte Frage beantwortet. Direkte, eindeutige Bitten vermeiden das Missverständnis. Provokation zu unterstellen, belastet die Beziehung, lauteres Wiederholen ändert nichts am Missverständnis, und Aufträge ganz zu streichen, nimmt ihm Lerngelegenheiten."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Wovon rät die Leitlinie NICE CG170 zur Behandlung der Kernmerkmale von Autismus ausdrücklich ab? (mehrere richtig)",
+      "optionen": [
+        "Gluten- oder kaseinfreie Diäten",
+        "Spielbasierte Förderung der sozialen Kommunikation mit Eltern und Lehrkräften",
+        "Chelat-Therapie",
+        "Medikamente gegen die Kernmerkmale",
+        "Anpassung der Umgebung an Sinnesbesonderheiten"
+      ],
+      "richtig": [0, 2, 3],
+      "erklaerung": "NICE rät von Ausschlussdiäten, Chelat-Therapie und Medikamenten gegen die Kernmerkmale ab. Spielbasierte Förderung der sozialen Kommunikation wird dagegen empfohlen, und Anpassungen an Sinnesbesonderheiten gehören zu guter Unterstützung. Bei Begleitstörungen wie ADHS können Medikamente allerdings sinnvoll sein."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Eltern von Rui (6) sprechen zu Hause Portugiesisch, in der Spillschoul hört er Luxemburgisch. Nach der Autismus-Diagnose fragen sie, ob sie nur noch Französisch mit ihm sprechen sollen, damit er nicht durcheinanderkommt.",
+      "frage": "Was antworten Sie am besten?",
+      "optionen": [
+        "Ja, eine einzige Sprache ist für autistische Kinder immer besser.",
+        "Sie sollten ab sofort nur noch Luxemburgisch sprechen, weil das die Sprache der Spillschoul ist.",
+        "Das müssen Sie selbst entscheiden; dazu weiß man nichts.",
+        "Bisherige Studien zeigen nicht, dass Mehrsprachigkeit autistischen Kindern schadet. Sprechen Sie die Sprache, in der Sie sich am wohlsten fühlen und am natürlichsten mit Rui spielen, und besprechen Sie Fragen zur Sprachförderung mit den Fachleuten."
+      ],
+      "richtig": [3],
+      "erklaerung": "Die bisherige Forschung gibt keinen Hinweis auf einen Schaden durch Mehrsprachigkeit; entscheidend ist eine reiche, natürliche Verständigung mit den Eltern. Ein Wechsel in eine Sprache, die die Eltern weniger gut beherrschen, kann diese Verständigung sogar ärmer machen. Die Frage offenzulassen, hilft der Familie nicht, denn es gibt durchaus Erkenntnisse."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Chiara (13) berichtet, dass ihre Tochter nach der Schule fast täglich weint, schreit oder sich stundenlang in ihr Zimmer zurückzieht. In der Klasse ist Chiara still, angepasst und hat gute Noten.",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Den Bericht ernst nehmen, in der Schule gezielt auf Anzeichen von Anspannung und Erschöpfung achten, mit der Leitung sprechen und mit den Eltern das weitere Vorgehen besprechen, etwa eine fachliche Abklärung.",
+        "Der Mutter sagen, dass das Problem zu Hause liegen muss, weil Chiara in der Schule unauffällig ist.",
+        "Chiara vor der Klasse fragen, ob sie Probleme hat.",
+        "Abwarten, bis sich auch in der Schule Auffälligkeiten zeigen."
+      ],
+      "richtig": [0],
+      "erklaerung": "Manche Kinder halten in der Schule mühsam durch und brechen erst zu Hause zusammen. Das kann auf Maskieren und Überlastung hindeuten, etwa bei einem unerkannten Autismus, aber auch auf andere Belastungen – deshalb genauer hinschauen und gemeinsam eine Abklärung erwägen. Die Ursache vorschnell in der Familie zu suchen, Chiara vor der Klasse anzusprechen oder abzuwarten, übergeht ihre Not."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Gleichförmige Bewegungen wie Flattern mit den Händen sollten grundsätzlich unterbunden werden, weil sie vom Lernen abhalten.",
+      "richtig": [1],
+      "erklaerung": "Falsch. Solche Bewegungen helfen vielen autistischen Kindern, sich zu beruhigen, zu konzentrieren oder Freude auszudrücken. Eingreifen ist nur nötig, wenn sie dem Kind oder anderen schaden oder das Lernen deutlich behindern – dann gemeinsam nach Alternativen suchen, statt sie einfach zu verbieten."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Autismus-Spektrum-Störung",
+      "erklaerung": "Neuronale Entwicklungsstörung mit dauerhaften Schwierigkeiten in sozialer Kommunikation und Interaktion sowie eingeschränkten, sich wiederholenden Verhaltensweisen, Interessen und Sinnesbesonderheiten. Umfasst frühere Diagnosen wie das Asperger-Syndrom."
+    },
+    {
+      "begriff": "Neuronale Entwicklungsstörung",
+      "erklaerung": "Störung, die in der frühen Entwicklung des Gehirns beginnt und Wahrnehmung, Denken oder Verhalten dauerhaft prägt, zum Beispiel Autismus oder ADHS."
+    },
+    {
+      "begriff": "Echolalie",
+      "erklaerung": "Wiederholen gehörter Wörter oder Sätze, sofort oder später. Kann auch ein Weg sein, sich mitzuteilen."
+    },
+    {
+      "begriff": "Stereotypien (Stimming)",
+      "erklaerung": "Gleichförmige, wiederholte Bewegungen oder Geräusche wie Flattern, Schaukeln oder Summen; dienen oft der Selbstberuhigung oder dem Ausdruck von Gefühlen."
+    },
+    {
+      "begriff": "Maskieren",
+      "erklaerung": "Bewusstes oder unbewusstes Verbergen autistischer Merkmale durch Nachahmen und Anpassung (engl. camouflaging). Kostet viel Kraft und verzögert oft die Diagnose."
+    },
+    {
+      "begriff": "Meltdown",
+      "erklaerung": "Kontrollverlust bei Überlastung mit Schreien, Weinen, Werfen oder Weglaufen; kein zielgerichteter Wutanfall."
+    },
+    {
+      "begriff": "Shutdown",
+      "erklaerung": "Rückzug bei Überlastung: Das Kind verstummt, erstarrt oder reagiert kaum noch."
+    },
+    {
+      "begriff": "TEACCH",
+      "erklaerung": "Ansatz des strukturierten Lernens, der mit räumlicher und zeitlicher Struktur, Arbeitssystemen und visuellen Hilfen Vorhersehbarkeit und Selbstständigkeit schafft."
+    },
+    {
+      "begriff": "Sozialgeschichte",
+      "erklaerung": "Kurze, wörtlich zutreffende Geschichte nach Carol Gray, die eine soziale Situation erklärt und beschreibt, was das Kind tun kann."
+    },
+    {
+      "begriff": "Gemeinsame Aufmerksamkeit",
+      "erklaerung": "Die Fähigkeit, die Aufmerksamkeit mit einer anderen Person auf etwas Drittes zu richten, etwa durch Zeigen und Blickwechsel; bei Autismus oft schon früh eingeschränkt."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "lord2018",
+    "niceCG170",
+    "mesibov2004",
+    "gray2015",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "adhs",
+    "angst",
+    "sprache-mutismus",
+    "emotionsregulation",
+    "elternarbeit",
+    "inklusion-luxemburg"
+  ],
+  "toolbox": [
+    "tagesplan-bildkarten",
+    "mein-tag-in-bildern",
+    "zuerst-dann",
+    "ich-brauche-eine-pause",
+    "ruhe-ecke-karten"
+  ]
+}

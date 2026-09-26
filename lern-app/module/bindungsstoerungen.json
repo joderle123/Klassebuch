@@ -1,0 +1,493 @@
+{
+  "id": "bindungsstoerungen",
+  "bereich": "stoerungen",
+  "titel": "Bindungsstörungen",
+  "untertitel": "Wenn frühe Fürsorge gefehlt hat – Bindungsstörungen erkennen, abgrenzen und verlässlich begleiten",
+  "dauer": 45,
+  "lernziele": [
+    "Sie können die reaktive Bindungsstörung und die Störung der sozialen Bindung mit Enthemmung beschreiben und wissen, welche Vorgeschichte beide voraussetzen.",
+    "Sie können Bindungsstörungen von unsicherer Bindung, Autismus und ADHS abgrenzen und wissen, warum die Diagnose in erfahrene Hände gehört.",
+    "Sie verstehen, warum Kinder aus Pflegefamilien und Heimen besonders betroffen sein können und was Beziehungsabbrüche für sie bedeuten.",
+    "Sie können im Schulalltag verlässliche Beziehungsangebote machen, Grenzen und Schutz sichern und typische Fallen vermeiden.",
+    "Sie wissen, welche Hilfen wirksam sind und von welchen Verfahren Leitlinien ausdrücklich abraten."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Mila und Dario, Cycle 2.1",
+          "text": "Mila (6) stolpert im Pausenhof und schürft sich das Knie auf. Sie weint nicht und sucht niemanden. Als die Erzieherin sich zu ihr hockt, dreht Mila sich weg und erstarrt. Sie lebt seit einem Jahr in einer Pflegefamilie; in ihren ersten Lebensjahren war sie oft tagelang sich selbst überlassen. Dario (7) kam mit vier Jahren aus einem großen Kinderheim im Ausland zu seinen Adoptiveltern. Am ersten Schultag läuft er auf die ihm unbekannte Praktikantin zu, umarmt sie und fragt, ob er mit zu ihr nach Hause darf. Beim Ausflug entfernt er sich, ohne sich umzusehen, und plaudert mit Fremden auf einer Parkbank.",
+          "fragen": [
+            "Was haben Milas und Darios Verhaltensweisen gemeinsam, obwohl sie so gegensätzlich wirken?",
+            "Welche Gefühle lösen die beiden Kinder vermutlich bei den Erwachsenen um sie herum aus?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Bindung** ist das angeborene Bedürfnis eines Kindes, bei Angst, Schmerz oder Kummer die Nähe einer vertrauten, schützenden Person zu suchen (Bowlby, 1969). Im Laufe des ersten Lebensjahres entwickeln Kinder eine deutliche Vorliebe für wenige Bezugspersonen: Sie lassen sich vor allem von ihnen trösten, fremdeln bei Unbekannten und protestieren, wenn die vertraute Person geht. Eine solche Bindung entsteht fast immer – auch zu Eltern, die wenig feinfühlig oder selbst stark belastet sind. Wie **sicher** sie ist, hängt davon ab, wie verlässlich die Bezugspersonen auf die Signale des Kindes eingehen (Ainsworth et al., 1978; Grossmann & Grossmann, 2012).\n\nEine **Bindungsstörung** ist etwas anderes als eine unsichere Bindung. Sie entsteht nur, wenn ein Kind in den ersten Lebensjahren kaum Gelegenheit hatte, überhaupt eine verlässliche Bindung aufzubauen: bei schwerer Vernachlässigung, bei ständig wechselnden Bezugspersonen oder in Heimen, in denen sich wenige Betreuende um sehr viele Kinder kümmern (Zeanah & Gleason, 2015). DSM-5-TR und ICD-11 ordnen die Bindungsstörungen den Störungen zu, die mit Belastung und Stress zusammenhängen, und unterscheiden zwei Formen.\n\nBei der **reaktiven Bindungsstörung** wendet sich ein Kind kaum an Erwachsene: Es sucht bei Kummer selten Trost und nimmt ihn kaum an. Die **Störung der sozialen Bindung mit Enthemmung** (auch: Beziehungsstörung mit Enthemmung) zeigt ein scheinbar gegenteiliges Bild: Das Kind geht ohne jede Scheu auf Fremde zu, ist übermäßig vertraut und würde mit Unbekannten mitgehen. Mila und Dario stehen für diese beiden Bilder. Gemeinsam ist ihnen, dass ihnen die Erfahrung fehlt, bei einer bestimmten Person sicher aufgehoben zu sein."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Bindungsstörung setzt immer eine Vorgeschichte schwer unzureichender Fürsorge voraus. Sie ist selten – viel seltener, als das Wort im Alltag benutzt wird. Nicht jedes Kind mit schwierigem Beziehungsverhalten hat eine Bindungsstörung."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: zwei Formen und wie sie sich zeigen",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Die beiden Bindungsstörungen im Vergleich",
+          "spalten": [
+            "Merkmal",
+            "Reaktive Bindungsstörung",
+            "Störung der sozialen Bindung mit Enthemmung"
+          ],
+          "zeilen": [
+            [
+              "Kernbild",
+              "gehemmt und emotional zurückgezogen gegenüber Bezugspersonen",
+              "fehlende soziale Zurückhaltung, wahllose Kontaktaufnahme mit Fremden"
+            ],
+            [
+              "Gegenüber Bezugspersonen",
+              "wendet sich bei Kummer kaum an sie, reagiert kaum auf Trost",
+              "kann eine Bindung an Bezugspersonen haben, vergewissert sich aber kaum bei ihnen"
+            ],
+            [
+              "Gegenüber Fremden",
+              "insgesamt wenig sozialer Austausch",
+              "keine Scheu, übermäßig vertraut in Worten und Körperkontakt, würde ohne Zögern mitgehen"
+            ],
+            [
+              "Gefühle",
+              "wenig Freude; unerklärliche Gereiztheit, Traurigkeit oder Ängstlichkeit auch in ruhigen Situationen",
+              "wirkt oft offen und gewinnend, die Kontakte bleiben aber oberflächlich und wechselnd"
+            ],
+            [
+              "Im Schulalter",
+              "Rückzug, kaum Hilfesuche, verschlossen oder traurig; nach dem fünften Lebensjahr wird diese Diagnose nur zurückhaltend gestellt",
+              "distanzlos gegenüber Erwachsenen, später auch gegenüber Gleichaltrigen; oberflächliche Freundschaften, Konflikte, erhöhtes Risiko, ausgenutzt zu werden"
+            ],
+            [
+              "Bei guter Fürsorge",
+              "bessert sich meist deutlich",
+              "hält oft länger an, auch wenn das Kind neue Bindungen aufgebaut hat"
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Für beide Diagnosen muss eine Vorgeschichte schwer unzureichender Fürsorge bekannt sein. Die Auffälligkeiten beginnen in der frühen Kindheit, und das Kind muss einen Entwicklungsstand von mindestens etwa neun Monaten erreicht haben – vorher sind gezielte Bindungen noch nicht voll ausgebildet. Die reaktive Bindungsstörung wird nicht diagnostiziert, wenn eine Autismus-Spektrum-Störung vorliegt. Bei der enthemmten Form geht es nicht bloß um Impulsivität wie bei ADHS, sondern um fehlende soziale Zurückhaltung gegenüber Fremden (DSM-5-TR; ICD-11).\n\n**Wie häufig?** Beide Störungen sind selten. Selbst unter Kindern, die schwer vernachlässigt wurden oder in Heimen aufwuchsen, entwickelt nur eine Minderheit eine Bindungsstörung; die reaktive Form ist dabei noch deutlich seltener als die enthemmte (Zeanah & Gleason, 2015). Viel häufiger sind **Bindungsschwierigkeiten** im weiteren Sinn. Diesen Begriff verwendet die NICE-Leitlinie für Kinder in Pflege, in Heimen und in Adoptivfamilien; er umfasst unsichere und desorganisierte Bindungen ebenso wie diagnostizierte Bindungsstörungen (NICE, 2015)."
+        },
+        {
+          "art": "liste",
+          "titel": "Worauf Sie im Schulalltag achten können",
+          "punkte": [
+            "Ein Kind ist verletzt oder traurig und sucht niemanden auf – auch keine vertraute Person.",
+            "Trost, Lob oder Zuwendung werden abgewehrt, ignoriert oder lösen Unruhe aus.",
+            "Unerklärliche Gereiztheit, Traurigkeit oder Angst in eigentlich ruhigen Situationen.",
+            "Wahllose Kontaktfreude: Umarmungen, Sitzen auf dem Schoß, sehr persönliche Fragen an Unbekannte.",
+            "Kein Rückversichern bei der Bezugsperson in neuer Umgebung, Bereitschaft, mit Fremden mitzugehen.",
+            "Bei Älteren: schnell wechselnde, oberflächliche Freundschaften und Distanzlosigkeit, auch im Internet."
+          ]
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen, Verlauf und Begleitprobleme",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Bindungsstörungen haben eine klare Ursache in der Umwelt: Das Kind hat in einer entscheidenden Entwicklungsphase keine verlässliche, feinfühlige Fürsorge erlebt. Warum unter solchen Bedingungen nur manche Kinder eine Bindungsstörung entwickeln, ist noch nicht ausreichend geklärt. Vermutlich spielen Veranlagung, Temperament, die Dauer der Mangelversorgung und das Alter, in dem sie endet, zusammen (Zeanah & Gleason, 2015).\n\nWas fehlt, wenn niemand verlässlich tröstet? Ein Säugling kann sich noch nicht selbst beruhigen. Er braucht einen Erwachsenen, der seinen Kummer bemerkt, ihn tröstet und seine Gefühle mitreguliert. Aus diesen tausendfach wiederholten Erfahrungen entstehen innere Erwartungen, die Bowlby **innere Arbeitsmodelle** nannte: „Wenn ich Hilfe brauche, kommt jemand“ – oder eben „Es kommt niemand“ (Bowlby, 1969). Vereinfacht gesagt: Ein Kind mit reaktiver Bindungsstörung hat gelernt, dass es nichts nützt, sich an Erwachsene zu wenden. Ein Kind mit enthemmtem Verhalten hat erlebt, dass Erwachsene austauschbar sind.\n\n**Verlauf.** Langzeitstudien zeigen, dass frühe Erfahrungen die Entwicklung prägen, spätere gute Erfahrungen aber ebenfalls zählen (Sroufe, 2005). Studien mit Kindern, die aus Heimen in Pflege- oder Adoptivfamilien kamen, zeigen für die beiden Bindungsstörungen ein unterschiedliches Bild (Zeanah & Gleason, 2015). Die Anzeichen der reaktiven Bindungsstörung gehen zurück, sobald ein Kind feinfühlige, stabile Fürsorge erlebt; viele dieser Kinder bauen auch später noch eine Bindung auf. Das enthemmte Verhalten hält dagegen oft über Jahre an – selbst dann, wenn das Kind längst eine Bindung an seine neuen Eltern entwickelt hat. Je früher ein Kind in verlässliche Fürsorge kommt, desto besser sind im Durchschnitt die Aussichten."
+        },
+        {
+          "art": "liste",
+          "titel": "Häufige Begleitprobleme",
+          "punkte": [
+            "Verzögerungen der Sprache und der geistigen Entwicklung",
+            "Unaufmerksamkeit und Unruhe, besonders bei der enthemmten Form",
+            "Niedergeschlagenheit und Rückzug, besonders bei der reaktiven Form",
+            "Traumafolgen nach Misshandlung oder miterlebter Gewalt",
+            "Folgen von Alkohol in der Schwangerschaft (fetale Alkoholspektrumstörung)",
+            "Körperliche Folgen früher Mangelversorgung, etwa Wachstumsverzögerungen"
+          ]
+        },
+        {
+          "art": "mythos",
+          "mythos": "Ein Kind, das in jedem Erwachsenen sofort einen Freund sieht, ist besonders offen und gut gebunden.",
+          "fakt": "Wahllose Kontaktfreude bei Kindern mit Vernachlässigungs- oder Heimerfahrung kann Ausdruck einer Störung der sozialen Bindung mit Enthemmung sein. Sie ist kein Zeichen sicherer Bindung – und sie macht Kinder verletzlich für Menschen, die ihr Vertrauen ausnutzen."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Der Begriff „Bindungsstörung“ wird im pädagogischen Alltag oft zu schnell verwendet – für Kinder, die sich schwer auf Beziehungen einlassen, klammern oder provozieren. Eine sorgfältige Abklärung durch erfahrene Fachleute der Kinder- und Jugendpsychiatrie oder Kinderpsychologie stützt sich auf die Vorgeschichte, auf Beobachtungen des Kindes mit vertrauten und mit fremden Personen und auf den Ausschluss anderer Erklärungen. Die wichtigste Abgrenzung ist die zur unsicheren Bindung."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Unsichere Bindung und Bindungsstörung",
+          "spalten": [
+            "Merkmal",
+            "Unsichere oder desorganisierte Bindung",
+            "Bindungsstörung"
+          ],
+          "zeilen": [
+            [
+              "Was es ist",
+              "eine Qualität einer bestehenden Bindung, beschrieben als Bindungsmuster (Ainsworth et al., 1978; Main & Solomon, 1990)",
+              "eine psychische Störung: Eine gezielte Bindung fehlt weitgehend (reaktive Form) oder soziale Zurückhaltung fehlt (enthemmte Form)"
+            ],
+            [
+              "Häufigkeit",
+              "häufig, auch in Familien ohne besondere Belastungen",
+              "selten, nur nach schwer unzureichender Fürsorge"
+            ],
+            [
+              "Diagnose?",
+              "nein – ein Forschungsbegriff; die desorganisierte Bindung gilt aber als Risikofaktor für spätere Schwierigkeiten",
+              "ja – beschrieben in DSM-5-TR und ICD-11"
+            ],
+            [
+              "Beispiel",
+              "Das Kind sucht bei Kummer seine Bezugsperson, zeigt aber wenig Gefühle (vermeidend) oder ist kaum zu beruhigen (ambivalent).",
+              "Das Kind sucht bei Kummer niemanden auf – oder geht ebenso bereitwillig mit Fremden mit wie mit seinen Eltern."
+            ]
+          ]
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Weitere Abgrenzungen",
+          "punkte": [
+            {
+              "wie": "Autismus-Spektrum-Störung",
+              "unterschied": "Auch Kinder mit Autismus haben Schwierigkeiten in der sozialen Gegenseitigkeit. Hinzu kommen aber eingeschränkte, sich wiederholende Verhaltensweisen und Interessen und oft besondere Sinnesempfindlichkeiten, und die Schwierigkeiten bestehen unabhängig von der Qualität der Fürsorge (Lord et al., 2018). Die meisten Kinder mit Autismus zeigen durchaus eine Bindung an ihre Eltern. Umgekehrt wurden nach schwerer Vernachlässigung in Heimen auch autismusähnliche Auffälligkeiten beschrieben – die Unterscheidung gehört in erfahrene Hände."
+            },
+            {
+              "wie": "ADHS",
+              "unterschied": "Kinder mit ADHS gehen manchmal ebenfalls vorschnell auf andere zu. Bei ADHS zeigt sich die Impulsivität aber in vielen Situationen, zusammen mit Unaufmerksamkeit und Unruhe. Die enthemmte Bindungsstörung betrifft gezielt das Verhalten gegenüber Fremden und setzt unzureichende Fürsorge voraus. Nach Heimerfahrung kommt beides häufig gemeinsam vor."
+            },
+            {
+              "wie": "Trauma und PTBS",
+              "unterschied": "Viele Kinder mit Bindungsstörungen haben auch Gewalt erlebt. Rückzug, Misstrauen oder heftige Reaktionen können Traumafolgen sein. Beides wird bei der Abklärung gemeinsam betrachtet (siehe Modul „Trauma und Traumafolgen“)."
+            },
+            {
+              "wie": "Fetale Alkoholspektrumstörung (FASD)",
+              "unterschied": "Alkohol in der Schwangerschaft kann zu Lernproblemen, Impulsivität und sozialer Distanzlosigkeit führen. Bei Kindern aus schwer belasteten Verhältnissen ist das nicht selten; die Abklärung erfolgt ärztlich."
+            },
+            {
+              "wie": "Entwicklungsverzögerung",
+              "unterschied": "Bei einer deutlichen Entwicklungsverzögerung entspricht das Sozialverhalten dem Entwicklungsalter, nicht dem Lebensalter. Es ist dann nicht „gestört“, sondern jünger."
+            },
+            {
+              "wie": "Eingewöhnung und kulturelle Unterschiede",
+              "unterschied": "Nach einem Wechsel in eine neue Familie oder Schule sind Zurückhaltung oder anfängliche Distanzlosigkeit oft vorübergehend. Auch Normen für Nähe und Körperkontakt unterscheiden sich zwischen Kulturen und Familien. Maßstab ist, was im Umfeld des Kindes üblich ist."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Beschreiben statt etikettieren: „Sucht nach Stürzen niemanden auf, wehrt Pflaster ab“ oder „Hat heute drei fremde Erwachsene umarmt“ hilft der Abklärung mehr als „Er ist bindungsgestört“."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: verlässlich bleiben, Grenzen und Schutz sichern",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "**Kinder in Pflegefamilien und Heimen.** Viele Kinder mit Bindungsschwierigkeiten leben nicht bei ihren leiblichen Eltern, sondern in Pflege- oder Adoptivfamilien oder in Wohngruppen. Hinter ihnen liegen oft nicht nur Vernachlässigung, sondern auch mehrere Abbrüche: Wechsel der Bezugspersonen, der Wohnorte, der Schulen. Jeder weitere Abbruch bestätigt die Erfahrung, dass Beziehungen nicht halten. Die Schule kann ein Ort sein, der bleibt, wenn sich sonst vieles ändert. Die NICE-Leitlinie betont deshalb, dass auch Fachkräfte in Schulen Bindungsschwierigkeiten kennen und eng mit Pflegefamilie oder Einrichtung zusammenarbeiten sollten (NICE, 2015).\n\nDie Grundhaltung ist einfach, aber anspruchsvoll: **verlässlich bleiben, auch wenn das Kind die Beziehung zurückweist oder testet.** Kinder mit Bindungsschwierigkeiten reagieren auf Nähe oft mit Abwehr, auf Lob mit Stören und auf freundliche Angebote mit Gleichgültigkeit. Das heißt nicht, dass Ihre Mühe vergeblich ist; es ist Ausdruck früherer Erfahrungen. Neue Erwartungen entstehen erst durch viele wiederholte, verlässliche Erlebnisse."
+        },
+        {
+          "art": "tun",
+          "titel": "Was hilft",
+          "punkte": [
+            "Eine feste Bezugsperson in der Schule, die das Kind begrüßt und verabschiedet und in schwierigen Momenten zuständig ist.",
+            "Vorhersehbare Abläufe und Rituale; Veränderungen und Abwesenheiten rechtzeitig und ehrlich ankündigen.",
+            "Trost und Hilfe aktiv anbieten, auch wenn das Kind nicht darum bittet – ruhig, ohne Druck und in einer Dosis, die es aushalten kann („Ich sehe, dass dein Knie blutet. Ich hole ein Pflaster und bleibe hier.“).",
+            "Gefühle benennen und Signale übersetzen („Du bist wütend, weil die Pause vorbei ist.“) – so lernt das Kind, sich und andere zu verstehen.",
+            "Bei enthemmtem Verhalten: freundliche, klare Regeln zu Nähe und Distanz, die alle Erwachsenen im Haus kennen und gleich anwenden („Umarmen nur in der Familie, bei anderen Hand geben oder winken“).",
+            "Die Regel „Erst fragen, dann gehen“ üben; bei Ausflügen eine feste Begleitperson einplanen.",
+            "Übergänge gestalten: neue Lehrkräfte vorher vorstellen, Abschiede bewusst begehen, Kontakte nicht einfach abbrechen lassen.",
+            "Mit Pflegefamilie oder Wohngruppe gleiche Absprachen treffen und sich regelmäßig austauschen, zum Beispiel über ein Mitteilungsheft."
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was schadet",
+          "punkte": [
+            "Beziehungsentzug oder Ausschluss als Strafe („Dann eben ohne dich.“).",
+            "Zwang zu Nähe: das Kind festhalten oder in den Arm nehmen, bis es Trost „annimmt“.",
+            "Wahllose Zuneigung erwidern: sich von einem fremden Kind umarmen lassen, es auf den Schoß nehmen, Geschenke von Unbekannten dulden.",
+            "Zurückweisung persönlich nehmen und sich enttäuscht zurückziehen.",
+            "Unnötige Wechsel von Bezugspersonen, Sitzplätzen oder Gruppen.",
+            "Pflegeeltern oder Fachkräfte der Wohngruppe vor dem Kind kritisieren oder für sein Verhalten verantwortlich machen.",
+            "Das Etikett „bindungsgestört“ ohne fachliche Diagnose verwenden."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Darios Schutzregeln",
+          "text": "Das Team spricht mit Darios Adoptiveltern. Gemeinsam vereinbaren sie drei Regeln, die mit Bildern an seinem Platz hängen: „Umarmen: Mama, Papa, Oma“, „Hand geben oder winken: alle anderen“ und „Bevor ich mit jemandem mitgehe, frage ich Frau Weber.“ Frau Weber ist seine feste Bezugsperson und begrüßt ihn jeden Morgen. Alle Erwachsenen im Haus, auch Praktikantinnen und Kantinenpersonal, reagieren gleich: freundlich, aber mit einem Hinweis auf die Regel. Bei Ausflügen geht Dario an Frau Webers Seite. Nach vier Monaten schaut er in neuen Situationen häufiger zu ihr, bevor er auf Fremde zugeht. Ganz verschwunden ist die Distanzlosigkeit nicht.",
+          "fragen": [
+            "Warum ist es wichtig, dass alle Erwachsenen im Haus gleich reagieren?",
+            "Was bedeutet es für die weitere Begleitung, dass die Distanzlosigkeit nicht ganz verschwunden ist?"
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "Kinder und Jugendliche mit enthemmtem Bindungsverhalten sind besonders gefährdet, von Menschen ausgenutzt zu werden, die gezielt ihr Vertrauen suchen – auch im Internet. Wenn ein Kind oder eine Jugendliche von neuen erwachsenen „Freunden“, Geschenken oder heimlichen Treffen erzählt, nehmen Sie das ernst, informieren Sie noch am selben Tag die Leitung und folgen Sie den internen Kinderschutzabläufen. Bei akuter Gefahr: Polizei 113."
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und Zusammenarbeit",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Die Diagnose einer Bindungsstörung stellen erfahrene Fachleute der Kinder- und Jugendpsychiatrie oder Kinderpsychologie. Dazu gehören die genaue Vorgeschichte, Beobachtungen des Kindes mit vertrauten und mit fremden Erwachsenen, Informationen aus Familie, Einrichtung und Schule sowie die Abklärung von Entwicklung, Sprache, Autismus, ADHS, Traumafolgen und körperlichen Ursachen.\n\nDie wichtigste „Behandlung“ ist eine sichere, stabile und feinfühlige Fürsorge. Hilfen setzen deshalb vor allem bei den Bezugspersonen an: Pflege- und Adoptiveltern oder Fachkräfte in Wohngruppen lernen, die Signale des Kindes zu lesen und verlässlich zu beantworten – etwa mit videogestützter Beratung, bei der kurze Alltagsszenen gemeinsam angeschaut und besprochen werden (NICE, 2015). Kommen Traumafolgen hinzu, kann zusätzlich eine traumafokussierte Therapie nötig sein. Für die Bindungsstörung selbst gibt es keine Medikamente; begleitende Probleme wie ADHS werden nach den jeweiligen Leitlinien behandelt.\n\nFachleute und Leitlinien raten ausdrücklich von Verfahren ab, die mit Zwang arbeiten – etwa von sogenannten Festhaltetherapien, bei denen ein Kind gegen seinen Willen festgehalten wird, bis es „nachgibt“. Für sie gibt es keinen Wirksamkeitsnachweis, und sie können Kindern schwer schaden."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Wer früh vernachlässigt wurde, kann nie mehr eine Bindung aufbauen.",
+          "fakt": "Viele Kinder entwickeln in feinfühliger, stabiler Fürsorge auch später noch eine tragfähige Bindung; die Anzeichen der reaktiven Bindungsstörung gehen dann meist deutlich zurück (Zeanah & Gleason, 2015). Das braucht Zeit, Geduld und vor allem Verlässlichkeit."
+        },
+        {
+          "art": "tun",
+          "titel": "Was die Schule beitragen kann",
+          "punkte": [
+            "Beobachtungen sachlich festhalten – im Umgang mit vertrauten und mit fremden Personen.",
+            "An Hilfeplan- oder Netzwerkgesprächen teilnehmen und die Sicht der Schule einbringen.",
+            "Absprachen aus Beratung oder Therapie im Schulalltag mittragen.",
+            "Die Schule als stabilen Ort erhalten: Schulwechsel möglichst vermeiden, unvermeidbare Übergänge sorgfältig vorbereiten."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Sprechen Sie mit der Leitung und regen Sie über die Sorgeberechtigten eine fachliche Abklärung an (Diagnostique, Kinder- und Jugendpsychiatrie), wenn ein Kind über längere Zeit auffallend wenig Trost sucht und annimmt oder wahllos auf Fremde zugeht – besonders bei bekannter Vernachlässigungs- oder Heimerfahrung. Bei Hinweisen auf aktuelle Vernachlässigung oder Gefährdung gelten sofort die internen Kinderschutzabläufe. Holen Sie sich auch selbst Unterstützung: Kinder, die Beziehungen zurückweisen oder ständig testen, lösen starke Gefühle aus. Supervision und kollegiale Beratung helfen, verlässlich zu bleiben."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was ist Voraussetzung für die Diagnose einer Bindungsstörung (reaktiv oder enthemmt)?",
+      "optionen": [
+        "Ein unsicheres Bindungsmuster in einer Bindungsuntersuchung",
+        "Eine Vorgeschichte schwer unzureichender Fürsorge, etwa massive Vernachlässigung, ständig wechselnde Bezugspersonen oder Heimerziehung mit sehr wenigen Betreuenden",
+        "Eine Trennung oder Scheidung der Eltern",
+        "Ein auffälliger Befund in einer Blutuntersuchung"
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Beide Bindungsstörungen setzen eine Vorgeschichte schwer unzureichender Fürsorge voraus, in der das Kind kaum eine gezielte Bindung aufbauen konnte. Ein unsicheres Bindungsmuster ist häufig und keine Störung. Eine Trennung der Eltern ist belastend, verhindert aber keine Bindung, und Laborbefunde spielen für die Diagnose keine Rolle."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen passen zur Störung der sozialen Bindung mit Enthemmung? (mehrere richtig)",
+      "optionen": [
+        "Geht ohne Zögern mit einer unbekannten Person mit",
+        "Sucht bei Kummer kaum Trost und nimmt ihn nicht an",
+        "Ist in Worten und Körperkontakt übermäßig vertraut mit Fremden",
+        "Vergewissert sich in fremder Umgebung nicht bei der Bezugsperson",
+        "Hat sehr ausgeprägte Spezialinteressen und besteht auf festen Routinen"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Mitgehen mit Fremden, übermäßige Vertrautheit und fehlendes Rückversichern bei der Bezugsperson gehören zur enthemmten Form. Kaum Trost suchen und annehmen ist typisch für die reaktive Bindungsstörung. Spezialinteressen und feste Routinen sprechen eher für Autismus."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Ein unsicher-vermeidendes Bindungsmuster ist eine leichte Form der reaktiven Bindungsstörung.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Bindungsmuster beschreiben die Qualität einer bestehenden Bindung und sind keine Diagnosen; unsichere Bindung ist häufig. Bei einer reaktiven Bindungsstörung fehlt dagegen eine gezielte Bindung weitgehend – und sie setzt schwer unzureichende Fürsorge voraus."
+    },
+    {
+      "art": "fall",
+      "fall": "Mila (6) lebt seit einem Jahr in einer Pflegefamilie. Wenn sie sich verletzt oder traurig ist, zieht sie sich zurück und wehrt Trost ab. Die Klassenlehrerin ist gekränkt: „Sie will mich einfach nicht.“",
+      "frage": "Welche Haltung ist am hilfreichsten?",
+      "optionen": [
+        "Mila in Ruhe lassen – sie zeigt deutlich, dass sie keine Beziehung will.",
+        "Sie in den Arm nehmen und festhalten, bis sie den Trost annimmt.",
+        "Trost und Hilfe weiter ruhig und ohne Druck anbieten, Nähe dosieren, verlässlich bleiben und die Beobachtungen mit Pflegefamilie und Team teilen.",
+        "Der Pflegefamilie mitteilen, dass Mila eine Bindungsstörung hat."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Milas Abwehr ist Ausdruck früher Erfahrungen und richtet sich nicht gegen die Lehrerin persönlich. Geduldige, dosierte und verlässliche Angebote geben ihr die Chance auf neue Erfahrungen. Wenn Erwachsene sich zurückziehen, bestätigt das ihre Erwartung, dass niemand kommt; Zwang zu Nähe schadet. Eine Diagnose stellen Fachleute, nicht die Schule."
+    },
+    {
+      "art": "fall",
+      "fall": "Beim Ausflug in den Park entfernt sich Dario (7) plötzlich von der Gruppe, spricht einen fremden Mann mit Hund an und will mit ihm „den Hund nach Hause bringen“. Das ist nicht das erste Mal.",
+      "frage": "Wie reagieren Sie am besten?",
+      "optionen": [
+        "Dario ruhig zurückholen, ihm für den Rest des Ausflugs eine feste Begleitperson an die Seite geben, die Regel „Erst fragen, dann gehen“ üben und den Vorfall mit Leitung und Eltern besprechen.",
+        "Nichts weiter unternehmen – Dario ist eben sehr kontaktfreudig.",
+        "Ihn vor der Gruppe laut ausschimpfen, damit er es sich merkt.",
+        "Ihn künftig von allen Ausflügen ausschließen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Darios Verhalten ist ein Sicherheitsrisiko und typisch für enthemmtes Bindungsverhalten. Er braucht Schutz durch Aufsicht, klare, geübte Regeln und ein mit den Eltern abgestimmtes Vorgehen. Bloßstellen hilft nicht, weil das Verhalten nicht aus Trotz entsteht, und ein Ausschluss nimmt ihm Lerngelegenheiten, ohne das Problem zu lösen."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Beobachtung spricht eher für Autismus als für eine reaktive Bindungsstörung?",
+      "optionen": [
+        "Das Kind wurde in den ersten Lebensjahren schwer vernachlässigt.",
+        "Die sozialen Schwierigkeiten gehen deutlich zurück, seit das Kind in einer feinfühligen Pflegefamilie lebt.",
+        "Das Kind sucht bei Kummer kaum Trost.",
+        "Das Kind zeigt seit früher Kindheit sich wiederholende Verhaltensweisen und eng begrenzte Interessen, obwohl es immer liebevoll versorgt wurde."
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Eingeschränkte, sich wiederholende Verhaltensweisen und Interessen unabhängig von der Fürsorge sprechen für Autismus. Vernachlässigung in der Vorgeschichte und eine deutliche Besserung bei guter Fürsorge passen eher zur reaktiven Bindungsstörung. Wenig Trostsuche kann bei beidem vorkommen und hilft deshalb nicht bei der Unterscheidung."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist über den Verlauf der beiden Bindungsstörungen bekannt?",
+      "optionen": [
+        "Beide bleiben unabhängig von der späteren Fürsorge lebenslang unverändert.",
+        "Die reaktive Form bessert sich bei feinfühliger, stabiler Fürsorge meist deutlich; das enthemmte Verhalten hält oft länger an.",
+        "Beide verschwinden im Jugendalter von selbst.",
+        "Beide lassen sich nur mit Medikamenten wirksam behandeln."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Studien mit Kindern, die aus Heimen in Familien kamen, zeigen: Die Anzeichen der reaktiven Bindungsstörung gehen bei guter Fürsorge meist deutlich zurück, das enthemmte Verhalten besteht dagegen oft weiter, selbst wenn das Kind neue Bindungen aufgebaut hat. Von selbst verschwinden die Störungen nicht, und Medikamente gegen die Bindungsstörung selbst gibt es nicht."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Maßnahmen sind bei Kindern mit Bindungsschwierigkeiten ungeeignet oder schädlich? (mehrere richtig)",
+      "optionen": [
+        "Festhalten gegen den Willen des Kindes, bis es Nähe „annimmt“",
+        "Eine feste Bezugsperson, die das Kind begrüßt und verabschiedet",
+        "Beziehungsentzug als Strafe",
+        "Häufige, unvorbereitete Wechsel der Betreuungspersonen",
+        "Abwesenheiten und Wechsel rechtzeitig ankündigen und Abschiede gestalten"
+      ],
+      "richtig": [
+        0,
+        2,
+        3
+      ],
+      "erklaerung": "Zwang zu Nähe wird von Leitlinien ausdrücklich abgelehnt; Beziehungsentzug und häufige Wechsel bestätigen die Erfahrung, dass Beziehungen nicht halten. Eine feste Bezugsperson und gut gestaltete Übergänge gehören dagegen zu den wichtigsten Hilfen."
+    },
+    {
+      "art": "fall",
+      "fall": "Jessica (9) lebt in einer Wohngruppe und hat schon viele Wechsel erlebt. Ihre Klassenlehrerin, zu der sie langsam Vertrauen fasst, geht in drei Wochen für ein Jahr in Elternzeit.",
+      "frage": "Wie gehen Sie am besten vor?",
+      "optionen": [
+        "Nichts sagen, damit Jessica sich nicht unnötig aufregt.",
+        "Es Jessica erst am letzten Tag sagen, damit die Zeit bis dahin ruhig bleibt.",
+        "Den Wechsel frühzeitig und ehrlich ankündigen, die Nachfolgerin vorher vorstellen, einen Abschied gestalten und mit der Wohngruppe absprechen, wie Jessica begleitet wird.",
+        "Jessica erklären, dass sie Wechsel ja schon gewohnt ist."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Für Kinder mit vielen Abbrüchen ist ein vorbereiteter, erklärter Übergang eine wichtige neue Erfahrung: Beziehungen können enden, ohne dass man verlassen wird. Verschweigen oder kurzfristiges Mitteilen wiederholt die alte Erfahrung plötzlicher Verluste, und der Hinweis auf „Gewöhnung“ übergeht Jessicas Gefühle."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Für Bindungsstörungen gibt es Medikamente, die die Bindungsfähigkeit direkt verbessern.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Die wichtigste Hilfe ist feinfühlige, stabile Fürsorge; Unterstützung setzt vor allem bei den Bezugspersonen an. Medikamente können bei begleitenden Störungen wie ADHS eine Rolle spielen, nicht aber für die Bindungsstörung selbst."
+    },
+    {
+      "art": "fall",
+      "fall": "Kim (14) lebt in einer Wohngruppe. Sie erzählt Ihnen fröhlich, dass sie online einen 23-jährigen Mann kennengelernt hat, der ihr Geschenke schickt und sie am Wochenende allein treffen möchte. Die Betreuenden wüssten davon nichts.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Ernst nehmen, ruhig nachfragen, Ihre Sorge offen ansprechen, keine Geheimhaltung versprechen und noch am selben Tag die Leitung informieren – das weitere Vorgehen folgt den Kinderschutzabläufen.",
+        "Nichts unternehmen – das ist Kims Privatleben.",
+        "Kim das Handy abnehmen und den Chat löschen.",
+        "Den Mann selbst anschreiben und ihn auffordern, den Kontakt abzubrechen."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Geschenke, Heimlichkeit und ein deutlich älterer Erwachsener sind Warnzeichen für eine gezielte Anbahnung sexueller Ausbeutung. Jugendliche mit enthemmtem Bindungsverhalten sind dafür besonders verletzlich. Die Situation gehört umgehend in die internen Kinderschutzabläufe. Löschen vernichtet mögliche Beweise, und eigenes Vorgehen gegenüber dem Mann kann Kim gefährden."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Bindung",
+      "erklaerung": "Emotionales Band zwischen Kind und Bezugsperson. Bei Angst, Schmerz oder Kummer sucht das Kind deren Nähe und Schutz (Bowlby)."
+    },
+    {
+      "begriff": "Bindungsmuster",
+      "erklaerung": "Qualität einer bestehenden Bindung: sicher, unsicher-vermeidend, unsicher-ambivalent oder desorganisiert. Ein Forschungsbegriff, keine Diagnose."
+    },
+    {
+      "begriff": "Reaktive Bindungsstörung",
+      "erklaerung": "Seltene Störung nach schwer unzureichender Fürsorge: Das Kind sucht bei Kummer kaum Trost, nimmt ihn kaum an und zeigt wenig positive Gefühle."
+    },
+    {
+      "begriff": "Störung der sozialen Bindung mit Enthemmung",
+      "erklaerung": "Seltene Störung nach schwer unzureichender Fürsorge: wahllose, übermäßig vertraute Kontaktaufnahme mit Fremden, Mitgehen ohne Zögern, kaum Rückversichern bei Bezugspersonen. Auch: Beziehungsstörung mit Enthemmung."
+    },
+    {
+      "begriff": "Bindungsschwierigkeiten",
+      "erklaerung": "Oberbegriff der NICE-Leitlinie für unsichere oder desorganisierte Bindungen und für diagnostizierte Bindungsstörungen."
+    },
+    {
+      "begriff": "Feinfühligkeit",
+      "erklaerung": "Fähigkeit einer Bezugsperson, die Signale des Kindes wahrzunehmen, richtig zu deuten und prompt und angemessen darauf zu reagieren (Ainsworth)."
+    },
+    {
+      "begriff": "Inneres Arbeitsmodell",
+      "erklaerung": "Aus frühen Beziehungserfahrungen entstandene Erwartungen, ob andere helfen und ob man selbst Hilfe verdient (Bowlby)."
+    },
+    {
+      "begriff": "Fetale Alkoholspektrumstörung (FASD)",
+      "erklaerung": "Folgen von Alkohol in der Schwangerschaft, etwa Lern- und Aufmerksamkeitsprobleme, Impulsivität und soziale Distanzlosigkeit. Die Diagnose stellt eine Ärztin oder ein Arzt."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "zeanah2015",
+    "niceNG26",
+    "bowlby1969",
+    "ainsworth1978",
+    "mainSolomon1990",
+    "grossmann2012",
+    "sroufe2005",
+    "lord2018",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "bindung",
+    "bindungsmuster",
+    "trauma",
+    "autismus",
+    "beziehung-haltung",
+    "kinderschutz"
+  ],
+  "toolbox": [
+    "wer-ist-fuer-mich-da",
+    "meine-helfer-hand",
+    "grenzen-spueren",
+    "gefuehle-gesichter",
+    "neue-klasse"
+  ]
+}

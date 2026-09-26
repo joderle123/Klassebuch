@@ -1,0 +1,485 @@
+{
+  "id": "essstoerungen",
+  "bereich": "stoerungen",
+  "titel": "Essstörungen",
+  "untertitel": "Anorexie, Bulimie, Binge-Eating und ARFID – Warnzeichen erkennen, einfühlsam ansprechen, schnell weiterleiten",
+  "dauer": 50,
+  "lernziele": [
+    "Sie können Anorexie, Bulimie, Binge-Eating-Störung und ARFID in ihren Kernmerkmalen beschreiben.",
+    "Sie erkennen körperliche, verhaltensbezogene und emotionale Warnzeichen und wissen, dass man eine Essstörung nicht am Gewicht erkennt.",
+    "Sie können eine Schülerin oder einen Schüler einfühlsam und konkret auf Ihre Sorge ansprechen und wissen, was Sie dabei vermeiden sollten.",
+    "Sie wissen, dass bei Warnzeichen rasch gehandelt werden muss, kennen die Schritte der Weiterleitung und erkennen medizinische Notfälle.",
+    "Sie können die Behandlung unterstützen und vermeiden in der Schule zusätzlichen Druck rund um Essen, Gewicht und Aussehen."
+  ],
+  "kapitel": [
+    {
+      "titel": "Worum es geht",
+      "bloecke": [
+        {
+          "art": "fall",
+          "titel": "Clara, 15 Jahre, Lycée",
+          "text": "Nach den Sommerferien fällt der Klassenlehrerin auf, dass Clara deutlich schmaler geworden ist. In der Kantine isst sie nur einen Apfel, in den Pausen läuft sie Runden über den Schulhof. Sie trägt auch an warmen Tagen dicke Pullover, ihre Hände sind kalt. Ihre Noten sind hervorragend, doch mit ihren Freundinnen trifft sie sich kaum noch. Als eine Mitschülerin bewundernd fragt: „Wie hast du das geschafft?“, lächelt Clara. Auf Nachfrage sagt sie nur: „Ich ernähre mich jetzt gesund.“",
+          "fragen": [
+            "Welche Beobachtungen machen Ihnen Sorgen – und welche könnten leicht übersehen werden?",
+            "Was bewirkt die Bewunderung der Mitschülerin?"
+          ]
+        },
+        {
+          "art": "text",
+          "text": "**Essstörungen** sind ernste Erkrankungen, bei denen sich Denken, Fühlen und Verhalten rund um Essen, Gewicht und Körper so verändern, dass Gesundheit und Entwicklung gefährdet sind. Sie sind keine Diät, die aus dem Ruder läuft, und kein Zeichen von Eitelkeit. Die Magersucht gehört zu den psychischen Erkrankungen mit der höchsten Sterblichkeit; auch die anderen Formen können schwere körperliche Folgen haben (Treasure et al., 2020).\n\nEssstörungen beginnen meist im Jugendalter, manche Formen schon in der Kindheit. Mädchen und junge Frauen sind häufiger betroffen. Jungen erkranken ebenfalls, werden aber oft später erkannt, weil niemand an eine Essstörung denkt. DSM-5-TR und ICD-11 beschreiben mehrere Formen; im Schulalltag begegnen Ihnen vor allem vier: die **Anorexie** (Magersucht), die **Bulimie** (Ess-Brech-Sucht), die **Binge-Eating-Störung** und die **vermeidend-restriktive Ernährungsstörung** (ARFID).\n\nFür Fachkräfte in Schule und Betreuung ist eines besonders wichtig: **Früh erkennen und schnell weiterleiten verbessert die Aussichten deutlich.** Sie stellen keine Diagnose – aber Sie sehen die Kinder und Jugendlichen jeden Tag, oft auch beim Essen, und bemerken Veränderungen manchmal früher als die Familie."
+        },
+        {
+          "art": "merke",
+          "text": "Eine Essstörung ist eine Erkrankung von Körper und Psyche, keine Willensschwäche und keine Phase. Je früher sie behandelt wird, desto besser sind die Chancen, ganz gesund zu werden."
+        }
+      ]
+    },
+    {
+      "titel": "Erkennen: vier Formen und ihre Warnzeichen",
+      "bloecke": [
+        {
+          "art": "tabelle",
+          "titel": "Die vier häufigsten Formen im Schulalltag",
+          "spalten": [
+            "Form",
+            "Kernmerkmale",
+            "Was man leicht übersieht"
+          ],
+          "zeilen": [
+            [
+              "Anorexie (Magersucht)",
+              "stark eingeschränktes Essen und deutlich zu niedriges Gewicht – bei Kindern und Jugendlichen auch ausbleibende Gewichtszunahme im Wachstum; große Angst vor Gewichtszunahme; gestörtes Erleben des eigenen Körpers; der Selbstwert hängt stark an Figur und Gewicht",
+              "Betroffene erleben sich oft nicht als krank; Leistung und Fleiß bleiben lange hoch. Manche haben zusätzlich Essanfälle oder erbrechen."
+            ],
+            [
+              "Bulimie (Ess-Brech-Sucht)",
+              "wiederholte Essanfälle mit Kontrollverlust, danach Gegensteuern durch Erbrechen, Abführmittel, Fasten oder übermäßigen Sport; der Selbstwert hängt stark an Figur und Gewicht",
+              "Das Gewicht liegt meist im Normalbereich; Scham führt zu großer Heimlichkeit."
+            ],
+            [
+              "Binge-Eating-Störung",
+              "wiederholte Essanfälle mit Kontrollverlust, großem Leidensdruck und Scham danach – ohne regelmäßiges Gegensteuern",
+              "Oft, aber nicht immer Übergewicht; Hänseleien über das Gewicht verstärken die Not."
+            ],
+            [
+              "ARFID (vermeidend-restriktive Ernährungsstörung)",
+              "isst sehr wenig oder sehr einseitig – aus fehlendem Interesse am Essen, wegen Geschmack, Geruch oder Konsistenz oder aus Angst vor Verschlucken, Ersticken oder Erbrechen – mit Folgen für Gewicht, Wachstum, Ernährung oder Alltag",
+              "Keine Sorge um Figur oder Gewicht. Beginnt oft schon in der Kindheit, häufiger bei Kindern mit Autismus oder Ängsten; Jungen sind oft betroffen."
+            ]
+          ]
+        },
+        {
+          "art": "text",
+          "text": "Für Bulimie und Binge-Eating-Störung verlangt DSM-5-TR, dass die Essanfälle über drei Monate im Durchschnitt mindestens einmal pro Woche auftreten. Viele Jugendliche erfüllen nicht alle Kriterien einer Form und sind trotzdem ernsthaft krank – etwa bei einer **atypischen Anorexie**, bei der jemand stark abgenommen hat, aber noch im Normalgewicht liegt. Sie kann körperlich ebenso gefährlich sein. Die NICE-Leitlinie betont deshalb, dass weder das Gewicht noch der Body-Mass-Index allein darüber entscheiden, ob jemand Behandlung braucht (NICE, 2017)."
+        },
+        {
+          "art": "tabelle",
+          "titel": "Warnzeichen im Schulalltag",
+          "spalten": [
+            "Bereich",
+            "Mögliche Warnzeichen"
+          ],
+          "zeilen": [
+            [
+              "Essen",
+              "lässt Mahlzeiten aus, isst in Kantine oder Maison Relais kaum, versteckt oder entsorgt Essen, schneidet es in winzige Stücke, strenge Regeln („nur gesund“, viele verbotene Lebensmittel), zählt Kalorien, isst nicht vor anderen; bei Essanfällen: heimliches Essen, große Mengen verschwinden"
+            ],
+            [
+              "Körper",
+              "deutlicher Gewichtsverlust oder – bei Jüngeren – ausbleibendes Wachstum, friert ständig, kalte bläuliche Hände, Schwindel, Ohnmacht, Erschöpfung, Konzentrationsprobleme, trockene Haut, dünner werdende Haare"
+            ],
+            [
+              "Nach dem Essen",
+              "geht regelmäßig sofort zur Toilette, auffällig lange Toilettengänge, Geruch nach Erbrochenem, geschwollene Wangen"
+            ],
+            [
+              "Bewegung",
+              "übermäßiger Sport, Bewegung bei jeder Gelegenheit, steht statt zu sitzen, trainiert trotz Krankheit oder Verletzung"
+            ],
+            [
+              "Gedanken und Gefühle",
+              "ständige Beschäftigung mit Essen, Kalorien und Figur, abwertende Aussagen über den eigenen Körper, Vergleiche mit anderen, Reizbarkeit, Niedergeschlagenheit, starker Perfektionismus"
+            ],
+            [
+              "Soziales Leben",
+              "meidet Feiern, Ausflüge und Klassenfahrten mit gemeinsamem Essen, trägt sehr weite Kleidung, zieht sich von Freundschaften zurück"
+            ],
+            [
+              "Bei Diabetes Typ 1",
+              "Insulin wird weggelassen oder verringert, um Gewicht zu verlieren – lebensgefährlich"
+            ]
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Man sieht einer Essstörung das Gewicht oft nicht an. Viele Jugendliche mit Bulimie, Binge-Eating-Störung oder atypischer Anorexie sind normal- oder übergewichtig – und trotzdem ernsthaft krank."
+        }
+      ]
+    },
+    {
+      "titel": "Verstehen: Ursachen, Teufelskreise und Gefahren",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Essstörungen entstehen aus einem Zusammenspiel vieler Faktoren (Treasure et al., 2020). **Biologisch** spielen Erbanlagen eine erhebliche Rolle; bei der Anorexie sind auch Stoffwechselfaktoren beteiligt. **Psychisch** erhöhen Perfektionismus, hohe Ängstlichkeit und ein Selbstwert, der stark an Leistung und Aussehen hängt, das Risiko; bei Bulimie und Binge-Eating fällt es Betroffenen oft schwer, mit starken Gefühlen und Impulsen umzugehen. **Sozial** wirken Schlankheitsideale, Kommentare und Hänseleien über Gewicht und Aussehen, Druck in Sportarten, in denen Gewicht oder Figur zählen, und Bilder in sozialen Medien. Häufig steht am Anfang eine Diät oder ein ungewollter Gewichtsverlust, etwa nach einer Krankheit. Belastungen und Übergänge – Pubertät, Schulwechsel, Konflikte, Verluste – können den Ausschlag geben.\n\n**Teufelskreise.** Hat die Essstörung einmal begonnen, hält sie sich oft selbst aufrecht. Hungern verändert das Denken: Die Gedanken kreisen ums Essen, das Denken wird starr, die Stimmung gedrückt und gereizt, der Rückzug wächst. Gleichzeitig vermittelt die Kontrolle über das Essen anfangs Sicherheit und ein Gefühl von Erfolg – verstärkt durch Komplimente zum Gewichtsverlust. Deshalb erleben viele Betroffene, besonders mit Anorexie, ihre Essstörung zunächst nicht als Problem, sondern als Lösung. Bei Bulimie und Binge-Eating führt strenges Diäthalten zu Heißhunger, der Essanfall zu Scham und Gegensteuern – und das wieder zu strengem Diäthalten.\n\n**Körperliche Gefahren.** Mangelernährung und Erbrechen belasten den ganzen Körper: Herz und Kreislauf (sehr langsamer Puls, Rhythmusstörungen), Knochen, Wachstum und Pubertätsentwicklung, Zähne. Erbrechen und Abführmittel können gefährliche Verschiebungen der Blutsalze auslösen. Auch bei normalen Laborwerten kann ein ernstes Risiko bestehen – die Einschätzung gehört in ärztliche Hände.\n\n**Verlauf und Begleitprobleme.** Mit Behandlung werden viele Betroffene gesund; der Weg dauert aber oft Monate bis Jahre, und Rückfälle sind häufig. Je früher die Behandlung beginnt, desto besser sind die Aussichten (Treasure et al., 2020). Häufig kommen Depression, Ängste oder Zwänge hinzu, bei Bulimie auch Selbstverletzung und Substanzkonsum. Das Suizidrisiko ist bei Essstörungen erhöht."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Essstörungen betreffen nur Mädchen aus wohlhabenden Familien.",
+          "fakt": "Essstörungen kommen in allen sozialen Schichten, Kulturen und Geschlechtern vor. Bei Jungen zeigen sie sich manchmal anders, etwa als Fixierung auf Muskeln, „reines“ Essen und Training – und werden deshalb oft übersehen."
+        },
+        {
+          "art": "mythos",
+          "mythos": "Man muss einfach wieder normal essen – das ist eine Frage des Willens.",
+          "fakt": "Eine Essstörung ist eine Erkrankung, keine Willensfrage. Hungern und Essanfälle verändern Körper und Denken so, dass Betroffene ohne Hilfe kaum herausfinden."
+        }
+      ]
+    },
+    {
+      "titel": "Abgrenzen: was ähnlich aussieht",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Nicht jede Veränderung beim Essen ist eine Essstörung – und nicht jede Essstörung ist auf den ersten Blick als solche erkennbar. Die Abklärung gehört zur Ärztin oder zum Arzt und zu Fachleuten für Essstörungen; dabei werden auch körperliche Ursachen ausgeschlossen."
+        },
+        {
+          "art": "abgrenzung",
+          "titel": "Andere mögliche Erklärungen",
+          "punkte": [
+            {
+              "wie": "Wählerisches Essen im Kindesalter",
+              "unterschied": "Viele jüngere Kinder essen zeitweise sehr einseitig. Solange sie gut wachsen, ausreichend ernährt sind und der Alltag nicht stark leidet, ist das meist eine Phase. Bei ARFID hat das eingeschränkte Essen deutliche Folgen für Gewicht, Wachstum, Ernährung oder Alltag."
+            },
+            {
+              "wie": "Körperliche Erkrankungen",
+              "unterschied": "Gewichtsverlust kann auch durch Diabetes, Schilddrüsen- oder Darmerkrankungen und andere Krankheiten entstehen. Das klärt die Ärztin oder der Arzt."
+            },
+            {
+              "wie": "Depression",
+              "unterschied": "Appetitlosigkeit und Gewichtsverlust kommen auch bei Depression vor – dann aber meist ohne Angst vor Gewichtszunahme und ohne Beschäftigung mit Figur und Kalorien. Beides kann gemeinsam auftreten."
+            },
+            {
+              "wie": "Vegetarisch, vegan, religiöses Fasten",
+              "unterschied": "Bewusst gewählte Ernährungsformen und Fastenzeiten wie der Ramadan sind keine Essstörung. Aufmerksam werden sollten Sie, wenn eine Ernährungsform zum Deckmantel für immer strengere Einschränkung wird oder Gewicht und Figur im Mittelpunkt stehen."
+            },
+            {
+              "wie": "Sport und Training",
+              "unterschied": "Sportliche Jugendliche essen oft viel und bewusst. Warnzeichen sind Training trotz Verletzung oder Krankheit, Schuldgefühle bei Pausen und zu wenig Essen für die Belastung."
+            },
+            {
+              "wie": "Übergewicht",
+              "unterschied": "Übergewicht ist keine Essstörung. Auf eine Binge-Eating-Störung weisen Essanfälle mit Kontrollverlust und großem Leidensdruck hin – unabhängig vom Gewicht."
+            },
+            {
+              "wie": "Zu wenig Essen zu Hause",
+              "unterschied": "Ein Kind, das hungrig zur Schule kommt oder Essen hortet, weil zu Hause zu wenig da ist, hat keine Essstörung. Hier sind soziale Hilfen gefragt, bei Vernachlässigung die Kinderschutzabläufe."
+            }
+          ]
+        },
+        {
+          "art": "merke",
+          "text": "Ob es sich um eine Essstörung handelt, klären Ärztinnen, Ärzte und Fachleute. Ihre Aufgabe ist es, Sorgen ernst zu nehmen und rasch weiterzugeben – nicht, sie selbst zu überprüfen."
+        }
+      ]
+    },
+    {
+      "titel": "Handeln: ansprechen und weiterleiten",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Wenn Sie Warnzeichen bemerken, warten Sie nicht ab, bis „es eindeutig ist“. Essstörungen werden oft lange verborgen, und die Zeit bis zur Behandlung ist entscheidend. Die NICE-Leitlinie empfiehlt, bei Verdacht auf eine Essstörung sofort an einen spezialisierten Dienst zu überweisen (NICE, 2017). Für Sie heißt das: Beobachtungen festhalten, die Leitung einbeziehen, die Schülerin oder den Schüler ansprechen, die Eltern informieren und eine ärztliche Abklärung anstoßen – innerhalb von Tagen, nicht Wochen."
+        },
+        {
+          "art": "liste",
+          "titel": "Die Schritte im Überblick",
+          "punkte": [
+            "Beobachtungen sachlich notieren: was, wann, wie oft.",
+            "Mit der Leitung das Vorgehen abstimmen; es gelten die internen Abläufe.",
+            "Die Schülerin oder den Schüler in Ruhe ansprechen – wenn möglich durch eine vertraute Person.",
+            "Die Eltern zeitnah informieren und dringend eine ärztliche Abklärung empfehlen (Kinderärztin, Hausarzt, Kinder- und Jugendpsychiatrie).",
+            "Nachfragen, ob die Abklärung stattgefunden hat, und in Kontakt bleiben."
+          ]
+        },
+        {
+          "art": "tun",
+          "titel": "So sprechen Sie Ihre Sorge an",
+          "punkte": [
+            "Einen ruhigen, ungestörten Moment wählen – nicht direkt vor oder nach dem Essen, nicht vor anderen, nicht kurz vor einer Prüfung.",
+            "Mit der Beziehung beginnen: „Ich mache mir Sorgen um dich, weil du mir wichtig bist.“",
+            "Konkrete Beobachtungen statt Deutungen: „Mir ist aufgefallen, dass du mittags nichts isst, oft müde bist und im Sport schwindelig wurdest.“",
+            "Nach dem Befinden fragen, nicht nach Gewicht, Figur oder Kalorien: „Wie geht es dir gerade?“",
+            "Zuhören und Abwehr aushalten. Sätze wie „Mir geht es gut“ oder „Ich esse normal“ sind typisch – bleiben Sie freundlich und klar, ohne zu diskutieren.",
+            "Ehrlich über die nächsten Schritte sprechen: „Ich kann das nicht für mich behalten. Ich werde mit deinen Eltern sprechen – möchtest du dabei sein?“",
+            "Weiter Unterstützung anbieten: „Ich bin weiter für dich da.“"
+          ]
+        },
+        {
+          "art": "lassen",
+          "titel": "Was Sie vermeiden sollten",
+          "punkte": [
+            "Kommentare zu Gewicht, Figur und Aussehen – auch gut gemeinte wie „Du hast toll abgenommen“ oder „Jetzt siehst du wieder gesund aus“.",
+            "Über Kalorien, Diäten oder „gutes“ und „schlechtes“ Essen diskutieren oder eigene Diäten erwähnen.",
+            "Druck, Drohungen oder Ultimaten („Wenn du nicht isst, dann …“) und Machtkämpfe ums Essen.",
+            "Schuld zuweisen oder moralisieren („Denk doch an deine Eltern“).",
+            "Geheimhaltung versprechen.",
+            "Vor Mitschülern oder im Lehrerzimmer über die Vermutung sprechen.",
+            "Selbst wiegen, Portionen kontrollieren oder Essen „verordnen“ – das gehört in den Behandlungsplan."
+          ]
+        },
+        {
+          "art": "fall",
+          "titel": "Das Gespräch mit Clara",
+          "text": "Die Klassenlehrerin bespricht ihre Beobachtungen mit der Direktion und bittet Clara nach der letzten Stunde zu einem kurzen Gespräch: „Ich mache mir Sorgen um dich. Mir ist aufgefallen, dass du mittags fast nichts isst, in den Pausen nur läufst und oft sehr müde aussiehst. Wie geht es dir?“ Clara wehrt ab: „Mir geht’s gut, ich esse einfach gesünder.“ Die Lehrerin diskutiert nicht über Essen, sondern bleibt bei ihrer Sorge: „Ich glaube dir, dass es sich für dich so anfühlt. Trotzdem möchte ich, dass sich das eine Ärztin anschaut. Ich rufe heute deine Eltern an – möchtest du dabei sein?“ Am Abend telefoniert sie mit Claras Mutter. Beim Kinderarzt zeigt sich ein sehr langsamer Puls; Clara wird an eine spezialisierte Ambulanz überwiesen.",
+          "fragen": [
+            "Was hat die Lehrerin in diesem Gespräch bewusst vermieden?",
+            "Wie könnte es weitergehen, wenn die Eltern die Sorge abgewehrt hätten?"
+          ]
+        },
+        {
+          "art": "achtung",
+          "text": "**Sofort den Notruf 112 wählen**, wenn eine Schülerin oder ein Schüler mit Verdacht auf eine Essstörung ohnmächtig wird oder zusammenbricht, über Brustschmerzen, Herzrasen oder Herzstolpern klagt, verwirrt oder extrem geschwächt wirkt oder Blut erbricht. Die Person nicht allein lassen. Äußert jemand Gedanken, nicht mehr leben zu wollen, gilt das Vorgehen aus dem Modul „Selbstverletzung und Suizidalität“. Leitung und Eltern werden in jedem Fall noch am selben Tag informiert."
+        }
+      ]
+    },
+    {
+      "titel": "Behandlung und die Rolle der Schule",
+      "bloecke": [
+        {
+          "art": "text",
+          "text": "Behandelt werden Essstörungen von spezialisierten Teams aus Kinder- und Jugendpsychiatrie, Kinder- und Jugendmedizin, Psychotherapie und Ernährungsberatung – meist ambulant, bei körperlicher Gefahr oder ausbleibender Besserung auch in einer Tagesklinik oder stationär. Bei Kindern und Jugendlichen mit Anorexie gilt eine **auf die Essstörung ausgerichtete Familientherapie** als Behandlung der ersten Wahl: Die Eltern übernehmen vorübergehend die Verantwortung für das Essen und geben sie schrittweise zurück, wenn es der Jugendlichen besser geht (NICE, 2017). Auch bei Bulimie wird die Familie in der Regel einbezogen; bei der Binge-Eating-Störung stehen Formen der kognitiven Verhaltenstherapie im Vordergrund. Bei ARFID geht es meist darum, das Essen schrittweise zu erweitern und begleitende Ängste zu behandeln. Medikamente spielen bei Essstörungen im Jugendalter nur eine Nebenrolle.\n\nDie Schule ist während der Behandlung ein wichtiger Ort: Hier verbringen die Jugendlichen viel Zeit, hier wird gegessen, verglichen und bewertet. Absprachen mit dem Behandlungsteam laufen über die Eltern und – je nach Alter – mit Einverständnis der Jugendlichen."
+        },
+        {
+          "art": "tun",
+          "titel": "Was die Schule beitragen kann",
+          "punkte": [
+            "Absprachen mit dem Behandlungsteam umsetzen, etwa zu Zwischenmahlzeiten, Begleitung beim Mittagessen oder Sport.",
+            "Sportunterricht nur nach ärztlicher Freigabe; wenn nötig Alternativen anbieten, ohne bloßzustellen.",
+            "Leistungsdruck vorübergehend senken und perfektionistische Ansprüche nicht verstärken.",
+            "Den Wiedereinstieg nach einem Klinikaufenthalt planen: feste Ansprechperson, angepasster Stundenplan, Umgang mit Fragen der Mitschüler.",
+            "Auch nach der Behandlung aufmerksam bleiben für Rückfallzeichen und Stimmungsveränderungen.",
+            "Im Unterricht über Ernährung und Körper sprechen, ohne Kalorien zu zählen, Körper zu vergleichen oder Lebensmittel als „gut“ und „schlecht“ zu bewerten; auf Wiegen und BMI-Rechnen verzichten."
+          ]
+        },
+        {
+          "art": "weiter",
+          "text": "Informieren Sie Leitung und Eltern zeitnah, wenn Sie Warnzeichen einer Essstörung bemerken, und empfehlen Sie eine ärztliche Abklärung (Kinderärztin, Hausarzt, Kinder- und Jugendpsychiatrie). Warten Sie nicht, bis das Bild eindeutig ist, und fragen Sie nach, ob die Abklärung stattgefunden hat. Wenn Eltern die Sorge abwehren und sich der Zustand verschlechtert, stimmen Sie das weitere Vorgehen mit der Leitung ab; bei einer Gefährdung der Gesundheit gelten die internen Kinderschutzabläufe."
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "art": "einfach",
+      "frage": "Was unterscheidet die Bulimie am deutlichsten von der Binge-Eating-Störung?",
+      "optionen": [
+        "Bei der Bulimie folgen auf die Essanfälle regelmäßig gegensteuernde Verhaltensweisen wie Erbrechen, Fasten oder übermäßiger Sport.",
+        "Bei der Bulimie sind die Betroffenen immer stark untergewichtig.",
+        "Bei der Binge-Eating-Störung gibt es keinen Kontrollverlust.",
+        "Die Binge-Eating-Störung ist keine echte Erkrankung, sondern ein Mangel an Disziplin."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Beide Störungen haben wiederholte Essanfälle mit Kontrollverlust. Bei der Bulimie wird regelmäßig gegengesteuert, bei der Binge-Eating-Störung nicht. Menschen mit Bulimie sind meist normalgewichtig, und die Binge-Eating-Störung ist eine anerkannte Erkrankung mit großem Leidensdruck – keine Frage der Disziplin."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Welche Beobachtungen können Warnzeichen einer Essstörung sein? (mehrere richtig)",
+      "optionen": [
+        "Isst in der Kantine kaum etwas und schneidet das Essen in winzige Stücke",
+        "Verschwindet regelmäßig direkt nach dem Essen auf die Toilette",
+        "Isst gern Süßes und nimmt sich manchmal einen Nachschlag",
+        "Friert ständig, wirkt erschöpft und ist im Sport schwindelig geworden",
+        "Ernährt sich seit Jahren vegetarisch wie der Rest der Familie und isst ausreichend"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Stark eingeschränktes, ritualisiertes Essen, Toilettengänge direkt nach dem Essen und körperliche Zeichen wie Frieren, Erschöpfung und Schwindel können auf eine Essstörung hinweisen. Freude an Süßem und eine bewusst gewählte, ausreichende vegetarische Ernährung sind für sich genommen unauffällig."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Wer normalgewichtig ist, kann keine gefährliche Essstörung haben.",
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Falsch. Viele Menschen mit Bulimie, Binge-Eating-Störung oder atypischer Anorexie sind normal- oder übergewichtig und trotzdem ernsthaft gefährdet, etwa durch Erbrechen oder raschen Gewichtsverlust. Die NICE-Leitlinie betont, dass Gewicht oder BMI allein nicht darüber entscheiden, ob jemand Behandlung braucht."
+    },
+    {
+      "art": "fall",
+      "fall": "Sie möchten Clara (15) auf Ihre Sorge ansprechen: Sie isst mittags kaum, läuft in jeder Pause Runden und wirkt erschöpft.",
+      "frage": "Welcher Gesprächseinstieg ist am besten?",
+      "optionen": [
+        "„Du bist ja richtig dünn geworden. Du musst mehr essen.“",
+        "„Ich habe gehört, dass du magersüchtig bist.“",
+        "„Ich mache mir Sorgen um dich. Mir ist aufgefallen, dass du mittags wenig isst und oft sehr müde wirkst. Wie geht es dir gerade?“",
+        "„Du siehst toll aus, aber übertreib es nicht mit dem Abnehmen.“"
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Der beste Einstieg verbindet Sorge mit konkreten Beobachtungen und fragt nach dem Befinden – ohne Gewicht, Aussehen oder Diagnosen. Aussagen über Dünnsein und Aufforderungen zu essen führen oft zu Abwehr; eine Diagnose als Gerücht zu präsentieren beschämt, und Komplimente zum Aussehen können die Essstörung bestärken."
+    },
+    {
+      "art": "fall",
+      "fall": "Im Sportunterricht bricht Mehdi (14), der in den letzten Monaten stark abgenommen hat, zusammen. Er kommt schnell wieder zu sich, klagt aber über Herzstolpern.",
+      "frage": "Was tun Sie?",
+      "optionen": [
+        "Ihn hinlegen lassen, ihm etwas Süßes geben und ihn danach weiter am Unterricht teilnehmen lassen.",
+        "Den Notruf 112 wählen, ihn nicht allein lassen, Erste Hilfe leisten und danach Leitung und Eltern informieren.",
+        "Die Eltern bitten, ihn nach der Schule abzuholen.",
+        "Ihn für den Rest des Jahres vom Sport befreien und sonst nichts unternehmen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Ein Zusammenbruch mit Herzstolpern bei starkem Gewichtsverlust ist ein medizinischer Notfall: Herzrhythmusstörungen können lebensgefährlich sein. Deshalb sofort 112 wählen und bei ihm bleiben. Abwarten, Weitermachen oder eine bloße Sportbefreiung lassen die akute Gefahr außer Acht."
+    },
+    {
+      "art": "einfach",
+      "frage": "Was ist typisch für ARFID?",
+      "optionen": [
+        "Große Angst vor Gewichtszunahme und ein verzerrtes Körperbild",
+        "Wiederholte Essanfälle mit anschließendem Erbrechen",
+        "Vorübergehend wählerisches Essen im Kleinkindalter ohne Folgen",
+        "Sehr eingeschränktes Essen – etwa wegen der Konsistenz oder aus Angst vor Ersticken – mit Folgen für Gewicht, Wachstum, Ernährung oder Alltag, ohne Sorge um die Figur"
+      ],
+      "richtig": [
+        3
+      ],
+      "erklaerung": "Bei ARFID wird wenig oder sehr einseitig gegessen, aus fehlendem Interesse, wegen Sinneseigenschaften der Nahrung oder aus Angst vor unangenehmen Folgen – mit deutlichen Folgen. Angst vor Gewichtszunahme passt zur Anorexie, Essanfälle mit Erbrechen zur Bulimie. Vorübergehend wählerisches Essen ohne Folgen ist normal."
+    },
+    {
+      "art": "mehrfach",
+      "frage": "Was sollten Sie vermeiden, wenn Sie bei einer Jugendlichen eine Essstörung vermuten? (mehrere richtig)",
+      "optionen": [
+        "Sie für ihren Gewichtsverlust loben",
+        "Von der eigenen Diät erzählen",
+        "Konkrete Beobachtungen nennen und Ihre Sorge ausdrücken",
+        "Ultimaten stellen („Wenn du nicht isst, dann …“)",
+        "Weitere Unterstützung anbieten"
+      ],
+      "richtig": [
+        0,
+        1,
+        3
+      ],
+      "erklaerung": "Lob für Gewichtsverlust bestärkt die Essstörung, Gespräche über Diäten lenken den Blick weiter auf Gewicht und Kalorien, und Ultimaten führen zu Machtkämpfen. Konkrete Beobachtungen, ausgedrückte Sorge und das Angebot weiterer Unterstützung sind dagegen genau richtig."
+    },
+    {
+      "art": "fall",
+      "fall": "Die Mutter von Lea (13) reagiert gelassen auf Ihre Sorge: „Lea isst halt gesund, sie ist im Wachstum.“ Lea hat seit dem Frühjahr sichtbar abgenommen, isst in der Schule nichts und war zweimal schwindelig.",
+      "frage": "Was ist jetzt sinnvoll?",
+      "optionen": [
+        "Die Einschätzung der Mutter akzeptieren und das Thema abschließen.",
+        "Lea selbst regelmäßig wiegen, um Beweise zu sammeln.",
+        "Der Mutter die konkreten Beobachtungen schildern, dringend eine ärztliche Abklärung empfehlen, das Gespräch dokumentieren, das weitere Vorgehen mit der Leitung abstimmen und nachfragen, ob der Termin stattgefunden hat.",
+        "Lea im Klassenrat zum Thema machen, damit die Mitschüler auf sie achten."
+      ],
+      "richtig": [
+        2
+      ],
+      "erklaerung": "Abwehr ist bei Essstörungen häufig, auch in Familien. Konkrete Beobachtungen, eine klare Empfehlung und beharrliches Nachfragen erhöhen die Chance, dass Lea rasch untersucht wird; bleibt es bei einer Gefährdung, gelten die Kinderschutzabläufe. Wiegen gehört nicht zu Ihren Aufgaben, und ein Klassenrat würde Lea bloßstellen."
+    },
+    {
+      "art": "richtigfalsch",
+      "frage": "Bei Kindern und Jugendlichen mit Anorexie gilt eine auf die Essstörung ausgerichtete Familientherapie als Behandlung der ersten Wahl.",
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Richtig. Die Eltern übernehmen dabei vorübergehend die Verantwortung für das Essen und geben sie schrittweise zurück (NICE, 2017). Die Schule kann diese Behandlung unterstützen, etwa durch Absprachen zu Mahlzeiten und Sport – immer abgestimmt mit Familie und Behandlungsteam."
+    },
+    {
+      "art": "einfach",
+      "frage": "Welche Aussage über die Wirkung des Hungerns trifft zu?",
+      "optionen": [
+        "Hungern verändert das Denken: Die Gedanken kreisen ums Essen, das Denken wird starr, die Stimmung gedrückt – das hält die Störung aufrecht.",
+        "Hungern macht auf Dauer klarer im Kopf und leistungsfähiger.",
+        "Wer hungert, hört irgendwann von selbst damit auf, weil der Hunger zu stark wird.",
+        "Hungern hat nur Folgen für das Gewicht, nicht für die Psyche."
+      ],
+      "richtig": [
+        0
+      ],
+      "erklaerung": "Mangelernährung verändert Denken und Stimmung und macht es noch schwerer, aus der Essstörung herauszufinden – ein Grund, warum eine frühe Behandlung so wichtig ist. Die anderen Aussagen sind verbreitete Irrtümer: Hungern schadet Körper und Psyche und hört nicht von selbst auf."
+    },
+    {
+      "art": "fall",
+      "fall": "In Ihrer Klasse (7e, Lycée) ist im Biologieunterricht das Thema Ernährung geplant. Eine Kollegin schlägt vor, dass sich alle wiegen, ihren BMI ausrechnen und eine Woche lang Kalorien zählen.",
+      "frage": "Wie reagieren Sie?",
+      "optionen": [
+        "Zustimmen – das fördert ein gesundes Essverhalten.",
+        "Vorschlagen, auf Wiegen, BMI und Kalorienzählen zu verzichten und stattdessen über regelmäßige Mahlzeiten, die Bedürfnisse des Körpers, Genuss und Schönheitsbilder in Medien zu sprechen.",
+        "Nur die Jugendlichen mit Übergewicht wiegen, damit sich die anderen nicht unwohl fühlen.",
+        "Die Ergebnisse anonym an der Tafel vergleichen."
+      ],
+      "richtig": [
+        1
+      ],
+      "erklaerung": "Wiegen, BMI-Vergleiche und Kalorienzählen lenken den Blick auf Zahlen und Körpervergleiche, können Scham auslösen und gefährdete Jugendliche in ihrem Verhalten bestärken. Einzelne Jugendliche herauszugreifen, stigmatisiert zusätzlich, und auch anonyme Vergleiche fördern das Vergleichen. Günstiger ist ein Unterricht, der regelmäßiges Essen und einen freundlichen Blick auf den Körper stärkt."
+    }
+  ],
+  "glossar": [
+    {
+      "begriff": "Anorexie (Anorexia nervosa)",
+      "erklaerung": "Magersucht: stark eingeschränktes Essen mit deutlich zu niedrigem Gewicht, großer Angst vor Gewichtszunahme und gestörtem Körpererleben."
+    },
+    {
+      "begriff": "Bulimie (Bulimia nervosa)",
+      "erklaerung": "Ess-Brech-Sucht: wiederholte Essanfälle mit Kontrollverlust und anschließendem Gegensteuern, etwa durch Erbrechen oder Fasten; meist Normalgewicht."
+    },
+    {
+      "begriff": "Binge-Eating-Störung",
+      "erklaerung": "Wiederholte Essanfälle mit Kontrollverlust und großem Leidensdruck, ohne regelmäßiges Gegensteuern."
+    },
+    {
+      "begriff": "ARFID",
+      "erklaerung": "Vermeidend-restriktive Ernährungsstörung: sehr eingeschränktes Essen ohne Sorge um die Figur – aus fehlendem Interesse, wegen Sinneseigenschaften der Nahrung oder aus Angst vor Folgen wie Ersticken – mit deutlichen Folgen für Gesundheit oder Alltag."
+    },
+    {
+      "begriff": "Essanfall",
+      "erklaerung": "In kurzer Zeit wird eine deutlich größere Menge gegessen als üblich, mit dem Gefühl, nicht aufhören oder das Essen nicht kontrollieren zu können."
+    },
+    {
+      "begriff": "Gegensteuerndes Verhalten",
+      "erklaerung": "Verhalten, mit dem eine Gewichtszunahme verhindert werden soll: Erbrechen, Abführmittel, Fasten, übermäßiger Sport. Fachbegriff: kompensatorisches Verhalten."
+    },
+    {
+      "begriff": "Atypische Anorexie",
+      "erklaerung": "Alle Merkmale der Anorexie, aber das Gewicht liegt trotz starker Abnahme noch im Normalbereich. Kann körperlich ebenso gefährlich sein."
+    },
+    {
+      "begriff": "Familientherapie bei Essstörungen",
+      "erklaerung": "Auf die Essstörung ausgerichtete Behandlung, bei der Eltern vorübergehend die Verantwortung für das Essen übernehmen; erste Wahl bei Kindern und Jugendlichen mit Anorexie."
+    },
+    {
+      "begriff": "Gewichtsstigma",
+      "erklaerung": "Abwertung und Benachteiligung von Menschen wegen ihres Gewichts, etwa durch Hänseleien oder Kommentare. Erhöht die Belastung und das Risiko für gestörtes Essverhalten."
+    }
+  ],
+  "quellen": [
+    "dsm5tr",
+    "icd11",
+    "niceNG69",
+    "treasure2020",
+    "fegert2012",
+    "rutter2015"
+  ],
+  "verwandt": [
+    "selbstverletzung-suizid",
+    "depression",
+    "angst",
+    "zwang-tics",
+    "gespraechsfuehrung",
+    "elternarbeit"
+  ],
+  "toolbox": [
+    "koerperbild",
+    "mein-koerper-veraendert-sich",
+    "was-tut-mir-gut",
+    "wer-hilft-mir",
+    "elterngespraech-vorbereiten"
+  ]
+}

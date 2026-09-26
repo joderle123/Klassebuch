@@ -28,3 +28,15 @@ dist-ssr
 
 # Zwischendateien der KI-Generierung
 tmp/
+
+# Bilder und Dateien aus Testläufen (Hub und Klassenbuch)
+hub-quellen/tests/*-aus/
+hub-quellen/tests/*.png
+klassenbuch/tests/aus/
+_alt-test.html
+
+# Daten aus dem Hub-Ordner auf O:\ – gehören nie ins Repository
+teamliste.json
+konten/
+gemeinsam/
+teams/
