@@ -31,7 +31,7 @@ var BEREICHE=[[91,'3 Monate'],[182,'6 Monate'],[365,'12 Monate']], spanne=91;
 var MONATE=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'], MON_KURZ=['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 var SC_STUFE={unauffaellig:0,beobachten:1,foerdern:2,planen:3,sofort:4}, SC_NAME=['unauffällig','im Blick behalten','gezielt fördern','Unterstützung planen','Warnsignal'];
 var BERICHT={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
-var HINWEIS='Tippe auf einen Punkt, einen Balken oder eine Nummer – hier steht dann der Wert.';
+var HINWEIS='Klicke oder tippe auf einen Punkt, einen Balken oder eine Nummer – hier steht dann der Wert.';
 
 /* ---------- Daten sammeln ---------- */
 function daten(d,ab,bis){

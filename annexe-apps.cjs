@@ -154,4 +154,27 @@ function ersetze(s, a, b, name, datei) {
   if (!rest.length && !restSeite.length) console.log('✓ ' + z + ': kein „ISA“ und kein „CDSE Hub“ mehr (' + anzahl + ' Stellen angepasst)');
 })();
 
+/* ---------- Hub-Wächter in die Apps, die in einem eigenen Tab laufen können ----------
+   hub-quellen/hub-waechter.js: Eingaben dort halten den Hub offen, seine Sperre deckt die App ab, nach dem
+   Abmelden verlässt der Tab die App. Eingebettet im Hub tut der Wächter nichts. Zwischen den Marken wird er bei
+   jedem Lauf erneuert; das Klassenbuch bekommt ihn beim Bauen (build-merged.cjs). */
+(function () {
+  var w = lies('hub-quellen/hub-waechter.js').trim();
+  var M = '<!--cdse-hub-waechter-->', block = M + '<script>\n' + w + '\n</script>' + M;
+  ['apps/toolbox.html', 'apps/lernen.html', 'apps/pathologien.html', 'apps/screening.html', 'apps/eldib-generator.html'].forEach(function (z) {
+    var s = lies(z), a = s.indexOf(M), neu;
+    if (a >= 0) {
+      var e = s.indexOf(M, a + M.length);
+      if (e < 0) { console.error('✗ ' + z + ': Marke des Hub-Wächters ohne Ende'); fehler++; return; }
+      neu = s.slice(0, a) + block + s.slice(e + M.length);
+    } else {
+      var i = s.lastIndexOf('</body>');
+      if (i < 0) { console.error('✗ ' + z + ': kein </body> für den Hub-Wächter'); fehler++; return; }
+      neu = s.slice(0, i) + block + '\n' + s.slice(i);
+    }
+    if (neu !== s) schreib(z, neu);
+  });
+  console.log('✓ Hub-Wächter in Toolbox, Lernen, Pathologien, Befundbericht und ELDiB');
+})();
+
 if (fehler) { console.error(fehler + ' Fehler'); process.exit(1); }

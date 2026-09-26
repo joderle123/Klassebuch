@@ -383,7 +383,7 @@ function fremdBeobachten(id){
       if(!x.neu){return;}
       fremdNeu=x.dossier;
       b.hidden=false;
-      b.innerHTML=svg('info')+'<span>'+(x.eigen?'Du hast dieses Dossier an einem anderen PC geändert':'<b>'+esc(x.vonName||'Jemand')+'</b> hat dieses Dossier gerade geändert')+(x.wann?' ('+esc(datumZeit(x.wann).slice(-5))+' Uhr)':'')+'.</span>'+
+      b.innerHTML=svg('info')+'<span>'+(x.eigen?'Du hast dieses Dossier in einem anderen Fenster oder an einem anderen PC geändert':'<b>'+esc(x.vonName||'Jemand')+'</b> hat dieses Dossier gerade geändert')+(x.wann?' ('+esc(datumZeit(x.wann).slice(-5))+' Uhr)':'')+'.</span>'+
         '<button class="btn" type="button" data-ar="fremd-neu">'+svg('reload')+'Neuen Stand anzeigen</button>';
     },function(){laeuft=false;});
   },ms);
@@ -429,7 +429,7 @@ function aktuelleBewertungen(d){
 function dsFuerText(d){
   var ds=JSON.parse(JSON.stringify((d.profil&&d.profil.ds)||{v:2,bewertungen:{},chips:{},f:{},frei:{},tabellen:{}}));
   ds.bewertungen=aktuelleBewertungen(d);
-  ds.geschlecht=ds.geschlecht||(d.person&&d.person.geschlecht)||'m';
+  ds.geschlecht=ds.geschlecht||(d.person&&d.person.geschlecht)||'';
   return ds;
 }
 /* Stand des DS für Screening und Kompass: aktuelle Bewertungen (DS + spätere Einschätzungen), Auswahlfelder, Datum */
@@ -2219,7 +2219,7 @@ function fdl(zeilen){
   return z.length?'<dl class="ar-dl">'+z.map(function(x){return '<dt>'+esc(x[0])+'</dt><dd>'+(x[2]?x[1]:esc(x[1]).replace(/\n/g,'<br>'))+'</dd>';}).join('')+'</dl>':'<p class="ar-leise">Keine Angaben.</p>';
 }
 function fkarte(titel,fr,inhalt,aktion,r){
-  return '<section class="ar-karte ar-fkarte"><div class="ar-kartenkopf"><h2>'+esc(titel)+(fr?' <small lang="fr">'+esc(fr)+'</small>':'')+'</h2>'+
+  return '<section class="ar-karte ar-fkarte"><div class="ar-kartenkopf"><h2>'+esc(titel)+(fr&&fr!==titel?' <small lang="fr">'+esc(fr)+'</small>':'')+'</h2>'+
     (r.bearbeiten&&aktion?'<button class="ar-link" type="button" data-ar="fiche-teil" data-teil="'+aktion+'">'+svg('edit')+'Bearbeiten</button>':'')+'</div>'+inhalt+'</section>';
 }
 function tabFiche(d,r){

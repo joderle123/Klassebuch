@@ -385,7 +385,7 @@ function pubGeprueft(k){
    Daten-Tresor
    ===================================================================== */
 /* Was dem Hub selbst gehört, wird weder gesichert noch gelöscht */
-function hubSchluessel(k){return k===ZULETZT||k===MARKE||k===GEPRUEFT||k.indexOf('__')===0;}
+function hubSchluessel(k){return k===ZULETZT||k===MARKE||k===GEPRUEFT||k.indexOf('__')===0||k.indexOf('cdse_hub_')===0;}
 /* Die Marke sagt, wem die App-Daten auf diesem PC gehören und welchem Stand
    auf dem Server sie entsprechen: {konto, stand, hash, ...} */
 function marke(){try{var m=JSON.parse(localStorage.getItem(MARKE)||'null');return (m&&m.konto)?m:null;}catch(e){return null;}}
@@ -787,7 +787,7 @@ function sitzungsSchluesselMerken(){
 function sitzungsSchluesselLoeschen(){return idbSet('sitzung-schluessel',null).catch(function(){}).then(function(){if(cb.schluesselWeg){try{cb.schluesselWeg();}catch(e){}}});}
 function angemeldet(s,hinweise){
   var vorher=sitzung&&sitzung.id;
-  sitzung={id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||b64(rnd(12))};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
+  sitzung={id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||b64(rnd(12))};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);hubZustand('offen');
   if(s.pub){tresor={id:s.id,pub:s.pub,priv:s.priv||null};geprueftMerken(s.id,s.hash);sitzungsSchluesselMerken();}
   try{localStorage.setItem(ZULETZT,s.id);}catch(e){}
   if(s.roh&&s.roh.fill){s.roh.fill(0);}
@@ -799,7 +799,7 @@ function angemeldet(s,hinweise){
 }
 function ende(){
   pausierteVerwerfen();if(privatAbbruch){try{privatAbbruch();}catch(e){}}
-  sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();sitzungsSchluesselLoeschen();
+  sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();sitzungsSchluesselLoeschen();hubZustand('abgemeldet');
   if(cb.abgemeldet){cb.abgemeldet();}
   status({art:'aus'});
   if(konten.length){kontenListe();}else{zeigeVerbinden(null,!!ordner);}
@@ -813,6 +813,7 @@ function abmelden(){
   tor(true);
   karte('<h2>Abmelden …</h2><p class="sub">Deine Daten werden verschlüsselt im Hub-Ordner gesichert und danach von diesem PC entfernt.</p><div class="warten"><span class="laden dunkel" aria-hidden="true"></span>Einen Moment …</div>');
   if(cb.appsSchliessen){cb.appsSchliessen();}
+  hubZustand('abgemeldet');
   ordnerBereit().then(function(){
     k=kontoVon(s.id);if(!k){throw fehler('Dein Konto wurde im Hub-Ordner nicht gefunden');}
     return (tresor.pub&&tresor.id===s.id)?tresor.pub:pubGeprueft(k);
@@ -843,6 +844,12 @@ function zeigeAbmeldeFehler(e){
   $('g-trotzdem').onclick=ende;
 }
 
+/* ---------- Apps im eigenen Tab (hub-waechter.js) ----------
+   Unter file:// öffnen Klassenbuch, Toolbox und Skills-Kurs in einem eigenen Tab. Der Hub sagt ihnen über den
+   Browser-Speicher, ob er offen, gesperrt oder abgemeldet ist; sie melden Eingaben zurück (HUB_AKTIV). */
+var HUB_ZUSTAND='cdse_hub_zustand', HUB_AKTIV='cdse_hub_aktiv';
+function hubZustand(z){try{localStorage.setItem(HUB_ZUSTAND,JSON.stringify({z:z,t:Date.now()}));}catch(e){}}
+
 /* ---------- Sperre nach Inaktivität ----------
    Als Aktivität zählen nur echte Eingaben (Maus, Tastatur, Touch) – auch in eingebetteten Apps, soweit der Browser
    das erlaubt. Dass eine App Daten speichert, zählt nicht (manche speichern alle paar Sekunden von selbst).
@@ -853,8 +860,9 @@ function aktiv(){letzteAktivitaet=Date.now();if(vorwarnungSeit){vorwarnungWeg();
 function iframeBeobachten(f){try{var d=f.contentWindow.document;['pointerdown','keydown','wheel','touchstart'].forEach(function(t){d.addEventListener(t,aktiv,{passive:true,capture:true});});}catch(e){}}
 document.addEventListener('load',function(e){if(e.target&&e.target.tagName==='IFRAME'){iframeBeobachten(e.target);}},true);
 window.addEventListener('storage',function(e){
+  if(e.key===HUB_AKTIV){if(sitzung&&!gesperrt){aktiv();}return;}   /* Eingabe in einer App im eigenen Tab */
   if(e.key===MARKE&&sitzung){var m=marke();if(!m||m.konto!==sitzung.id){ende();return;}}   /* in einem anderen Hub-Tab ab- oder umgemeldet */
-  if(e.key!==MARKE&&e.key!==GEPRUEFT&&e.key!==ZULETZT){baldSichern();}   /* eine App hat gespeichert: bald sichern */
+  if(e.key===null||!hubSchluessel(e.key)){baldSichern();}   /* eine App hat gespeichert: bald sichern */
 });
 function vorwarnungZeigen(){
   var el=$('g-nochda');
@@ -887,7 +895,7 @@ function pausierteZeigen(){var l=pausiert;pausiert=[];l.forEach(function(d){if(d
 function pausierteVerwerfen(){var l=pausiert;pausiert=[];l.forEach(function(d){try{d.dispatchEvent(new Event('cdse-schliessen'));}catch(e){}if(d.isConnected){d.remove();}});}
 function sperren(grund){
   if(!sitzung){return;}
-  gesperrt=true;sperrGrund=grund||'Der Hub ist gesperrt. Bitte gib dein Passwort ein.';
+  gesperrt=true;sperrGrund=grund||'Der Hub ist gesperrt. Bitte gib dein Passwort ein.';hubZustand('gesperrt');
   if(privatAbbruch){try{privatAbbruch();}catch(e){}}
   sitzungLoeschen();tresor.priv=null;sitzungsSchluesselLoeschen();
   offeneDialogeSchliessen();
@@ -1439,6 +1447,7 @@ function sperreHolen(ziel){
   var name=sperrName(ziel), token=neueSperrId(), start=Date.now(), fremd={};
   function lies(){return speicher.lesen(P_SPERREN,name).then(sperrJson,function(){return null;});}
   function versuch(n){
+    var gelesen=Date.now();   /* ab hier zählt die Zeit bis zur eigenen Sperrdatei (siehe unten) */
     return lies().then(function(s){
       if(s&&s.token&&s.token!==token){
         /* fremde Sperre: wie lange sehen wir genau diesen Stand (Token und Lebenszeichen) schon? */
@@ -1449,18 +1458,24 @@ function sperreHolen(ziel){
           return warte(60+Math.random()*140*Math.min(n,6)).then(function(){return versuch(n+1);});
         }
       }
-      return speicher.schreiben(P_SPERREN,name,sperrInhalt(token,0))
-        .then(function(){return warte(SPERR_BEDENKZEIT);}).then(lies).then(function(s2){
-          if(s2&&s2.token===token){return gehalteneSperre(name,token);}
+      return speicher.schreiben(P_SPERREN,name,sperrInhalt(token,0)).then(function(){
+        /* Kam die eigene Sperrdatei erst nach der Bedenkzeit an (belegte Datei, die erneut geschrieben wurde,
+           langsames Netz), kann ein anderer PC seine Sperre inzwischen bestätigt haben – dann arbeiten beide
+           gleichzeitig. Die Sperre gilt trotzdem, ist aber „unsicher“: nach dem Schreiben wird nachgeprüft
+           (sicherAendern in team.js). Der andere PC merkt es daran, dass seine Sperrdatei nicht mehr seine ist. */
+        var unsicher=Date.now()-gelesen>SPERR_BEDENKZEIT;
+        return warte(SPERR_BEDENKZEIT).then(lies).then(function(s2){
+          if(s2&&s2.token===token){return gehalteneSperre(name,token,unsicher);}
           return warte(40+Math.random()*160).then(function(){return versuch(n+1);});
         });
+      });
     });
   }
   return versuch(1);
 }
 /* Eine gehaltene Sperre: gibt Lebenszeichen und kann prüfen, ob sie noch gilt */
-function gehalteneSperre(name,token){
-  var s={name:name,token:token,puls:0,bestaetigt:Date.now(),verloren:false,frei:false,laeuft:null};
+function gehalteneSperre(name,token,unsicher){
+  var s={name:name,token:token,puls:0,bestaetigt:Date.now(),verloren:false,frei:false,laeuft:null,unsicher:!!unsicher};
   function eigene(){return speicher.lesen(P_SPERREN,name).then(function(t){var x=sperrJson(t);return !!x&&x.token===token;},function(){return false;});}
   s.timer=setInterval(function(){
     if(s.frei||s.verloren||s.laeuft){return;}
@@ -1471,10 +1486,11 @@ function gehalteneSperre(name,token){
       return speicher.schreiben(P_SPERREN,name,sperrInhalt(token,p)).then(function(){s.bestaetigt=Date.now();});
     }).catch(function(){}).then(function(){s.laeuft=null;});
   },SPERR_PULS);
-  /* Gilt die Sperre noch? Kurz nach dem letzten Lebenszeichen ohne Netzzugriff, sonst nachlesen. */
-  s.noch=function(){
+  /* Gilt die Sperre noch? Kurz nach dem letzten Lebenszeichen ohne Netzzugriff, sonst nachlesen
+     (frisch=true: immer nachlesen – z. B. nach dem Schreiben, siehe sicherAendern in team.js). */
+  s.noch=function(frisch){
     if(s.verloren){return Promise.resolve(false);}
-    if(Date.now()-s.bestaetigt<SPERR_DAUER/3){return Promise.resolve(true);}
+    if(!frisch&&Date.now()-s.bestaetigt<SPERR_DAUER/3){return Promise.resolve(true);}
     return eigene().then(function(ja){if(ja){s.bestaetigt=Date.now();}else{s.verloren=true;}return ja;});
   };
   return s;

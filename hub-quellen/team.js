@@ -106,7 +106,21 @@ function standPruefen(r){
    Direkt vor dem Schreiben: Gilt die Sperre noch? (Ein Laptop, der mitten im Speichern zugeklappt wurde, hat sie
    inzwischen verloren – dann alles noch einmal von vorn.) Nach dem Schreiben wird nachgelesen: Ist die eigene
    Fassung nicht angekommen (z. B. weil ein PC mit einer älteren Hub-Datei dazwischen gespeichert hat), wird die
-   Änderung auf den neuen Stand noch einmal angewendet. */
+   Änderung auf den neuen Stand noch einmal angewendet.
+   Langsames Netz: Kommt eine Sperrdatei erst nach der Bedenkzeit an (eine kurz belegte Datei schreibt der Hub nach
+   einer Pause erneut), können zwei PCs gleichzeitig arbeiten, und der eine schreibt womöglich einen Stand ohne die
+   Änderung des anderen – ohne dass es jemand merkt. Deshalb:
+   - Vor und nach dem Schreiben wird die Sperrdatei frisch gelesen. Ist sie nicht mehr unsere, hat ein anderer PC
+     gleichzeitig gearbeitet: vor dem Schreiben nicht schreiben (später noch einmal), nach dem Schreiben unter einer
+     neuen Sperre – also nach ihm – nachsehen, ob die Änderung noch in der Datei steckt, sonst noch einmal anwenden.
+   - Kam die eigene Sperrdatei spät an (s.unsicher, siehe sperreHolen in konto3.js), sieht der andere PC seine
+     Sperrdatei nicht mehr – er hält sich für allein. Dann nach dem Schreiben mit der Sperre kurz warten (bis seine
+     Datei angekommen sein kann) und nachsehen; fehlt die Änderung, noch einmal anwenden. */
+var NACHLAUF=1200;
+/* Eigene, gerade geschriebene Fassungen: pruefen() meldet sie nicht als fremde Änderung – sonst erschiene der
+   Hinweis „geändert“ im offenen Dossier, während man selbst noch speichert */
+var eigeneFassungen=[];
+function eigeneFassung(sid){eigeneFassungen.push(sid);if(eigeneFassungen.length>50){eigeneFassungen.shift();}}
 function sicherAendern(o,versuch){
   versuch=versuch||1;
   return K.speicher.sperre(o.ziel,function(s){
@@ -117,19 +131,38 @@ function sicherAendern(o,versuch){
           if(erg===false){return {doc:doc,geaendert:false};}
           doc.rev=(doc.rev|0)+1;doc.sid=neueId(10);doc.kette=(Array.isArray(doc.kette)?doc.kette:[]).concat([basis]).slice(-40);
           var meine=doc.sid;
-          return (s&&s.noch?s.noch():Promise.resolve(true)).then(function(ja){
-            if(!ja){var e=fehler('Die Schreibsperre ist abgelaufen.');e.sperreWeg=true;throw e;}
-            return o.schreiben(doc);
-          }).then(function(){return o.lesen();}).then(function(pruef){
-            if(enthaelt(pruef,meine)){return {doc:doc,geaendert:true,erg:erg};}
+          function nochEinmal(){
             if(n>=4){var e=fehler('Das Speichern ließ sich nicht bestätigen. Bitte noch einmal versuchen.');e.konflikt=true;throw e;}
             return warte(80+Math.random()*240).then(function(){return runde(n+1);});
+          }
+          function frisch(){return s&&s.noch?s.noch(true):Promise.resolve(true);}
+          return frisch().then(function(ja){
+            if(!ja){var e=fehler('Die Schreibsperre ist abgelaufen.');e.sperreWeg=true;throw e;}
+            eigeneFassung(meine);
+            return o.schreiben(doc);
+          }).then(function(){return o.lesen();}).then(function(pruef){
+            if(!enthaelt(pruef,meine)){return nochEinmal();}
+            return frisch().then(function(noch){
+              if(!noch){return {doc:doc,geaendert:true,erg:erg,nachsehen:meine};}
+              if(!(s&&s.unsicher)){return {doc:doc,geaendert:true,erg:erg};}
+              return warte(NACHLAUF).then(function(){return o.lesen();}).then(function(d2){
+                if(!enthaelt(d2,meine)){return nochEinmal();}
+                return frisch().then(function(noch2){return {doc:d2,geaendert:true,erg:erg,nachsehen:noch2?'':meine};});
+              });
+            });
           });
         });
       });
     }
     return runde(1);
-  }).catch(function(e){
+  }).then(function(x){
+    if(!x.nachsehen){return x;}
+    /* die Sperre war zwischendurch fremd: steckt die Änderung nach dem anderen PC noch in der Datei? */
+    return K.speicher.sperre(o.ziel,function(){return o.lesen();}).then(function(d){
+      if(enthaelt(d,x.nachsehen)){return {doc:d,geaendert:true,erg:x.erg};}
+      return sicherAendern(o);
+    });
+  },function(e){
     if(e&&e.sperreWeg&&versuch<3){return sicherAendern(o,versuch+1);}
     if(e&&e.sperreWeg){e.message='Das Speichern hat zu lange gedauert. Bitte noch einmal versuchen.';}
     throw e;
@@ -676,7 +709,7 @@ function pruefen(id){
     if(st&&st.m===x.lastModified&&st.s===x.size){return {neu:false};}
     return x.datei.text().catch(function(){return K.speicher.lesen(P_SCHUELER,dn);}).then(ausBox).then(function(d){
       stand[dn]={m:x.lastModified,s:x.size};
-      var alt=cache[id], anders=!!alt&&stempel(alt)!==stempel(d)&&(d.rev|0)>=(alt.rev|0);
+      var alt=cache[id], anders=!!alt&&stempel(alt)!==stempel(d)&&(d.rev|0)>=(alt.rev|0)&&eigeneFassungen.indexOf(d.sid)<0;
       cache[id]=d;
       return {neu:anders,dossier:d,von:d.geaendertVon||'',vonName:d.geaendertVon?name(d.geaendertVon):'',wann:d.geaendert||'',eigen:d.geaendertVon===ich().id};
     });

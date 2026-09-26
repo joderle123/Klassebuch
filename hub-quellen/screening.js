@@ -504,8 +504,12 @@ document.addEventListener('click',function(ev){
   }
   if(a==='abbrechen'){
     var e0=zu.entwurf, leer=!e0||(!eigeneAntworten(e0)&&!e0.notiz&&!e0.warn.length);
-    if(!leer&&!window.confirm('Den angefangenen Bogen verwerfen?')){return;}
-    entwurfWeg(d.id);zu.entwurf=null;zu.modus='liste';neuZeichnen(d);return;
+    var verwerfen=function(){entwurfWeg(d.id);zu.entwurf=null;zu.modus='liste';neuZeichnen(d);};
+    if(leer){verwerfen();return;}
+    /* Rückfrage im Stil des Hubs (nicht das Browser-Fenster) */
+    H.dialog('Bogen verwerfen?','<p>Die Antworten in diesem angefangenen Bogen gehen verloren.</p>',[{text:'Weiter ausfüllen',wert:''},{text:'Verwerfen',wert:'ok',primaer:true,gefahr:true}],{})
+      .then(function(r){var jetzt=aktuell();if(r.aktion&&jetzt&&jetzt.id===d.id&&zu.entwurf===e0){verwerfen();}});
+    return;
   }
   if(a==='liste'){zu.modus='liste';neuZeichnen(d);nachOben();return;}
   if(a==='zeigen'){zu.modus='detail';zu.id=t.getAttribute('data-id');neuZeichnen(d);nachOben();return;}

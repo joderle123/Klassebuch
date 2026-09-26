@@ -135,7 +135,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Stufe wechseln (ES): Texte und Aussagen passen sich an (l7, Warnsignal Sucht)', !!(await page.$('#sc-i-l7')) && (await text('#sc-warnsignale')).includes('Alkohol') && !(await page.$('#sc-i-k1')));
   check('Stufe wechseln: g6 (dort anderer Text) entfernt und markiert, a2 bleibt; Hinweis in einer Zeile', !(await page.$('#sc-i-g6 input:checked')) && !!(await page.$('#sc-i-g6.sc-fehlt')) && !!(await page.$('#sc-i-a2 input[value="1"]:checked')) &&
     (await text('.sc-stufehinweis')).includes('Stufe gewechselt: 1 Antwort passte nicht zur neuen Stufe und wurde entfernt'), await text('.sc-stufehinweis').catch(() => ''));
-  await page.click('[data-sc="abbrechen"]'); await warte(300);
+  await page.click('[data-sc="abbrechen"]'); await page.waitForSelector('dialog.ar-dialog'); await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Verwerfen")'); await warte(300);
   check('Abbrechen: zurück zur Liste', await page.isVisible('.sc-einfuehrung') && !(await page.$('.sc-bogen')));
   check('CDSE_SCREENING.vergessen() (Abmelden/Sperren): alle Entwürfe weg', await page.evaluate(ids => { ids.forEach(id => sessionStorage.setItem('cdse-screening-entwurf-' + id, JSON.stringify({ konto: CDSE_KONTO.ich().id, e: { stufe: 'GS', antworten: {}, auswirkung: {}, warn: [] } }))); CDSE_SCREENING.vergessen(); return !Object.keys(sessionStorage).some(k => k.indexOf('cdse-screening-entwurf-') === 0); }, [tom, ben]));
 

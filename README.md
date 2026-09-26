@@ -51,6 +51,11 @@ Zu den Befehlen:
 - In der Lern-App ersetzt `annexe-apps.cjs` „ISA“ und „CDSE Hub“ in den eingebetteten Modulen (Fallbeispiele, Quiz,
   Tabelle der CDSE-Angebote). `lern-app/module/` bleibt wie in Unified, wo „ISA“ ein Team ist – deshalb nach jedem
   `python3 lern-app/baue.py` wieder `node annexe-apps.cjs` ausführen. Prüfen: `node hub-quellen/tests/annexe-apps.js`.
+- `annexe-apps.cjs` setzt außerdem den **Hub-Wächter** (`hub-quellen/hub-waechter.js`) in Toolbox, Lernen,
+  Pathologien, Befundbericht und ELDiB; das Klassenbuch bekommt ihn beim Bauen. Er wirkt nur, wenn eine App in
+  einem eigenen Tab läuft (auf O:\ über file:// öffnen Klassenbuch, Toolbox und Skills-Kurs so): Eingaben dort
+  halten den Hub offen, ist der Hub gesperrt, ist die App abgedeckt, und nach dem Abmelden zeigt der Tab die
+  Anmeldung des Hubs statt der App. Prüfen: `node hub-quellen/tests/annexe-waechter.js`.
 - Den Hub baut `python3 hub-quellen/baue-hub.py` und schreibt `hub.html`.
 
 ## Verbesserungen aus Unified übernehmen
@@ -62,14 +67,16 @@ Zu den Befehlen:
 - **`datenbank.js` und `datenbank.css`** werden nicht übernommen.
 - **`README.md`** hat oben einen Hinweis auf die Annexe.
 - **`tests/annexe*.js`** gibt es nur hier (`annexe-weiche.js` lässt die Tests aus Unified gegen die Annexe laufen).
+- **`hub-waechter.js`** gibt es nur hier (die Hub-Seite dazu steht in `konto3.js`: `hubZustand`, `cdse_hub_aktiv`).
 
 Neue Fassungen der übrigen Dateien einfach hineinkopieren und `python3 hub-quellen/baue-hub.py` ausführen. Passt eine
 Ersetzung in `annexe.py` nicht mehr zum neuen Wortlaut, bricht der Bau mit einer Meldung ab. Er prüft außerdem, dass
 nirgends „ISA“, „Journal“ oder „CDSE Hub“ sichtbar wird.
 
 **Achtung, Korrekturen aus der Durchsicht (September 2026):** Sie stecken in gemeinsamen Dateien und fehlen in Unified
-noch – `arbeit.js`, `arbeit.css`, `berichte.js`, `begleitplan.js`, `screening.js`, `kompass.css`, `konto3.js` und
-`hub.vor-arbeit.html`. Einfaches Hineinkopieren aus Unified würde sie zurücknehmen. Deshalb zuerst nach Unified
+noch – `arbeit.js`, `arbeit.css`, `berichte.js`, `begleitplan.js`, `screening.js`, `kompass.css`, `konto3.js`,
+`team.js` (Schreibsperre bei langsamem Netz), `verlauf.js`, `hub.vor-arbeit.html` und der Test `tests/screening.js`.
+Einfaches Hineinkopieren aus Unified würde sie zurücknehmen. Deshalb zuerst nach Unified
 übernehmen oder beim Kopieren zusammenführen; `git log --oneline -- hub-quellen/<datei>` zeigt, was hier dazukam.
 
 **Klassenbuch.** `klassenbuch/quellen/` ist die Fassung der Annexe (mit den eingebauten Daten). Verbesserungen aus
@@ -101,6 +108,8 @@ Die Tests brauchen einen Webserver im Hauptordner, z. B. `npx http-server . -p 8
 node hub-quellen/tests/annexe.js              # Hub der Annexe: ein Team, ohne Datenbank/Journal, Teamliste, Übernahme der Klasse
 node hub-quellen/tests/annexe-korrekturen.js  # Hub: Korrekturen aus der Durchsicht (Dialoge, Datum, Fiche, Berichte, Konto)
 node hub-quellen/tests/annexe-apps.js         # Lernen und Pathologien: kein „ISA“, Markierung, keine Platzhalter
+node hub-quellen/tests/annexe-sperrbruch.js   # gleichzeitiges Schreiben bei langsamem Netzlaufwerk: nichts geht verloren
+node hub-quellen/tests/annexe-waechter.js     # Apps im eigenen Tab: Sperre und Abmelden des Hubs gelten auch dort
 node klassenbuch/tests/rundgang.cjs           # Klassenbuch: Rundgang
 node klassenbuch/tests/fehler.cjs             # Klassenbuch: zwei Geräte, Team-Datei, Wochenziele, nichts löschen beim Start
 node klassenbuch/tests/heute.cjs              # Klassenbuch: Heute-Tafel

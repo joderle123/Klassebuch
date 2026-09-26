@@ -282,6 +282,31 @@ const nurLokal = r => { const u = r.request().url(); return (u.startsWith(ROOT) 
   await page.click('[data-sc="speichern"]'); await page.waitForSelector('#sc-ergebnis', { timeout: 20000 }); await warte(500);
   check('D8: nach „Auswerten und speichern“ steht der Arbeitsbereich oben', (await page.evaluate(() => document.getElementById('v-arbeit').scrollTop)) === 0);
 
+  console.log('N-H1) Wortlaut: Screening abbrechen, Fiche, Fallverantwortliche, Verlauf');
+  await page.click('[data-sc="liste"]').catch(() => {}); await warte(200);
+  await page.click('[data-sc="neu"]'); await page.waitForSelector('.sc-bogen');
+  const ersteAussage = await page.$eval('.sc-item', x => x.id); await page.$eval('#' + ersteAussage + ' input[value="2"]', el => el.click());
+  dialoge.length = 0;
+  await page.click('[data-sc="abbrechen"]'); await page.waitForSelector('dialog.ar-dialog', { timeout: 5000 }).catch(() => {});
+  check('Screening abbrechen mit Antworten: Rückfrage im Hub-Dialog, kein Browser-Fenster', await dialogOffen() && /Bogen verwerfen\?/.test(await text('dialog.ar-dialog')) && dialoge.length === 0, dialoge);
+  await knopf('Weiter ausfüllen'); await dialogZu();
+  check('„Weiter ausfüllen“: Bogen und Antwort bleiben', await page.isVisible('.sc-bogen') && !!(await page.$('#' + ersteAussage + ' input[value="2"]:checked')));
+  await page.click('[data-sc="abbrechen"]'); await page.waitForSelector('dialog.ar-dialog'); await knopf('Verwerfen'); await dialogZu();
+  check('„Verwerfen“: zurück zur Liste', !(await page.$('.sc-bogen')) && await page.isVisible('[data-sc="neu"]'));
+  await gehe('#/schueler/' + lea); await page.waitForSelector('.ar-dkopf h1'); await reiter('fiche');
+  const titel = await page.$$eval('.ar-fkarte h2', l => l.map(h => h.textContent.replace(/\s+/g, ' ').trim()));
+  check('Fiche: Karte „Dépistage“ ohne doppelten Titel', titel.includes('Dépistage') && !titel.some(t => /Dépistage Dépistage/.test(t)), titel);
+  await page.evaluate(() => document.querySelector('[data-ar="verantwortlich"]').click()); await page.waitForSelector('dialog.ar-dialog');
+  const fvText = await text('dialog.ar-dialog');
+  check('Fallverantwortliche: kein „weitergeben“ (gibt es in der Annexe nicht)', !/weitergeb/i.test(fvText) && fvText.includes('Rechte vergeben und den Status ändern'), fvText.slice(0, 160));
+  await verwerfen(); await dialogZu();
+  let vlWert = '';
+  for (const t of ['ueberblick', 'entwicklung', 'profil']) { await reiter(t); if (await page.$('#vl-wert')) { vlWert = await text('#vl-wert'); break; } }
+  await gehe('#/schueler/' + tom); await page.waitForSelector('.ar-dkopf h1');
+  for (const t of ['ueberblick', 'entwicklung', 'profil']) { if (vlWert) { break; } await reiter(t); if (await page.$('#vl-wert')) { vlWert = await text('#vl-wert'); } }
+  check('Verlauf: Hinweis „Klicke oder tippe auf …“ (auch am PC richtig)', /^Klicke oder tippe auf einen Punkt/.test(vlWert), vlWert);
+  check('Hinweis bei eigener Änderung nennt auch ein anderes Fenster', fs.readFileSync(HUB_DATEI, 'utf8').includes('Du hast dieses Dossier in einem anderen Fenster oder an einem anderen PC geändert'));
+
   console.log('F5) Profil ändern bei 390 px');
   await page.setViewportSize({ width: 390, height: 844 }); await warte(300);
   await page.click('#burger'); await warte(300); await menue('profil'); await page.waitForSelector('#g-funktion'); await warte(200);

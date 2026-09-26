@@ -13,6 +13,7 @@
 | `hub.vor-arbeit.html` | Grundgerüst des Hubs (Seitenleiste, Kacheln, Anleitung, Hub-Skript) |
 | `konto3.js` | Konten, Anmeldung, verschlüsselter Tresor; Zugriff auf den Hub-Ordner mit Wiederholung bei kurz belegten Dateien und Schreibsperren (`sperren/<ziel>.lock` mit Lebenszeichen, siehe unten) |
 | `team.js` | Gemeinsamer Bereich: verschlüsselte Schülerdossiers, Rechte, Einsatzpläne; sicheres Ändern gemeinsamer Dateien und Schlüssel erneuern (siehe unten) |
+| `hub-waechter.js` | Nur Annexe: für Apps im eigenen Tab (file://). Meldet Eingaben an den Hub (`cdse_hub_aktiv`), deckt die App ab, solange der Hub gesperrt ist, und zeigt nach dem Abmelden die Anmeldung (`cdse_hub_zustand`, geschrieben von `konto3.js`). Eingebaut von `annexe-apps.cjs` und `klassenbuch/quellen/build-merged.cjs` |
 | `arbeit.js`, `arbeit.css` | Oberfläche: Schülerliste, Dossier (Überblick, Fiche, Entwicklung & Ziele, Einträge mit Vorfall-/Krisenprotokoll und Wiedervorlage, Übergabeblatt mit Kompass und Begleitplan …), Einsatzplan, Team, Verwaltung. Auf der Startseite „Fällig diese Woche“: je Kind eine Zeile mit dem Wichtigsten (dringend, fällig, in den nächsten sieben Tagen) – nur eigene Fälle und eigene Fristen, ohne Passwortabfrage, Warnsignale ohne Inhalt |
 | `fiche.js` + `fiche/vorlage.docx` | Fiche de renseignement lesen (Upload) und ausfüllen (Download); die leere Vorlage wird beim Bauen eingebettet |
 | `datenbank.js`, `datenbank.css` | Datenbank-Bereich (nur Responsables und Verwaltung) – optional. Stichtag je Schuljahr (Alter, Stelle und laufende Maßnahmen an diesem Tag), CSV-Import erkennt UTF-8 und Windows-1252, Export auf Wunsch ohne Namen, Abfrage-Ergebnis als Tabelle kopieren oder als CSV |
@@ -32,10 +33,10 @@ Bauen: `python3 hub-quellen/baue-hub.py` → schreibt `hub.html` (anderes Ziel: 
 
 Alle arbeiten auf demselben Ordner (O:\). Damit keine Änderung verloren geht:
 
-- **Schreibsperre** je gemeinsamer Datei (`sperren/dossier-<id>.lock`, `mitglieder`, `schluessel`, `teamliste`, `anhang-…`): lesen – eigene Sperre schreiben – kurz warten – nachlesen. Wer arbeitet, gibt alle 4 s ein Lebenszeichen (`puls`). Eine Sperre, die sich 15 s nicht ändert (gemessen mit der eigenen Uhr, nicht mit der Uhrzeit anderer PCs), gilt als verwaist. Vor dem Schreiben prüft der Hub, ob er die Sperre noch hat – ein zugeklappter Laptop überschreibt beim Aufwachen nichts.
+- **Schreibsperre** je gemeinsamer Datei (`sperren/dossier-<id>.lock`, `mitglieder`, `schluessel`, `teamliste`, `anhang-…`): lesen – eigene Sperre schreiben – kurz warten – nachlesen. Wer arbeitet, gibt alle 4 s ein Lebenszeichen (`puls`). Eine Sperre, die sich 15 s nicht ändert (gemessen mit der eigenen Uhr, nicht mit der Uhrzeit anderer PCs), gilt als verwaist. Vor dem Schreiben prüft der Hub, ob er die Sperre noch hat – ein zugeklappter Laptop überschreibt beim Aufwachen nichts. Langsames Netz: Kommt eine Sperrdatei erst nach der Bedenkzeit an (eine kurz belegte Datei wird nach einer Pause erneut geschrieben), können zwei PCs gleichzeitig arbeiten. Deshalb liest `sicherAendern` die Sperrdatei vor und nach dem Schreiben frisch: Ist sie nicht mehr die eigene, sieht der Hub unter einer neuen Sperre nach, ob die Änderung noch in der Datei steckt, und wendet sie sonst noch einmal an. Kam die eigene Sperrdatei spät an (`unsicher`), wartet er nach dem Schreiben kurz mit der Sperre und prüft dann dasselbe – der andere PC merkt in diesem Fall nichts.
 - **Stempel und Nachprüfen** (`sicherAendern` in `team.js`): immer den neuesten Stand lesen, Änderung anwenden, mit `rev`, `sid` und `kette` stempeln, schreiben, nachlesen. Fehlt die eigene Fassung, wird die Änderung auf den neuen Stand noch einmal angewendet.
 - **Wiederholen** bei kurz belegten Dateien (`nochmal` in `konto3.js`), statt eine Fehlermeldung zu zeigen.
-- **Liste**: Nur Dossiers mit neuer Änderungszeit oder Größe werden neu gelesen. Im offenen Dossier prüft der Hub alle 20 s den Datei-Stand und zeigt „… hat dieses Dossier gerade geändert – Neuen Stand anzeigen“.
+- **Liste**: Nur Dossiers mit neuer Änderungszeit oder Größe werden neu gelesen. Im offenen Dossier prüft der Hub alle 20 s den Datei-Stand und zeigt „… hat dieses Dossier gerade geändert – Neuen Stand anzeigen“ (Fassungen, die dieses Fenster gerade selbst geschrieben hat, zählen nicht).
 - **Schlüssel erneuern** (Verwaltung, nach „Zugang entziehen“): neue Generation im Schlüsselring (`gen`), ältere Schlüssel mit dem neuen verschlossen in `alt`, alle Dateien werden neu verschlüsselt; die anderen PCs übernehmen den neuen Schlüssel beim nächsten Speichern. Im Dateikopf steht die Generation, mit der verschlüsselt wurde.
 - **`HUB_STAND`** (`team.js`) erhöhen, wenn sich das Schreiben gemeinsamer Dateien ändert: Ältere, noch offene Hub-Fenster speichern dann nicht mehr, sondern bitten um Neuladen (F5).
 
@@ -88,3 +89,7 @@ Einsatzplan-Entwurf und Datum in Ortszeit.
 Festplatte als gemeinsames Laufwerk für mehrere Browser-Kontexte (= PCs) bereit – mit Netz-Verzögerung, Schreiben über
 Tauschdatei und gelegentlich belegten Dateien. Einstellbar: `PERSONEN` (gleichzeitige PCs, ab 12), `KONTEN` (insgesamt, 120),
 `DOSSIERS` (je PC, 25), `WACKELIG` (Anteil belegter Zugriffe, 0.03), `NUR=grundlage` (nur Konten, Freischalten, gleichzeitiges Schreiben).
+
+`tests/annexe-sperrbruch.js` (nur hier) läuft wie `gleichzeitig.js` mit `NUR=grundlage`, lässt aber einen Teil der
+Sperrdateien und Dossiers verspätet ankommen (langsames Netzlaufwerk). Ohne die Nachprüfung nach dem Schreiben (siehe
+`sicherAendern` in `team.js`) fehlten dabei in etwa jedem zweiten Lauf Einträge – ohne Fehlermeldung.

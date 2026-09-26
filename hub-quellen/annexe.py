@@ -317,6 +317,8 @@ def anpassen(s):
     ersetze("|verwaltung|datenbank)(?:", "|verwaltung)(?:", 'Adresse #/datenbank')
     ersetze(",verwaltung:'Verwaltung',datenbank:'Datenbank'}[ar[1]]", ",verwaltung:'Verwaltung'}[ar[1]]", 'Seitentitel Datenbank')
     ersetze("'+(istResp()?', die Datenbank-Angaben':'')+'", "", 'Kompass: Datenbank-Angaben')
+    ersetze("Fallverantwortliche leiten den Fall: Sie dürfen weitergeben und Rechte vergeben.",
+            "Fallverantwortliche leiten den Fall: Sie dürfen Rechte vergeben und den Status ändern.", 'Fallverantwortliche ohne Weitergeben')
     ersetze("(DS'+(istResp()?', Datenbank':'')+', vom Team eingetragen)", "(DS, vom Team eingetragen)", 'Kompass: Datenbank')
     # Kompass und Begleitplan: Angaben der Fiche ohne Datenbank (Cycle, Ankunft, Erstsprache, Helfernetz, Kernangaben)
     ersetze("<script>\n/* =====================================================================\n   CDSE Hub — Kompass: Umgang",

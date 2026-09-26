@@ -30,6 +30,8 @@ function replaceOnce(s, find, repl, label) {
 }
 
 var TABS_GUARD = read('tabs-guard.js');
+/* Hub-Wächter (gehört zum Hub, liegt darum dort): im eigenen Tab gelten Sperre und Abmelden des Hubs auch hier */
+var HUB_WAECHTER = fs.readFileSync(path.join(ROOT, '..', '..', 'hub-quellen', 'hub-waechter.js'), 'utf8');
 var MERGE_JS = read('merge.js');
 var KB_DATUM_JS = "/* Heute als JJJJ-MM-TT nach der Uhr auf dem Geraet - toISOString() rechnet in UTC, und zwischen Mitternacht und 2 Uhr waere es in Luxemburg noch gestern. */window.kbLokalISO=function(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);};";
 var SPELL_JS  = read('spell.js');
@@ -4138,6 +4140,7 @@ var parts = [
   '<script>' + SHELL_CONTROLLER + '</' + 'script>',
   '<script>' + ANW_SIDE_TOGGLE + '</' + 'script>',
   '<script>' + TABS_GUARD + '</' + 'script>',
+  '<script>' + HUB_WAECHTER + '</' + 'script>',
   '<script>' + SPELL_DATA + '</' + 'script>',
   '<script>' + NSPELL_JS + '</' + 'script>',
   '<script>' + SYMBOLE_JS + '</' + 'script>',
