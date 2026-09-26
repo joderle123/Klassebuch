@@ -109,7 +109,8 @@ window.CDSE_APPS = [
     bereich: 'Materialien',
     datei: 'apps/toolbox.html',
     dateizugriff: true,
-    quelle: { repo: 'ISA-APP', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'offline/ISA-App.html',
+    /* Eigener Branch der Annexe: Skills-Kurs mit Kursjahr-Reitern und Fahrplan */
+    quelle: { repo: 'ISA-APP', branch: 'claude/focused-galileo-e2s63b', pfad: 'offline/ISA-App.html',
               zusatz: [{ pfad: 'offline/toolbox-index.js', datei: 'apps/toolbox-index.js' }] },
     stichworte: 'material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf'
   },

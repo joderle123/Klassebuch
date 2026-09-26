@@ -39,7 +39,7 @@ Konten, Daten und die Team-Datei legt der Hub selbst an: `konten/`, `daten/`, `t
 | Klassenbuch | `klassenbuch/quellen/` (hier) | `node klassenbuch/quellen/build-merged.cjs` |
 | Befundbericht | Repository `PEI-and-Compl-ment-` | `node update-apps.cjs screening` |
 | ELDiB-Generator | Repository `Eldib-Pleni-re` | `node update-apps.cjs eldib` |
-| Toolbox und Skills-Kurs | Repository `ISA-APP` | `node update-apps.cjs toolbox` |
+| Toolbox und Skills-Kurs | Repository `ISA-APP`, Branch `claude/focused-galileo-e2s63b` | `node update-apps.cjs toolbox` |
 | Lernen | `lern-app/` (hier) | `python3 lern-app/baue.py` |
 | Pathologien | `SAVOIR.html` (hier) | `node annexe-apps.cjs` |
 
@@ -67,6 +67,10 @@ nirgends „ISA“, „Journal“ oder „CDSE Hub“ sichtbar wird.
 Unified werden hier eingearbeitet, nicht darübergeschrieben.
 
 **`hub-apps.js`** ist die eigene Fassung der Annexe.
+
+**Toolbox.** Sie kommt aus einem eigenen Branch von `ISA-APP` (`claude/focused-galileo-e2s63b`) mit dem
+überarbeiteten Skills-Kurs. Neuerungen aus Unified (`claude/wizardly-bohr-99r7kg`) dort hineinmergen, dann
+`node update-apps.cjs toolbox`.
 
 ## Daten
 

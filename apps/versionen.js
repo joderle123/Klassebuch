@@ -15,11 +15,11 @@ window.CDSE_APP_VERSIONEN = {
     "groesse": 4650723
   },
   "toolbox": {
-    "stand": "2026-09-25",
-    "commit": "212004b",
-    "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
-    "aenderung": "Skills-Kurs, Kursjahr 2 und 3: je 35 Einheiten und 4 Joker, 107 neue Schülerblätter",
-    "groesse": 5731850
+    "stand": "2026-09-26",
+    "commit": "2a10f84",
+    "quelle": "ISA-APP · claude/focused-galileo-e2s63b",
+    "aenderung": "Skills-Kurs übersichtlicher: Kursjahr-Reiter, Jahresweg als Treppe, Einheit mit Fahrplan",
+    "groesse": 5744603
   },
   "screening": {
     "stand": "2026-09-25",
