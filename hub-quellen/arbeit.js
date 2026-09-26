@@ -68,7 +68,8 @@ function dialog(titel,inhalt,knoepfe,opt){
     Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(b){
       b.addEventListener('click',function(ev){
         ev.preventDefault();
-        var w={aktion:b.value,werte:werte(),dialog:d};
+        /* anfang = Werte beim Öffnen: damit speichern Formulare nur, was wirklich geändert wurde */
+        var w={aktion:b.value,werte:werte(),anfang:anfang,dialog:d};
         if(b.value&&opt.pruefen){var f=opt.pruefen(w);if(f){d.fehler(f);return;}}
         if(b.value&&opt.ausfuehren){
           b.disabled=true;var alt=b.textContent;b.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(alt);
@@ -81,6 +82,7 @@ function dialog(titel,inhalt,knoepfe,opt){
     form.addEventListener('submit',function(ev){ev.preventDefault();var p=form.querySelector('button[type=submit]');if(p){p.click();}});
     d.addEventListener('cancel',function(ev){ev.preventDefault();zu({aktion:'',werte:werte()});});
     if(opt.nachAufbau){opt.nachAufbau(d);}
+    var anfang=werte();
     d.showModal();
     var f=d.querySelector('[autofocus]')||d.querySelector('input,select,textarea');if(f){f.focus();}
   });
@@ -233,7 +235,9 @@ function seiteDossier(id,neu){
   bereichLaden().then(function(z){
     if(z.art!=='bereit'){$('ar-dossier').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
     if(window.CDSE_SCREENING&&window.CDSE_SCREENING.geoeffnet){window.CDSE_SCREENING.geoeffnet(id);}
-    return T.dossier(id,neu).then(function(d){aktDossier=d;dossierZeichnen(d);});
+    /* beim Öffnen immer den neuesten Stand (andere arbeiten vielleicht gerade daran); nur wenn die Datei
+       gerade nicht lesbar ist, den Stand aus dieser Sitzung zeigen */
+    return T.dossier(id,true).catch(function(e){if(neu){throw e;}return T.dossier(id,false).catch(function(){throw e;});}).then(function(d){aktDossier=d;dossierZeichnen(d);});
   }).catch(function(e){$('ar-dossier').innerHTML=karte('<h2>Dossier nicht gefunden</h2>'+hinweis(fehlerText(e))+'<a class="btn" href="#/schueler">Zur Liste</a>','ar-leer');});
 }
 function dossierZeichnen(d){
@@ -258,9 +262,37 @@ function dossierZeichnen(d){
       '<div class="ar-chips">'+stelleChip(d.stelle)+'<span class="ar-status '+(d.status==='inaktiv'?'aus':'an')+'">'+(d.status==='inaktiv'?'inaktiv seit '+esc(datum(d.statusSeit)):'aktiv')+'</span>'+
       '<span class="ar-meinrecht '+(r.bearbeiten?'ja':'nein')+'" title="'+esc(r.grund)+'">'+(r.bearbeiten?svg('edit')+'Du kannst bearbeiten':svg('lock')+'Nur lesen')+'</span></div></div>'+
       '<div class="ar-daktionen">'+aktionen+mehr+'</div></header>'+
+    '<div class="ar-fremd" id="ar-fremd" role="status" hidden></div>'+
     '<nav class="ar-tabs" role="tablist">'+tabs.map(function(t){return '<button type="button" role="tab" aria-selected="'+(dossierTab===t[0])+'" class="'+(dossierTab===t[0]?'on':'')+'" data-tab="'+t[0]+'">'+esc(t[1])+'</button>';}).join('')+'</nav>'+
     '<div class="ar-tabinhalt" id="ar-tabinhalt">'+tabInhalt(d,r)+'</div>';
   nachZeichnen(d);
+  fremdBeobachten(d.id);
+}
+/* Mehrere Personen gleichzeitig: Speichert jemand anderes (oder dieselbe Person an einem anderen PC)
+   dieses Dossier, erscheint oben ein Hinweis mit „Neuen Stand anzeigen“. Geprüft wird nur der
+   Datei-Stand (Zeit, Größe) – das kostet im Netz fast nichts. */
+var fremdTimer=null, fremdNeu=null;
+function fremdBeobachten(id){
+  if(fremdTimer){clearInterval(fremdTimer);fremdTimer=null;}
+  fremdNeu=null;
+  if(!T||!T.pruefen){return;}
+  var ms=+window.__CDSE_PRUEF_MS||20000, laeuft=false;
+  fremdTimer=setInterval(function(){
+    if(!$('ar-dossier')||!aktDossier||aktDossier.id!==id){clearInterval(fremdTimer);fremdTimer=null;return;}
+    if(laeuft||document.visibilityState==='hidden'||T.zustand().art!=='bereit'){return;}
+    laeuft=true;
+    T.pruefen(id).then(function(x){
+      laeuft=false;
+      var b=$('ar-fremd');
+      if(!x||!b||!aktDossier||aktDossier.id!==id){return;}
+      if(x.geloescht){b.hidden=false;b.innerHTML=svg('warn')+'<span>Dieses Dossier wurde inzwischen gelöscht.</span><a class="btn" href="#/schueler">Zur Liste</a>';return;}
+      if(!x.neu){return;}
+      fremdNeu=x.dossier;
+      b.hidden=false;
+      b.innerHTML=svg('info')+'<span>'+(x.eigen?'Du hast dieses Dossier an einem anderen PC geändert':'<b>'+esc(x.vonName||'Jemand')+'</b> hat dieses Dossier gerade geändert')+(x.wann?' ('+esc(datumZeit(x.wann).slice(-5))+' Uhr)':'')+'.</span>'+
+        '<button class="btn" type="button" data-ar="fremd-neu">'+svg('reload')+'Neuen Stand anzeigen</button>';
+    },function(){laeuft=false;});
+  },ms);
 }
 function tabInhalt(d,r){
   if(dossierTab==='kompass'&&window.CDSE_KOMPASS){return window.CDSE_KOMPASS.tab(d,r);}
@@ -682,7 +714,7 @@ function personDialog(d){
     feld('matricule','Matricule',p.matricule)+feld('sprachen','Sprachen',p.sprachen)+'</div>'+textfeld('kontakt','Eltern / Kontakt (Namen, Telefon)',p.kontakt,2);
   dialog('Stammdaten',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){return (w.werte.nachname.trim()&&w.werte.vorname.trim())?'':'Vor- und Nachname fehlen.';},
-    ausfuehren:function(w){var v=w.werte;Object.keys(v).forEach(function(k){v[k]=String(v[k]).trim();});return T.ops.person(d.id,v);}
+    ausfuehren:function(w){function sauber(o){var v={};Object.keys(o||{}).forEach(function(k){v[k]=String(o[k]).trim();});return v;}return T.ops.person(d.id,sauber(w.werte),sauber(w.anfang));}
   }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Stammdaten gespeichert');}});
 }
 function statusDialog(d){
@@ -705,7 +737,9 @@ function eintragAendernDialog(d,eid){
   dialog('Eintrag ändern',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){var a=dlg.querySelector('select[name="art"]'), p=dlg.querySelector('.ar-vorfall-platz'), t=dlg.querySelector('textarea[name="text"]'), lab=t&&t.closest('label');
       if(a&&p){a.addEventListener('change',function(){var v=a.value==='vorfall';p.hidden=!v;if(lab&&lab.querySelector('span')){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}});}},
-    ausfuehren:function(w){var x=Object.assign({},w.werte);x.vorfall=w.werte.art==='vorfall'?vorfallAus(w.werte):null;Object.keys(x).forEach(function(k){if(k.indexOf('v_')===0){delete x[k];}});return T.ops.eintragAendern(d.id,eid,x);}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
+    ausfuehren:function(w){
+      function bau(roh){var x=Object.assign({},roh);x.vorfall=roh.art==='vorfall'?vorfallAus(roh):null;Object.keys(x).forEach(function(k){if(k.indexOf('v_')===0){delete x[k];}});return x;}
+      return T.ops.eintragAendern(d.id,eid,bau(w.werte),bau(w.anfang||{}));}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
 }
 /* Beobachtung direkt zu einem Förderziel eintragen */
 function zielEintragDialog(d,code){
@@ -1580,6 +1614,38 @@ function tlExport(){
   var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='CDSE-Teamliste.csv';document.body.appendChild(a);a.click();
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);toast('Teamliste als Tabelle gespeichert (CSV)');
 }
+/* Schlüssel des Schülerbereichs erneuern (nach dem Entziehen eines Zugangs) */
+function schluesselKarte(){
+  var st=T.schluesselStand(), e=st.erneuert;
+  return karte('<h2>Schlüssel des Schülerbereichs</h2><p>Generation <b>'+st.gen+'</b>'+(e?' · zuletzt erneuert am '+esc(datumZeit(e.am))+' von '+esc(kname(e.von)):' · noch nie erneuert')+'.</p>'+
+    '<p class="ar-klein">Nach dem Entziehen eines Zugangs den Schlüssel erneuern: Dann kann die Person auch mit einer alten Kopie der Schlüsseldatei (zum Beispiel aus einer Sicherung) nichts Neues mehr lesen. Alle anderen arbeiten ohne Unterbrechung weiter.</p>'+
+    '<div class="ar-knopfreihe"><button class="btn" type="button" data-ar="schluessel-erneuern">'+svg('key')+'Schlüssel erneuern</button>'+
+    (e?'<button class="ar-link" type="button" data-ar="umschluesseln">Umschlüsseln fortsetzen</button>':'')+'</div>','ar-schluessel');
+}
+function schluesselErneuernDialog(nachEntzug){
+  var st=T.schluesselStand();
+  var inhalt=(nachEntzug?'<p><b>Der Zugang ist entzogen.</b> Jetzt sollte der Schlüssel erneuert werden.</p>':'')+
+    '<p>Mit einem neuen Schlüssel kann eine Person, der der Zugang entzogen wurde, auch mit einer alten Kopie der Schlüsseldatei nichts Neues mehr lesen. Der Hub verschlüsselt dafür alle Dossiers, Anhänge und die Rollenliste neu – je nach Anzahl dauert das einige Minuten.</p>'+
+    '<p>Alle anderen können währenddessen weiterarbeiten; ihr Hub übernimmt den neuen Schlüssel beim nächsten Speichern von selbst.</p>'+
+    '<p class="ar-klein" id="ar-schl-stand">Aktuell: Generation '+st.gen+'.</p>';
+  dialog('Schlüssel erneuern',inhalt,[{text:nachEntzug?'Später':'Abbrechen',wert:''},{text:'Jetzt erneuern',wert:'ok',primaer:true}],{
+    ausfuehren:function(w){
+      var p=w.dialog.querySelector('#ar-schl-stand');
+      return T.schluesselErneuern(function(n,g){if(p){p.textContent='Neu verschlüsseln: '+n+' von '+g+' Dateien …';}});
+    }})
+  .then(function(r){
+    if(r.aktion!=='ok'||!r.ergebnis){return;}
+    var z=r.ergebnis;
+    toast('Schlüssel erneuert (Generation '+z.gen+') – '+z.neu+' Dateien neu verschlüsselt'+(z.fehler?', '+z.fehler+' noch offen':''));
+    verwaltungZeichnen();
+  });
+}
+function umschluesselnDialog(){
+  dialog('Umschlüsseln fortsetzen','<p>Der Hub sucht Dateien, die noch mit einem älteren Schlüssel verschlüsselt sind, und verschlüsselt sie mit dem aktuellen neu.</p><p class="ar-klein" id="ar-schl-stand"></p>',
+    [{text:'Abbrechen',wert:''},{text:'Starten',wert:'ok',primaer:true}],{
+    ausfuehren:function(w){var p=w.dialog.querySelector('#ar-schl-stand');return T.umschluesseln(function(n,g){if(p){p.textContent=n+' von '+g+' Dateien geprüft …';}});}})
+  .then(function(r){if(r.aktion==='ok'&&r.ergebnis){toast(r.ergebnis.neu?r.ergebnis.neu+' Dateien neu verschlüsselt':'Alles ist schon mit dem aktuellen Schlüssel verschlüsselt');}});
+}
 function verwaltungZeichnen(){
   var el=$('ar-verw');if(!el){return;}
   var admin=T.istAdmin(), w=T.wartende(), m=T.mitglieder();
@@ -1598,6 +1664,7 @@ function verwaltungZeichnen(){
         '<span>'+(admin&&k.id!==K.ich().id?'<button class="ar-link gefahr" type="button" data-ar="entziehen" data-id="'+esc(k.id)+'">Zugang entziehen</button>':'')+'</span></div>';
     }).join('')+'</div>'+(admin?'<p class="ar-klein"><b>Responsables</b> können Konten freischalten und alle Dossiers bearbeiten. Die <b>Verwaltung</b> vergibt zusätzlich Rollen und kann Dossiers löschen.</p>':''));
   h+=teamlisteKarte(admin,ROLLEN);
+  if(admin&&T.schluesselStand){h+=schluesselKarte();}
   var log=T.bereichsVerlauf().slice(0,60);
   h+=karte('<h2>Protokoll des Schülerbereichs</h2><ol class="ar-protokoll">'+log.map(function(v){return '<li><span class="ar-leise">'+esc(datumZeit(v.z))+'</span><b>'+esc(kname(v.v))+'</b><span>'+esc(v.t)+'</span></li>';}).join('')+'</ol>');
   el.innerHTML=h;
@@ -1650,6 +1717,7 @@ document.addEventListener('click',function(ev){
     case 'eldib-oeffnen':eldibOeffnen(d);break;
     case 'einschaetzung':einschaetzungDialog(d);break;
     case 'neu-laden-dossier':seiteDossier(d.id,true);break;
+    case 'fremd-neu':if(fremdNeu&&fremdNeu.id===d.id){aktDossier=fremdNeu;dossierZeichnen(fremdNeu);toast('Neuer Stand angezeigt');}else{seiteDossier(d.id,true);}break;
     case 'eintrag-aendern':eintragAendernDialog(d,t.getAttribute('data-eid'));break;
     case 'eintrag-loeschen':eintragLoeschenDialog(d,t.getAttribute('data-eid'));break;
     case 'ziel-eintrag':zielEintragDialog(d,t.getAttribute('data-item'));break;
@@ -1666,7 +1734,9 @@ document.addEventListener('click',function(ev){
       t.disabled=true;T.freischalten(t.getAttribute('data-id')).then(function(){toast('Freigeschaltet');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;if(!(e&&e.abgebrochen)){toast((e&&e.message)||String(e));}});break;
     case 'entziehen':
       dialog('Zugang entziehen','<p><b>'+esc(kname(t.getAttribute('data-id')))+'</b> kann danach keine Schülerdaten mehr öffnen. Was die Person bisher gesehen hat, lässt sich nicht zurückholen.</p>',[{text:'Abbrechen',wert:''},{text:'Entziehen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.entziehen(t.getAttribute('data-id'));}})
-        .then(function(r){if(r.aktion==='ok'){toast('Zugang entzogen');verwaltungZeichnen();}});break;
+        .then(function(r){if(r.aktion==='ok'){toast('Zugang entzogen');verwaltungZeichnen();if(T.schluesselErneuern){schluesselErneuernDialog(true);}}});break;
+    case 'schluessel-erneuern':schluesselErneuernDialog(false);break;
+    case 'umschluesseln':umschluesselnDialog();break;
   }
 });
 /* Ungespeicherten Einsatzplan nicht verlieren */
@@ -1960,18 +2030,23 @@ function ficheTeilDialog(d,teil){
   dialog(titel,inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:breit,
     pruefen:function(w){if(teil==='person'&&!(String(w.werte['p.nachname']).trim()&&String(w.werte['p.vorname']).trim())){return 'Vor- und Nachname fehlen.';}return '';},
     ausfuehren:function(w){
-      var pn=werteZuObjekt(w.werte,'p'), fn=werteZuObjekt(w.werte,'f'), werte={fiche:{}};
-      if(teil==='person'){werte.person=pn;Object.keys(fn).forEach(function(k){werte.fiche[k]=fn[k];});}
-      else if(teil==='schule'){
-        werte.fiche.schule=fn.schule||{};
-        ['ef','es'].forEach(function(t){var x=fn[t]||{};x.weitere=ohneLeere(x.weitere);werte.fiche[t]=x;});
-        werte.person={schule:(fn.schule||{}).name||'',klasse:(fn.schule||{}).klasse||''};
+      /* aus den Formularwerten die Fiche-Teile bauen – einmal für die Eingabe, einmal für den Stand beim Öffnen:
+         gespeichert wird nur, was sich dazwischen geändert hat */
+      function bau(roh){
+        var pn=werteZuObjekt(roh,'p'), fn=werteZuObjekt(roh,'f'), werte={fiche:{}};
+        if(teil==='person'){werte.person=pn;Object.keys(fn).forEach(function(k){werte.fiche[k]=fn[k];});}
+        else if(teil==='schule'){
+          werte.fiche.schule=fn.schule||{};
+          ['ef','es'].forEach(function(t){var x=fn[t]||{};x.weitere=ohneLeere(x.weitere);werte.fiche[t]=x;});
+          werte.person={schule:(fn.schule||{}).name||'',klasse:(fn.schule||{}).klasse||''};
+        }
+        else if(teil==='vertreter'){werte.fiche.vertreter=(fn.vertreter||[]).map(function(x){return x||{};});werte.fiche.familie=fn.familie||'';}
+        else if(teil==='progression'){var l=(fn.progression||[]).map(function(x){return x||'';});while(l.length&&!l[l.length-1]){l.pop();}werte.fiche.progression=l;werte.fiche.progressionBemerkung=fn.progressionBemerkung||'';}
+        else if(teil==='intervenants'){werte.fiche.intervenants=ohneLeere(fn.intervenants);}
+        else{werte.fiche[teil]=fn[teil]||{};}
+        return werte;
       }
-      else if(teil==='vertreter'){werte.fiche.vertreter=(fn.vertreter||[]).map(function(x){return x||{};});werte.fiche.familie=fn.familie||'';}
-      else if(teil==='progression'){var l=(fn.progression||[]).map(function(x){return x||'';});while(l.length&&!l[l.length-1]){l.pop();}werte.fiche.progression=l;werte.fiche.progressionBemerkung=fn.progressionBemerkung||'';}
-      else if(teil==='intervenants'){werte.fiche.intervenants=ohneLeere(fn.intervenants);}
-      else{werte.fiche[teil]=fn[teil]||{};}
-      return T.ops.fiche(d.id,werte,'Fiche geändert: '+titel.replace(/ \(.*$/,''));
+      return T.ops.fiche(d.id,bau(w.werte),'Fiche geändert: '+titel.replace(/ \(.*$/,''),bau(w.anfang||{}));
     }
   }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Gespeichert');}});
 }

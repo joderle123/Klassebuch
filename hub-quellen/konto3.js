@@ -116,22 +116,52 @@ function eintraege(dir){
   function w(){return it.next().then(function(r){if(r.done){return l;}if(r.value&&r.value.kind==='file'){l.push(r.value);}return w();});}
   return w();
 }
+/* Im Netz (O:\) ist eine Datei manchmal kurz belegt, weil jemand anderes sie gerade schreibt oder liest.
+   Solche vorübergehenden Fehler wiederholt der Hub mit wachsender Pause, statt eine Meldung zu zeigen. */
+var VORUEBERGEHEND=/^(NotReadableError|NoModificationAllowedError|InvalidStateError|AbortError|UnknownError|NetworkError|TimeoutError|InvalidModificationError)$/;
+function nochmal(fn,versuche){
+  versuche=versuche||6;
+  function v(n){
+    return Promise.resolve().then(fn).catch(function(e){
+      if(n>=versuche||!e||!VORUEBERGEHEND.test(e.name||'')){throw e;}
+      return warte(Math.min(1600,70*Math.pow(2,n))+Math.random()*120).then(function(){return v(n+1);});
+    });
+  }
+  return v(1);
+}
 function dateiLesen(dir,name){
-  return dir.getFileHandle(name).then(function(h){return h.getFile();}).then(function(f){return f.text();})
-    .then(function(t){return t||null;},function(e){if(e&&e.name==='NotFoundError'){return null;}throw e;});
+  return nochmal(function(){
+    return dir.getFileHandle(name).then(function(h){return h.getFile();}).then(function(f){return f.text();})
+      .then(function(t){return t||null;},function(e){if(e&&e.name==='NotFoundError'){return null;}throw e;});
+  });
 }
 function dateiSchreiben(dir,name,inhalt){
-  return dir.getFileHandle(name,{create:true}).then(function(h){return h.createWritable();})
-    .then(function(w){return w.write(inhalt).then(function(){return w.close();});});
+  return nochmal(function(){
+    return dir.getFileHandle(name,{create:true}).then(function(h){return h.createWritable();})
+      .then(function(w){return w.write(inhalt).then(function(){return w.close();},function(e){try{w.abort();}catch(x){}throw e;});});
+  });
+}
+/* Datei-Stand ohne Inhalt: Zeitpunkt der letzten Änderung und Größe (für „nur Geändertes neu lesen“) */
+function dateiInfo(dir,name){
+  return nochmal(function(){
+    return dir.getFileHandle(name).then(function(h){return h.getFile();}).then(function(f){return {name:name,lastModified:f.lastModified,size:f.size,datei:f};},
+      function(e){if(e&&e.name==='NotFoundError'){return null;}throw e;});
+  });
 }
 function ladeKonten(){
   return unterordner(['konten']).then(eintraege).then(function(dateien){
     var liste=[];
-    return dateien.filter(function(h){return /\.json$/i.test(h.name);}).reduce(function(p,h){
-      return p.then(function(){return h.getFile().then(function(f){return f.text();}).then(function(t){
+    /* mehrere Konto-Dateien gleichzeitig lesen (bei 100 und mehr Konten deutlich schneller) */
+    var l=dateien.filter(function(h){return /\.json$/i.test(h.name);}), i=0;
+    function weiter(){
+      if(i>=l.length){return Promise.resolve();}
+      var h=l[i++];
+      return nochmal(function(){return h.getFile().then(function(f){return f.text();});}).then(function(t){
         try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
-      },function(){});});
-    },Promise.resolve()).then(function(){return liste;});
+      },function(){}).then(weiter);
+    }
+    var w=[];for(var n=0;n<Math.min(8,l.length);n++){w.push(weiter());}
+    return Promise.all(w).then(function(){return liste;});
   }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return teamlisteLesen().then(function(){return l;});});
 }
 /* ---------- Teamliste: vorbereitete Konten ----------
@@ -142,7 +172,7 @@ function ladeKonten(){
    Konto-Dateien; sie enthält keine Schülerdaten und keine Passwörter. Rollen
    daraus übernimmt der Hub nur, wenn die Verwaltung freischaltet – und nie die
    Rolle „Verwaltung“ selbst. */
-var teamliste=[];
+var teamliste=[], teamlisteStand='';
 var ROLLEN_TL=['mitarbeiter','responsable','admin'];
 function namensSchluessel(n){return String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,' ').trim().split(' ').filter(Boolean).sort().join(' ');}
 function tlPerson(x){
@@ -153,15 +183,30 @@ function tlPerson(x){
 function teamlisteLesen(){
   if(!ordner){teamliste=[];return Promise.resolve([]);}
   return dateiLesen(ordner,'teamliste.json').then(function(t){
-    var l=[];try{var o=JSON.parse(t||'null');if(o&&o.format==='cdse-teamliste'&&Array.isArray(o.personen)){l=o.personen.map(tlPerson).filter(Boolean);}}catch(e){}
-    teamliste=l;return l;
+    var l=[], stand='';try{var o=JSON.parse(t||'null');if(o&&o.format==='cdse-teamliste'&&Array.isArray(o.personen)){l=o.personen.map(tlPerson).filter(Boolean);stand=String(o.geaendert||'');}}catch(e){}
+    teamliste=l;teamlisteStand=stand;return l;
   },function(){teamliste=[];return [];});
 }
 function teamlisteSchreiben(personen){
   var l=(personen||[]).map(tlPerson).filter(Boolean);
   l.sort(function(a,b){return a.name.localeCompare(b.name,'de');});
   var o={format:'cdse-teamliste',version:1,geaendert:new Date().toISOString(),von:sitzung?sitzung.id:'',personen:l};
-  return ordnerBereit().then(function(){return dateiSchreiben(ordner,'teamliste.json',JSON.stringify(o,null,1));}).then(function(){teamliste=l;return l;});
+  /* unter der Schreibsperre und nur, wenn niemand die Liste inzwischen geändert hat */
+  return ordnerBereit().then(function(){
+    return speicher.sperre('teamliste',function(s){
+      return dateiLesen(ordner,'teamliste.json').then(function(t){
+        var x=null;try{x=JSON.parse(t||'null');}catch(e){}
+        var jetzt=x&&x.format==='cdse-teamliste'?String(x.geaendert||''):'';
+        if(jetzt&&jetzt!==teamlisteStand){
+          var k=x.von?kontoVon(x.von):null, e=fehler('Die Teamliste wurde inzwischen'+(k?' von '+k.name:'')+' geändert. Bitte die Seite neu laden und die Änderung noch einmal machen.');e.konflikt=true;throw e;
+        }
+        return s.noch().then(function(ja){
+          if(!ja){throw fehler('Das Speichern hat zu lange gedauert. Bitte noch einmal versuchen.');}
+          return dateiSchreiben(ordner,'teamliste.json',JSON.stringify(o,null,1));
+        });
+      });
+    });
+  }).then(function(){teamliste=l;teamlisteStand=o.geaendert;return l;});
 }
 function teamlisteEintrag(name){var k=namensSchluessel(name);if(!k){return null;}for(var i=0;i<teamliste.length;i++){if(namensSchluessel(teamliste[i].name)===k){return teamliste[i];}}return null;}
 function kontoMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<konten.length;i++){if(namensSchluessel(konten[i].name)===k){return konten[i];}}return null;}
@@ -1154,11 +1199,100 @@ function ordnerDa(){
   if(!ordner){return Promise.reject(fehler('Kein Zugriff auf den Hub-Ordner'));}
   return recht(ordner,false).then(function(r){if(r!=='granted'){throw fehler('Kein Zugriff auf den Hub-Ordner');}return ordner;});
 }
+/* ---------- Gemeinsame Dateien: Schreibsperre ----------
+   Ohne Server gibt es kein „Datei exklusiv öffnen“ über alle PCs hinweg. Deshalb eine kleine
+   Sperrdatei je Ziel (sperren/<ziel>.lock): lesen – fremde gültige Sperre? warten – eigene Sperre
+   schreiben – kurz warten – nachlesen; nur wer seine eigene Sperre wiederfindet, schreibt.
+   Wer länger arbeitet, gibt alle SPERR_PULS ein Lebenszeichen (puls). Ändert sich eine fremde Sperre
+   länger als SPERR_DAUER nicht (gemessen mit der eigenen Uhr), gilt sie als verwaist (PC abgestürzt,
+   Laptop zugeklappt). Vor dem Schreiben prüft der Hub, ob er die Sperre noch hat (s.noch()) – ein
+   aufgewachter Laptop überschreibt so nicht, was andere inzwischen gespeichert haben. */
+var P_SPERREN=['sperren'], SPERR_DAUER=15000, SPERR_PULS=4000, SPERR_BEDENKZEIT=160, SPERR_GEDULD=45000;
+function sperrName(ziel){return String(ziel||'').replace(/[^0-9A-Za-z._-]/g,'_').slice(0,80)+'.lock';}
+function sperrJson(t){try{return JSON.parse(t||'null');}catch(e){return null;}}
+/* nur Konto-ID und Zeitpunkt (keine Namen, keine Schülerdaten) */
+function sperrInhalt(token,puls){return JSON.stringify({token:token,puls:puls,von:sitzung?sitzung.id:'',z:new Date().toISOString()});}
+function sperreHolen(ziel){
+  var name=sperrName(ziel), token=neueSperrId(), start=Date.now(), fremd={};
+  function lies(){return speicher.lesen(P_SPERREN,name).then(sperrJson,function(){return null;});}
+  function versuch(n){
+    return lies().then(function(s){
+      if(s&&s.token&&s.token!==token){
+        /* fremde Sperre: wie lange sehen wir genau diesen Stand (Token und Lebenszeichen) schon? */
+        var stand=s.token+'|'+(s.puls|0);
+        if(!fremd[stand]){fremd[stand]=Date.now();}
+        if(Date.now()-fremd[stand]<SPERR_DAUER){
+          if(Date.now()-start>SPERR_GEDULD){var wer=s.von?kontoVon(s.von):null, e=fehler((wer?wer.name:'Jemand')+' speichert gerade. Bitte gleich noch einmal versuchen.');e.gesperrt=true;throw e;}
+          return warte(60+Math.random()*140*Math.min(n,6)).then(function(){return versuch(n+1);});
+        }
+      }
+      return speicher.schreiben(P_SPERREN,name,sperrInhalt(token,0))
+        .then(function(){return warte(SPERR_BEDENKZEIT);}).then(lies).then(function(s2){
+          if(s2&&s2.token===token){return gehalteneSperre(name,token);}
+          return warte(40+Math.random()*160).then(function(){return versuch(n+1);});
+        });
+    });
+  }
+  return versuch(1);
+}
+/* Eine gehaltene Sperre: gibt Lebenszeichen und kann prüfen, ob sie noch gilt */
+function gehalteneSperre(name,token){
+  var s={name:name,token:token,puls:0,bestaetigt:Date.now(),verloren:false,frei:false,laeuft:null};
+  function eigene(){return speicher.lesen(P_SPERREN,name).then(function(t){var x=sperrJson(t);return !!x&&x.token===token;},function(){return false;});}
+  s.timer=setInterval(function(){
+    if(s.frei||s.verloren||s.laeuft){return;}
+    var p=++s.puls;
+    s.laeuft=eigene().then(function(ja){
+      if(!ja){s.verloren=true;return;}
+      if(s.frei){return;}
+      return speicher.schreiben(P_SPERREN,name,sperrInhalt(token,p)).then(function(){s.bestaetigt=Date.now();});
+    }).catch(function(){}).then(function(){s.laeuft=null;});
+  },SPERR_PULS);
+  /* Gilt die Sperre noch? Kurz nach dem letzten Lebenszeichen ohne Netzzugriff, sonst nachlesen. */
+  s.noch=function(){
+    if(s.verloren){return Promise.resolve(false);}
+    if(Date.now()-s.bestaetigt<SPERR_DAUER/3){return Promise.resolve(true);}
+    return eigene().then(function(ja){if(ja){s.bestaetigt=Date.now();}else{s.verloren=true;}return ja;});
+  };
+  return s;
+}
+function sperreFrei(s){
+  if(!s){return Promise.resolve();}
+  s.frei=true;if(s.timer){clearInterval(s.timer);}
+  /* ein gerade laufendes Lebenszeichen abwarten – sonst entstünde die Sperrdatei nach dem Löschen neu */
+  return Promise.resolve(s.laeuft).then(function(){return speicher.lesen(P_SPERREN,s.name);}).then(function(t){
+    var x=sperrJson(t);
+    if(x&&x.token===s.token){return speicher.loeschen(P_SPERREN,s.name);}
+  }).catch(function(){});
+}
+function neueSperrId(){var b=rnd(9),c='';for(var i=0;i<b.length;i++){c+=ALPHA.charAt(b[i]&31);}return c;}
 var speicher={
   lesen:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return dateiLesen(d,name);});},
   schreiben:function(pfad,name,inhalt){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return dateiSchreiben(d,name,inhalt);});},
   liste:function(pfad){return ordnerDa().then(function(){return unterordner(pfad);}).then(eintraege).then(function(l){return l.map(function(h){return h.name;});});},
-  loeschen:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return d.removeEntry(name).catch(function(e){if(e&&e.name==='NotFoundError'){return;}throw e;});});}
+  loeschen:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return nochmal(function(){return d.removeEntry(name);}).catch(function(e){if(e&&e.name==='NotFoundError'){return;}throw e;});});},
+  /* Stand einer Datei (Änderungszeit, Größe) ohne den Inhalt zu lesen; null, wenn es sie nicht gibt */
+  info:function(pfad,name){return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){return dateiInfo(d,name);});},
+  /* alle Dateien eines Ordners mit Stand; .datei ist der Datei-Inhalt zum späteren Lesen (text()) */
+  listeInfo:function(pfad,filter){
+    return ordnerDa().then(function(){return unterordner(pfad);}).then(function(d){
+      return eintraege(d).then(function(l){
+        l=l.filter(function(h){return !filter||filter.test(h.name);});
+        var erg=[], i=0;
+        function weiter(){if(i>=l.length){return Promise.resolve();}var h=l[i++];
+          return nochmal(function(){return h.getFile();}).then(function(f){erg.push({name:h.name,lastModified:f.lastModified,size:f.size,datei:f});},function(){}).then(weiter);}
+        var w=[];for(var n=0;n<Math.min(8,l.length);n++){w.push(weiter());}
+        return Promise.all(w).then(function(){return erg;});
+      });
+    });
+  },
+  /* Arbeit unter der Schreibsperre ausführen (Sperre wird in jedem Fall wieder freigegeben).
+     arbeit(s) bekommt die Sperre; vor dem Schreiben mit s.noch() prüfen, ob sie noch gilt. */
+  sperre:function(ziel,arbeit){
+    return sperreHolen(ziel).then(function(s){
+      return Promise.resolve().then(function(){return arbeit(s);}).then(function(r){return sperreFrei(s).then(function(){return r;});},function(e){return sperreFrei(s).then(function(){throw e;});});
+    });
+  }
 };
 
 /* ---------- Start ---------- */

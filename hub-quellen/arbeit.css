@@ -43,6 +43,10 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-zurueck:hover{color:var(--accent);}
 .ar-zurueck .ic{width:16px;height:16px;}
 .ar-dkopf{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;padding-bottom:18px;margin-bottom:0;}
+.ar-fremd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:10px 14px;border-radius:var(--radius);background:#FFF7E0;border:1px solid #F0D48A;color:#5B4300;font-size:14px;}
+.ar-fremd[hidden]{display:none;}
+.ar-fremd .ic{color:#9A6B00;}
+.ar-fremd span{flex:1;min-width:200px;}
 .ar-dkopf>.ava{width:56px;height:56px;font-size:19px;}
 .ar-dtitel h1{margin:0;font-size:30px;line-height:1.15;font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-track);}
 .ar-dtitel p{margin:4px 0 10px;color:var(--muted);}

@@ -21,6 +21,17 @@
    Teams). Sie verhindern versehentliche Änderungen und machen alles
    nachvollziehbar; gegen absichtliches Manipulieren von Dateien schützen
    nur die Ordnerrechte auf O:\ (IT).
+
+   Mehrere Personen gleichzeitig: Gemeinsame Dateien (Dossier, Rollen,
+   Schlüsselring) ändert der Hub nur unter einer Schreibsperre (sperren/),
+   liest dabei immer den neuesten Stand, stempelt jede Fassung (rev, sid,
+   kette) und prüft nach dem Schreiben, ob die eigene Fassung angekommen
+   ist – sonst wendet er die Änderung auf den neuen Stand noch einmal an.
+   Schlüssel erneuern: neue Generation des gemeinsamen Schlüssels (ring.gen);
+   ältere Schlüssel liegen, mit dem neuen verschlossen, in ring.alt, damit
+   noch nicht umgeschlüsselte Dateien lesbar bleiben. Wem der Zugang
+   entzogen wurde, kann mit einer alten Kopie von schluessel.json nichts
+   Neues mehr lesen.
    ===================================================================== */
 window.CDSE_TEAM=(function(){
 'use strict';
@@ -30,7 +41,11 @@ var RSA={name:'RSA-OAEP',hash:'SHA-256'};
 var ALPHA='0123456789abcdefghjkmnpqrstvwxyz';
 var te=new TextEncoder(), td=new TextDecoder();
 var zustand={art:'unbekannt'};       /* unbekannt | kein-bereich | wartet | bereit | fehler */
-var ring=null, orgKey=null, mitgl=null, cache={}, cacheZeit=0;
+/* orgKey = gemeinsamer Schlüssel dieser Sitzung, orgGen = seine Generation (steht beim Schreiben im Dateikopf) */
+var ring=null, orgKey=null, orgGen=0, mitgl=null, cache={}, cacheZeit=0, keys={}, ringZeit=0, stand={};
+/* Stand des Schreibverfahrens für gemeinsame Dateien. Erhöhen, wenn sich das Schreiben ändert: Hub-Fenster
+   mit einem älteren Stand (z. B. seit Tagen offen) speichern dann nicht mehr, sondern bitten um Neuladen. */
+var HUB_STAND=2;
 
 /* ---------- Hilfen ---------- */
 function fehler(t){return new Error(t);}
@@ -74,21 +89,109 @@ function parallel(liste,n,fn){
   return Promise.all(w).then(function(){return erg;});
 }
 
+function warte(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+/* =====================================================================
+   Gleichzeitig arbeiten: Schreibsperre, Stempel, Prüfen nach dem Schreiben
+   ===================================================================== */
+/* Stempel einer Fassung: sid (neu) oder – bei älteren Dateien – rev und Zeitpunkt */
+function stempel(x){return (x&&x.sid)||('r'+((x&&x.rev)|0)+'@'+((x&&(x.geaendert||x.erstellt||x.gespeichert))||''));}
+function enthaelt(x,sid){return !!x&&(x.sid===sid||(Array.isArray(x.kette)&&x.kette.indexOf(sid)>=0));}
+/* Ein Hub-Fenster mit älterem Schreibverfahren darf nicht mehr speichern (siehe HUB_STAND) */
+function standPruefen(r){
+  if(r&&(r.hubStand|0)>HUB_STAND){var e=fehler('Im Hub-Ordner gibt es eine neuere Version des Hubs. Bitte die Seite neu laden (F5) – danach kann wieder gespeichert werden.');e.veraltet=true;throw e;}
+}
+/* Lesen – ändern – schreiben unter der Sperre. o = {ziel, lesen(), schreiben(doc), anwenden(doc) → false | Wert | Promise, vorher()}.
+   Direkt vor dem Schreiben: Gilt die Sperre noch? (Ein Laptop, der mitten im Speichern zugeklappt wurde, hat sie
+   inzwischen verloren – dann alles noch einmal von vorn.) Nach dem Schreiben wird nachgelesen: Ist die eigene
+   Fassung nicht angekommen (z. B. weil ein PC mit einer älteren Hub-Datei dazwischen gespeichert hat), wird die
+   Änderung auf den neuen Stand noch einmal angewendet. */
+function sicherAendern(o,versuch){
+  versuch=versuch||1;
+  return K.speicher.sperre(o.ziel,function(s){
+    function runde(n){
+      return Promise.resolve(o.vorher?o.vorher():null).then(function(){standPruefen(ring);return o.lesen();}).then(function(doc){
+        var basis=stempel(doc);
+        return Promise.resolve(o.anwenden(doc)).then(function(erg){
+          if(erg===false){return {doc:doc,geaendert:false};}
+          doc.rev=(doc.rev|0)+1;doc.sid=neueId(10);doc.kette=(Array.isArray(doc.kette)?doc.kette:[]).concat([basis]).slice(-40);
+          var meine=doc.sid;
+          return (s&&s.noch?s.noch():Promise.resolve(true)).then(function(ja){
+            if(!ja){var e=fehler('Die Schreibsperre ist abgelaufen.');e.sperreWeg=true;throw e;}
+            return o.schreiben(doc);
+          }).then(function(){return o.lesen();}).then(function(pruef){
+            if(enthaelt(pruef,meine)){return {doc:doc,geaendert:true,erg:erg};}
+            if(n>=4){var e=fehler('Das Speichern ließ sich nicht bestätigen. Bitte noch einmal versuchen.');e.konflikt=true;throw e;}
+            return warte(80+Math.random()*240).then(function(){return runde(n+1);});
+          });
+        });
+      });
+    }
+    return runde(1);
+  }).catch(function(e){
+    if(e&&e.sperreWeg&&versuch<3){return sicherAendern(o,versuch+1);}
+    if(e&&e.sperreWeg){e.message='Das Speichern hat zu lange gedauert. Bitte noch einmal versuchen.';}
+    throw e;
+  });
+}
+/* Schlüssel je Generation: aktuelle aus dem eigenen Eintrag im Ring, ältere aus ring.alt (mit dem aktuellen verschlossen) */
+function aktGen(){return ring?((ring.gen|0)||1):1;}
+function boxGen(b){return (b&&(b.gen|0))||1;}
+function keyFuer(b,tiefe){
+  var g=boxGen(b);
+  if(orgKey&&g===orgGen){return Promise.resolve(orgKey);}
+  if(keys[g]){return Promise.resolve(keys[g]);}
+  /* neuere Datei als der eigene Schlüssel, oder der Ring ist schon weiter: erst den aktuellen Schlüssel holen */
+  if(g>orgGen||orgGen!==aktGen()){
+    if(tiefe){return Promise.reject(fehler('Der Schlüssel für diese Datei fehlt noch. Bitte die Seite neu laden.'));}
+    return ringNeu().then(function(){return keyFuer(b,1);});
+  }
+  var a=ring&&ring.alt&&ring.alt[g];
+  if(!a||!orgKey){return Promise.reject(fehler('Für diese Datei fehlt ein älterer Schlüssel. Bitte die Verwaltung fragen.'));}
+  return aesOeffnen(orgKey,a).then(function(o){return aesKey(unb64(o.k),false);}).then(function(k){keys[g]=k;return k;});
+}
+/* Ring neu lesen; hat sich die Generation geändert, den neuen Schlüssel holen. Fehlt der eigene Eintrag, ist der Zugang entzogen. */
+function ringNeu(){
+  var me=ich();
+  return ringLesen().then(function(r){
+    if(!r||r.format!=='cdse-schluesselring'){throw fehler('Der Schlüsselring fehlt im Hub-Ordner.');}
+    ringZeit=Date.now();
+    if(!r.fuer||!r.fuer[me.id]){
+      ring=r;orgKey=null;orgGen=0;keys={};cache={};cacheZeit=0;stand={};zustand={art:'wartet'};
+      idbSet('team-schluessel',null);
+      var e=fehler('Dein Zugang zum Schülerbereich wurde entzogen.');e.entzogen=true;throw e;
+    }
+    ring=r;
+    if(!orgKey||orgGen!==aktGen()){orgKey=null;keys={};return schluesselHolen(me,false).then(function(){return r;});}
+    return r;
+  });
+}
+function ringAktuell(maxAlter){return (maxAlter!=null&&Date.now()-ringZeit<maxAlter)?Promise.resolve(ring):ringNeu();}
+
 /* =====================================================================
    Bereich: Schlüsselring, Freischalten, Rollen
    ===================================================================== */
 function ringLesen(){return K.speicher.lesen(P_BEREICH,'schluessel.json').then(json);}
 function ringSchreiben(r){return K.speicher.schreiben(P_BEREICH,'schluessel.json',JSON.stringify(r,null,1));}
 function mitgliederLesen(){
-  return K.speicher.lesen(P_BEREICH,'mitglieder.cdse').then(function(t){var b=json(t);return b?aesOeffnen(orgKey,b):{v:1,rev:0,mitglieder:{},verlauf:[]};});
+  return K.speicher.lesen(P_BEREICH,'mitglieder.cdse').then(function(t){var b=json(t);return b?keyFuer(b).then(function(k){return aesOeffnen(k,b);}):{v:1,rev:0,mitglieder:{},verlauf:[]};});
 }
-function mitgliederSchreiben(m){return aesVersiegeln(orgKey,m,{format:'cdse-mitglieder',version:1}).then(function(t){return K.speicher.schreiben(P_BEREICH,'mitglieder.cdse',t);});}
+function mitgliederSchreiben(m){return aesVersiegeln(orgKey,m,{format:'cdse-mitglieder',version:1,gen:orgGen}).then(function(t){return K.speicher.schreiben(P_BEREICH,'mitglieder.cdse',t);});}
 function mitgliederAendern(fn,text){
-  return mitgliederLesen().then(function(m){
-    fn(m);m.rev=(m.rev|0)+1;
-    m.verlauf=(m.verlauf||[]).concat([{z:jetzt(),v:ich().id,t:text}]).slice(-300);
-    return mitgliederSchreiben(m).then(function(){mitgl=m;return m;});
-  });
+  return sicherAendern({ziel:'mitglieder',vorher:function(){return ringAktuell(15000);},lesen:mitgliederLesen,schreiben:mitgliederSchreiben,
+    anwenden:function(m){
+      return Promise.resolve(fn(m)).then(function(r){
+        if(r===false){return false;}
+        m.verlauf=(m.verlauf||[]).concat([{z:jetzt(),v:ich().id,t:text}]).slice(-300);
+        return true;
+      });
+    }}).then(function(x){mitgl=x.doc;return x.doc;});
+}
+/* Schlüsselring sicher ändern (Freischalten, Entziehen, Schlüssel erneuern) */
+function ringAendern(anwenden){
+  return sicherAendern({ziel:'schluessel',
+    lesen:function(){return ringLesen().then(function(r){if(!r||r.format!=='cdse-schluesselring'){throw fehler('Der Schülerbereich ist noch nicht eingerichtet');}standPruefen(r);return r;});},
+    schreiben:ringSchreiben,anwenden:anwenden}).then(function(x){ring=x.doc;ringZeit=Date.now();return x;});
 }
 /* Beim Öffnen: Wo stehe ich? Liefert den Zustand. */
 function laden(opt){
@@ -96,24 +199,32 @@ function laden(opt){
   var me=ich();
   if(!me){zustand={art:'unbekannt'};return Promise.resolve(zustand);}
   return ringLesen().then(function(r){
-    ring=r;
+    ring=r;ringZeit=Date.now();
     if(!r||r.format!=='cdse-schluesselring'){zustand={art:'kein-bereich'};return zustand;}
-    if(!r.fuer||!r.fuer[me.id]){orgKey=null;zustand={art:'wartet'};return zustand;}
-    return schluesselHolen(me,opt.leise).then(function(){return mitgliederLesen();}).then(function(m){mitgl=m;zustand={art:'bereit'};rolleFuerApps();return zustand;});
+    if(!r.fuer||!r.fuer[me.id]){orgKey=null;orgGen=0;zustand={art:'wartet'};return zustand;}
+    /* Schlüssel inzwischen erneuert? Dann den alten dieser Sitzung nicht mehr zum Schreiben verwenden */
+    if(orgKey&&orgGen!==aktGen()){orgKey=null;keys={};}
+    return schluesselHolen(me,opt.leise).then(function(){return mitgliederLesen();}).then(function(m){mitgl=m;zustand={art:'bereit'};rolleFuerApps();standMelden();return zustand;});
   }).catch(function(e){if(e&&e.abgebrochen){zustand={art:'gesperrt'};return zustand;}zustand={art:'fehler',text:(e&&e.message)||String(e)};return zustand;});
+}
+/* Den eigenen Stand des Schreibverfahrens im Ring vermerken (einmalig, im Hintergrund) */
+function standMelden(){
+  if(!ring||(ring.hubStand|0)>=HUB_STAND){return;}
+  ringAendern(function(r){if((r.hubStand|0)>=HUB_STAND){return false;}r.hubStand=HUB_STAND;return true;}).catch(function(){});
 }
 /* Den gemeinsamen Schlüssel holen: aus der Sitzung oder mit dem privaten Schlüssel */
 function schluesselHolen(me,leise){
-  if(orgKey){return Promise.resolve(orgKey);}
+  if(orgKey&&orgGen===aktGen()){return Promise.resolve(orgKey);}
+  var g=aktGen(), eintrag=ring.fuer[me.id];
   return idbGet('team-schluessel').then(function(x){
-    if(x&&x.key&&x.sid===K.sitzungsId()&&x.konto===me.id&&x.gen===(ring.gen|0)){orgKey=x.key;return orgKey;}
+    if(x&&x.key&&x.sid===K.sitzungsId()&&x.konto===me.id&&((x.gen|0)||1)===g){orgKey=x.key;orgGen=g;keys[g]=orgKey;return orgKey;}
     /* im Hintergrund nie nach dem Passwort fragen */
     if(leise&&!K.privatDa()){var e=fehler('Passwort nötig');e.abgebrochen=true;throw e;}
     return K.privat('Für die Schülerdaten').then(function(priv){
-      return crypto.subtle.decrypt(RSA,priv,unb64(ring.fuer[me.id].k)).then(function(raw){
+      return crypto.subtle.decrypt(RSA,priv,unb64(eintrag.k)).then(function(raw){
         return aesKey(new Uint8Array(raw),false).then(function(k){
-          orgKey=k;
-          return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:ring.gen|0,key:k}).then(function(){return k;});
+          orgKey=k;orgGen=g;keys[g]=k;
+          return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:g,key:k}).then(function(){return k;});
         });
       });
     });
@@ -133,27 +244,28 @@ function rolleFuerApps(){
   }catch(e){}
 }
 /* Beim Abmelden/Sperren alles vergessen */
-function vergessen(){ring=null;orgKey=null;mitgl=null;cache={};cacheZeit=0;zustand={art:'unbekannt'};return idbSet('team-schluessel',null);}
+function vergessen(){ring=null;orgKey=null;orgGen=0;mitgl=null;cache={};cacheZeit=0;keys={};ringZeit=0;stand={};zustand={art:'unbekannt'};return idbSet('team-schluessel',null);}
 /* Erste Einrichtung: wer das macht, wird Verwaltung (Admin) */
 function einrichten(){
   var me=ich();
-  return ringLesen().then(function(r){
+  return K.speicher.sperre('schluessel',function(){return ringLesen().then(function(r){
     if(r&&r.format==='cdse-schluesselring'){throw fehler('Der Schülerbereich ist schon eingerichtet');}
     var raw=rnd(32);
     return K.kontoPub(me.id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,raw);}).then(function(w){
-      ring={format:'cdse-schluesselring',version:1,gen:1,erstellt:jetzt(),erstelltVon:me.id,fuer:{}};
+      ring={format:'cdse-schluesselring',version:1,gen:1,hubStand:HUB_STAND,erstellt:jetzt(),erstelltVon:me.id,fuer:{}};
       ring.fuer[me.id]={k:b64(w),von:me.id,am:jetzt()};
       return aesKey(raw,false);
     }).then(function(k){
-      raw.fill(0);orgKey=k;
+      raw.fill(0);orgKey=k;orgGen=1;
       var m={v:1,rev:1,mitglieder:{},verlauf:[{z:jetzt(),v:me.id,t:'Schülerbereich eingerichtet'}]};
       m.mitglieder[me.id]={rolle:'admin',seit:jetzt(),von:me.id};
+      keys={1:k};ringZeit=Date.now();
       return ringSchreiben(ring).then(function(){return mitgliederSchreiben(m);}).then(function(){
         mitgl=m;zustand={art:'bereit'};
         return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:1,key:k});
       });
     });
-  });
+  });});
 }
 function rolle(id){
   if(!ring||!ring.fuer||!ring.fuer[id]){return null;}
@@ -172,14 +284,14 @@ function freischalten(id){
   if(!darfFreischalten()){return Promise.reject(fehler('Freischalten dürfen die Verwaltung und die Responsables'));}
   var me=ich();
   return K.privat('Zum Freischalten').then(function(priv){
-    return ringLesen().then(function(r){
-      ring=r;
-      if(r.fuer[id]){return;}
+    return ringAendern(function(r){
+      if(r.fuer[id]){return false;}
+      if(!r.fuer[me.id]){throw fehler('Dein eigener Zugang fehlt im Schlüsselring.');}
       return crypto.subtle.decrypt(RSA,priv,unb64(r.fuer[me.id].k)).then(function(raw){
         return K.kontoPub(id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,raw);}).then(function(w){
           new Uint8Array(raw).fill(0);
           r.fuer[id]={k:b64(w),von:me.id,am:jetzt()};
-          return ringSchreiben(r);
+          return true;
         });
       });
     });
@@ -196,7 +308,7 @@ function freischalten(id){
 function entziehen(id){
   if(!istAdmin()){return Promise.reject(fehler('Nur die Verwaltung kann den Zugang entziehen'));}
   if(id===ich().id){return Promise.reject(fehler('Den eigenen Zugang kannst du nicht entziehen'));}
-  return ringLesen().then(function(r){ring=r;delete r.fuer[id];return ringSchreiben(r);}).then(function(){
+  return ringAendern(function(r){if(!r.fuer||!r.fuer[id]){return false;}delete r.fuer[id];return true;}).then(function(){
     var k=K.konten().filter(function(x){return x.id===id;})[0];
     return mitgliederAendern(function(m){delete m.mitglieder[id];},'Zugang entzogen: '+(k?k.name:id));
   });
@@ -212,6 +324,119 @@ function rolleSetzen(id,neu){
   var namen={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
   return mitgliederAendern(function(m){var e=m.mitglieder[id]||(m.mitglieder[id]={seit:jetzt(),von:ich().id});e.rolle=neu;e.geaendert=jetzt();},'Rolle von '+(k?k.name:id)+': '+namen[neu]);
 }
+/* =====================================================================
+   Schlüssel erneuern (Verwaltung) – z. B. nachdem jemandem der Zugang entzogen wurde.
+   1. Neuer Zufallsschlüssel, Generation +1, für alle verbliebenen Konten verschlossen.
+   2. Alle älteren Schlüssel mit dem neuen verschlossen in ring.alt (noch nicht umgeschlüsselte
+      Dateien bleiben lesbar – für alle, die den neuen Schlüssel haben).
+   3. Alle Dateien (Dossiers, Anhänge, Rollen) mit dem neuen Schlüssel neu verschlüsseln.
+   Andere PCs bemerken die neue Generation beim nächsten Speichern (Ring wird unter der Sperre
+   gelesen) und holen sich den neuen Schlüssel selbst. Bricht der Vorgang ab, macht
+   „Umschlüsseln fortsetzen“ weiter; bis dahin bleibt alles lesbar.
+   ===================================================================== */
+function schluesselErneuern(fortschritt){
+  if(!istAdmin()){return Promise.reject(fehler('Den Schlüssel erneuert die Verwaltung.'));}
+  var me=ich(), neuRoh=rnd(32), ausgelassen=[];
+  /* Für jedes Konto im Ring den neuen Schlüssel verschließen. Fehlt ein Konto in der eigenen Liste
+     (gerade erst angelegt), die Konten einmal neu laden – ausgelassen wird nur, wessen Konto-Datei fehlt. */
+  function verschliessen(ids,fuer,nochmal){
+    var fehlt=[];
+    return parallel(ids,8,function(id){
+      return K.kontoPub(id).then(function(pub){return crypto.subtle.encrypt(RSA,pub,neuRoh);}).then(function(w){fuer[id]={k:b64(w),von:me.id,am:jetzt()};},function(){fehlt.push(id);});
+    }).then(function(){
+      if(!fehlt.length){return;}
+      if(!nochmal){ausgelassen=ausgelassen.concat(fehlt);return;}
+      return K.kontenNeu().then(function(){return verschliessen(fehlt,fuer,false);},function(){ausgelassen=ausgelassen.concat(fehlt);});
+    });
+  }
+  return K.privat('Zum Erneuern des Schlüssels').then(function(priv){
+    return ringAendern(function(r){
+      ausgelassen=[];
+      var gAlt=(r.gen|0)||1, gNeu=gAlt+1;
+      if(!r.fuer||!r.fuer[me.id]){throw fehler('Dein eigener Zugang fehlt im Schlüsselring.');}
+      return crypto.subtle.decrypt(RSA,priv,unb64(r.fuer[me.id].k)).then(function(ab){
+        var altRoh=new Uint8Array(ab);
+        return Promise.all([aesKey(altRoh,false),aesKey(neuRoh,false)]).then(function(ks){
+          var kAlt=ks[0], kNeu=ks[1], alt={};
+          return Promise.all(Object.keys(r.alt||{}).map(function(g){
+            return aesOeffnen(kAlt,r.alt[g]).then(function(o){return aesVersiegeln(kNeu,{k:o.k},{gen:+g});}).then(function(t){alt[g]=JSON.parse(t);});
+          })).then(function(){return aesVersiegeln(kNeu,{k:b64(altRoh)},{gen:gAlt});}).then(function(t){
+            alt[gAlt]=JSON.parse(t);altRoh.fill(0);
+            var fuer={};
+            return verschliessen(Object.keys(r.fuer),fuer,true).then(function(){
+              if(!fuer[me.id]){throw fehler('Der neue Schlüssel ließ sich für dein eigenes Konto nicht verschließen.');}
+              r.fuer=fuer;r.alt=alt;r.gen=gNeu;r.erneuert={am:jetzt(),von:me.id,gen:gNeu};
+              return true;
+            });
+          });
+        });
+      });
+    });
+  }).then(function(x){
+    var r=x.doc, g=(r.gen|0)||1;
+    return aesKey(neuRoh,false).then(function(k){
+      neuRoh.fill(0);
+      orgKey=k;orgGen=g;keys={};keys[g]=k;
+      return idbSet('team-schluessel',{sid:K.sitzungsId(),konto:me.id,gen:g,key:k});
+    }).then(function(){return umschluesseln(fortschritt);}).then(function(z){
+      z.gen=r.gen|0;z.ausgelassen=ausgelassen.length;
+      return mitgliederAendern(function(){},'Schlüssel erneuert (Generation '+z.gen+'): '+z.neu+' von '+z.gesamt+' Dateien neu verschlüsselt'+(z.fehler?', '+z.fehler+' noch offen':'')+(ausgelassen.length?', '+ausgelassen.length+' Konten ohne Konto-Datei nicht mehr freigeschaltet':'')).then(function(){return z;});
+    });
+  });
+}
+/* Alle Dateien, die noch mit einem älteren Schlüssel verschlüsselt sind, mit dem aktuellen neu verschlüsseln */
+function umschluesseln(fortschritt){
+  istBereit();
+  var g=orgGen, z={neu:0,gesamt:0,fehler:0};
+  return Promise.all([K.speicher.liste(P_SCHUELER),K.speicher.liste(P_ANHANG).catch(function(){return [];})]).then(function(l){
+    var aufgaben=[{art:'mitglieder',name:'mitglieder.cdse'}]
+      .concat(l[0].filter(function(n){return /^[0-9a-z]+\.cdse$/.test(n);}).map(function(n){return {art:'dossier',name:n};}))
+      .concat(l[1].filter(function(n){return /\.cdsa$/.test(n);}).map(function(n){return {art:'anhang',name:n};}));
+    z.gesamt=aufgaben.length;var fertig=0;
+    if(fortschritt){fortschritt(0,z.gesamt);}
+    return parallel(aufgaben,8,function(a){
+      return umschluesselnEins(a,g).then(function(neu){if(neu){z.neu++;}},function(){z.fehler++;}).then(function(){fertig++;if(fortschritt){fortschritt(fertig,z.gesamt);}});
+    }).then(function(){return z;});
+  });
+}
+/* Eine Datei unter ihrer Schreibsperre neu verschlüsseln (Inhalt bleibt gleich) */
+function umschluesselnEins(a,g){
+  function unterSperre(ziel,pfad,pruefen,schreiben){
+    return K.speicher.sperre(ziel,function(s){
+      return K.speicher.lesen(pfad,a.name).then(function(t){
+        var b=json(t);if(!b||!pruefen(b)||boxGen(b)===g){return false;}
+        return keyFuer(b).then(function(k){return aesOeffnen(k,b);}).then(function(inhalt){
+          return s.noch().then(function(ja){
+            if(!ja||orgGen!==g){throw fehler('Die Datei wurde nicht neu verschlüsselt.');}
+            return schreiben(inhalt,b);
+          });
+        }).then(function(){return true;});
+      });
+    });
+  }
+  if(a.art==='mitglieder'){
+    return unterSperre('mitglieder',P_BEREICH,function(){return true;},mitgliederSchreiben);
+  }
+  if(a.art==='dossier'){
+    var id=a.name.replace(/\.cdse$/,'');
+    return unterSperre('dossier-'+id,P_SCHUELER,function(b){return b.format==='cdse-dossier';},function(d){return dossierSchreiben(d).then(function(){cache[id]=d;});});
+  }
+  return unterSperre(anhangSperre(a.name),P_ANHANG,function(b){return b.format==='cdse-anhang';},function(o,b){
+    return aesVersiegeln(orgKey,o,{format:'cdse-anhang',version:1,dossier:b.dossier,id:b.id,gen:orgGen}).then(function(t2){return K.speicher.schreiben(P_ANHANG,a.name,t2);});
+  });
+}
+/* Neue Datei mit dem aktuellen Schlüssel schreiben. Kam währenddessen eine neue Schlüssel-Generation dazu
+   (die Verwaltung erneuert gerade den Schlüssel), wird die Datei gleich mit dem neuen Schlüssel neu
+   verschlüsselt – so bleibt keine neue Datei mit dem alten Schlüssel zurück. */
+function neuSchreiben(schreib,aufgabe){
+  return ringAktuell().then(function(){
+    standPruefen(ring);
+    var g=orgGen;
+    return schreib().then(function(){return ringAktuell();}).then(function(){return orgGen===g?null:umschluesselnEins(aufgabe,orgGen);});
+  });
+}
+function anhangSperre(name){return 'anhang-'+String(name).replace(/\.cdsa$/,'');}
+function schluesselStand(){return {gen:aktGen(),erneuert:(ring&&ring.erneuert)||null,alteGenerationen:Object.keys((ring&&ring.alt)||{}).length};}
 function mitglieder(){
   var m=(mitgl&&mitgl.mitglieder)||{};
   return K.konten().map(function(k){var e=m[k.id];k.rolle=rolle(k.id);k.freigeschaltet=!!(ring&&ring.fuer&&ring.fuer[k.id]);k.seit=e&&e.seit;return k;});
@@ -227,10 +452,10 @@ function dossierLesen(id){
   return K.speicher.lesen(P_SCHUELER,dateiName(id)).then(function(t){
     var b=json(t);if(!b){throw fehler('Dossier nicht gefunden');}
     if(b.format!=='cdse-dossier'){throw fehler('Unbekanntes Dateiformat');}
-    return aesOeffnen(orgKey,b);
+    return keyFuer(b).then(function(k){return aesOeffnen(k,b);});
   });
 }
-function dossierSchreiben(d){return aesVersiegeln(orgKey,d,{format:'cdse-dossier',version:1,id:d.id,gen:ring.gen|0}).then(function(t){return K.speicher.schreiben(P_SCHUELER,dateiName(d.id),t);});}
+function dossierSchreiben(d){return aesVersiegeln(orgKey,d,{format:'cdse-dossier',version:1,id:d.id,gen:orgGen}).then(function(t){return K.speicher.schreiben(P_SCHUELER,dateiName(d.id),t);});}
 /* Anhänge (z. B. Arztbriefe): je Anhang eine eigene verschlüsselte Datei neben den Dossiers,
    damit die Dossiers klein bleiben und die Schülerliste schnell lädt */
 function anhangName(did,aid){return String(did).replace(/[^0-9a-z]/g,'')+'-'+String(aid).replace(/[^0-9a-z]/g,'')+'.cdsa';}
@@ -238,26 +463,32 @@ function anhangSpeichern(did,datei){
   istBereit();datei=datei||{};
   var bytes=datei.bytes instanceof Uint8Array?datei.bytes:new Uint8Array(datei.bytes||[]);
   if(bytes.length>12*1024*1024){return Promise.reject(fehler('Die Datei ist zu groß (höchstens 12 MB).'));}
-  var id=neueId(10), obj={name:String(datei.name||'Datei').slice(0,200),typ:String(datei.typ||''),b64:b64(bytes)};
-  return aesVersiegeln(orgKey,obj,{format:'cdse-anhang',version:1,dossier:did,id:id,gen:ring.gen|0})
-    .then(function(t){return K.speicher.schreiben(P_ANHANG,anhangName(did,id),t);})
-    .then(function(){return {id:id,name:obj.name,typ:obj.typ,groesse:bytes.length};});
+  var id=neueId(10), obj={name:String(datei.name||'Datei').slice(0,200),typ:String(datei.typ||''),b64:b64(bytes)}, n=anhangName(did,id);
+  return neuSchreiben(function(){
+    return aesVersiegeln(orgKey,obj,{format:'cdse-anhang',version:1,dossier:did,id:id,gen:orgGen}).then(function(t){return K.speicher.schreiben(P_ANHANG,n,t);});
+  },{art:'anhang',name:n}).then(function(){return {id:id,name:obj.name,typ:obj.typ,groesse:bytes.length};});
 }
 function anhangLesen(did,aid){
   istBereit();
   return K.speicher.lesen(P_ANHANG,anhangName(did,aid)).then(function(t){
     var b=json(t);if(!b||b.format!=='cdse-anhang'){throw fehler('Die Datei wurde nicht gefunden.');}
-    return aesOeffnen(orgKey,b);
+    return keyFuer(b).then(function(k){return aesOeffnen(k,b);});
   }).then(function(o){return {name:o.name,typ:o.typ,bytes:unb64(o.b64)};});
 }
-function anhangLoeschen(did,aid){istBereit();return K.speicher.loeschen(P_ANHANG,anhangName(did,aid));}
+function anhangLoeschen(did,aid){istBereit();var n=anhangName(did,aid);return K.speicher.sperre(anhangSperre(n),function(){return K.speicher.loeschen(P_ANHANG,n);});}
 /* Alle Dossiers laden (für die Liste). Mit Zwischenspeicher für die Sitzung. */
+/* Nur Dateien mit neuem Stand (Änderungszeit oder Größe) werden neu gelesen und entschlüsselt –
+   bei vielen Dossiers und vielen Personen im Netz spart das fast alle Lesezugriffe. */
+function ausBox(t){var b=json(t);if(!b||b.format!=='cdse-dossier'){throw fehler('Dossier nicht lesbar');}return keyFuer(b).then(function(k){return aesOeffnen(k,b);});}
 function alleDossiers(neu){
   istBereit();
   if(!neu&&cacheZeit&&Date.now()-cacheZeit<60000){return Promise.resolve(Object.keys(cache).map(function(k){return cache[k];}));}
-  return K.speicher.liste(P_SCHUELER).then(function(namen){
-    namen=namen.filter(function(n){return /^[0-9a-z]+\.cdse$/.test(n);});
-    return parallel(namen,6,function(n){return dossierLesen(n.replace(/\.cdse$/,''));});
+  return K.speicher.listeInfo(P_SCHUELER,/^[0-9a-z]+\.cdse$/).then(function(infos){
+    return parallel(infos,6,function(x){
+      var id=x.name.replace(/\.cdse$/,''), st=stand[x.name];
+      if(st&&cache[id]&&st.m===x.lastModified&&st.s===x.size){return cache[id];}
+      return x.datei.text().catch(function(){return K.speicher.lesen(P_SCHUELER,x.name);}).then(ausBox).then(function(d){stand[x.name]={m:x.lastModified,s:x.size};return d;});
+    });
   }).then(function(l){
     var neuCache={}, kaputt=0;
     l.forEach(function(d){if(d&&d.id&&!d.fehler){neuCache[d.id]=d;}else{kaputt++;}});
@@ -289,25 +520,56 @@ function neuesDossier(person,opt){
     verantwortlich:[me.id],rechte:{},profil:null,einschaetzungen:[],eintraege:[],
     verlauf:[{z:t,v:me.id,a:'angelegt',t:opt.fiche?'Dossier angelegt (aus der Fiche de renseignement)':'Dossier angelegt'}]};
   if(opt.fiche){d.fiche=opt.fiche;}
-  return dossierSchreiben(d).then(function(){cache[id]=d;return d;});
+  return neuSchreiben(function(){return dossierSchreiben(d);},{art:'dossier',name:dateiName(id)}).then(function(){cache[id]=d;return d;});
 }
 /* Ändern: immer auf dem neuesten Stand der Datei, Rechte prüfen, Verlauf schreiben.
    fn(d, recht) ändert d und liefert den Text für den Verlauf (oder wirft einen Fehler). */
 function aendern(id,fn,art){
   istBereit();
   var me=ich();
-  return dossierLesen(id).then(function(d){
-    var r=rechte(d,me.id);
-    var text=fn(d,r);
-    if(text===false){return d;}
-    d.rev=(d.rev|0)+1;d.geaendert=jetzt();d.geaendertVon=me.id;
-    d.verlauf=(d.verlauf||[]).concat([{z:d.geaendert,v:me.id,a:art||'geaendert',t:String(text||'Geändert')}]);
-    /* kurz vor dem Schreiben prüfen, ob inzwischen jemand anderes gespeichert hat */
-    return dossierLesen(id).then(function(frisch){
-      if((frisch.rev|0)!==(d.rev|0)-1){var e=fehler('Das Dossier wurde gerade von jemand anderem geändert. Bitte noch einmal versuchen.');e.konflikt=true;throw e;}
-      return dossierSchreiben(d);
-    }).then(function(){cache[id]=d;return d;});
+  /* Unter der Schreibsperre des Dossiers: Ring prüfen (neuer Schlüssel? Zugang entzogen?), neuesten Stand lesen,
+     Änderung anwenden, schreiben, nachlesen. Speichern zwei Personen gleichzeitig, kommt die zweite einfach danach dran. */
+  return sicherAendern({ziel:'dossier-'+id,vorher:function(){return ringAktuell();},
+    lesen:function(){return dossierLesen(id);},
+    schreiben:dossierSchreiben,
+    anwenden:function(d){
+      var r=rechte(d,me.id), text=fn(d,r);
+      if(text===false){return false;}
+      d.geaendert=jetzt();d.geaendertVon=me.id;
+      d.verlauf=(d.verlauf||[]).concat([{z:d.geaendert,v:me.id,a:art||'geaendert',t:String(text||'Geändert')}]);
+      return true;
+    }}).then(function(x){cache[id]=x.doc;return x.doc;});
+}
+/* Für das offene Dossier: Hat jemand anderes (oder derselbe Mensch an einem anderen PC) inzwischen gespeichert? */
+function pruefen(id){
+  istBereit();
+  var dn=dateiName(id);
+  return K.speicher.info(P_SCHUELER,dn).then(function(x){
+    if(!x){return {neu:false,geloescht:true};}
+    var st=stand[dn];
+    if(st&&st.m===x.lastModified&&st.s===x.size){return {neu:false};}
+    return x.datei.text().catch(function(){return K.speicher.lesen(P_SCHUELER,dn);}).then(ausBox).then(function(d){
+      stand[dn]={m:x.lastModified,s:x.size};
+      var alt=cache[id], anders=!!alt&&stempel(alt)!==stempel(d)&&(d.rev|0)>=(alt.rev|0);
+      cache[id]=d;
+      return {neu:anders,dossier:d,von:d.geaendertVon||'',vonName:d.geaendertVon?name(d.geaendertVon):'',wann:d.geaendert||'',eigen:d.geaendertVon===ich().id};
+    });
   });
+}
+/* Drei-Wege-Abgleich für Formulare: Nur was im Formular wirklich geändert wurde (neu ≠ basis = Stand beim Öffnen),
+   kommt in den aktuellen Stand der Datei. Was andere inzwischen an anderen Feldern gespeichert haben, bleibt so
+   erhalten. Ohne basis (Übernahmen, ältere Aufrufe) wird wie bisher alles übernommen. Listen zählen als ein Feld. */
+function gleich(a,b){return JSON.stringify(a===undefined?null:a)===JSON.stringify(b===undefined?null:b);}
+function istObj(x){return !!x&&typeof x==='object'&&!Array.isArray(x);}
+function abgleich(aktuell,neu,basis){
+  if(basis===undefined){return istObj(aktuell)&&istObj(neu)?Object.assign({},aktuell,neu):neu;}
+  if(!istObj(neu)||!istObj(basis)){return neu;}
+  var erg=istObj(aktuell)?Object.assign({},aktuell):{};
+  Object.keys(neu).forEach(function(k){
+    if(gleich(neu[k],basis[k])){return;}
+    erg[k]=istObj(neu[k])&&istObj(basis[k])?abgleich(erg[k],neu[k],basis[k]):neu[k];
+  });
+  return erg;
 }
 function brauche(r,was){if(!r[was]){throw fehler(was==='bearbeiten'?'Du hast für dieses Dossier nur Leserechte. Bitte die Fallverantwortlichen um ein Schreibrecht.':'Dafür fehlt dir das Recht. Das dürfen die Fallverantwortlichen, die Responsables und die Verwaltung.');}}
 function name(id){var k=K.konten().filter(function(x){return x.id===id;})[0];return k?k.name:'(gelöschtes Konto)';}
@@ -325,7 +587,12 @@ function kmMontag(iso){var t=new Date(iso+'T12:00:00'), w=t.getDay();t.setDate(t
 var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
 var BERICHT_ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
 var ops={
-  person:function(id,werte){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.person=Object.assign({},d.person,werte);return 'Stammdaten geändert';},'person');},
+  person:function(id,werte,basis){return aendern(id,function(d,r){
+    brauche(r,'bearbeiten');
+    var neu=abgleich(d.person||{},werte,basis);
+    if(basis!==undefined&&gleich(neu,d.person||{})){return false;}
+    d.person=neu;return 'Stammdaten geändert';
+  },'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
     brauche(r,'status');if(d.status===status){return false;}
     d.status=status;d.statusGrund=grund||'';d.statusSeit=datum||jetzt().slice(0,10);
@@ -358,13 +625,17 @@ var ops={
     }
     return 'Eintrag: '+(e.titel||e.art||'Notiz')+(wv?' – Wiedervorlage am '+wv.bis.split('-').reverse().join('.'):'');
   },'eintrag');},
-  eintragAendern:function(id,eid,werte){return aendern(id,function(d,r){
+  eintragAendern:function(id,eid,werte,basis){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){throw fehler('Eintrag nicht gefunden');}
     if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge ändern dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
-    ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null){e[k]=werte[k];}});
-    if(werte.ziel!=null){if(werte.ziel){e.ziel=String(werte.ziel);}else{delete e.ziel;}}
-    if(werte.vorfall!==undefined){if(werte.vorfall&&typeof werte.vorfall==='object'){e.vorfall=werte.vorfall;}else{delete e.vorfall;}}
+    /* mit basis (Stand beim Öffnen des Formulars) nur die wirklich geänderten Felder übernehmen */
+    function neu(k){return werte[k]!==undefined&&(basis===undefined||!gleich(werte[k],basis[k]));}
+    var vorher=JSON.stringify(e);
+    ['datum','art','titel','text'].forEach(function(k){if(werte[k]!=null&&neu(k)){e[k]=werte[k];}});
+    if(werte.ziel!=null&&neu('ziel')){if(werte.ziel){e.ziel=String(werte.ziel);}else{delete e.ziel;}}
+    if(werte.vorfall!==undefined&&neu('vorfall')){if(werte.vorfall&&typeof werte.vorfall==='object'){e.vorfall=basis!==undefined?abgleich(e.vorfall||{},werte.vorfall,basis.vorfall||{}):werte.vorfall;}else{delete e.vorfall;}}
+    if(basis!==undefined&&JSON.stringify(e)===vorher){return false;}
     e.geaendert=jetzt();e.geaendertVon=ich().id;
     return 'Eintrag geändert: '+(e.titel||e.art);
   },'eintrag');},
@@ -376,10 +647,12 @@ var ops={
     return 'Eintrag gelöscht: '+(e.titel||e.art)+' vom '+e.datum;
   },'eintrag');},
   /* Fiche de renseignement: werte = {person:{…}, fiche:{Abschnitt: vollständiger Inhalt}} */
-  fiche:function(id,werte,text){return aendern(id,function(d,r){
+  fiche:function(id,werte,text,basis){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
-    if(werte.person){d.person=Object.assign({},d.person,werte.person);}
-    if(werte.fiche){d.fiche=Object.assign({},d.fiche||{},werte.fiche);}
+    var vorher=JSON.stringify([d.person||{},d.fiche||{}]);
+    if(werte.person){d.person=abgleich(d.person||{},werte.person,basis!==undefined?basis.person||{}:undefined);}
+    if(werte.fiche){d.fiche=abgleich(d.fiche||{},werte.fiche,basis!==undefined?basis.fiche||{}:undefined);}
+    if(basis!==undefined&&JSON.stringify([d.person||{},d.fiche||{}])===vorher){return false;}
     return text||'Fiche de renseignement geändert';
   },'fiche');},
   /* Angaben nur für die Datenbank (Statistik): nur Responsables und Verwaltung */
@@ -729,6 +1002,10 @@ return {
   anhangSpeichern:anhangSpeichern, anhangLesen:anhangLesen, anhangLoeschen:anhangLoeschen, BERICHT_ART:BERICHT_ART,
   mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
   alleDossiers:alleDossiers, dossier:dossier, neuesDossier:neuesDossier, rechte:rechte, ops:ops,
+  /* mehrere Personen gleichzeitig: fremde Änderungen am offenen Dossier erkennen */
+  pruefen:pruefen,
+  /* Schlüssel erneuern (Verwaltung), Umschlüsseln fortsetzen, Stand */
+  schluesselErneuern:schluesselErneuern, umschluesseln:function(f){return ringAktuell().then(function(){return umschluesseln(f);});}, schluesselStand:schluesselStand,
   planSpeichern:planSpeichern, meinPlan:meinPlan, lesbarePlaene:lesbarePlaene, empfaengerFuer:function(){return empfaengerFuer(ich());},
   name:name, neueId:neueId
 };

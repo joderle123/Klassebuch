@@ -1373,9 +1373,12 @@ function dbDialog(d){
         autreMesure:dbWert('autreMesure',{name:v.am_name,von:v.am_von,bis:v.am_bis}),eltern:v.eltern,scas:v.scas,tutelle:zeilen(v.tutelle),massnahmenFamilie:zeilen(v.massnahmenFamilie),
         diagnosen:zeilen(v.diagnosen),verdacht:zeilen(v.verdacht),iq:txt(v.iq)===''?null:Math.round(zahl(v.iq)),
         eldibStufen:dbWert('eldibStufen',{datum:v.el_datum,verhalten:v.el_verhalten,kommunikation:v.el_kommunikation,sozialisation:v.el_sozialisation,kognition:v.el_kognition}),notiz:txt(v.notiz)};
-      var ae=Object.keys(neu).filter(function(k){return JSON.stringify(dbWert(k,db[k]))!==JSON.stringify(dbWert(k,neu[k]));}).map(function(k){return DB_NAMEN[k]||k;});
+      var keys=Object.keys(neu).filter(function(k){return JSON.stringify(dbWert(k,db[k]))!==JSON.stringify(dbWert(k,neu[k]));});
+      var ae=keys.map(function(k){return DB_NAMEN[k]||k;});
       if(!ae.length){return {unveraendert:true};}
-      return T.ops.datenbank(d.id,neu,'Datenbank-Angaben geändert: '+ae.join(', '));
+      /* nur die geänderten Angaben speichern – was jemand anderes inzwischen an anderen Angaben gespeichert hat, bleibt */
+      var nurNeu={};keys.forEach(function(k){nurNeu[k]=neu[k];});
+      return T.ops.datenbank(d.id,nurNeu,'Datenbank-Angaben geändert: '+ae.join(', '));
     }
   }).then(function(r){
     if(!r.ergebnis){return null;}
