@@ -922,8 +922,14 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     if(schonGewaehlt){sel.value=(cur&&state.periods.some(function(p){return p.id===cur;}))?cur:'';return;}
     // Beim ersten Mal das Trimester vorbelegen, in dem wir heute stehen
     var t=today();
-    var jetzt=state.periods.filter(function(p){return t>=p.start&&t<=p.end&&/Trimester/.test(p.name);})[0]
-           || state.periods.filter(function(p){return t>=p.start&&t<=p.end;})[0];
+    var tri=state.periods.filter(function(p){return /Trimester/.test(p.name);});
+    var jetzt=tri.filter(function(p){return t>=p.start&&t<=p.end;})[0];
+    if(!jetzt){
+      /* Ferien zwischen zwei Trimestern: das zuletzt beendete, nicht gleich
+         "alle Zeitraeume" - sonst zaehlten wieder alle Jahre mit. */
+      jetzt=tri.filter(function(p){return p.end<t;}).sort(function(a,b){return a.end<b.end?1:(a.end>b.end?-1:0);})[0]
+        || state.periods.filter(function(p){return t>=p.start&&t<=p.end;})[0];
+    }
     sel.value=jetzt?jetzt.id:'';
   }
 
@@ -1342,8 +1348,27 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var subTxt=ctx.subject?(' · '+ctx.subject):'';
     var blkTxt=ctx.blockId?(' · '+(BLOCKS.find(function(b){return b.id===ctx.blockId;})||{start:'',end:''}).start+'–'+(BLOCKS.find(function(b){return b.id===ctx.blockId;})||{end:''}).end):'';
     document.getElementById('note-context').textContent=fmtD(ctx.date)+lvlTxt+subTxt+blkTxt;
-    renderNoteTarget();renderNoteList();document.getElementById('note-text').value='';openModal('modal-note');document.getElementById('note-text').focus();
+    renderNoteTarget();renderNoteList();document.getElementById('note-text').value='';
+    /* Entwurf: eine angefangene, nie hinzugefuegte Notiz fuer genau diese
+       Stelle kommt zurueck (Fenster zu, Absturz, vergessen zu klicken). */
+    var ew=notizEntwurf();
+    if(ew&&ew.ctx===notizKontext()&&String(ew.t||'').trim()){
+      document.getElementById('note-text').value=ew.t;
+      if(ew.typ){document.getElementById('note-type').value=ew.typ;}
+      var tsel=document.getElementById('note-target');if(tsel&&ew.fuer!=null&&Array.prototype.some.call(tsel.options,function(o){return o.value===ew.fuer;})){tsel.value=ew.fuer;}
+      document.getElementById('note-context').textContent+=' — ↺ nicht gespeicherter Entwurf wiederhergestellt';
+    }
+    openModal('modal-note');document.getElementById('note-text').focus();
   }
+  var NOTIZ_ENTWURF='anw_notiz_entwurf';
+  function notizKontext(){return noteCtx?[noteCtx.date,noteCtx.blockId||'',noteCtx.level||'',noteCtx.subject||'',noteCtx.studentId||'',noteCtx.mode||''].join('|'):'';}
+  function notizEntwurf(){try{return JSON.parse(localStorage.getItem(NOTIZ_ENTWURF)||'null');}catch(e){return null;}}
+  function notizEntwurfMerken(){
+    if(!noteCtx)return;
+    var sel=document.getElementById('note-target');
+    try{localStorage.setItem(NOTIZ_ENTWURF,JSON.stringify({ctx:notizKontext(),t:document.getElementById('note-text').value,typ:document.getElementById('note-type').value,fuer:sel?sel.value:'',ts:Date.now()}));}catch(e){}
+  }
+  function notizEntwurfWeg(){try{localStorage.removeItem(NOTIZ_ENTWURF);}catch(e){}}
   function renderNoteList(){
     var list=state.notes.filter(function(n){
       if(n.date!==noteCtx.date)return false;
@@ -1364,7 +1389,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var fuer=sel?sel.value:'';
     noteCtx.fuer=fuer;
     state.notes.push({id:uid(),date:noteCtx.date,blockId:noteCtx.blockId||null,subject:noteCtx.subject||null,level:noteCtx.level||null,studentId:fuer||null,type:type,text:txt,byUser:state.currentUser||'',byUserAt:Date.now()});
-    save();document.getElementById('note-text').value='';renderNoteList();renderStudents();renderMain();toast('✅ Notiz hinzugefügt');
+    save();notizEntwurfWeg();document.getElementById('note-text').value='';renderNoteList();renderStudents();renderMain();toast('✅ Notiz hinzugefügt');
   }
   function delNote(id){state.notes=state.notes.filter(function(n){return n.id!==id;});save();renderNoteList();renderStudents();renderMain();toast('🗑 Notiz gelöscht');}
 
@@ -1512,6 +1537,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var sse=document.getElementById('stats-student');if(sse)sse.addEventListener('change',renderStats);
     var sst=document.getElementById('stats-status');if(sst)sst.addEventListener('change',renderStats);
     document.getElementById('note-add').addEventListener('click',addNote);
+    document.getElementById('note-text').addEventListener('input',notizEntwurfMerken);
     document.getElementById('class-tabs').addEventListener('click',function(e){var t=e.target.closest('[data-class]');if(!t)return;classFilter=t.dataset.class;
       var act=state.students.find(function(s){return s.id===activeStudentId;});if(!act||act.level!==classFilter)pickFirstInLevel();
       renderStudents();renderMain();});

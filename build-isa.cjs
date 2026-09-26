@@ -31,7 +31,15 @@ function replaceOnce(s, find, repl, label) {
 
 var anw = read('anwesenheit.html');
 var TABS_GUARD = read('tabs-guard.js');
+/* Klassebuch und ISA laufen beide unter file:// und teilen sich den Browser-
+   Speicher. Eigene Namen, damit ein offenes ISA-Fenster nicht als zweites
+   Klassebuch-Fenster gilt und die Einstellungen getrennt bleiben. */
+TABS_GUARD = TABS_GUARD.split("'klassebuch_fenster'").join("'isa_fenster'");
+var MERGE_JS = read('merge.js');
+var KB_DATUM_JS = "/* Heute als JJJJ-MM-TT nach der Uhr auf dem Geraet - toISOString() rechnet in UTC, und zwischen Mitternacht und 2 Uhr waere es in Luxemburg noch gestern. */window.kbLokalISO=function(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);};";
 var SPELL_JS  = read('spell.js');
+SPELL_JS = SPELL_JS.split("'kb_spell_eigen'").join("'isa_spell_eigen'").split("'kb_spell_an'").join("'isa_spell_an'");
+var SPELL_ZUSATZ = read('spell-zusatz.js');
 var SPELL_CSS = read('spell.css');
 var NSPELL_JS = read('vendor/nspell.bundle.js');
 /* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
@@ -1066,7 +1074,7 @@ var DOS_OVERRIDES = `
       items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
-      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml((x&&typeof x==='object')?String(x.text||''):String(x||''))+'</li>';}).join('')+'</ul>'});}
     });
     if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
     if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
@@ -1351,8 +1359,8 @@ var DOS_OVERRIDES = `
     ready:function(){return !!Repo.ready;},
     exportEntries:function(){return (Repo.entries||[]).slice();},
     exportReunions:function(){return (Repo.reunions||[]).slice();},
-    applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render();}catch(e){}}},
-    applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render();}catch(e){}}}
+    applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render({hintergrund:true});}catch(e){}}},
+    applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render({hintergrund:true});}catch(e){}}}
   };
 })();
 `;
@@ -1499,7 +1507,7 @@ var SHELL_CONTROLLER = `
   // Roster-Änderungen -> Dossier + Mein-Tag/Terminplan aktualisieren
   if(window.KB_ROSTER){
     window.KB_ROSTER.onChange(function(){
-      if(window.render){try{window.render();}catch(e){}}
+      if(window.render){try{window.render({hintergrund:true});}catch(e){}}
       if($('isa-home')&&$('isa-home').classList.contains('active')&&window.KB_HOME){try{window.KB_HOME.render();}catch(e){}}
     });
   }
@@ -1598,7 +1606,7 @@ var SHELL_CONTROLLER = `
   }
   function openGate(){if(!gate)buildGate();renderGateGrid();gate.classList.add('open');}
   function closeGate(){if(gate)gate.classList.remove('open');}
-  function pickUser(u){setCurUser(u);addExtraUser(u);closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render();}catch(e){}}if($('isa-home')&&$('isa-home').classList.contains('active')&&window.KB_HOME){try{window.KB_HOME.render();}catch(e){}}}
+  function pickUser(u){setCurUser(u);addExtraUser(u);closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render({hintergrund:true});}catch(e){}}if($('isa-home')&&$('isa-home').classList.contains('active')&&window.KB_HOME){try{window.KB_HOME.render();}catch(e){}}}
   function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser();
     if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">wechseln</span>';c.title='Angemeldet als '+u+' — klicken zum Wechseln';}
     else{c.innerHTML='<span class="kb-uc-av">?</span><span class="kb-uc-n">Wer bist du?</span>';c.title='Person wählen';}
@@ -1703,7 +1711,7 @@ window.KB_BUBBLE=(function(){
     addNode:function(sid,n){var r=get(sid);n.id='bn_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);r.nodes.push(n);set(sid,r);return n.id;},
     updateNode:function(sid,id,f){var r=get(sid);r.nodes.forEach(function(n){if(n.id===id){for(var k in f){n[k]=f[k];}}});set(sid,r);},
     removeNode:function(sid,id){var r=get(sid);r.nodes=r.nodes.filter(function(n){return n.id!==id;});set(sid,r);},
-    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:new Date().toISOString().slice(0,10),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
+    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:window.kbLokalISO(),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
     snapshots:function(sid){return (get(sid).snapshots||[]).slice();},
     removeSnapshot:function(sid,snapId){var r=get(sid);r.snapshots=(r.snapshots||[]).filter(function(s){return s.id!==snapId;});set(sid,r);},
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:r.nodes||[],snapshots:r.snapshots||[]});}return out;},
@@ -1937,10 +1945,31 @@ window.KB_SYNC=(function(){
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
 
   function eqPayload(a,b){return JSON.stringify(a)===JSON.stringify(b);}
-  function mergeColl(remote,local){
-    var by={},i,r,ex;
+  /* Zusammenfuehren zweier Staende einer Sammlung.
+     Ohne coll: die juengere Fassung je Eintrag gewinnt (fuer interne Schritte).
+     Mit coll und Basis: haben BEIDE Seiten denselben Eintrag seit dem letzten
+     gemeinsamen Stand geaendert, wird feldgenau zusammengefuehrt (KB_MERGE) -
+     sonst ginge die aeltere Fassung spurlos verloren. */
+  function mergeColl(remote,local,baseC,coll,now){
+    var by={},bb=null,i,r,ex;
+    var fn=(coll&&window.KB_MERGE&&window.KB_MERGE.datensatz)?window.KB_MERGE.datensatz[coll]:null;
+    if(fn){bb={};for(i=0;i<(baseC||[]).length;i++){bb[baseC[i].id]=baseC[i];}}
     for(i=0;i<(remote||[]).length;i++){r=remote[i];by[r.id]=r;}
-    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||(r._ts||0)>=(ex._ts||0)){by[r.id]=r;}}
+    for(i=0;i<(local||[]).length;i++){
+      r=local[i];ex=by[r.id];
+      if(!ex){by[r.id]=r;continue;}
+      if(fn&&!r._del&&!ex._del&&r.d&&ex.d&&!eqPayload(r.d,ex.d)){
+        var b=bb[r.id], bd=(b&&!b._del&&b.d)?b.d:null;
+        var geaendertR=!bd||!eqPayload(bd,ex.d), geaendertL=!bd||!eqPayload(bd,r.d);
+        if(geaendertR&&geaendertL){
+          try{
+            by[r.id]={id:r.id,_ts:Math.max(r._ts||0,ex._ts||0,now||0),d:fn(bd,ex.d,r.d,ex._ts||0,r._ts||0)};
+            continue;
+          }catch(e){}
+        }
+      }
+      if((r._ts||0)>=(ex._ts||0)){by[r.id]=r;}
+    }
     var out=[];for(var k in by){out.push(by[k]);}return out;
   }
   function diffColl(base,live,now){
@@ -1954,7 +1983,7 @@ window.KB_SYNC=(function(){
   function liveOf(coll){var out=[];for(var i=0;i<(coll||[]).length;i++){if(!coll[i]._del){out.push(coll[i].d);}}return out;}
   function emptyDoc(){var d={_format:FMT,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
   function buildLocalDoc(base,live,now){var ld=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var bc=(base&&base.colls&&base.colls[n])||[];ld.colls[n]=mergeColl(bc,diffColl(bc,live[n]||[],now));}return ld;}
-  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return nb;}
+  function mergeDocs(remote,localDoc,baseDoc,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var bc=(baseDoc&&baseDoc.colls&&baseDoc.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n],bc,n,now);}return nb;}
   function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
@@ -2185,7 +2214,7 @@ window.KB_SYNC=(function(){
           busy=false;try{wipeBar(w);}catch(e){}
           return;
         }
-        nb=mergeDocs(remote||null,ld);apply=!sameDoc(nb,ld);
+        nb=mergeDocs(remote||null,ld,base,now);apply=!sameDoc(nb,ld);
       }
       if(apply){applying=true;try{collSet(nb);}catch(e){}applying=false;}
       /* Schicht 3: die Tageskopie entsteht VOR dem ersten Schreiben, also vom
@@ -2214,7 +2243,7 @@ window.KB_SYNC=(function(){
      meist der Klick auf den eigenen Namen - statt jedes Mal von Hand in die
      Einstellungen zu gehen. Wird abgelehnt, bleibt der Balken stehen und
      nichts fragt ungefragt nach. */
-  var AUTO_KEY='kb_sync_auto';
+  var AUTO_KEY='isa_sync_auto';
   var autoArmed=false,autoTried=false;
   function autoOn(){try{return localStorage.getItem(AUTO_KEY)!=='0';}catch(e){return true;}}
   function setAuto(v){try{localStorage.setItem(AUTO_KEY,v?'1':'0');}catch(e){}}
@@ -2473,7 +2502,7 @@ window.KB_SCREENING=(function(){
   }
   function snapshotDaily(sid){
     var s=snapshotOf(sid); if(!s)return;
-    var today=new Date().toISOString().slice(0,10);
+    var today=window.kbLokalISO();
     var d=get(sid); d.history=Array.isArray(d.history)?d.history:[];
     var snap={date:today}; for(var k in s)snap[k]=s[k];
     var idx=-1; for(var i=0;i<d.history.length;i++){if(d.history[i].date===today){idx=i;break;}}
@@ -3334,7 +3363,7 @@ window.KB_NOTEN=(function(){
     periodsFor:periodsFor, norm:norm, list:listOf, subjectAvg:subjAvg,
     getMode:function(sid){return rec(sid).mode;},
     setMode:function(sid,m){var r=rec(sid);var nm=(m==='trimester'?'trimester':'semester');if(r.mode!==nm){r.mode=nm;r.updatedAt=new Date().toISOString();notify(sid);}},
-    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:new Date().toISOString().slice(0,10)});r.updatedAt=new Date().toISOString();notify(sid);},
+    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:window.kbLokalISO()});r.updatedAt=new Date().toISOString();notify(sid);},
     remove:function(sid,id){var r=rec(sid);r.grades=r.grades.filter(function(g){return g.id!==id;});r.updatedAt=new Date().toISOString();notify(sid);},
     periodAvg:function(sid,period,subjects){var avgs=[];(subjects||[]).forEach(function(su){var a=subjAvg(sid,su,period);if(a!=null)avgs.push(a);});if(!avgs.length)return null;var s=0;for(var i=0;i<avgs.length;i++)s+=avgs[i];return s/avgs.length;},
     moduleOf:function(sid,subject){return modOf(sid,subject);},
@@ -4375,6 +4404,8 @@ var parts = [
   SHELL_PANELS_EXTRA,
   '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
   '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
+  '<script>' + KB_DATUM_JS + '</' + 'script>',
+  '<script>' + MERGE_JS + '</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
   '<script>' + DOS_OVERRIDES + '</' + 'script>',
@@ -4393,6 +4424,7 @@ var parts = [
   '<script>' + TABS_GUARD + '</' + 'script>',
   '<script>' + SPELL_DATA + '</' + 'script>',
   '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SPELL_ZUSATZ + '</' + 'script>',
   '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',
   '</html>',

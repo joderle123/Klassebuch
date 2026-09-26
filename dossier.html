@@ -66,6 +66,16 @@ p{margin:.4em 0;}
   margin-left:auto; flex-shrink:0; background:#fff; border:1px solid #b9d2c8; color:#1f3a30;
   border-radius:var(--radius); padding:6px 12px; cursor:pointer;
 }
+/* Hinweis: ein nicht gespeicherter Entwurf wurde wiederhergestellt */
+.entwurf-hinweis{
+  display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  background:#fff7e3; border:1px solid #efd9a0; color:#5d4611;
+  border-radius:var(--radius); padding:9px 14px; margin:0 0 14px; font-size:.9rem;
+}
+.entwurf-hinweis button{
+  margin-left:auto; background:#fff; border:1px solid #e3c98a; color:#5d4611;
+  border-radius:var(--radius); padding:4px 10px; cursor:pointer; font-size:.85rem;
+}
 
 /* ---------- Generic components ---------- */
 .btn{
@@ -950,6 +960,67 @@ var Storage = {
 var REUNION_SEED_VERSION = 3;
 
 /* ---------------------------------------------------------------
+   Entwuerfe
+
+   Was getippt, aber noch nicht gespeichert ist, liegt zusaetzlich als
+   Entwurf im Browser-Speicher - der schreibt sofort, nicht erst nach einer
+   Wartezeit. Geht das Fenster zu, stuerzt der Rechner ab oder ist der Akku
+   leer, bevor gespeichert wurde, kommt der Text beim naechsten Oeffnen
+   zurueck. Nach dem Speichern wird der Entwurf wieder weggeraeumt.
+   b = der gespeicherte Stand, von dem der Entwurf ausging; damit laesst er
+   sich spaeter mit dem zusammenfuehren, was andere inzwischen geschrieben
+   haben.
+   --------------------------------------------------------------- */
+var Entwurf = {
+  PREFIX: LS_PREFIX + 'entwurf:',
+  TAGE: 14,
+  merke: function (key, daten) {
+    try {
+      var d = {}; for (var k in daten) d[k] = daten[k];
+      d.ts = Date.now();
+      localStorage.setItem(this.PREFIX + key, JSON.stringify(d));
+    } catch (e) {}
+  },
+  hole: function (key) {
+    try { return JSON.parse(localStorage.getItem(this.PREFIX + key) || 'null'); } catch (e) { return null; }
+  },
+  /* nurWenn: nur wegraeumen, wenn der Entwurf noch genau diesen Text hat -
+     wer nach dem Speichern weitergetippt hat, behaelt seinen Entwurf. */
+  weg: function (key, nurWenn) {
+    try {
+      if (nurWenn !== undefined) { var x = this.hole(key); if (!x || x.t !== nurWenn) return; }
+      localStorage.removeItem(this.PREFIX + key);
+    } catch (e) {}
+  },
+  alle: function () {
+    var out = [], keys = [];
+    try { for (var i = 0; i < localStorage.length; i++) keys.push(localStorage.key(i)); } catch (e) {}
+    for (var j = 0; j < keys.length; j++) {
+      var k = keys[j];
+      if (k && k.indexOf(this.PREFIX) === 0) {
+        var x = this.hole(k.slice(this.PREFIX.length));
+        if (x) out.push({ key: k.slice(this.PREFIX.length), d: x });
+      }
+    }
+    return out;
+  },
+  aufraeumen: function () {
+    var grenze = Date.now() - this.TAGE * 864e5, self = this;
+    this.alle().forEach(function (x) { if (!x.d.ts || x.d.ts < grenze) self.weg(x.key); });
+  }
+};
+
+/* Speichern, die noch in der Warteschlange stehen (Réunion: 0,7 s nach dem
+   letzten Tastendruck). Geht das Fenster zu, werden sie sofort ausgefuehrt. */
+var offeneSpeicher = {};
+window.addEventListener('pagehide', function () {
+  Object.keys(offeneSpeicher).forEach(function (k) {
+    var fn = offeneSpeicher[k]; delete offeneSpeicher[k];
+    try { fn(); } catch (e) {}
+  });
+});
+
+/* ---------------------------------------------------------------
    Papierkorb
 
    Geloeschtes ist nicht sofort weg: es wandert in eine Liste im
@@ -1115,7 +1186,7 @@ var Repo = {
     var self = this;
     var isNew = !data.id;
     var clean = {
-      id: data.id || ('e_' + uid()),
+      id: data.id || reunionEntryId(self, data) || ('e_' + uid()),
       studentId: data.studentId,
       date: data.date,
       author: String(data.author || '').trim(),
@@ -1263,6 +1334,16 @@ function normalizeSlider(v) {
 
 function uid() {
   return Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 9);
+}
+
+/* Ein Réunion-Update bekommt eine feste Kennung aus Datum und Schüler. Legen
+   zwei Geräte gleichzeitig das Update zum selben Schüler an, ist es damit
+   derselbe Eintrag - der Abgleich führt beide Texte zusammen, statt zwei
+   Einträge anzulegen, von denen die Réunion nur einen zeigt. */
+function reunionEntryId(repo, data) {
+  if (!data || data.category !== 'Team-Réunion' || !data.date || !data.studentId) return null;
+  var id = 'e_reu_' + String(data.date).replace(/-/g, '') + '_' + data.studentId;
+  return repo.getEntry(id) ? null : id;
 }
 
 function nowIso() {
@@ -2261,10 +2342,15 @@ function viewEntryForm(params) {
     afterRender: function (root) {
       var form = qs('#entry-form', root);
       var tagWrap = qs('#tag-wrap', root);
+      /* Neues vom Team laesst die offene Maske in Ruhe (sonst waeren
+         gesetzte Tags und Getipptes weg); beim Speichern wird mit dem
+         neuesten Stand zusammengefuehrt. */
+      ansichtAuffrischen = function () { return document.body.contains(form); };
 
       function rerenderTags() {
         tagWrap.innerHTML = tagsWrapHtml();
         wireTagInput();
+        entwurfMerken();
       }
 
       function addTag(raw) {
@@ -2351,6 +2437,43 @@ function viewEntryForm(params) {
         });
       });
 
+      /* ---- Entwurf: Getipptes ueberlebt Schliessen, Absturz, leeren Akku ----
+         Kommt zurueck, sobald man dieselbe Maske wieder oeffnet. */
+      var ENTWURF = 'eintrag:' + (existing ? existing.id : ('neu:' + defaultStudentId + ':' + defaultCategory));
+      var basisText = existing ? String(existing.text || '') : '';
+      function entwurfMerken() {
+        if (!ENTWURF) return;
+        Entwurf.merke(ENTWURF, {
+          t: textArea.value, b: basisText, tags: formState.tags.slice(),
+          student: qs('#f-student', form).value, date: qs('#f-date', form).value,
+          category: qs('#f-category', form).value, author: qs('#f-author', form).value
+        });
+      }
+      var ew = Entwurf.hole(ENTWURF);
+      if (ew && String(ew.t || '').trim() && ew.t !== basisText) {
+        /* inzwischen anderswo Geschriebenes bleibt - zusammenfuehren */
+        textArea.value = (existing && window.KB_MERGE && (ew.b || '') !== basisText) ? KB_MERGE.text(ew.b || '', ew.t, basisText) : ew.t;
+        if (Array.isArray(ew.tags)) { formState.tags = ew.tags.slice(); tagWrap.innerHTML = tagsWrapHtml(); wireTagInput(); }
+        [['#f-student', ew.student], ['#f-date', ew.date], ['#f-category', ew.category], ['#f-author', ew.author]].forEach(function (p) {
+          var el = qs(p[0], form);
+          if (!el || p[1] == null || p[1] === '') return;
+          if (el.tagName === 'SELECT' && !Array.prototype.some.call(el.options, function (o) { return o.value === p[1]; })) return;
+          el.value = p[1];
+        });
+        renderDetectedThemes();
+        var hinweis = document.createElement('div');
+        hinweis.className = 'entwurf-hinweis';
+        hinweis.innerHTML = '<span>↺ Nicht gespeicherter Entwurf vom ' + escapeHtml(formatDateTime(new Date(ew.ts || Date.now()).toISOString())) +
+          ' wiederhergestellt — noch nicht gespeichert.</span><button type="button" id="entwurf-weg">Verwerfen</button>';
+        form.parentNode.insertBefore(hinweis, form);
+        qs('#entwurf-weg', hinweis).addEventListener('click', function () { Entwurf.weg(ENTWURF); render(); });
+      }
+      form.addEventListener('input', entwurfMerken);
+      form.addEventListener('change', entwurfMerken);
+      // Abbrechen heisst: bewusst verwerfen
+      var abbrechenBtn = qs('button[data-route]', form);
+      if (abbrechenBtn) abbrechenBtn.addEventListener('click', function () { Entwurf.weg(ENTWURF); });
+
       form.addEventListener('submit', function (ev) {
         ev.preventDefault();
         var studentId = qs('#f-student', form).value;
@@ -2368,19 +2491,48 @@ function viewEntryForm(params) {
           sliders[def.key] = toggle.checked ? Number(range.value) : null;
         });
 
+        /* Was seit dem Oeffnen der Maske woanders an diesem Eintrag
+           geschrieben wurde (Réunion, Team-Abgleich), bleibt erhalten. Ein
+           neues Réunion-Update zu einem Schueler, der an dem Tag schon eines
+           hat, kommt in dasselbe - sonst zeigte die Réunion nur eines davon. */
+        var category = qs('#f-category', form).value;
+        var M = window.KB_MERGE;
+        var jetzt = existing ? Repo.getEntry(existing.id) : null;
+        if (!existing && category === 'Team-Réunion') jetzt = Repo.reunionEntryFor(date, studentId);
+        var tags = formState.tags.slice();
+        if (jetzt && M) {
+          var basisText = existing ? String(existing.text || '').trim() : '';
+          var daText = String(jetzt.text || '');
+          // Bearbeiten: eigene Reihenfolge; Neues zu vorhandenem Update: hinten anfügen
+          if (daText.trim() !== basisText) text = existing ? M.text(basisText, text, daText) : M.text('', daText, text);
+          tags = M.set(existing ? existing.tags : [], tags, jetzt.tags || []);
+          SLIDER_DEFS.forEach(function (def) {
+            var vorher = existing && existing.sliders ? existing.sliders[def.key] : null;
+            var dort = jetzt.sliders ? jetzt.sliders[def.key] : null;
+            if (sliders[def.key] == null && vorher == null && dort != null) sliders[def.key] = dort;
+          });
+        }
+        var autor = qs('#f-author', form).value;
         var payload = {
-          id: existing ? existing.id : null,
+          id: jetzt ? jetzt.id : (existing ? existing.id : null),
           studentId: studentId,
           date: date,
-          author: qs('#f-author', form).value,
-          category: qs('#f-category', form).value,
-          tags: formState.tags,
+          author: (!existing && jetzt && jetzt.author) ? jetzt.author : autor,
+          updatedBy: (window.KB_USER && KB_USER.get && KB_USER.get()) || autor,
+          category: category,
+          tags: tags,
           text: text,
           sliders: sliders,
-          createdAt: existing ? existing.createdAt : null
+          createdAt: jetzt ? jetzt.createdAt : (existing ? existing.createdAt : null)
         };
+        /* Bericht-Daten eines DS/PEI-Imports hat die Maske nicht - frueher
+           gingen sie beim Speichern verloren. */
+        var quelle = jetzt || existing;
+        if (quelle && quelle.report) payload.report = quelle.report;
+        if (quelle && quelle.source) payload.source = quelle.source;
 
         Repo.saveEntry(payload).then(function (saved) {
+          Entwurf.weg(ENTWURF);
           showToast(isEdit ? 'Eintrag aktualisiert.' : 'Eintrag gespeichert.');
           navigate(returnTo || ('#/student/' + saved.studentId), true);
         }).catch(function (err) {
@@ -2486,6 +2638,11 @@ function viewSearch(params, query) {
     afterRender: function (root) {
       var wrap = qs('#search-results-wrap', root);
       function rerender() { wrap.innerHTML = resultsHtml(); }
+      // Neues vom Team: nur die Treffer neu, Suchbegriff und Filter bleiben
+      ansichtAuffrischen = function () {
+        if (!document.body.contains(wrap)) return false;
+        rerender(); return true;
+      };
 
       qs('#s-q', root).addEventListener('input', function (e) { state.q = e.target.value; rerender(); });
       qs('#s-student', root).addEventListener('change', function (e) { state.studentId = e.target.value; rerender(); });
@@ -2637,6 +2794,8 @@ function viewPdfExport(params, query) {
 
       function rerenderConfig() { configWrap.innerHTML = configHtml(); wireConfig(); }
       function rerenderPreview() { previewWrap.innerHTML = previewHtml(); wirePreview(); }
+      // Auswahl und Vorschau bleiben bei Neuem vom Team stehen
+      ansichtAuffrischen = function () { return document.body.contains(configWrap); };
 
       function wireConfig() {
         qs('#pe-student', configWrap).addEventListener('change', function (e) {
@@ -2915,6 +3074,8 @@ function viewAiExport(params, query) {
     afterRender: function (root) {
       var wrap = qs('#ai-phase-wrap', root);
       function rerender() { wrap.innerHTML = phaseHtml(); wire(); }
+      // mitten im Ablauf nicht zurueck auf Anfang, nur weil vom Team etwas kam
+      ansichtAuffrischen = function () { return document.body.contains(wrap); };
 
       function wire() {
         if (state.phase === 'config') wireConfig();
@@ -3294,6 +3455,11 @@ function viewThemeAnalysis(params, query) {
     afterRender: function (root) {
       var body = qs('#th-body', root);
       function rerender() { body.innerHTML = bodyHtml(); wireBody(); }
+      // Neues vom Team: Zahlen neu, Auswahl bleibt
+      ansichtAuffrischen = function () {
+        if (!document.body.contains(body)) return false;
+        rerender(); return true;
+      };
 
       qs('#th-student', root).addEventListener('change', function (e) { state.studentId = e.target.value; rerender(); });
       qs('#th-from', root).addEventListener('change', function (e) { state.from = e.target.value; rerender(); });
@@ -3339,6 +3505,83 @@ function nextMondayIso() {
   return d.getFullYear() + '-' + m + '-' + dd;
 }
 
+/* Ein Réunion-Update, an dem ausser dem automatischen Tag nichts haengt -
+   keine eigenen Tags, kein Bericht, keine Verlaufs-Slider. */
+function reunionEintragNurText(entry) {
+  if (!entry || entry.report) return false;
+  var tg = entry.tags || [];
+  if (tg.length > 1) return false;
+  if (tg.length === 1 && tg[0] !== 'Réunion') return false;
+  var sl = entry.sliders || {};
+  for (var k in sl) { if (sl[k] != null) return false; }
+  return true;
+}
+/* Den (fertig zusammengefuehrten) Text eines Réunion-Updates speichern.
+   Leer geraeumt: ein sonst leerer Eintrag wird wieder entfernt. Nichts Neues:
+   gar nicht speichern, sonst stuende man als Verfasser da. */
+function reunionTextSpeichern(date, sid, txt) {
+  var entry = Repo.reunionEntryFor(date, sid);
+  txt = String(txt || '');
+  if (!txt.trim()) {
+    return (entry && reunionEintragNurText(entry)) ? Repo.deleteEntry(entry.id) : Promise.resolve();
+  }
+  if (entry && txt === String(entry.text || '')) return Promise.resolve();
+  var ich = (window.KB_USER && KB_USER.get && KB_USER.get()) || '';
+  var payload = {
+    id: entry ? entry.id : undefined,
+    studentId: sid, date: date,
+    author: entry && entry.author ? entry.author : (ich || 'Team (Réunion)'),
+    updatedBy: ich || (entry && entry.updatedBy) || '',
+    category: 'Team-Réunion',
+    tags: entry && entry.tags && entry.tags.length ? entry.tags : ['Réunion'],
+    text: txt,
+    sliders: entry ? entry.sliders : null,
+    createdAt: entry ? entry.createdAt : undefined
+  };
+  if (entry && entry.report) payload.report = entry.report;
+  return Repo.saveEntry(payload);
+}
+
+/* Beim Start: Entwuerfe aus der Réunion, die nie gespeichert wurden (Fenster
+   zu, Absturz, Akku leer), zurueckholen - zusammengefuehrt mit dem, was
+   inzwischen gespeichert ist. Ist noch ein anderes Fenster der App offen,
+   bleibt alles liegen: dort tippt vielleicht gerade jemand an genau diesem
+   Entwurf. Entwuerfe der ausfuehrlichen Maske und der Schuelerseite kommen
+   zurueck, sobald man sie wieder oeffnet. */
+function entwuerfeZurueckholen() {
+  Entwurf.aufraeumen();
+  if (window.KB_TABS && KB_TABS.count && KB_TABS.count() > 1) return;
+  var M = window.KB_MERGE, namen = [], laeuft = [];
+  var teile = function (v) { return String(v || '').split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean); };
+  Entwurf.alle().forEach(function (x) {
+    var d = x.d, m;
+    if (Date.now() - (d.ts || 0) < 3000) return;
+    if ((m = /^reu:(\d{4}-\d{2}-\d{2}):(.+)$/.exec(x.key))) {
+      var s = Repo.getStudent(m[2]), e = Repo.reunionEntryFor(m[1], m[2]);
+      var da = e ? String(e.text || '') : '';
+      var txt = M ? M.text(d.b || '', d.t || '', da) : String(d.t || '');
+      if (!s || txt === da) { Entwurf.weg(x.key); return; }
+      laeuft.push(reunionTextSpeichern(m[1], m[2], txt).then(function () { Entwurf.weg(x.key); }));
+      namen.push(s.name + ' (Réunion ' + formatDate(m[1]) + ')');
+      return;
+    }
+    if ((m = /^reu-org:(\d{4}-\d{2}-\d{2})$/.exec(x.key))) {
+      var r = Repo.getReunionByDate(m[1]);
+      var da2 = r ? teile((r.orgItems || []).join('\n\n')) : [];
+      var neu = M ? M.liste(teile(d.b), teile(d.t), da2) : teile(d.t);
+      if (!r || JSON.stringify(neu) === JSON.stringify(da2)) { Entwurf.weg(x.key); return; }
+      r.orgItems = neu;
+      laeuft.push(Repo.saveReunion(r).then(function () { Entwurf.weg(x.key); }));
+      namen.push('Orga-Punkte (Réunion ' + formatDate(m[1]) + ')');
+    }
+  });
+  if (!namen.length) return;
+  Promise.all(laeuft).then(function () {
+    showToast('Nicht gespeicherter Text von vorhin wiederhergestellt: ' + namen.join(', ') + '.');
+    render({ hintergrund: true });
+  });
+}
+
 function viewReunion(params, query) {
   var reunions = Repo.listReunions(); // neueste zuerst
   var state = {
@@ -3349,6 +3592,7 @@ function viewReunion(params, query) {
     orderEdit: false,
     extra: {}           // inaktiver Schueler -> in dieser Sitzung dazugeholt
   };
+  var kartenStand = {}; // sid -> zuletzt gezeichnetes HTML der Karte
 
   function current() { return Repo.getReunionByDate(state.date); }
   function returnRoute() { return '#/reunion?date=' + encodeURIComponent(state.date); }
@@ -3489,10 +3733,13 @@ function viewReunion(params, query) {
   }
 
   /* ---------- Organisation ---------- */
+  function gruppenziel(r) {
+    var group = (r.goals && r.goals.group) || [];
+    return Array.isArray(group) ? group.join(' ') : String(group || '');
+  }
   function orgHtml(r) {
     var items = r.orgItems || [];
-    var group = (r.goals && r.goals.group) || [];
-    var groupTxt = Array.isArray(group) ? group.join(' ') : String(group || '');
+    var groupTxt = gruppenziel(r);
     var text = items.join('\n\n');
     return '<section class="card reu-orgcard">' +
       '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
@@ -3543,7 +3790,9 @@ function viewReunion(params, query) {
         '</div>' +
       '</div>';
     var body = expanded ? '<div class="reu-body">' + cardBodyHtml(row, r) + '</div>' : '';
-    return '<section class="reu-card' + (row.discussed ? ' is-done' : '') + (expanded ? ' is-open' : '') + (row.discussed && !expanded ? ' dimmed' : '') + '" data-card="' + escapeAttr(row.sid) + '">' + head + body + '</section>';
+    var html = '<section class="reu-card' + (row.discussed ? ' is-done' : '') + (expanded ? ' is-open' : '') + (row.discussed && !expanded ? ' dimmed' : '') + '" data-card="' + escapeAttr(row.sid) + '">' + head + body + '</section>';
+    kartenStand[row.sid] = html;
+    return html;
   }
   /* Stichpunkte je Schueler. Die Punkte stehen im Text selbst, damit sie
      ueberall gleich aussehen - im Feld, im Dossier, im Protokoll - und man
@@ -3783,7 +4032,8 @@ function viewReunion(params, query) {
             bta.value = an ? toBullets(bta.value) : fromBullets(bta.value);
             autoGrow(bta); bta.focus();
             try { bta.setSelectionRange(bta.value.length, bta.value.length); } catch (e) {}
-            clearTimeout(saveT['u' + bsid]); saveUpd(bsid, bta);
+            Entwurf.merke(entwurfKey(state.date, bsid), { t: bta.value, b: startwert(bta) });
+            sofortSpeichern('u' + bsid, function () { saveUpd(bsid, bta); });
           }
           return;
         }
@@ -3822,35 +4072,57 @@ function viewReunion(params, query) {
         clearTimeout(el._t);
         el._t = setTimeout(function () { el.classList.remove('on'); }, 1600);
       }
+      /* ---------- Mehrere schreiben gleichzeitig ----------
+         Der Abgleich bringt im Hintergrund, was andere geschrieben haben. Das
+         Feld, in dem man gerade tippt, wird dabei nicht angefasst (sonst
+         spraenge der Cursor). Darum merkt sich jedes Feld, von welchem Stand
+         es ausgeht; beim Speichern wird gegen den gespeicherten Stand
+         zusammengefuehrt statt ihn zu ueberschreiben. */
+      function startwert(el) { return el._kbStart !== undefined ? el._kbStart : el.defaultValue; }
+      function orgTeile(v) {
+        return String(v || '').split(/\n\s*\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+      }
       function saveOrg() {
         var r = current(); if (!r) return;
         var ta = qs('#org-edit', wrap); if (!ta) return;
-        r.orgItems = ta.value.split(/\n\s*\n/).map(function (x) { return x.trim(); }).filter(Boolean);
+        /* Nur uebernehmen, was in DIESEM Feld geaendert wurde. Das andere
+           Feld ist vielleicht nicht mehr aktuell und darf den Stand der
+           anderen nicht zurueckdrehen. */
+        var start = orgTeile(startwert(ta)), mein = orgTeile(ta.value), roh = ta.value;
+        var da = orgTeile((r.orgItems || []).join('\n\n'));
+        var gleich = function (a, b) { return JSON.stringify(a) === JSON.stringify(b); };
+        if (gleich(mein, start)) r.orgItems = da;
+        else if (gleich(da, start) || !window.KB_MERGE) r.orgItems = mein;
+        else r.orgItems = KB_MERGE.liste(start, mein, da);
+        ta._kbStart = roh;
         var gEl = qs('#org-group', wrap);
         if (gEl) {
-          if (!r.goals || typeof r.goals !== 'object') r.goals = {};
           var gv = gEl.value.trim();
-          r.goals.group = gv ? [gv] : [];
+          if (gv !== startwert(gEl).trim()) {
+            if (!r.goals || typeof r.goals !== 'object') r.goals = {};
+            r.goals.group = gv ? [gv] : [];
+          }
+          gEl._kbStart = gEl.value;
         }
         persist(r).then(function () {
           var c = qs('#org-count', wrap); if (c) c.textContent = r.orgItems.length;
           markSaved(qs('#org-saved', wrap));
           rerenderStats();
+          Entwurf.weg('reu-org:' + r.date, roh);
         });
-      }
-      function isPlainAuto(entry) {
-        if (!entry || entry.report) return false;
-        var tg = entry.tags || [];
-        if (tg.length > 1) return false;
-        if (tg.length === 1 && tg[0] !== 'Réunion') return false;
-        var sl = entry.sliders || {};
-        for (var k in sl) { if (sl[k] != null) return false; }
-        return true;
       }
       function saveUpd(sid, ta) {
         var r = current(); if (!r || !sid || !ta) return;
-        var txt = ta.value;
         var entry = Repo.reunionEntryFor(r.date, sid);
+        var start = startwert(ta), mein = ta.value;
+        var da = entry ? String(entry.text || '') : '';
+        /* Hat inzwischen jemand anderes an dieser Karte geschrieben, bleiben
+           seine Zeilen stehen und die eigenen kommen dazu. */
+        var txt = (da !== start && window.KB_MERGE) ? KB_MERGE.text(start, mein, da) : mein;
+        ta._kbStart = mein;
+        if (document.activeElement !== ta && ta.value !== txt) {
+          ta.value = txt; ta._kbStart = txt; autoGrow(ta);
+        }
         var done = function () {
           var card = qs('[data-card="' + cssEsc(sid) + '"]', wrap);
           var flag = card && qs('.reu-flag.upd, .reu-flag.noupd', card);
@@ -3861,39 +4133,29 @@ function viewReunion(params, query) {
           }
           markSaved(card && qs('[data-saved="' + cssEsc(sid) + '"]', card));
           rerenderStats();
+          Entwurf.weg(entwurfKey(r.date, sid), mein);
         };
-        if (!txt.trim()) {
-          /* Leer geraeumt: einen hier angelegten, sonst leeren Eintrag wieder
-             entfernen. Haengt daran mehr als der automatische Tag - eigene
-             Tags, ein Bericht oder gesetzte Verlaufs-Slider - bleibt er stehen. */
-          if (entry && isPlainAuto(entry)) {
-            Repo.deleteEntry(entry.id).then(done);
-          } else { done(); }
-          return;
-        }
-        var ich = (window.KB_USER && KB_USER.get && KB_USER.get()) || '';
-        var payload = {
-          id: entry ? entry.id : undefined,
-          studentId: sid, date: r.date,
-          author: entry && entry.author ? entry.author : (ich || 'Team (Réunion)'),
-          updatedBy: ich || (entry && entry.updatedBy) || '',
-          category: 'Team-Réunion',
-          tags: entry && entry.tags && entry.tags.length ? entry.tags : ['Réunion'],
-          text: txt,
-          sliders: entry ? entry.sliders : null,
-          createdAt: entry ? entry.createdAt : undefined
-        };
-        if (entry && entry.report) payload.report = entry.report;
-        Repo.saveEntry(payload).then(done);
+        reunionTextSpeichern(r.date, sid, txt).then(done);
       }
+      function entwurfKey(date, sid) { return 'reu:' + date + ':' + sid; }
       var saveT = {};
       function queueSave(key, fn) {
         clearTimeout(saveT[key]);
-        saveT[key] = setTimeout(fn, 700);
+        var gk = state.date + ':' + key;
+        offeneSpeicher[gk] = fn;
+        saveT[key] = setTimeout(function () { delete offeneSpeicher[gk]; fn(); }, 700);
+      }
+      function sofortSpeichern(key, fn) {
+        clearTimeout(saveT[key]);
+        delete offeneSpeicher[state.date + ':' + key];
+        fn();
       }
       wrap.addEventListener('input', function (e) {
         var t = e.target;
-        if (t.id === 'org-edit' || t.id === 'org-group') { autoGrow(t); queueSave('org', saveOrg); return; }
+        if (t.id === 'org-edit' || t.id === 'org-group') {
+          if (t.id === 'org-edit') Entwurf.merke('reu-org:' + state.date, { t: t.value, b: startwert(t) });
+          autoGrow(t); queueSave('org', saveOrg); return;
+        }
         var usid = t.getAttribute && t.getAttribute('data-upd');
         if (usid) {
           /* Erstes Zeichen in einem Stichpunkt-Feld bekommt gleich den Punkt. */
@@ -3902,6 +4164,7 @@ function viewReunion(params, query) {
             t.value = toBullets(t.value);
             if (ende) { try { t.setSelectionRange(t.value.length, t.value.length); } catch (e2) {} }
           }
+          Entwurf.merke(entwurfKey(state.date, usid), { t: t.value, b: startwert(t) });
           autoGrow(t); queueSave('u' + usid, function () { saveUpd(usid, t); }); return;
         }
       });
@@ -3917,19 +4180,66 @@ function viewReunion(params, query) {
         var pos = a + 1 + BUL.length;
         try { t.setSelectionRange(pos, pos); } catch (e3) {}
         autoGrow(t);
+        Entwurf.merke(entwurfKey(state.date, usid), { t: t.value, b: startwert(t) });
         queueSave('u' + usid, function () { saveUpd(usid, t); });
       });
       /* Beim Verlassen sofort sichern, nicht erst nach der Wartezeit. */
       wrap.addEventListener('focusout', function (e) {
         var t = e.target;
-        if (t.id === 'org-edit' || t.id === 'org-group') { clearTimeout(saveT.org); saveOrg(); return; }
+        if (t.id === 'org-edit' || t.id === 'org-group') { sofortSpeichern('org', saveOrg); return; }
         var usid = t.getAttribute && t.getAttribute('data-upd');
-        if (usid) { clearTimeout(saveT['u' + usid]); saveUpd(usid, t); return; }
+        if (usid) { sofortSpeichern('u' + usid, function () { saveUpd(usid, t); }); return; }
       });
       /* Felder auf ihren Inhalt einstellen, sobald sie sichtbar werden. */
       function growAll() { (wrap.querySelectorAll ? wrap.querySelectorAll('textarea.reu-auto') : []).forEach(autoGrow); }
       wrap._growAll = growAll;
       setTimeout(growAll, 0);
+
+      /* Neues vom Team: an Ort und Stelle auffrischen, statt die Seite neu
+         aufzubauen - sonst klappten bei jedem Abgleich alle Karten zu und
+         Filter und Suche waeren weg. Neu gezeichnet wird nur, was sich
+         geaendert hat. Steht man gerade in einem Feld, bleibt dessen Karte,
+         wie sie ist; der Rest wird trotzdem aktuell. */
+      ansichtAuffrischen = function (o) {
+        if (!document.body.contains(wrap)) return false;
+        var r = current(); if (!r) return false;
+        var tippt = !!(o && o.tippt);
+        var fokus = document.activeElement;
+        var drin = function (el) { return !!(el && fokus && el.contains(fokus)); };
+        var rows = rowsFor(r);
+        var soll = rows.filter(function (x) { return matchesFilter(x) && matchesSearch(x); }).map(function (x) { return x.sid; }).join('|');
+        var ist = Array.prototype.map.call(wrap.querySelectorAll('.reu-card[data-card]'), function (k) { return k.getAttribute('data-card'); }).join('|');
+        if (soll !== ist && !tippt) {
+          rerenderList();          // Schueler dazu/weg oder neue Reihenfolge
+        } else {
+          rows.forEach(function (row, i) {
+            var el = qs('.reu-card[data-card="' + cssEsc(row.sid) + '"]', wrap);
+            if (!el || drin(el)) return;
+            var vorher = kartenStand[row.sid];
+            var neu = cardHtml(row, i, rows.length);
+            if (neu !== vorher) el.outerHTML = neu;
+          });
+        }
+        var ota = qs('#org-edit', wrap);
+        if (ota && ota !== fokus && ota.value === startwert(ota)) {
+          var ot = (r.orgItems || []).join('\n\n');
+          if (ota.value !== ot) {
+            ota.value = ot; ota._kbStart = ot; autoGrow(ota);
+            if (window.KB_SPELL && KB_SPELL.feld) KB_SPELL.feld(ota);
+          }
+        }
+        var gin = qs('#org-group', wrap);
+        if (gin && gin !== fokus && gin.value === startwert(gin)) {
+          var gt = gruppenziel(r);
+          if (gin.value !== gt) { gin.value = gt; gin._kbStart = gt; }
+        }
+        var oc = qs('#org-count', wrap); if (oc) oc.textContent = (r.orgItems || []).length;
+        var ib = qs('#reu-inactive', wrap); if (ib && !drin(ib)) ib.outerHTML = inactiveBarHtml(r);
+        var fb = qs('.reu-filter', wrap); if (fb && !drin(fb)) fb.outerHTML = filterHtml(rows);
+        rerenderStats();
+        growAll();
+        return true;
+      };
 
       // Suche + Ziel-Eingabe (Enter)
       wrap.addEventListener('input', function (e) {
@@ -4225,6 +4535,11 @@ function viewOrgLog(params, query) {
       var input = qs('#org-q', root);
       var log = qs('#org-log', root);
       var timer = null;
+      // Neues vom Team: Liste neu, Filter bleibt
+      ansichtAuffrischen = function () {
+        if (!document.body.contains(log)) return false;
+        log.innerHTML = listHtml(); return true;
+      };
       input.addEventListener('input', function () {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -4806,6 +5121,8 @@ function viewReportImport(params, query) {
     afterRender: function (root) {
       var wrap = qs('#imp-wrap', root);
       function rerender() { wrap.innerHTML = phaseHtml(); wire(); }
+      // ein laufender Import bleibt stehen, auch wenn vom Team etwas kommt
+      ansichtAuffrischen = function () { return document.body.contains(wrap); };
       function doSave() {
         var r = st.report; if (!r) return;
         var sid = st.studentId;
@@ -4817,7 +5134,7 @@ function viewReportImport(params, query) {
           try { if (window.KB_ROSTER.update) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() }); } catch (e) {}
         }
         if (!sid) { showToast('Bitte einen Schüler zuordnen.'); return; }
-        var dateIso = st.dateIso || (new Date().toISOString().slice(0, 10));
+        var dateIso = st.dateIso || todayIso();
         var body = kbReportToEntryText(r);
         var tags = [r.type === 'PEI' ? 'PEI' : (r.type === 'DS' ? 'DS' : 'Bericht')];
         if (r.goals && r.goals.length) tags.push('ELDiB');
@@ -4852,7 +5169,7 @@ function viewReportImport(params, query) {
             st.kind = ext.kind; st.rawText = ext.text || '';
             st.warnLowText = (st.rawText.replace(/\s/g, '').length < 200);
             st.report = kbParseReport(st.rawText);
-            st.dateIso = kbReportDateIso(st.report.reportDate) || (new Date().toISOString().slice(0, 10));
+            st.dateIso = kbReportDateIso(st.report.reportDate) || todayIso();
             if (!st.studentId) { var mid = autoMatchStudent(); if (mid) st.studentId = mid; else { st.createNew = true; st.newName = st.report.identity.name || ''; } }
             var body = kbReportToEntryText(st.report);
             var detMap = detectNamesInText([body], { excludeNames: st.report.identity.name ? [st.report.identity.name] : [] });
@@ -4931,9 +5248,94 @@ function navigate(hash, replace) {
    Darum: gleiche Adresse heisst gleiche Seite, also Scrollstand halten. Und
    wer gerade in einem Feld schreibt, bekommt gar keinen Neuaufbau - sonst
    verschwindet das Feld unter den Fingern und Getipptes waere weg. Der
-   Neuaufbau wird nachgeholt, sobald das Feld verlassen wird. */
+   Neuaufbau wird nachgeholt, sobald das Feld verlassen wird.
+
+   Kommt der Anstoss aus dem Hintergrund (Team-Abgleich, Klassenliste),
+   render({hintergrund: true}), gilt zusaetzlich:
+   - Eine Ansicht, die sich selbst auffrischen kann, tut das an Ort und
+     Stelle - aufgeklappte Karten, Filter und Halbfertiges bleiben stehen.
+   - Sonst wird neu aufgebaut, aber was in Feldern getippt und noch nicht
+     gespeichert ist, kommt danach wieder hinein.
+   - Und nie mitten in einem Klick: sonst verschwaende der Knopf zwischen
+     Druecken und Loslassen, und der Klick ginge ins Leere. */
 var lastRenderHash = null;
 var renderPending = false;
+/* Eine Ansicht kann hier eine Funktion hinterlegen, die sie an Ort und
+   Stelle auffrischt: ansichtAuffrischen({tippt}). Gibt sie false zurueck,
+   ist die Ansicht nicht mehr da und es wird neu aufgebaut. */
+var ansichtAuffrischen = null;
+
+var zeigerUnten = false;
+document.addEventListener('pointerdown', function () { zeigerUnten = true; }, true);
+document.addEventListener('pointerup', function () { zeigerUnten = false; }, true);
+document.addEventListener('pointercancel', function () { zeigerUnten = false; }, true);
+window.addEventListener('blur', function () { zeigerUnten = false; });   // losgelassen ausserhalb des Fensters
+/* fn erst ausfuehren, wenn ein laufender Klick fertig ist. */
+function nachDemKlick(fn) {
+  if (!zeigerUnten) { setTimeout(fn, 0); return; }
+  var fertig = false;
+  var los = function (ev) {
+    if (fertig) return;
+    fertig = true;
+    if (!ev) zeigerUnten = false;   // Zeit abgelaufen: das Loslassen kam nie an
+    document.removeEventListener('pointerup', los, true);
+    document.removeEventListener('pointercancel', los, true);
+    setTimeout(fn, 0);          // nach dem click, der auf pointerup folgt
+  };
+  document.addEventListener('pointerup', los, true);
+  document.addEventListener('pointercancel', los, true);
+  setTimeout(function () { los(null); }, 2000);
+}
+
+/* Getipptes, das noch nicht gespeichert ist, ueber einen Neuaufbau retten.
+   Ein Feld gilt als geaendert, wenn es vom geladenen Stand abweicht (oder
+   von dem, den die Ansicht als gespeichert vermerkt hat: _kbStart). Wieder
+   eingesetzt wird in das Feld an derselben Stelle; hat sich der gespeicherte
+   Text inzwischen geaendert, werden beide Fassungen zusammengefuehrt. */
+var FELD_MERKMALE = ['data-upd', 'data-add-sid', 'data-sid', 'data-nf', 'data-subj', 'data-per', 'name'];
+function feldListe(root) {
+  var out = [], zaehler = {};
+  qsa('textarea, input, select', root).forEach(function (el) {
+    var typ = String(el.type || '').toLowerCase();
+    if (el.tagName === 'INPUT' && ['text', 'search', 'number', 'date', 'time', 'email', 'tel', 'url', 'checkbox', 'range'].indexOf(typ) < 0) return;
+    var k = el.tagName + '|' + (el.id || '');
+    FELD_MERKMALE.forEach(function (a) { if (el.hasAttribute(a)) k += '|' + a + '=' + el.getAttribute(a); });
+    var kl = String(el.className || '').split(/\s+/).filter(function (x) { return x && x !== 'kb-sp-on'; })[0];
+    if (kl) k += '|.' + kl;
+    zaehler[k] = (zaehler[k] || 0) + 1;
+    out.push({ key: k + '#' + zaehler[k], el: el });
+  });
+  return out;
+}
+function feldStart(el) {
+  if (el.type === 'checkbox') return el.defaultChecked;
+  if (el.tagName === 'SELECT') {
+    for (var i = 0; i < el.options.length; i++) if (el.options[i].defaultSelected) return el.options[i].value;
+    return el.options.length ? el.options[0].value : '';
+  }
+  return el._kbStart !== undefined ? el._kbStart : el.defaultValue;
+}
+function feldWert(el) { return el.type === 'checkbox' ? el.checked : el.value; }
+function getippteFelder(root) {
+  var m = {}, n = 0;
+  feldListe(root).forEach(function (f) {
+    var w = feldWert(f.el), s = feldStart(f.el);
+    if (w !== s) { m[f.key] = { wert: w, start: s }; n++; }
+  });
+  return n ? m : null;
+}
+function getippteZurueck(root, m) {
+  feldListe(root).forEach(function (f) {
+    var alt = m[f.key]; if (!alt) return;
+    var el = f.el, neuStart = feldStart(el), w = alt.wert;
+    if (el.tagName === 'TEXTAREA' && neuStart !== alt.start && window.KB_MERGE) w = KB_MERGE.text(alt.start, alt.wert, neuStart);
+    if (w === neuStart || w === feldWert(el)) return;
+    if (el.type === 'checkbox') { el.checked = w; el.dispatchEvent(new Event('change', { bubbles: true })); return; }
+    el.value = w;
+    if (el.type === 'range' || el.type === 'search') el.dispatchEvent(new Event('input', { bubbles: true }));
+    if (el.tagName === 'TEXTAREA' && el.style) { el.style.height = 'auto'; el.style.height = (el.scrollHeight + 2) + 'px'; }
+  });
+}
 
 function scrollHolder() {
   var el = document.getElementById('app-root'), l = [];
@@ -4946,30 +5348,54 @@ function scrollHolder() {
   return l;
 }
 
-function render() {
+function render(opt) {
+  var hintergrund = !!(opt && opt.hintergrund === true);
   var hashNow = location.hash;
   var gleicheSeite = (hashNow === lastRenderHash);
+
+  if (gleicheSeite && hintergrund && zeigerUnten) {
+    nachDemKlick(function () { render({ hintergrund: true }); });
+    return;
+  }
 
   var ae = document.activeElement;
   var tippt = ae && (ae.tagName === 'TEXTAREA' || ae.tagName === 'INPUT' || ae.isContentEditable);
   if (gleicheSeite && tippt) {
-    if (!renderPending) {
-      renderPending = true;
-      ae.addEventListener('blur', function () {
-        renderPending = false;
-        setTimeout(render, 0);
+    /* renderPending = das Feld, dessen Verlassen den Neuaufbau nachholt. Ist
+       es inzwischen aus der Seite verschwunden (dann meldet der Browser kein
+       Verlassen), wartet das neue Feld. */
+    if (!renderPending || !document.body.contains(renderPending)) {
+      var wartet = ae;
+      renderPending = wartet;
+      wartet.addEventListener('blur', function () {
+        nachDemKlick(function () { if (renderPending === wartet) renderPending = false; render({ hintergrund: true }); });
       }, { once: true });
+    }
+    if (ansichtAuffrischen) {
+      try { if (ansichtAuffrischen({ tippt: true }) === false) ansichtAuffrischen = null; } catch (e) { ansichtAuffrischen = null; }
     }
     return;
   }
 
   var halten = gleicheSeite ? scrollHolder() : null;
+  if (gleicheSeite && hintergrund && ansichtAuffrischen) {
+    var erledigt = false;
+    try { erledigt = ansichtAuffrischen({ tippt: false }) !== false; } catch (e) { erledigt = false; }
+    if (erledigt) {
+      halten.forEach(function (x) { try { x[0].scrollTop = x[1]; } catch (e) {} });
+      return;
+    }
+  }
+
+  ansichtAuffrischen = null;
+  var root = document.getElementById('app-root');
+  var getippt = (gleicheSeite && hintergrund) ? getippteFelder(root) : null;
   var parsed = parseHash();
   var view = resolveView(parsed.parts, parsed.query);
-  var root = document.getElementById('app-root');
   root.innerHTML = shellHtml(view.navKey, view.html);
   var main = qs('#main-content', root);
   if (view.afterRender) view.afterRender(main);
+  if (getippt) { try { getippteZurueck(root, getippt); } catch (e) {} }
   lastRenderHash = hashNow;
   if (halten) {
     halten.forEach(function (x) { try { x[0].scrollTop = x[1]; } catch (e) {} });
@@ -5052,6 +5478,8 @@ Repo.init()
     maybeShowPrivacyBanner();
     checkPersistenceAndWarn();
     render();
+    /* etwas warten: erst muessen andere offene Fenster sich gemeldet haben */
+    setTimeout(function () { try { entwuerfeZurueckholen(); } catch (e) {} }, 2500);
   })
   .catch(function (err) {
     document.getElementById('app-root').innerHTML =

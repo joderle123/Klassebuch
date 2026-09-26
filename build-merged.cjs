@@ -30,7 +30,10 @@ function replaceOnce(s, find, repl, label) {
 }
 
 var TABS_GUARD = read('tabs-guard.js');
+var MERGE_JS = read('merge.js');
+var KB_DATUM_JS = "/* Heute als JJJJ-MM-TT nach der Uhr auf dem Geraet - toISOString() rechnet in UTC, und zwischen Mitternacht und 2 Uhr waere es in Luxemburg noch gestern. */window.kbLokalISO=function(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);};";
 var SPELL_JS  = read('spell.js');
+var SPELL_ZUSATZ = read('spell-zusatz.js');
 var SPELL_CSS = read('spell.css');
 var NSPELL_JS = read('vendor/nspell.bundle.js');
 /* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
@@ -1221,6 +1224,13 @@ window.KB_TERMS=(function(){
 
   function yearForDate(d){ensure();for(var i=0;i<data.years.length;i++){var y=data.years[i];if(d>=y.from&&d<=y.to)return y;}return null;}
   function termForDate(y,d){if(!y)return null;for(var i=0;i<y.terms.length;i++){var t=y.terms[i];if(d>=t.from&&d<=t.to)return t;}return null;}
+  /* In den Ferien zwischen zwei Trimestern liegt das Datum in keinem - dann
+     gilt das zuletzt beendete (Osterferien: T2, nicht wieder T1). */
+  function termOrLast(y,d){
+    var t=termForDate(y,d);if(t)return t;
+    var last=null;for(var i=0;i<y.terms.length;i++){if(y.terms[i].to&&y.terms[i].to<d&&(!last||y.terms[i].to>last.to))last=y.terms[i];}
+    return last||y.terms[0];
+  }
   /* Aktiv = fest gewählt, sonst nach heutigem Datum, sonst jüngstes Jahr. */
   function active(){
     ensure();
@@ -1231,7 +1241,7 @@ window.KB_TERMS=(function(){
         return {year:py,term:pt||py.terms[0],auto:false};}
     }
     var y=yearForDate(d);
-    if(y)return {year:y,term:termForDate(y,d)||y.terms[0],auto:true};
+    if(y)return {year:y,term:termOrLast(y,d),auto:true};
     var last=data.years[data.years.length-1];
     return {year:last,term:last.terms[0],auto:true};
   }
@@ -1732,7 +1742,7 @@ var DOS_OVERRIDES = `
     /* ---- Wochenziele (sichtbar mit Ziel-Texten) ---- */
     var wochenCard;
     if(weekly.length){
-      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<ul class="hub-list">'+weekly.map(function(g){return '<li>'+escapeHtml(g)+'</li>';}).join('')+'</ul></div>';
+      wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<ul class="hub-list">'+weekly.map(function(g){var fertig=!!(g&&typeof g==='object'&&g.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(g))+'</li>';}).join('')+'</ul></div>';
     } else {
       wochenCard='<div class="card kb-mini">'+mh('📌','Wochenziele','w')+'<p class="muted">Noch keine — in der <a href="#/reunion" data-route="#/reunion">Réunion</a> festlegen.</p></div>';
     }
@@ -1781,7 +1791,7 @@ var DOS_OVERRIDES = `
       items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
-      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul>'});}
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+'</li>';}).join('')+'</ul>'});}
     });
     if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
     if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
@@ -1808,6 +1818,9 @@ var DOS_OVERRIDES = `
     }
     return '<div class="kb-hub-pad"><div class="tl-filters">'+chips+'</div>'+body+'</div>';
   }
+  /* Ziele stehen als Text oder als {text, done} - die Réunion speichert die
+     zweite Form. Ohne diese Umwandlung stand hier "[object Object]". */
+  function zielTxt(g){return (g&&typeof g==='object')?String(g.text||''):String(g||'');}
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
     reu.forEach(function(r){
@@ -1815,11 +1828,11 @@ var DOS_OVERRIDES = `
       if(!e&&!g.length){return;}
       out.push('<div class="card"><div class="muted" style="font-size:.85em;display:flex;justify-content:space-between;gap:8px;align-items:center;"><span>Réunion '+escapeHtml(formatDate(r.date))+'</span>'+(e&&e.author?'<span class="reunion-author" title="Verfasst von '+escapeAttr(e.author)+'">✍ '+escapeHtml(e.author)+'</span>':'')+'</div>'+
         (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
-        (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){return '<li>'+escapeHtml(x)+'</li>';}).join('')+'</ul></div>':'')+'</div>');
+        (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+(fertig?' <span class="muted">(erreicht)</span>':'')+'</li>';}).join('')+'</ul></div>':'')+'</div>');
     });
-    var today=(new Date()).toISOString().slice(0,10);
+    var today=window.kbLokalISO();
     var up=reu.filter(function(r){return r.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
-    function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return d.toISOString().slice(0,10);}
+    function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return window.kbLokalISO(d);}
     var nextDate=up.length?up[0].date:nextMondayISO();
     var nObj=Repo.getReunionByDate?Repo.getReunionByDate(nextDate):null;
     var ex=Repo.reunionEntryFor(nextDate,sid);
@@ -1830,7 +1843,7 @@ var DOS_OVERRIDES = `
       '<label class="reu-lbl">Beitrag / Update für die Réunion</label>'+
       '<textarea class="reu-input" rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
       '<label class="reu-lbl" style="margin-top:12px;">Wochenziel(e) <span class="muted" style="font-weight:600;">— optional, je Zeile eins</span></label>'+
-      '<textarea class="reu-goals" rows="2" placeholder="z. B. Pünktlich zur Schule kommen">'+escapeHtml(exGoals.join('\\n'))+'</textarea>'+
+      '<textarea class="reu-goals" rows="2" placeholder="z. B. Pünktlich zur Schule kommen">'+escapeHtml(exGoals.map(zielTxt).join('\\n'))+'</textarea>'+
       '<div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-primary reu-save" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextDate)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+'>'+((ex||exGoals.length)?'Aktualisieren':'Speichern')+'</button> <span class="reu-status muted" style="font-size:.85em;"></span></div>'+
       '<p class="muted" style="font-size:.8em;margin-top:6px;">Beitrag wird als Réunion-Eintrag gespeichert, Wochenziele wandern in die Réunion-Ziele — alles synchronisiert automatisch (Team-Datei & überall).</p>'+
     '</div>';
@@ -1949,19 +1962,53 @@ var DOS_OVERRIDES = `
         }catch(e){}}
         if(tab==='reunion'){try{
           var rbtn=root.querySelector('.reu-save'), rta=root.querySelector('.reu-input'), rgta=root.querySelector('.reu-goals'), rst=root.querySelector('.reu-status');
+          /* Entwurf: was hier getippt, aber nicht gespeichert wurde, kommt
+             beim naechsten Oeffnen zurueck (Fenster zu, Absturz, Akku leer). */
+          var EW=(rbtn&&window.Entwurf)?('hub-reu:'+rbtn.getAttribute('data-date')+':'+rbtn.getAttribute('data-sid')):'';
+          var ewMerken=function(){if(EW){window.Entwurf.merke(EW,{t:rta?rta.value:'',g:rgta?rgta.value:'',b:rta?rta.defaultValue:''});}};
+          if(EW){
+            var ew=window.Entwurf.hole(EW), rtaStart=rta?rta.defaultValue:'', rgStart=rgta?rgta.defaultValue:'';
+            if(ew&&((ew.t||'')!==rtaStart||(ew.g||'')!==rgStart)){
+              if(rta){rta.value=(window.KB_MERGE&&(ew.b||'')!==rtaStart)?window.KB_MERGE.text(ew.b||'',ew.t||'',rtaStart):(ew.t||'');}
+              if(rgta){rgta.value=ew.g||'';}
+              if(rst){rst.textContent='↺ Nicht gespeicherter Entwurf wiederhergestellt — noch nicht gespeichert.';}
+            }
+          }
+          if(rta){rta.addEventListener('input',ewMerken);}
+          if(rgta){rgta.addEventListener('input',ewMerken);}
           if(rbtn){rbtn.addEventListener('click',function(){
-            var sid2=rbtn.getAttribute('data-sid'), date2=rbtn.getAttribute('data-date'), eid2=rbtn.getAttribute('data-eid');
+            var sid2=rbtn.getAttribute('data-sid'), date2=rbtn.getAttribute('data-date');
+            var zeilen2=function(v){return String(v||'').split('\\n').map(function(s){return s.trim();}).filter(Boolean);};
             var text2=((rta&&rta.value)||'').trim();
-            var goals2=((rgta&&rgta.value)||'').split('\\n').map(function(s){return s.trim();}).filter(Boolean);
+            var goals2=zeilen2(rgta&&rgta.value);
             if(!text2 && !goals2.length){ if(rta){rta.focus();} return; }
             rbtn.disabled=true; if(rst){rst.textContent='Speichert …';}
+            var M=window.KB_MERGE;
             var r2=Repo.getReunionByDate?Repo.getReunionByDate(date2):null;
             var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
             base.goals=base.goals||{};
-            if(goals2.length){base.goals[sid2]=goals2;}else if(base.goals[sid2]){delete base.goals[sid2];}
+            /* Seit dem Oeffnen kann das Team schon weitergeschrieben haben:
+               gegen den Stand beim Oeffnen zusammenfuehren, nicht ueberschreiben.
+               "Erreicht" bleibt bei Zielen stehen, die es schon gab. */
+            var jetztG=Array.isArray(base.goals[sid2])?base.goals[sid2]:[];
+            var texteG=M?M.liste(zeilen2(rgta&&rgta.defaultValue),goals2,jetztG.map(zielTxt)):goals2;
+            var neuG=texteG.map(function(t){var alt=jetztG.filter(function(g){return zielTxt(g)===t;})[0];return {text:t,done:!!(alt&&typeof alt==='object'&&alt.done)};});
+            if(neuG.length){base.goals[sid2]=neuG;}else if(base.goals[sid2]){delete base.goals[sid2];}
             Repo.saveReunion(base).then(function(){
-              if(text2){var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:text2,author:((window.KB_USER&&window.KB_USER.get())||'')};if(eid2){p2.id=eid2;}return Repo.saveEntry(p2);}
+              if(!text2){return;}
+              var ex2=Repo.reunionEntryFor(date2,sid2), da2=ex2?String(ex2.text||''):'';
+              var start2=((rta&&rta.defaultValue)||'').trim();
+              var t2=(ex2&&M&&da2!==start2)?M.text(start2,text2,da2):text2;
+              if(ex2&&t2===da2){return;}
+              var ich=((window.KB_USER&&window.KB_USER.get())||'');
+              var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:t2,
+                author:(ex2&&ex2.author)||ich,updatedBy:ich,
+                tags:(ex2&&ex2.tags&&ex2.tags.length)?ex2.tags:['Réunion'],
+                sliders:ex2?ex2.sliders:null,createdAt:ex2?ex2.createdAt:undefined};
+              if(ex2){p2.id=ex2.id;if(ex2.report){p2.report=ex2.report;}if(ex2.source){p2.source=ex2.source;}}
+              return Repo.saveEntry(p2);
             }).then(function(){
+              if(EW){window.Entwurf.weg(EW);}
               if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
               if(window.render){try{window.render();}catch(e){}}
             }).catch(function(){rbtn.disabled=false;if(rst){rst.textContent='Fehler beim Speichern';}});
@@ -2011,8 +2058,8 @@ var DOS_OVERRIDES = `
     ready:function(){return !!Repo.ready;},
     exportEntries:function(){return (Repo.entries||[]).slice();},
     exportReunions:function(){return (Repo.reunions||[]).slice();},
-    applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render();}catch(e){}}},
-    applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render();}catch(e){}}}
+    applyEntries:function(list){Repo.entries=(list||[]).slice();kbDosPersist('entries',Repo.entries);if(window.render){try{window.render({hintergrund:true});}catch(e){}}},
+    applyReunions:function(list){Repo.reunions=(list||[]).slice();kbDosPersist('reunions',Repo.reunions);if(window.render){try{window.render({hintergrund:true});}catch(e){}}}
   };
   /* Papierkorb nach aussen: die Shell zeigt ihn unter Daten & Backup. */
   window.KB_TRASH={
@@ -2034,11 +2081,18 @@ var DOS_OVERRIDES = `
         }catch(e){}
       }
       delete d._studentName;
+      /* Steht unter derselben Kennung inzwischen wieder etwas - etwa ein neu
+         geschriebenes Réunion-Update -, wird zusammengefuehrt, nicht
+         ueberschrieben. */
+      var jetzt=x.kind==='reunion'?Repo.getReunion(d.id):Repo.getEntry(d.id);
+      if(jetzt&&window.KB_MERGE&&window.KB_MERGE.datensatz){
+        try{d=window.KB_MERGE.datensatz[x.kind==='reunion'?'dosReunions':'dosEntries'](null,jetzt,d,1,0);}catch(e){}
+      }
       if(x.kind==='reunion')p=Repo.saveReunion(d);
       else p=Repo.saveEntry(d);
       return Promise.resolve(p).then(function(){
         Trash.drop(tid);
-        if(window.render){try{window.render();}catch(e){}}
+        if(window.render){try{window.render({hintergrund:true});}catch(e){}}
         return true;
       });
     },
@@ -2559,7 +2613,7 @@ var SHELL_CONTROLLER = `
   if(window.KB_ROSTER){
     window.KB_ROSTER.onChange(function(){
       if(window.__anwRefresh){try{window.__anwRefresh();}catch(e){}}
-      if(window.render){try{window.render();}catch(e){}}
+      if(window.render){try{window.render({hintergrund:true});}catch(e){}}
       if($('kb-klasse')&&$('kb-klasse').classList.contains('active')){renderRoster();}
     });
   }
@@ -2662,7 +2716,7 @@ var SHELL_CONTROLLER = `
   }
   function openGate(){if(!gate)buildGate();renderGateGrid();gate.classList.add('open');}
   function closeGate(){if(gate)gate.classList.remove('open');}
-  function pickUser(u){if(window.KB_ANW&&KB_ANW.setUser){try{KB_ANW.setUser(u);}catch(e){}}closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render();}catch(e){}}}
+  function pickUser(u){if(window.KB_ANW&&KB_ANW.setUser){try{KB_ANW.setUser(u);}catch(e){}}closeGate();updateUserChip();for(var i=0;i<userHooks.length;i++){try{userHooks[i](u);}catch(e){}}if(window.render){try{window.render({hintergrund:true});}catch(e){}}}
   function updateUserChip(){var c=$('kb-userchip');if(!c)return;var u=curUser();
     if(u){c.innerHTML='<span class="kb-uc-av" style="background:'+uBg(u)+'">'+esc(uIni(u))+'</span><span class="kb-uc-n">'+esc(u)+'</span><span class="kb-uc-x">wechseln</span>';c.title='Angemeldet als '+u+' — klicken zum Wechseln';}
     else{c.innerHTML='<span class="kb-uc-av">?</span><span class="kb-uc-n">Wer bist du?</span>';c.title='Person wählen';}
@@ -2706,7 +2760,7 @@ window.KB_BUBBLE=(function(){
     addNode:function(sid,n){var r=get(sid);n.id='bn_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);r.nodes.push(n);set(sid,r);return n.id;},
     updateNode:function(sid,id,f){var r=get(sid);r.nodes.forEach(function(n){if(n.id===id){for(var k in f){n[k]=f[k];}}});set(sid,r);},
     removeNode:function(sid,id){var r=get(sid);r.nodes=r.nodes.filter(function(n){return n.id!==id;});set(sid,r);},
-    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:new Date().toISOString().slice(0,10),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
+    snapshot:function(sid,label){var r=get(sid);var snap={id:'bs_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),date:window.kbLokalISO(),label:label||'',matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:clone(r.nodes||[])};r.snapshots=r.snapshots||[];r.snapshots.push(snap);r.snapshots.sort(function(a,b){return a.date<b.date?-1:(a.date>b.date?1:0);});set(sid,r);return snap.id;},
     snapshots:function(sid){return (get(sid).snapshots||[]).slice();},
     removeSnapshot:function(sid,snapId){var r=get(sid);r.snapshots=(r.snapshots||[]).filter(function(s){return s.id!==snapId;});set(sid,r);},
     syncExport:function(){var out=[];for(var k in data){var r=data[k]||{};out.push({id:k,matrikel:r.matrikel||'',dateBegin:r.dateBegin||'',dateEnd:r.dateEnd||'',nodes:r.nodes||[],snapshots:r.snapshots||[]});}return out;},
@@ -2940,10 +2994,31 @@ window.KB_SYNC=(function(){
   function fsSupported(){return (typeof window!=='undefined')&&('showOpenFilePicker' in window)&&('showSaveFilePicker' in window);}
 
   function eqPayload(a,b){return JSON.stringify(a)===JSON.stringify(b);}
-  function mergeColl(remote,local){
-    var by={},i,r,ex;
+  /* Zusammenfuehren zweier Staende einer Sammlung.
+     Ohne coll: die juengere Fassung je Eintrag gewinnt (fuer interne Schritte).
+     Mit coll und Basis: haben BEIDE Seiten denselben Eintrag seit dem letzten
+     gemeinsamen Stand geaendert, wird feldgenau zusammengefuehrt (KB_MERGE) -
+     sonst ginge die aeltere Fassung spurlos verloren. */
+  function mergeColl(remote,local,baseC,coll,now){
+    var by={},bb=null,i,r,ex;
+    var fn=(coll&&window.KB_MERGE&&window.KB_MERGE.datensatz)?window.KB_MERGE.datensatz[coll]:null;
+    if(fn){bb={};for(i=0;i<(baseC||[]).length;i++){bb[baseC[i].id]=baseC[i];}}
     for(i=0;i<(remote||[]).length;i++){r=remote[i];by[r.id]=r;}
-    for(i=0;i<(local||[]).length;i++){r=local[i];ex=by[r.id];if(!ex||(r._ts||0)>=(ex._ts||0)){by[r.id]=r;}}
+    for(i=0;i<(local||[]).length;i++){
+      r=local[i];ex=by[r.id];
+      if(!ex){by[r.id]=r;continue;}
+      if(fn&&!r._del&&!ex._del&&r.d&&ex.d&&!eqPayload(r.d,ex.d)){
+        var b=bb[r.id], bd=(b&&!b._del&&b.d)?b.d:null;
+        var geaendertR=!bd||!eqPayload(bd,ex.d), geaendertL=!bd||!eqPayload(bd,r.d);
+        if(geaendertR&&geaendertL){
+          try{
+            by[r.id]={id:r.id,_ts:Math.max(r._ts||0,ex._ts||0,now||0),d:fn(bd,ex.d,r.d,ex._ts||0,r._ts||0)};
+            continue;
+          }catch(e){}
+        }
+      }
+      if((r._ts||0)>=(ex._ts||0)){by[r.id]=r;}
+    }
     var out=[];for(var k in by){out.push(by[k]);}return out;
   }
   function diffColl(base,live,now){
@@ -2957,7 +3032,7 @@ window.KB_SYNC=(function(){
   function liveOf(coll){var out=[];for(var i=0;i<(coll||[]).length;i++){if(!coll[i]._del){out.push(coll[i].d);}}return out;}
   function emptyDoc(){var d={_format:FMT,colls:{}};for(var i=0;i<COLLS.length;i++){d.colls[COLLS[i]]=[];}return d;}
   function buildLocalDoc(base,live,now){var ld=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var bc=(base&&base.colls&&base.colls[n])||[];ld.colls[n]=mergeColl(bc,diffColl(bc,live[n]||[],now));}return ld;}
-  function mergeDocs(remote,localDoc){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n]);}return nb;}
+  function mergeDocs(remote,localDoc,baseDoc,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var bc=(baseDoc&&baseDoc.colls&&baseDoc.colls[n])||[];nb.colls[n]=mergeColl(rc,localDoc.colls[n],bc,n,now);}return nb;}
   function firstReconcile(live,remote,now){var nb=emptyDoc();for(var i=0;i<COLLS.length;i++){var n=COLLS[i];var rc=(remote&&remote.colls&&remote.colls[n])||[];var rby={};for(var j=0;j<rc.length;j++){rby[rc[j].id]=true;}var add=[];var lv=live[n]||[];for(j=0;j<lv.length;j++){if(!rby[lv[j].id]){add.push({id:lv[j].id,_ts:now,d:lv[j]});}}nb.colls[n]=mergeColl(rc,add);}return nb;}
   function normColl(c){return (c||[]).slice().sort(function(a,b){return a.id<b.id?-1:(a.id>b.id?1:0);}).map(function(r){return r.id+'|'+(r._ts||0)+'|'+(r._del?1:0)+'|'+JSON.stringify(r.d||null);}).join(';');}
   function sameDoc(a,b){if(!a||!b)return false;for(var i=0;i<COLLS.length;i++){if(normColl(a.colls[COLLS[i]])!==normColl(b.colls[COLLS[i]]))return false;}return true;}
@@ -3187,7 +3262,7 @@ window.KB_SYNC=(function(){
           busy=false;try{wipeBar(w);}catch(e){}
           return;
         }
-        nb=mergeDocs(remote||null,ld);apply=!sameDoc(nb,ld);
+        nb=mergeDocs(remote||null,ld,base,now);apply=!sameDoc(nb,ld);
       }
       if(apply){applying=true;try{collSet(nb);}catch(e){}applying=false;}
       /* Schicht 3: die Tageskopie entsteht VOR dem ersten Schreiben, also vom
@@ -3475,7 +3550,7 @@ window.KB_SCREENING=(function(){
   }
   function snapshotDaily(sid){
     var s=snapshotOf(sid); if(!s)return;
-    var today=new Date().toISOString().slice(0,10);
+    var today=window.kbLokalISO();
     var d=get(sid); d.history=Array.isArray(d.history)?d.history:[];
     var snap={date:today}; for(var k in s)snap[k]=s[k];
     var idx=-1; for(var i=0;i<d.history.length;i++){if(d.history[i].date===today){idx=i;break;}}
@@ -4118,7 +4193,7 @@ window.KB_NOTEN=(function(){
     periodsFor:periodsFor, norm:norm, list:listOf, subjectAvg:subjAvg,
     getMode:function(sid){return rec(sid).mode;},
     setMode:function(sid,m){var r=rec(sid);var nm=(m==='trimester'?'trimester':'semester');if(r.mode!==nm){r.mode=nm;r.updatedAt=new Date().toISOString();notify(sid);}},
-    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:new Date().toISOString().slice(0,10)});r.updatedAt=new Date().toISOString();notify(sid);},
+    add:function(sid,o){var r=rec(sid);r.grades.push({id:nid(),subject:o.subject||'',period:o.period||'S1',label:(o.label||'').trim(),points:+o.points||0,max:(+o.max>0?+o.max:60),date:window.kbLokalISO()});r.updatedAt=new Date().toISOString();notify(sid);},
     remove:function(sid,id){var r=rec(sid);r.grades=r.grades.filter(function(g){return g.id!==id;});r.updatedAt=new Date().toISOString();notify(sid);},
     periodAvg:function(sid,period,subjects){var avgs=[];(subjects||[]).forEach(function(su){var a=subjAvg(sid,su,period);if(a!=null)avgs.push(a);});if(!avgs.length)return null;var s=0;for(var i=0;i<avgs.length;i++)s+=avgs[i];return s/avgs.length;},
     moduleOf:function(sid,subject){return modOf(sid,subject);},
@@ -4472,6 +4547,8 @@ var parts = [
   SHELL_PANELS_EXTRA,
   '<script type="application/octet-stream" id="kb-isa-b64">' + ISA_B64 + '</' + 'script>',
   '<script>window.KB_MATERIALS_DATA=' + jsonForScript(MATERIALS_JSON) + ';window.KB_TAXONOMY=' + jsonForScript(TAXONOMY_JSON) + ';</' + 'script>',
+  '<script>' + KB_DATUM_JS + '</' + 'script>',
+  '<script>' + MERGE_JS + '</' + 'script>',
   '<script>' + TERMS_MODULE + '</' + 'script>',
   '<script>' + ROSTER_MODULE + '</' + 'script>',
   '<script>' + dosScript + '</' + 'script>',
@@ -4491,6 +4568,7 @@ var parts = [
   '<script>' + TABS_GUARD + '</' + 'script>',
   '<script>' + SPELL_DATA + '</' + 'script>',
   '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SPELL_ZUSATZ + '</' + 'script>',
   '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',
   '</html>',

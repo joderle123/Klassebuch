@@ -34,7 +34,15 @@
   }
   function eigenListe() {
     if (eigene) return eigene;
-    try { eigene = JSON.parse(localStorage.getItem(EIGEN_KEY) || '[]') || []; } catch (e) { eigene = []; }
+    try {
+      var roh = localStorage.getItem(EIGEN_KEY);
+      /* ISA hat inzwischen eine eigene Liste; frueher teilte es sie mit dem
+         Klassebuch - beim ersten Mal die alte uebernehmen. (Der Name steht
+         absichtlich zerlegt da, damit der ISA-Bau ihn nicht umbenennt.) */
+      var alt = 'kb_' + 'spell_eigen';
+      if (roh === null && EIGEN_KEY !== alt) roh = localStorage.getItem(alt);
+      eigene = JSON.parse(roh || '[]') || [];
+    } catch (e) { eigene = []; }
     return eigene;
   }
   function eigenAdd(w) {
@@ -76,30 +84,178 @@
   /* Wortzeichen: Buchstaben inklusive Umlauten, dazu Apostroph und
      Bindestrich im Wortinneren (d'Kanner, Kanner-Grupp). */
   var WORT = /[A-Za-zÀ-ÖØ-öø-ÿ]+(?:['’-][A-Za-zÀ-ÖØ-öø-ÿ]+)*/g;
+  var GROSS = /^[A-ZÀ-ÖØ-Þ]/;
+
+  /* Was ausser dem Woerterbuch als richtig gilt. Ohne das war in echten
+     Texten des Teams jedes sechste Wort unterstrichen - Namen, Abkuerzungen,
+     franzoesische Fachwoerter, zusammengesetzte Woerter -, und die echten
+     Fehler gingen darin unter. */
+  var ZUSATZ = Object.create(null), VORNAMEN = Object.create(null);
+  (function () {
+    var z = window.KB_SPELL_ZUSATZ || {};
+    String(z.fach || '').split(/\s+/).forEach(function (w) { if (w) ZUSATZ[w.toLowerCase()] = 1; });
+    String(z.vornamen || '').split(/\s+/).forEach(function (w) { if (w) VORNAMEN[w.toLowerCase()] = 1; });
+  })();
+  /* Namen aus der eigenen Arbeit: Schueler, Team, bekannte Aerzte und
+     Therapeuten, Helfernetz, aus Berichten gelernte Namen, Orte. Wird alle
+     paar Sekunden neu eingesammelt - kommt ein Schueler dazu, gilt sein Name
+     sofort. */
+  var namenSet = Object.create(null), appVornamen = Object.create(null), namenZeit = 0, namenSig = '';
+  /* Klein geschriebene Teile ("de", "la", "sur" in Jean de la Fontaine,
+     Esch-sur-Alzette) sind keine Namen - sonst gaelte "De Blorfanek" als
+     Vorname plus Nachname. */
+  function namenAus(set, n, vorn) {
+    String(n || '').split(/[\s.,;:()\/"«»]+/).forEach(function (t, i) {
+      t = t.replace(/^['’]+|['’]+$/g, '');
+      if (t.length < 2 || !GROSS.test(t)) return;
+      set[t.toLowerCase()] = 1;
+      if (t.indexOf('-') > 0) t.split('-').forEach(function (u) { if (u.length >= 2 && GROSS.test(u)) set[u.toLowerCase()] = 1; });
+      if (vorn && i === 0) vorn[t.toLowerCase()] = 1;
+    });
+  }
+  function namen() {
+    var jetzt = Date.now();
+    if (jetzt - namenZeit < 10000) return namenSet;
+    namenZeit = jetzt;
+    var s = Object.create(null), v = Object.create(null);
+    var mit = function (liste, feld, vorn) { (liste || []).forEach(function (x) { namenAus(s, feld ? (x && x[feld]) : x, vorn); }); };
+    try { if (window.KB_ROSTER && KB_ROSTER.syncExport) mit(KB_ROSTER.syncExport(), 'name', v); } catch (e) {}
+    try { if (window.Repo && Repo.students) mit(Repo.students, 'name', v); } catch (e) {}
+    try { if (window.KB_USER && KB_USER.list) mit(KB_USER.list(), null, v); } catch (e) {}
+    try { if (typeof window.getLearnedNames === 'function') mit(window.getLearnedNames(), 'name'); } catch (e) {}
+    try { if (window.KNOWN_PERSONS) mit(window.KNOWN_PERSONS, 'name'); } catch (e) {}
+    try { if (window.LU_PLACES) mit(window.LU_PLACES); } catch (e) {}
+    try {
+      if (window.KB_BUBBLE && KB_BUBBLE.syncExport) KB_BUBBLE.syncExport().forEach(function (r) { mit(r.nodes, 'name'); });
+    } catch (e) {}
+    var sig = Object.keys(s).sort().join('|') + '#' + Object.keys(v).sort().join('|');
+    if (sig !== namenSig) { namenSig = sig; namenSet = s; appVornamen = v; cache = Object.create(null); }
+    return namenSet;
+  }
+  function istName(w) {
+    var k = w.toLowerCase();
+    if (VORNAMEN[k] || namen()[k]) return true;
+    return k.indexOf('-') > 0 && k.split('-').every(function (t) { return VORNAMEN[t] || namenSet[t]; });
+  }
+  /* Nur echte Vornamen: danach darf ein unbekannter Nachname stehen. */
+  function istVorname(w) {
+    namen();
+    var k = w.toLowerCase();
+    if (VORNAMEN[k] || appVornamen[k]) return true;
+    return k.indexOf('-') > 0 && k.split('-').every(function (t) { return VORNAMEN[t] || appVornamen[t]; });
+  }
+  /* Nach diesen Woertern folgt ein Name: Dr Meinhardt, Madame Tissier. */
+  var TITEL = { dr: 1, drs: 1, dres: 1, prof: 1, mme: 1, mmes: 1, madame: 1, madamm: 1, 'här': 1, herr: 1,
+    monsieur: 1, mr: 1, hr: 1, fr: 1, fra: 1, frau: 1, dokter: 1, doktesch: 1, famill: 1, famille: 1 };
+
+  /* Abkuerzungen: LTA, CNI, SePAS, CeHJP - zwei oder mehr Grossbuchstaben. */
+  function akronym(w) { return (w.match(/[A-ZÀ-ÖØ-Þ]/g) || []).length >= 2; }
+
+  function imWoerterbuch(w) {
+    if (spell.correct(w)) return true;
+    /* Gross geschrieben am Satzanfang: auch die kleine Form gilt. */
+    var k = w.charAt(0).toLowerCase() + w.slice(1);
+    if (k !== w && spell.correct(k)) return true;
+    if (w === w.toUpperCase()) { var g = w.charAt(0) + w.slice(1).toLowerCase(); if (g !== w && spell.correct(g)) return true; }
+    return false;
+  }
   function richtig(w) {
     if (w.length < MIN_LEN) return true;
     if (/[0-9]/.test(w)) return true;
     if (w in cache) return cache[w];
     var ok = true;
-    try {
-      ok = spell.correct(w);
-      /* Groß geschrieben am Satzanfang: auch die kleine Form gilt. */
-      if (!ok && w[0] === w[0].toUpperCase()) ok = spell.correct(w.charAt(0).toLowerCase() + w.slice(1));
-      if (!ok && w === w.toUpperCase()) ok = spell.correct(w.charAt(0) + w.slice(1).toLowerCase());
-      /* d'Mamm, D'Kanner, s'ass: der kurze Artikel haengt am Wort, im
-         Wörterbuch steht aber nur das Wort selbst. */
-      if (!ok) {
-        var t = w.split(/['’]/);
-        if (t.length === 2 && t[0].length <= 2 && t[1].length >= MIN_LEN) {
-          ok = spell.correct(t[1]) || spell.correct(t[1].charAt(0).toLowerCase() + t[1].slice(1));
-        }
-      }
-    } catch (e) { ok = true; }
+    try { ok = pruefe(w, 0); } catch (e) { ok = true; }
     cache[w] = ok;
     return ok;
   }
+  function pruefe(w, tiefe) {
+    if (w.length < MIN_LEN) return true;
+    /* Bindestrich: jeder Teil fuer sich - LTA-Proffen, Vape-Konsum. */
+    if (w.indexOf('-') > 0 && tiefe < 3) {
+      if (imWoerterbuch(w) || ZUSATZ[w.toLowerCase()] || (GROSS.test(w) && istName(w))) return true;
+      return w.split('-').every(function (t) { return pruefe(t, tiefe + 1); });
+    }
+    if (akronym(w)) return true;
+    if (imWoerterbuch(w)) return true;
+    if (ZUSATZ[w.toLowerCase()]) return true;
+    if (GROSS.test(w) && istName(w)) return true;
+    var ap = w.split(/['’]/);
+    if (ap.length === 2 && tiefe < 3) {
+      /* d'Mamm, D'Lilly, z'intégréieren: der kurze Artikel haengt am Wort,
+         im Woerterbuch steht aber nur das Wort selbst. */
+      if (ap[0].length <= 2 && ap[1].length >= 2) return pruefe(ap[1], tiefe + 1);
+      /* Endung hinter dem Apostroph: CCP'en, Tic'en */
+      if (/^(en|n|er|s)$/i.test(ap[1])) return ap[0].length < MIN_LEN || pruefe(ap[0], tiefe + 1);
+    }
+    /* Hauptwort, zusammengesetzt aus richtigen Woertern: Bezuch-s-Zäit,
+       Ofschloss-Gespréich, Schoul-Wiessel. Das Woerterbuch fuehrt nur die
+       gaengigsten. Kleine Woerter nie - sonst rutschten Tippfehler wie
+       "iwwerhellt" als "iwwer+hellt" durch. */
+    return tiefe === 0 && w.length >= 7 && GROSS.test(w) && zerlegen(w, 0);
+  }
+  var teilCache = Object.create(null), nomenCache = Object.create(null);
+  function teilWort(t) {
+    if (t.length < 3) return false;
+    if (t in teilCache) return teilCache[t];
+    var ok = spell.correct(t.charAt(0).toUpperCase() + t.slice(1)) ||
+      spell.correct(t.charAt(0).toLowerCase() + t.slice(1)) || !!ZUSATZ[t.toLowerCase()];
+    teilCache[t] = ok;
+    return ok;
+  }
+  /* Der letzte Teil traegt das Wort. Er muss ein Hauptwort sein (steht nur
+     gross im Woerterbuch) oder wenigstens sechs Buchstaben haben - sonst
+     ergaeben zufaellige Wortschnipsel ein "Wort": Verhaalen = verha + Alen. */
+  function kopfWort(t) {
+    if (t.length < 3) return false;
+    if (!(t in nomenCache)) {
+      nomenCache[t] = spell.correct(t.charAt(0).toUpperCase() + t.slice(1)) &&
+        !spell.correct(t.charAt(0).toLowerCase() + t.slice(1));
+    }
+    return nomenCache[t] || (t.length >= 6 && teilWort(t));
+  }
+  function zerlegen(w, n) {
+    if (n > 0 && kopfWort(w)) return true;
+    if (n >= 2) return false;                 // hoechstens drei Teile
+    for (var i = 3; i <= w.length - 3; i++) {
+      if (!teilWort(w.slice(0, i))) continue;
+      var rest = w.slice(i);
+      if (zerlegen(rest, n + 1)) return true;
+      /* Fugen-s: Sport-s-Stonn, Bezuch-s-Zäit */
+      if (rest.charAt(0) === 's' && rest.length >= 4 && zerlegen(rest.slice(1), n + 1)) return true;
+    }
+    return false;
+  }
+
+  /* Vorschlaege: zuerst dasselbe Wort mit Akzent - die haeufigsten Fehler
+     sind fehlende Zeichen wie in mei/méi, gett/gëtt, emmer/ëmmer, und die
+     findet der allgemeine Vorschlags-Algorithmus nicht immer. */
+  var AKZENT = { a: 'äàâ', e: 'éëèê', i: 'îï', o: 'ôö', u: 'üûù', 'ä': 'a', 'à': 'a', 'é': 'eëè',
+    'è': 'eé', 'ë': 'eé', 'ê': 'eé', 'ö': 'o', 'ü': 'u', 'î': 'i', 'ï': 'i' };
+  function akzentVorschlaege(w) {
+    var out = [];
+    for (var i = 0; i < w.length && out.length < 4; i++) {
+      var c = w.charAt(i), k = c.toLowerCase(), alt = AKZENT[k];
+      if (!alt) continue;
+      for (var j = 0; j < alt.length; j++) {
+        var neu = c === k ? alt.charAt(j) : alt.charAt(j).toUpperCase();
+        var v = w.slice(0, i) + neu + w.slice(i + 1);
+        if (out.indexOf(v) < 0 && imWoerterbuch(v)) out.push(v);
+      }
+    }
+    return out;
+  }
   function vorschlaege(w) {
-    try { return (spell.suggest(w) || []).slice(0, MAX_VORSCHLAEGE); } catch (e) { return []; }
+    var ap = w.split(/['’]/);
+    if (ap.length === 2 && ap[0].length <= 2 && ap[1].length >= 2) {
+      var sep = w.charAt(ap[0].length);
+      return vorschlaege(ap[1]).map(function (x) { return ap[0] + sep + x; });
+    }
+    var liste = [];
+    try { liste = akzentVorschlaege(w); } catch (e) {}
+    try { liste = liste.concat(spell.suggest(w) || []); } catch (e) {}
+    var out = [];
+    liste.forEach(function (x) { if (x && x !== w && out.indexOf(x) < 0) out.push(x); });
+    return out.slice(0, MAX_VORSCHLAEGE);
   }
 
   /* ---- Ebene hinter dem Schreibfeld ---- */
@@ -110,6 +266,11 @@
 
   function huelle(ta) {
     if (ta._kbSpell) return ta._kbSpell;
+    /* Das Feld wandert in die Huelle - und ein verschobenes Element verliert
+       den Fokus. Wer gerade hineingeklickt hat, tippte sonst ins Leere.
+       Darum bekommt es Fokus und Cursor gleich zurueck. */
+    var fokus = document.activeElement === ta;
+    var selA = ta.selectionStart, selB = ta.selectionEnd, selR = ta.selectionDirection, st = ta.scrollTop;
     var h = document.createElement('div');
     h.className = 'kb-sp-wrap';
     ta.parentNode.insertBefore(h, ta);
@@ -117,11 +278,16 @@
     ebene.className = 'kb-sp-layer';
     ebene.setAttribute('aria-hidden', 'true');
     h.appendChild(ebene);
-    h.appendChild(ta);
-    ta.classList.add('kb-sp-on');
     var o = { wrap: h, layer: ebene };
     ta._kbSpell = o;
+    h.appendChild(ta);
+    ta.classList.add('kb-sp-on');
     ta.addEventListener('scroll', function () { ebene.scrollTop = ta.scrollTop; ebene.scrollLeft = ta.scrollLeft; });
+    if (fokus && document.activeElement !== ta) {
+      try { ta.focus({ preventScroll: true }); } catch (e) { ta.focus(); }
+      try { ta.setSelectionRange(selA, selB, selR || 'none'); } catch (e) {}
+      ta.scrollTop = st;
+    }
     return o;
   }
   /* Die Ebene muss Zeichen fuer Zeichen so umbrechen wie das Feld, sonst
@@ -153,15 +319,28 @@
   /* Den Text einmal durchgehen und die falschen Wörter markieren.
      Die Ebene bekommt denselben Text, nur unsichtbar - sichtbar ist allein
      die Wellenlinie, und die sitzt damit genau unter dem echten Wort. */
+  /* Stellen [von, bis] der falschen Woerter in einem Text. */
+  function fehlerIn(txt) {
+    var m, treffer = [], vor = '', vorEnde = -1;
+    WORT.lastIndex = 0;
+    while ((m = WORT.exec(txt))) {
+      var w = m[0], ok = richtig(w);
+      /* Nach einem Titel oder Vornamen steht ein Name: Dr Meinhardt,
+         Madame Tissier, Jean-Pierre Tomozei. */
+      if (!ok && vor && GROSS.test(w) && /^[\s.]{1,3}$/.test(txt.slice(vorEnde, m.index))) {
+        var v = vor.toLowerCase();
+        if (TITEL[v] || (GROSS.test(vor) && istVorname(vor))) ok = true;
+      }
+      if (!ok) treffer.push([m.index, m.index + w.length]);
+      if (treffer.length > 400) break;          // sehr lange Texte nicht überziehen
+      vor = w; vorEnde = m.index + w.length;
+    }
+    return treffer;
+  }
   function zeichnen(ta) {
     var o = ta._kbSpell;
     if (!o) return;
-    var txt = ta.value, out = '', letzte = 0, m, treffer = [];
-    WORT.lastIndex = 0;
-    while ((m = WORT.exec(txt))) {
-      if (!richtig(m[0])) treffer.push([m.index, m.index + m[0].length]);
-      if (treffer.length > 400) break;          // sehr lange Texte nicht überziehen
-    }
+    var txt = ta.value, out = '', letzte = 0, treffer = fehlerIn(txt);
     for (var i = 0; i < treffer.length; i++) {
       out += esc(txt.slice(letzte, treffer[i][0])) + '<span class="kb-sp-bad">' +
         esc(txt.slice(treffer[i][0], treffer[i][1])) + '</span>';
@@ -270,7 +449,14 @@
       delete cache[w];
     },
     pruefe: function (w) { return spell ? richtig(w) : true; },
+    /* die Woerter eines Textes, die unterstrichen wuerden */
+    fehler: function (txt) {
+      txt = String(txt || '');
+      return spell ? fehlerIn(txt).map(function (r) { return txt.slice(r[0], r[1]); }) : [];
+    },
     vorschlaege: function (w) { return spell ? vorschlaege(w) : []; },
-    neuzeichnen: function () { document.querySelectorAll('textarea.kb-sp-on').forEach(zeichnen); }
+    neuzeichnen: function () { document.querySelectorAll('textarea.kb-sp-on').forEach(zeichnen); },
+    /* nach einem Wert, der nicht getippt, sondern eingesetzt wurde */
+    feld: function (ta) { if (ta && ta._kbSpell) pruefeSpaeter(ta); }
   };
 })();

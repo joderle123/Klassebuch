@@ -24,3 +24,28 @@ zusammengefasst (`--format=iife --global-name=NSPELL --minify`).
 Beides wird beim Bau in `index.html` bzw. `isa.html` eingebettet, damit die
 Prüfung ohne Internet funktioniert. Das Wörterbuch wird erst ausgepackt, wenn
 zum ersten Mal in ein Textfeld geschrieben wird.
+
+## Was zusätzlich als richtig gilt
+
+In den echten Texten des Teams war mit dem Wörterbuch allein jedes sechste
+Wort unterstrichen (16,6 %) — meist gar keine Fehler, sondern Namen,
+Abkürzungen, französische Fachbegriffe und zusammengesetzte Wörter. Darum
+prüft `spell.js` zusätzlich:
+
+- Abkürzungen mit zwei oder mehr Großbuchstaben (LTA, CNI, SePAS) gelten.
+- Namen aus der App: Klassenliste, Team, bekannte Ärzte/Therapeuten,
+  Helfernetz, aus Berichten gelernte Namen, Orte — dazu häufige Vornamen
+  und ein großgeschriebenes Wort direkt nach einem Titel (Dr, Madame, Här …)
+  oder Vornamen.
+- `../../spell-zusatz.js`: französische Fachwörter, Abkürzungen, Apps,
+  Medikamentennamen und einige gebräuchliche Wörter, die im Wörterbuch fehlen.
+- Zusammengesetzte Hauptwörter aus richtigen Teilen (Bezuch-s-Zäit,
+  Ofschloss-Gespréich); der letzte Teil muss ein Hauptwort sein oder
+  mindestens sechs Buchstaben haben.
+- Wörter mit Bindestrich oder Apostroph werden in ihren Teilen geprüft
+  (LTA-Proffen, d'Lilly, CCP'en).
+
+Danach sind noch 9,8 % markiert — fast ausschließlich echte Fehler nach der
+offiziellen Rechtschreibung (mei → méi, gett → gëtt, emmer → ëmmer) und
+deutsche Wörter im luxemburgischen Text (und, ist, steht). Bei den
+Vorschlägen steht dasselbe Wort mit dem fehlenden Akzent an erster Stelle.
