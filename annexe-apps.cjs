@@ -60,10 +60,36 @@ function ersetze(s, a, b, name, datei) {
   s = ersetze(s, '`CDSE / ISA-Team`', '`CDSE`', 'Herkunft', z);
   s = ersetze(s, 'short:`ISA-Team`', 'short:`CDSE`', 'Herkunft kurz', z);
   s = ersetze(s, 'O:\\\\ISA-Blaetter', 'O:\\\\Annexe-Blaetter', 'Ordnerbeispiel', z);
+
+  /* Materialien, Arbeitsblätter und das PDF-Modul liegen gzip-komprimiert in der Datei (`H4sI…` in
+     Backticks). Dort genauso ersetzen und wieder packen – sonst stünde „ISA“ weiter als Autor der
+     Materialien, in den Material-PDFs und in den Dateinamen der Downloads. */
+  var zlib = require('zlib');
+  var ERSATZ = [
+    ['"author":"ISA-Toolbox"', '"author":"CDSE Toolbox"'],     // Autor der Materialien
+    ['SePAS oder ISA-Team', 'SePAS oder CDSE-Team'],           // Blatt „Nachgespräch nach einer Krise“
+    ['`ISA · MATERIAL`', '`CDSE · MATERIAL`'],                 // Material-PDF: Kopf
+    ['`ISA-App`', '`CDSE Toolbox`'],                           // Material-PDF: Autor
+    ['`ISA-App · ', '`CDSE Toolbox · '],                       // Material-PDF: Fußzeile (ältere Fassung)
+    ['`ISA-Material_', '`Material_'],                          // Dateiname Material-PDF
+    ['`ISA-Arbeitsblatt_', '`Arbeitsblatt_']                   // Dateiname Arbeitsblatt-PDF
+  ];
+  var bloecke = 0, geaendert = 0, restGz = [];
+  s = s.replace(/`(H4sI[A-Za-z0-9+/=]+)`/g, function (ganz, b64) {
+    bloecke++;
+    var alt = zlib.gunzipSync(Buffer.from(b64, 'base64')).toString('utf8'), neu = alt;
+    ERSATZ.forEach(function (e) { neu = neu.split(e[0]).join(e[1]); });
+    (neu.match(/.{0,50}\bISA\b.{0,50}/g) || []).forEach(function (t) { restGz.push(t); });
+    if (neu === alt) return ganz;
+    geaendert++;
+    return '`' + zlib.gzipSync(Buffer.from(neu, 'utf8'), { level: 9 }).toString('base64') + '`';
+  });
+  if (!bloecke) { console.error('✗ ' + z + ': keine komprimierten Daten gefunden'); fehler++; }
+  if (restGz.length) { console.error('✗ ' + z + ': noch „ISA“ in komprimierten Daten: ' + restGz.slice(0, 8).join(' | ')); fehler++; }
   schreib(z, s);
   var rest = (s.match(/[`'"][^`'"\n]{0,200}\bISA\b[^`'"\n]{0,200}[`'"]/g) || []).filter(function (t) { return !/^[`'"][A-Za-z0-9+/=]{40,}/.test(t); });
   if (rest.length) { console.error('✗ ' + z + ': noch „ISA“ in Texten: ' + rest.join(' | ')); fehler++; }
-  else console.log('✓ ' + z + ': keine sichtbaren „ISA“-Bezeichnungen mehr');
+  else console.log('✓ ' + z + ': keine sichtbaren „ISA“-Bezeichnungen mehr (' + bloecke + ' komprimierte Blöcke geprüft, ' + geaendert + ' angepasst)');
 })();
 
 if (fehler) { console.error(fehler + ' Fehler'); process.exit(1); }

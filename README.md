@@ -46,7 +46,8 @@ Konten, Daten und die Team-Datei legt der Hub selbst an: `konten/`, `daten/`, `t
 Zu den Befehlen:
 
 - `update-apps.cjs` ruft danach selbst `annexe-apps.cjs` auf. Dieses Skript entfernt „ISA“ aus den sichtbaren Texten
-  der Toolbox und baut die Pathologien ohne Web-Schriften.
+  der Toolbox, auch aus den komprimierten Daten (Autor der Materialien), den Material-PDFs und den Dateinamen der
+  Downloads. Außerdem baut es die Pathologien ohne Web-Schriften.
 - Den Hub baut `python3 hub-quellen/baue-hub.py` und schreibt `hub.html`.
 
 ## Verbesserungen aus Unified übernehmen

@@ -16,10 +16,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "toolbox": {
     "stand": "2026-09-26",
-    "commit": "2a10f84",
+    "commit": "76ed378",
     "quelle": "ISA-APP · claude/focused-galileo-e2s63b",
-    "aenderung": "Skills-Kurs übersichtlicher: Kursjahr-Reiter, Jahresweg als Treppe, Einheit mit Fahrplan",
-    "groesse": 5744603
+    "aenderung": "PDF-Layout: Mappen ohne falschen Folgekopf, Material-PDFs ohne Überlappungen",
+    "groesse": 5744847
   },
   "screening": {
     "stand": "2026-09-25",
