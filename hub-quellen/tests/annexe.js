@@ -1,6 +1,7 @@
 // Test: Hub der Annexe Junglinster (hub-quellen/annexe.py) – nur ein Team, ohne Datenbank und Journal, keine
 // Stellen und kein Weitergeben, Teamliste ohne Team-Spalte (Einfügen, Tabelle, zurück einlesen), Übernahme der
-// eingebauten Klasse aus dem Klassenbuch in die Hub-Dossiers, nirgends „ISA“, „Journal“ oder „Datenbank“.
+// eingebauten Klasse aus dem Klassenbuch in die Hub-Dossiers, alle Apps (mit Befundbericht), nirgends „ISA“,
+// „Journal“ oder „Datenbank“.
 // Die Tests in diesem Ordner, die mehrere Teams voraussetzen, stammen aus dem gemeinsamen Stand (Unified).
 // Personen sind erfunden; von der eingebauten Klasse werden nur Zahlen geprüft, keine Namen ausgegeben.
 // Aufruf: node hub-quellen/tests/annexe.js   (Webserver auf Port 8099 für den Hauptordner)
@@ -44,7 +45,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.waitForSelector('#g-code', { timeout: 30000 }); await page.check('#g-ok'); await page.click('#g-weiter'); await page.waitForSelector('#me:not([hidden])', { timeout: 30000 });
   check('Konto gehört zum Team der Annexe', await page.evaluate(() => CDSE_KONTO.ich().team === 'annexe' && CDSE_KONTO.ich().teamName === 'Annexe Junglinster'));
   const home = (await text('#v-home')).replace(/\s+/g, ' ');
-  check('Übersicht: „für den Alltag in der Annexe“, alle sechs Apps', home.includes('für den Alltag in der Annexe') && (await page.$$eval('#home-body .tile:not(.add) h3', l => l.map(x => x.textContent))).join('|') === 'Klassenbuch|ELDiB-Generator|Toolbox|Skills-Kurs|Lernen|Pathologien');
+  check('Übersicht: „für den Alltag in der Annexe“, alle sieben Apps (mit Befundbericht)', home.includes('für den Alltag in der Annexe') && (await page.$$eval('#home-body .tile:not(.add) h3', l => l.map(x => x.textContent))).join('|') === 'Klassenbuch|Befundbericht|ELDiB-Generator|Toolbox|Skills-Kurs|Lernen|Pathologien');
   if (await page.isVisible('#me-btn')) await page.click('#me-btn'); else await page.click('#me-ava');
   await page.click('[data-konto="profil"]'); await page.waitForSelector('#g-funktion');
   check('Profil ändern: Funktion und Responsable, keine Team-Wahl', !(await page.$('input[name="g-team"]')) && (await text('#gate-card')).includes('Funktion und Responsable'));
@@ -151,8 +152,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Rollen ohne ISA und Diagnostique', !rollen.includes('isa') && !rollen.includes('diagnostique') && rollen.includes('lehrkraft') && rollen.includes('educ'), rollen);
   await page.click('.sc-bogen [data-sc="abbrechen"]').catch(() => {}); await warte(300);
 
-  console.log('8) Nirgends „ISA“, „Journal“, „Datenbank“, „Befundbericht“, „CDSE Hub“');
-  const VERBOTEN = /\bISA\b|Journal|Datenbank|Befundbericht|CDSE Hub|Diagnostique-Team/;
+  console.log('8) Nirgends „ISA“, „Journal“, „Datenbank“, „CDSE Hub“');
+  const VERBOTEN = /\bISA\b|Journal|Datenbank|CDSE Hub|Diagnostique-Team/;
   const funde = [];
   const pruefe = async wo => { const t = (await page.evaluate(() => document.body.innerText)).replace(/Intervention spécialisée ambulatoire \(ISA\)/g, ''); const m = t.match(VERBOTEN); if (m) { funde.push(wo + ': „' + m[0] + '“ in „' + t.slice(Math.max(0, m.index - 60), m.index + 40).replace(/\s+/g, ' ') + '“'); } };
   for (const h of ['#/', '#/schueler', '#/einsatz', '#/verwaltung', '#/screening', '#/hinzufuegen']) { await gehe(h); await warte(700); await pruefe(h); }

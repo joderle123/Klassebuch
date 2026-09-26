@@ -40,3 +40,6 @@ teamliste.json
 konten/
 gemeinsam/
 teams/
+
+# Python-Zwischendateien (entstehen beim Bauen)
+__pycache__/

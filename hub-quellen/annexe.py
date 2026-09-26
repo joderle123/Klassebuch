@@ -12,6 +12,7 @@ Was angepasst wird:
   1. Nur ein Team: keine Team-Wahl beim Konto, keine „Stelle“, kein „Weitergeben“
      an eine andere Stelle, Teamliste ohne Team-Spalte
   2. Ohne Datenbank: das Modul fehlt; Adresse, Titel und Texte dazu sind entfernt
+     (der Befundbericht ist dabei – für alle, nicht nur für ein Diagnostik-Team)
   3. Ohne Journal: Übernahme und frühere Screenings nur aus dem Klassenbuch
   4. Texte: Annexe statt ganzes CDSE, nirgends „ISA“, Anleitung für die Annexe
      (Formulartexte der offiziellen Fiche de renseignement bleiben, wie sie sind)
@@ -89,7 +90,7 @@ def anpassen(s):
     ersetze("var APP_SPUREN=[['klassenbuch',/^(klassebuch_|anwesenheit|anw_|cdse_dossier)/,'cdse_dossier_db'],['journal',/^isa_(?!team_user$|uploader_ok$)/,'isa_dossier_db'],\n"
             "                ['screening',/^cdse-autosave/,null],['eldib',/^eldib-/,null],",
             "var APP_SPUREN=[['klassenbuch',/^(klassebuch_|anwesenheit|anw_|cdse_dossier)/,'cdse_dossier_db'],\n"
-            "                ['eldib',/^eldib-/,null],",
+            "                ['screening',/^cdse-autosave/,null],['eldib',/^eldib-/,null],",
             'Daten auf dem PC: nur Apps der Annexe')
 
     # Gemeinsamer Bereich (team.js): neues Dossier gehört zur Annexe
@@ -315,7 +316,6 @@ def anpassen(s):
             "nachmittags Rückmeldung mit Lob.</span><span>" + TITEL + "</span></div>", 'Tageskarte (Druck): Fuß')
 
     # Anleitung im Hub
-    ersetze('Wie der ELDiB-Generator oder der Befundbericht: eine', 'Wie der ELDiB-Generator oder die Pathologien: eine', 'Anleitung: Weg A')
     ersetze('<div>Die Toolbox (ISA-App) wird bereits genau so gebaut — sie ist ein gutes Vorbild.</div>',
             '<div>Die Toolbox wird bereits genau so gebaut — sie ist ein gutes Vorbild.</div>', 'Anleitung: Weg B')
     ersetze("<td><code>'screening'</code></td>", "<td><code>'wochenplan'</code></td>", 'Anleitung: Beispiel id')
@@ -357,6 +357,7 @@ def anpassen(s):
              '  teams/                <span class="c">← der Ordner des Teams für die gemeinsame Klassenbuch-Datei</span>\n'
              '  apps/\n'
              '    klassenbuch.html\n'
+             '    screening.html        <span class="c">← Befundbericht</span>\n'
              '    eldib-generator.html\n'
              '    toolbox.html          <span class="c">← mit dem Skills-Kurs</span>\n'
              '    lernen.html\n'
@@ -370,12 +371,12 @@ def anpassen(s):
     if fehler:
         raise SystemExit('Annexe-Anpassung passt nicht mehr zum Hub:\n  ' + '\n  '.join(fehler))
 
-    # Kontrolle: nirgends mehr sichtbar „ISA“, Journal oder Befundbericht.
+    # Kontrolle: nirgends mehr sichtbar „ISA“ oder Journal.
     # Kommentare zählen nicht; erlaubt sind die Maßnahmen der offiziellen Fiche de renseignement.
     import re
     ohne_kommentare = re.sub(r'/\*[\s\S]*?\*/', '', s)
     rest = []
-    for m in re.finditer(r"ISA-App|\(ISA\)|'ISA'|„ISA“|Klassenbuch oder Journal|Klassenbuch und Journal|Befundbericht|Diagnostique-Team|CDSE Hub", ohne_kommentare):
+    for m in re.finditer(r"ISA-App|\(ISA\)|'ISA'|„ISA“|Klassenbuch oder Journal|Klassenbuch und Journal|Diagnostique-Team|CDSE Hub", ohne_kommentare):
         rest.append(ohne_kommentare[max(0, m.start() - 50):m.end() + 30].replace('\n', ' '))
     rest = [r for r in rest if 'Intervention spécialisée ambulatoire (ISA)' not in r and "isa:'ISA'" not in r]
     if rest:

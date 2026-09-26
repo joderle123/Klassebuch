@@ -73,6 +73,18 @@ window.CDSE_APPS = [
     stichworte: 'anwesenheit absenzen dossier réunion protokoll noten stundenplan schuljahr trimester team'
   },
 
+  {
+    id: 'screening',
+    name: 'Befundbericht',
+    beschreibung: 'Ergebnisse aus 13 Tests und Fragebögen eingeben (u. a. WISC-V, KABC-II, SDQ, CBCL, Conners 3, DISYPS-III) — fertiger Befundbericht auf Deutsch, Französisch oder Englisch, als Word-Datei oder PDF.',
+    symbol: 'test',
+    farbe: '#B4533A',
+    bereich: 'Diagnostik & Förderung',
+    datei: 'apps/screening.html',
+    quelle: { repo: 'PEI-and-Compl-ment-', branch: 'claude/wizardly-bohr-99r7kg', pfad: 'diagnostic-tool/index.html' },
+    stichworte: 'screening testing test auswertung befund bericht diagnostik sdq cbcl trf ysr conners disyps afs dikj feel-kj wisc kabc cft son-r d2 vineland fragebogen word'
+  },
+
 
 
   {

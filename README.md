@@ -5,7 +5,8 @@ Stand „Unified“ (Branch `claude/wizardly-bohr-99r7kg`), aber auf die Annexe 
 
 - **Nur ein Team.** Beim Konto gibt es keine Team-Wahl. Stellen gibt es keine, ebenso kein „Weitergeben“ an eine
   andere Stelle. Die Teamliste hat keine Team-Spalte. Alle sehen alle Apps.
-- **Ohne Datenbank, ohne Journal (ISA-Ansicht) und ohne Befundbericht.** Nirgends steht „ISA“.
+- **Ohne Datenbank und ohne Journal (ISA-Ansicht).** Nirgends steht „ISA“. Alle anderen Apps aus Unified sind dabei,
+  auch der Befundbericht, den in Unified nur das Diagnostique-Team sieht.
   - Ausnahme sind die offiziellen Formulartexte: die Maßnahmen der Fiche de renseignement und die Empfehlungen im
     ELDiB-Generator.
 - **Das Klassenbuch der Annexe mit allen Daten und Einstellungen**, dazu die Verbesserungen aus Unified (siehe
@@ -21,6 +22,7 @@ hub.html              ← der Hub (Konten, Schüler-Dossiers, Einsatzplan, Verwa
 hub-apps.js           ← das App-Verzeichnis (Titel, Team, Apps)
 apps/
   klassenbuch.html    ← Klassenbuch der Annexe
+  screening.html      ← Befundbericht (13 Tests und Fragebögen)
   eldib-generator.html, ds-motor.js
   toolbox.html, toolbox-index.js   ← Toolbox mit Skills-Kurs
   lernen.html
@@ -35,6 +37,7 @@ Konten, Daten und die Team-Datei legt der Hub selbst an: `konten/`, `daten/`, `t
 | App | Woher | Bauen / holen |
 |---|---|---|
 | Klassenbuch | `klassenbuch/quellen/` (hier) | `node klassenbuch/quellen/build-merged.cjs` |
+| Befundbericht | Repository `PEI-and-Compl-ment-` | `node update-apps.cjs screening` |
 | ELDiB-Generator | Repository `Eldib-Pleni-re` | `node update-apps.cjs eldib` |
 | Toolbox und Skills-Kurs | Repository `ISA-APP` | `node update-apps.cjs toolbox` |
 | Lernen | `lern-app/` (hier) | `python3 lern-app/baue.py` |
@@ -58,7 +61,7 @@ Zu den Befehlen:
 
 Neue Fassungen der übrigen Dateien einfach hineinkopieren und `python3 hub-quellen/baue-hub.py` ausführen. Passt eine
 Ersetzung in `annexe.py` nicht mehr zum neuen Wortlaut, bricht der Bau mit einer Meldung ab. Er prüft außerdem, dass
-nirgends „ISA“, „Journal“, „Befundbericht“ oder „CDSE Hub“ sichtbar wird.
+nirgends „ISA“, „Journal“ oder „CDSE Hub“ sichtbar wird.
 
 **Klassenbuch.** `klassenbuch/quellen/` ist die Fassung der Annexe (mit den eingebauten Daten). Verbesserungen aus
 Unified werden hier eingearbeitet, nicht darübergeschrieben.

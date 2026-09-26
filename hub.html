@@ -1996,7 +1996,7 @@ window.addEventListener('error',function(e){
 
         <div class="way" style="--ac:#1F6B6F">
           <h3>A · Eine einzelne HTML-Datei <span class="way-tag">funktioniert sofort</span></h3>
-          <p>Wie der ELDiB-Generator oder die Pathologien: eine <code>.html</code>-Datei, die man per Doppelklick öffnet. Einfach ablegen und mit <code>datei: 'apps/name.html'</code> eintragen — fertig.</p>
+          <p>Wie der ELDiB-Generator oder der Befundbericht: eine <code>.html</code>-Datei, die man per Doppelklick öffnet. Einfach ablegen und mit <code>datei: 'apps/name.html'</code> eintragen — fertig.</p>
           <p>Arbeitet die App mit Dateien oder Ordnern — etwa einer Team-Datei auf O:\ oder Sicherungen, wie Klassenbuch und Toolbox —, ergänze <code>dateizugriff: true</code>. Dann öffnet sie in einem eigenen Tab (Erklärung unten bei „Wenn etwas nicht klappt").</p>
         </div>
 
@@ -2085,6 +2085,7 @@ window.addEventListener('error',function(e){
   teams/                <span class="c">← der Ordner des Teams für die gemeinsame Klassenbuch-Datei</span>
   apps/
     klassenbuch.html
+    screening.html        <span class="c">← Befundbericht</span>
     eldib-generator.html
     toolbox.html          <span class="c">← mit dem Skills-Kurs</span>
     lernen.html
@@ -2797,7 +2798,7 @@ function fremdeSichern(m,snap){
   },function(){return beiseiteLegen(snap,k.id).then(function(){return 'beiseite';});});
 }
 var APP_SPUREN=[['klassenbuch',/^(klassebuch_|anwesenheit|anw_|cdse_dossier)/,'cdse_dossier_db'],
-                ['eldib',/^eldib-/,null],['toolbox',/^isa_(team_user|uploader_ok)$/,null]];
+                ['screening',/^cdse-autosave/,null],['eldib',/^eldib-/,null],['toolbox',/^isa_(team_user|uploader_ok)$/,null]];
 function altbestandApps(snap){
   var namen={}, d=snap.daten, out=[];
   (window.CDSE_APPS||[]).forEach(function(a){if(a&&a.id){namen[a.id]=a.name;}});

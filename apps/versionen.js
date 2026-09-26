@@ -20,5 +20,12 @@ window.CDSE_APP_VERSIONEN = {
     "quelle": "ISA-APP · claude/wizardly-bohr-99r7kg",
     "aenderung": "Skills-Kurs, Kursjahr 2 und 3: je 35 Einheiten und 4 Joker, 107 neue Schülerblätter",
     "groesse": 5731850
+  },
+  "screening": {
+    "stand": "2026-09-25",
+    "commit": "58640bd",
+    "quelle": "PEI-and-Compl-ment- · claude/wizardly-bohr-99r7kg",
+    "aenderung": "Befund-Tool: lange Schrittnamen zweizeilig statt abgeschnitten",
+    "groesse": 1458628
   }
 };
