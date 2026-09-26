@@ -16,10 +16,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "toolbox": {
     "stand": "2026-09-26",
-    "commit": "99aa635",
+    "commit": "de84d6c",
     "quelle": "ISA-APP · claude/focused-galileo-e2s63b",
-    "aenderung": "Neuer Bereich „Selbstreflexion“: 8 Blätter mit Gläsern, Netz, Kurven und Kreisen",
-    "groesse": 5779050
+    "aenderung": "Toolbox: zweite Runde – Spickzettel auf einer Seite, Finder-Zahl, Kleinigkeiten",
+    "groesse": 5781473
   },
   "screening": {
     "stand": "2026-09-25",
