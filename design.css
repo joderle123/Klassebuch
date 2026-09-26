@@ -433,3 +433,45 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
 /* Hinweis-Leiste bündig mit dem Inhalt darunter */
 #dos-root .privacy-banner{box-sizing:border-box;width:calc(100% - 56px);max-width:1124px;margin:14px auto 2px;}
 @media (max-width:880px){#dos-root .privacy-banner{width:calc(100% - 36px);}}
+
+/* ---------- Klassenbuch: Notiz-Fenster ---------- */
+#modal-note .modal-row{display:flex;gap:8px;flex-wrap:wrap;}
+#modal-note textarea.note-text{flex:1 1 100%;width:100%;box-sizing:border-box;min-height:104px;font:inherit;font-size:14.5px;line-height:1.55;
+  padding:11px 13px;border-radius:10px;resize:vertical;}
+#modal-note .modal-actions{align-items:center;}
+#modal-note .note-kbd{margin-right:auto;font-size:12px;color:var(--kb-muted-2);}
+@media (max-width:640px){#modal-note .note-kbd{display:none;}}
+/* Fenster im Klassenbuch: ruhiger Auftritt statt Hüpfen */
+#anw-root .modal-bg{background:rgba(16,24,40,.38);backdrop-filter:blur(2px);}
+#anw-root .modal{border-radius:16px;border:1px solid var(--kb-border);box-shadow:var(--kb-shadow-lg);animation:kb-auf .16s ease-out;}
+#anw-root .modal h3{font-size:19px;font-weight:700;letter-spacing:-.018em;}
+#anw-root .modal .sub{color:var(--kb-muted);}
+@keyframes kb-auf{from{opacity:0;transform:translateY(4px) scale(.985);}to{opacity:1;transform:none;}}
+
+/* ---------- Ausführliche Maske ---------- */
+#dos-root .form-card{max-width:820px;padding:22px 24px 0;border-radius:16px;}
+#dos-root .form-card label{font-weight:600;color:var(--kb-text-soft);}
+#dos-root .form-card .hint{font-weight:400;color:var(--kb-muted-2);}
+#dos-root #f-text{font-size:15px;line-height:1.6;padding:12px 14px;min-height:200px;}
+#dos-root .form-savebar{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:10px;margin:22px -24px 0;padding:12px 24px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-top:1px solid var(--kb-border);border-radius:0 0 16px 16px;}
+#dos-root .form-savebar-sp{flex:1;}
+#dos-root .form-kbd{font-size:11px;color:var(--kb-muted-2);border:1px solid var(--kb-border);border-bottom-width:2px;border-radius:6px;padding:1px 6px;font-weight:500;}
+#dos-root .form-savebar .btn-primary{display:inline-flex;align-items:center;gap:6px;}
+#dos-root .entwurf-hinweis{border-radius:12px;}
+@media (max-width:640px){#dos-root .form-kbd{display:none;}}
+/* die Rechtschreib-Huelle um das Feld muss die ganze Breite nehmen */
+#modal-note .modal-row>.kb-sp-wrap{flex:1 1 100%;min-width:0;}
+
+/* ---------- Réunion: Organisation begrenzt und zuklappbar ---------- */
+#dos-root .reu-orgcard-head{display:flex;align-items:center;gap:10px;min-width:0;}
+#dos-root .reu-orgpeek{display:none;min-width:0;flex:0 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;color:var(--kb-muted);}
+#dos-root .reu-orgcard.is-zu .reu-orgpeek{display:block;}
+#dos-root .reu-orgcard.is-zu>:not(.reu-orgcard-head){display:none;}
+#dos-root .reu-orgtoggle{flex:0 0 auto;}
+#dos-root .reu-orgtoggle svg{transition:transform .18s;}
+#dos-root .reu-orgcard.is-zu .reu-orgtoggle svg{transform:rotate(-90deg);}
+#dos-root .reu-orgcard.is-zu{padding-top:12px;padding-bottom:12px;}
+#dos-root #org-edit{max-height:42vh;overflow-y:auto;}
+
+#dos-root .reu-search{flex:0 1 300px;}

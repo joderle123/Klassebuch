@@ -488,9 +488,10 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
         <select id="note-target" class="inp" title="Für wen gilt diese Notiz?"></select>
       </div>
       <div class="modal-row">
-        <textarea id="note-text" class="inp" rows="3" placeholder="Notiz, Prüfungsinhalt, Bemerkung …"></textarea>
+        <textarea id="note-text" class="inp note-text" rows="4" placeholder="Notiz, Prüfungsinhalt, Bemerkung …"></textarea>
       </div>
       <div class="modal-actions">
+        <span class="note-kbd">Strg + Enter fügt hinzu · Esc schliesst</span>
         <button class="btn btn-ghost" data-close>Schliessen</button>
         <button class="btn btn-primary" id="note-add">+ Hinzufügen</button>
       </div>
@@ -1358,7 +1359,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
       document.getElementById('note-text').value=ew.t;
       if(ew.typ){document.getElementById('note-type').value=ew.typ;}
       var tsel=document.getElementById('note-target');if(tsel&&ew.fuer!=null&&Array.prototype.some.call(tsel.options,function(o){return o.value===ew.fuer;})){tsel.value=ew.fuer;}
-      document.getElementById('note-context').textContent+=' — ↺ nicht gespeicherter Entwurf wiederhergestellt';
+      document.getElementById('note-context').textContent+=' — Entwurf von vorhin zurückgeholt';
     }
     openModal('modal-note');document.getElementById('note-text').focus();
   }
@@ -1540,6 +1541,9 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var sst=document.getElementById('stats-status');if(sst)sst.addEventListener('change',renderStats);
     document.getElementById('note-add').addEventListener('click',addNote);
     document.getElementById('note-text').addEventListener('input',notizEntwurfMerken);
+    /* Strg+Enter (Mac: Cmd+Enter) fuegt hinzu, der Cursor bleibt im Feld -
+       die naechste Notiz laesst sich gleich tippen. */
+    document.getElementById('note-text').addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();addNote();}});
     document.getElementById('class-tabs').addEventListener('click',function(e){var t=e.target.closest('[data-class]');if(!t)return;classFilter=t.dataset.class;
       var act=state.students.find(function(s){return s.id===activeStudentId;});if(!act||act.level!==classFilter)pickFirstInLevel();
       renderStudents();renderMain();});

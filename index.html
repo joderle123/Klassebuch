@@ -6005,6 +6005,48 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
 #dos-root .privacy-banner{box-sizing:border-box;width:calc(100% - 56px);max-width:1124px;margin:14px auto 2px;}
 @media (max-width:880px){#dos-root .privacy-banner{width:calc(100% - 36px);}}
 
+/* ---------- Klassenbuch: Notiz-Fenster ---------- */
+#modal-note .modal-row{display:flex;gap:8px;flex-wrap:wrap;}
+#modal-note textarea.note-text{flex:1 1 100%;width:100%;box-sizing:border-box;min-height:104px;font:inherit;font-size:14.5px;line-height:1.55;
+  padding:11px 13px;border-radius:10px;resize:vertical;}
+#modal-note .modal-actions{align-items:center;}
+#modal-note .note-kbd{margin-right:auto;font-size:12px;color:var(--kb-muted-2);}
+@media (max-width:640px){#modal-note .note-kbd{display:none;}}
+/* Fenster im Klassenbuch: ruhiger Auftritt statt Hüpfen */
+#anw-root .modal-bg{background:rgba(16,24,40,.38);backdrop-filter:blur(2px);}
+#anw-root .modal{border-radius:16px;border:1px solid var(--kb-border);box-shadow:var(--kb-shadow-lg);animation:kb-auf .16s ease-out;}
+#anw-root .modal h3{font-size:19px;font-weight:700;letter-spacing:-.018em;}
+#anw-root .modal .sub{color:var(--kb-muted);}
+@keyframes kb-auf{from{opacity:0;transform:translateY(4px) scale(.985);}to{opacity:1;transform:none;}}
+
+/* ---------- Ausführliche Maske ---------- */
+#dos-root .form-card{max-width:820px;padding:22px 24px 0;border-radius:16px;}
+#dos-root .form-card label{font-weight:600;color:var(--kb-text-soft);}
+#dos-root .form-card .hint{font-weight:400;color:var(--kb-muted-2);}
+#dos-root #f-text{font-size:15px;line-height:1.6;padding:12px 14px;min-height:200px;}
+#dos-root .form-savebar{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;gap:10px;margin:22px -24px 0;padding:12px 24px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-top:1px solid var(--kb-border);border-radius:0 0 16px 16px;}
+#dos-root .form-savebar-sp{flex:1;}
+#dos-root .form-kbd{font-size:11px;color:var(--kb-muted-2);border:1px solid var(--kb-border);border-bottom-width:2px;border-radius:6px;padding:1px 6px;font-weight:500;}
+#dos-root .form-savebar .btn-primary{display:inline-flex;align-items:center;gap:6px;}
+#dos-root .entwurf-hinweis{border-radius:12px;}
+@media (max-width:640px){#dos-root .form-kbd{display:none;}}
+/* die Rechtschreib-Huelle um das Feld muss die ganze Breite nehmen */
+#modal-note .modal-row>.kb-sp-wrap{flex:1 1 100%;min-width:0;}
+
+/* ---------- Réunion: Organisation begrenzt und zuklappbar ---------- */
+#dos-root .reu-orgcard-head{display:flex;align-items:center;gap:10px;min-width:0;}
+#dos-root .reu-orgpeek{display:none;min-width:0;flex:0 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;color:var(--kb-muted);}
+#dos-root .reu-orgcard.is-zu .reu-orgpeek{display:block;}
+#dos-root .reu-orgcard.is-zu>:not(.reu-orgcard-head){display:none;}
+#dos-root .reu-orgtoggle{flex:0 0 auto;}
+#dos-root .reu-orgtoggle svg{transition:transform .18s;}
+#dos-root .reu-orgcard.is-zu .reu-orgtoggle svg{transform:rotate(-90deg);}
+#dos-root .reu-orgcard.is-zu{padding-top:12px;padding-bottom:12px;}
+#dos-root #org-edit{max-height:42vh;overflow-y:auto;}
+
+#dos-root .reu-search{flex:0 1 300px;}
+
 </style>
 </head>
 <body>
@@ -6242,9 +6284,10 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
         <select id="note-target" class="inp" title="Für wen gilt diese Notiz?"></select>
       </div>
       <div class="modal-row">
-        <textarea id="note-text" class="inp" rows="3" placeholder="Notiz, Prüfungsinhalt, Bemerkung …"></textarea>
+        <textarea id="note-text" class="inp note-text" rows="4" placeholder="Notiz, Prüfungsinhalt, Bemerkung …"></textarea>
       </div>
       <div class="modal-actions">
+        <span class="note-kbd">Strg + Enter fügt hinzu · Esc schliesst</span>
         <button class="btn btn-ghost" data-close>Schliessen</button>
         <button class="btn btn-primary" id="note-add">+ Hinzufügen</button>
       </div>
@@ -8910,10 +8953,19 @@ function viewEntryForm(params) {
       '<input type="text" id="tag-input" placeholder="Tag eingeben + Enter…" list="tag-suggestions" autocomplete="off">';
   }
 
+  /* Zeile unter dem Titel nur mit dem, was es wirklich gibt (aeltere,
+     eingelesene Eintraege haben kein Erstelldatum) */
+  var metaTeile = [];
+  if (existing) {
+    var erstellt = existing.createdAt ? formatDateTime(existing.createdAt) : '';
+    var geaendert = existing.updatedAt && existing.updatedAt !== existing.createdAt ? formatDateTime(existing.updatedAt) : '';
+    if (erstellt) metaTeile.push('Erstellt am ' + escapeHtml(erstellt));
+    if (geaendert) metaTeile.push('zuletzt geändert ' + escapeHtml(geaendert) + (existing.updatedBy ? ' von ' + escapeHtml(existing.updatedBy) : ''));
+  }
   var html =
     '<div class="page-head">' +
       '<div><h2>' + (isEdit ? 'Eintrag bearbeiten' : 'Neuen Eintrag erfassen') + '</h2>' +
-      (existing ? '<p class="muted">Erstellt am ' + escapeHtml(formatDateTime(existing.createdAt)) + (existing.updatedAt && existing.updatedAt !== existing.createdAt ? ' &middot; zuletzt geändert ' + escapeHtml(formatDateTime(existing.updatedAt)) : '') + '</p>' : '') +
+      (metaTeile.length ? '<p class="muted">' + metaTeile.join(' &middot; ') + '</p>' : '') +
       '</div>' +
     '</div>' +
     '<form id="entry-form" class="card form-card">' +
@@ -8951,10 +9003,12 @@ function viewEntryForm(params) {
         '<label>Verlaufs-Slider <span class="hint">(optional, 1–10 — bleiben „nicht bewertet“, wenn nicht angehakt)</span></label>' +
         '<div class="row">' + SLIDER_DEFS.map(function (d) { return '<div style="flex:1; min-width:230px;">' + sliderFieldHtml(d) + '</div>'; }).join('') + '</div>' +
       '</div>' +
-      '<hr class="divider">' +
-      '<div class="page-head" style="margin:0;">' +
+      /* Speicherleiste bleibt unten stehen, auch bei langen Texten */
+      '<div class="form-savebar">' +
         '<button type="button" class="btn" data-route="' + escapeAttr(returnTo || (isEdit ? '#/student/' + existing.studentId : '#/dashboard')) + '">Abbrechen</button>' +
-        '<button type="submit" class="btn btn-primary">' + (isEdit ? 'Änderungen speichern' : 'Eintrag speichern') + '</button>' +
+        '<span class="form-savebar-sp"></span>' +
+        '<span class="form-kbd">Strg + S</span>' +
+        '<button type="submit" class="btn btn-primary">' + kbIcon('check', 'sm') + (isEdit ? 'Änderungen speichern' : 'Eintrag speichern') + '</button>' +
       '</div>' +
     '</form>';
 
@@ -9085,13 +9139,35 @@ function viewEntryForm(params) {
         renderDetectedThemes();
         var hinweis = document.createElement('div');
         hinweis.className = 'entwurf-hinweis';
-        hinweis.innerHTML = '<span>↺ Nicht gespeicherter Entwurf vom ' + escapeHtml(formatDateTime(new Date(ew.ts || Date.now()).toISOString())) +
-          ' wiederhergestellt — noch nicht gespeichert.</span><button type="button" id="entwurf-weg">Verwerfen</button>';
+        hinweis.innerHTML = '<span>' + kbIcon('history', 'sm') + ' Entwurf vom ' + escapeHtml(formatDateTime(new Date(ew.ts || Date.now()).toISOString())) +
+          ' zurückgeholt — noch nicht gespeichert.</span><button type="button" id="entwurf-weg">Verwerfen</button>';
         form.parentNode.insertBefore(hinweis, form);
         qs('#entwurf-weg', hinweis).addEventListener('click', function () { Entwurf.weg(ENTWURF); render(); });
       }
       form.addEventListener('input', entwurfMerken);
       form.addEventListener('change', entwurfMerken);
+
+      /* Das Textfeld waechst mit dem Text (bis gut zwei Drittel des
+         Fensters), statt nach acht Zeilen innen zu scrollen. */
+      function textWaechst() {
+        textArea.style.height = 'auto';
+        textArea.style.height = Math.min(textArea.scrollHeight + 2, Math.max(220, Math.round(window.innerHeight * 0.68))) + 'px';
+      }
+      textArea.addEventListener('input', textWaechst);
+      textWaechst();
+
+      /* Strg+S oder Strg+Enter (Mac: Cmd) speichert, egal wo man in der
+         Maske steht. Ist die Maske weg, raeumt sich der Horcher selbst ab. */
+      function tasten(ev) {
+        if (!document.body.contains(form)) { document.removeEventListener('keydown', tasten, true); return; }
+        if (!(ev.ctrlKey || ev.metaKey) || ev.altKey) return;
+        if (ev.key !== 's' && ev.key !== 'S' && ev.key !== 'Enter') return;
+        ev.preventDefault();
+        var tagIn = qs('#tag-input', tagWrap);
+        if (tagIn && tagIn.value.trim()) { addTag(tagIn.value); }
+        if (form.requestSubmit) form.requestSubmit(); else qs('button[type="submit"]', form).click();
+      }
+      document.addEventListener('keydown', tasten, true);
       // Abbrechen heisst: bewusst verwerfen
       var abbrechenBtn = qs('button[data-route]', form);
       if (abbrechenBtn) abbrechenBtn.addEventListener('click', function () { Entwurf.weg(ENTWURF); });
@@ -10360,13 +10436,22 @@ function viewReunion(params, query) {
     var group = (r.goals && r.goals.group) || [];
     return Array.isArray(group) ? group.join(' ') : String(group || '');
   }
+  /* Die Organisation kann lang werden (50+ Punkte) und schob die Schueler
+     weit nach unten. Das Feld ist darum in der Hoehe begrenzt und laesst
+     sich zuklappen; zugeklappt bleibt es auf diesem Geraet. */
+  var ORG_ZU = LS_PREFIX + 'reu_org_zu';
+  function orgZu() { try { return localStorage.getItem(ORG_ZU) === '1'; } catch (e) { return false; } }
   function orgHtml(r) {
     var items = r.orgItems || [];
     var groupTxt = gruppenziel(r);
     var text = items.join('\n\n');
-    return '<section class="card reu-orgcard">' +
-      '<div class="reu-orgcard-head"><h3>' + kbIcon('list-checks') + 'Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
-        '<span class="reu-saved" id="org-saved"></span></div>' +
+    var zu = orgZu();
+    var vorschau = items.length ? items[0].split('\n')[0] + (items.length > 1 ? ' …' : '') : 'Noch keine Punkte';
+    return '<section class="card reu-orgcard' + (zu ? ' is-zu' : '') + '">' +
+      '<div class="reu-orgcard-head"><h3>' + kbIcon('list-checks') + 'Organisation</h3><span class="count" id="org-count">' + items.length + '</span>' +
+        '<span class="reu-orgpeek">' + escapeHtml(vorschau) + '</span><span class="sp"></span>' +
+        '<span class="reu-saved" id="org-saved"></span>' +
+        '<button type="button" class="reu-iconbtn reu-orgtoggle" data-act="orgtoggle" aria-expanded="' + (zu ? 'false' : 'true') + '" title="' + (zu ? 'Aufklappen' : 'Zuklappen') + '">' + kbIcon('chevron-down') + '</button></div>' +
       '<textarea id="org-edit" class="reu-auto" rows="4" placeholder="Orga-Punkte der Réunion — ein Punkt pro Absatz …">' + escapeHtml(text) + '</textarea>' +
       '<p class="hint">Wird automatisch gespeichert · eine Leerzeile trennt die Punkte</p>' +
       '<div class="reu-groupgoal"><label for="org-group">' + kbIcon('target', 'sm') + 'Gruppenziel der Woche</label>' +
@@ -10607,6 +10692,16 @@ function viewReunion(params, query) {
         if (!action) return;
 
         if (action === 'goreu') { var d = act.getAttribute('data-date'); if (d) navigate('#/reunion?date=' + encodeURIComponent(d), true); return; }
+        if (action === 'orgtoggle') {
+          var karte = act.closest('.reu-orgcard');
+          var jetztZu = !karte.classList.contains('is-zu');
+          karte.classList.toggle('is-zu', jetztZu);
+          act.setAttribute('aria-expanded', jetztZu ? 'false' : 'true');
+          act.title = jetztZu ? 'Aufklappen' : 'Zuklappen';
+          try { if (jetztZu) localStorage.setItem(ORG_ZU, '1'); else localStorage.removeItem(ORG_ZU); } catch (e2) {}
+          if (!jetztZu) { var oe = qs('#org-edit', karte); if (oe) autoGrow(oe); }
+          return;
+        }
         if (action === 'discuss') {
           e.preventDefault(); e.stopPropagation();
           var r = current(); var sid = act.getAttribute('data-sid');
@@ -10754,6 +10849,8 @@ function viewReunion(params, query) {
         }
         persist(r).then(function () {
           var c = qs('#org-count', wrap); if (c) c.textContent = r.orgItems.length;
+          var pk = qs('.reu-orgpeek', wrap);
+          if (pk) pk.textContent = r.orgItems.length ? r.orgItems[0].split('\n')[0] + (r.orgItems.length > 1 ? ' …' : '') : 'Noch keine Punkte';
           markSaved(qs('#org-saved', wrap));
           rerenderStats();
           Entwurf.weg('reu-org:' + r.date, roh);
@@ -13705,7 +13802,7 @@ window.KB_BUBBLE=(function(){
       document.getElementById('note-text').value=ew.t;
       if(ew.typ){document.getElementById('note-type').value=ew.typ;}
       var tsel=document.getElementById('note-target');if(tsel&&ew.fuer!=null&&Array.prototype.some.call(tsel.options,function(o){return o.value===ew.fuer;})){tsel.value=ew.fuer;}
-      document.getElementById('note-context').textContent+=' — ↺ nicht gespeicherter Entwurf wiederhergestellt';
+      document.getElementById('note-context').textContent+=' — Entwurf von vorhin zurückgeholt';
     }
     openModal('modal-note');document.getElementById('note-text').focus();
   }
@@ -13887,6 +13984,9 @@ window.KB_BUBBLE=(function(){
     var sst=document.getElementById('stats-status');if(sst)sst.addEventListener('change',renderStats);
     document.getElementById('note-add').addEventListener('click',addNote);
     document.getElementById('note-text').addEventListener('input',notizEntwurfMerken);
+    /* Strg+Enter (Mac: Cmd+Enter) fuegt hinzu, der Cursor bleibt im Feld -
+       die naechste Notiz laesst sich gleich tippen. */
+    document.getElementById('note-text').addEventListener('keydown',function(e){if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();addNote();}});
     document.getElementById('class-tabs').addEventListener('click',function(e){var t=e.target.closest('[data-class]');if(!t)return;classFilter=t.dataset.class;
       var act=state.students.find(function(s){return s.id===activeStudentId;});if(!act||act.level!==classFilter)pickFirstInLevel();
       renderStudents();renderMain();});

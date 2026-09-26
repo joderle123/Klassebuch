@@ -2302,10 +2302,19 @@ function viewEntryForm(params) {
       '<input type="text" id="tag-input" placeholder="Tag eingeben + Enter…" list="tag-suggestions" autocomplete="off">';
   }
 
+  /* Zeile unter dem Titel nur mit dem, was es wirklich gibt (aeltere,
+     eingelesene Eintraege haben kein Erstelldatum) */
+  var metaTeile = [];
+  if (existing) {
+    var erstellt = existing.createdAt ? formatDateTime(existing.createdAt) : '';
+    var geaendert = existing.updatedAt && existing.updatedAt !== existing.createdAt ? formatDateTime(existing.updatedAt) : '';
+    if (erstellt) metaTeile.push('Erstellt am ' + escapeHtml(erstellt));
+    if (geaendert) metaTeile.push('zuletzt geändert ' + escapeHtml(geaendert) + (existing.updatedBy ? ' von ' + escapeHtml(existing.updatedBy) : ''));
+  }
   var html =
     '<div class="page-head">' +
       '<div><h2>' + (isEdit ? 'Eintrag bearbeiten' : 'Neuen Eintrag erfassen') + '</h2>' +
-      (existing ? '<p class="muted">Erstellt am ' + escapeHtml(formatDateTime(existing.createdAt)) + (existing.updatedAt && existing.updatedAt !== existing.createdAt ? ' &middot; zuletzt geändert ' + escapeHtml(formatDateTime(existing.updatedAt)) : '') + '</p>' : '') +
+      (metaTeile.length ? '<p class="muted">' + metaTeile.join(' &middot; ') + '</p>' : '') +
       '</div>' +
     '</div>' +
     '<form id="entry-form" class="card form-card">' +
@@ -2343,10 +2352,12 @@ function viewEntryForm(params) {
         '<label>Verlaufs-Slider <span class="hint">(optional, 1–10 — bleiben „nicht bewertet“, wenn nicht angehakt)</span></label>' +
         '<div class="row">' + SLIDER_DEFS.map(function (d) { return '<div style="flex:1; min-width:230px;">' + sliderFieldHtml(d) + '</div>'; }).join('') + '</div>' +
       '</div>' +
-      '<hr class="divider">' +
-      '<div class="page-head" style="margin:0;">' +
+      /* Speicherleiste bleibt unten stehen, auch bei langen Texten */
+      '<div class="form-savebar">' +
         '<button type="button" class="btn" data-route="' + escapeAttr(returnTo || (isEdit ? '#/student/' + existing.studentId : '#/dashboard')) + '">Abbrechen</button>' +
-        '<button type="submit" class="btn btn-primary">' + (isEdit ? 'Änderungen speichern' : 'Eintrag speichern') + '</button>' +
+        '<span class="form-savebar-sp"></span>' +
+        '<span class="form-kbd">Strg + S</span>' +
+        '<button type="submit" class="btn btn-primary">' + kbIcon('check', 'sm') + (isEdit ? 'Änderungen speichern' : 'Eintrag speichern') + '</button>' +
       '</div>' +
     '</form>';
 
@@ -2477,13 +2488,35 @@ function viewEntryForm(params) {
         renderDetectedThemes();
         var hinweis = document.createElement('div');
         hinweis.className = 'entwurf-hinweis';
-        hinweis.innerHTML = '<span>↺ Nicht gespeicherter Entwurf vom ' + escapeHtml(formatDateTime(new Date(ew.ts || Date.now()).toISOString())) +
-          ' wiederhergestellt — noch nicht gespeichert.</span><button type="button" id="entwurf-weg">Verwerfen</button>';
+        hinweis.innerHTML = '<span>' + kbIcon('history', 'sm') + ' Entwurf vom ' + escapeHtml(formatDateTime(new Date(ew.ts || Date.now()).toISOString())) +
+          ' zurückgeholt — noch nicht gespeichert.</span><button type="button" id="entwurf-weg">Verwerfen</button>';
         form.parentNode.insertBefore(hinweis, form);
         qs('#entwurf-weg', hinweis).addEventListener('click', function () { Entwurf.weg(ENTWURF); render(); });
       }
       form.addEventListener('input', entwurfMerken);
       form.addEventListener('change', entwurfMerken);
+
+      /* Das Textfeld waechst mit dem Text (bis gut zwei Drittel des
+         Fensters), statt nach acht Zeilen innen zu scrollen. */
+      function textWaechst() {
+        textArea.style.height = 'auto';
+        textArea.style.height = Math.min(textArea.scrollHeight + 2, Math.max(220, Math.round(window.innerHeight * 0.68))) + 'px';
+      }
+      textArea.addEventListener('input', textWaechst);
+      textWaechst();
+
+      /* Strg+S oder Strg+Enter (Mac: Cmd) speichert, egal wo man in der
+         Maske steht. Ist die Maske weg, raeumt sich der Horcher selbst ab. */
+      function tasten(ev) {
+        if (!document.body.contains(form)) { document.removeEventListener('keydown', tasten, true); return; }
+        if (!(ev.ctrlKey || ev.metaKey) || ev.altKey) return;
+        if (ev.key !== 's' && ev.key !== 'S' && ev.key !== 'Enter') return;
+        ev.preventDefault();
+        var tagIn = qs('#tag-input', tagWrap);
+        if (tagIn && tagIn.value.trim()) { addTag(tagIn.value); }
+        if (form.requestSubmit) form.requestSubmit(); else qs('button[type="submit"]', form).click();
+      }
+      document.addEventListener('keydown', tasten, true);
       // Abbrechen heisst: bewusst verwerfen
       var abbrechenBtn = qs('button[data-route]', form);
       if (abbrechenBtn) abbrechenBtn.addEventListener('click', function () { Entwurf.weg(ENTWURF); });
@@ -3752,13 +3785,22 @@ function viewReunion(params, query) {
     var group = (r.goals && r.goals.group) || [];
     return Array.isArray(group) ? group.join(' ') : String(group || '');
   }
+  /* Die Organisation kann lang werden (50+ Punkte) und schob die Schueler
+     weit nach unten. Das Feld ist darum in der Hoehe begrenzt und laesst
+     sich zuklappen; zugeklappt bleibt es auf diesem Geraet. */
+  var ORG_ZU = LS_PREFIX + 'reu_org_zu';
+  function orgZu() { try { return localStorage.getItem(ORG_ZU) === '1'; } catch (e) { return false; } }
   function orgHtml(r) {
     var items = r.orgItems || [];
     var groupTxt = gruppenziel(r);
     var text = items.join('\n\n');
-    return '<section class="card reu-orgcard">' +
-      '<div class="reu-orgcard-head"><h3>' + kbIcon('list-checks') + 'Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
-        '<span class="reu-saved" id="org-saved"></span></div>' +
+    var zu = orgZu();
+    var vorschau = items.length ? items[0].split('\n')[0] + (items.length > 1 ? ' …' : '') : 'Noch keine Punkte';
+    return '<section class="card reu-orgcard' + (zu ? ' is-zu' : '') + '">' +
+      '<div class="reu-orgcard-head"><h3>' + kbIcon('list-checks') + 'Organisation</h3><span class="count" id="org-count">' + items.length + '</span>' +
+        '<span class="reu-orgpeek">' + escapeHtml(vorschau) + '</span><span class="sp"></span>' +
+        '<span class="reu-saved" id="org-saved"></span>' +
+        '<button type="button" class="reu-iconbtn reu-orgtoggle" data-act="orgtoggle" aria-expanded="' + (zu ? 'false' : 'true') + '" title="' + (zu ? 'Aufklappen' : 'Zuklappen') + '">' + kbIcon('chevron-down') + '</button></div>' +
       '<textarea id="org-edit" class="reu-auto" rows="4" placeholder="Orga-Punkte der Réunion — ein Punkt pro Absatz …">' + escapeHtml(text) + '</textarea>' +
       '<p class="hint">Wird automatisch gespeichert · eine Leerzeile trennt die Punkte</p>' +
       '<div class="reu-groupgoal"><label for="org-group">' + kbIcon('target', 'sm') + 'Gruppenziel der Woche</label>' +
@@ -3999,6 +4041,16 @@ function viewReunion(params, query) {
         if (!action) return;
 
         if (action === 'goreu') { var d = act.getAttribute('data-date'); if (d) navigate('#/reunion?date=' + encodeURIComponent(d), true); return; }
+        if (action === 'orgtoggle') {
+          var karte = act.closest('.reu-orgcard');
+          var jetztZu = !karte.classList.contains('is-zu');
+          karte.classList.toggle('is-zu', jetztZu);
+          act.setAttribute('aria-expanded', jetztZu ? 'false' : 'true');
+          act.title = jetztZu ? 'Aufklappen' : 'Zuklappen';
+          try { if (jetztZu) localStorage.setItem(ORG_ZU, '1'); else localStorage.removeItem(ORG_ZU); } catch (e2) {}
+          if (!jetztZu) { var oe = qs('#org-edit', karte); if (oe) autoGrow(oe); }
+          return;
+        }
         if (action === 'discuss') {
           e.preventDefault(); e.stopPropagation();
           var r = current(); var sid = act.getAttribute('data-sid');
@@ -4146,6 +4198,8 @@ function viewReunion(params, query) {
         }
         persist(r).then(function () {
           var c = qs('#org-count', wrap); if (c) c.textContent = r.orgItems.length;
+          var pk = qs('.reu-orgpeek', wrap);
+          if (pk) pk.textContent = r.orgItems.length ? r.orgItems[0].split('\n')[0] + (r.orgItems.length > 1 ? ' …' : '') : 'Noch keine Punkte';
           markSaved(qs('#org-saved', wrap));
           rerenderStats();
           Entwurf.weg('reu-org:' + r.date, roh);
