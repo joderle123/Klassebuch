@@ -165,7 +165,9 @@ const STATS = [
   for (let i = 0; i < 2; i++) { await page.click('[data-ar="freischalten"]'); await page.waitForFunction(n => document.querySelectorAll('[data-ar="freischalten"]').length === n, 1 - i, { timeout: 20000 }); await warte(400); }
   const konto = await page.evaluate(() => { const k = CDSE_KONTO.konten(); return { lea: k.find(x => x.name === 'Lea Beispiel').id, paul: k.find(x => x.name === 'Paul Probe').id, mia: k.find(x => x.name === 'Mia Muster').id }; });
   await page.waitForSelector('select[data-rolle="' + konto.lea + '"]');
-  await page.selectOption('select[data-rolle="' + konto.lea + '"]', 'responsable'); await warte(1200);
+  await page.selectOption('select[data-rolle="' + konto.lea + '"]', 'responsable');
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Rolle ändern")');   /* Rollenwechsel wird bestätigt */
+  await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await warte(400);
   check('Lea ist Responsable', await page.evaluate(id => CDSE_TEAM.rolle(id), konto.lea) === 'responsable');
 
   console.log('4) Mitarbeiter: kein Zugang');

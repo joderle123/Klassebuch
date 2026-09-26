@@ -218,5 +218,29 @@ ersetze("""  appsSchliessen:function(){aufraeumen(true);if(view==='app'){show('h
 ersetze("""    menuAuf(false);aufraeumen(true);ICH=null;HINWEISE=[];renderMe();activeCat='';$('q').value='';""",
         """    menuAuf(false);aufraeumen(true);ICH=null;HINWEISE=[];renderMe();activeCat='';$('q').value='';
     if(window.CDSE_ARBEIT){window.CDSE_ARBEIT.zuruecksetzen();}""", pflicht=False)
+# Konto-Menü: Hub sperren (Pause, ohne Abmelden)
+ersetze("""      '<button type="button" role="menuitem" data-konto="abmelden">'+svg('logout')+'Abmelden</button>'+""",
+        """      '<button type="button" role="menuitem" data-konto="sperren">'+svg('lock')+'Hub sperren</button>'+
+      '<button type="button" role="menuitem" data-konto="abmelden">'+svg('logout')+'Abmelden</button>'+""")
+# Gesperrt: keine Seite öffnen (sonst ließe sich über die Adresse etwas hinter dem Sperrbildschirm aufbauen)
+ersetze("""  if(!ICH){return;}   /* erst anmelden */""",
+        """  if(!ICH||(window.CDSE_KONTO.gesperrt&&window.CDSE_KONTO.gesperrt())){return;}   /* erst anmelden; gesperrt: nichts öffnen */""")
+# Übersicht nur neu zeichnen, wenn sich etwas geändert hat, das sie zeigt (manche Apps speichern alle paar Sekunden)
+ersetze("""window.addEventListener('storage',function(){if(ICH&&view==='home'){renderHome();renderHello();}});""",
+        """var homeNeuTimer=null;
+window.addEventListener('storage',function(e){
+  var k=e.key;
+  if(k!==null&&k!=='klassebuch_terms_v1'&&k!=='klassebuch_roster_v1'&&k.indexOf(LS_RECENT)!==0){return;}
+  clearTimeout(homeNeuTimer);
+  homeNeuTimer=setTimeout(function(){if(ICH&&view==='home'){renderHome();renderHello();}},400);
+});""")
+# Lesbarkeit: blasse Schrift etwas dunkler (Kontrast mind. 4,5:1), Tastatur-Fokus deutlich sichtbar
+ersetze("""--faint:#8C96A8;""", """--faint:#667084;""")
+ersetze("""  --focus:0 0 0 3px rgba(46,58,156,.26);""", """  --focus:0 0 0 2px var(--accent),0 0 0 5px rgba(46,58,156,.16);""")
+# „Noch da?“ vor der Sperre nach Inaktivität
+ersetze(""".gate-card.breit{""", """.nochda{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:120;display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center;max-width:calc(100% - 32px);background:var(--surface);border:1px solid var(--line-2);border-radius:14px;box-shadow:var(--shadow-3);padding:12px 14px 12px 18px;font-size:14px;color:var(--ink);}
+.nochda[hidden]{display:none;}
+.nochda .btn{height:38px;}
+.gate-card.breit{""")
 open(P, 'w', encoding='utf-8').write(s)
 print('hub.html gebaut:', len(s), 'Zeichen')

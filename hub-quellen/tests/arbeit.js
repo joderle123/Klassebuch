@@ -121,7 +121,7 @@ const FALL = JSON.parse(fs.readFileSync(OUT + '/../ds-probe/fall-tom.json', 'utf
 
   console.log('5) Zweites Konto: Anna (Annexe), Responsable = Joey');
   await abmelden();
-  await page.click('#g-neu');
+  await page.click('#g-neu'); await page.waitForSelector('#g-name');   /* die Kontenliste wird vorher neu gelesen */
   await erstelle('Anna Beispiel', 'annexe', 'noch ein Passwort 22', await page.evaluate(() => { const o = Array.from(document.querySelectorAll('#g-resp option')).find(x => x.textContent.includes('Joey')); return o ? o.value : '-'; }), 'Erzieherin');
   await gehe('#/schueler');
   await page.waitForSelector('#ar-mein-code', { timeout: 20000 });
@@ -201,7 +201,7 @@ const FALL = JSON.parse(fs.readFileSync(OUT + '/../ds-probe/fall-tom.json', 'utf
 
   console.log('9) Drittes Konto ohne Rechte: nur lesen');
   await abmelden();
-  await page.click('#g-neu');
+  await page.click('#g-neu'); await page.waitForSelector('#g-name');   /* die Kontenliste wird vorher neu gelesen */
   await erstelle('Ben Leser', 'cst', 'drittes Passwort 333', '-', '');
   await abmelden();
   await anmelden('Joey Muster', 'ein sicheres Passwort 1');

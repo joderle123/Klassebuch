@@ -45,10 +45,35 @@ trägt die Person selbst in den Schlüsselring ein (`per:'startcode'`, Rolle aus
 automatisch) und entfernt den verschlossenen Schlüssel aus der Datei. Nach einem Schlüsselwechsel passt ein offener
 Startcode nicht mehr zum Ring: Das Konto entsteht trotzdem, freigeschaltet wird dann wie gewohnt von der Verwaltung.
 
+## Sperre, Formulare und Entwürfe
+
+- **Sperren**: nach `sperreNachMinuten` (hub-apps.js) ohne Eingabe oder über Konto-Menü → **Hub sperren**. Als Aktivität
+  zählen nur echte Eingaben (Maus, Tastatur, Touch – auch in eingebetteten Apps), nicht das Speichern einer App im
+  Hintergrund. Eine Minute vorher erscheint „Noch da?“. Gesperrt öffnet die Adresse (`#/…`) keine Seite; der Tab-Speicher
+  der Sitzung hat ein Lebenszeichen (`lebt`, alle 30 s) – nach einem Browser-Neustart braucht es wieder das Passwort.
+- **Formulare beim Sperren**: Offene Dialoge bekommen das Ereignis `cdse-schliessen`. Fangen sie es ab (`preventDefault`,
+  so die Dialoge des Arbeitsbereichs), werden sie nur ausgeblendet und nach dem Entsperren wieder gezeigt – ein halb
+  geschriebener Text geht nicht verloren. Beim Abmelden werden sie verworfen.
+- **Dialoge** (`dialog()` in arbeit.js): Während des Speicherns sind die Knöpfe gesperrt und Esc wirkt nicht; geschriebenen
+  Text verwirft Abbrechen/Esc erst nach einer Rückfrage; die Knöpfe bleiben bei langen Formularen sichtbar.
+- **Entwurf je Dossier**: Der angefangene Eintrag bleibt beim Reiterwechsel, beim Wechsel zu einem anderen Kind und bei
+  „Neuen Stand anzeigen“ erhalten (nur im Arbeitsspeicher, beim Abmelden weg). Gezeichnet wird ein Dossier nur, wenn es
+  noch das gewählte ist – bei schnellem Wechseln landet nichts im falschen Dossier.
+- **Rollen und Zugang**: Freischalten, Entziehen und Rollen prüfen das eigene Recht auf dem neuesten Stand von
+  `mitglieder.cdse`; es bleibt immer mindestens eine Verwaltung. Entzogene Konten stehen dort unter `entzogen` und
+  erscheinen nicht mehr unter „Warten auf Freischaltung“ (wieder freischalten nur durch die Verwaltung).
+- **Tageskarte zu zweit**: Das Formular schickt den Stand beim Öffnen mit (`basis`); gespeichert wird nur, was geändert
+  wurde (je Ziel und Abschnitt) – morgens und nachmittags eingetragene Punkte bleiben beide erhalten.
+- **Datum**: Kalendertage (Einträge, Status, Tageskarte …) in Ortszeit, nicht in UTC.
+
 ## Tests
 
 Tests (Playwright, Chromium) liegen in `tests/`; sie erwarten einen Webserver auf Port 8099, der den Hauptordner ausliefert
 (`npx http-server . -p 8099 -s`), und legen nur erfundene Personen an.
+
+`tests/bedienung.js` prüft Sperren (Menü, Adresse, Formular übersteht die Sperre), Rückfrage vor dem Verwerfen, Entwurf
+je Dossier, schnelles Wechseln zwischen Kindern, Suche, Tageskarte zu zweit, Einschätzung in mehreren Bereichen,
+Einsatzplan-Entwurf und Datum in Ortszeit.
 
 `tests/gleichzeitig.js` prüft den Betrieb mit vielen Personen: `tests/netzordner.js` stellt einen echten Ordner auf der
 Festplatte als gemeinsames Laufwerk für mehrere Browser-Kontexte (= PCs) bereit – mit Netz-Verzögerung, Schreiben über

@@ -33,7 +33,9 @@ function svg(n,c){return '<svg class="ic'+(c?' '+c:'')+'" aria-hidden="true"><us
 function pad(n){return (n<10?'0':'')+n;}
 function heuteIso(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function datum(iso){if(!iso){return '';}var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso);return m?m[3]+'.'+m[2]+'.'+m[1]:iso;}
-function datumZeit(iso){if(!iso){return '';}var d=new Date(iso);return isNaN(d)?iso:datum(iso.slice(0,10))+', '+pad(d.getHours())+':'+pad(d.getMinutes());}
+function datumZeit(iso){if(!iso){return '';}var d=new Date(iso);return isNaN(d)?iso:pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'+d.getFullYear()+', '+pad(d.getHours())+':'+pad(d.getMinutes());}
+/* Kalendertag eines Zeitstempels in Ortszeit (ein reines Datum bleibt, wie es ist) */
+function tagVon(iso){if(!iso||/^\d{4}-\d{2}-\d{2}$/.test(iso)){return iso||'';}var d=new Date(iso);return isNaN(d)?String(iso).slice(0,10):d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
 function alter(geb){if(!geb){return null;}var g=new Date(geb+'T12:00:00'),h=new Date();if(isNaN(g)){return null;}var j=h.getFullYear()-g.getFullYear();if(h.getMonth()<g.getMonth()||(h.getMonth()===g.getMonth()&&h.getDate()<g.getDate())){j--;}return j;}
 function team(id){return K.team(id);}
 function ini(n){return K.initialen(n);}
@@ -49,7 +51,15 @@ function laedt(t){return '<div class="ar-laedt"><span class="laden dunkel" aria-
 function fehlerText(e){return esc((e&&e.message)||String(e));}
 function body(){return $('arbeit-body');}
 function setzen(html){var b=body();if(b){b.innerHTML=html;}}
-function toast(t){Array.prototype.forEach.call(document.querySelectorAll('.ar-toast'),function(x){x.remove();});var el=document.createElement('div');el.className='ar-toast';el.setAttribute('role','status');el.textContent=t;document.body.appendChild(el);setTimeout(function(){el.classList.add('weg');},2600);setTimeout(function(){el.remove();},3200);}
+/* Kurze Rückmeldung unten; Fehler (fehler=true) bleiben länger stehen und lassen sich wegklicken */
+function toast(t,fehler){
+  Array.prototype.forEach.call(document.querySelectorAll('.ar-toast'),function(x){x.remove();});
+  var el=document.createElement('div');el.className='ar-toast'+(fehler?' fehler':'');el.setAttribute('role',fehler?'alert':'status');el.textContent=t;
+  if(fehler){el.title='Zum Schließen klicken';el.onclick=function(){el.remove();};}
+  document.body.appendChild(el);
+  var ms=fehler?9000:2600;setTimeout(function(){el.classList.add('weg');},ms);setTimeout(function(){el.remove();},ms+600);
+}
+function fehlerToast(e){if(e&&e.abgebrochen){return;}toast((e&&e.message)||String(e),true);}
 function stelleChip(id){var t=team(id);return '<span class="ar-stelle" style="--tc:'+esc(t.farbe)+'">'+esc(t.name)+'</span>';}
 function motorDa(){return typeof DsText!=='undefined'&&typeof DS_AUFBAU!=='undefined'&&typeof DS_TEXTE!=='undefined';}
 
@@ -61,28 +71,54 @@ function dialog(titel,inhalt,knoepfe,opt){
     d.innerHTML='<form method="dialog" novalidate><h2>'+esc(titel)+'</h2><div class="ar-dialog-inhalt">'+inhalt+'</div><p class="ar-dialog-fehler" hidden></p>'+
       '<div class="ar-knoepfe">'+(knoepfe||[{text:'Schließen',wert:''}]).map(function(k){return '<button class="btn'+(k.primaer?' primary':'')+(k.gefahr?' gefahr':'')+'" value="'+esc(k.wert)+'"'+(k.primaer?' type="submit"':' type="button"')+'>'+esc(k.text)+'</button>';}).join('')+'</div></form>';
     document.body.appendChild(d);
-    var form=d.querySelector('form'), fertig=false;
+    var form=d.querySelector('form'), fertig=false, laeuft=false, pause=false, anfang=null;
     function werte(){var o={};Array.prototype.forEach.call(form.elements,function(el){if(!el.name){return;}if(el.type==='checkbox'){o[el.name]=el.checked;}else if(el.type==='radio'){if(el.checked){o[el.name]=el.value;}}else{o[el.name]=el.value;}});return o;}
-    function zu(w){if(fertig){return;}fertig=true;d.close();d.remove();res(w);}
-    d.fehler=function(t){var p=d.querySelector('.ar-dialog-fehler');p.textContent=t;p.hidden=!t;};
+    /* Geschriebener Text, der beim Abbrechen verloren ginge (Auswahlfelder sind schnell wieder gesetzt) */
+    function textGeaendert(){
+      if(!anfang){return false;}
+      return Array.prototype.some.call(form.querySelectorAll('textarea[name],input[name]'),function(el){
+        if(el.tagName==='INPUT'&&!/^(text|search|email|tel|url)$/.test(el.type)){return false;}
+        return String(el.value||'').trim()!==String(anfang[el.name]==null?'':anfang[el.name]).trim();
+      });
+    }
+    function zu(w){if(fertig){return;}fertig=true;if(d.open){d.close();}d.remove();res(w);}
+    function knoepfeAn(an){Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(x){x.disabled=!an;});}
+    d.fehler=function(t){var p=d.querySelector('.ar-dialog-fehler');p.textContent=t;p.hidden=!t;if(t&&p.scrollIntoView){p.scrollIntoView({block:'nearest'});}};
+    /* Abbrechen (Knopf ohne Wert oder Esc): während des Speicherns nicht; angefangenen Text nicht ohne Rückfrage verwerfen */
+    function abbrechen(){
+      if(laeuft){return;}
+      if(textGeaendert()&&d.dataset.verwerfen!=='1'){d.dataset.verwerfen='1';d.fehler('Du hast etwas geschrieben, das noch nicht gespeichert ist. Nochmal „'+((form.querySelector('.ar-knoepfe button[value=""]')||{}).textContent||'Abbrechen')+'“ (oder Esc), um es zu verwerfen.');return;}
+      zu({aktion:'',werte:werte()});
+    }
+    form.addEventListener('input',function(){if(d.dataset.verwerfen==='1'){d.dataset.verwerfen='';d.fehler('');}});
     Array.prototype.forEach.call(form.querySelectorAll('.ar-knoepfe button'),function(b){
       b.addEventListener('click',function(ev){
         ev.preventDefault();
+        if(laeuft){return;}
+        if(!b.value){abbrechen();return;}
         /* anfang = Werte beim Öffnen: damit speichern Formulare nur, was wirklich geändert wurde */
         var w={aktion:b.value,werte:werte(),anfang:anfang,dialog:d};
-        if(b.value&&opt.pruefen){var f=opt.pruefen(w);if(f){d.fehler(f);return;}}
-        if(b.value&&opt.ausfuehren){
-          b.disabled=true;var alt=b.textContent;b.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(alt);
-          Promise.resolve(opt.ausfuehren(w)).then(function(r){zu({aktion:b.value,werte:w.werte,ergebnis:r});},function(e){b.disabled=false;b.textContent=alt;if(e&&e.abgebrochen){return;}d.fehler((e&&e.message)||String(e));});
+        if(opt.pruefen){var f=opt.pruefen(w);if(f){d.fehler(f);return;}}
+        if(opt.ausfuehren){
+          laeuft=true;knoepfeAn(false);d.fehler('');var alt=b.textContent;b.innerHTML='<span class="laden" aria-hidden="true"></span>'+esc(alt);
+          /* nach dem Entsperren ist der Schülerbereich erst wieder zu öffnen */
+          Promise.resolve().then(function(){return (geladen&&T.zustand().art==='unbekannt')?bereichLaden(false,true).catch(function(){}):null;})
+            .then(function(){return opt.ausfuehren(w);})
+            .then(function(r){laeuft=false;zu({aktion:b.value,werte:w.werte,ergebnis:r});},
+              function(e){laeuft=false;knoepfeAn(true);b.textContent=alt;if(e&&e.abgebrochen){return;}d.fehler((e&&e.message)||String(e));});
           return;
         }
         zu({aktion:b.value,werte:w.werte});
       });
     });
     form.addEventListener('submit',function(ev){ev.preventDefault();var p=form.querySelector('button[type=submit]');if(p){p.click();}});
-    d.addEventListener('cancel',function(ev){ev.preventDefault();zu({aktion:'',werte:werte()});});
+    d.addEventListener('cancel',function(ev){ev.preventDefault();abbrechen();});
+    /* Hub wird gesperrt: nur ausblenden (nach dem Entsperren geht es weiter); beim Abmelden verwerfen */
+    d.addEventListener('cdse-schliessen',function(ev){if(ev.cancelable){ev.preventDefault();pause=true;return;}laeuft=false;zu({aktion:'',werte:werte()});});
+    /* ohne unser Zutun geschlossen (z. B. zweimal Esc): wie Abbrechen – außer beim Sperren oder Speichern */
+    d.addEventListener('close',function(){if(pause){pause=false;return;}if(!fertig&&!laeuft){zu({aktion:'',werte:werte()});}});
     if(opt.nachAufbau){opt.nachAufbau(d);}
-    var anfang=werte();
+    anfang=werte();
     d.showModal();
     var f=d.querySelector('[autofocus]')||d.querySelector('input,select,textarea');if(f){f.focus();}
   });
@@ -95,7 +131,22 @@ function teamOptionen(){return TEAMS.map(function(t){return [t.id,t.name];});}
 var STELLEN=TEAMS.filter(function(t){return t.stelle!==false;});
 function stellenOptionen(){return STELLEN.map(function(t){return [t.id,t.name];});}
 function eigeneStelle(me){return STELLEN.some(function(t){return t.id===me.team;})?me.team:'diagnostique';}
-function kontoOptionen(filterFn){return K.konten().filter(filterFn||function(){return true;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return [k.id,k.name+' · '+k.teamName];});}
+/* Personen, die Schülerdaten lesen können – nur sie kommen für Schreibrechte und Fallverantwortung in Frage */
+function freieKonten(){return T.zustand().art==='bereit'?T.mitglieder().filter(function(k){return k.freigeschaltet;}):K.konten();}
+/* Suchfeld über einer langen Auswahl (select) oder Liste (.ar-checkliste): blendet Unpassendes aus */
+function suchfeld(ziel,platzhalter){return '<input type="search" class="ar-suchfeld" data-suche="'+esc(ziel)+'" placeholder="'+esc(platzhalter||'Name suchen …')+'" autocomplete="off" aria-label="'+esc(platzhalter||'Name suchen')+'">';}
+function suchfelderVerbinden(dlg){
+  Array.prototype.forEach.call(dlg.querySelectorAll('[data-suche]'),function(inp){
+    inp.addEventListener('input',function(){
+      var w=suchWoerter(inp.value), ziel=inp.getAttribute('data-suche'), sel=dlg.querySelector('select[name="'+ziel+'"]');
+      if(sel){Array.prototype.forEach.call(sel.options,function(o){if(!o.value){return;}o.hidden=!w.every(function(x){return suchNorm(o.textContent).indexOf(x)>=0;});});var sicht=Array.prototype.filter.call(sel.options,function(o){return o.value&&!o.hidden;});if(sicht.length===1){sel.value=sicht[0].value;}return;}
+      var box=dlg.querySelector('#'+ziel);if(!box){return;}
+      Array.prototype.forEach.call(box.querySelectorAll('label'),function(l){var an=l.querySelector('input:checked');l.hidden=!an&&!w.every(function(x){return suchNorm(l.textContent).indexOf(x)>=0;});});
+    });
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();}});
+  });
+}
+function kontoOptionen(filterFn){return freieKonten().filter(filterFn||function(){return true;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return [k.id,k.name+' · '+k.teamName];});}
 
 /* ---------- Laden des Bereichs ---------- */
 function bereichLaden(neu,leise){
@@ -148,7 +199,9 @@ function meinenCodeZeigen(){var el=$('ar-mein-code');if(el){K.kontrollcode(K.ich
 function seiteSchueler(neu){
   var suche='<label class="search"><svg class="ic"><use href="#i-search"/></svg><input id="ar-q" type="search" placeholder="Name, Klasse, Schule …" autocomplete="off" aria-label="Schüler suchen" value="'+esc(filter.q)+'"></label>';
   setzen(kopf('Arbeit','Schüler','Alle Schülerinnen und Schüler des CDSE – aktiv und ehemalig. Jede und jeder im CDSE kann die Dossiers lesen; bearbeiten dürfen die Zuständigen.',suche)+'<div id="ar-liste">'+laedt('Lade Schülerdossiers …')+'</div>');
-  var q=$('ar-q');if(q){q.oninput=function(){filter.q=q.value;listeZeichnen(letzteListe);};}
+  var q=$('ar-q'), qTimer=null;
+  if(q){q.oninput=function(){filter.q=q.value;clearTimeout(qTimer);qTimer=setTimeout(function(){listeZeichnen(letzteListe);},120);};
+    q.onkeydown=function(e){if(e.key==='Enter'){var z=document.querySelector('#ar-liste a.ar-zeile');if(z){z.click();}}if(e.key==='Escape'&&q.value){q.value='';filter.q='';listeZeichnen(letzteListe);}};}
   bereichLaden(neu).then(function(z){
     if(z.art!=='bereit'){$('ar-liste').innerHTML=zustandsKarte(z);meinenCodeZeigen();return;}
     return T.alleDossiers(neu).then(function(l){letzteListe=l;listeZeichnen(l);});
@@ -156,9 +209,17 @@ function seiteSchueler(neu){
 }
 var letzteListe=null;
 function meineDossier(d,me){return (d.verantwortlich||[]).indexOf(me.id)>=0||!!(d.rechte&&d.rechte[me.id]);}
+/* Suche: jedes Wort muss vorkommen (Groß-/Kleinschreibung und Akzente egal) */
+function suchNorm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function suchWoerter(q){return suchNorm(q).split(/\s+/).filter(Boolean);}
+function passtSuche(d,w){
+  if(!w.length){return true;}
+  var p=d.person||{}, h=suchNorm([p.nachname,p.vorname,p.klasse,p.schule,p.matricule,datum(p.geburtsdatum),team(d.stelle).name,(d.verantwortlich||[]).map(kname).join(' ')].join(' '));
+  return w.every(function(x){return h.indexOf(x)>=0;});
+}
 function listeZeichnen(l){
   var el=$('ar-liste');if(!el||!l){return;}
-  var me=K.ich(), q=filter.q.trim().toLowerCase();
+  var me=K.ich(), qw=suchWoerter(filter.q);
   var zaehl={aktiv:0,inaktiv:0,alle:l.length}, stellen={};
   l.forEach(function(d){zaehl[d.status==='inaktiv'?'inaktiv':'aktiv']++;});
   var sicht=l.filter(function(d){
@@ -167,7 +228,7 @@ function listeZeichnen(l){
     if(filter.stelle&&d.stelle!==filter.stelle){return false;}
     if(filter.meine&&!meineDossier(d,me)){return false;}
     if(filter.ueber){var k=eldibKurz(d);if(!k||!k.ueber){return false;}}
-    if(q){var p=d.person||{},h=[p.nachname,p.vorname,p.klasse,p.schule,p.matricule,team(d.stelle).name].join(' ').toLowerCase();if(h.indexOf(q)<0){return false;}}
+    if(!passtSuche(d,qw)){return false;}
     return true;
   }).sort(function(a,b){return schuelerName(a.person).localeCompare(schuelerName(b.person),'de');});
   var wart=T.darfFreischalten()?T.wartende().length:0;
@@ -184,8 +245,11 @@ function listeZeichnen(l){
     '<span class="ar-knopfreihe"><button class="btn" type="button" data-ar="fiche-hochladen" title="Aus einer Fiche de renseignement (.docx) ein Dossier anlegen oder aktualisieren">'+svg('hoch')+'Fiche hochladen</button>'+
     '<button class="btn primary" type="button" data-ar="neu">'+svg('plus')+'Neuer Schüler</button></span></div>'+
     (window.CDSE_KB_UEBERNAHME?'<div id="ar-kbu"></div>':'');
+  /* gesucht, aber nur bei den Inaktiven (oder Aktiven) gefunden: darauf hinweisen */
+  var anderswo=(qw.length&&filter.status!=='alle')?l.filter(function(d){return (d.status==='inaktiv'?'inaktiv':'aktiv')!==filter.status&&passtSuche(d,qw);}).length:0;
+  if(anderswo){h+=hinweis(anderswo+(anderswo===1?' Treffer':' Treffer')+' bei den <b>'+(filter.status==='aktiv'?'Inaktiven':'Aktiven')+'</b>. <button class="ar-link" type="button" data-filter-status="alle">Alle zeigen</button>','info');}
   if(!sicht.length){
-    h+=karte(l.length?'<p>Keine Schüler für diese Auswahl.</p>':'<h2>Noch keine Dossiers</h2><p>Meist beginnt ein Dossier beim Diagnostique: <b>„Neuer Schüler“</b> anlegen, dann das Profil aus dem DS des ELDiB-Generators übernehmen.</p>','ar-leer');
+    h+=karte(l.length?'<p>Keine Schüler für diese Auswahl'+(qw.length?' und die Suche „'+esc(filter.q.trim())+'“':'')+'.</p>':'<h2>Noch keine Dossiers</h2><p>Meist beginnt ein Dossier beim Diagnostique: <b>„Neuer Schüler“</b> anlegen, dann das Profil aus dem DS des ELDiB-Generators übernehmen.</p>','ar-leer');
   }else{
     h+='<div class="ar-tabelle" role="table" aria-label="Schüler"><div class="ar-zeile kopf" role="row"><span role="columnheader">Name</span><span role="columnheader">Klasse · Schule</span><span role="columnheader">Stelle</span><span role="columnheader">Fallverantwortlich</span><span role="columnheader">Geändert</span></div>'+
       sicht.map(function(d){
@@ -197,7 +261,7 @@ function listeZeichnen(l){
           '<span role="cell">'+esc([p.klasse,p.schule].filter(Boolean).join(' · ')||'—')+'</span>'+
           '<span role="cell">'+stelleChip(d.stelle)+'</span>'+
           '<span role="cell">'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</span>'+
-          '<span role="cell" class="ar-leise">'+esc(datum((d.geaendert||'').slice(0,10)))+'</span></a>';
+          '<span role="cell" class="ar-leise">'+esc(datum(tagVon(d.geaendert)))+'</span></a>';
       }).join('')+'</div>';
   }
   el.innerHTML=h;
@@ -237,13 +301,22 @@ function seiteDossier(id,neu){
     if(window.CDSE_SCREENING&&window.CDSE_SCREENING.geoeffnet){window.CDSE_SCREENING.geoeffnet(id);}
     /* beim Öffnen immer den neuesten Stand (andere arbeiten vielleicht gerade daran); nur wenn die Datei
        gerade nicht lesbar ist, den Stand aus dieser Sitzung zeigen */
-    return T.dossier(id,true).catch(function(e){if(neu){throw e;}return T.dossier(id,false).catch(function(){throw e;});}).then(function(d){aktDossier=d;dossierZeichnen(d);});
-  }).catch(function(e){$('ar-dossier').innerHTML=karte('<h2>Dossier nicht gefunden</h2>'+hinweis(fehlerText(e))+'<a class="btn" href="#/schueler">Zur Liste</a>','ar-leer');});
+    return T.dossier(id,true).catch(function(e){if(neu){throw e;}return T.dossier(id,false).catch(function(){throw e;});}).then(function(d){
+      /* inzwischen ein anderes Kind gewählt: nichts zeichnen (sonst landet der nächste Eintrag im falschen Dossier) */
+      if(!nochGewaehlt(id)){return;}
+      if(!aktDossier||aktDossier.id!==d.id){eldibWahl=null;}
+      dossierNeu(d);
+    });
+  }).catch(function(e){if(!nochGewaehlt(id)){return;}var el=$('ar-dossier');if(el){el.innerHTML=karte('<h2>Dossier nicht gefunden</h2>'+hinweis(fehlerText(e))+'<a class="btn" href="#/schueler">Zur Liste</a>','ar-leer');}});
 }
+function nochGewaehlt(id){return akt.seite==='schueler'&&akt.param===id;}
+/* Neuer Stand nach dem Speichern: nur übernehmen, wenn dieses Kind noch gewählt ist (schnelles Wechseln) */
+function dossierNeu(d){if(!d||!nochGewaehlt(d.id)){return false;}aktDossier=d;dossierZeichnen(d);return true;}
 function dossierZeichnen(d){
-  var el=$('ar-dossier');if(!el){return;}
+  var el=$('ar-dossier');if(!el||!nochGewaehlt(d.id)){return;}
   var p=d.person||{}, r=T.rechte(d), a=alter(p.geburtsdatum);
   var aktionen='';
+  if(r.bearbeiten){aktionen+='<button class="btn primary" type="button" data-ar="eintrag-neu" title="Neuen Eintrag schreiben (Notiz, Gespräch, Beobachtung, Vorfall …)">'+svg('plus')+'Eintrag</button>';}
   if(r.weitergeben){aktionen+='<button class="btn" type="button" data-ar="weitergeben">'+svg('weiter')+'Weitergeben</button>';}
   if(r.rechteVergeben){aktionen+='<button class="btn" type="button" data-ar="rechte">'+svg('users')+'Rechte</button>';}
   aktionen+='<button class="btn" type="button" data-ar="drucken">'+svg('print')+'Übergabeblatt</button>';
@@ -256,7 +329,7 @@ function dossierZeichnen(d){
     '<button type="button" data-ar="neu-laden-dossier">'+svg('reload')+'Neu laden</button>'+
     (r.loeschen?'<button type="button" class="gefahr" data-ar="loeschen">'+svg('x')+'Dossier löschen</button>':'')+'</div></details>';
   var tabs=[['ueberblick','Überblick']].concat(window.CDSE_KOMPASS?[['kompass','Kompass']]:[]).concat(window.CDSE_BEGLEITPLAN?[['begleitplan','Begleitplan']]:[]).concat([['fiche','Fiche'],['entwicklung','Entwicklung & Ziele']]).concat(window.CDSE_SCREENING?[['screening','Screening'+(((d.screenings||[]).length+(d.screeningsAlt||[]).length)?' ('+((d.screenings||[]).length+(d.screeningsAlt||[]).length)+')':'')]]:[])
-    .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'],['verlauf','Protokoll']]);
+    .concat([['profil','Profil & Verlauf'],['eintraege','Einträge ('+((d.eintraege||[]).length)+')'+(entwurfDa(d.id)&&dossierTab!=='eintraege'?' · Entwurf':'')],['verlauf','Protokoll']]);
   el.innerHTML='<header class="ar-dkopf">'+ava(schuelerNameKurz(p),team(d.stelle).farbe)+'<div class="ar-dtitel"><h1>'+esc(schuelerName(p))+'</h1>'+
       '<p>'+[a!=null?a+' Jahre':'',p.geburtsdatum?'geb. '+datum(p.geburtsdatum):'',p.klasse,p.schule].filter(Boolean).map(esc).join(' · ')+'</p>'+
       '<div class="ar-chips">'+stelleChip(d.stelle)+'<span class="ar-status '+(d.status==='inaktiv'?'aus':'an')+'">'+(d.status==='inaktiv'?'inaktiv seit '+esc(datum(d.statusSeit)):'aktiv')+'</span>'+
@@ -305,13 +378,23 @@ function tabInhalt(d,r){
   if(dossierTab==='verlauf'){return tabVerlauf(d);}
   return tabUeberblick(d,r);
 }
+var entwuerfe={};
+function entwurfInhalt(w){return !!w&&['text','titel'].concat(VORFALL_TEXTE.map(function(x){return 'v_'+x[0];})).some(function(k){return String(w[k]||'').trim();});}
+function entwurfDa(id){return entwurfInhalt(entwuerfe[id]);}
 function nachZeichnen(d){
   var f=$('ar-eintrag-form');
   if(f){
     f.onsubmit=function(ev){ev.preventDefault();eintragSpeichern(d,f);};
+    var ew=entwuerfe[d.id];
+    if(entwurfInhalt(ew)){
+      Object.keys(ew).forEach(function(k){var el=f.elements[k];if(!el||!el.name||el.length&&!el.tagName){return;}if(el.type==='checkbox'){el.checked=!!ew[k];}else{el.value=ew[k];}});
+      var eh=$('ar-entwurf-hinweis');if(eh){eh.hidden=false;}
+    }
+    f.addEventListener('input',function(){var w=formWerte(f);if(entwurfInhalt(w)){entwuerfe[d.id]=w;}else{delete entwuerfe[d.id];}});
+    f.addEventListener('change',function(){var w=formWerte(f);if(entwurfInhalt(w)){entwuerfe[d.id]=w;}});
     /* Vorfall / Krise: Protokollfelder einblenden, der Text wird zum „Verlauf“ */
     var art=f.elements.art, platz=f.querySelector('.ar-vorfall-platz'), lab=f.elements.text&&f.elements.text.closest('label');
-    if(art&&platz){art.onchange=function(){var v=art.value==='vorfall';platz.hidden=!v;if(lab){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}};}
+    if(art&&platz){art.onchange=function(){var v=art.value==='vorfall';platz.hidden=!v;if(lab){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}};if(art.value==='vorfall'){art.onchange();}}
   }
 }
 
@@ -549,7 +632,10 @@ function einschaetzungDialog(d){
     nachAufbau:function(dlg){
       var sel=dlg.querySelector('select[name=bereich]');
       zeichne(dlg,sel.value);
+      /* in der Auswahl markieren, in welchen Bereichen schon bewertet wurde (gespeichert werden alle) */
+      function markieren(){Array.prototype.forEach.call(sel.options,function(o){var n=(DS_AUFBAU[o.value].themen||[]).reduce(function(s,th){return s+th.aussagen.filter(function(a){return gewaehlt[a[0]];}).length;},0);o.textContent=BEREICH_NAMEN[o.value]+(n?' ('+n+' bewertet)':'');});}
       sel.onchange=function(){zeichne(dlg,sel.value);};
+      dlg.addEventListener('click',function(ev){if(ev.target.closest('.ar-skala button')){setTimeout(markieren,0);}});
       dlg.addEventListener('click',function(ev){
         var btn=ev.target.closest('.ar-skala button');if(!btn){return;}
         var z=btn.closest('.ar-einsch-zeile'), id=z.dataset.id, r=+btn.dataset.r;
@@ -558,14 +644,19 @@ function einschaetzungDialog(d){
       });
     },
     ausfuehren:function(w){
-      var bereich=w.werte.bereich, bew={};
-      (DS_AUFBAU[bereich].themen||[]).forEach(function(th){th.aussagen.forEach(function(a){
-        var r=gewaehlt[a[0]]!=null?gewaehlt[a[0]]:(b[a[0]]||0);if(r){bew[a[0]]=r;}
-      });});
-      if(!Object.keys(bew).length){throw new Error('Bitte mindestens eine Aussage bewerten.');}
-      return T.ops.einschaetzung(d.id,{datum:w.werte.datum,bereich:bereich,bewertungen:bew,notiz:w.werte.notiz});
+      /* alle Bereiche speichern, in denen etwas bewertet wurde – nicht nur den gerade gezeigten */
+      function beruehrt(ber){return (DS_AUFBAU[ber].themen||[]).some(function(th){return th.aussagen.some(function(a){return gewaehlt[a[0]]!=null;});});}
+      var liste=bereiche.filter(function(ber){return ber===w.werte.bereich||beruehrt(ber);}).map(function(ber){
+        var bew={};
+        (DS_AUFBAU[ber].themen||[]).forEach(function(th){th.aussagen.forEach(function(a){
+          var r=gewaehlt[a[0]]!=null?gewaehlt[a[0]]:(b[a[0]]||0);if(r){bew[a[0]]=r;}
+        });});
+        return {datum:w.werte.datum,bereich:ber,bewertungen:bew,notiz:ber===w.werte.bereich?w.werte.notiz:''};
+      }).filter(function(x){return Object.keys(x.bewertungen).length;});
+      if(!liste.length){throw new Error('Bitte mindestens eine Aussage bewerten.');}
+      return T.ops.einschaetzung(d.id,liste.length===1?liste[0]:liste);
     }
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierTab='profil';dossierZeichnen(r.ergebnis);toast('Einschätzung gespeichert');}});
+  }).then(function(r){if(r.ergebnis){if(nochGewaehlt(r.ergebnis.id)){dossierTab='profil';}dossierNeu(r.ergebnis);toast('Einschätzung gespeichert');}});
 }
 
 /* ---------- Einträge ---------- */
@@ -643,11 +734,11 @@ function tabEintraege(d,r){
   var h='';
   if(r.bearbeiten){
     var zo=zielOptionen(d);
-    h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag</h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
+    h+=karte('<form id="ar-eintrag-form" class="ar-eintrag-form" novalidate><h2>Neuer Eintrag<span class="ar-entwurf" id="ar-entwurf-hinweis" hidden>ungespeicherter Entwurf</span></h2><div class="ar-raster3">'+feld('datum','Datum',heuteIso(),'date')+
       auswahl('art','Art','notiz',Object.keys(ARTEN).map(function(k){return [k,ARTEN[k]];}))+feld('titel','Titel (optional)','','text',' autocomplete="off"')+'</div>'+
       (zo.length?auswahl('ziel','Bezug zu einem Förderziel (optional)','',zo,'– kein Bezug –'):'')+
       '<div class="ar-vorfall-platz" hidden>'+vorfallFelder()+'</div>'+
-      textfeld('text','Text','',4)+'<div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button>'+
+      textfeld('text','Text','',4)+'<p class="ar-dialog-fehler" id="ar-eintrag-fehler" role="alert" hidden></p><div class="ar-knopfreihe"><button class="btn primary" type="submit">'+svg('plus')+'Eintrag speichern</button>'+
       '<label class="ar-wv" title="Erscheint als Frist im Begleitplan und unter „Fällig diese Woche“"><span>Wiedervorlage am (optional)</span><input type="date" name="wiedervorlage" min="'+heuteIso()+'"></label></div></form>');
   }else{h+=hinweis('Du kannst die Einträge lesen. Schreiben dürfen die Zuständigen – frage die Fallverantwortlichen nach einem Schreibrecht.','info');}
   h+=vorfallAuswertung(d);
@@ -656,13 +747,16 @@ function tabEintraege(d,r){
   return h;
 }
 function eintragSpeichern(d,f){
-  var text=f.elements.text.value.trim();
-  if(!text){toast('Bitte einen Text eingeben');return;}
+  var text=f.elements.text.value.trim(), fe=$('ar-eintrag-fehler');
+  function fehlerZeigen(t){if(fe){fe.textContent=t;fe.hidden=!t;}else if(t){toast(t);}}
+  if(!text){fehlerZeigen('Bitte einen Text eingeben.');f.elements.text.focus();return;}
+  fehlerZeigen('');
   var b=f.querySelector('button[type=submit]');b.disabled=true;
   var art=f.elements.art.value, titel=f.elements.titel.value.trim(), dat=f.elements.datum.value||heuteIso(), wv=f.elements.wiedervorlage?f.elements.wiedervorlage.value:'';
   T.ops.eintrag(d.id,{datum:dat,art:art,titel:titel,text:text,ziel:f.elements.ziel?f.elements.ziel.value:'',vorfall:art==='vorfall'?vorfallAus(formWerte(f)):null,
     wiedervorlage:wv?{bis:wv,titel:'Nachfassen: '+(titel||ARTEN[art]||'Eintrag')+' vom '+datum(dat)}:null})
-    .then(function(neu){aktDossier=neu;dossierZeichnen(neu);toast(wv?'Eintrag gespeichert – Wiedervorlage am '+datum(wv):'Eintrag gespeichert');},function(e){b.disabled=false;toast((e&&e.message)||String(e));});
+    .then(function(neu){delete entwuerfe[d.id];dossierNeu(neu);toast(wv?'Eintrag gespeichert – Wiedervorlage am '+datum(wv):'Eintrag gespeichert');},
+      function(e){b.disabled=false;if(e&&e.abgebrochen){return;}fehlerZeigen('Nicht gespeichert: '+((e&&e.message)||String(e))+' – dein Text bleibt hier stehen.');});
 }
 function tabVerlauf(d){
   return karte('<h2>Protokoll</h2><p class="ar-leise">Jede Änderung am Dossier – wer, wann, was.</p><ol class="ar-protokoll">'+
@@ -670,42 +764,45 @@ function tabVerlauf(d){
 }
 
 /* ---------- Aktionen am Dossier ---------- */
-function mitDossier(p,t){return p.then(function(d){aktDossier=d;dossierZeichnen(d);if(t){toast(t);}return d;});}
+function mitDossier(p,t){return p.then(function(d){dossierNeu(d);if(t){toast(t);}return d;});}
 function weitergebenDialog(d){
   var inhalt='<p>Der Schüler wechselt die zuständige Stelle – z. B. vom Diagnostique in die Annexe. Alle können das Dossier weiter lesen; der ganze Weg bleibt im Dossier sichtbar.</p><div class="ar-raster2">'+
     auswahl('stelle','An welche Stelle?','',stellenOptionen().filter(function(o){return o[0]!==d.stelle;}),'– bitte wählen –')+
-    auswahl('verantwortlich','Neue/r Fallverantwortliche/r (optional)','',kontoOptionen(),'– später festlegen –')+'</div>'+
+    '<div>'+suchfeld('verantwortlich')+auswahl('verantwortlich','Neue/r Fallverantwortliche/r (optional)','',kontoOptionen(),'– später festlegen –')+'</div></div>'+
     '<label class="ar-haken"><input type="checkbox" name="behalten"> Die bisherigen Fallverantwortlichen ('+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+') behalten ein Schreibrecht</label>'+
     textfeld('notiz','Notiz zur Weitergabe (optional)','',2);
-  dialog('Weitergeben',inhalt,[{text:'Abbrechen',wert:''},{text:'Weitergeben',wert:'ok',primaer:true}],{breit:true,
+  dialog('Weitergeben',inhalt,[{text:'Abbrechen',wert:''},{text:'Weitergeben',wert:'ok',primaer:true}],{breit:true,nachAufbau:suchfelderVerbinden,
     pruefen:function(w){return w.werte.stelle?'':'Bitte die neue Stelle wählen.';},
     ausfuehren:function(w){return T.ops.weitergeben(d.id,{stelle:w.werte.stelle,verantwortlich:w.werte.verantwortlich,bisherigeBehalten:!!w.werte.behalten,notiz:w.werte.notiz.trim()});}
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Weitergegeben an '+team(r.ergebnis.stelle).name);}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Weitergegeben an '+team(r.ergebnis.stelle).name);}});
 }
 function rechteDialog(d){
   var liste=Object.keys(d.rechte||{});
   var inhalt='<p>Wer ein Schreibrecht hat, kann Einträge schreiben, Einschätzungen machen und Stammdaten ändern. <b>Lesen</b> können ohnehin alle Freigeschalteten.</p>'+
     '<h3>Fallverantwortlich</h3><p>'+esc((d.verantwortlich||[]).map(kname).join(', ')||'—')+'</p>'+
-    '<h3>Schreibrecht</h3>'+(liste.length?'<ul class="ar-rechteliste">'+liste.map(function(id){return '<li>'+esc(kname(id))+'<small> seit '+esc(datum(d.rechte[id].am.slice(0,10)))+', von '+esc(kname(d.rechte[id].von))+'</small><button type="button" class="ar-link gefahr" data-weg="'+esc(id)+'">Entziehen</button></li>';}).join('')+'</ul>':'<p class="ar-leise">Noch niemand.</p>')+
-    auswahl('neu','Schreibrecht geben an','',kontoOptionen(function(k){return liste.indexOf(k.id)<0&&(d.verantwortlich||[]).indexOf(k.id)<0;}),'– Person wählen –');
+    '<h3>Schreibrecht</h3>'+(liste.length?'<ul class="ar-rechteliste">'+liste.map(function(id){return '<li>'+esc(kname(id))+'<small> seit '+esc(datum(tagVon(d.rechte[id].am)))+', von '+esc(kname(d.rechte[id].von))+'</small><button type="button" class="ar-link gefahr" data-weg="'+esc(id)+'">Entziehen</button></li>';}).join('')+'</ul>':'<p class="ar-leise">Noch niemand.</p>')+
+    suchfeld('neu')+auswahl('neu','Schreibrecht geben an','',kontoOptionen(function(k){return liste.indexOf(k.id)<0&&(d.verantwortlich||[]).indexOf(k.id)<0;}),'– Person wählen –');
   dialog('Rechte',inhalt,[{text:'Schließen',wert:''},{text:'Recht geben',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){
+      suchfelderVerbinden(dlg);
       dlg.addEventListener('click',function(ev){
         var b=ev.target.closest('[data-weg]');if(!b){return;}
         b.disabled=true;
-        T.ops.rechtNehmen(d.id,b.getAttribute('data-weg')).then(function(neu){aktDossier=neu;dossierZeichnen(neu);b.closest('li').remove();toast('Schreibrecht entzogen');},function(e){b.disabled=false;dlg.fehler((e&&e.message)||String(e));});
+        T.ops.rechtNehmen(d.id,b.getAttribute('data-weg')).then(function(neu){dossierNeu(neu);b.closest('li').remove();toast('Schreibrecht entzogen');},function(e){b.disabled=false;dlg.fehler((e&&e.message)||String(e));});
       });
     },
     pruefen:function(w){return w.werte.neu?'':'Bitte eine Person wählen.';},
     ausfuehren:function(w){return T.ops.rechtGeben(d.id,w.werte.neu);}
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Schreibrecht gegeben');}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Schreibrecht gegeben');}});
 }
 function verantwortlichDialog(d){
   var inhalt='<p>Fallverantwortliche leiten den Fall: Sie dürfen weitergeben und Rechte vergeben.</p>'+
-    '<div class="ar-checkliste">'+K.konten().sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){return '<label class="ar-haken"><input type="checkbox" name="v_'+esc(k.id)+'"'+((d.verantwortlich||[]).indexOf(k.id)>=0?' checked':'')+'> '+esc(k.name)+' <small>'+esc(k.teamName)+'</small></label>';}).join('')+'</div>';
-  dialog('Fallverantwortliche',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
+    suchfeld('ar-verantw-liste')+
+    '<div class="ar-checkliste ar-checkliste-lang" id="ar-verantw-liste">'+freieKonten().slice().sort(function(a,b){var x=(d.verantwortlich||[]).indexOf(a.id)>=0, y=(d.verantwortlich||[]).indexOf(b.id)>=0;return x!==y?(x?-1:1):a.name.localeCompare(b.name,'de');}).map(function(k){return '<label class="ar-haken"><input type="checkbox" name="v_'+esc(k.id)+'"'+((d.verantwortlich||[]).indexOf(k.id)>=0?' checked':'')+'> '+esc(k.name)+' <small>'+esc(k.teamName)+'</small></label>';}).join('')+'</div>';
+  dialog('Fallverantwortliche',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,nachAufbau:suchfelderVerbinden,
+    pruefen:function(w){return Object.keys(w.werte).some(function(k){return /^v_/.test(k)&&w.werte[k];})?'':'Mindestens eine Person muss fallverantwortlich sein.';},
     ausfuehren:function(w){var l=Object.keys(w.werte).filter(function(k){return /^v_/.test(k)&&w.werte[k];}).map(function(k){return k.slice(2);});return T.ops.verantwortlich(d.id,l);}
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Gespeichert');}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Gespeichert');}});
 }
 function personDialog(d){
   var p=d.person||{};
@@ -715,18 +812,18 @@ function personDialog(d){
   dialog('Stammdaten',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){return (w.werte.nachname.trim()&&w.werte.vorname.trim())?'':'Vor- und Nachname fehlen.';},
     ausfuehren:function(w){function sauber(o){var v={};Object.keys(o||{}).forEach(function(k){v[k]=String(o[k]).trim();});return v;}return T.ops.person(d.id,sauber(w.werte),sauber(w.anfang));}
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Stammdaten gespeichert');}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Stammdaten gespeichert');}});
 }
 function statusDialog(d){
   if(d.status==='inaktiv'){
     dialog('Wieder aktiv setzen','<p>'+esc(schuelerName(d.person))+' wird wieder als aktiv geführt.</p>',[{text:'Abbrechen',wert:''},{text:'Aktiv setzen',wert:'ok',primaer:true}],{ausfuehren:function(){return T.ops.status(d.id,'aktiv');}})
-      .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Wieder aktiv');}});
+      .then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Wieder aktiv');}});
     return;
   }
   var inhalt='<p>Inaktive Schüler bleiben mit allen Daten erhalten und sind unter „Inaktiv“ zu finden.</p><div class="ar-raster2">'+
     auswahl('grund','Grund','Abschluss',[['Abschluss','Abschluss der Begleitung'],['Umzug','Umzug'],['Wechsel','Wechsel in eine andere Einrichtung'],['Schulende','Ende der Schulpflicht'],['Sonstiges','Sonstiges']])+feld('datum','Seit',heuteIso(),'date')+'</div>';
   dialog('Inaktiv setzen',inhalt,[{text:'Abbrechen',wert:''},{text:'Inaktiv setzen',wert:'ok',primaer:true}],{ausfuehren:function(w){return T.ops.status(d.id,'inaktiv',w.werte.grund,w.werte.datum);}})
-    .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Inaktiv gesetzt');}});
+    .then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Inaktiv gesetzt');}});
 }
 function eintragAendernDialog(d,eid){
   var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return;}
@@ -739,7 +836,7 @@ function eintragAendernDialog(d,eid){
       if(a&&p){a.addEventListener('change',function(){var v=a.value==='vorfall';p.hidden=!v;if(lab&&lab.querySelector('span')){lab.querySelector('span').textContent=v?'Was ist passiert? (Verlauf)':'Text';}});}},
     ausfuehren:function(w){
       function bau(roh){var x=Object.assign({},roh);x.vorfall=roh.art==='vorfall'?vorfallAus(roh):null;Object.keys(x).forEach(function(k){if(k.indexOf('v_')===0){delete x[k];}});return x;}
-      return T.ops.eintragAendern(d.id,eid,bau(w.werte),bau(w.anfang||{}));}}).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag geändert');}});
+      return T.ops.eintragAendern(d.id,eid,bau(w.werte),bau(w.anfang||{}));}}).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Eintrag geändert');}});
 }
 /* Beobachtung direkt zu einem Förderziel eintragen */
 function zielEintragDialog(d,code){
@@ -750,11 +847,11 @@ function zielEintragDialog(d,code){
   dialog('Beobachtung zum Förderziel',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){return w.werte.text.trim()?'':'Bitte beschreiben, was du beobachtet hast.';},
     ausfuehren:function(w){return T.ops.eintrag(d.id,{datum:w.werte.datum,art:w.werte.art,titel:'Zum Ziel '+code+(inf?' ('+inf.it.keyword+')':''),text:w.werte.text.trim(),ziel:code});}
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Beobachtung gespeichert');}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Beobachtung gespeichert');}});
 }
 function eintragLoeschenDialog(d,eid){
   dialog('Eintrag löschen','<p>Den Eintrag wirklich löschen? Im Protokoll bleibt vermerkt, dass er gelöscht wurde.</p>',[{text:'Abbrechen',wert:''},{text:'Löschen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.ops.eintragLoeschen(d.id,eid);}})
-    .then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Eintrag gelöscht');}});
+    .then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Eintrag gelöscht');}});
 }
 function loeschenDialog(d){
   dialog('Dossier löschen','<p><b>'+esc(schuelerName(d.person))+'</b> und alle Einträge werden endgültig gelöscht. Meist ist „Inaktiv setzen“ die bessere Wahl.</p>'+feld('bestaetigung','Zur Bestätigung den Nachnamen eintippen','','text',' autocomplete="off"'),
@@ -813,7 +910,7 @@ function eldibUebernehmenDialog(d){
         return neu;
       });
     }
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;eldibWahl=null;dossierZeichnen(r.ergebnis);toast('Übernommen');}});
+  }).then(function(r){if(r.ergebnis){if(nochGewaehlt(r.ergebnis.id)){eldibWahl=null;}dossierNeu(r.ergebnis);toast('Übernommen');}});
 }
 /* Den Schüler im ELDiB-Generator öffnen (anlegen, falls es ihn dort noch nicht gibt) */
 function eldibOeffnen(d){
@@ -1295,6 +1392,11 @@ function tagesBloecke(plan,wann){
   var ganz=aus.filter(function(a){return !a.zeitVon;})[0];
   if(ganz&&ganz.art!=='termin'){return [];}
   var bl=(plan.woche||[]).filter(function(b){return +b.tag===tag;}).map(function(b){return {von:b.von,bis:b.bis,ort:b.ort,klasse:b.klasse,art:b.art,notiz:b.notiz};});
+  /* ganztags an einem anderen Ort: ersetzt den ganzen Tag (Zeitraum wie sonst an diesem Tag, sonst 8–16 Uhr) */
+  if(ganz){
+    var von=bl.length?Math.min.apply(null,bl.map(function(b){return minuten(b.von);})):480, bis=bl.length?Math.max.apply(null,bl.map(function(b){return minuten(b.bis);})):960;
+    return [{von:hhmm(von),bis:hhmm(bis),ort:ganz.ort||AUSNAHME.termin,klasse:ganz.klasse,art:'anderes',notiz:ganz.notiz,ausnahme:true,ganztags:true}];
+  }
   aus.filter(function(a){return a.zeitVon;}).forEach(function(a){
     var v=minuten(a.zeitVon), e=minuten(a.zeitBis)||v+60;
     bl=bl.filter(function(b){return minuten(b.bis)<=v||minuten(b.von)>=e;});   /* Ausnahme ersetzt diese Zeit */
@@ -1314,6 +1416,8 @@ function statusText(s){
 function seiteEinsatz(){
   setzen(kopf('Arbeit','Mein Einsatzplan','Wann du wo arbeitest: Klasse, Ort und Zeit. Sichtbar nur für dich, deine Responsable und die Verwaltung – verschlüsselt im Hub-Ordner.')+'<div id="ar-einsatz">'+laedt('Lade deinen Plan …')+'</div>');
   var me=K.ich();
+  /* ungespeicherte Änderungen von vorhin (z. B. kurz eine App geöffnet): nicht vom gespeicherten Plan überschreiben */
+  if(planDirty&&planEntwurf){einsatzZeichnen();return;}
   bereichLaden().catch(function(){}).then(function(){return T.meinPlan();}).then(function(p){
     planEntwurf=p||leererPlan();planDirty=false;
     einsatzZeichnen();
@@ -1346,9 +1450,18 @@ function einsatzZeichnen(){
   h+='<div class="ar-karte"><div class="ar-kartenkopf"><h2>Ausnahmen</h2><button class="btn" type="button" data-ar="ausnahme-neu">'+svg('plus')+'Ausnahme</button></div>'+
     '<p class="ar-leise">Urlaub, Krankheit, Fortbildung oder ein anderer Einsatz an bestimmten Tagen. Vergangene Ausnahmen werden ausgeblendet.</p>'+
     (aus.length?'<ul class="ar-ausnahmen">'+aus.map(function(a){return '<li><span class="ar-art">'+esc(AUSNAHME[a.art]||a.art)+'</span><b>'+esc(datum(a.von))+(a.bis&&a.bis!==a.von?' – '+esc(datum(a.bis)):'')+'</b>'+(a.zeitVon?' <span>'+esc(a.zeitVon)+'–'+esc(a.zeitBis||'')+'</span>':' <span>ganztags</span>')+(a.ort?' · '+esc(a.ort):'')+(a.notiz?' · '+esc(a.notiz):'')+'<button type="button" class="ar-link gefahr" data-ar="ausnahme-weg" data-id="'+esc(a.id)+'">'+svg('x')+'Entfernen</button></li>';}).join('')+'</ul>':'<p>Keine anstehenden Ausnahmen.</p>')+'</div>';
-  h+='<div class="ar-speicherleiste'+(planDirty?' offen':'')+'"><span>'+(planDirty?'Ungespeicherte Änderungen':'Alles gespeichert')+'</span><button class="btn primary" type="button" data-ar="plan-speichern"'+(planDirty?'':' disabled')+'>'+svg('check')+'Plan speichern</button></div>';
+  var fehlt=planEmpfaengerFehlen(p), offen=planDirty||fehlt.length>0;
+  if(fehlt.length&&!planDirty){h+=hinweis('<b>'+esc(fehlt.map(kname).join(', '))+'</b> '+(fehlt.length===1?'kann':'können')+' deinen Plan noch nicht sehen (neu als Responsable oder Verwaltung). Bitte einmal <b>„Plan speichern“</b>.','info');}
+  h+='<div class="ar-speicherleiste'+(offen?' offen':'')+'"><span>'+(planDirty?'Ungespeicherte Änderungen':(fehlt.length?'Für die neuen Empfänger speichern':'Alles gespeichert'))+'</span><button class="btn primary" type="button" data-ar="plan-speichern"'+(offen?'':' disabled')+'>'+svg('check')+'Plan speichern</button></div>';
   el.innerHTML=h;
   var sa=$('ar-samstag');if(sa){sa.onchange=function(){planEntwurf.samstag=sa.checked;planDirty=true;einsatzZeichnen();};}
+}
+/* Wer den Plan lesen soll (eigene Responsable, Verwaltung), aber beim letzten Speichern noch nicht dabei war */
+function planEmpfaengerFehlen(p){
+  var me=K.ich(), da=p&&p.__empfaenger;if(!me||!Array.isArray(da)){return [];}
+  var soll=[];if(me.responsable){soll.push(me.responsable);}
+  if(T.zustand().art==='bereit'){T.mitglieder().forEach(function(k){if(k.rolle==='admin'&&k.hatSchluessel&&k.id!==me.id&&soll.indexOf(k.id)<0){soll.push(k.id);}});}
+  return soll.filter(function(id){return id!==me.id&&da.indexOf(id)<0&&!!konto(id);});
 }
 function ortFarbe(ort){var s=String(ort||'').toLowerCase(),h=0;for(var i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))>>>0;}var f=['#3F5AA6','#1F6B6F','#B4533A','#A8741A','#6E4A7E','#2E7D4F','#9C3D6B','#476B9C'];return s?f[h%f.length]:'#8C96A8';}
 function blockHtml(b){
@@ -1411,7 +1524,7 @@ function planSpeichern(btn){
   /* Vergangene Ausnahmen (älter als 60 Tage) nicht ewig mitschleppen */
   var grenze=new Date(Date.now()-60*864e5).toISOString().slice(0,10);
   p.ausnahmen=(p.ausnahmen||[]).filter(function(a){return (a.bis||a.von)>=grenze;});
-  T.planSpeichern(p).then(function(r){planEntwurf=r.plan;planDirty=false;einsatzZeichnen();toast('Plan gespeichert');},function(e){if(btn){btn.disabled=false;}toast('Nicht gespeichert: '+((e&&e.message)||e));});
+  T.planSpeichern(p).then(function(r){planEntwurf=r.plan;planDirty=false;einsatzZeichnen();toast('Plan gespeichert');},function(e){if(btn){btn.disabled=false;}toast('Nicht gespeichert: '+((e&&e.message)||e),true);});
 }
 
 /* =====================================================================
@@ -1498,12 +1611,19 @@ function teamWoche(leute){
   });
   return h+'</div>';
 }
+var teamNeuLaeuft=false;
 function uhrStarten(){
   clearInterval(uhrTimer);
   uhrTimer=setInterval(function(){
     if(akt.seite!=='team'||!$('ar-team')){clearInterval(uhrTimer);return;}
-    if(Date.now()-teamZeit>300000){seiteTeam(true);return;}   /* alle 5 Minuten die Pläne neu lesen */
-    teamZeichnen();
+    /* alle 5 Minuten die Pläne neu lesen – still im Hintergrund und nur, wenn dafür kein Passwort nötig ist */
+    if(teamDaten&&!teamNeuLaeuft&&Date.now()-teamZeit>300000&&K.privatDa()){
+      teamNeuLaeuft=true;
+      T.lesbarePlaene().then(function(l){teamDaten=l;teamZeit=Date.now();},function(){teamZeit=Date.now();})
+        .then(function(){teamNeuLaeuft=false;if(akt.seite==='team'&&$('ar-team')){teamZeichnen();}});
+      return;
+    }
+    if(teamDaten){teamZeichnen();}
   },30000);
 }
 
@@ -1739,6 +1859,10 @@ function verwaltungZeichnen(){
         (K.teamliste&&K.teamliste().length?(tl?'<small class="ar-tl-ok">'+svg('check')+'In der Teamliste'+(tl.rolle==='responsable'?' · Responsable'+(admin?' (wird übernommen)':''):'')+(tl.team&&tl.team!==k.team?' · Team laut Liste: '+esc(T_NAME(tl.team)):'')+'</small>':'<small class="ar-tl-fehlt">'+svg('warn')+'Nicht in der Teamliste – Identität besonders sorgfältig prüfen</small>'):'')+'</span>'+
         '<code class="ar-code" data-code="'+esc(k.id)+'">…</code><button class="btn primary" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Freischalten</button></div>';}).join('')+'</div>'
       :'<p class="ar-leise">Niemand wartet.</p>'));
+  var ez=T.entzogene?T.entzogene():[];
+  if(ez.length){h+=karte('<h2>Zugang entzogen <span class="ar-zahl">'+ez.length+'</span></h2><p class="ar-klein">Diese Konten warten nicht auf Freischaltung – ihnen hat die Verwaltung den Zugang entzogen.</p><div class="ar-wartende">'+
+    ez.map(function(k){return '<div class="ar-wartend"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><span><b>'+esc(k.name)+'</b><small>entzogen am '+esc(datum(tagVon(k.entzogenAm)))+(k.entzogenVon?' von '+esc(kname(k.entzogenVon)):'')+'</small></span><span></span>'+
+      (admin?'<button class="btn" type="button" data-ar="freischalten" data-id="'+esc(k.id)+'">'+svg('check')+'Wieder freischalten</button>':'')+'</div>';}).join('')+'</div>');}
   h+=karte('<h2>Mitglieder</h2><div class="ar-tabelle ar-mitglieder"><div class="ar-zeile kopf"><span>Name</span><span>Team · Funktion</span><span>Responsable</span><span>Rolle</span><span></span></div>'+
     m.filter(function(k){return k.freigeschaltet;}).sort(function(a,b){return a.name.localeCompare(b.name,'de');}).map(function(k){
       return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(k.teamFarbe)+'">'+esc(ini(k.name))+'</span><b>'+esc(k.name)+'</b></span><span>'+esc([k.teamName,k.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(k.responsable?kname(k.responsable):'—')+'</span>'+
@@ -1753,8 +1877,11 @@ function verwaltungZeichnen(){
   el.innerHTML=h;
   Array.prototype.forEach.call(el.querySelectorAll('[data-code]'),function(c){K.kontrollcode(c.getAttribute('data-code')).then(function(x){c.textContent=x||'—';});});
   Array.prototype.forEach.call(el.querySelectorAll('select[data-rolle]'),function(s){
-    s.onchange=function(){var id=s.getAttribute('data-rolle'), alt=T.rolle(id);s.disabled=true;
-      T.rolleSetzen(id,s.value).then(function(){toast('Rolle geändert');verwaltungZeichnen();navNeu();},function(e){s.value=alt;s.disabled=false;toast((e&&e.message)||String(e));});};
+    s.onchange=function(){var id=s.getAttribute('data-rolle'), alt=T.rolle(id), neu=s.value;
+      var WAS={admin:'vergibt Rollen, schaltet frei, kann Zugänge entziehen und Dossiers löschen',responsable:'schaltet Konten frei und kann alle Dossiers bearbeiten',mitarbeiter:'liest alle Dossiers und bearbeitet die eigenen Fälle'};
+      dialog('Rolle ändern','<p><b>'+esc(kname(id))+'</b>: '+esc(ROLLEN[alt]||alt)+' → <b>'+esc(ROLLEN[neu])+'</b></p><p class="ar-klein">'+esc(ROLLEN[neu])+' '+esc(WAS[neu])+'.</p>',
+        [{text:'Abbrechen',wert:''},{text:'Rolle ändern',wert:'ok',primaer:true}],{ausfuehren:function(){return T.rolleSetzen(id,neu);}})
+        .then(function(r){if(r.aktion==='ok'){toast('Rolle geändert');verwaltungZeichnen();navNeu();}else{s.value=alt;}});};
   });
 }
 
@@ -1769,12 +1896,12 @@ document.addEventListener('click',function(ev){
   if(t.hasAttribute('data-filter-meine')){filter.meine=!filter.meine;listeZeichnen(letzteListe);return;}
   if(t.hasAttribute('data-filter-ueber')){filter.ueber=!filter.ueber;listeZeichnen(letzteListe);return;}
   if(t.hasAttribute('data-ansicht')){teamAnsicht=t.getAttribute('data-ansicht');Array.prototype.forEach.call(document.querySelectorAll('[data-ansicht]'),function(b){b.classList.toggle('on',b===t);b.setAttribute('aria-selected',String(b===t));});teamZeichnen();return;}
-  if(t.hasAttribute('data-tab')){dossierTab=t.getAttribute('data-tab');if(aktDossier){dossierZeichnen(aktDossier);}window.scrollTo(0,0);return;}
+  if(t.hasAttribute('data-tab')){dossierTab=t.getAttribute('data-tab');if(aktDossier){dossierZeichnen(aktDossier);}reiterInSicht();return;}
   var a=t.getAttribute('data-ar'), d=aktDossier;
   var det=t.closest('details');if(det){det.open=false;}
   switch(a){
     case 'einrichten':
-      t.disabled=true;T.einrichten().then(function(){toast('Schülerbereich eingerichtet – du bist Verwaltung');navNeu();seiteSchueler(true);},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
+      t.disabled=true;T.einrichten().then(function(){toast('Schülerbereich eingerichtet – du bist Verwaltung');navNeu();seiteSchueler(true);},function(e){t.disabled=false;fehlerToast(e);});break;
     case 'neu-laden':geladen=false;T.vergessen().then(function(){zeigen(akt.seite,akt.param,true);});break;
     case 'neu':neuerSchueler();break;
     case 'fiche-hochladen':ficheHochladen(null);break;
@@ -1789,8 +1916,8 @@ document.addEventListener('click',function(ev){
     case 'tl-startneu':tlStartNeu(t.getAttribute('data-id'));break;
     case 'tl-startweg':tlStartWeg(t.getAttribute('data-id'));break;
     case 'tl-filter':tlFilter=t.getAttribute('data-team')||'';verwaltungZeichnen();var fb=document.querySelector('[data-ar="tl-filter"][data-team="'+tlFilter+'"]');if(fb){fb.focus();}break;
-    case 'tl-rolle':t.disabled=true;T.rolleSetzen(t.getAttribute('data-id'),t.getAttribute('data-rolle')).then(function(){toast('Rolle laut Teamliste übernommen');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
-    case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){aktDossier=neu;dossierZeichnen(neu);}});}break;
+    case 'tl-rolle':t.disabled=true;T.rolleSetzen(t.getAttribute('data-id'),t.getAttribute('data-rolle')).then(function(){toast('Rolle laut Teamliste übernommen');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;fehlerToast(e);});break;
+    case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){dossierNeu(neu);}});}break;
     case 'db-zeigen':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.zeigen(d.id);}break;
     case 'weitergeben':weitergebenDialog(d);break;
     case 'rechte':rechteDialog(d);break;
@@ -1803,7 +1930,8 @@ document.addEventListener('click',function(ev){
     case 'eldib-oeffnen':eldibOeffnen(d);break;
     case 'einschaetzung':einschaetzungDialog(d);break;
     case 'neu-laden-dossier':seiteDossier(d.id,true);break;
-    case 'fremd-neu':if(fremdNeu&&fremdNeu.id===d.id){aktDossier=fremdNeu;dossierZeichnen(fremdNeu);toast('Neuer Stand angezeigt');}else{seiteDossier(d.id,true);}break;
+    case 'eintrag-neu':dossierTab='eintraege';dossierZeichnen(d);reiterInSicht();var tf=document.querySelector('#ar-eintrag-form textarea[name=text]');if(tf){tf.focus();}break;
+    case 'fremd-neu':if(fremdNeu&&fremdNeu.id===d.id){dossierNeu(fremdNeu);toast('Neuer Stand angezeigt');}else{seiteDossier(d.id,true);}break;
     case 'eintrag-aendern':eintragAendernDialog(d,t.getAttribute('data-eid'));break;
     case 'eintrag-loeschen':eintragLoeschenDialog(d,t.getAttribute('data-eid'));break;
     case 'ziel-eintrag':zielEintragDialog(d,t.getAttribute('data-item'));break;
@@ -1817,7 +1945,7 @@ document.addEventListener('click',function(ev){
     case 'plan-speichern':planSpeichern(t);break;
     case 'team-neu':seiteTeam(true);break;
     case 'freischalten':
-      t.disabled=true;T.freischalten(t.getAttribute('data-id')).then(function(){toast('Freigeschaltet');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;if(!(e&&e.abgebrochen)){toast((e&&e.message)||String(e));}});break;
+      t.disabled=true;T.freischalten(t.getAttribute('data-id')).then(function(){toast('Freigeschaltet');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;if(!(e&&e.abgebrochen)){fehlerToast(e);}});break;
     case 'entziehen':
       dialog('Zugang entziehen','<p><b>'+esc(kname(t.getAttribute('data-id')))+'</b> kann danach keine Schülerdaten mehr öffnen. Was die Person bisher gesehen hat, lässt sich nicht zurückholen.</p>',[{text:'Abbrechen',wert:''},{text:'Entziehen',wert:'ok',primaer:true,gefahr:true}],{ausfuehren:function(){return T.entziehen(t.getAttribute('data-id'));}})
         .then(function(r){if(r.aktion==='ok'){toast('Zugang entzogen');verwaltungZeichnen();if(T.schluesselErneuern){schluesselErneuernDialog(true);}}});break;
@@ -1825,8 +1953,18 @@ document.addEventListener('click',function(ev){
     case 'umschluesseln':umschluesselnDialog();break;
   }
 });
-/* Ungespeicherten Einsatzplan nicht verlieren */
-window.addEventListener('beforeunload',function(ev){if(planDirty&&akt.seite==='einsatz'){ev.preventDefault();ev.returnValue='';}});
+/* „Weitere Aktionen“ (⋯) schließt bei einem Klick daneben und mit Esc */
+document.addEventListener('click',function(ev){Array.prototype.forEach.call(document.querySelectorAll('details.ar-mehr[open]'),function(det){if(!det.contains(ev.target)){det.open=false;}});},true);
+document.addEventListener('keydown',function(ev){if(ev.key!=='Escape'){return;}Array.prototype.forEach.call(document.querySelectorAll('details.ar-mehr[open]'),function(det){det.open=false;var su=det.querySelector('summary');if(su){su.focus();}});});
+/* Nach dem Reiterwechsel: stand die Reiterleiste schon oberhalb des sichtbaren Bereichs, dorthin zurück */
+function reiterInSicht(){
+  var nav=document.querySelector('#ar-dossier .ar-tabs'), b=body(), sc=b&&b.parentNode;if(!nav||!sc){return;}
+  var oben=nav.getBoundingClientRect().top-sc.getBoundingClientRect().top;
+  if(oben<0){sc.scrollTop=Math.max(0,sc.scrollTop+oben-8);}
+  var on=nav.querySelector('.on');if(on&&on.scrollIntoView){on.scrollIntoView({block:'nearest',inline:'nearest'});}
+}
+/* Ungespeicherten Einsatzplan nicht verlieren (auch wenn inzwischen eine App offen ist) */
+window.addEventListener('beforeunload',function(ev){if(planDirty){ev.preventDefault();ev.returnValue='';}});
 
 /* ---------- Screening: Übersicht aller Schüler (Modul CDSE_SCREENING) ---------- */
 function seiteScreening(neu){
@@ -1920,12 +2058,16 @@ function ficheHochladen(ziel){
   inp.click();
 }
 function matriculeGleich(a,b){a=String(a||'').replace(/\D/g,'');b=String(b||'').replace(/\D/g,'');return a.length>=8&&a===b;}
+/* beide Matricules bekannt und verschieden: dann ist es ein anderes Kind, auch bei gleichem Namen */
+function matriculeAnders(a,b){a=String(a||'').replace(/\D/g,'');b=String(b||'').replace(/\D/g,'');return a.length>=8&&b.length>=8&&a!==b;}
 function passendesDossier(p,liste){
   var l=liste||[];
   var m=l.filter(function(d){return matriculeGleich((d.person||{}).matricule,p.matricule);})[0];
   if(m){return {d:m,grund:'gleiche Matricule'};}
-  m=l.filter(function(d){var q=d.person||{};return String(q.nachname||'').toLowerCase()===String(p.nachname||'').toLowerCase()&&String(q.vorname||'').toLowerCase()===String(p.vorname||'').toLowerCase()&&(!p.geburtsdatum||!q.geburtsdatum||p.geburtsdatum===q.geburtsdatum);})[0];
-  return m?{d:m,grund:'gleicher Name'+(p.geburtsdatum?' und Geburtsdatum':'')}:null;
+  var namensGleich=l.filter(function(d){var q=d.person||{};return norm(q.nachname)===norm(p.nachname)&&norm(q.vorname)===norm(p.vorname)&&(!p.geburtsdatum||!q.geburtsdatum||p.geburtsdatum===q.geburtsdatum);});
+  m=namensGleich.filter(function(d){return !matriculeAnders((d.person||{}).matricule,p.matricule);})[0];
+  if(m){return {d:m,grund:'gleicher Name'+(p.geburtsdatum?' und Geburtsdatum':'')};}
+  return namensGleich.length?{d:null,aehnlich:namensGleich[0]}:null;
 }
 function ficheZusammenfassung(f){
   f=f||{};
@@ -1943,12 +2085,17 @@ function ficheZusammenfassung(f){
 }
 function ficheVorschau(erg,ziel,liste){
   var dat=erg.daten, p=dat.person||{}, f=dat.fiche||{};
-  var treffer=ziel?{d:ziel,grund:'dieses Dossier'}:passendesDossier(p,liste);
+  var treffer=ziel?{d:ziel,grund:'dieses Dossier'}:passendesDossier(p,liste), aehnlich=null;
+  if(treffer&&!treffer.d){aehnlich=treffer.aehnlich;treffer=null;}
+  /* Aktualisieren nur mit Schreibrecht – sonst nicht aus Versehen ein zweites Dossier für dasselbe Kind */
+  var darf=!treffer||T.rechte(treffer.d).bearbeiten;
   var inhalt='<p class="ar-klein">'+svg('datei')+' '+esc(erg.datei||'Fiche')+'</p>'+
+    (aehnlich?hinweis('Es gibt schon ein Dossier <b>'+esc(schuelerName(aehnlich.person))+'</b> mit gleichem Namen, aber einer <b>anderen Matricule</b>. Bitte prüfen, ob es wirklich ein anderes Kind ist.'):'')+
+    (treffer&&!darf?hinweis('Für <b>'+esc(schuelerName(treffer.d.person))+'</b> gibt es schon ein Dossier ('+esc(treffer.grund)+'). Du hast dort nur Leserechte. Bitte '+esc((treffer.d.verantwortlich||[]).map(kname).join(', ')||'die Fallverantwortlichen')+' um ein Schreibrecht und lade die Fiche dann noch einmal hoch.'):'')+
     (erg.hinweise||[]).map(function(h){return hinweis(esc(h),'info');}).join('')+
     ((erg.nichtZugeordnet||[]).length?hinweis('Einige Tabellen der Datei waren keinem Feld zuzuordnen. Bitte nach dem Übernehmen kurz prüfen.','info'):'')+
     (treffer?'<fieldset class="ar-wahlgruppe"><legend>Was soll passieren?</legend>'+
-      '<label class="ar-radio"><input type="radio" name="modus" value="aktualisieren" checked><span><b>Dossier von '+esc(schuelerName(treffer.d.person))+' aktualisieren</b><small>'+esc(treffer.grund)+' – Angaben aus der Fiche ersetzen die alten, leere Felder der Fiche ändern nichts.</small></span></label>'+
+      '<label class="ar-radio'+(darf?'':' aus')+'"><input type="radio" name="modus" value="aktualisieren"'+(darf?' checked':' disabled')+'><span><b>Dossier von '+esc(schuelerName(treffer.d.person))+' aktualisieren</b><small>'+esc(treffer.grund)+' – Angaben aus der Fiche ersetzen die alten, leere Felder der Fiche ändern nichts.</small></span></label>'+
       (ziel?'':'<label class="ar-radio"><input type="radio" name="modus" value="neu"><span><b>Neues Dossier anlegen</b><small>Nur wählen, wenn es wirklich ein anderes Kind ist.</small></span></label>')+'</fieldset>':'<input type="hidden" name="modus" value="neu">')+
     '<h3 class="ar-zwischen">Personendaten – bitte prüfen</h3><div class="ar-raster2">'+
       feld('nachname','Nachname',p.nachname,'text',' required')+feld('vorname','Vorname',p.vorname,'text',' required')+
@@ -1957,7 +2104,12 @@ function ficheVorschau(erg,ziel,liste){
       (treffer&&ziel?'':auswahl('stelle','Zuständige Stelle (bei neuem Dossier)',stelleAusFiche(f),stellenOptionen()))+'</div>'+
     '<h3 class="ar-zwischen">Außerdem in der Fiche</h3>'+ficheZusammenfassung(f);
   dialog('Fiche de renseignement übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
-    pruefen:function(w){return (String(w.werte.nachname).trim()&&String(w.werte.vorname).trim())?'':'Vor- und Nachname fehlen.';},
+    pruefen:function(w){
+      if(!w.werte.modus){return 'Bitte wählen, was passieren soll.';}
+      if(w.werte.modus==='aktualisieren'&&!darf){return 'Für dieses Dossier hast du nur Leserechte.';}
+      if(w.werte.modus==='aktualisieren'&&treffer&&matriculeAnders(w.werte.matricule,(treffer.d.person||{}).matricule)&&!w.dialog.dataset.mOk){
+        w.dialog.dataset.mOk='1';return 'Die Matricule in der Fiche ist eine andere als im Dossier. Nochmal „Übernehmen“, wenn es wirklich dasselbe Kind ist.';}
+      return (String(w.werte.nachname).trim()&&String(w.werte.vorname).trim())?'':'Vor- und Nachname fehlen.';},
     ausfuehren:function(w){
       var v=w.werte, person={nachname:v.nachname.trim(),vorname:v.vorname.trim(),geburtsdatum:v.geburtsdatum,geschlecht:v.geschlecht,matricule:v.matricule.trim(),schule:v.schule.trim(),klasse:v.klasse.trim()};
       var fiche=Object.assign({},f,{quelle:{datei:erg.datei||'',gelesen:new Date().toISOString(),von:K.ich().id}});
@@ -1965,7 +2117,8 @@ function ficheVorschau(erg,ziel,liste){
       if(v.modus==='aktualisieren'&&treffer){
         var alt=treffer.d;
         var np=fmischen(alt.person||{},person), nf=fmischen(alt.fiche||{},fiche);
-        return T.ops.fiche(alt.id,{person:np,fiche:nf},'Fiche de renseignement hochgeladen ('+(erg.datei||'Datei')+')');
+        /* Stand beim Öffnen als Basis: was andere inzwischen an anderen Feldern gespeichert haben, bleibt erhalten */
+        return T.ops.fiche(alt.id,{person:np,fiche:nf},'Fiche de renseignement hochgeladen ('+(erg.datei||'Datei')+')',{person:alt.person||{},fiche:alt.fiche||{}});
       }
       return T.neuesDossier(person,{stelle:v.stelle||stelleAusFiche(f),fiche:fiche});
     }
@@ -2134,7 +2287,7 @@ function ficheTeilDialog(d,teil){
       }
       return T.ops.fiche(d.id,bau(w.werte),'Fiche geändert: '+titel.replace(/ \(.*$/,''),bau(w.anfang||{}));
     }
-  }).then(function(r){if(r.ergebnis){aktDossier=r.ergebnis;dossierZeichnen(r.ergebnis);toast('Gespeichert');}});
+  }).then(function(r){if(r.ergebnis){dossierNeu(r.ergebnis);toast('Gespeichert');}});
 }
 
 /* =====================================================================
@@ -2151,7 +2304,14 @@ function seiteDatenbank(param,neu){
     window.CDSE_DATENBANK.seite(el,param||'',!!neu);
   }).catch(function(e){var el=$('ar-db');if(el){el.innerHTML=zustandsKarte({art:'fehler',text:(e&&e.message)||String(e)});}});
 }
-function zuruecksetzen(){geladen=false;ladeVersprechen=null;aktDossier=null;letzteListe=null;teamDaten=null;planEntwurf=null;planDirty=false;akt={seite:'',param:''};clearInterval(uhrTimer);setzen('');return T.vergessen();}
+function zuruecksetzen(){
+  geladen=false;ladeVersprechen=null;aktDossier=null;letzteListe=null;teamDaten=null;planEntwurf=null;planDirty=false;akt={seite:'',param:''};
+  eldibWahl=null;kurzCache={};fremdNeu=null;entwuerfe={};if(fremdTimer){clearInterval(fremdTimer);fremdTimer=null;}clearInterval(uhrTimer);setzen('');
+  ['CDSE_SCREENING','CDSE_BEGLEITPLAN','CDSE_BERICHTE','CDSE_KOMPASS','CDSE_TAGESKARTE','CDSE_VERLAUF','CDSE_KINDMODUS','CDSE_DATENBANK','CDSE_FICHE','CDSE_KB_UEBERNAHME'].forEach(function(n){
+    var m=window[n];if(m&&typeof m.vergessen==='function'){try{m.vergessen();}catch(e){}}
+  });
+  return T.vergessen();
+}
 /* Kleine Zusammenfassung für die Übersicht des Hubs */
 function heuteKarte(){
   var me=K.ich();if(!me||!K.privatDa()){return Promise.resolve('');}   /* auf der Übersicht nie nach dem Passwort fragen */
@@ -2211,9 +2371,9 @@ return {zeigen:zeigen, navHtml:navHtml, zuruecksetzen:zuruecksetzen, bereichLade
   neuLaden:function(){if(akt&&akt.seite){zeigen(akt.seite,akt.param,true);}},
   hilfen:{esc:esc, svg:svg, pad:pad, heuteIso:heuteIso, datum:datum, datumZeit:datumZeit, alter:alter, team:team, ava:ava, kname:kname,
     schuelerName:schuelerName, schuelerNameKurz:schuelerNameKurz, kopf:kopf, karte:karte, hinweis:hinweis, laedt:laedt, fehlerText:fehlerText,
-    toast:toast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,
+    toast:toast, fehlerToast:fehlerToast, stelleChip:stelleChip, dialog:dialog, feld:feld, auswahl:auswahl, textfeld:textfeld, TEAMS:TEAMS,
     eldibKurz:function(d){return eldibKurz(d);}, dossierOeffnen:function(id,tab){if(tab){dossierTab=tab;naechsterTab=tab;}location.hash='#/schueler/'+encodeURIComponent(id);},
-    aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){aktDossier=d;dossierZeichnen(d);},
+    aktDossier:function(){return aktDossier;}, dossierZeichnen:function(d){dossierNeu(d);},
     /* für Kompass, Begleitplan und Screening: ELDiB-Auswertung, DS, passende Arbeitsblätter, Vorfall-Minuten, Eintragsarten */
     eldibAuswertung:function(d){return bankDa()?eldibAuswertung(d):null;}, blaetterZuItem:blaetterZuItem, toolboxHref:toolboxHref,
     itemZu:function(c){return bankDa()?itemZu(c):null;}, vorfallMinuten:vorfallMinuten, ARTEN:ARTEN,

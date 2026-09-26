@@ -132,7 +132,12 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-dialog{border:0;border-radius:16px;padding:0;width:min(520px,calc(100vw - 32px));box-shadow:var(--shadow-3);color:var(--ink);font-family:var(--font-ui);}
 .ar-dialog.breit{width:min(760px,calc(100vw - 32px));}
 .ar-dialog::backdrop{background:rgba(14,22,40,.42);}
-.ar-dialog form{padding:22px 24px;max-height:calc(100vh - 48px);overflow:auto;}
+.ar-dialog form{padding:0;max-height:calc(100vh - 48px);max-height:calc(100dvh - 48px);display:flex;flex-direction:column;overflow:hidden;}
+/* Titel oben und Knöpfe unten bleiben stehen, nur der Inhalt dazwischen rollt (nichts wird verdeckt) */
+.ar-dialog form>h2{flex:0 0 auto;padding:22px 24px 0;}
+.ar-dialog .ar-dialog-inhalt{flex:1 1 auto;min-height:0;overflow:auto;padding:2px 24px 6px;}
+.ar-dialog .ar-dialog-fehler{flex:0 0 auto;margin:8px 24px 0;}
+.ar-dialog .ar-knoepfe{flex:0 0 auto;margin:0;padding:12px 24px 18px;border-top:1px solid var(--line);background:var(--surface);}
 .ar-dialog h2{margin:0 0 12px;font-size:19px;font-family:var(--font-display);}
 .ar-dialog h3{font-size:14px;margin:14px 0 6px;}
 .ar-dialog p{line-height:1.55;margin:0 0 12px;}
@@ -158,6 +163,7 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-skala button.an{background:var(--accent);border-color:var(--accent);color:#fff;}
 .ar-toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;box-shadow:var(--shadow-3);z-index:3000;transition:opacity .4s,transform .4s;}
 .ar-toast.weg{opacity:0;transform:translateX(-50%) translateY(10px);}
+.ar-toast.fehler{background:#8F2A16;cursor:pointer;max-width:min(560px,calc(100vw - 32px));}
 /* Einsatzplan */
 .ar-jetzt{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);padding:14px 18px;margin:0 0 16px;box-shadow:var(--shadow-1);}
 .ar-jetzt small{display:block;color:var(--muted);font-size:12.5px;}
@@ -409,6 +415,7 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-radio input{margin-top:3px;}
 .ar-radio span{display:flex;flex-direction:column;gap:2px;}
 .ar-radio small{color:var(--muted);font-size:12.5px;}
+.ar-radio.aus{opacity:.55;cursor:not-allowed;}
 .ar-fset{border:1px solid var(--line);border-radius:12px;padding:10px 12px 2px;margin:0 0 12px;}
 .ar-fset legend{font-size:13px;font-weight:650;padding:0 4px;}
 .ar-fset h4,.ar-fdetails h4{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:10px 0 6px;}
@@ -419,6 +426,36 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-laufbahn-felder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 10px;}
 @media (max-width:900px){.ar-fraster{grid-template-columns:minmax(0,1fr);}.ar-kontakt,.ar-kontakt:has(input[name$=".rolle"]){grid-template-columns:repeat(2,minmax(0,1fr));}.ar-laufbahn-felder{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media (max-width:560px){.ar-kontakt,.ar-kontakt:has(input[name$=".rolle"]),.ar-laufbahn-felder{grid-template-columns:minmax(0,1fr);}}
+/* ---- Bedienung und Lesbarkeit ---- */
+.ar-dtitel{min-width:0;}
+.ar-dtitel h1{word-spacing:.12em;overflow-wrap:anywhere;}
+.ar-eintrag p,.ar-dl dd,.ar-protokoll span,.ar-ftext,.ar-eintrag header b{overflow-wrap:anywhere;}
+.ar-entwurf{font-size:12.5px;font-weight:650;color:#8A5A00;background:#FFF4D6;border-radius:999px;padding:2px 9px;margin-left:10px;vertical-align:middle;font-family:var(--font-ui);letter-spacing:0;}
+.ar-entwurf[hidden]{display:none;}
+.ar-suchfeld{width:100%;font:inherit;font-size:14px;padding:8px 11px;border:1px solid var(--line-2);border-radius:9px;background:var(--surface);margin:0 0 8px;}
+.ar-suchfeld:focus{outline:none;border-color:var(--accent);box-shadow:var(--focus);}
+.ar-checkliste-lang{max-height:min(46vh,420px);overflow:auto;padding-right:4px;}
+.ar-checkliste label[hidden]{display:none;}
+/* Reiter: auf breiten Bildschirmen umbrechen statt versteckt seitlich scrollen */
+@media (min-width:861px){.ar-tabs{flex-wrap:wrap;overflow:visible;}}
+@media (max-width:860px){.ar-tabs{scroll-snap-type:x proximity;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent);}.ar-tabs button{scroll-snap-align:start;}}
+@media (max-width:560px){.ar-dtitel h1{font-size:24px;}.ar-dkopf{gap:12px;}.ar-dkopf>.ava{width:44px;height:44px;font-size:16px;}}
+/* Verwaltung auf schmalen Bildschirmen: Rolle und „Zugang entziehen“ bleiben erreichbar */
+@media (max-width:860px){
+  .ar-mitglieder .ar-zeile{grid-template-columns:minmax(0,1fr);gap:4px;}
+  .ar-mitglieder .ar-zeile>span:nth-child(2),.ar-mitglieder .ar-zeile>span:nth-child(4),.ar-mitglieder .ar-zeile>span:nth-child(5){display:block;}
+  .ar-mitglieder .ar-zeile>span:nth-child(2),.ar-mitglieder .ar-zeile>span:nth-child(3){font-size:12.5px;color:var(--muted);}
+  .ar-wartend{grid-template-columns:auto minmax(0,1fr);}
+  .ar-wartend>.ar-code,.ar-wartend>.btn{grid-column:1/-1;justify-self:start;}
+}
+/* Touch-Bildschirme: größere Tippflächen für kleine Links und Knöpfe */
+@media (pointer:coarse){
+  .ar-zurueck{min-height:40px;}
+  .ar-link{min-height:36px;display:inline-flex;align-items:center;}
+  body .ko-q{min-width:32px;min-height:32px;}
+}
+/* Filter-Chips mit Symbol: Symbol und Text in einer Zeile */
+.catchip .ic{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px;}
 /* ==== Ende Arbeit ==== */
 
 /* Toolbox-Materialien je Ziel */

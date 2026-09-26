@@ -169,6 +169,21 @@ function ladeKonten(){
     return Promise.all(w).then(function(){return liste;});
   }).then(function(l){l.sort(nachName);konten=l;vorb.sort(nachName);vorbereitete=vorb;return teamlisteLesen().then(function(){return l;});});
 }
+/* Die eigene Konto-Datei frisch lesen: Passwort oder Profil wurden vielleicht an einem anderen PC geändert.
+   Mit dem alten Stand würde „Profil ändern“ sonst eine neuere Passwortänderung überschreiben. */
+function kontoFrisch(id){
+  return unterordner(['konten']).then(function(dir){return dateiLesen(dir,id+'.json');}).then(function(t){
+    var k=null;try{k=JSON.parse(t||'null');}catch(e){}
+    if(k&&k.format==='cdse-konto'&&k.id===id&&k.schluessel&&k.profil){
+      var i=-1;konten.forEach(function(x,j){if(x.id===id){i=j;}});
+      if(i>=0){konten[i]=k;}else{konten.push(k);konten.sort(nachName);}
+      return k;
+    }
+    return kontoVon(id);
+  },function(){return kontoVon(id);});
+}
+/* Kontenliste frisch laden, dann „Wer bist du?“ zeigen (am geteilten PC entstehen tagsüber neue Konten) */
+function kontenListe(){return ordnerDa().then(ladeKonten).then(zeigeKonten,zeigeKonten);}
 function vorbereitetVon(id){for(var i=0;i<vorbereitete.length;i++){if(vorbereitete[i].id===id){return vorbereitete[i];}}return null;}
 function vorbereitetMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<vorbereitete.length;i++){if(namensSchluessel(vorbereitete[i].name)===k){return vorbereitete[i];}}return null;}
 /* ---------- Teamliste: vorbereitete Konten ----------
@@ -242,12 +257,15 @@ function rolleAusText(t){
 }
 /* Eingefügte Liste lesen: eine Person pro Zeile – „Name; Team; Funktion; Rolle; Responsable“
    (Tabulator aus Excel, Semikolon oder Komma). Kopfzeile wird erkannt. */
+/* eine Zeile an einem Trennzeichen zerlegen – nicht innerhalb von Anführungszeichen („Muster, Tom“) */
+function zerlegen(z,t){var l=[], akt='', inQ=false;for(var i=0;i<z.length;i++){var c=z.charAt(i);if(c==='"'){inQ=!inQ;akt+=c;}else if(c===t&&!inQ){l.push(akt);akt='';}else{akt+=c;}}l.push(akt);return l;}
 function teamlisteParsen(text){
   var personen=[], probleme=[], gesehen={};
   String(text||'').split(/\r?\n/).forEach(function(zeile,i){
     var z=zeile.trim();if(!z){return;}
-    var teile=z.indexOf('\t')>=0?z.split('\t'):(z.indexOf(';')>=0?z.split(';'):(z.indexOf(',')>=0?z.split(','):[z]));
-    teile=teile.map(function(x){return x.trim().replace(/^"|"$/g,'').trim();});
+    var trenner=z.indexOf('\t')>=0?'\t':(z.indexOf(';')>=0?';':(z.indexOf(',')>=0?',':''));
+    var teile=trenner?zerlegen(z,trenner):[z];
+    teile=teile.map(function(x){return x.trim().replace(/^"|"$/g,'').replace(/""/g,'"').trim();});
     if(i===0&&/^name$/i.test(teile[0])&&teile.length>1){return;}
     var name=(teile[0]||'').replace(/\s+/g,' ');
     if(name.length<3){probleme.push({zeile:i+1,text:'kein Name: „'+z.slice(0,40)+'“'});return;}
@@ -734,7 +752,8 @@ function autoSichern(){
 }
 setInterval(autoSichern,AUTO_MS);
 var baldTimer=null;
-function baldSichern(){clearTimeout(baldTimer);baldTimer=setTimeout(autoSichern,8000);}
+/* eine App hat Daten geändert: bald sichern – höchstens alle 30 Sekunden (Apps speichern teils alle paar Sekunden) */
+function baldSichern(){if(baldTimer){return;}baldTimer=setTimeout(function(){baldTimer=null;autoSichern();},30000);}
 document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden'){autoSichern();}});
 function tresorWiederaufnehmen(){
   if(!sitzung){return Promise.resolve();}
@@ -748,8 +767,12 @@ function tresorWiederaufnehmen(){
 }
 
 /* ---------- Sitzung ---------- */
-function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||'',bis:Date.now()+SPERRE_MS}));}catch(e){}}
-function sitzungLesen(){try{var s=JSON.parse(sessionStorage.getItem(SITZUNG)||'null');return (s&&s.id&&s.bis>Date.now())?s:null;}catch(e){return null;}}
+/* bis = letzte Aktivität + Sperrzeit; lebt = Lebenszeichen der offenen Seite (alle 30 s). Stellt der Browser nach einem
+   Neustart den Tab samt Sitzungsspeicher wieder her, ist das Lebenszeichen alt – dann braucht es wieder das Passwort. */
+var LEBT_MS=180000;
+function sitzungMerken(s){try{sessionStorage.setItem(SITZUNG,JSON.stringify({id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||'',bis:letzteAktivitaet+SPERRE_MS,lebt:Date.now()}));}catch(e){}}
+function sitzungLesen(){try{var s=JSON.parse(sessionStorage.getItem(SITZUNG)||'null');return (s&&s.id&&s.bis>Date.now()&&s.lebt&&Date.now()-s.lebt<LEBT_MS)?s:null;}catch(e){return null;}}
+setInterval(function(){if(sitzung&&!gesperrt){sitzungMerken(sitzung);}},30000);
 function sitzungLoeschen(){try{sessionStorage.removeItem(SITZUNG);}catch(e){}}
 function oeffentlich(s){var t=team(s.team);return {id:s.id,name:s.name,team:s.team,teamName:t.name,teamFarbe:t.farbe,funktion:s.funktion||'',responsable:s.responsable||'',responsableGewaehlt:!!s.rg};}
 /* Privater Schlüssel für die Dauer der Sitzung: als nicht exportierbarer
@@ -761,6 +784,7 @@ function sitzungsSchluesselMerken(){
 }
 function sitzungsSchluesselLoeschen(){return idbSet('sitzung-schluessel',null).catch(function(){}).then(function(){if(cb.schluesselWeg){try{cb.schluesselWeg();}catch(e){}}});}
 function angemeldet(s,hinweise){
+  var vorher=sitzung&&sitzung.id;
   sitzung={id:s.id,name:s.name,team:s.team,funktion:s.funktion||'',responsable:s.responsable||'',rg:!!s.rg,sid:s.sid||b64(rnd(12))};gesperrt=false;letzteAktivitaet=Date.now();sitzungMerken(sitzung);
   if(s.pub){tresor={id:s.id,pub:s.pub,priv:s.priv||null};geprueftMerken(s.id,s.hash);sitzungsSchluesselMerken();}
   try{localStorage.setItem(ZULETZT,s.id);}catch(e){}
@@ -768,12 +792,15 @@ function angemeldet(s,hinweise){
   tor(false);
   if(cb.bereit){cb.bereit(oeffentlich(sitzung),hinweise||[]);}
   if(s.pub){letzteSicherung=0;status({art:'bereit'});}
+  /* entsperrt: angefangene Formulare wieder zeigen (nur für dieselbe Person) */
+  if(pausiert.length){if(vorher===s.id){pausierteZeigen();}else{pausierteVerwerfen();}}
 }
 function ende(){
+  pausierteVerwerfen();if(privatAbbruch){try{privatAbbruch();}catch(e){}}
   sitzung=null;gesperrt=false;tresor={id:null,pub:null,priv:null};sitzungLoeschen();sitzungsSchluesselLoeschen();
   if(cb.abgemeldet){cb.abgemeldet();}
   status({art:'aus'});
-  if(konten.length){zeigeKonten();}else{zeigeVerbinden(null,!!ordner);}
+  if(konten.length){kontenListe();}else{zeigeVerbinden(null,!!ordner);}
 }
 /* Abmelden: sichern, dann die App-Daten von diesem PC entfernen */
 function abmelden(){
@@ -790,37 +817,81 @@ function abmelden(){
       return griffeMerken(s.id,snap.griffe).then(function(){return sichern(k,pub,snap);});
     });
   }).then(function(r){
-    if(r==='fremd'){return;}   /* gehört nicht (mehr) dieser Person: nicht anfassen */
-    return leeren().then(geleertMerken);
-  }).then(ende).catch(function(e){zeigeAbmeldeFehler(e);});
+    if(r==='fremd'){return r;}   /* gehört nicht (mehr) dieser Person: nicht anfassen */
+    return leeren().then(geleertMerken).then(function(){return r;});
+  }).then(function(r){if(r==='konflikt'){zeigeKonfliktHinweis();return;}ende();}).catch(function(e){zeigeAbmeldeFehler(e);});
+}
+/* Beim Abmelden war auf dem Server schon ein neuerer Stand (an einem anderen PC weitergearbeitet):
+   die Daten dieses PCs liegen als Kopie bereit – das muss die Person wissen */
+function zeigeKonfliktHinweis(){
+  karte('<h2>Als Kopie gesichert</h2>'+meldung('Mit deinem Konto wurde inzwischen an einem anderen PC weitergearbeitet. Damit nichts überschrieben wird, liegen deine Änderungen von diesem PC als <b>Kopie</b> bereit.','info')+
+    '<p class="sub">Beim nächsten Anmelden findest du sie im Konto-Menü unter „Frühere Stände“ (Kopie: Änderungen von einem anderen PC).</p><button class="btn primary voll" type="button" id="g-ok2">Verstanden</button>');
+  $('g-ok2').onclick=ende;
 }
 function zeigeAbmeldeFehler(e){
   karte('<h2>Nicht gesichert</h2>'+meldung('Deine Daten konnten nicht im Hub-Ordner gesichert werden: '+text(e)+'.')+
     '<p class="sub">Bis das klappt, bleiben sie auf diesem PC. Sie werden beim nächsten Anmelden an diesem PC gesichert — egal von wem.</p>'+
     '<button class="btn primary voll" type="button" id="g-nochmal">Nochmal versuchen</button>'+
-    '<div class="knopfreihe" style="margin-top:8px"><button class="btn" type="button" id="g-zurueck">Zurück zum Hub</button><button class="btn" type="button" id="g-trotzdem">Trotzdem abmelden</button></div>');
+    '<div class="knopfreihe" style="margin-top:8px"><button class="btn" type="button" id="g-zurueck">'+(gesperrt?'Zurück':'Zurück zum Hub')+'</button><button class="btn" type="button" id="g-trotzdem">Trotzdem abmelden</button></div>');
   $('g-nochmal').onclick=abmelden;
-  $('g-zurueck').onclick=function(){tor(false);};
+  /* gesperrt: zurück zum Sperrbildschirm, nie offen in den Hub */
+  $('g-zurueck').onclick=function(){if(gesperrt&&sitzung){sperrBildschirm();return;}tor(false);};
   $('g-trotzdem').onclick=ende;
 }
 
-/* ---------- Sperre nach Inaktivität ---------- */
-function aktiv(){letzteAktivitaet=Date.now();if(sitzung&&!gesperrt){sitzungMerken(sitzung);}}
+/* ---------- Sperre nach Inaktivität ----------
+   Als Aktivität zählen nur echte Eingaben (Maus, Tastatur, Touch) – auch in eingebetteten Apps, soweit der Browser
+   das erlaubt. Dass eine App Daten speichert, zählt nicht (manche speichern alle paar Sekunden von selbst).
+   Eine Minute vor der Sperre erscheint „Noch da?“. */
+var VORWARNUNG_MS=60000, vorwarnungSeit=0, sperrGrund='';
+function aktiv(){letzteAktivitaet=Date.now();if(vorwarnungSeit){vorwarnungWeg();}if(sitzung&&!gesperrt){sitzungMerken(sitzung);}}
 ['pointerdown','keydown','wheel','touchstart'].forEach(function(t){document.addEventListener(t,aktiv,{passive:true,capture:true});});
-/* eine App in einem anderen Tab speichert: es wird gearbeitet - und bald gesichert */
+function iframeBeobachten(f){try{var d=f.contentWindow.document;['pointerdown','keydown','wheel','touchstart'].forEach(function(t){d.addEventListener(t,aktiv,{passive:true,capture:true});});}catch(e){}}
+document.addEventListener('load',function(e){if(e.target&&e.target.tagName==='IFRAME'){iframeBeobachten(e.target);}},true);
 window.addEventListener('storage',function(e){
   if(e.key===MARKE&&sitzung){var m=marke();if(!m||m.konto!==sitzung.id){ende();return;}}   /* in einem anderen Hub-Tab ab- oder umgemeldet */
-  aktiv();if(e.key!==MARKE&&e.key!==GEPRUEFT&&e.key!==ZULETZT){baldSichern();}
+  if(e.key!==MARKE&&e.key!==GEPRUEFT&&e.key!==ZULETZT){baldSichern();}   /* eine App hat gespeichert: bald sichern */
 });
+function vorwarnungZeigen(){
+  var el=$('g-nochda');
+  if(!el){el=document.createElement('div');el.id='g-nochda';el.className='nochda';el.setAttribute('role','alert');document.body.appendChild(el);}
+  el.innerHTML='<span id="g-nochda-t">Noch da? In <b id="g-nochda-s">60</b> Sekunden wird der Hub gesperrt.</span><button type="button" class="btn primary" id="g-nochda-ja">Ich bin da</button>';
+  el.hidden=false;
+}
+function vorwarnungWeg(){vorwarnungSeit=0;var el=$('g-nochda');if(el){el.hidden=true;}}
 setInterval(function(){
-  if(!sitzung||gesperrt){return;}
-  if(document.hasFocus()&&document.activeElement&&document.activeElement.tagName==='IFRAME'){aktiv();return;}
-  if(Date.now()-letzteAktivitaet>SPERRE_MS){sperren();}
-},15000);
-function sperren(){
-  gesperrt=true;sitzungLoeschen();tresor.priv=null;sitzungsSchluesselLoeschen();
+  if(!sitzung||gesperrt){if(vorwarnungSeit){vorwarnungWeg();}return;}
+  var ruhe=Date.now()-letzteAktivitaet;
+  if(ruhe>=SPERRE_MS){vorwarnungWeg();sperren('Nach '+Math.round(SPERRE_MS/60000)+' Minuten ohne Aktivität gesperrt. Bitte gib dein Passwort ein.');return;}
+  if(ruhe<SPERRE_MS-VORWARNUNG_MS){if(vorwarnungSeit){vorwarnungWeg();}return;}
+  if(!vorwarnungSeit){vorwarnungSeit=Date.now();vorwarnungZeigen();}
+  var z=$('g-nochda-s');if(z){z.textContent=Math.max(1,Math.ceil((SPERRE_MS-ruhe)/1000));}
+},5000);
+/* Offene Formulare des Hubs schließen (ihre Inhalte wären sonst über dem Sperrbildschirm lesbar). Der Kindmodus bleibt.
+   Ein Formular, das das Ereignis „cdse-schliessen“ abfängt (preventDefault), wird nur ausgeblendet und nach dem
+   Entsperren wieder gezeigt – ein angefangener Text geht so nicht verloren. Beim Abmelden wird es verworfen. */
+var pausiert=[];
+function offeneDialogeSchliessen(){
+  Array.prototype.forEach.call(document.querySelectorAll('dialog[open]'),function(d){
+    if(d.id==='km-dialog'){return;}
+    var ev=null;try{ev=new Event('cdse-schliessen',{cancelable:true});d.dispatchEvent(ev);}catch(e){}
+    if(ev&&ev.defaultPrevented&&pausiert.indexOf(d)<0){pausiert.push(d);}
+    if(d.open){try{d.close();}catch(e){}}
+  });
+}
+function pausierteZeigen(){var l=pausiert;pausiert=[];l.forEach(function(d){if(d.isConnected&&!d.open){try{d.showModal();}catch(e){}}});}
+function pausierteVerwerfen(){var l=pausiert;pausiert=[];l.forEach(function(d){try{d.dispatchEvent(new Event('cdse-schliessen'));}catch(e){}if(d.isConnected){d.remove();}});}
+function sperren(grund){
+  if(!sitzung){return;}
+  gesperrt=true;sperrGrund=grund||'Der Hub ist gesperrt. Bitte gib dein Passwort ein.';
+  if(privatAbbruch){try{privatAbbruch();}catch(e){}}
+  sitzungLoeschen();tresor.priv=null;sitzungsSchluesselLoeschen();
+  offeneDialogeSchliessen();
+  sperrBildschirm();
+}
+function sperrBildschirm(){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
-  zeigeAnmelden(k,'Nach '+Math.round(SPERRE_MS/60000)+' Minuten ohne Aktivität gesperrt. Bitte gib dein Passwort ein.');
+  zeigeAnmelden(k,sperrGrund||'Der Hub ist gesperrt. Bitte gib dein Passwort ein.');
 }
 
 /* ---------- Oberfläche ---------- */
@@ -894,13 +965,22 @@ function zeigeKonten(){
     alle.map(function(x){var k=x.k;return '<button class="konto'+(x.neu?' neu':'')+'" type="button" '+(x.neu?'data-start':'data-id')+'="'+esc(k.id)+'">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+(x.neu?' · erste Anmeldung mit Startcode':'')+'</small></span>'+ic('right')+'</button>';}).join('')+
     '</div><p class="sub" id="g-leer" hidden>Kein Konto mit diesem Namen.</p><button class="btn voll" id="g-neu" type="button">'+ic('plus')+'Neues Konto erstellen</button>');
   Array.prototype.forEach.call(document.querySelectorAll('#gate .konto[data-start]'),function(el){el.onclick=function(){var v=vorbereitetVon(el.getAttribute('data-start'));if(v){zeigeStartcode(v);}};});
-  if(viele){$('g-suche').oninput=function(){
-    var q=this.value.trim().toLowerCase(), n=0;
-    Array.prototype.forEach.call(document.querySelectorAll('#g-liste .konto'),function(el){var an=!q||el.textContent.toLowerCase().indexOf(q)>=0;el.hidden=!an;if(an){n++;}});
-    $('g-leer').hidden=n>0;
-  };}
+  /* Suche: nur im Namen, ohne Akzente, Reihenfolge egal („muster tom“ findet „Tom Muster“); Enter öffnet den ersten Treffer */
+  function norm(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss');}
+  if(viele){
+    $('g-suche').oninput=function(){
+      var w=norm(this.value).split(/[^a-z0-9]+/).filter(Boolean), n=0;
+      Array.prototype.forEach.call(document.querySelectorAll('#g-liste .konto'),function(el){
+        var teile=norm((el.querySelector('b')||el).textContent).split(/[^a-z0-9]+/);
+        var an=w.every(function(x){return teile.some(function(t){return t.indexOf(x)===0;});});
+        el.hidden=!an;if(an){n++;}
+      });
+      $('g-leer').hidden=n>0;
+    };
+    $('g-suche').onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();var t=document.querySelector('#g-liste .konto:not([hidden])');if(t){t.click();}}};
+  }
   Array.prototype.forEach.call(document.querySelectorAll('#gate .konto[data-id]'),function(el){el.onclick=function(){zeigeAnmelden(kontoVon(el.getAttribute('data-id')));};});
-  $('g-neu').onclick=function(){zeigeErstellen(false);};
+  $('g-neu').onclick=function(){var b=this;beschaeftigt(b,true,'Einen Moment …');ordnerDa().then(ladeKonten).then(function(){zeigeErstellen(false);},function(){zeigeErstellen(false);});};
 }
 
 function zeigeStart(){
@@ -920,14 +1000,15 @@ function zeigeAnmelden(k,hinweis,fehlerText){
     if(warten){zeigeAnmelden(k,hinweis,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
     if(!pw){zeigeAnmelden(k,hinweis,'Bitte gib dein Passwort ein.');return;}
     beschaeftigt(b,true,'Prüfe …');
-    ordnerBereit().then(function(){var echt=kontoVon(k.id);if(!echt){throw fehler('Konto nicht gefunden');}k=echt;return anmeldenMit(k,pw,'passwort');})
+    ['g-zurueck','g-vergessen','g-ab'].forEach(function(i){var x=$(i);if(x){x.disabled=true;}});   /* keine zweite Anmeldung dazwischen */
+    ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(echt){if(!echt){throw fehler('Konto nicht gefunden');}k=echt;return anmeldenMit(k,pw,'passwort');})
       .then(function(s){return weiterMitDaten(s,knopfText(b));})
       .catch(function(e){
         if(e&&e.falsch){fehlversuch(k.id);zeigeAnmelden(k,hinweis,'Das Passwort stimmt nicht.');return;}
         zeigeAnmelden(k,hinweis,'Anmelden ging nicht: '+text(e)+'. Ist der Server erreichbar?');
       });
   });
-  if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
+  if($('g-zurueck')){$('g-zurueck').onclick=kontenListe;}
   if($('g-ab')){$('g-ab').onclick=abmelden;}
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
@@ -965,7 +1046,7 @@ function zeigeErstellen(erstes,fehlerText,werte){
     if(name.length<3){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',w);return;}
     var vb=vorbereitetMitNamen(name);
     if(vb){zeigeStartcode(vb,null,'Für dich hat die Verwaltung schon ein Konto vorbereitet. Gib den Startcode von deinem Zettel ein und wähle dein Passwort.');return;}
-    if(konten.some(function(k){return k.name.toLowerCase()===name.toLowerCase();})){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
+    if(kontoMitNamen(name)){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
     if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',w);return;}
     if(re===null){zeigeErstellen(erstes,'Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
     var pr=pwProblem(pw1,name);if(pr){zeigeErstellen(erstes,pr,w);return;}
@@ -1110,7 +1191,7 @@ function zeigeVergessen(k,fehlerText){
     var pr=pwProblem(pw1,k.name);if(pr){zeigeVergessen(k,pr);return;}
     if(pw1!==pw2){zeigeVergessen(k,'Die beiden Passwörter sind nicht gleich.');return;}
     beschaeftigt(b,true,'Prüfe den Code …');
-    ordnerBereit().then(function(){k=kontoVon(k.id)||k;return anmeldenMit(k,code,'code');}).then(function(s){
+    ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f||k;return anmeldenMit(k,code,'code');}).then(function(s){
       return passwortSetzen(k,s.roh,pw1).then(function(){return weiterMitDaten(s,knopfText(b));});
     }).catch(function(e){
       if(e&&e.falsch){fehlversuch(k.id);zeigeVergessen(k,'Dieser Code passt nicht zu diesem Konto.');return;}
@@ -1137,7 +1218,7 @@ function frageAltbestand(apps,seit){
 }
 
 /* ---------- Konto-Menü (angemeldet) ---------- */
-function dialogZu(){tor(false);}
+function dialogZu(){if(gesperrt&&sitzung){sperrBildschirm();return;}tor(false);}
 function zeigePasswortAendern(fehlerText){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
   tor(true,true);
@@ -1152,7 +1233,7 @@ function zeigePasswortAendern(fehlerText){
     var pr=pwProblem(pw1,k.name);if(pr){zeigePasswortAendern(pr);return;}
     if(pw1!==pw2){zeigePasswortAendern('Die beiden neuen Passwörter sind nicht gleich.');return;}
     beschaeftigt($('g-los'),true,'Speichere …');
-    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1).then(function(){s.roh.fill(0);});})
+    ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f;return anmeldenMit(k,alt,'passwort');}).then(function(s){return passwortSetzen(k,s.roh,pw1).then(function(){s.roh.fill(0);});})
       .then(function(){karte('<h2>Passwort geändert</h2><p class="sub">Ab jetzt meldest du dich mit dem neuen Passwort an.</p><button class="btn primary voll" type="button" id="g-fertig">Fertig</button>');$('g-fertig').onclick=dialogZu;})
       .catch(function(e){zeigePasswortAendern(e&&e.falsch?'Das bisherige Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.');});
   });
@@ -1160,7 +1241,7 @@ function zeigePasswortAendern(fehlerText){
 }
 function zeigeProfilAendern(fehlerText,werte){
   var k=kontoVon(sitzung.id)||{id:sitzung.id,name:sitzung.name,team:sitzung.team};
-  werte=werte||{team:sitzung.team,funktion:sitzung.funktion||k.funktion||'',responsable:(sitzung.responsable!=null?sitzung.responsable:k.responsable)};
+  werte=werte||{team:sitzung.team,funktion:sitzung.funktion||k.funktion||'',responsable:sitzung.rg?(sitzung.responsable!=null?sitzung.responsable:k.responsable):null};
   tor(true,true);
   karte('<h2>Profil ändern</h2><p class="sub">Team, Funktion und Responsable. Das Team bestimmt, welche Apps du siehst; deine Responsable sieht deinen Einsatzplan.</p>'+(fehlerText?meldung(fehlerText):'')+
     '<form id="g-form" novalidate>'+(TEAMS.length?'<div class="feld"><span class="label">Team</span>'+teamWahl(werte.team)+'</div>':'')+
@@ -1172,7 +1253,7 @@ function zeigeProfilAendern(fehlerText,werte){
     if(!w.team){zeigeProfilAendern('Bitte wähle ein Team.',w);return;}
     if(w.responsable===null){zeigeProfilAendern('Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
     beschaeftigt($('g-los'),true,'Speichere …');
-    ordnerBereit().then(function(){k=kontoVon(k.id);return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return profilSetzen(k,s.dek,s.prof,w);})
+    ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f;return anmeldenMit(k,alt,'passwort');}).then(function(s){s.roh.fill(0);return profilSetzen(k,s.dek,s.prof,w);})
       .then(function(){sitzung.team=w.team;sitzung.funktion=w.funktion;sitzung.responsable=w.responsable;sitzung.rg=true;sitzungMerken(sitzung);dialogZu();if(cb.geaendert){cb.geaendert(oeffentlich(sitzung));}})
       .catch(function(e){zeigeProfilAendern(e&&e.falsch?'Das Passwort stimmt nicht.':'Das ging nicht: '+text(e)+'.',w);});
   });
@@ -1188,10 +1269,9 @@ function staende(id){
   }).then(function(server){
     return idbGet('beiseite').then(function(b){
       var pc=(Array.isArray(b)?b:[]).filter(function(x){return !x.von||x.von===id;}).map(function(x){return {quelle:'pc',id:x.id,zeit:x.zeit,von:x.von};});
-      return pc.concat(server.sort(function(a,b){
-        var ta=/^\d{4}-/.test(a.datei)?a.datei.slice(0,10)+'T23:59':new Date(a.zeit).toISOString(), tb=/^\d{4}-/.test(b.datei)?b.datei.slice(0,10)+'T23:59':new Date(b.zeit).toISOString();
-        return ta<tb?1:(ta>tb?-1:0);
-      }));
+      /* nach Zeitpunkt (neueste zuerst): Tagesstände zählen als Ende ihres Tages (Ortszeit), Kopien mit ihrer Dateizeit */
+      function wann(e){var m=e.datei&&/^(\d{4})-(\d{2})-(\d{2})\.cdse$/.exec(e.datei);return m?new Date(+m[1],+m[2]-1,+m[3],23,59).getTime():(+e.zeit||0);}
+      return pc.concat(server).sort(function(a,b){return wann(b)-wann(a);});
     });
   });
 }
@@ -1243,13 +1323,13 @@ function zeigeStaende(fehlerText){
     karte('<h2>Frühere Stände</h2><p class="sub">Der Hub bewahrt die Stände der letzten 14 Tage auf. Holst du einen zurück, wird dein jetziger Stand vorher als Kopie gesichert.</p>'+
       (fehlerText?meldung(fehlerText):'')+
       (liste.length
-        ?'<form id="g-form" novalidate><div class="staende" role="radiogroup" aria-label="Stand">'+liste.map(function(e,i){var x=standText(e);return '<label><input type="radio" name="g-stand" value="'+i+'"'+(i===0?' checked':'')+'><span><b>'+esc(x.t)+'</b><small>'+esc(x.w)+'</small></span></label>';}).join('')+'</div>'+
+        ?'<form id="g-form" novalidate><div class="staende" role="radiogroup" aria-label="Stand">'+liste.map(function(e,i){var x=standText(e);return '<label><input type="radio" name="g-stand" value="'+i+'"><span><b>'+esc(x.t)+'</b><small>'+esc(x.w)+'</small></span></label>';}).join('')+'</div>'+
           (pw?'<div class="feld"><label for="g-alt">Zur Bestätigung: dein Passwort</label><input id="g-alt" type="password" autocomplete="off"></div>':'')+
           '<div class="knopfreihe"><button class="btn" type="button" id="g-abbruch">Abbrechen</button><button class="btn primary" type="submit" id="g-los">Zurückholen</button></div></form>'
         :'<p class="sub">Noch keine früheren Stände. Der erste entsteht, sobald du an einem neuen Tag weiterarbeitest.</p><button class="btn voll" type="button" id="g-abbruch">Schließen</button>'),true);
     $('g-abbruch').onclick=dialogZu;
     formular('g-form',function(){
-      var r=document.querySelector('input[name="g-stand"]:checked');if(!r){return;}
+      var r=document.querySelector('input[name="g-stand"]:checked');if(!r){zeigeStaende('Bitte zuerst einen Stand auswählen.');return;}
       var e=liste[+r.value], b=$('g-los');
       beschaeftigt(b,true,'Hole zurück …');
       var privP=(tresor.priv||e.quelle!=='server')?Promise.resolve(tresor.priv)
@@ -1265,17 +1345,29 @@ function zeigeStaende(fehlerText){
     $('g-abbruch').onclick=dialogZu;
   });
 }
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')&&!g.querySelector('button:disabled')){dialogZu();}}});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&sitzung&&!gesperrt){var g=$('gate');if(g&&!g.hidden&&g.classList.contains('modal')&&!g.querySelector('button:disabled')){var ab=$('g-abbruch');if(ab){ab.click();}else{dialogZu();}}}});
 
 /* ---------- Schnittstelle für den gemeinsamen Bereich (Schüler, Einsatzplan) ---------- */
 /* Privater Schlüssel der angemeldeten Person. Fehlt er (z. B. nach der Sperre),
    wird einmal das Passwort erfragt. */
+var privatLaeuft=null, privatAbbruch=null;   /* eine laufende Passwortabfrage – weitere Aufrufe warten auf dieselbe */
 function privat(grund){
   if(!sitzung){return Promise.reject(fehler('Nicht angemeldet'));}
+  /* gesperrt: nie eine eigene Passwortabfrage öffnen (sie ließe sich wegklicken) – entsperrt wird nur über den Sperrbildschirm */
+  if(gesperrt){var eg=fehler('Der Hub ist gesperrt');eg.abgebrochen=true;return Promise.reject(eg);}
   if(tresor.priv&&tresor.id===sitzung.id){return Promise.resolve(tresor.priv);}
+  if(privatLaeuft){return privatLaeuft;}
   var k=kontoVon(sitzung.id);
   if(!k){return Promise.reject(fehler('Dein Konto wurde im Hub-Ordner nicht gefunden'));}
+  var p=privatFragen(k,grund);
+  privatLaeuft=p;
+  p.then(function(){privatLaeuft=null;privatAbbruch=null;},function(){privatLaeuft=null;privatAbbruch=null;});
+  return p;
+}
+function privatFragen(k,grund){
   return new Promise(function(res,rej){
+    /* wird der Hub gesperrt, während die Abfrage offen ist: abbrechen (sonst wartet die Aktion dahinter für immer) */
+    privatAbbruch=function(){var e=fehler('Abgebrochen');e.abgebrochen=true;rej(e);};
     function zeige(fehlerText){
       tor(true,true);
       karte(kontoKopf(k)+'<h2>Passwort bestätigen</h2><p class="sub">'+esc(grund||'Für die Schülerdaten')+' braucht der Hub einmal dein Passwort.</p>'+(fehlerText?meldung(fehlerText):'')+
@@ -1286,7 +1378,7 @@ function privat(grund){
         if(w){zeige('Zu viele Versuche. Bitte warte noch '+w+' Sekunden.');return;}
         if(!pw){zeige('Bitte gib dein Passwort ein.');return;}
         beschaeftigt(b,true,'Prüfe …');
-        ordnerBereit().then(function(){k=kontoVon(k.id)||k;return anmeldenMit(k,pw,'passwort');}).then(schluesselBereit).then(function(s2){
+        ordnerBereit().then(function(){return kontoFrisch(k.id);}).then(function(f){k=f||k;return anmeldenMit(k,pw,'passwort');}).then(schluesselBereit).then(function(s2){
           if(s2.roh&&s2.roh.fill){s2.roh.fill(0);}
           tresor={id:s2.id,pub:s2.pub,priv:s2.priv};geprueftMerken(s2.id,s2.hash);sitzungsSchluesselMerken();
           dialogZu();res(s2.priv);
@@ -1440,8 +1532,12 @@ return {
     if(aktion==='passwort'){zeigePasswortAendern();}
     else if(aktion==='team'||aktion==='profil'){zeigeProfilAendern();}
     else if(aktion==='staende'){zeigeStaende();}
+    else if(aktion==='sperren'){sperren('Du hast den Hub gesperrt. Zum Weiterarbeiten dein Passwort eingeben.');}
     else if(aktion==='abmelden'){abmelden();}
   },
+  /* Hub sperren (z. B. Kindmodus „Code vergessen“): wie nach Inaktivität, die Arbeit bleibt erhalten */
+  sperren:function(grund){sperren(grund);},
+  gesperrt:function(){return !!(sitzung&&gesperrt);},
   /* Knopf "Zugriff erlauben" in der Seitenleiste (braucht einen Klick) */
   zugriff:function(){return ordnerBereit().then(tresorWiederaufnehmen).catch(function(e){status({art:'fehler',text:(e&&e.message)||String(e)});});},
   sichernJetzt:autoSichern,

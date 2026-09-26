@@ -54,6 +54,7 @@ function unb64(s){var t=atob(s),b=new Uint8Array(t.length);for(var i=0;i<t.lengt
 function rnd(n){var b=new Uint8Array(n);crypto.getRandomValues(b);return b;}
 function neueId(n){var b=rnd(n||12),s='';for(var i=0;i<b.length;i++){s+=ALPHA.charAt(b[i]&31);}return s;}
 function jetzt(){return new Date().toISOString();}
+function heute(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();}
 function ich(){return K.ich();}
 function gzip(bytes){
   if(typeof CompressionStream==='undefined'){return Promise.resolve(null);}
@@ -275,15 +276,29 @@ function rolle(id){
 function istAdmin(id){return rolle(id||ich().id)==='admin';}
 function istResponsable(id){var r=rolle(id||ich().id);return r==='responsable'||r==='admin';}
 function darfFreischalten(){return zustand.art==='bereit'&&istResponsable();}
-/* Konten, die auf Freischaltung warten */
+/* Rolle laut einer (frisch gelesenen) Rollen-Datei */
+function rolleIn(m,id){var e=m&&m.mitglieder&&m.mitglieder[id];return (e&&e.rolle)||'mitarbeiter';}
+function entzogenIn(m,id){return !!(m&&m.entzogen&&m.entzogen[id]);}
+/* Konten, die auf Freischaltung warten (ohne die, denen die Verwaltung den Zugang entzogen hat) */
 function wartende(){
   if(!ring){return [];}
-  return K.konten().filter(function(k){return k.hatSchluessel&&!(ring.fuer&&ring.fuer[k.id]);});
+  return K.konten().filter(function(k){return k.hatSchluessel&&!(ring.fuer&&ring.fuer[k.id])&&!entzogenIn(mitgl,k.id);});
+}
+/* Konten, denen der Zugang entzogen wurde (nur zur Anzeige in der Verwaltung) */
+function entzogene(){
+  if(!ring||!mitgl||!mitgl.entzogen){return [];}
+  return K.konten().filter(function(k){return entzogenIn(mitgl,k.id)&&!(ring.fuer&&ring.fuer[k.id]);}).map(function(k){var e=mitgl.entzogen[k.id]||{};return Object.assign({},k,{entzogenAm:e.am||'',entzogenVon:e.von||''});});
 }
 function freischalten(id){
   if(!darfFreischalten()){return Promise.reject(fehler('Freischalten dürfen die Verwaltung und die Responsables'));}
   var me=ich();
-  return K.privat('Zum Freischalten').then(function(priv){
+  /* das eigene Recht auf dem neuesten Stand prüfen (die eigene Rolle kann inzwischen geändert worden sein) */
+  return mitgliederLesen().then(function(m){
+    mitgl=m;var ro=rolleIn(m,me.id);
+    if(ro!=='admin'&&ro!=='responsable'){throw fehler('Freischalten dürfen die Verwaltung und die Responsables');}
+    if(entzogenIn(m,id)&&ro!=='admin'){throw fehler('Dieser Person hat die Verwaltung den Zugang entzogen. Wieder freischalten kann nur die Verwaltung.');}
+    return K.privat('Zum Freischalten');
+  }).then(function(priv){
     return ringAendern(function(r){
       if(r.fuer[id]){return false;}
       if(!r.fuer[me.id]){throw fehler('Dein eigener Zugang fehlt im Schlüsselring.');}
@@ -300,7 +315,7 @@ function freischalten(id){
     /* Teamliste: „Responsable“ übernimmt der Hub nur, wenn die Verwaltung freischaltet – „Verwaltung“ nie automatisch */
     var tl=k&&K.teamlisteEintrag?K.teamlisteEintrag(k.name):null;
     var r=(tl&&tl.rolle==='responsable'&&istAdmin())?'responsable':'mitarbeiter';
-    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:r,seit:jetzt(),von:me.id};}},'Freigeschaltet: '+(k?k.name:id)+(r==='responsable'?' (Responsable laut Teamliste)':''));
+    return mitgliederAendern(function(m){if(!m.mitglieder[id]){m.mitglieder[id]={rolle:r,seit:jetzt(),von:me.id};}if(entzogenIn(m,id)){delete m.entzogen[id];}},'Freigeschaltet: '+(k?k.name:id)+(r==='responsable'?' (Responsable laut Teamliste)':''));
   });
 }
 /* Zugang entziehen (nur Verwaltung). Hinweis: Wer den Schlüssel schon hatte,
@@ -308,9 +323,14 @@ function freischalten(id){
 function entziehen(id){
   if(!istAdmin()){return Promise.reject(fehler('Nur die Verwaltung kann den Zugang entziehen'));}
   if(id===ich().id){return Promise.reject(fehler('Den eigenen Zugang kannst du nicht entziehen'));}
-  return ringAendern(function(r){if(!r.fuer||!r.fuer[id]){return false;}delete r.fuer[id];return true;}).then(function(){
+  var me=ich();
+  return mitgliederLesen().then(function(m){
+    mitgl=m;if(rolleIn(m,me.id)!=='admin'){throw fehler('Nur die Verwaltung kann den Zugang entziehen');}
+    return ringAendern(function(r){if(!r.fuer||!r.fuer[id]){return false;}delete r.fuer[id];return true;});
+  }).then(function(){
     var k=K.konten().filter(function(x){return x.id===id;})[0];
-    return mitgliederAendern(function(m){delete m.mitglieder[id];},'Zugang entzogen: '+(k?k.name:id));
+    /* vermerken: das Konto erscheint sonst gleich wieder unter „Warten auf Freischaltung“ */
+    return mitgliederAendern(function(m){delete m.mitglieder[id];m.entzogen=m.entzogen||{};m.entzogen[id]={am:jetzt(),von:me.id};},'Zugang entzogen: '+(k?k.name:id));
   });
 }
 function rolleSetzen(id,neu){
@@ -320,9 +340,17 @@ function rolleSetzen(id,neu){
     var admins=Object.keys((mitgl&&mitgl.mitglieder)||{}).filter(function(x){return mitgl.mitglieder[x].rolle==='admin';});
     if(admins.length<2){return Promise.reject(fehler('Es muss mindestens eine Verwaltung (Admin) geben'));}
   }
-  var k=K.konten().filter(function(x){return x.id===id;})[0];
+  var k=K.konten().filter(function(x){return x.id===id;})[0], me=ich();
   var namen={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'};
-  return mitgliederAendern(function(m){var e=m.mitglieder[id]||(m.mitglieder[id]={seit:jetzt(),von:ich().id});e.rolle=neu;e.geaendert=jetzt();},'Rolle von '+(k?k.name:id)+': '+namen[neu]);
+  return mitgliederAendern(function(m){
+    /* auf dem neuesten Stand: bin ich noch Verwaltung? Bleibt mindestens eine Verwaltung übrig? */
+    if(rolleIn(m,me.id)!=='admin'){throw fehler('Rollen vergibt die Verwaltung');}
+    var e=m.mitglieder[id]||(m.mitglieder[id]={seit:jetzt(),von:me.id});
+    if(e.rolle===neu){return false;}
+    e.rolle=neu;e.geaendert=jetzt();
+    var admins=Object.keys(m.mitglieder).filter(function(x){return m.mitglieder[x].rolle==='admin'&&!!(ring&&ring.fuer&&ring.fuer[x]);});
+    if(!admins.length){throw fehler('Es muss mindestens eine Verwaltung (Admin) geben');}
+  },'Rolle von '+(k?k.name:id)+': '+namen[neu]);
 }
 /* =====================================================================
    Schlüssel erneuern (Verwaltung) – z. B. nachdem jemandem der Zugang entzogen wurde.
@@ -614,7 +642,7 @@ function neuesDossier(person,opt){
   var me=ich(), id=neueId(12), t=jetzt();
   var stelle=opt.stelle||((window.CDSE_TEAMS||[]).some(function(x){return x.id===me.team&&x.stelle!==false;})?me.team:'diagnostique');
   var d={v:1,id:id,rev:1,erstellt:t,erstelltVon:me.id,geaendert:t,geaendertVon:me.id,
-    person:person||{},status:'aktiv',statusSeit:t.slice(0,10),stelle:stelle,stelleSeit:t.slice(0,10),
+    person:person||{},status:'aktiv',statusSeit:heute(),stelle:stelle,stelleSeit:heute(),
     verantwortlich:[me.id],rechte:{},profil:null,einschaetzungen:[],eintraege:[],
     verlauf:[{z:t,v:me.id,a:'angelegt',t:opt.fiche?'Dossier angelegt (aus der Fiche de renseignement)':'Dossier angelegt'}]};
   if(opt.fiche){d.fiche=opt.fiche;}
@@ -693,13 +721,13 @@ var ops={
   },'person');},
   status:function(id,status,grund,datum){return aendern(id,function(d,r){
     brauche(r,'status');if(d.status===status){return false;}
-    d.status=status;d.statusGrund=grund||'';d.statusSeit=datum||jetzt().slice(0,10);
+    d.status=status;d.statusGrund=grund||'';d.statusSeit=datum||heute();
     return status==='aktiv'?'Wieder aktiv':'Inaktiv gesetzt'+(grund?' ('+grund+')':'');
   },'status');},
   weitergeben:function(id,opt){return aendern(id,function(d,r){
     brauche(r,'weitergeben');
     var alt=d.stelle, altVer=(d.verantwortlich||[]).slice();
-    d.stelle=opt.stelle;d.stelleSeit=jetzt().slice(0,10);
+    d.stelle=opt.stelle;d.stelleSeit=heute();
     if(opt.verantwortlich){d.verantwortlich=[opt.verantwortlich];}
     if(opt.bisherigeBehalten){altVer.forEach(function(x){if((d.verantwortlich||[]).indexOf(x)<0){d.rechte[x]={von:ich().id,am:jetzt()};}});}
     d.weitergaben=(d.weitergaben||[]).concat([{z:jetzt(),von:alt,an:opt.stelle,durch:ich().id,verantwortlich:opt.verantwortlich||'',notiz:opt.notiz||''}]);
@@ -710,7 +738,7 @@ var ops={
   verantwortlich:function(id,liste){return aendern(id,function(d,r){brauche(r,'weitergeben');if(!liste.length){throw fehler('Mindestens eine Person muss fallverantwortlich sein');}d.verantwortlich=liste.slice();return 'Fallverantwortlich: '+liste.map(name).join(', ');},'recht');},
   eintrag:function(id,e){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
-    var neu={id:neueId(8),datum:e.datum||jetzt().slice(0,10),art:e.art||'notiz',titel:e.titel||'',text:e.text||'',von:ich().id,z:jetzt()};
+    var neu={id:neueId(8),datum:e.datum||heute(),art:e.art||'notiz',titel:e.titel||'',text:e.text||'',von:ich().id,z:jetzt()};
     if(e.ziel){neu.ziel=String(e.ziel);}   /* Bezug zu einem ELDiB-Förderziel, z. B. "V-14" */
     if(e.vorfall&&typeof e.vorfall==='object'){neu.vorfall=e.vorfall;}   /* Vorfall-/Krisenprotokoll (Art „vorfall“) */
     d.eintraege=(d.eintraege||[]).concat([neu]);
@@ -719,7 +747,7 @@ var ops={
     if(wv){
       var bp=planVon(d);
       bp.eigene=(bp.eigene||[]).concat([{id:neueId(8),titel:String(wv.titel||'Wiedervorlage').trim().slice(0,200),text:'',phase:'umsetzen',wer:ich().id,bis:wv.bis,status:'offen',von:ich().id,z:neu.z,bezug:'eintrag:'+neu.id}]);
-      if(!bp.start){bp.start=neu.z.slice(0,10);}
+      if(!bp.start){bp.start=heute();}
     }
     return 'Eintrag: '+(e.titel||e.art||'Notiz')+(wv?' – Wiedervorlage am '+wv.bis.split('-').reverse().join('.'):'');
   },'eintrag');},
@@ -742,7 +770,10 @@ var ops={
     var e=(d.eintraege||[]).filter(function(x){return x.id===eid;})[0];if(!e){return false;}
     if(e.von!==ich().id&&!r.weitergeben){throw fehler('Fremde Einträge löschen dürfen nur die Fallverantwortlichen, Responsables und die Verwaltung');}
     d.eintraege=d.eintraege.filter(function(x){return x.id!==eid;});
-    return 'Eintrag gelöscht: '+(e.titel||e.art)+' vom '+e.datum;
+    /* eine noch offene Wiedervorlage zu diesem Eintrag (Frist im Begleitplan) gleich mit entfernen */
+    var bp=d.begleitplan, wv=0;
+    if(bp&&Array.isArray(bp.eigene)){var vorher=bp.eigene.length;bp.eigene=bp.eigene.filter(function(x){return !(x&&x.bezug==='eintrag:'+eid&&x.status!=='erledigt');});wv=vorher-bp.eigene.length;}
+    return 'Eintrag gelöscht: '+(e.titel||e.art)+' vom '+e.datum+(wv?' (mit Wiedervorlage)':'');
   },'eintrag');},
   /* Fiche de renseignement: werte = {person:{…}, fiche:{Abschnitt: vollständiger Inhalt}} */
   fiche:function(id,werte,text,basis){return aendern(id,function(d,r){
@@ -760,17 +791,19 @@ var ops={
     return text||'Datenbank-Angaben geändert';
   },'datenbank');},
   profil:function(id,profil,text){return aendern(id,function(d,r){brauche(r,'bearbeiten');d.profil=profil;return text||'Profil übernommen';},'profil');},
+  /* e = eine Einschätzung oder eine Liste (mehrere Bereiche in einem Schreibvorgang) */
   einschaetzung:function(id,e){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
-    d.einschaetzungen=(d.einschaetzungen||[]).concat([{id:neueId(8),datum:e.datum||jetzt().slice(0,10),bereich:e.bereich||'schule',bewertungen:e.bewertungen||{},notiz:e.notiz||'',von:ich().id,z:jetzt()}]);
-    return 'Neue Einschätzung ('+Object.keys(e.bewertungen||{}).length+' Aussagen)';
+    var l=Array.isArray(e)?e:[e], n=0, t=jetzt();
+    d.einschaetzungen=(d.einschaetzungen||[]).concat(l.map(function(x){x=x||{};n+=Object.keys(x.bewertungen||{}).length;return {id:neueId(8),datum:x.datum||heute(),bereich:x.bereich||'schule',bewertungen:x.bewertungen||{},notiz:x.notiz||'',von:ich().id,z:t};}));
+    return 'Neue Einschätzung ('+n+' Aussagen'+(l.length>1?', '+l.length+' Bereiche':'')+')';
   },'einschaetzung');},
   /* Screening (Beobachtungsbogen): s = {datum, stufe, rolle, version, antworten, auswirkung, warn, warnNotiz, notiz, kurz} */
   screening:function(id,s){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var neu=Object.assign({},s,{id:neueId(8),von:ich().id,z:jetzt()});
     d.screenings=(d.screenings||[]).concat([neu]);
-    return 'Screening vom '+(s.datum||jetzt().slice(0,10))+((s.warn||[]).length?' – mit Warnsignal':'');
+    return 'Screening vom '+(s.datum||heute())+((s.warn||[]).length?' – mit Warnsignal':'');
   },'screening');},
   screeningLoeschen:function(id,sid){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
@@ -806,7 +839,7 @@ var ops={
       datum:String(b.datum||'').slice(0,10),text:String(b.text||'').slice(0,60000),
       datei:(b.datei&&b.datei.id)?{id:String(b.datei.id),name:String(b.datei.name||'').slice(0,200),typ:String(b.datei.typ||'').slice(0,100),groesse:+b.datei.groesse||0}:null,
       profile:(b.profile||[]).slice(0,20).map(function(p){return {id:String(p.id),art:p.art==='verdacht'?'verdacht':'diagnose',beleg:String(p.beleg||'').slice(0,300)};}),
-      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){return {name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};}),
+      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){var x={name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};if(m.abgesetzt){x.abgesetzt=true;}return x;}),
       empfehlungen:(b.empfehlungen||[]).slice(0,20).map(function(e){return String(e).slice(0,500);}),eingetragenVon:me,z:t};
     var quelle=BERICHT_ART[x.art]+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
     d.berichte=(d.berichte||[]).concat([x]);
@@ -817,7 +850,7 @@ var ops={
     }
     (b.schritte||[]).slice(0,10).forEach(function(s){s=String(s||'').trim();if(!s){return;}
       bp.eigene=(bp.eigene||[]).concat([{id:neueId(8),titel:s.slice(0,200),text:'Empfehlung aus: '+quelle,phase:'umsetzen',wer:'',bis:'',status:'offen',von:me,z:t}]);});
-    if(!bp.start&&((b.schritte||[]).length||x.profile.length)){bp.start=t.slice(0,10);}
+    if(!bp.start&&((b.schritte||[]).length||x.profile.length)){bp.start=heute();}
     return 'Bericht eingetragen: '+quelle+(x.profile.length?' – '+x.profile.length+(x.profile.length===1?' Profil':' Profile')+' im Kompass':'')+((b.schritte||[]).length?', '+b.schritte.length+(b.schritte.length===1?' Schritt':' Schritte')+' im Begleitplan':'');
   },'bericht');},
   berichtLoeschen:function(id,bid){return aendern(id,function(d,r){
@@ -844,14 +877,14 @@ var ops={
     if(!st){if(!alt){return false;}delete bp.schritte[key];return 'Begleitplan: „'+titel+'“ wieder offen';}
     if(!PLAN_STATUS[st]){throw fehler('Unbekannter Status');}
     bp.schritte[key]={status:st,z:jetzt(),von:ich().id,notiz:String(werte.notiz||'').trim().slice(0,2000),bis:werte.bis||''};
-    if(!bp.start){bp.start=jetzt().slice(0,10);}
+    if(!bp.start){bp.start=heute();}
     return 'Begleitplan: „'+titel+'“ '+PLAN_STATUS[st]+(st==='spaeter'&&werte.bis?' (bis '+werte.bis+')':'')+(werte.notiz?' – '+String(werte.notiz).trim().slice(0,200):'');
   },'begleitplan');},
   planFokus:function(id,codes){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var bp=planVon(d), l=(codes||[]).map(String).filter(Boolean).slice(0,3);
     if(JSON.stringify(bp.fokus||[])===JSON.stringify(l)){return false;}
-    bp.fokus=l;bp.fokusSeit=jetzt().slice(0,10);if(!bp.start){bp.start=bp.fokusSeit;}
+    bp.fokus=l;bp.fokusSeit=heute();if(!bp.start){bp.start=bp.fokusSeit;}
     return l.length?'Begleitplan: Fokusziele '+l.join(', '):'Begleitplan: Fokusziele entfernt';
   },'begleitplan');},
   planEigener:function(id,e){return aendern(id,function(d,r){
@@ -859,7 +892,7 @@ var ops={
     var bp=planVon(d), t=jetzt(), x={id:neueId(8),titel:String(e.titel||'').trim().slice(0,200),text:String(e.text||'').trim().slice(0,2000),
       phase:String(e.phase||'umsetzen'),wer:String(e.wer||''),bis:String(e.bis||''),status:'offen',von:ich().id,z:t};
     if(!x.titel){throw fehler('Bitte angeben, was zu tun ist.');}
-    bp.eigene=(bp.eigene||[]).concat([x]);if(!bp.start){bp.start=t.slice(0,10);}
+    bp.eigene=(bp.eigene||[]).concat([x]);if(!bp.start){bp.start=heute();}
     return 'Begleitplan: eigener Schritt „'+x.titel+'“';
   },'begleitplan');},
   planEigenerAendern:function(id,sid,werte){return aendern(id,function(d,r){
@@ -886,43 +919,74 @@ var ops={
     if(!ziele.length){throw fehler('Bitte mindestens ein Ziel eintragen.');}
     var abschnitte=(cfg.abschnitte||[]).map(function(a){return String(a||'').trim().slice(0,30);}).filter(Boolean).slice(0,10);
     if(!abschnitte.length){throw fehler('Bitte mindestens einen Tagesabschnitt angeben.');}
-    var tk=alt||{v:1,start:t.slice(0,10),von:ich().id,tage:{},ziele:[]}, neuStart=!!(alt&&alt.ende);
+    var tk=alt||{v:1,start:heute(),von:ich().id,tage:{},ziele:[]}, neuStart=!!(alt&&alt.ende);
     var bleiben={};
     ziele.forEach(function(z){
       var vorher=z.id?(tk.ziele||[]).filter(function(x){return x.id===z.id;})[0]:null;
       if(vorher){vorher.text=z.text;vorher.code=z.code||vorher.code||'';delete vorher.aus;bleiben[vorher.id]=1;}
-      else{var n={id:'z'+neueId(5),code:z.code,text:z.text,seit:t.slice(0,10)};tk.ziele.push(n);bleiben[n.id]=1;}
+      else{var n={id:'z'+neueId(5),code:z.code,text:z.text,seit:heute()};tk.ziele.push(n);bleiben[n.id]=1;}
     });
-    tk.ziele.forEach(function(x){if(!bleiben[x.id]&&!x.aus){x.aus=t.slice(0,10);}});
+    tk.ziele.forEach(function(x){if(!bleiben[x.id]&&!x.aus){x.aus=heute();}});
     var zp=+cfg.ziel;tk.ziel=zp>=50&&zp<=100?Math.round(zp):80;
     tk.abschnitte=abschnitte;tk.belohnung=String(cfg.belohnung||'').trim().slice(0,120);tk.heim=!!cfg.heim;
-    if(neuStart){delete tk.ende;delete tk.endeGrund;tk.phasen=(tk.phasen||[]).concat([{z:t.slice(0,10),art:'wieder'}]);}
+    if(neuStart){delete tk.ende;delete tk.endeGrund;tk.phasen=(tk.phasen||[]).concat([{z:heute(),art:'wieder'}]);}
     tk.geaendert=t;tk.geaendertVon=ich().id;
     d.tageskarte=tk;
-    var bp=planVon(d);if(!bp.start){bp.start=t.slice(0,10);}
+    var bp=planVon(d);if(!bp.start){bp.start=heute();}
     return (alt?(neuStart?'Tageskarte wieder aufgenommen':'Tageskarte geändert'):'Tageskarte eingerichtet')+': '+ziele.length+(ziele.length===1?' Ziel':' Ziele')+', '+abschnitte.length+' Abschnitte, Tagesziel '+tk.ziel+' %';
   },'tageskarte');},
-  /* w = {p:{zielId:[0|1|2|null je Abschnitt]}, s:'gut'|'mittel'|'schwer', notiz}; ein leerer Tag wird entfernt */
-  tageskarteTag:function(id,tag,w){return aendern(id,function(d,r){
+  /* w = {p:{zielId:[0|1|2|null je Abschnitt]}, a:[Abschnitte, wie das Formular sie zeigte], s:'gut'|'mittel'|'schwer', notiz};
+     ein leerer Tag wird entfernt. basis = der Tag, wie er beim Öffnen des Formulars aussah (null: noch leer):
+     dann kommen nur die Felder in die Datei, die im Formular geändert wurden – trägt morgens jemand die ersten
+     Abschnitte ein und nachmittags jemand anderes die letzten, bleibt beides erhalten. Ohne basis wie bisher. */
+  tageskarteTag:function(id,tag,w,basis){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');w=w||{};
     var tk=d.tageskarte;if(!tk||!Array.isArray(tk.ziele)){throw fehler('Für dieses Kind gibt es noch keine Tageskarte.');}
     tag=String(tag||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(tag)){throw fehler('Ungültiger Tag.');}
-    var p={}, pkt=0, max=0, n=tk.abschnitte.length;
-    Object.keys(w.p||{}).forEach(function(zid){
-      if(!tk.ziele.some(function(z){return z.id===zid;})){return;}
-      var l=(w.p[zid]||[]).slice(0,n).map(function(v){return (v===0||v===1||v===2)?v:null;});
-      if(l.some(function(v){return v!=null;})){p[zid]=l;l.forEach(function(v){if(v!=null){pkt+=v;max+=2;}});}
+    tk.tage=tk.tage||{};
+    var p={}, pkt=0, max=0, n=tk.abschnitte.length, alt=tk.tage[tag]||null, mischen=basis!==undefined;
+    var wa=Array.isArray(w.a)?w.a:tk.abschnitte, akt=JSON.stringify(tk.abschnitte);
+    /* Wo steht der i-te Abschnitt in einer anderen Abschnittsliste? Über den Namen (falls die Abschnitte inzwischen
+       geändert wurden); bei gleich lautenden Abschnitten die gleiche Wiederholung. -1: dort nicht vorhanden */
+    function stelle(a,i){
+      if(!Array.isArray(a)||JSON.stringify(a)===akt){return i;}
+      var name=tk.abschnitte[i], k=0, x;
+      for(x=0;x<i;x++){if(tk.abschnitte[x]===name){k++;}}
+      for(x=0;x<a.length;x++){if(a[x]===name){if(!k){return x;}k--;}}
+      return -1;
+    }
+    function zelle(e,zid,i,namen){
+      if(!e||!e.p||!Array.isArray(e.p[zid])){return null;}
+      var j=stelle(namen!==undefined?namen:e.a,i), v=j<0?null:e.p[zid][j];
+      return (v===0||v===1||v===2)?v:null;
+    }
+    tk.ziele.forEach(function(z){
+      var gesendet=!!(w.p&&Object.prototype.hasOwnProperty.call(w.p,z.id));
+      if(!mischen&&!gesendet){return;}
+      var l=tk.abschnitte.slice(0,n).map(function(name,i){
+        var neu=gesendet?zelle(w,z.id,i,wa):null;
+        if(!mischen){return neu;}
+        var jetztWert=zelle(alt,z.id,i);
+        if(!gesendet||stelle(wa,i)<0){return jetztWert;}   /* im Formular nicht zu sehen: nichts ändern */
+        return neu!==zelle(basis,z.id,i)?neu:jetztWert;
+      });
+      if(l.some(function(v){return v!=null;})){p[z.id]=l;l.forEach(function(v){if(v!=null){pkt+=v;max+=2;}});}
     });
     var s=['gut','mittel','schwer'].indexOf(w.s)>=0?w.s:'', notiz=String(w.notiz||'').trim().slice(0,500);
-    tk.tage=tk.tage||{};
+    if(mischen){
+      var bs=(basis&&basis.s)||'', bn=String((basis&&basis.notiz)||'').trim();
+      if(s===bs){s=(alt&&alt.s)||'';}
+      if(notiz===bn){notiz=String((alt&&alt.notiz)||'').trim();}
+    }
     if(!max&&!s&&!notiz){if(!tk.tage[tag]){return false;}delete tk.tage[tag];return 'Tageskarte: Einträge vom '+tag.split('-').reverse().join('.')+' entfernt';}
+    if(mischen&&alt&&JSON.stringify(alt.p||{})===JSON.stringify(p)&&(alt.s||'')===s&&String(alt.notiz||'')===notiz&&JSON.stringify(alt.a||[])===JSON.stringify(tk.abschnitte)){return false;}
     tk.tage[tag]={p:p,a:tk.abschnitte.slice(),s:s,notiz:notiz,von:ich().id,z:jetzt()};
     return 'Tageskarte '+tag.split('-').reverse().join('.')+': '+(max?pkt+' von '+max+' Punkten ('+Math.round(pkt/max*100)+' %)':'ohne Punkte');
   },'tageskarte');},
   tageskarteEnde:function(id,grund){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
     var tk=d.tageskarte;if(!tk||tk.ende){return false;}
-    tk.ende=jetzt().slice(0,10);tk.endeGrund=String(grund||'').trim().slice(0,200);
+    tk.ende=heute();tk.endeGrund=String(grund||'').trim().slice(0,200);
     tk.phasen=(tk.phasen||[]).concat([{z:tk.ende,art:'ende'}]);
     return 'Tageskarte beendet'+(tk.endeGrund?' – '+tk.endeGrund:'');
   },'tageskarte');},
@@ -931,7 +995,7 @@ var ops={
      Gespeichert werden nur Auswahl und Zahlen – keine Freitexte des Kindes. */
   kindmodus:function(id,cfg){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');cfg=cfg||{};
-    var alt=d.kindmodus&&typeof d.kindmodus==='object'?d.kindmodus:null, km=alt||{v:1,start:jetzt().slice(0,10),wochen:{},runden:[]};
+    var alt=d.kindmodus&&typeof d.kindmodus==='object'?d.kindmodus:null, km=alt||{v:1,start:heute(),wochen:{},runden:[]};
     km.spitzname=String(cfg.spitzname||'').trim().slice(0,20);
     if(!km.spitzname){throw fehler('Bitte einen Spitznamen eintragen.');}
     km.ziel=String(cfg.ziel||'').trim().slice(0,90);
@@ -988,7 +1052,7 @@ var ops={
   },'kindmodus-runde');},
   planUeberpruefung:function(id,rv){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');rv=rv||{};
-    var bp=planVon(d), t=jetzt(), x={id:neueId(8),datum:String(rv.datum||t.slice(0,10)),notiz:String(rv.notiz||'').trim().slice(0,4000),
+    var bp=planVon(d), t=jetzt(), x={id:neueId(8),datum:String(rv.datum||heute()),notiz:String(rv.notiz||'').trim().slice(0,4000),
       kennzahlen:rv.kennzahlen&&typeof rv.kennzahlen==='object'?rv.kennzahlen:{},von:ich().id,z:t};
     bp.reviews=(bp.reviews||[]).concat([x]);if(!bp.start){bp.start=x.datum;}
     return 'Begleitplan: Überprüfung vom '+x.datum+(x.notiz?' – '+x.notiz.slice(0,200):'');
@@ -1027,11 +1091,25 @@ var ops={
   },'uebernahme');},
   loeschen:function(id){
     istBereit();
-    return dossierLesen(id).then(function(d){
-      if(!rechte(d).loeschen){throw fehler('Löschen darf nur die Verwaltung');}
-      var anh=(d.berichte||[]).map(function(b){return b&&b.datei&&b.datei.id;}).filter(Boolean);
-      return K.speicher.loeschen(P_SCHUELER,dateiName(id)).then(function(){return Promise.all(anh.map(function(a){return anhangLoeschen(id,a).catch(function(){});}));}).then(function(){delete cache[id];
-        return mitgliederAendern(function(){},'Dossier gelöscht: '+((d.person&&(d.person.nachname+', '+d.person.vorname))||id));});
+    var d0=null;
+    /* Recht auf dem neuesten Stand prüfen, dann unter der Schreibsperre des Dossiers löschen:
+       wer gerade speichert, ist vorher fertig – danach schreibt niemand das Dossier wieder zurück */
+    return mitgliederLesen().then(function(m){mitgl=m;
+      return K.speicher.sperre('dossier-'+id,function(s){
+        return dossierLesen(id).then(function(d){
+          d0=d;
+          if(!rechte(d).loeschen){throw fehler('Löschen darf nur die Verwaltung');}
+          return (s&&s.noch?s.noch():Promise.resolve(true)).then(function(ja){
+            if(!ja){throw fehler('Das Löschen hat zu lange gedauert. Bitte noch einmal versuchen.');}
+            return K.speicher.loeschen(P_SCHUELER,dateiName(id));
+          });
+        });
+      });
+    }).then(function(){
+      delete cache[id];
+      var anh=(d0.berichte||[]).map(function(b){return b&&b.datei&&b.datei.id;}).filter(Boolean);
+      return Promise.all(anh.map(function(a){return anhangLoeschen(id,a).catch(function(){});})).then(function(){
+        return mitgliederAendern(function(){},'Dossier gelöscht: '+((d0.person&&(d0.person.nachname+', '+d0.person.vorname))||id));});
     });
   }
 };
@@ -1095,7 +1173,7 @@ return {
   rolle:rolle, istAdmin:istAdmin, istResponsable:istResponsable, darfFreischalten:darfFreischalten,
   /* Eintrag im gemeinsamen, verschlüsselten Protokoll der Verwaltung (z. B. Datenbank-Export) */
   protokollieren:function(text){return mitgliederAendern(function(){},String(text||'').slice(0,300));},
-  wartende:wartende, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
+  wartende:wartende, entzogene:entzogene, freischalten:freischalten, entziehen:entziehen, rolleSetzen:rolleSetzen,
   /* Anhänge (Originaldateien von Berichten), verschlüsselt */
   anhangSpeichern:anhangSpeichern, anhangLesen:anhangLesen, anhangLoeschen:anhangLoeschen, BERICHT_ART:BERICHT_ART,
   mitglieder:mitglieder, bereichsVerlauf:bereichsVerlauf,
