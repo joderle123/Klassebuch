@@ -894,7 +894,7 @@ var FAMILY_TERM_REGEX = /\b(d['’]?Elteren|Elteren|d['’]?Mamm|Mamm|d['’]?Pa
 var SLIDER_DEFS = [
   { key: 'wellbeing',  label: 'Wohlbefinden',                       min: 1, max: 10, hint: '1 = sehr schlecht … 10 = sehr gut',          invert: false },
   { key: 'stability',  label: 'Schulische Stabilität / Mitarbeit',  min: 1, max: 10, hint: '1 = sehr instabil … 10 = sehr stabil',       invert: false },
-  { key: 'attendance', label: 'Anwesenheit',                        min: 1, max: 10, hint: '1 = kaum da … 10 = vollständig present',      invert: false },
+  { key: 'attendance', label: 'Anwesenheit',                        min: 1, max: 10, hint: '1 = kaum da … 10 = vollständig präsent',      invert: false },
   { key: 'risk',       label: 'Risiko / Sorge',                     min: 1, max: 10, hint: '1 = unbedenklich … 10 = höchste Sorge',       invert: true  }
 ];
 function sliderDef(key){ return SLIDER_DEFS.filter(function(s){ return s.key === key; })[0]; }
@@ -1507,7 +1507,8 @@ var Repo = {
       format: 'cdse-dossier-backup',
       version: 2, // v2: + reunions
       exportedAt: nowIso(),
-      students: this.students,
+      /* dieselbe Liste, die die App zeigt (in der gemeinsamen App die Klassenliste), gleiches Format */
+      students: this.listStudents(),
       entries: this.entries,
       reunions: this.reunions
     };
@@ -2279,10 +2280,10 @@ function viewDashboard(params, query) {
     var initial = escapeHtml((s.name || '?').charAt(0).toUpperCase());
     var meta = []; if (klasse) meta.push(escapeHtml(klasse)); if (level) meta.push('Niveau ' + escapeHtml(level));
     var chips = [];
-    if (abs && abs.total) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + abs.total + ' Absenzen' + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
+    if (abs && abs.total) chips.push('<span class="st-chip' + (abs.unentschuldigt ? ' st-warn' : '') + '">' + pluralize(abs.total, 'Absenz', 'Absenzen') + (abs.unentschuldigt ? ' · ' + abs.unentschuldigt + ' unent.' : '') + '</span>');
     if (s.active === false) chips.unshift('<span class="st-chip">ehemalig</span>');
     if (scr && scr.hasData) chips.push(scr.acute && scr.acute.length ? '<span class="st-chip st-danger">⚠ Krisenhinweis (früheres Screening)</span>' : '<span class="st-chip">Screening (früher)</span>');
-    if (cg && cg.goals && cg.goals.length) chips.push('<span class="st-chip">' + cg.goals.length + ' Förderziele</span>');
+    if (cg && cg.goals && cg.goals.length) chips.push('<span class="st-chip">' + pluralize(cg.goals.length, 'Förderziel', 'Förderziele') + '</span>');
     var foot = lastEntry ? ('Letzter Eintrag ' + escapeHtml(formatDate(lastEntry.date)) + ' · ' + pluralize(entries.length, 'Eintrag', 'Einträge')) : 'Noch keine Einträge';
     return '<article class="card student-card st-card" data-route="#/student/' + s.id + '" tabindex="0" role="button" aria-label="Dossier von ' + escapeAttr(s.name) + ' öffnen">' +
       '<div class="st-top"><div class="st-avatar">' + initial + '</div><div class="st-idblock"><div class="st-name">' + escapeHtml(s.name) + '</div>' + (meta.length ? '<div class="st-sub">' + meta.join(' · ') + '</div>' : '') + '</div></div>' +
@@ -2479,7 +2480,7 @@ function viewStudentDetail(params) {
     return '<div class="chip-row">' + autoThemes.slice(0, 10).map(function (a) {
       return '<button type="button" class="chip theme-chip sev-' + a.severity + '" ' +
         'data-route="#/themes?student=' + encodeURIComponent(student.id) + '&theme=' + encodeURIComponent(a.key) + '" ' +
-        'title="' + escapeAttr(a.key + ': ' + a.entryCount + ' Einträge, ' + a.matchCount + ' Treffer — klicken für Belege') + '">' +
+        'title="' + escapeAttr(a.key + ': ' + pluralize(a.entryCount, 'Eintrag', 'Einträge') + ', ' + a.matchCount + ' Treffer — klicken für Belege') + '">' +
         escapeHtml(a.key) + ' <strong>' + a.entryCount + '</strong></button>';
     }).join('') + '</div>' +
     '<p class="hint" style="margin-top:6px;">Automatische Stichwort-Erkennung — Zahl = Einträge mit Treffern. Klick öffnet die Belege.</p>';
@@ -2515,7 +2516,7 @@ function viewStudentDetail(params) {
     '<div id="filter-bar-wrap">' + filterBarHtml() + '</div>' +
     '</details>' +
 
-    '<h3 class="section-title">Zeitleiste (' + allEntries.length + ' Einträge, chronologisch)</h3>' +
+    '<h3 class="section-title">Zeitleiste (' + pluralize(allEntries.length, 'Eintrag', 'Einträge') + ', chronologisch)</h3>' +
     '<div id="timeline-wrap">' + timelineHtml() + '</div>';
 
   return {
@@ -3103,7 +3104,7 @@ function viewPdfExport(params, query) {
       '<div class="field"><label for="pe-category">Kategorie <span class="hint">(optional)</span></label>' +
         '<select id="pe-category"><option value="">Alle Kategorien</option>' + optionsHtml(CATEGORIES, state.category) + '</select>' +
       '</div>' +
-      '<div class="field"><label>Tags <span class="hint">(optional, Mehrfachauswahl — der Schüler hat ' + availableTags.length + ' verschiedene Tags)</span></label>' +
+      '<div class="field"><label>Tags <span class="hint">(optional, Mehrfachauswahl — der Schüler hat ' + (availableTags.length === 1 ? '1 Tag' : availableTags.length + ' verschiedene Tags') + ')</span></label>' +
         '<div class="chip-row" id="pe-tags">' + (tagChips || '<span class="muted">Keine Tags vorhanden.</span>') + '</div>' +
       '</div>' +
       '<div class="row">' +
@@ -3167,14 +3168,14 @@ function viewPdfExport(params, query) {
       '</div>';
     }).join('');
     return '<div class="card no-print" style="padding:16px; margin-bottom:14px;">' +
-        '<p><strong>Vorschau bereit:</strong> ' + p.entries.length + ' Einträge — ' + escapeHtml(p.scopeLabel) + ', ' + escapeHtml(p.periodLabel) + '</p>' +
+        '<p><strong>Vorschau bereit:</strong> ' + pluralize(p.entries.length, 'Eintrag', 'Einträge') + ' — ' + escapeHtml(p.scopeLabel) + ', ' + escapeHtml(p.periodLabel) + '</p>' +
         '<button type="button" class="btn btn-primary" id="pe-print">Drucken / Als PDF speichern</button>' +
         '<p class="hint" style="margin-top:8px;">Öffnet den Druckdialog Ihres Browsers — wählen Sie dort „Als PDF speichern".</p>' +
       '</div>' +
       '<div class="print-sheet" id="print-sheet">' +
         '<h1>Dossier-Auszug — ' + escapeHtml(p.student.name) + '</h1>' +
         '<h2>' + escapeHtml(p.scopeLabel.split(' — ')[1] || 'alle Themen') + ' &middot; Zeitraum: ' + escapeHtml(p.periodLabel) + '</h2>' +
-        '<p class="muted">Erstellt am ' + escapeHtml(formatDateTime(nowIso())) + ' &middot; ' + p.entries.length + ' Einträge, chronologisch</p>' +
+        '<p class="muted">Erstellt am ' + escapeHtml(formatDateTime(nowIso())) + ' &middot; ' + pluralize(p.entries.length, 'Eintrag', 'Einträge') + ', chronologisch</p>' +
         '<hr class="divider">' +
         entriesHtml +
       '</div>';
@@ -3324,16 +3325,16 @@ function viewAiExport(params, query) {
     var student = Repo.getStudent(state.studentId);
     if (!student) return '(kein Schüler gewählt)';
     var label = kindLabel(student);
-    if (state.scopeType === 'student') return 'Gesamtes Dossier von ' + label + ' (' + studentEntries().length + ' Einträge)';
+    if (state.scopeType === 'student') return 'Gesamtes Dossier von ' + label + ' (' + eintraegeText(studentEntries().length) + ')';
     if (state.scopeType === 'theme') {
       var bits = [];
       if (state.category) bits.push('Kategorie „' + state.category + '"');
       var tagList = Object.keys(state.tags);
       if (tagList.length) bits.push('Tags: ' + tagList.join(', '));
       if (!bits.length) bits.push('alle Themen');
-      return 'Thema bei ' + label + ' — ' + bits.join(' · ') + ' (' + scopedEntries().length + ' Einträge)';
+      return 'Thema bei ' + label + ' — ' + bits.join(' · ') + ' (' + eintraegeText(scopedEntries().length) + ')';
     }
-    return 'Eigene Auswahl bei ' + label + ' (' + scopedEntries().length + ' Einträge)';
+    return 'Eigene Auswahl bei ' + label + ' (' + eintraegeText(scopedEntries().length) + ')';
   }
 
   function aufgabenZahl() {
@@ -3986,7 +3987,7 @@ function viewBackup() {
   var pendingImport = null; // { data, filename }
 
   function summaryHtml() {
-    return '<p class="muted">Aktuell gespeichert: ' + pluralize(Repo.students.length, 'Schüler', 'Schüler') + ' &middot; ' +
+    return '<p class="muted">Aktuell gespeichert: ' + pluralize(Repo.listStudents().length, 'Schüler', 'Schüler') + ' &middot; ' +
       pluralize(Repo.entries.length, 'Eintrag', 'Einträge') + ' &middot; Speicherort: ' +
       (Storage.mode === 'indexeddb' ? 'IndexedDB (lokal im Browser)' : 'localStorage (lokal im Browser, Fallback)') + '</p>';
   }
@@ -4001,7 +4002,6 @@ function viewBackup() {
         (d.exportedAt ? ' (exportiert am ' + escapeHtml(formatDateTime(d.exportedAt)) + ')' : '') + '.</p>' +
       '<div class="field">' +
         '<label class="checkbox-row"><input type="radio" name="import-mode" value="merge" checked> <span><strong>Zusammenführen</strong> — neue Datensätze ergänzen, gleiche IDs werden überschrieben, bestehende Daten bleiben sonst erhalten.</span></label>' +
-        '<label class="checkbox-row"><input type="radio" name="import-mode" value="replace"> <span><strong>Ersetzen</strong> — die komplette aktuelle Datenbank wird durch den Inhalt dieser Datei ersetzt. Nicht rückgängig zu machen!</span></label>' +
       '</div>' +
       '<div class="page-head" style="margin:0;">' +
         '<button type="button" class="btn" id="bk-cancel-import">Abbrechen</button>' +
@@ -4019,7 +4019,7 @@ function viewBackup() {
     '</div>' +
     '<div class="card export-config" style="margin-top:14px;">' +
       '<h3 style="margin-top:0;">Backup importieren</h3>' +
-      '<p class="muted">Wählen Sie eine zuvor exportierte <span class="kbd">.json</span>-Datei. Sie können danach wählen, ob die Daten zusammengeführt oder die Datenbank komplett ersetzt werden soll.</p>' +
+      '<p class="muted">Wählen Sie eine zuvor exportierte <span class="kbd">.json</span>-Datei. Ihre Daten werden danach mit den vorhandenen zusammengeführt.</p>' +
       '<input type="file" id="bk-file" accept="application/json,.json">' +
     '</div>' +
     '<div id="bk-import-panel">' + importPanelHtml() + '</div>';
@@ -4069,8 +4069,8 @@ function viewBackup() {
           importPanel.innerHTML = '';
         });
         if (confirmBtn) confirmBtn.addEventListener('click', function () {
-          var mode = (qs('input[name="import-mode"]:checked', importPanel) || {}).value || 'merge';
-          if (mode === 'replace' && !confirm('Wirklich die GESAMTE aktuelle Datenbank durch diese Datei ersetzen? Das kann nicht rückgängig gemacht werden.')) return;
+          /* Nur Zusammenführen: „Ersetzen“ löschte alles Vorhandene ohne Papierkorb – wie das entfernte „Backup laden“ */
+          var mode = 'merge';
           Repo.importAll(pendingImport.data, mode).then(function () {
             showToast('Import abgeschlossen (' + (mode === 'replace' ? 'ersetzt' : 'zusammengeführt') + ').');
             pendingImport = null;
@@ -4141,7 +4141,7 @@ function viewThemeAnalysis(params, query) {
       return '<button type="button" class="theme-bar-row' + (selected ? ' selected' : '') + '" data-theme="' + escapeAttr(a.key) + '">' +
         '<span class="theme-bar-label">' + escapeHtml(a.key) + '</span>' +
         '<span class="theme-bar-track"><span class="theme-bar-fill" style="width:' + pct + '%; background:' + SEVERITY_META[a.severity].color + '"></span></span>' +
-        '<span class="theme-bar-count">' + a.entryCount + '/' + entryTotal + ' Einträge · ' + a.matchCount + ' Treffer · ' + pluralize(studentCount, 'Schüler', 'Schüler') + '</span>' +
+        '<span class="theme-bar-count">' + a.entryCount + '/' + entryTotal + (entryTotal === 1 ? ' Eintrag · ' : ' Einträge · ') + a.matchCount + ' Treffer · ' + pluralize(studentCount, 'Schüler', 'Schüler') + '</span>' +
       '</button>';
     }).join('') + '</div>';
   }
@@ -5952,7 +5952,7 @@ function viewReportImport(params, query) {
       parts.push('<p style="margin:0 0 2px;color:#2e7d52;"><strong>✓ Förderziele (ELDiB) erkannt (' + r.goals.length + '):</strong></p><ul style="margin:0 0 6px;padding-left:18px;">' +
         r.goals.map(function (g) { return '<li><strong>[' + escapeHtml(g.code) + ']</strong> ' + escapeHtml(g.title) + (g.formulation ? ' — „' + escapeHtml(g.formulation) + '"' : '') + '</li>'; }).join('') + '</ul>');
     } else if (r.type === 'PEI') {
-      parts.push('<div class="warn-banner" style="margin:0 0 8px;">⚠ <strong>Keine ELDiB-Förderziele erkannt.</strong> Erwartet werden Codes wie <code>V-19</code>, <code>SOZ-32</code>, <code>K-15</code>, <code>KOG-7</code> (auch „V 19", „V19", „K–15" werden erkannt). Prüfe den Rohtext unten — sind die Ziele anders formatiert (z. B. nur als Text ohne Code, oder unter Überschriften „Verhalten/Kommunikation/…"), schicke mir bitte einen kurzen Ausschnitt, dann passe ich den Import an.</div>' +
+      parts.push('<div class="warn-banner" style="margin:0 0 8px;">⚠ <strong>Keine ELDiB-Förderziele erkannt.</strong> Erwartet werden Codes wie <code>V-19</code>, <code>SOZ-32</code>, <code>K-15</code>, <code>KOG-7</code> (auch „V 19", „V19", „K–15" werden erkannt). Prüfe den Rohtext unten — sind die Ziele anders formatiert (z. B. nur als Text ohne Code, oder unter Überschriften „Verhalten/Kommunikation/…"), erkennt der Import sie nicht. Der Bericht wird trotzdem vollständig gespeichert – nur die Förderziele fehlen dann in der Übersicht des Schülers.</div>' +
         '<details style="margin:0 0 8px;"><summary style="cursor:pointer;font-weight:600;">🔍 Rohtext des Berichts anzeigen (zur Fehlersuche)</summary><div class="preview-box" style="max-height:260px;overflow:auto;white-space:pre-wrap;font-size:12px;line-height:1.5;margin-top:6px;">' + escapeHtml((st.rawText || '').slice(0, 5000)) + ((st.rawText || '').length > 5000 ? '\n…' : '') + '</div></details>');
     }
     /* Vollständiger Text, der wirklich gespeichert wird — damit ersichtlich ist,

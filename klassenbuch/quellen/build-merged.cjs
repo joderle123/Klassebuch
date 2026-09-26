@@ -205,6 +205,8 @@ var ANW_API = [
   "    /* für die Heute-Tafel: gezählte Stunden einer Absenz, Stunden eines Schultags, Ferien/Feiertag */",
   "    hoursOf:function(e){return countHours(e);},",
   "    dayHours:function(){var n=0;for(var k in BLOCK_WEIGHTS){n+=BLOCK_WEIGHTS[k];}return n;},",
+  "    /* Stunden eines Wochentags laut Stundenplan des Niveaus - montags sind es z. B. nur 5 */",
+  "    hoursOnDay:function(level,wd){var d=state.timetable&&state.timetable[level]&&state.timetable[level][wd];var n=0;if(d){for(var i=0;i<BLOCKS.length;i++){n+=blockWeight(BLOCKS[i].id,d[i]);}}return n;},",
   "    holidayInfo:function(iso){return holidayInfo(iso);},",
   "    statusLabel:function(s){return (STATUS[s]&&STATUS[s].label)||s;},",
   "    fmt:function(iso){return fmtD(iso);},",
@@ -332,6 +334,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-termrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;}
 .kb-termrow input{flex:1;min-width:128px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}   /* schmal: das zweite Datum rutscht in die nächste Zeile, statt abgeschnitten zu werden */
 .kb-termfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--kb-border);}
+.kb-term-hinweis{margin:12px 0 0;padding:9px 12px;border-radius:10px;background:var(--kb-accent-50);border:1px solid var(--kb-accent-100);color:var(--kb-accent-dark);font-size:13.5px;font-weight:600;line-height:1.45;}
 .kb-termnew,.kb-termacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .kb-ttbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
 .kb-ttacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
@@ -902,6 +905,7 @@ var SHELL_PANELS_EXTRA = `
             <button class="kb-btn" data-kb-act="open-cal">📆 Schulkalender</button>
           </div>
         </div>
+        <p class="kb-term-hinweis" id="kb-term-hinweis" role="status" hidden></p>
       </div>
 
       <div class="kb-card kb-ttcard">
@@ -1010,7 +1014,7 @@ var SHELL_PANELS_EXTRA = `
       </div>
       <div class="kb-card">
         <div class="kb-card-h"><h3>📅 Wochen-Sicherung</h3><span class="kb-term-now" id="kb-wk-range"></span></div>
-        <p class="kb-hint">Alles, was in <b>einer Woche neu dazugekommen</b> ist — Réunionen, Wochenziele, Dossier-Einträge, Noten, Screenings, Absenzen und Klassenbuch-Notizen. Zum Archivieren, damit nie etwas verloren geht.</p>
+        <p class="kb-hint">Alles, was in <b>einer Woche neu dazugekommen</b> ist — Réunionen, Wochenziele, Dossier-Einträge, Noten, Screenings, Absenzen, Retards und Klassenbuch-Notizen. Zum Archivieren, damit nie etwas verloren geht.</p>
         <div class="kb-wkbar">
           <button class="kb-btn" id="kb-wk-prev" title="Woche zurück">‹</button>
           <input class="kb-in" type="date" id="kb-wk-date" style="max-width:170px;">
@@ -1713,7 +1717,7 @@ var DOS_OVERRIDES = `
     sideRows+=row('🗒️','Letzter Eintrag',(last?escapeHtml(formatDate(last.date)+' · '+last.category):'keiner'),'');
     var ngN=window.KB_NOTEN?window.KB_NOTEN.list(sid,null,null).length:0;
     var ntMod=window.KB_NOTEN?window.KB_NOTEN.totalModules(sid):0;
-    sideRows+=row('📊','Noten & Module',(ngN||ntMod)?((ngN?ngN+' Noten':'')+(ngN&&ntMod?' · ':'')+(ntMod?ntMod+' Module':'')):'—','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=noten">Öffnen</button>');
+    sideRows+=row('📊','Noten & Module',(ngN||ntMod)?((ngN?ngN+(ngN===1?' Note':' Noten'):'')+(ngN&&ntMod?' · ':'')+(ntMod?ntMod+(ntMod===1?' Modul':' Module'):'')):'—','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=noten">Öffnen</button>');
     sideRows+=row('🕸️','Helfernetz','Support-Bubble','<button class="btn btn-sm ra" data-route="#/student/'+encodeURIComponent(sid)+'?hub=helfernetz">Öffnen</button>');
     var sideCard='<div class="card hub-side-card">'+sideRows+'</div>';
 
@@ -2253,7 +2257,13 @@ var SHELL_CONTROLLER = `
     $('kb-term-new').placeholder='z. B. '+T.nextLabel();
     $('kb-term-close').textContent=(cur&&cur.closed)?'🔓 Schuljahr wieder öffnen':'🔒 Schuljahr abschließen';
     $('kb-term-auto').style.display=a.auto?'none':'';
+    /* Nach „+ Schuljahr anlegen“ ist das neue Jahr fest gewählt - die ganze App arbeitet dann darin.
+       Das steht hier, solange es so bleibt (anderes Jahr oder „Automatisch“ blendet es aus). */
+    var hw=$('kb-term-hinweis');
+    if(hw){var zeig=!!neuesJahr&&!a.auto&&a.year.id===neuesJahr;if(!zeig){neuesJahr='';}hw.hidden=!zeig;
+      hw.textContent=zeig?(a.year.label+' ist jetzt fest gewählt – „⟳ Automatisch“ führt zurück zum laufenden Schuljahr.'):'';}
   }
+  var neuesJahr='';
   function renderTTGrid(){
     var host=$('kb-tt-grid'); if(!host||!window.KB_ANW||!window.KB_ANW.blocks)return;
     var lvls=window.KB_ANW.levels(), blocks=window.KB_ANW.blocks(), days=window.KB_ANW.dayNames();
@@ -2339,7 +2349,7 @@ var SHELL_CONTROLLER = `
     var nAn=(window.KB_ANW&&window.KB_ANW.renameSubject)?window.KB_ANW.renameSubject(from,to):0;
     renderTTGrid();renderSubjects();
     alert('„'+from+'" heißt jetzt „'+to+'".\\n\\n'+
-      nTT+' Stundenplan-Felder (alle Trimester)\\n'+nNo+' Noten/Modul-Einträge\\n'+nAn+' Absenzen/Notizen\\n\\nwurden mitgeändert.');
+      nTT+(nTT===1?' Stundenplan-Feld':' Stundenplan-Felder')+' (alle Trimester)\\n'+nNo+(nNo===1?' Noten-/Modul-Eintrag':' Noten/Modul-Einträge')+'\\n'+nAn+(nAn===1?' Absenz/Notiz':' Absenzen/Notizen')+'\\n\\nwurden mitgeändert.');
     if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
   }
   /* ---- Stundenraster: nur die Uhrzeiten ---- */
@@ -2387,8 +2397,10 @@ var SHELL_CONTROLLER = `
     if(add&&nin){
       add.addEventListener('click',function(){
         var v=(nin.value||'').trim()||window.KB_TERMS.nextLabel();
-        if(!window.KB_TERMS.addYear(v)){alert('Bitte ein gültiges Schuljahr eingeben, z. B. '+window.KB_TERMS.nextLabel()+'.');return;}
+        var neu=window.KB_TERMS.addYear(v);
+        if(!neu){alert('Bitte ein gültiges Schuljahr eingeben, z. B. '+window.KB_TERMS.nextLabel()+'.');return;}
         nin.value='';
+        neuesJahr=neu;renderTermCard();
       });
       nin.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();add.click();}});
     }
@@ -2482,7 +2494,7 @@ var SHELL_CONTROLLER = `
         try{nD=window.KB_DOS_SYNC.exportEntries().filter(function(e){return e.studentId===id;}).length;}catch(e){}
         try{nA=(window.KB_ANW&&window.KB_ANW.entriesForStudent)?window.KB_ANW.entriesForStudent(id).length:0;}catch(e){}
         try{var nr=(window.KB_NOTEN&&window.KB_NOTEN.list)?window.KB_NOTEN.list(id):[];nN=(nr&&nr.length)||0;}catch(e){}
-        var was=[];if(nD)was.push(nD+' Dossier-Einträge');if(nA)was.push(nA+' Absenzen');if(nN)was.push(nN+' Noten');
+        var was=[];if(nD)was.push(nD+(nD===1?' Dossier-Eintrag':' Dossier-Einträge'));if(nA)was.push(nA+(nA===1?' Absenz':' Absenzen'));if(nN)was.push(nN+(nN===1?' Note':' Noten'));
         var txt='„'+s.name+'“ endgültig aus der Liste löschen?'+
           (was.length?('\\n\\nDaran hängen: '+was.join(', ')+'. Die Dossier-Einträge kommen in den Papierkorb (auf diesem Gerät), auf den anderen Geräten verschwinden sie.'):'')+
           '\\n\\nBesser: den Haken bei „Aktiv" entfernen — dann bleibt alles erhalten.';
@@ -2521,7 +2533,7 @@ var SHELL_CONTROLLER = `
         r=l.length;
         for(var i=0;i<l.length;i++)n+=((l[i]||{}).orgItems||[]).length;
       }catch(e){}
-      o.textContent=n?(n+' Punkte aus '+r+' Réunionen.'):'Noch keine Orga-Punkte erfasst.';
+      o.textContent=n?(n+(n===1?' Punkt aus ':' Punkte aus ')+r+(r===1?' Réunion.':' Réunionen.')):'Noch keine Orga-Punkte erfasst.';
     }
     var u=$('kb-wz-reu');
     if(u){
@@ -2574,7 +2586,7 @@ var SHELL_CONTROLLER = `
       var d=x.data||{};
       var wer=x.kind==='reunion'?('Réunion vom '+esc(d.date||'')):(esc(window.KB_TRASH.nameOf(d.studentId,d)||'Eintrag')+' · '+esc(d.date||''));
       var txt=x.kind==='reunion'
-        ? ((d.orgItems||[]).length+' Orga-Punkte')
+        ? ((d.orgItems||[]).length+((d.orgItems||[]).length===1?' Orga-Punkt':' Orga-Punkte'))
         : String(d.text||'').replace(/\\s+/g,' ').slice(0,120);
       return '<div class="kb-trash-row">'+
         '<div class="kb-trash-main"><b>'+wer+'</b>'+(d.category?' <span class="kb-trash-cat">'+esc(d.category)+'</span>':'')+
@@ -2615,8 +2627,10 @@ var SHELL_CONTROLLER = `
     function d(s){var p=String(s).split('-');return p[2]+'.'+p[1]+'.'+p[0];}
     $('kb-wk-range').textContent=d(r.lo)+' – '+d(r.hi);
     var rows=window.KB_WEEKLY.collect(r.lo,r.hi), sum=window.KB_WEEKLY.summary(rows);
+    /* Einzahl der Bereiche, sonst hieße es „1 Absenzen“ */
+    var EINS={'Réunion-Beiträge':'Réunion-Beitrag','Dossier-Einträge':'Dossier-Eintrag','Wochenziele':'Wochenziel','Noten':'Note','Screenings':'Screening','Absenzen':'Absenz','Retards':'Retard','Klassenbuch-Notizen':'Klassenbuch-Notiz'};
     $('kb-wk-counts').innerHTML=rows.length
-      ? ('<b>'+rows.length+'</b> neue Einträge: '+sum.map(function(p){return '<b>'+p[1]+'</b> '+esc(p[0]);}).join(' · '))
+      ? ('<b>'+rows.length+'</b> '+(rows.length===1?'neuer Eintrag: ':'neue Einträge: ')+sum.map(function(p){return '<b>'+p[1]+'</b> '+esc(p[1]===1&&EINS[p[0]]?EINS[p[0]]:p[0]);}).join(' · '))
       : 'In dieser Woche ist nichts Neues dazugekommen.';
   }
   (function wireWeek(){
@@ -2658,13 +2672,13 @@ var SHELL_CONTROLLER = `
     /* Plakette oben rechts: der Zustand auf einen Blick */
     var pill=$('kb-sync-pill');
     if(pill){var pz=!s.supported?['Browser passt nicht','bad']:(s.connected?['Verbunden','ok']:(s.error==='reconnect'?['Bitte bestätigen','warn']:['Nur dieses Gerät','']));pill.textContent=pz[0];pill.className='kb-sync-pill'+(pz[1]?' '+pz[1]:'');}
-    if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte die App in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>index.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
+    if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte den Hub in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>hub.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
     var info;
     if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'')+(s.warten?' · <b style="color:#c9851f">wartet auf '+esc(s.warten)+'</b>':'');}
     else if(s.error==='reconnect'){info='<b style="color:#c9851f">Verbindung muss bestätigt werden</b> — der Browser setzt die Freigabe beim Neustart zurück. Die App fragt beim ersten Klick von selbst danach, sonst hier „Verbinden" ('+esc(s.fileName)+').';}
     else{info='Nicht verbunden — Daten liegen nur auf diesem Gerät.';}
     if(s.error&&s.error!=='reconnect'){info+='<br><span style="color:#b3432d">'+esc(s.error)+'</span>';}
-    if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Dossier-Einträge · <b>'+(k.anwEntries||0)+'</b> Absenzen · <b>'+(k.anwNotes||0)+'</b> Notizen · <b>'+(k.dosReunions||0)+'</b> Réunionen · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
+    if(s.connected&&s.counts){var k=s.counts,z=function(n,eins,mehr){return '<b>'+(n||0)+'</b> '+(n===1?eins:mehr);};info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · '+z(k.dosEntries,'Dossier-Eintrag','Dossier-Einträge')+' · '+z(k.anwEntries,'Absenz','Absenzen')+' · '+z(k.anwNotes,'Notiz','Notizen')+' · '+z(k.dosReunions,'Réunion','Réunionen')+' · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
     if(s.connected){
       var bk;
       if(s.backupName){bk='Auto-Sicherung: Ordner <b>'+esc(s.backupName)+'</b> · letzte Kopie: '+(s.backupLast?esc(s.backupLast):'noch keine')+(s.backupErr==='reconnect'?' · <span style="color:#c9851f">bitte bestätigen</span>':'');}
@@ -2968,7 +2982,7 @@ window.KB_BUBBLE=(function(){
     function snaplistRender(){
       var el=q('#kbb-snaplist');if(!el){return;}var ss=snaps();
       if(!ss.length){el.innerHTML='<div class="muted" style="font-size:.85em">Noch keine Snapshots — speichere den aktuellen Stand, um später zu vergleichen.</div>';return;}
-      el.innerHTML=ss.map(function(s){return '<div class="kbb-snapitem" data-id="'+esc(s.id)+'"><span>📸 '+esc(s.date||'')+(s.label?(' · '+esc(s.label)):'')+' <span class="muted">('+((s.nodes||[]).length)+' Personen)</span></span><button class="kb-btn kb-btn-ghost kbb-snapdel" title="Snapshot löschen">🗑</button></div>';}).join('');
+      el.innerHTML=ss.map(function(s){return '<div class="kbb-snapitem" data-id="'+esc(s.id)+'"><span>📸 '+esc(s.date||'')+(s.label?(' · '+esc(s.label)):'')+' <span class="muted">('+((s.nodes||[]).length)+((s.nodes||[]).length===1?' Person)':' Personen)')+'</span></span><button class="kb-btn kb-btn-ghost kbb-snapdel" title="Snapshot löschen">🗑</button></div>';}).join('');
     }
     function fillSelects(){
       var a=q('#kbb-cmp-a'),b=q('#kbb-cmp-b');if(!a||!b){return;}
@@ -2995,7 +3009,7 @@ window.KB_BUBBLE=(function(){
         diffGrp('Neu hinzugekommen',d.added,'add',fa)+
         diffGrp('Weggefallen',d.removed,'rem',fa)+
         diffGrp('Verändert',d.changed,'chg',fc)+
-        (none?'<div class="muted" style="font-size:.9em">Keine Unterschiede zwischen A und B'+(d.same?(' ('+d.same+' Personen unverändert)'):'')+'.</div>':'<div class="muted" style="font-size:.82em;margin-top:8px">'+d.same+' Personen unverändert.</div>')+
+        (none?'<div class="muted" style="font-size:.9em">Keine Unterschiede zwischen A und B'+(d.same?(' ('+d.same+(d.same===1?' Person':' Personen')+' unverändert)'):'')+'.</div>':'<div class="muted" style="font-size:.82em;margin-top:8px">'+d.same+(d.same===1?' Person':' Personen')+' unverändert.</div>')+
       '</div>';
       body.innerHTML=bubbles+diff;
     }
@@ -3296,7 +3310,7 @@ window.KB_SYNC=(function(){
     busy=true;setStatus({pending:true});
     var now=Date.now();var live=kopie(collGet());
     return readFile().then(function(remote){
-      if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unveraendert).',pending:false});busy=false;return;}
+      if(remote==='INVALID'){setStatus({error:'Gemeinsame Datei nicht lesbar — Sync pausiert (lokale Daten bleiben unverändert).',pending:false});busy=false;return;}
       if(remote==='FREMD'){setStatus({error:'Diese Datei ist keine Team-Datei des Klassenbuchs — bitte die richtige Datei wählen. Nichts wurde verändert.',pending:false});busy=false;return;}
       var nb,apply;
       if(!base){nb=firstReconcile(live,remote||null,now);apply=true;}
@@ -3385,9 +3399,9 @@ window.KB_SYNC=(function(){
     supported:fsSupported,
     getStatus:function(){return status;},
     onStatus:function(cb){statusCb=cb;try{cb(status);}catch(e){}},
-    connectNew:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge moeglich.'});return;}window.showSaveFilePicker({suggestedName:'klassebuch-team.json',types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(afterPick).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
-    connectExisting:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge moeglich.'});return;}window.showOpenFilePicker({multiple:false,types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(function(a){return afterPick(a[0]);}).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
-    chooseBackupDir:function(){if(!fsSupported()||!('showDirectoryPicker' in window)){setStatus({backupErr:'Nur in Chrome/Edge moeglich.'});return;}window.showDirectoryPicker({mode:'readwrite'}).then(function(d){return verifyPermission(d,true).then(function(ok){if(!ok){setStatus({backupErr:'Kein Zugriff auf den Ordner erteilt.'});return;}backupDir=d;bkSetDay('');return idbSet(d,'backupdir').then(function(){setStatus({backupName:d.name||'Backup-Ordner',backupLast:'',backupErr:''});maybeBackup();});});}).catch(function(e){if(e&&e.name!=='AbortError')setStatus({backupErr:String((e&&e.message)||e)});});},
+    connectNew:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge möglich.'});return;}window.showSaveFilePicker({suggestedName:'klassebuch-team.json',types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(afterPick).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
+    connectExisting:function(){if(!fsSupported()){setStatus({error:'Nur in Chrome/Edge möglich.'});return;}window.showOpenFilePicker({multiple:false,types:[{description:'Klassebuch-Daten',accept:{'application/json':['.json']}}]}).then(function(a){return afterPick(a[0]);}).catch(function(e){if(e&&e.name!=='AbortError')setStatus({error:String((e&&e.message)||e)});});},
+    chooseBackupDir:function(){if(!fsSupported()||!('showDirectoryPicker' in window)){setStatus({backupErr:'Nur in Chrome/Edge möglich.'});return;}window.showDirectoryPicker({mode:'readwrite'}).then(function(d){return verifyPermission(d,true).then(function(ok){if(!ok){setStatus({backupErr:'Kein Zugriff auf den Ordner erteilt.'});return;}backupDir=d;bkSetDay('');return idbSet(d,'backupdir').then(function(){setStatus({backupName:d.name||'Backup-Ordner',backupLast:'',backupErr:''});maybeBackup();});});}).catch(function(e){if(e&&e.name!=='AbortError')setStatus({backupErr:String((e&&e.message)||e)});});},
     regrantBackupDir:function(){idbGet('backupdir').then(function(d){if(!d)return;return verifyPermission(d,true).then(function(ok){if(ok){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupErr:''});maybeBackup();}else{setStatus({backupErr:'Kein Zugriff auf den Ordner erteilt.'});}});});},
     clearBackupDir:function(){backupDir=null;idbDel('backupdir');setStatus({backupName:'',backupLast:'',backupErr:''});},
     disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
@@ -3643,6 +3657,9 @@ window.KB_HEUTE=(function(){
   /* Schultage (Mo–Fr ohne Ferien und Feiertage) zwischen zwei Daten, beide eingeschlossen */
   function schultage(von,bis){var a=A(),n=0,d=tag(von),e=tag(bis);if(d>e){return 0;}
     for(;d<=e;d.setDate(d.getDate()+1)){var w=d.getDay();if(w===0||w===6){continue;}if(a&&a.holidayInfo&&a.holidayInfo(iso(d))){continue;}n++;}return n;}
+  /* Unterrichtsstunden in diesen Schultagen laut Stundenplan des Niveaus (montags z. B. nur 5, nicht pauschal 7) */
+  function stunden(von,bis,niveau){var a=A(),n=0,d=tag(von),e=tag(bis);if(d>e){return 0;}
+    for(;d<=e;d.setDate(d.getDate()+1)){var w=d.getDay();if(w===0||w===6){continue;}if(a&&a.holidayInfo&&a.holidayInfo(iso(d))){continue;}n+=a.hoursOnDay(niveau,w);}return n;}
   function karte(titel,inhalt,extra){return '<div class="kb-card kb-heute-karte'+(extra?' '+extra:'')+'"><h3>'+titel+'</h3>'+inhalt+'</div>';}
   function render(el){
     if(!el){return;}
@@ -3674,11 +3691,12 @@ window.KB_HEUTE=(function(){
     /* 3) Fehlzeiten im laufenden Trimester */
     var r=window.KB_TERMS?window.KB_TERMS.dateRange():null, fz=[];
     if(r&&r.from){
-      var bis=heute<r.to?heute:r.to, tage=schultage(r.from,bis), moeglich=tage*(a.dayHours?a.dayHours():7);
-      if(moeglich>0){
+      var bis=heute<r.to?heute:r.to, tage=schultage(r.from,bis), jeNiveau={};
+      var moeglich=function(niveau){if(!(niveau in jeNiveau)){jeNiveau[niveau]=stunden(r.from,bis,niveau);}return jeNiveau[niveau];};
+      if(tage>0){
         var std={};alle.filter(function(e){return e.date>=r.from&&e.date<=bis&&(e.status==='unentschuldigt'||e.status==='entschuldigt');}).forEach(function(e){var x=std[e.studentId]||(std[e.studentId]={u:0,e:0});x[e.status==='unentschuldigt'?'u':'e']+=(a.hoursOf?a.hoursOf(e):0)||0;});
-        fz=Object.keys(std).map(function(sid){var x=std[sid], p=Math.round((x.u+x.e)/moeglich*100);return {k:idx[sid],x:x,p:p};}).filter(function(y){return y.p>=SCHWELLE;}).sort(function(x,y){return y.p-x.p;});
-        h+=karte('Fehlzeiten im Trimester',(fz.length?'<ul class="kb-heute-liste">'+fz.map(function(y){return '<li><button class="kb-heute-kind" data-heute-kind="'+esc(y.k.id)+'">'+esc(y.k.name)+'</button><span class="kb-heute-chip'+(y.p>=ROT?' rot':' gelb')+'">'+y.p+' % · '+(y.x.u+y.x.e)+' Std. ('+y.x.u+' unentsch.)</span></li>';}).join('')+'</ul><p class="kb-heute-fuss">Ab '+SCHWELLE+' % der Schulstunden seit Trimesterbeginn ('+tage+' Schultage): im Team besprechen, mit den Eltern reden – bevor es ein Signalement braucht.</p>':'<p class="kb-hint">Niemand fehlt in diesem Trimester '+SCHWELLE+' % oder mehr ('+tage+' Schultage bisher).</p>'));
+        fz=Object.keys(std).map(function(sid){var x=std[sid], m=moeglich(idx[sid].level||'L1'), p=m>0?Math.round((x.u+x.e)/m*100):0;return {k:idx[sid],x:x,p:p};}).filter(function(y){return y.p>=SCHWELLE;}).sort(function(x,y){return y.p-x.p;});
+        h+=karte('Fehlzeiten im Trimester',(fz.length?'<ul class="kb-heute-liste">'+fz.map(function(y){return '<li><button class="kb-heute-kind" data-heute-kind="'+esc(y.k.id)+'">'+esc(y.k.name)+'</button><span class="kb-heute-chip'+(y.p>=ROT?' rot':' gelb')+'">'+y.p+' % · '+(y.x.u+y.x.e)+' Std. ('+y.x.u+' unentsch.)</span></li>';}).join('')+'</ul><p class="kb-heute-fuss">Ab '+SCHWELLE+' % der Schulstunden laut Stundenplan seit Trimesterbeginn ('+tage+(tage===1?' Schultag':' Schultage')+'): im Team besprechen, mit den Eltern reden – bevor es ein Signalement braucht.</p>':'<p class="kb-hint">Niemand fehlt in diesem Trimester '+SCHWELLE+' % oder mehr ('+tage+(tage===1?' Schultag':' Schultage')+' bisher).</p>'));
       }
     }
     /* 4) Für heute eingetragen: Prüfungen, Hausaufgaben, Bemerkungen */
@@ -3798,10 +3816,10 @@ window.KB_WEEKLY=(function(){
     try{(window.KB_DOS_SYNC?KB_DOS_SYNC.exportReunions():[]).forEach(function(r){var wi=weekOf(r.date);if(wi<0)return;var g=r.goals||{};Object.keys(g).forEach(function(sid){var arr=g[sid]||[];if(!arr.length)return;var who=(sid==='group')?'Gruppe':esc(nameOf(students,sid));push(wi,'Wochenziele','<div class="it"><div class="ih"><b>'+who+'</b> · '+fmtD(r.date)+'</div><div class="tx">'+window.kbZiele(arr).map(function(x){return '• '+(x.done?'✓ ':'')+esc(x.text);}).join('<br>')+'</div></div>');});});}catch(e){}
     try{(window.KB_NOTEN?KB_NOTEN.syncExport():[]).forEach(function(r){(r.grades||[]).forEach(function(g){var wi=weekOf(g.date);if(wi<0)return;var n60=(+g.max>0?(+g.points/+g.max*60):0);push(wi,'Noten','<div class="it2">'+fmtD(g.date)+' · <b>'+esc(nameOf(students,r.id))+'</b> · '+esc(g.subject||'')+(g.label?(' ('+esc(g.label)+')'):'')+': '+(+g.points)+'/'+(+g.max)+' → '+(Math.round(n60*10)/10).toString().replace('.',',')+'/60</div>');});});}catch(e){}
     try{if(window.KB_SCREENING&&KB_SCREENING.history){(window.KB_ROSTER?KB_ROSTER.list():[]).forEach(function(s){(KB_SCREENING.history(s.id)||[]).forEach(function(h){var wi=weekOf(h.date);if(wi<0)return;var mu=(h.muster||[]).map(function(x){return (x&&x.name)?x.name:x;}).join(' · ');var risk=h.acute?'akute Krise':(h.risk?'Risiko':'');push(wi,'Screenings','<div class="it2">'+fmtD(h.date)+' · <b>'+esc(s.name)+'</b>'+(risk?(' · '+risk):'')+(mu?(' · '+esc(mu)):'')+'</div>');});});}}catch(e){}
-    try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var lab=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status);push(wi,'Absenzen','<div class="it2">'+fmtD(e.date)+' · <b>'+esc(nameOf(students,e.studentId))+'</b> · '+esc(lab)+(e.subject?(' · '+esc(e.subject)):'')+(e.byUser?(' <em>('+esc(e.byUser)+')</em>'):'')+'</div>');});}catch(e){}
+    try{(window.KB_ANW?KB_ANW.exportEntries():[]).forEach(function(e){var wi=weekOf(e.date);if(wi<0)return;var lab=(window.KB_ANW.statusLabel?KB_ANW.statusLabel(e.status):e.status);push(wi,e.status==='verspaetet'?'Retards':'Absenzen','<div class="it2">'+fmtD(e.date)+' · <b>'+esc(nameOf(students,e.studentId))+'</b> · '+esc(lab)+(e.subject?(' · '+esc(e.subject)):'')+(e.byUser?(' <em>('+esc(e.byUser)+')</em>'):'')+'</div>');});}catch(e){}
     try{(window.KB_ANW?KB_ANW.exportNotes():[]).forEach(function(n){var wi=weekOf(n.date);if(wi<0)return;push(wi,'Klassenbuch-Notizen','<div class="it"><div class="ih"><b>'+esc(n.type||'Notiz')+'</b> · '+fmtD(n.date)+(n.subject?(' · '+esc(n.subject)):'')+(n.byUser?(' <em>(von '+esc(n.byUser)+')</em>'):'')+'</div><div class="tx">'+nl2br(n.text||'')+'</div></div>');});}catch(e){}
 
-    var CATS=['Réunion-Beiträge','Wochenziele','Noten','Screenings','Dossier-Einträge','Absenzen','Klassenbuch-Notizen'];
+    var CATS=['Réunion-Beiträge','Wochenziele','Noten','Screenings','Dossier-Einträge','Absenzen','Retards','Klassenbuch-Notizen'];
     var body='';
     wks.forEach(function(wk,wi){
       body+='<section class="wk"><h2>Woche '+fmtD(wk.lo)+' – '+fmtD(wk.hi)+'</h2>';
@@ -3867,7 +3885,8 @@ window.KB_WEEKLY=(function(){
       /* Beim Retard gehoeren die Minuten dazu, sonst fehlt in der Sicherung
          genau die Angabe, wegen der wir sie erfassen. */
       if(e.status==='verspaetet'&&+e.lateMin>0)st+=' ('+(+e.lateMin)+' min)';
-      add('Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',st,'');});
+      /* Ein Retard ist keine Absenz: eigener Bereich, eigene Zahl */
+      add(e.status==='verspaetet'?'Retards':'Absenzen',e.date,nameOf(students,e.studentId),e.subject||'',e.byUser||'',st,'');});
     }catch(e){}
     try{(window.KB_ANW?KB_ANW.exportNotes():[]).forEach(function(n){if(!inW(n.date))return;
       /* Notizen koennen einem Kind gehoeren - dann gehoert der Name in die Zeile. */
@@ -3996,7 +4015,7 @@ window.KB_WEEKLY=(function(){
       '<head><meta charset="utf-8"><title>Klassebuch — Woche '+esc(fmtD(w.lo))+'</title><style>'+st+'</style></head><body>'+
       '<h1>Klassebuch — Wochen-Sicherung</h1>'+
       '<p class="sub">Annexe Junglinster · Woche '+esc(fmtD(w.lo))+' – '+esc(fmtD(w.hi))+
-      ' · erstellt am '+esc(fmtD(iso(new Date())))+' · '+rows.length+' neue Einträge</p>';
+      ' · erstellt am '+esc(fmtD(iso(new Date())))+' · '+rows.length+(rows.length===1?' neuer Eintrag</p>':' neue Einträge</p>');
     if(!rows.length){h+='<p><i>In dieser Woche ist nichts Neues dazugekommen.</i></p>';}
     else{
       h+='<table><tr><th>Bereich</th><th>Anzahl</th></tr>';

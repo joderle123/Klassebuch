@@ -2,7 +2,10 @@
 // beim Start (K2), keine zweite Personenwahl (K3), Protokoll mit Ehemaligen (K4), zwei Fenster (K5),
 // Réunion vom Schülerblatt mit offenen Zielen (K7), KI-Anonymisierung (K8), Absenzen-Bericht mit
 // Ehemaligen (K9), CSV-Stunden (K10), Karte „Dossier-Bericht“ (K11), Tag-Feld (K13), Handy 390 px (K14),
-// „Tag leeren“, Papierkorb, Noten, leerer Name, Stundenplan (K15a–e). Nur erfundene Personen.
+// „Tag leeren“, Papierkorb, Noten, leerer Name, Stundenplan (K15a–e). Zweite Runde: Hinweis nach
+// „+ Schuljahr anlegen“ (K6), Texte und Einzahl, Retards in der Wochen-Sicherung, Fehlzeiten nach
+// Stundenplan, Dossier-Backup, Handy (Woche, Warnleisten, CSV mit Ehemaligen, Startdialog 320 px).
+// Nur erfundene Personen.
 // Aufruf: node klassenbuch/tests/korrekturen.cjs   (Webserver auf Port 8099 für den Hauptordner)
 'use strict';
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
@@ -20,6 +23,7 @@ async function kontext(browser, fehler, opt) {
   const ctx = await browser.newContext({ viewport: opt.viewport || { width: 1400, height: 900 }, locale: 'de-DE', timezoneId: 'Europe/Luxembourg', acceptDownloads: true });
   await ctx.route('**/*', r => r.request().url().startsWith(HOST + '/') ? r.continue() : r.abort());
   await ctx.addInitScript(() => { window.open = (function (o) { return function (u, n) { return u ? null : o.call(window, u, n); }; })(window.open); window.print = function () {}; });
+  if (opt.init) { await ctx.addInitScript(opt.init); }
   const dialoge = [];
   ctx.antwort = null;   // true/false: nächste Rückfrage annehmen/ablehnen
   ctx.on('page', p => {
@@ -30,13 +34,13 @@ async function kontext(browser, fehler, opt) {
   ctx.dialoge = dialoge;
   return ctx;
 }
-async function frisch(page) {
+async function frisch(page, ohneHub) {
   await page.goto(BASE, { waitUntil: 'load' });
-  await page.evaluate(async () => {
+  await page.evaluate(async ohneHub => {
     localStorage.clear();
     for (const n of ['cdse_dossier_db', 'klassebuch-sync', 'anwesenheit-sync']) { await new Promise(r => { const q = indexedDB.deleteDatabase(n); q.onsuccess = q.onerror = q.onblocked = () => r(); }); }
-    localStorage.setItem('cdse-nutzer', JSON.stringify({ id: 'k1', name: 'Mia Muster', team: 'annexe' }));
-  });
+    if (!ohneHub) { localStorage.setItem('cdse-nutzer', JSON.stringify({ id: 'k1', name: 'Mia Muster', team: 'annexe' })); }
+  }, !!ohneHub);
   await page.reload({ waitUntil: 'load' }); await warte(1500);
 }
 /* Klassenbuch für ein Kind in der festen Schulwoche öffnen */
@@ -45,6 +49,8 @@ async function woche(page, sid) {
   await warte(450);
 }
 const zelle = (sid, blk, tag) => '#anw-root .wcell[data-sid="' + sid + '"][data-blk="' + blk + '"][data-date="' + tag + '"]';
+/* Inhalt eines Downloads lesen, ohne ihn abzulegen */
+async function lies(dl) { const teile = []; for await (const t of await dl.createReadStream()) { teile.push(t); } return Buffer.concat(teile); }
 
 (async () => {
   const t0 = Date.now();
@@ -258,11 +264,126 @@ const zelle = (sid, blk, tag) => '#anw-root .wcell[data-sid="' + sid + '"][data-
   await H.evaluate(() => window.scrollTo(0, 900)); await warte(300);
   const reu = await H.evaluate(() => { const k = document.querySelector('#dos-root .reu-topbar').getBoundingClientRect(), l = document.querySelector('.kb-topbar').getBoundingClientRect(); return { kopfOben: Math.round(k.top), kopfUnten: Math.round(k.bottom), leisteUnten: Math.round(l.bottom) }; });
   check('Réunion: der Kopf rutscht beim Scrollen nicht unter die App-Leiste', reu.kopfUnten <= reu.leisteUnten || reu.kopfOben >= reu.leisteUnten, reu);
+  await H.evaluate(() => window.scrollTo(0, 0));
+  const hk = await H.evaluate(() => KB_ROSTER.add('Tom Muster', '', 'L1', 'ES'));
+  await woche(H, hk);
+  const zf = zelle(hk, 'b5', '2026-09-25');
+  await H.click(zf); await warte(400);
+  const raster = await H.evaluate(([sel, sid]) => { const g = document.querySelector('#anw-root .wk-grid'), c = document.querySelector(sel).getBoundingClientRect(); return { links: Math.round(g.scrollLeft), zelle: [Math.round(c.left), Math.round(c.right)], breite: innerWidth, eintraege: KB_ANW.exportEntries().filter(e => e.studentId === sid).length }; }, [zf, hk]);
+  check('Klassenbuch: nach dem Klick bleibt die Woche an der Stelle, die Zelle am Freitag bleibt im Bild', raster.eintraege === 1 && raster.links > 0 && raster.zelle[0] >= 0 && raster.zelle[1] <= raster.breite, raster);
   const H2 = await ctx3.newPage(); await H2.goto(BASE, { waitUntil: 'load' }); await warte(3000);
   await H.evaluate(() => { window.scrollTo(0, 0); window.__kbGo('heute'); }); await warte(3000);
   const balken = await H.evaluate(() => { const b = document.getElementById('kb-tabwarn'); if (!b) { return null; } const r = b.getBoundingClientRect(), m = document.getElementById('kb-burger').getBoundingClientRect(); const e = document.elementFromPoint(m.left + m.width / 2, m.top + m.height / 2); return { hoehe: Math.round(r.height), menue: !!(e && e.closest('#kb-burger')) }; });
   check('Hinweis „mehrere Fenster“ verdeckt die Menü-Taste ☰ nicht', !!balken && balken.menue && balken.hoehe <= 120, balken);
+  /* „Team-Datei nicht verbunden“ und Löschbremse nachgestellt – mit dem Stil, den KB_SYNC ihnen am Element gibt */
+  const leisten = await H.evaluate(() => {
+    const mk = (id, z, farbe) => { const el = document.createElement('div'); el.id = id; el.setAttribute('role', 'alert'); el.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:' + z + ';background:' + farbe + ';color:#fff;font:600 14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:11px 16px;display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;box-shadow:0 2px 14px rgba(0,0,0,.35);'; el.textContent = 'Testleiste mit etwas längerem Text, damit sie auf dem Handy über mehrere Zeilen geht.'; document.body.appendChild(el); return el; };
+    const a = mk('kb-syncwarn', 9998, '#E8A317'), b = mk('kb-wipewarn', 10000, '#8E1B12');
+    const m = document.getElementById('kb-burger').getBoundingClientRect(), e = document.elementFromPoint(m.left + m.width / 2, m.top + m.height / 2);
+    const lage = el => { const r = el.getBoundingClientRect(); return { oben: Math.round(r.top), unten: Math.round(r.bottom), schrift: getComputedStyle(el).fontSize }; };
+    const aus = { menue: !!(e && e.closest('#kb-burger')), sync: lage(a), loeschbremse: lage(b), hoehe: innerHeight };
+    a.remove(); b.remove();
+    return aus;
+  });
+  check('Warnleisten „Team-Datei nicht verbunden“ und Löschbremse stehen unten und lassen ☰ frei', leisten.menue && Math.abs(leisten.sync.unten - leisten.hoehe) <= 1 && Math.abs(leisten.loeschbremse.unten - leisten.hoehe) <= 1 && leisten.loeschbremse.schrift === '12.5px', leisten);
   await ctx3.close();
+
+  console.log('13) Schuljahr-Hinweis (K6), Texte und Einzahl, Wochen-Sicherung, Dossier-Backup, CSV mit Ehemaligen');
+  const ctx4 = await kontext(browser, fehler);
+  const R = await ctx4.newPage(); await frisch(R);
+  const k4 = await R.evaluate(() => ({ tom: KB_ROSTER.add('Tom Muster', '', 'L1', 'ES'), lea: KB_ROSTER.add('Lea Beispiel', '', 'L2', 'ES') }));
+  await R.evaluate(() => window.__kbGo('klasse')); await warte(400);
+  await R.click('#kb-term-add'); await warte(300);
+  const jahr = await R.evaluate(() => { const h = document.getElementById('kb-term-hinweis'); return h ? { sichtbar: !h.hidden && !!h.offsetParent, text: h.textContent, fest: !KB_TERMS.active().auto } : null; });
+  check('„+ Schuljahr anlegen“: Hinweis, dass das neue Jahr jetzt fest gewählt ist und wie es zurückgeht', !!jahr && jahr.sichtbar && jahr.fest && /^\d{4}\/\d{2} ist jetzt fest gewählt – „⟳ Automatisch“ führt zurück zum laufenden Schuljahr\.$/.test(jahr.text), jahr);
+  await R.click('#kb-term-auto'); await warte(300);
+  check('Nach „⟳ Automatisch“ ist der Hinweis wieder weg', await R.evaluate(() => { const h = document.getElementById('kb-term-hinweis'); return !!h && h.hidden && KB_TERMS.active().auto; }));
+  /* Tom: je ein Dossier-Eintrag, eine Absenz, eine Note; Lea: ein Retard. In der Woche ab 14.09.2026 liegen davon nur Absenz und Retard. */
+  await R.evaluate(async ([tom, lea]) => {
+    await Repo.saveEntry({ studentId: tom, date: '2026-09-10', author: 'Test', category: 'Schule', tags: [], text: 'Eintrag (erfunden)' });
+    const e = (id, sid, date, blk, status) => ({ id, studentId: sid, date, weekday: new Date(date + 'T12:00:00').getDay(), blockId: blk, subject: 'Mathe', status, hours: 1.5, note: '', byUser: 'Test', byUserAt: 1 });
+    KB_ANW.applyEntries([e('w1', tom, '2026-09-16', 'b3', 'unentschuldigt'), Object.assign(e('w2', lea, '2026-09-17', 'b5', 'verspaetet'), { lateMin: 10 })]);
+    KB_NOTEN.add(tom, { subject: 'Mathe', period: 'S1', points: 40, max: 60 });
+  }, [k4.tom, k4.lea]);
+  await R.evaluate(() => window.__kbGo('klasse')); await warte(400);
+  ctx4.dialoge.length = 0; ctx4.antwort = false;
+  await R.click('#kb-roster-body tr[data-id="' + k4.tom + '"] .kb-rd'); await warte(300);
+  ctx4.antwort = null;
+  const loeschen = (ctx4.dialoge.find(d => d.typ === 'confirm') || {}).text || '';
+  check('Löschen fragt in der Einzahl: „1 Dossier-Eintrag, 1 Absenz, 1 Note“ – und „Abbrechen“ lässt Tom stehen', loeschen.includes('Daran hängen: 1 Dossier-Eintrag, 1 Absenz, 1 Note.') && !!(await R.evaluate(sid => KB_ROSTER.byId(sid), k4.tom)), loeschen);
+  await R.evaluate(() => { window.__kbGo('students'); location.hash = '#/'; }); await warte(700);
+  const chips = await R.evaluate(sid => { const k = document.querySelector('article.st-card[data-route="#/student/' + sid + '"] .st-chips'); return k ? k.textContent.replace(/\s+/g, ' ').trim() : ''; }, k4.tom);
+  check('Übersicht: „1 Absenz“ statt „1 Absenzen“', chips.includes('1 Absenz · 1 unent.') && !chips.includes('Absenzen'), chips);
+  await R.evaluate(() => { window.__kbGo('data'); const i = document.getElementById('kb-wk-date'); i.value = '2026-09-14'; i.dispatchEvent(new Event('change', { bubbles: true })); }); await warte(300);
+  /* nur Absenzen und Retards prüfen – die eingebauten Daten der Annexe können in derselben Woche weitere Einträge haben */
+  const wochenSich = await R.evaluate(() => ({ teile: document.getElementById('kb-wk-counts').textContent.replace(/\s+/g, ' ').trim().replace(/^.*?: /, '').split(' · '), bereiche: KB_WEEKLY.collect('2026-09-14', '2026-09-20').filter(r => /^(Absenzen|Retards)$/.test(r.bereich)).map(r => r.bereich + ':' + r.details).sort().join(' | ') }));
+  check('Wochen-Sicherung: der Retard zählt nicht als Absenz – „1 Absenz · 1 Retard“', wochenSich.teile.includes('1 Absenz') && wochenSich.teile.includes('1 Retard') && !wochenSich.teile.some(t => /Absenzen/.test(t)) && wochenSich.bereiche === 'Absenzen:Non-excusé | Retards:Retard (10 min)', wochenSich);
+  await R.evaluate(sid => { window.__kbGo('students'); location.hash = '#/entry/new/' + sid; }, k4.lea); await warte(700);
+  const regler = await R.evaluate(() => [...document.querySelectorAll('.slider-field')].map(f => f.textContent).join(' ').replace(/\s+/g, ' '));
+  const quelle = await R.evaluate(() => fetch(location.href).then(r => r.text()));
+  const alt = ['vollständig present', 'schicke mir bitte', 'Chrome/Edge moeglich', 'bleiben unveraendert', '<i>index.html</i>'].filter(s => quelle.includes(s));
+  check('Texte: „vollständig präsent“, Hinweis beim DS/PEI-Import für Lehrkräfte, „möglich“, „unverändert“, Hub statt index.html', regler.includes('10 = vollständig präsent') && alt.length === 0 && quelle.includes('erkennt der Import sie nicht') && quelle.includes('Nur in Chrome/Edge möglich.') && quelle.includes('(lokale Daten bleiben unverändert)'), { alt, regler: regler.includes('vollständig präsent') });
+  await R.evaluate(() => { window.__kbGo('students'); location.hash = '#/backup'; }); await warte(700);
+  const bk = await R.evaluate(() => ({ zahl: +((/(\d+) Schüler/.exec(document.getElementById('bk-summary').textContent) || [])[1] || -1), liste: KB_ROSTER.list().length }));
+  const [bkDl] = await Promise.all([R.waitForEvent('download', { timeout: 8000 }).catch(() => null), R.click('#bk-export')]);
+  const bkDaten = bkDl ? await lies(bkDl) : null, bkJson = bkDaten ? JSON.parse(bkDaten.toString('utf8')) : { students: [] };
+  check('Dossier-Backup: gleiche Zahl Schüler in Übersicht, Klassenliste und Datei', bk.zahl === bk.liste && bkJson.students.length === bk.liste && bkJson.students.some(s => s.id === k4.tom), { bk, datei: bkJson.students.length });
+  let panel = null, nach = null;
+  if (bkDaten) {
+    await R.setInputFiles('#bk-file', { name: 'dossier-backup.json', mimeType: 'application/json', buffer: bkDaten }); await warte(600);
+    panel = await R.evaluate(() => { const p = document.getElementById('bk-import-panel'); return { ersetzen: !!p.querySelector('[value="replace"]') || /Ersetzen/.test(p.textContent), zusammen: !!p.querySelector('[value="merge"]:checked') }; });
+    await R.click('#bk-confirm-import'); await warte(900);
+    nach = await R.evaluate(sid => ({ liste: KB_ROSTER.list().length, eintraege: Repo.entriesForStudent(sid).length }), k4.tom);
+  }
+  check('Backup importieren: nur noch „Zusammenführen“, kein „Ersetzen“ – danach ist alles noch da', !!panel && !panel.ersetzen && panel.zusammen && nach.liste === bk.liste && nach.eintraege === 1, { panel, nach });
+  await R.evaluate(sid => KB_ROSTER.update(sid, { active: false }), k4.lea); await warte(300);
+  await R.evaluate(() => window.__kbGo('absenzen')); await warte(400);
+  const [csvDl2] = await Promise.all([R.waitForEvent('download', { timeout: 8000 }).catch(() => null), R.evaluate(() => document.getElementById('export-csv').click())]);
+  const csv2 = csvDl2 ? (await lies(csvDl2)).toString('utf8').split(/\r?\n/).filter(z => /Tom Muster|Lea Beispiel/.test(z)).map(z => z.split(';').slice(0, 4).join(';')) : [];
+  check('CSV: die Ehemalige steht mit Namen und Niveau da („(ehemalig)“), nicht als „(gelöscht)“', csv2.join(' | ') === '2026-09-16;Mittwoch;Tom Muster;L1 | 2026-09-17;Donnerstag;Lea Beispiel (ehemalig);L2', csv2);
+  await ctx4.close();
+
+  console.log('14) Heute: Fehlzeiten mit den Stunden laut Stundenplan (Uhr auf Freitag, 25.09.2026)');
+  const ctx5 = await kontext(browser, fehler);
+  await ctx5.clock.install({ time: new Date('2026-09-25T10:00:00+02:00') });
+  const U = await ctx5.newPage(); await frisch(U);
+  const fz = await U.evaluate(() => {
+    const iso = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+    const ben = KB_ROSTER.add('Ben Probe', '', 'L2', 'ES'), tt = KB_ANW.getTimetable().L2 || {}, r = KB_TERMS.dateRange(), heute = todayIso();
+    /* Ben fehlt Montag, 21.09., und Dienstag, 22.09., ganz – jede Stunde laut Stundenplan */
+    const liste = []; let n = 0;
+    [['2026-09-21', 1], ['2026-09-22', 2]].forEach(([tag, w]) => KB_ANW.blocks().forEach((b, i) => { const s = (tt[w] || [])[i], h = KB_ANW.hoursOf({ blockId: b.id, subject: s }); if (h > 0) { liste.push({ id: 'h' + (++n), studentId: ben, date: tag, weekday: w, blockId: b.id, subject: s, status: 'unentschuldigt', hours: h, note: '', byUser: 'Test', byUserAt: 1 }); } }));
+    KB_ANW.applyEntries(liste);
+    /* mögliche Stunden: jeder Schultag vom Trimesterbeginn bis heute mit seinen Stunden laut Stundenplan */
+    let moeglich = 0, tage = 0;
+    for (const d = new Date(r.from + 'T12:00:00'); iso(d) <= heute; d.setDate(d.getDate() + 1)) { const w = d.getDay(); if (w > 0 && w < 6 && !KB_ANW.holidayInfo(iso(d))) { tage++; KB_ANW.blocks().forEach((b, i) => { moeglich += KB_ANW.hoursOf({ blockId: b.id, subject: (tt[w] || [])[i] }); }); } }
+    return { heute, tage, moeglich, fehlt: liste.reduce((s, e) => s + KB_ANW.hoursOf(e), 0), mo: KB_ANW.hoursOnDay ? KB_ANW.hoursOnDay('L2', 1) : null, di: KB_ANW.hoursOnDay ? KB_ANW.hoursOnDay('L2', 2) : null };
+  });
+  await U.evaluate(() => window.__kbGo('heute')); await warte(500);
+  /* nur Bens Zeile und die Fußnote lesen */
+  const fzKarte = await U.evaluate(() => { const k = [...document.querySelectorAll('#kb-heute .kb-heute-karte')].find(x => /Fehlzeiten im Trimester/.test(x.textContent)), z = k && [...k.querySelectorAll('li')].find(li => li.textContent.includes('Ben Probe')), f = k && k.querySelector('.kb-heute-fuss'); return ((z ? z.textContent : '') + ' | ' + (f ? f.textContent : '')).replace(/\s+/g, ' '); });
+  const fzP = Math.round(fz.fehlt / fz.moeglich * 100), fzAlt = Math.round(fz.fehlt / (fz.tage * 7) * 100);
+  check('Stunden je Tag aus dem Stundenplan: Montag 5, Dienstag 7 (L2)', fz.mo === 5 && fz.di === 7, fz);
+  check('Ben: ' + fzP + ' % (' + fz.fehlt + ' von ' + fz.moeglich + ' Std. laut Stundenplan), nicht ' + fzAlt + ' % mit pauschal 7 Std. je Tag', fz.heute === '2026-09-25' && fz.fehlt === 12 && fzP !== fzAlt && new RegExp('Ben Probe ?' + fzP + ' % · 12 Std\\. \\(12 unentsch\\.\\)').test(fzKarte) && fzKarte.includes('Schulstunden laut Stundenplan seit Trimesterbeginn (' + fz.tage + ' Schultage)'), { fz, fzP, fzAlt, karte: fzKarte });
+  await ctx5.close();
+
+  console.log('15) Browser ohne Zugriff auf Dateien: Hinweis nennt den Hub');
+  const ctx6 = await kontext(browser, fehler, { init: () => { delete window.showOpenFilePicker; delete window.showSaveFilePicker; } });
+  const F = await ctx6.newPage(); await frisch(F);
+  await F.evaluate(() => window.__kbGo('data')); await warte(400);
+  const sync = await F.evaluate(() => document.getElementById('kb-sync-status').textContent.replace(/\s+/g, ' '));
+  check('„Bitte den Hub in Microsoft Edge öffnen: Rechtsklick auf hub.html“ – nicht index.html', sync.includes('Bitte den Hub in Microsoft Edge öffnen: Rechtsklick auf hub.html') && !sync.includes('index.html'), sync);
+  await ctx6.close();
+
+  console.log('16) Kleines Handy 320 × 568: Startdialog ohne Person aus dem Hub');
+  const ctx7 = await kontext(browser, fehler, { viewport: { width: 320, height: 568 } });
+  const G = await ctx7.newPage(); await frisch(G, true);
+  const tor = await G.evaluate(() => { const g = document.getElementById('kb-gate'), k = g && g.querySelector('.kb-gate-card'); return k ? { offen: g.classList.contains('open'), oben: Math.round(k.getBoundingClientRect().top) } : null; });
+  let geklickt = true;
+  await G.click('#kb-gate-other', { timeout: 4000 }).catch(() => { geklickt = false; }); await warte(400);
+  const wer = await G.evaluate(() => ({ offen: document.getElementById('kb-gate').classList.contains('open'), person: KB_USER.get() }));
+  check('Karte oben nicht abgeschnitten, „+ Andere Person“ erreichbar, danach ist die Person gewählt', !!tor && tor.offen && tor.oben >= 0 && geklickt && !wer.offen && wer.person === 'Test Person', { tor, geklickt, wer });
+  await ctx7.close();
 
   check('Keine Fehler in der Konsole', fehler.length === 0, fehler.slice(0, 5));
   console.log('\n' + ok + ' ok, ' + bad + ' Fehler  (' + Math.round((Date.now() - t0) / 1000) + ' s)');

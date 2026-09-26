@@ -271,6 +271,10 @@ svg.kb-i.lg{width:22px;height:22px;}
 .kb-gate-user{background:#fff;border-color:var(--kb-border);font-weight:600;transition:border-color .12s,box-shadow .12s,transform .12s;}
 .kb-gate-user:hover{border-color:var(--kb-accent-200);box-shadow:0 4px 14px rgba(16,24,40,.08);transform:translateY(-1px);}
 .kb-gate-other{border-color:var(--kb-border-strong);color:var(--kb-text-soft);}
+/* Kleine Handys: ist die Karte höher als der Bildschirm, scrollt die Ansicht - oben wird nichts
+   abgeschnitten und „+ Andere Person“ bleibt erreichbar. Passt sie, steht sie weiter mittig. */
+.kb-gate{align-items:flex-start;overflow-y:auto;}
+.kb-gate-card{margin:auto;}
 
 /* ---------- Symbole, die Emoji ersetzen (symbole.js) ---------- */
 svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
@@ -515,10 +519,11 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
   #anw-root .wrap{width:100%;}
 }
 
-/* Hinweis „App in mehreren Fenstern offen“ (tabs-guard.js, Stil am Element): auf Handy und Tablet
-   unten statt oben - dort lag er über der Menü-Taste ☰ -, auf dem Handy auch kleiner */
-@media (max-width:880px){#kb-tabwarn{top:auto!important;bottom:0;box-shadow:0 -2px 10px rgba(0,0,0,.25)!important;}}
-@media (max-width:640px){#kb-tabwarn{font-size:12.5px!important;padding:7px 10px!important;gap:8px!important;}}
+/* Warnleisten „App in mehreren Fenstern offen“ (tabs-guard.js), „Team-Datei nicht verbunden“ und
+   Löschbremse (KB_SYNC), Stil am Element: auf Handy und Tablet unten statt oben - dort lagen sie
+   über der Menü-Taste ☰ -, auf dem Handy auch kleiner */
+@media (max-width:880px){#kb-tabwarn,#kb-syncwarn,#kb-wipewarn{top:auto!important;bottom:0;box-shadow:0 -2px 10px rgba(0,0,0,.25)!important;}}
+@media (max-width:640px){#kb-tabwarn,#kb-syncwarn,#kb-wipewarn{font-size:12.5px!important;padding:7px 10px!important;gap:8px!important;}}
 
 /* ---------- Pathologien (SAVOIR): an die App angeglichen ---------- */
 #sav-root .achse-card{border-radius:14px;border-color:var(--kb-border);box-shadow:var(--kb-shadow-sm);transition:border-color .12s,box-shadow .12s;}
