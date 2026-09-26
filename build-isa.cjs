@@ -902,6 +902,17 @@ window.KB_ROSTER=(function(){
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  /* Wer aus der Liste verschwindet - hier geloescht oder per Abgleich -,
+     dessen Name wird gemerkt. Sonst wuesste der Papierkorb spaeter nicht mehr,
+     wem die abgeraeumten Eintraege gehoerten. */
+  var WEG_KEY='klassebuch_roster_weg';
+  function weggeNamen(){try{return JSON.parse(localStorage.getItem(WEG_KEY)||'{}')||{};}catch(e){return {};}}
+  function merkeNamen(alt,neu){
+    var bleibt={},m=null,i;
+    for(i=0;i<(neu||[]).length;i++)bleibt[neu[i].id]=1;
+    for(i=0;i<(alt||[]).length;i++){var s=alt[i];if(!bleibt[s.id]&&s.name){if(!m)m=weggeNamen();m[s.id]=s.name;}}
+    if(m){try{localStorage.setItem(WEG_KEY,JSON.stringify(m));}catch(e){}}
+  }
   return {
     list:function(){return list.map(clone);},
     byId:function(id){var s=find(id);return s?clone(s):null;},
@@ -911,10 +922,11 @@ window.KB_ROSTER=(function(){
     add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
-    remove:function(id){list=list.filter(function(s){return s.id!==id;});notify();},
+    remove:function(id){merkeNamen(list,list.filter(function(s){return s.id!==id;}));list=list.filter(function(s){return s.id!==id;});notify();},
+    removedName:function(id){return (weggeNamen()[id])||'';},
     onChange:function(fn){hooks.push(fn);},
     syncExport:function(){return list.map(clone);},
-    syncApply:function(arr){list=(arr||[]).map(clone);persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
+    syncApply:function(arr){var neu=(arr||[]).map(clone);merkeNamen(list,neu);list=neu;persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   };
 })();
 `;
@@ -1303,6 +1315,20 @@ var DOS_OVERRIDES = `
   window.KB_DOS_RECONCILE=function(){
     if(!window.KB_ROSTER){return;}
     var keep=window.KB_ROSTER.ids();
+    /* Was hier wegfaellt, gehoert zu einem Schueler, der nicht mehr in der
+       Liste steht. Frueher war es damit endgueltig weg - jetzt geht es in den
+       Papierkorb, mit dem Namen, damit es sich zurueckholen laesst. */
+    var namen={};(Repo.students||[]).forEach(function(s){namen[s.id]=s.name;});
+    var nameVon=function(sid){return namen[sid]||(window.KB_ROSTER&&window.KB_ROSTER.removedName?window.KB_ROSTER.removedName(sid):'')||'';};
+    try{
+      (Repo.entries||[]).forEach(function(e){
+        if(!keep[e.studentId]&&typeof Trash!=='undefined'){
+          var c={};for(var k in e)c[k]=e[k];
+          c._studentName=nameVon(e.studentId);
+          Trash.push('entry',c);
+        }
+      });
+    }catch(e){}
     Repo.students=(Repo.students||[]).filter(function(s){return keep[s.id];});
     Repo.entries=(Repo.entries||[]).filter(function(e){return keep[e.studentId];});
     (Repo.reunions||[]).forEach(function(r){
@@ -2047,8 +2073,33 @@ window.KB_SYNC=(function(){
     }
     return {ges:ges,teile:out};
   }
+  /* Je Schueler: verliert einer auf einen Schlag den Grossteil seines
+     Dossiers, ist das verdaechtig - auch wenn es gemessen am Ganzen wenig ist
+     (30 Eintraege sind nur 6 % der Sammlung). Ausnahme: jemand hat den
+     Schueler hier gerade bewusst geloescht und das bestaetigt. */
+  var WIPE_ALLOW_KEY='klassebuch_wipe_ok';
+  function allowMap(){
+    try{var m=JSON.parse(localStorage.getItem(WIPE_ALLOW_KEY)||'{}')||{},out={},jetzt=Date.now();
+      for(var k in m){if(jetzt-m[k]<86400000)out[k]=m[k];}return out;}catch(e){return {};}
+  }
+  function allowWipe(sid){var m=allowMap();m[sid]=Date.now();try{localStorage.setItem(WIPE_ALLOW_KEY,JSON.stringify(m));}catch(e){}}
+  function jeSchueler(ld,now){
+    var bc=(base&&base.colls&&base.colls.dosEntries)||[], sidOf={}, tot={}, j;
+    for(j=0;j<bc.length;j++){var x=bc[j];if(!x._del&&x.d&&x.d.studentId){sidOf[x.id]=x.d.studentId;tot[x.d.studentId]=(tot[x.d.studentId]||0)+1;}}
+    var lc=(ld.colls.dosEntries||[]), dz={};
+    for(j=0;j<lc.length;j++){var y=lc[j];if(y._del&&(y._ts||0)>=now){var sid=sidOf[y.id];if(sid)dz[sid]=(dz[sid]||0)+1;}}
+    var namen={}, rc=(base&&base.colls&&base.colls.roster)||[];
+    for(j=0;j<rc.length;j++){if(rc[j].d&&rc[j].d.id)namen[rc[j].d.id]=rc[j].d.name;}
+    var out=[];for(var s2 in dz)out.push({sid:s2,del:dz[s2],vorher:tot[s2]||0,name:namen[s2]||''});
+    return out;
+  }
   function verdaechtig(w){
     if(wipeOk)return false;
+    var erlaubt=allowMap();
+    for(var k=0;k<(w.schueler||[]).length;k++){
+      var s=w.schueler[k];
+      if(!erlaubt[s.sid]&&s.del>=5&&s.vorher&&s.del/s.vorher>=0.5)return true;
+    }
     if(w.ges<WIPE_ABS)return false;
     for(var i=0;i<w.teile.length;i++){var t=w.teile[i];if(t.anteil>=WIPE_ANTEIL)return true;}
     return false;
@@ -2066,8 +2117,12 @@ window.KB_SYNC=(function(){
     var was=w.teile.filter(function(t){return t.del;}).map(function(t){
       return t.del+' '+(NAMEN[t.coll]||t.coll);
     }).join(', ');
+    var erl=allowMap(), einzeln=(w.schueler||[]).filter(function(s){return !erl[s.sid]&&s.del>=5&&s.vorher&&s.del/s.vorher>=0.5;});
+    var darunter=einzeln.length?(' — darunter '+einzeln.map(function(s){
+        return (s.del===s.vorher?'alle ':'')+s.del+' von „'+(s.name||'unbekannt')+'"';
+      }).join(', ')):'';
     var t=document.createElement('span');
-    t.textContent='⛔ Der Abgleich würde ' + was + ' löschen. Das sieht nach einem Fehler aus — es wurde nichts in die Team-Datei geschrieben.';
+    t.textContent='⛔ Der Abgleich würde ' + was + ' löschen' + darunter + '. Das sieht nach einem Fehler aus — es wurde nichts in die Team-Datei geschrieben.';
     el.appendChild(t);
     function knopf(txt,fn,stark){
       var b=document.createElement('button');b.textContent=txt;
@@ -2124,6 +2179,7 @@ window.KB_SYNC=(function(){
       else{
         var ld=buildLocalDoc(base,live,now);
         var w=neueLoeschungen(ld,now);
+        w.schueler=jeSchueler(ld,now);
         if(verdaechtig(w)){
           setStatus({pending:false,error:'Abgleich angehalten: würde ungewöhnlich viel löschen.'});
           busy=false;try{wipeBar(w);}catch(e){}
@@ -2140,6 +2196,7 @@ window.KB_SYNC=(function(){
       return vorher.then(function(){
         return changed?writeFile(nb):Promise.resolve();
       }).then(function(){
+        wipeOk=false;   /* ein "Trotzdem" gilt fuer genau eine Runde */
         setStatus({error:'',lastSync:Date.now(),lastBy:(remote&&remote._savedBy)||status.lastBy,pending:false,counts:summarize(base)});
         busy=false;
       });
@@ -2212,6 +2269,7 @@ window.KB_SYNC=(function(){
     disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
     syncNow:function(){return cycle();},
     restoreFromFile:function(){return restoreFromFile();},
+    allowWipe:function(sid){allowWipe(sid);},
     reconnect:function(){idbGet().then(function(h){if(h)return afterPick(h);}).then(function(){return idbGet('backupdir');}).then(function(d){if(!d)return;return verifyPermission(d,true).then(function(ok){if(ok){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupErr:''});maybeBackup();}});});},
     autoOn:autoOn,
     setAuto:function(v){setAuto(v);if(v&&!fileHandle)idbGet().then(function(h){if(h)armAuto(h);});},
