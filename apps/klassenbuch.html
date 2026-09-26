@@ -689,6 +689,230 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 #dos-root .checkbox-row{display:flex; align-items:flex-start; gap:8px; font-size:.86rem; margin-bottom:8px;}
 #dos-root .checkbox-row input{margin-top:3px;}
 
+/* ---------- KI-Export (§4): Schrittleiste, Karten, Namensliste, Vorschau ---------- */
+#dos-root .ki{--ki-acc:var(--kb-accent,#4453d6); --ki-acc-d:var(--kb-accent-dark,#3441b5); --ki-acc-50:var(--kb-accent-50,#f0f2fd);
+  --ki-acc-100:var(--kb-accent-100,#e2e6fb); --ki-acc-200:var(--kb-accent-200,#c8cef7);
+  --ki-b:var(--kb-border,#e5e7eb); --ki-b2:var(--kb-border-strong,#d3d7de); --ki-t:var(--kb-text,#161b26);
+  --ki-t2:var(--kb-text-soft,#384050); --ki-m:var(--kb-muted,#636b7c); --ki-m2:var(--kb-muted-2,#8e94a2);
+  --ki-ok:var(--kb-ok,#1f8a5b); --ki-ok-50:var(--kb-ok-50,#e9f6ef); --ki-warn-50:var(--kb-warn-50,#fbf3e4);
+  --ki-ring:var(--kb-ring,0 0 0 3px rgba(68,83,214,.18)); --ki-soft:var(--kb-surface-2,#f9fafb);
+  max-width:1080px; color:var(--ki-t);}
+#dos-root .ki .ki-muted{color:var(--ki-m);}
+#dos-root .ki-head{margin:0 0 18px;}
+#dos-root .ki-kicker{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:var(--ki-ok);
+  background:var(--ki-ok-50); padding:3px 10px 3px 8px; border-radius:999px; margin-bottom:10px;}
+#dos-root .ki-head h2{margin:0; font-size:24px; font-weight:700; letter-spacing:-.022em;}
+#dos-root .ki-head p{margin:5px 0 0; color:var(--ki-m); font-size:14.5px; max-width:680px; line-height:1.5;}
+
+#dos-root .ki-steps{list-style:none; margin:0 0 16px; padding:6px; display:flex; gap:6px; background:#fff; border:1px solid var(--ki-b);
+  border-radius:14px; box-shadow:0 1px 2px rgba(16,24,40,.04);}
+#dos-root .ki-step{flex:1 1 0; min-width:0;}
+#dos-root .ki-step button{display:flex; align-items:center; gap:11px; width:100%; padding:8px 12px; border:0; border-radius:10px;
+  background:transparent; cursor:pointer; text-align:left; transition:background .12s;}
+#dos-root .ki-step button:focus-visible{outline:none; box-shadow:var(--ki-ring);}
+#dos-root .ki-step-n{width:28px; height:28px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+  font-weight:700; font-size:13px; background:#eef0f3; color:var(--ki-m); font-variant-numeric:tabular-nums; transition:background .15s,color .15s;}
+#dos-root .ki-step-t{display:flex; flex-direction:column; min-width:0; line-height:1.3;}
+#dos-root .ki-step-t b{font-size:13.5px; font-weight:650; color:var(--ki-t2);}
+#dos-root .ki-step-t small{font-size:12px; color:var(--ki-m2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+#dos-root .ki-step.is-current button{background:var(--ki-acc-50);}
+#dos-root .ki-step.is-current .ki-step-n{background:var(--ki-acc); color:#fff; box-shadow:0 0 0 4px var(--ki-acc-100);}
+#dos-root .ki-step.is-current .ki-step-t b{color:var(--ki-acc-d);}
+#dos-root .ki-step.is-done .ki-step-n{background:var(--ki-ok-50); color:var(--ki-ok);}
+#dos-root .ki-step.is-done button:hover, #dos-root .ki-step.is-next button:hover{background:#f5f6f8;}
+#dos-root .ki-step.is-next .ki-step-t b{color:var(--ki-m);}
+
+#dos-root .ki-grid{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:16px; align-items:stretch;}
+#dos-root .ki-card{background:#fff; border:1px solid var(--ki-b); border-radius:14px; padding:18px 20px 20px;
+  box-shadow:var(--kb-shadow,0 1px 2px rgba(16,24,40,.04),0 2px 8px rgba(16,24,40,.04));}
+#dos-root .ki-card-h{display:flex; align-items:flex-start; gap:12px; margin-bottom:16px;}
+#dos-root .ki-card-ht{min-width:0; flex:1 1 auto;}
+#dos-root .ki-card-h h3{margin:1px 0 0; font-size:15.5px; font-weight:650; letter-spacing:-.01em;}
+#dos-root .ki-card-h p{margin:2px 0 0; font-size:13px; color:var(--ki-m); line-height:1.45;}
+#dos-root .ki-card-ic{width:34px; height:34px; border-radius:10px; background:var(--ki-acc-50); color:var(--ki-acc); flex:0 0 auto;
+  display:inline-flex; align-items:center; justify-content:center;}
+#dos-root .ki-count{margin-left:auto; flex:0 0 auto; font-size:12px; font-weight:600; color:var(--ki-m); background:#f0f1f4; border-radius:999px; padding:3px 10px; white-space:nowrap;}
+#dos-root .ki-field{margin-top:16px;}
+#dos-root .ki-card-h + .ki-field{margin-top:0;}
+#dos-root .ki-field > label, #dos-root .ki-label{display:block; font-size:12.5px; font-weight:600; color:var(--ki-t2); margin-bottom:6px;}
+#dos-root .ki-opt{font-weight:500; color:var(--ki-m2); margin-left:3px;}
+#dos-root .ki textarea{font-size:14px; line-height:1.5;}
+
+#dos-root .ki-kind{display:flex; gap:10px; align-items:center; flex-wrap:wrap;}
+#dos-root .ki-kind select{flex:1 1 200px; width:auto; min-width:0; height:40px; font-size:14.5px; font-weight:600;}
+#dos-root .ki-wird{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--ki-m); background:var(--ki-soft);
+  border:1px dashed var(--ki-b2); border-radius:999px; padding:5px 12px 5px 10px; white-space:nowrap;}
+#dos-root .ki-wird b{color:var(--ki-acc-d); font-weight:650;}
+
+#dos-root .ki-scope{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px;}
+#dos-root .ki-scope-opt{display:flex; flex-direction:column; align-items:flex-start; gap:9px; padding:12px; border:1px solid var(--ki-b2);
+  border-radius:12px; background:#fff; cursor:pointer; text-align:left; transition:border-color .12s,background .12s,box-shadow .12s;}
+#dos-root .ki-scope-opt:hover{border-color:#c2c7d0; background:#fafbfc;}
+#dos-root .ki-scope-opt:focus-visible{outline:none; box-shadow:var(--ki-ring);}
+#dos-root .ki-scope-opt.is-on{border-color:var(--ki-acc); background:var(--ki-acc-50); box-shadow:inset 0 0 0 1px var(--ki-acc);}
+#dos-root .ki-scope-ic{width:28px; height:28px; border-radius:8px; background:#f0f1f4; color:var(--ki-m); display:inline-flex; align-items:center; justify-content:center;}
+#dos-root .ki-scope-opt.is-on .ki-scope-ic{background:var(--ki-acc); color:#fff;}
+#dos-root .ki-scope-t{display:flex; flex-direction:column; min-width:0; line-height:1.35;}
+#dos-root .ki-scope-t b{font-size:13.5px; font-weight:650; color:var(--ki-t);}
+#dos-root .ki-scope-t small{font-size:12px; color:var(--ki-m);}
+
+#dos-root .ki-sub{margin-top:10px; padding:12px; border-radius:12px; background:var(--ki-soft); border:1px solid var(--ki-b);}
+#dos-root .ki-sub .ki-field{margin-top:12px;}
+#dos-root .ki-sub .ki-field:first-child{margin-top:0;}
+#dos-root .ki-sub-h{display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--ki-m); margin:0 2px 8px;}
+#dos-root .ki-sub-h span{margin-right:auto;}
+#dos-root .ki-link{border:0; background:none; padding:0; color:var(--ki-acc); font-weight:600; font-size:12.5px; cursor:pointer;}
+#dos-root .ki-link:hover{color:var(--ki-acc-d); text-decoration:underline;}
+#dos-root .ki-chips{display:flex; flex-wrap:wrap; gap:6px;}
+#dos-root .ki-chip{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:500; padding:4px 11px; border-radius:999px;
+  border:1px solid var(--ki-b2); background:#fff; color:var(--ki-t2); cursor:pointer;}
+#dos-root .ki-chip .n{color:var(--ki-m2); font-variant-numeric:tabular-nums;}
+#dos-root .ki-chip:hover{border-color:#c2c7d0;}
+#dos-root .ki-chip.is-on{background:var(--ki-acc); border-color:var(--ki-acc); color:#fff;}
+#dos-root .ki-chip.is-on .n{color:rgba(255,255,255,.78);}
+#dos-root .ki-entries{max-height:300px; overflow:auto; display:flex; flex-direction:column; gap:5px; padding-right:2px;}
+#dos-root .ki-entry{display:flex; gap:10px; align-items:flex-start; padding:8px 10px; border-radius:10px; cursor:pointer; background:#fff; border:1px solid var(--ki-b);}
+#dos-root .ki-entry:hover{border-color:var(--ki-b2);}
+#dos-root .ki-entry.is-on{border-color:var(--ki-acc-200); background:var(--ki-acc-50);}
+#dos-root .ki-entry input{margin-top:3px; accent-color:var(--ki-acc); flex:0 0 auto;}
+#dos-root .ki-entry-d{font-size:12px; font-weight:700; color:var(--ki-t2); font-variant-numeric:tabular-nums; white-space:nowrap; padding-top:1px;}
+#dos-root .ki-entry-b{min-width:0; font-size:13px; color:var(--ki-t2);}
+#dos-root .ki-entry-b b{font-weight:600;}
+#dos-root .ki-entry-b small{display:block; color:var(--ki-m); font-size:12.5px; margin-top:2px; line-height:1.4; overflow-wrap:anywhere;}
+
+#dos-root .ki-tasks{display:flex; flex-direction:column; gap:8px;}
+#dos-root .ki-task{position:relative; display:flex; align-items:center; gap:11px; padding:10px 12px; border:1px solid var(--ki-b2); border-radius:12px;
+  background:#fff; cursor:pointer; transition:border-color .12s,background .12s;}
+#dos-root .ki-task:hover{border-color:#c2c7d0; background:#fafbfc;}
+#dos-root .ki-task input{position:absolute; opacity:0; width:1px; height:1px; margin:0; pointer-events:none;}
+#dos-root .ki-task:focus-within{box-shadow:var(--ki-ring);}
+#dos-root .ki-task-ic{width:30px; height:30px; border-radius:9px; background:#f0f1f4; color:var(--ki-m); display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;}
+#dos-root .ki-task-t{flex:1 1 auto; font-size:13.5px; font-weight:550; color:var(--ki-t); line-height:1.4;}
+#dos-root .ki-task-ck{width:20px; height:20px; border-radius:6px; border:1.5px solid #c9ced6; display:inline-flex; align-items:center; justify-content:center;
+  color:transparent; flex:0 0 auto; background:#fff;}
+#dos-root .ki-task-ck svg.kb-i{width:13px; height:13px; stroke-width:3;}
+#dos-root .ki-task.is-on{border-color:var(--ki-acc); background:var(--ki-acc-50);}
+#dos-root .ki-task.is-on .ki-task-ic{background:var(--ki-acc); color:#fff;}
+#dos-root .ki-task.is-on .ki-task-ck{background:var(--ki-acc); border-color:var(--ki-acc); color:#fff;}
+
+#dos-root .ki-bar{position:sticky; bottom:12px; z-index:5; margin-top:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  padding:10px 10px 10px 16px; background:#fff; border:1px solid var(--ki-b); border-radius:14px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.08);}
+/* die Lücke unter der schwebenden Leiste deckt den Text darunter ab */
+#dos-root .ki-bar::after{content:''; position:absolute; left:-1px; right:-1px; top:100%; height:13px; background:var(--kb-bg,#f5f6f8); pointer-events:none;}
+#dos-root .ki-bar .btn{display:inline-flex; align-items:center; gap:7px; white-space:nowrap;}
+#dos-root .ki-bar-sum{flex:1 1 auto; display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:13px; color:var(--ki-m); min-width:0;}
+#dos-root .ki-sum-item{display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+#dos-root .ki-sum-item svg{color:var(--ki-m2);}
+#dos-root .ki-sum-item b{color:var(--ki-t); font-weight:650; font-variant-numeric:tabular-nums;}
+#dos-root .ki-sum-item.is-warn, #dos-root .ki-sum-item.is-warn b, #dos-root .ki-sum-item.is-warn svg{color:#9a5b12;}
+#dos-root .ki-sum-item.ki-safe, #dos-root .ki-sum-item.ki-safe svg{color:var(--ki-ok); font-weight:500;}
+
+#dos-root .ki-kid{border:1px solid var(--ki-acc-200); background:linear-gradient(180deg,var(--ki-acc-50),#fff); border-radius:12px; padding:12px 14px; margin-bottom:14px;}
+#dos-root .ki-kid-main{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+#dos-root .ki-kid-ic{color:var(--ki-acc); display:inline-flex;}
+#dos-root .ki-from{font-weight:650; font-size:14.5px;}
+#dos-root .ki-to{font-weight:650; color:var(--ki-acc-d); background:#fff; border:1px solid var(--ki-acc-200); border-radius:8px; padding:2px 9px;}
+#dos-root .ki-arrow{color:var(--ki-m2); display:inline-flex; align-items:center;}
+#dos-root .ki-badge{margin-left:auto; display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:600; color:var(--ki-ok);
+  background:var(--ki-ok-50); border-radius:999px; padding:3px 10px; white-space:nowrap;}
+#dos-root .ki-kid-parts{margin-top:10px; font-size:12.5px; color:var(--ki-m); display:flex; gap:6px 8px; flex-wrap:wrap; align-items:center;}
+#dos-root .ki-pair{display:inline-flex; align-items:center; gap:5px; background:#fff; border:1px solid var(--ki-b); border-radius:8px; padding:2px 8px; color:var(--ki-t2); font-weight:500;}
+#dos-root .ki-pair svg{color:var(--ki-m2);}
+#dos-root .ki-pair i{font-style:normal; font-weight:650; color:var(--ki-acc-d);}
+#dos-root .ki-kid-parts small{font-size:12px; color:var(--ki-m2);}
+
+#dos-root .ki-rows{display:flex; flex-direction:column; border:1px solid var(--ki-b); border-radius:12px; overflow:hidden;}
+#dos-root .ki-row{display:grid; grid-template-columns:auto minmax(0,1.1fr) auto minmax(0,1fr); gap:12px; align-items:center; padding:9px 12px; background:#fff;}
+#dos-root .ki-row + .ki-row{border-top:1px solid var(--ki-b);}
+#dos-root .ki-row-name{display:flex; align-items:center; gap:8px; min-width:0; flex-wrap:wrap;}
+#dos-root .ki-row-name b{font-weight:600; overflow-wrap:anywhere;}
+#dos-root .ki-cat{display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:var(--ki-m); background:#f0f1f4; border-radius:999px; padding:1px 8px 1px 6px; white-space:nowrap;}
+#dos-root .ki-cat svg.kb-i{width:12px; height:12px;}
+#dos-root .ki-row input[type=text]{height:34px; font-weight:600; color:var(--ki-acc-d); padding:5px 10px;}
+#dos-root .ki-row.is-off{background:#fafafb;}
+#dos-root .ki-row.is-off .ki-row-name b{color:var(--ki-m);}
+#dos-root .ki-row.is-off input[type=text]{opacity:.45;}
+#dos-root .ki-switch-platz{width:36px;}
+#dos-root .ki-switch{position:relative; display:inline-flex; width:36px; height:21px; flex:0 0 auto; cursor:pointer;}
+#dos-root .ki-switch input{position:absolute; inset:0; width:100%; height:100%; opacity:0; margin:0; cursor:pointer; z-index:1;}
+#dos-root .ki-switch span{position:absolute; inset:0; border-radius:999px; background:#d3d7de; transition:background .15s;}
+#dos-root .ki-switch span::after{content:''; position:absolute; top:2px; left:2px; width:17px; height:17px; border-radius:50%; background:#fff;
+  box-shadow:0 1px 2px rgba(16,24,40,.25); transition:transform .15s;}
+#dos-root .ki-switch input:checked + span{background:var(--ki-acc);}
+#dos-root .ki-switch input:checked + span::after{transform:translateX(15px);}
+#dos-root .ki-switch input:focus-visible + span{box-shadow:var(--ki-ring);}
+#dos-root .ki-switch input:disabled + span{opacity:.5;}
+#dos-root .ki-leerzeile{display:flex; align-items:center; gap:8px; margin:0; padding:12px 14px; border-radius:12px; background:var(--ki-soft); border:1px solid var(--ki-b); color:var(--ki-m); font-size:13px;}
+#dos-root .ki-leerzeile svg{color:var(--ki-ok);}
+#dos-root .ki-add{display:grid; grid-template-columns:minmax(0,1.1fr) auto minmax(0,1fr) auto; gap:10px; align-items:center; margin-top:12px;
+  padding:10px 12px; border:1px dashed var(--ki-b2); border-radius:12px;}
+#dos-root .ki-add input[type=text]{height:36px;}
+#dos-root .ki-add .btn{display:inline-flex; align-items:center; gap:6px; white-space:nowrap;}
+#dos-root .ki-inst{margin-top:16px; padding-top:14px; border-top:1px solid var(--ki-b);}
+#dos-root .ki-toggle{display:flex; align-items:center; gap:12px; cursor:pointer;}
+#dos-root .ki-toggle b{display:block; font-size:13.5px; font-weight:600;}
+#dos-root .ki-toggle small{display:block; font-size:12.5px; color:var(--ki-m);}
+#dos-root .ki-toggle.is-disabled{cursor:default;}
+#dos-root .ki-toggle.is-disabled b{color:var(--ki-m);}
+#dos-root .ki-rows-inst{margin-top:12px;}
+
+#dos-root .ki-status{display:flex; gap:12px; align-items:flex-start; padding:12px 14px; border-radius:12px; margin-bottom:14px; font-size:13px; line-height:1.45;}
+#dos-root .ki-status b{display:block; font-size:13.5px; font-weight:650; margin-bottom:1px;}
+#dos-root .ki-status-ic{flex:0 0 auto; display:inline-flex; margin-top:1px;}
+#dos-root .ki-status.ok{background:var(--ki-ok-50); color:#1d5e40; border:1px solid #bfe3cf;}
+#dos-root .ki-status.ok .ki-status-ic{color:var(--ki-ok);}
+#dos-root .ki-status.warn{background:var(--ki-warn-50); color:#6b4a16; border:1px solid #eccfa3;}
+#dos-root .ki-status.warn .ki-status-ic{color:#b7791f;}
+#dos-root .ki-reste{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px;}
+#dos-root .ki-rest{display:inline-flex; align-items:center; gap:6px; padding:3px 4px 3px 10px; border-radius:999px; background:#fff; border:1px solid #e3c48f;
+  font-size:12.5px; font-weight:600; color:#6b4a16; cursor:pointer;}
+#dos-root .ki-rest:hover{border-color:#cf9f4f; background:#fffaf1;}
+#dos-root .ki-rest-w{text-decoration:line-through; text-decoration-color:rgba(107,74,22,.45);}
+#dos-root .ki-rest-go{background:#b7791f; color:#fff; border-radius:999px; padding:1px 8px; font-size:11.5px;}
+#dos-root .ki-stats{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-bottom:14px;}
+#dos-root .ki-stat{border:1px solid var(--ki-b); border-radius:12px; padding:10px 14px; background:var(--ki-soft);}
+#dos-root .ki-stat b{display:block; font-size:21px; font-weight:700; letter-spacing:-.02em; font-variant-numeric:tabular-nums; line-height:1.2;}
+#dos-root .ki-stat span{font-size:12px; color:var(--ki-m);}
+#dos-root .ki-paper{white-space:pre-wrap; font-size:13.5px; line-height:1.62; color:var(--ki-t2); background:#fff; border:1px solid var(--ki-b);
+  border-radius:12px; padding:16px 18px; max-height:520px; overflow:auto; overflow-wrap:anywhere;}
+#dos-root .ki-paper .ki-l-h{font-weight:700; color:var(--ki-t);}
+#dos-root .ki-paper .ki-l-e{font-weight:650; color:var(--ki-acc-d);}
+#dos-root mark.ki-ph{background:var(--ki-acc-100); color:var(--ki-acc-d); border-radius:5px; padding:0 4px; font-weight:600;}
+#dos-root .ki-copy{padding-left:16px; padding-right:18px;}
+#dos-root .ki-copy.is-done, #dos-root .ki-copy.is-done:hover{background:var(--ki-ok); border-color:var(--ki-ok); color:#fff;}
+#dos-root .ki-leer .ki-card-h{margin-bottom:0;}
+
+@media (max-width:980px){
+  #dos-root .ki-grid{grid-template-columns:minmax(0,1fr);}
+}
+@media (max-width:640px){
+  #dos-root .ki-head h2{font-size:21px;}
+  #dos-root .ki-steps{padding:4px; gap:4px;}
+  #dos-root .ki-step{flex:0 0 auto;}
+  #dos-root .ki-step.is-current{flex:1 1 auto;}
+  #dos-root .ki-step:not(.is-current) .ki-step-t{display:none;}
+  #dos-root .ki-step-t small{display:none;}
+  #dos-root .ki-step button{padding:7px 9px;}
+  #dos-root .ki-card{padding:16px 14px 16px;}
+  #dos-root .ki-card-h .ki-count{display:none;}
+  #dos-root .ki-lang{display:none;}
+  #dos-root .ki-scope{grid-template-columns:minmax(0,1fr);}
+  #dos-root .ki-scope-opt{flex-direction:row; align-items:center;}
+  #dos-root .ki-row{grid-template-columns:auto minmax(0,1fr); row-gap:8px;}
+  #dos-root .ki-row > .ki-arrow{display:none;}
+  #dos-root .ki-row input[type=text]{grid-column:2;}
+  #dos-root .ki-add{grid-template-columns:minmax(0,1fr);}
+  #dos-root .ki-add > .ki-arrow{display:none;}
+  #dos-root .ki-badge{margin-left:0;}
+  #dos-root .ki-stat{padding:8px 10px;}
+  #dos-root .ki-stat b{font-size:18px;}
+  #dos-root .ki-bar{bottom:8px; padding:10px;}
+  #dos-root .ki-bar::after{height:9px;}
+  #dos-root .ki-bar-sum{order:-1; flex-basis:100%; gap:12px;}
+  #dos-root .ki-bar .btn{flex:1 1 auto; justify-content:center;}
+}
+
 /* ---------- Print ----------
    Hier steht bewusst nichts mehr. Das alte Blatt blendete die Seite mit
    visibility:hidden aus - der Platz blieb dabei stehen und wanderte als
@@ -2328,6 +2552,7 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
 <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /> <path d="M19 12H5" /></symbol>
 <symbol id="i-alarm-clock" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8" /> <path d="M12 9v4l2 2" /> <path d="M5 3 2 6" /> <path d="m22 6-3-3" /> <path d="M6.38 18.7 4 21" /> <path d="M17.64 18.67 20 21" /></symbol>
 <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M5 22h14" /> <path d="M5 2h14" /> <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" /> <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" /></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
 </svg>
 
 
@@ -3097,6 +3322,15 @@ window.KB_ROSTER=(function(){
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  /* Kuerzel fuer die KI-Anonymisierung ("Schueler X"). Ohne Kuerzel wurde
+     der Name im KI-Export durch nichts ersetzt - neu Angelegte bekommen
+     darum gleich das naechste freie. */
+  function freiesKuerzel(){
+    var used={},i,L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for(i=0;i<list.length;i++){if(list[i].anonLabel){used[list[i].anonLabel]=1;}}
+    for(i=0;i<L.length;i++){if(!used['Schüler '+L[i]]){return 'Schüler '+L[i];}}
+    for(i=list.length+1;;i++){if(!used['Schüler '+i]){return 'Schüler '+i;}}
+  }
   /* Wer aus der Liste verschwindet - hier geloescht oder per Abgleich -,
      dessen Name wird gemerkt. Sonst wuesste der Papierkorb spaeter nicht mehr,
      wem die abgeraeumten Eintraege gehoerten. */
@@ -3116,7 +3350,7 @@ window.KB_ROSTER=(function(){
        im Roster und in ids(), damit Absenzen und Dossier erhalten bleiben. */
     asAnwesenheit:function(){return list.filter(function(s){return s.active!==false;}).map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
     asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
-    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
+    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:freiesKuerzel(),klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
     remove:function(id){merkeNamen(list,list.filter(function(s){return s.id!==id;}));list=list.filter(function(s){return s.id!==id;});notify();},
@@ -4259,19 +4493,41 @@ function countUnrated(entries, key) {
 function detectNamesInText(texts, opts) {
   opts = opts || {};
   var exclude = opts.excludeNames || []; // z. B. Name des gerade exportierten Schülers
+  /* Namensteile des exportierten Kindes („Tom“, „Muster“): Treffer, die so
+     ein Wort enthalten („Frau Muster“, „Mama Muster“), gehören zur Familie
+     des Kindes. Sie ersetzt der Namens-Schritt selbst (→ „Frau [Nachname]“)
+     statt sie als Mitarbeiter einzuordnen. */
+  var excludeParts = opts.excludeParts || [];
   var found = {}; // name -> category
   var fullText = texts.join('\n');
+  function gesperrt(name) {
+    if (exclude.indexOf(name) !== -1) return true;
+    return excludeParts.some(function (w) { return kiEnthaeltWort(name, w, false); });
+  }
 
   KNOWN_PERSONS.forEach(function (p) {
-    if (fullText.indexOf(p.name) !== -1) found[p.name] = p.category;
+    if (!gesperrt(p.name) && kiEnthaeltWort(fullText, p.name)) found[p.name] = p.category;
   });
 
   /* Andere Schüler der App: Querverweise in Réunion-/Dossier-Texten
-     ebenfalls anonymisieren (Platzhalter = deren anonLabel, siehe View). */
+     ebenfalls anonymisieren (Platzhalter = deren anonLabel, siehe View).
+     Mit opts.vornamen auch der Vorname allein („Lisa“ statt „Lisa Muster“);
+     opts.schuelerTreffer sammelt dann, zu welchen Schülern ein Treffer passt. */
   if (typeof Repo !== 'undefined' && Repo.listStudents) {
+    var treffer = opts.schuelerTreffer || {};
     Repo.listStudents().forEach(function (s) {
-      if (exclude.indexOf(s.name) !== -1) return;
-      if (s.name && fullText.indexOf(s.name) !== -1) found[s.name] = 'Schüler';
+      if (!s.name || exclude.indexOf(s.name) !== -1) return;
+      var formen = kiNamensFormen(s.name);
+      var vn = formen.vorname;
+      var suchen = formen.ganz.slice();
+      /* gleicher Vorname wie das Kind: gehört dem Kind */
+      if (opts.vornamen && vn.length >= 2 && excludeParts.indexOf(vn) === -1) suchen.push(vn, vn.toUpperCase());
+      suchen.forEach(function (f) {
+        if (!kiEnthaeltWort(fullText, f)) return;
+        if (!found.hasOwnProperty(f)) found[f] = 'Schüler';
+        var l = (treffer[f] = treffer[f] || []);
+        if (l.indexOf(s.id) === -1) l.push(s.id);
+      });
     });
   }
 
@@ -4280,7 +4536,7 @@ function detectNamesInText(texts, opts) {
     var m;
     while ((m = re.exec(fullText)) !== null) {
       var name = m[0].trim();
-      if (!found.hasOwnProperty(name)) found[name] = pat.category;
+      if (!found.hasOwnProperty(name) && !gesperrt(name)) found[name] = pat.category;
       if (re.lastIndex === m.index) re.lastIndex++;
     }
   });
@@ -4295,7 +4551,7 @@ function detectNamesInText(texts, opts) {
 
   /* Gelernte Namen aus früheren Berichts-Importen (Eltern, Geschwister, …) */
   (getLearnedNames ? getLearnedNames() : []).forEach(function (ln) {
-    if (ln && ln.name && exclude.indexOf(ln.name) === -1 && fullText.indexOf(ln.name) !== -1) {
+    if (ln && ln.name && !gesperrt(ln.name) && kiEnthaeltWort(fullText, ln.name)) {
       if (!found.hasOwnProperty(ln.name)) found[ln.name] = ln.category || 'Person';
     }
   });
@@ -4316,6 +4572,65 @@ function detectNamesInText(texts, opts) {
   });
 
   return found;
+}
+
+/* ---------- Wortgenaue Suche ----------
+   „Tom“ trifft „Tom“, „Toms“, „Tom’s“ und „d'Tom“, aber nicht „Tomate“ oder
+   „Tomas“. Buchstaben aller Sprachen zählen als Wortteil (\p{L}), damit auch
+   „Léa“ oder „Jérôme“ sauber abgegrenzt sind. Leerraum im Namen darf auch ein
+   Zeilenumbruch sein. grossKlein === false: Schreibweise egal. */
+function kiWortRegex(wort, grossKlein) {
+  var esc = String(wort).trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  return new RegExp('(^|[^\\p{L}\\p{N}])(' + esc + ')(?=(?:s|\'s|’s)?(?:[^\\p{L}\\p{N}]|$))', 'gu' + (grossKlein === false ? 'i' : ''));
+}
+function kiEnthaeltWort(text, wort, grossKlein) {
+  return !!(wort && String(wort).trim()) && kiWortRegex(wort, grossKlein).test(text);
+}
+function kiErsetzeWort(text, wort, ersatz) {
+  if (!wort || !String(wort).trim()) return text;
+  return text.replace(kiWortRegex(wort), function (m, vor) { return vor + ersatz; });
+}
+
+/* Wie der Name eines Kindes im Text stehen kann.
+   ganz:  ganze Formen („Tom Muster“, „TOM MUSTER“, „MUSTER Tom“, „Muster, Tom“) → Kürzel
+   teile: einzeln stehende Teile – der Vorname → Kürzel, jeder weitere Teil
+          (auch die Hälften von Doppelnamen) → [Nachname]; jeweils auch in
+          GROSSBUCHSTABEN. Initialen („P.“) und kleine Partikel („van“, „de“)
+          bleiben stehen. */
+function kiNamensFormen(name) {
+  var roh = String(name || '').replace(/\s+/g, ' ').trim();
+  if (roh.indexOf(',') !== -1) {
+    var k = roh.split(',');
+    roh = (k.slice(1).join(' ') + ' ' + k[0]).replace(/\s+/g, ' ').trim();
+  }
+  var woerter = roh ? roh.split(' ') : [];
+  var ganz = [], teile = [];
+  function dazu(w) { if (w && ganz.indexOf(w) === -1) ganz.push(w); }
+  if (!woerter.length) return { ganz: ganz, teile: teile, vorname: '' };
+  var vor = woerter[0], rest = woerter.slice(1).join(' ');
+  dazu(roh); dazu(roh.toUpperCase());
+  if (rest) {
+    dazu(vor + ' ' + rest.toUpperCase());
+    dazu(rest + ' ' + vor); dazu(rest.toUpperCase() + ' ' + vor);
+    dazu(rest + ', ' + vor); dazu(rest.toUpperCase() + ', ' + vor);
+  }
+  woerter.forEach(function (w, i) {
+    var stuecke = [w];
+    if (i > 0 && w.indexOf('-') !== -1) stuecke = stuecke.concat(w.split('-'));
+    stuecke.forEach(function (s) {
+      var sauber = s.replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '');
+      if (sauber.length < 2) return;                                   // Initiale
+      var a = sauber.charAt(0);
+      if (a === a.toLowerCase() && a !== a.toUpperCase()) return;      // Partikel
+      var rolle = i === 0 ? 'vorname' : 'nachname';
+      [sauber, sauber.toUpperCase(), a.toUpperCase() + sauber.slice(1).toLowerCase()].forEach(function (f) {
+        if (!teile.some(function (t) { return t.wort === f; })) teile.push({ wort: f, rolle: rolle });
+      });
+    });
+  });
+  ganz.sort(function (x, y) { return y.length - x.length; });
+  teile.sort(function (x, y) { return y.wort.length - x.wort.length; });
+  return { ganz: ganz, teile: teile, vorname: vor.replace(/^[^\p{L}]+|[^\p{L}]+$/gu, '') };
 }
 
 /**
@@ -4361,52 +4676,80 @@ function detectInstitutions(entries) {
  * Konkrete Datumsangaben bleiben unverändert.
  */
 function anonymizeText(text, ctx) {
-  var out = text;
+  var out = String(text == null ? '' : text);
 
-  // 1) explizite, längere Namen zuerst ersetzen (vermeidet Teil-Überlappungen)
-  ctx.replacements
-    .filter(function (r) { return r.active && r.name; })
-    .sort(function (a, b) { return b.name.length - a.name.length; })
-    .forEach(function (r) {
-      out = splitJoin(out, r.name, r.placeholder);
-    });
+  /* Ersetzt wird über Marken: ein schon eingesetzter Platzhalter kann von
+     keiner späteren Regel mehr angefasst werden (ein Nachname „Schüler“
+     machte sonst aus „Schüler O“ wieder etwas anderes). Aufgelöst wird am
+     Ende – mit ctx.markieren zusätzlich eingerahmt für die Vorschau. */
+  var platz = [];
+  function marke(platzhalter) { return '' + (platz.push(platzhalter) - 1) + ''; }
+  function ersetze(wort, platzhalter) { if (wort) out = kiErsetzeWort(out, wort, marke(platzhalter)); }
 
-  // 2) Institutionen (optional)
-  if (ctx.anonymizeInstitutions) {
-    ctx.institutionMap.forEach(function (m) {
-      out = splitJoin(out, m.name, m.placeholder);
-    });
-  }
-
-  // 3) Schülername(n) -> anonLabel (zuletzt, damit Vor-/Nachnamen-Teile
-  //    nicht versehentlich schon durch generische Muster ersetzt wurden)
-  ctx.studentNameMap.forEach(function (m) {
-    out = splitJoin(out, m.name, m.anonLabel);
-  });
-
-  // 4) Hochsensible, eindeutige Kennungen IMMER entfernen (unabhängig von der
+  // 1) Hochsensible, eindeutige Kennungen IMMER entfernen (unabhängig von der
   //    Namensprüfung): Matrikel-/Sozialversicherungsnummer, E-Mail, Telefon.
   //    Die Matrikelnummer enthält u. a. das Geburtsdatum — darf nie zur KI.
-  if (ctx.maskIdentifiers !== false) {
-    out = out.replace(new RegExp(MATRICULE_REGEX.source, MATRICULE_REGEX.flags), '[Matrikelnr.]');
-    out = out.replace(new RegExp(EMAIL_REGEX.source, EMAIL_REGEX.flags), '[E-Mail]');
-    out = out.replace(new RegExp(PHONE_REGEX.source, PHONE_REGEX.flags), function (mtch) {
-      // nur maskieren, wenn genug Ziffern (vermeidet Treffer auf einzelne Zahlen)
-      return (mtch.replace(/\D/g, '').length >= 6) ? '[Tel.]' : mtch;
-    });
+  //    Zuerst, weil E-Mail-Adressen oft den Namen enthalten.
+  if (ctx.maskIdentifiers !== false) out = kiKennungenMaskieren(out, marke);
+
+  // 2) Das Kind in ganzer Form („Tom Muster“, „MUSTER Tom“) -> Kürzel
+  var kind = ctx.kind || null;
+  if (kind) kind.formen.ganz.forEach(function (f) { ersetze(f, kind.label); });
+  (ctx.studentNameMap || []).forEach(function (m) { if (!kind || m.name !== kind.name) ersetze(m.name, m.anonLabel); });
+
+  // 3) erkannte und ergänzte Namen, längere zuerst (vermeidet Teil-Überlappungen)
+  (ctx.replacements || [])
+    .filter(function (r) { return r.active && r.name; })
+    .sort(function (a, b) { return b.name.length - a.name.length; })
+    .forEach(function (r) { ersetze(r.name, r.placeholder); });
+
+  // 4) Institutionen (optional)
+  if (ctx.anonymizeInstitutions) {
+    (ctx.institutionMap || []).forEach(function (m) { ersetze(m.name, m.placeholder); });
   }
 
-  return out;
+  // 5) Einzelne Namensteile des Kindes zuletzt: „Tom“ -> Kürzel,
+  //    „Muster“ (auch in „Mama Muster“) -> [Nachname]
+  if (kind) kind.formen.teile.forEach(function (t) { ersetze(t.wort, t.rolle === 'vorname' ? kind.label : '[Nachname]'); });
+
+  var n = (out.match(/\d+/g) || []).length;
+  if (ctx.stat) ctx.stat.ersetzungen = (ctx.stat.ersetzungen || 0) + n;
+  return out.replace(/(\d+)/g, function (m, i) {
+    return ctx.markieren ? '' + platz[+i] + '' : platz[+i];
+  });
 }
 
-function splitJoin(haystack, needle, replacement) {
-  if (!needle) return haystack;
-  return haystack.split(needle).join(replacement);
+/* Telefonnummern, E-Mail, Matrikelnummer. Datum, Uhrzeit und Schuljahr
+   („08.09.2026“, „8.30–10.15“, „2025/2026“) sahen für die alte Regel wie
+   Telefonnummern aus und kamen als „[Tel.]6“ heraus – sie werden vorher
+   geschützt. Nummern mit Vorwahl oder „Tel“/„GSM“ davor gelten immer als
+   Telefonnummer. */
+var KI_EMAIL_REGEX = /[\p{L}\p{N}._%+\-]+@[\p{L}\p{N}.\-]+\.\p{L}{2,}/gu;
+var KI_TEL_MIT_KENNUNG = /(?:\+352|00352|\b(?:GSM|Gsm|gsm|T[ée]l|t[ée]l|Tel|tel|Handy|handy|Portable|portable))\.?\s?:?\s?\(?\d[\d\s.\/\-()]{4,18}\d/g;
+var KI_DATUM_REGEX = /(^|[^\d])(\d{1,2}[.\/-]\d{1,2}[.\/-](?:\d{4}|\d{2})|\d{4}-\d{2}-\d{2}|(?:19|20)\d{2}\s?[\/-]\s?(?:(?:19|20)\d{2}|\d{2})|\d{1,2}[.:h]\d{2}(?:\s?[-–]\s?\d{1,2}[.:h]\d{2})?)(?![.\/]?\d)/g;
+function kiKennungenMaskieren(text, einsetzen) {
+  einsetzen = einsetzen || function (p) { return p; };
+  var geschuetzt = [];
+  var out = text.replace(new RegExp(MATRICULE_REGEX.source, MATRICULE_REGEX.flags), function () { return einsetzen('[Matrikelnr.]'); });
+  out = out.replace(new RegExp(KI_EMAIL_REGEX.source, KI_EMAIL_REGEX.flags), function () { return einsetzen('[E-Mail]'); });
+  out = out.replace(new RegExp(KI_TEL_MIT_KENNUNG.source, KI_TEL_MIT_KENNUNG.flags), function () { return einsetzen('[Tel.]'); });
+  out = out.replace(new RegExp(KI_DATUM_REGEX.source, KI_DATUM_REGEX.flags), function (m, vor, d) {
+    return vor + '' + (geschuetzt.push(d) - 1) + '';
+  });
+  out = out.replace(new RegExp(PHONE_REGEX.source, PHONE_REGEX.flags), function (mtch) {
+    // nur maskieren, wenn genug Ziffern (vermeidet Treffer auf einzelne Zahlen)
+    if (mtch.replace(/\D/g, '').length < 6) return mtch;
+    return mtch.match(/^\s*/)[0] + einsetzen('[Tel.]');
+  });
+  return out.replace(/(\d+)/g, function (m, i) { return geschuetzt[+i]; });
 }
 
 /**
  * Baut den vollständigen, kopierbaren KI-Export-Text zusammen:
  * Auftrag/Frage + Hinweis zur Sprache + anonymisierte Einträge.
+ * Auch die Themen-Zeile läuft durch die Anonymisierung – dort stehen
+ * sonst gern Institutionskürzel. (Die eigene Frage anonymisiert die
+ * Ansicht selbst, siehe taskText.)
  */
 function buildAiExportText(opts) {
   // opts: { scopeLabel, taskText, entries, ctx }
@@ -4427,7 +4770,7 @@ function buildAiExportText(opts) {
     .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; })
     .forEach(function (e) {
       lines.push('');
-      lines.push('[' + formatDate(e.date) + '] ' + e.category + (e.tags && e.tags.length ? ' — Themen: ' + e.tags.join(', ') : ''));
+      lines.push('[' + formatDate(e.date) + '] ' + anonymizeText((e.category || '') + (e.tags && e.tags.length ? ' — Themen: ' + e.tags.join(', ') : ''), opts.ctx));
       lines.push(anonymizeText(e.text, opts.ctx));
     });
   if (opts.screeningText) {
@@ -5572,11 +5915,27 @@ function viewPdfExport(params, query) {
 
 function viewAiExport(params, query) {
   var students = Repo.listStudents();
+  var ersterAktiver = students.filter(function (s) { return s.active !== false; })[0] || students[0];
+
+  /* Symbole zu den festen KI-Aufgaben (Reihenfolge wie AI_PROMPT_OPTIONS) */
+  var AUFGABEN_SYMBOL = ['file-text', 'trending-up', 'list-checks', 'arrow-right'];
+  /* Kategorien der Namenserkennung, wie sie in der Liste heißen */
+  var KATEGORIE = {
+    'Mataarbechter': ['Mitarbeiter', 'users'], 'Arzt': ['Arzt', 'stethoscope'], 'Therapeut': ['Therapie', 'stethoscope'],
+    'Schüler': ['Mitschüler', 'graduation-cap'], 'Schüler (extern)': ['Schüler (extern)', 'graduation-cap'],
+    'Elteren': ['Familie', 'users-round'], 'Schule': ['Schule', 'school'], 'Ort': ['Ort', 'pin'],
+    'manuell': ['von Hand', 'pencil'], 'Person': ['Person', 'user'], 'Institution': ['Institution', 'school']
+  };
+  var SCHRITTE = [
+    { key: 'config', titel: 'Auswählen', text: 'Kind, Einträge, Aufgabe' },
+    { key: 'names', titel: 'Namen prüfen', text: 'Wer wird zu welchem Platzhalter?' },
+    { key: 'preview', titel: 'Prüfen & kopieren', text: 'Text lesen, dann kopieren' }
+  ];
 
   var state = {
     phase: 'config', // 'config' | 'names' | 'preview'
     scopeType: 'student', // 'student' | 'theme' | 'selection'
-    studentId: query.student || (students[0] && students[0].id) || '',
+    studentId: query.student || (ersterAktiver && ersterAktiver.id) || '',
     category: '',
     tags: {},
     selectedEntries: {},
@@ -5585,207 +5944,477 @@ function viewAiExport(params, query) {
     anonymizeInstitutions: false,
     replacements: [],
     institutionMap: [],
-    builtText: ''
+    namenSig: '',
+    namenKind: '',
+    builtText: '',
+    markText: '',
+    stat: null,
+    reste: []
   };
 
   function studentEntries() { return Repo.entriesForStudent(state.studentId); }
-
-  function scopedEntries() {
-    var all = studentEntries();
-    if (state.scopeType === 'student') return all.slice().sort(byDateAsc);
-    if (state.scopeType === 'theme') {
-      var tagList = Object.keys(state.tags);
-      return all.filter(function (e) {
-        if (state.category && e.category !== state.category) return false;
-        if (tagList.length && !(e.tags || []).some(function (t) { return tagList.indexOf(t) !== -1; })) return false;
-        return true;
-      }).sort(byDateAsc);
-    }
-    // selection
-    return all.filter(function (e) { return !!state.selectedEntries[e.id]; }).sort(byDateAsc);
-  }
   function byDateAsc(a, b) { return a.date < b.date ? -1 : (a.date > b.date ? 1 : 0); }
+
+  function themaEintraege() {
+    var tagList = Object.keys(state.tags);
+    return studentEntries().filter(function (e) {
+      if (state.category && e.category !== state.category) return false;
+      if (tagList.length && !(e.tags || []).some(function (t) { return tagList.indexOf(t) !== -1; })) return false;
+      return true;
+    });
+  }
+  function scopedEntries() {
+    if (state.scopeType === 'student') return studentEntries().slice().sort(byDateAsc);
+    if (state.scopeType === 'theme') return themaEintraege().sort(byDateAsc);
+    return studentEntries().filter(function (e) { return !!state.selectedEntries[e.id]; }).sort(byDateAsc);
+  }
+
+  /* Kürzel des Kindes. Wer noch keins hat (z. B. neu angelegt), bekommt das
+     nächste freie „Schüler X“ – gespeichert wird es erst beim Weitergehen. */
+  function kindLabel(s) { return (s && s.anonLabel) || kbGenAnonLabel(); }
+  function kuerzelSichern() {
+    var s = Repo.getStudent(state.studentId);
+    if (!s || s.anonLabel) return;
+    var label = kbGenAnonLabel();
+    try {
+      if (window.KB_ROSTER && window.KB_ROSTER.update) window.KB_ROSTER.update(s.id, { anonLabel: label });
+      else if (Repo.saveStudent) { s.anonLabel = label; Repo.saveStudent(s); }
+    } catch (e) {}
+    students = Repo.listStudents();
+  }
+  function kindKontext() {
+    var s = Repo.getStudent(state.studentId);
+    if (!s) return null;
+    return { id: s.id, name: s.name, label: kindLabel(s), formen: kiNamensFormen(s.name) };
+  }
 
   function scopeLabel() {
     var student = Repo.getStudent(state.studentId);
     if (!student) return '(kein Schüler gewählt)';
-    if (state.scopeType === 'student') return 'Gesamtes Dossier von ' + student.anonLabel + ' (' + studentEntries().length + ' Einträge)';
+    var label = kindLabel(student);
+    if (state.scopeType === 'student') return 'Gesamtes Dossier von ' + label + ' (' + studentEntries().length + ' Einträge)';
     if (state.scopeType === 'theme') {
       var bits = [];
       if (state.category) bits.push('Kategorie „' + state.category + '"');
       var tagList = Object.keys(state.tags);
       if (tagList.length) bits.push('Tags: ' + tagList.join(', '));
       if (!bits.length) bits.push('alle Themen');
-      return 'Thema bei ' + student.anonLabel + ' — ' + bits.join(' · ') + ' (' + scopedEntries().length + ' Einträge)';
+      return 'Thema bei ' + label + ' — ' + bits.join(' · ') + ' (' + scopedEntries().length + ' Einträge)';
     }
-    return 'Eigene Auswahl bei ' + student.anonLabel + ' (' + scopedEntries().length + ' Einträge)';
+    return 'Eigene Auswahl bei ' + label + ' (' + scopedEntries().length + ' Einträge)';
   }
 
-  function taskText() {
+  function aufgabenZahl() {
+    return Object.keys(state.selectedPrompts).length + (state.freeText.trim() ? 1 : 0);
+  }
+  /* Die festen Aufgaben gehen wörtlich mit, die eigene Frage läuft durch
+     die Anonymisierung (dort stehen gern Namen). */
+  function taskText(ctx) {
     var lines = [];
     AI_PROMPT_OPTIONS.forEach(function (p, i) { if (state.selectedPrompts[i]) lines.push('- ' + p); });
-    if (state.freeText.trim()) lines.push('- ' + state.freeText.trim());
+    var frei = state.freeText.trim();
+    if (frei) lines.push('- ' + (ctx ? anonymizeText(frei, ctx) : frei));
     return lines.join('\n');
   }
 
-  /* ---------------- Phase 1: Umfang & Aufgabe ---------------- */
+  /* ---------------- Schrittleiste ---------------- */
+  function schritteHtml() {
+    var akt = SCHRITTE.map(function (s) { return s.key; }).indexOf(state.phase);
+    return SCHRITTE.map(function (s, i) {
+      var cls = i < akt ? 'is-done' : (i === akt ? 'is-current' : 'is-next');
+      return '<li class="ki-step ' + cls + '"><button type="button" data-ki-goto="' + s.key + '"' + (i === akt ? ' aria-current="step"' : '') + '>' +
+        '<span class="ki-step-n">' + (i < akt ? kbIcon('check', 'sm') : String(i + 1)) + '</span>' +
+        '<span class="ki-step-t"><b>' + escapeHtml(s.titel) + '</b><small>' + escapeHtml(s.text) + '</small></span>' +
+      '</button></li>';
+    }).join('');
+  }
+
+  function kartenKopf(symbol, titel, text, rechts) {
+    return '<header class="ki-card-h"><span class="ki-card-ic">' + kbIcon(symbol) + '</span>' +
+      '<div class="ki-card-ht"><h3>' + escapeHtml(titel) + '</h3>' + (text ? '<p>' + text + '</p>' : '') + '</div>' + (rechts || '') + '</header>';
+  }
+
+  /* ---------------- Phase 1: Auswählen ---------------- */
+  function schuelerOptionen() {
+    var aktiv = students.filter(function (s) { return s.active !== false; });
+    var fruehere = students.filter(function (s) { return s.active === false; });
+    function opt(s) { return '<option value="' + escapeAttr(s.id) + '"' + (s.id === state.studentId ? ' selected' : '') + '>' + escapeHtml(s.name) + '</option>'; }
+    if (!fruehere.length || !aktiv.length) return students.map(opt).join('');
+    return '<optgroup label="Aktuelle Klasse">' + aktiv.map(opt).join('') + '</optgroup>' +
+      '<optgroup label="Ehemalige">' + fruehere.map(opt).join('') + '</optgroup>';
+  }
+
+  function scopeKarte(type, symbol, titel, zusatz) {
+    var on = state.scopeType === type;
+    return '<button type="button" class="ki-scope-opt' + (on ? ' is-on' : '') + '" data-scope="' + type + '" aria-pressed="' + on + '">' +
+      '<span class="ki-scope-ic">' + kbIcon(symbol, 'sm') + '</span>' +
+      '<span class="ki-scope-t"><b>' + escapeHtml(titel) + '</b><small data-scope-n="' + type + '">' + escapeHtml(zusatz) + '</small></span>' +
+    '</button>';
+  }
+  function eintraegeText(n) { return n === 1 ? '1 Eintrag' : n + ' Einträge'; }
+  function auswahlZusatz() {
+    var n = scopedEntriesFor('selection');
+    return n ? n + ' angehakt' : 'Einträge anhaken';
+  }
+  function scopedEntriesFor(type) {
+    if (type === 'student') return studentEntries().length;
+    if (type === 'theme') return themaEintraege().length;
+    return studentEntries().filter(function (e) { return !!state.selectedEntries[e.id]; }).length;
+  }
+
+  function themaHtml() {
+    var alle = studentEntries();
+    var kats = {}, tags = {};
+    alle.forEach(function (e) {
+      if (e.category) kats[e.category] = (kats[e.category] || 0) + 1;
+      (e.tags || []).forEach(function (t) { tags[t] = (tags[t] || 0) + 1; });
+    });
+    var katOpts = Object.keys(kats).sort().map(function (k) {
+      return '<option value="' + escapeAttr(k) + '"' + (k === state.category ? ' selected' : '') + '>' + escapeHtml(k) + ' (' + kats[k] + ')</option>';
+    }).join('');
+    var chips = Object.keys(tags).sort(function (a, b) { return a.localeCompare(b, 'de'); }).map(function (t) {
+      var on = !!state.tags[t];
+      return '<button type="button" class="ki-chip' + (on ? ' is-on' : '') + '" data-tag="' + escapeAttr(t) + '" aria-pressed="' + on + '">' +
+        escapeHtml(t) + ' <span class="n">' + tags[t] + '</span></button>';
+    }).join('');
+    return '<div class="ki-sub">' +
+      '<div class="ki-field"><label for="ai-category">Kategorie</label>' +
+        '<select id="ai-category"><option value="">Alle Kategorien</option>' + katOpts + '</select></div>' +
+      '<div class="ki-field"><span class="ki-label">Stichwörter <span class="ki-opt">mehrere möglich</span></span>' +
+        '<div class="ki-chips" id="ai-tags">' + (chips || '<span class="ki-muted">Keine Stichwörter vorhanden.</span>') + '</div></div>' +
+    '</div>';
+  }
+
+  function auswahlHtml() {
+    var alle = studentEntries().slice().sort(byDateAsc);
+    if (!alle.length) return '<div class="ki-sub"><p class="ki-muted">Keine Einträge vorhanden.</p></div>';
+    var n = scopedEntriesFor('selection');
+    return '<div class="ki-sub">' +
+      '<div class="ki-sub-h"><span id="ai-pick-count">' + n + ' von ' + alle.length + ' angehakt</span>' +
+        '<button type="button" class="ki-link" id="ai-pick-all">Alle</button><button type="button" class="ki-link" id="ai-pick-none">Keine</button></div>' +
+      '<div class="ki-entries">' + alle.map(function (e) {
+        var on = !!state.selectedEntries[e.id];
+        return '<label class="ki-entry' + (on ? ' is-on' : '') + '"><input type="checkbox" data-entry-pick="' + escapeAttr(e.id) + '"' + (on ? ' checked' : '') + '>' +
+          '<span class="ki-entry-d">' + escapeHtml(formatDate(e.date)) + '</span>' +
+          '<span class="ki-entry-b"><b>' + escapeHtml(e.category || '') + '</b>' +
+            (e.tags && e.tags.length ? ' <span class="ki-muted">· ' + escapeHtml(e.tags.join(', ')) + '</span>' : '') +
+            '<small>' + escapeHtml(snippetAround(e.text || '', '', 80)) + '</small></span></label>';
+      }).join('') + '</div>' +
+    '</div>';
+  }
+
+  function zusammenfassungHtml() {
+    var student = Repo.getStudent(state.studentId);
+    var n = scopedEntries().length, a = aufgabenZahl();
+    return '<span class="ki-sum-item">' + kbIcon('user', 'sm') + ' <b>' + escapeHtml(student ? kindLabel(student) : '–') + '</b></span>' +
+      '<span class="ki-sum-item' + (n ? '' : ' is-warn') + '">' + kbIcon('files', 'sm') + ' <b>' + n + '</b> ' + (n === 1 ? 'Eintrag' : 'Einträge') + '</span>' +
+      '<span class="ki-sum-item">' + kbIcon('sparkles', 'sm') + ' <b>' + a + '</b> ' + (a === 1 ? 'Aufgabe' : 'Aufgaben') + '</span>';
+  }
+
   function configHtml() {
+    if (!students.length) {
+      return '<section class="ki-card ki-leer">' + kartenKopf('user', 'Noch keine Schüler', 'Lege zuerst unter „Schüler“ ein Kind an – dann kannst du hier Einträge aus seinem Dossier anonymisiert weitergeben.') + '</section>';
+    }
     var student = Repo.getStudent(state.studentId);
-    var availableTags = student ? uniqueSorted(flatten(studentEntries().map(function (e) { return e.tags || []; }))) : [];
-    var tagChips = availableTags.map(function (t) {
-      var active = !!state.tags[t];
-      return '<button type="button" class="toggle-chip' + (active ? ' active' : '') + '" data-tag="' + escapeAttr(t) + '">' + escapeHtml(t) + '</button>';
-    }).join('');
-    var entryCheckboxes = student ? studentEntries().slice().sort(byDateAsc).map(function (e) {
-      var checked = !!state.selectedEntries[e.id];
-      return '<label class="checkbox-row"><input type="checkbox" data-entry-pick="' + e.id + '" ' + (checked ? 'checked' : '') + '>' +
-        '<span><strong>' + escapeHtml(formatDate(e.date)) + '</strong> &middot; ' + escapeHtml(e.category) +
-        (e.tags && e.tags.length ? ' &middot; <span class="muted">' + escapeHtml(e.tags.join(', ')) + '</span>' : '') +
-        '<br><span class="muted">' + escapeHtml(snippetAround(e.text, '', 70)) + '</span></span></label>';
-    }).join('') : '';
-
-    return '<div class="card export-config no-print">' +
-      '<h3 style="margin-top:0;">1. Umfang wählen</h3>' +
-      '<div class="field"><label for="ai-student">Schüler</label>' +
-        '<select id="ai-student">' + optionsHtml(students.map(function (s) { return { value: s.id, label: s.name + ' (' + s.anonLabel + ')' }; }), state.studentId) + '</select>' +
-      '</div>' +
-      '<div class="field"><label>Art der Auswahl</label>' +
-        '<div class="row" style="gap:8px;">' +
-          scopeOptionBtn('student', 'Ganzes Dossier') +
-          scopeOptionBtn('theme', 'Ein Thema (Kategorie/Tags)') +
-          scopeOptionBtn('selection', 'Eigene Auswahl an Einträgen') +
+    return '<div class="ki-grid">' +
+      '<section class="ki-card">' +
+        kartenKopf('user', 'Wer und welche Einträge?', 'Das Kind und den Ausschnitt aus seinem Dossier wählen.') +
+        '<div class="ki-field"><label for="ai-student">Kind</label>' +
+          '<div class="ki-kind"><select id="ai-student">' + schuelerOptionen() + '</select>' +
+            (student ? '<span class="ki-wird" title="So heißt das Kind im Text für die KI">' + kbIcon('eye-off', 'sm') + ' heißt für die KI <b>' + escapeHtml(kindLabel(student)) + '</b></span>' : '') +
+          '</div></div>' +
+        '<div class="ki-field"><span class="ki-label">Welche Einträge?</span>' +
+          '<div class="ki-scope">' +
+            scopeKarte('student', 'layers', 'Ganzes Dossier', eintraegeText(scopedEntriesFor('student'))) +
+            scopeKarte('theme', 'tag', 'Ein Thema', state.scopeType === 'theme' ? eintraegeText(scopedEntriesFor('theme')) : 'Kategorie oder Stichwort') +
+            scopeKarte('selection', 'list-checks', 'Eigene Auswahl', auswahlZusatz()) +
+          '</div>' +
+          (state.scopeType === 'theme' ? themaHtml() : '') +
+          (state.scopeType === 'selection' ? auswahlHtml() : '') +
         '</div>' +
-      '</div>' +
-      (state.scopeType === 'theme' ? (
-        '<div class="row">' +
-          '<div class="field"><label for="ai-category">Kategorie <span class="hint">(optional)</span></label>' +
-            '<select id="ai-category"><option value="">Alle Kategorien</option>' + optionsHtml(CATEGORIES, state.category) + '</select></div>' +
-        '</div>' +
-        '<div class="field"><label>Tags <span class="hint">(optional, Mehrfachauswahl)</span></label><div class="chip-row" id="ai-tags">' + (tagChips || '<span class="muted">Keine Tags vorhanden.</span>') + '</div></div>'
-      ) : '') +
-      (state.scopeType === 'selection' ? (
-        '<div class="field"><label>Einträge auswählen</label><div style="max-height:280px; overflow:auto; border:1px solid var(--border); border-radius:var(--radius); padding:10px;">' + (entryCheckboxes || '<p class="muted">Keine Einträge vorhanden.</p>') + '</div></div>'
-      ) : '') +
-      '<p class="muted" id="ai-scope-summary">' + escapeHtml(scopeLabel()) + '</p>' +
-
-      '<h3>2. Frage / Aufgabe an die KI</h3>' +
-      AI_PROMPT_OPTIONS.map(function (p, i) {
-        return '<label class="checkbox-row"><input type="checkbox" data-prompt="' + i + '" ' + (state.selectedPrompts[i] ? 'checked' : '') + '> <span>' + escapeHtml(p) + '</span></label>';
-      }).join('') +
-      '<div class="field"><label for="ai-free">Eigene Frage / Ergänzung <span class="hint">(optional)</span></label>' +
-        '<textarea id="ai-free" rows="2" placeholder="z. B. Worauf sollten wir im nächsten Gespräch mit den Eltern besonders achten?">' + escapeHtml(state.freeText) + '</textarea></div>' +
-
-      '<button type="button" class="btn btn-primary" id="ai-step-names">Weiter: Namen prüfen</button>' +
+      '</section>' +
+      '<section class="ki-card">' +
+        kartenKopf('sparkles', 'Was soll die KI tun?', 'Eine oder mehrere Aufgaben wählen – oder selbst fragen.') +
+        '<div class="ki-tasks">' + AI_PROMPT_OPTIONS.map(function (p, i) {
+          var on = !!state.selectedPrompts[i];
+          return '<label class="ki-task' + (on ? ' is-on' : '') + '"><input type="checkbox" data-prompt="' + i + '"' + (on ? ' checked' : '') + '>' +
+            '<span class="ki-task-ic">' + kbIcon(AUFGABEN_SYMBOL[i] || 'sparkles', 'sm') + '</span>' +
+            '<span class="ki-task-t">' + escapeHtml(p) + '</span>' +
+            '<span class="ki-task-ck">' + kbIcon('check', 'sm') + '</span></label>';
+        }).join('') + '</div>' +
+        '<div class="ki-field"><label for="ai-free">Eigene Frage <span class="ki-opt">optional</span></label>' +
+          '<textarea id="ai-free" rows="3" placeholder="z. B. Worauf sollten wir im nächsten Gespräch mit den Eltern besonders achten?">' + escapeHtml(state.freeText) + '</textarea></div>' +
+      '</section>' +
+    '</div>' +
+    '<div class="ki-bar">' +
+      '<div class="ki-bar-sum" id="ai-scope-summary">' + zusammenfassungHtml() + '</div>' +
+      '<button type="button" class="btn btn-primary" id="ai-step-names">Weiter: Namen prüfen ' + kbIcon('arrow-right', 'sm') + '</button>' +
     '</div>';
   }
 
-  function scopeOptionBtn(type, label) {
-    var active = state.scopeType === type;
-    return '<button type="button" class="toggle-chip' + (active ? ' active' : '') + '" data-scope="' + type + '" style="flex:1;">' + escapeHtml(label) + '</button>';
-  }
-
-  /* ---------------- Phase 2: Namen prüfen ---------------- */
-  function namesHtml() {
+  /* ---------------- Namen erkennen ---------------- */
+  /* Erkannt wird neu, sobald sich Kind, Einträge oder die eigene Frage
+     ändern; was von Hand angepasst wurde (Platzhalter, abgeschaltet,
+     ergänzt), bleibt für dasselbe Kind erhalten. */
+  function namenVorbereiten() {
     var entries = scopedEntries();
-    var student = Repo.getStudent(state.studentId);
-    var detected = detectNamesInText(
-      entries.map(function (e) { return e.text; }),
-      { excludeNames: student ? [student.name] : [] }
-    );
-    if (!state.replacements.length) {
-      state.replacements = buildReplacementList(detected);
-      // Querverweise auf andere App-Schüler: deren anonLabel als Platzhalter
-      state.replacements.forEach(function (r) {
-        if (r.category !== 'Schüler') return;
-        var other = students.filter(function (s) { return s.name === r.name; })[0];
-        if (other && other.anonLabel) r.placeholder = other.anonLabel;
-      });
-    }
-    var institutions = detectInstitutions(entries);
-    if (!state.institutionMap.length && institutions.length) {
-      state.institutionMap = institutions.map(function (name, i) { return { name: name, placeholder: 'Stell ' + (i + 1) }; });
-    }
+    var sig = JSON.stringify([state.studentId, entries.map(function (e) { return e.id; }), state.freeText.trim()]);
+    if (state.namenSig === sig) return;
+    state.namenSig = sig;
+    if (state.namenKind !== state.studentId) { state.replacements = []; state.institutionMap = []; state.namenKind = state.studentId; }
 
-    var rows = state.replacements.map(function (r, i) {
-      return '<tr>' +
-        '<td>' + escapeHtml(r.name) + '</td>' +
-        '<td><span class="muted">' + escapeHtml(r.category) + '</span></td>' +
-        '<td><input type="text" data-replacement-idx="' + i + '" value="' + escapeAttr(r.placeholder) + '"></td>' +
-        '<td><label class="checkbox-label"><input type="checkbox" data-replacement-active="' + i + '" ' + (r.active ? 'checked' : '') + '> ersetzen</label></td>' +
-      '</tr>';
-    }).join('');
+    var kind = kindKontext();
+    var teile = kind ? kind.formen.teile.map(function (t) { return t.wort; }) : [];
+    var texte = entries.map(function (e) { return e.text; });
+    if (state.freeText.trim()) texte.push(state.freeText);
+    var treffer = {};
+    var detected = detectNamesInText(texte, { excludeNames: kind ? [kind.name] : [], excludeParts: teile, vornamen: true, schuelerTreffer: treffer });
+    var neu = buildReplacementList(detected);
+    neu.forEach(function (r) {
+      var ids = treffer[r.name];
+      if (!ids) return;
+      /* Querverweise auf andere Kinder: deren Kürzel – bei gleichem
+         Vornamen mehrerer Kinder (oder ohne Kürzel) „Mitschüler“ */
+      var other = ids.length === 1 ? Repo.getStudent(ids[0]) : null;
+      r.category = 'Schüler';
+      r.placeholder = other && other.anonLabel ? other.anonLabel : 'Mitschüler';
+    });
+    var alt = {};
+    state.replacements.forEach(function (r) { alt[r.name] = r; });
+    neu.forEach(function (r) {
+      var a = alt[r.name];
+      if (a) { r.placeholder = a.placeholder; r.active = a.active; }
+    });
+    var vonHand = state.replacements.filter(function (r) {
+      return r.category === 'manuell' && !neu.some(function (n) { return n.name === r.name; });
+    });
+    state.replacements = neu.concat(vonHand);
 
-    var institutionRows = state.institutionMap.map(function (m, i) {
-      return '<tr><td>' + escapeHtml(m.name) + '</td><td class="muted">Institution</td>' +
-        '<td><input type="text" data-institution-idx="' + i + '" value="' + escapeAttr(m.placeholder) + '"></td><td></td></tr>';
-    }).join('');
+    var altInst = {};
+    state.institutionMap.forEach(function (m) { altInst[m.name] = m.placeholder; });
+    state.institutionMap = detectInstitutions(entries).map(function (name, i) {
+      return { name: name, placeholder: altInst[name] || ('Stell ' + (i + 1)) };
+    });
+  }
 
-    return '<div class="card export-config no-print">' +
-      '<h3 style="margin-top:0;">3. Erkannte Namen prüfen &amp; ergänzen</h3>' +
-      '<p class="muted">Die App hat folgende mögliche Personen-/Elternbezeichnungen im gewählten Textumfang gefunden. Prüfen Sie die Platzhalter, passen Sie sie bei Bedarf an, oder fügen Sie weitere Namen hinzu.</p>' +
-      (state.replacements.length ?
-        '<table class="replacement-table"><thead><tr><th>Erkannter Name</th><th>Kategorie</th><th>Platzhalter</th><th></th></tr></thead><tbody>' + rows + '</tbody></table>' :
-        '<p class="muted">Keine Namen automatisch erkannt — Sie können unten weitere von Hand ergänzen.</p>') +
-      '<div class="row" style="align-items:flex-end;">' +
-        '<div class="field"><label for="ai-add-name">Name ergänzen</label><input type="text" id="ai-add-name" placeholder="z. B. Mme Muster"></div>' +
-        '<div class="field"><label for="ai-add-placeholder">Platzhalter</label><input type="text" id="ai-add-placeholder" placeholder="z. B. Therapeut 2"></div>' +
-        '<div class="field"><button type="button" class="btn" id="ai-add-row">+ Hinzufügen</button></div>' +
-      '</div>' +
-      '<hr class="divider">' +
-      '<label class="checkbox-row"><input type="checkbox" id="ai-anon-inst" ' + (state.anonymizeInstitutions ? 'checked' : '') + '> <span>Institutionen ebenfalls anonymisieren (' +
-        (state.institutionMap.length ? state.institutionMap.map(function (m) { return escapeHtml(m.name); }).join(', ') : 'keine erkannt') + ' &rarr; „Stell 1, Stell 2, …")</span></label>' +
-      (state.anonymizeInstitutions && state.institutionMap.length ?
-        '<table class="replacement-table"><tbody>' + institutionRows + '</tbody></table>' : '') +
-      '<div class="page-head" style="margin:14px 0 0;">' +
-        '<button type="button" class="btn" id="ai-back-config">&larr; Zurück</button>' +
-        '<button type="button" class="btn btn-primary" id="ai-step-preview">Vorschau erzeugen</button>' +
-      '</div>' +
+  function kategorieChip(cat) {
+    var k = KATEGORIE[cat] || [cat || 'Person', 'user'];
+    return '<span class="ki-cat">' + kbIcon(k[1], 'sm') + escapeHtml(k[0]) + '</span>';
+  }
+
+  function kindHtml(kind) {
+    if (!kind) return '';
+    var gesehen = {}, teile = [];
+    kind.formen.teile.forEach(function (t) {
+      var k = t.wort.toLowerCase();
+      if (gesehen[k]) return;
+      gesehen[k] = 1;
+      teile.push(t);
+    });
+    teile.sort(function (a, b) { return (a.rolle === 'vorname' ? 0 : 1) - (b.rolle === 'vorname' ? 0 : 1); });
+    var nachname = teile.filter(function (t) { return t.rolle === 'nachname'; })[0];
+    var einzeln = teile.length > 1 ? teile.map(function (t) {
+      return '<span class="ki-pair">' + escapeHtml(t.wort) + ' ' + kbIcon('arrow-right', 'sm') + ' <i>' + escapeHtml(t.rolle === 'vorname' ? kind.label : '[Nachname]') + '</i></span>';
+    }).join('') : '';
+    return '<div class="ki-kid">' +
+      '<div class="ki-kid-main"><span class="ki-kid-ic">' + kbIcon('shield-check', 'sm') + '</span>' +
+        '<span class="ki-from">' + escapeHtml(kind.name) + '</span><span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
+        '<span class="ki-to">' + escapeHtml(kind.label) + '</span>' +
+        '<span class="ki-badge">' + kbIcon('lock', 'sm') + ' immer ersetzt</span></div>' +
+      (einzeln ? '<div class="ki-kid-parts"><span>Auch einzeln:</span>' + einzeln +
+        (nachname ? '<small>– auch in „Frau ' + escapeHtml(nachname.wort) + '“ und in GROSSBUCHSTABEN</small>' : '') + '</div>' : '') +
     '</div>';
   }
 
-  /* ---------------- Phase 3: Vorschau & Kopieren ---------------- */
-  function buildAnonymizationContext() {
-    var student = Repo.getStudent(state.studentId);
+  function namesHtml() {
+    namenVorbereiten();
+    var kind = kindKontext();
+    var n = state.replacements.length;
+    var rows = state.replacements.map(function (r, i) {
+      return '<div class="ki-row' + (r.active ? '' : ' is-off') + '">' +
+        '<label class="ki-switch" title="' + (r.active ? 'wird ersetzt' : 'bleibt stehen') + '"><input type="checkbox" data-replacement-active="' + i + '"' + (r.active ? ' checked' : '') + ' aria-label="' + escapeAttr(r.name) + ' ersetzen"><span></span></label>' +
+        '<div class="ki-row-name"><b>' + escapeHtml(r.name) + '</b>' + kategorieChip(r.category) + '</div>' +
+        '<span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
+        '<input type="text" data-replacement-idx="' + i + '" value="' + escapeAttr(r.placeholder) + '" aria-label="Platzhalter für ' + escapeAttr(r.name) + '"' + (r.active ? '' : ' disabled') + '>' +
+      '</div>';
+    }).join('');
+
+    var inst = state.institutionMap;
+    var instHtml = '<div class="ki-inst">' +
+      '<label class="ki-toggle' + (inst.length ? '' : ' is-disabled') + '"><span class="ki-switch"><input type="checkbox" id="ai-anon-inst"' +
+        (state.anonymizeInstitutions && inst.length ? ' checked' : '') + (inst.length ? '' : ' disabled') + '><span></span></span>' +
+        '<span><b>Institutionen auch ersetzen</b><small>' + (inst.length
+          ? escapeHtml(inst.map(function (m) { return m.name; }).join(', ')) + ' → „Stell 1, Stell 2, …“'
+          : 'In dieser Auswahl kommen keine Institutionskürzel vor.') + '</small></span></label>' +
+      (state.anonymizeInstitutions && inst.length ? '<div class="ki-rows ki-rows-inst">' + inst.map(function (m, i) {
+        return '<div class="ki-row"><span class="ki-switch-platz"></span><div class="ki-row-name"><b>' + escapeHtml(m.name) + '</b>' + kategorieChip('Institution') + '</div>' +
+          '<span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
+          '<input type="text" data-institution-idx="' + i + '" value="' + escapeAttr(m.placeholder) + '" aria-label="Platzhalter für ' + escapeAttr(m.name) + '"></div>';
+      }).join('') + '</div>' : '') +
+    '</div>';
+
+    return '<section class="ki-card">' +
+      kartenKopf('eye-off', 'Namen prüfen', 'Links steht, was im Dossier steht – rechts, was die KI stattdessen liest. Platzhalter kannst du ändern, einzelne Treffer abschalten.',
+        '<span class="ki-count">' + (n === 1 ? '1 Name' : n + ' Namen') + ' gefunden</span>') +
+      kindHtml(kind) +
+      (n ? '<div class="ki-rows">' + rows + '</div>'
+         : '<p class="ki-leerzeile">' + kbIcon('circle-check', 'sm') + ' Sonst keine Namen erkannt. Fehlt einer? Einfach unten ergänzen.</p>') +
+      '<div class="ki-add">' +
+        '<input type="text" id="ai-add-name" placeholder="Name ergänzen, z. B. Mme Muster" aria-label="Name ergänzen">' +
+        '<span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
+        '<input type="text" id="ai-add-placeholder" placeholder="Platzhalter, z. B. Therapeut 2" aria-label="Platzhalter">' +
+        '<button type="button" class="btn" id="ai-add-row">' + kbIcon('plus', 'sm') + ' Ergänzen</button>' +
+      '</div>' +
+      instHtml +
+    '</section>' +
+    '<div class="ki-bar">' +
+      '<button type="button" class="btn" id="ai-back-config">' + kbIcon('arrow-left', 'sm') + ' Zurück</button>' +
+      '<div class="ki-bar-sum" id="ai-names-summary">' + namenZusammenfassung() + '</div>' +
+      '<button type="button" class="btn btn-primary" id="ai-step-preview">Weiter: Vorschau ' + kbIcon('arrow-right', 'sm') + '</button>' +
+    '</div>';
+  }
+  function namenZusammenfassung() {
+    var an = state.replacements.filter(function (r) { return r.active; }).length;
+    var aus = state.replacements.length - an;
+    return '<span class="ki-sum-item">' + kbIcon('shield-check', 'sm') + ' <b>' + (an + 1) + '</b> ' + (an ? 'Namen werden' : 'Name wird') + ' ersetzt</span>' +
+      (aus ? '<span class="ki-sum-item is-warn">' + kbIcon('eye', 'sm') + ' <b>' + aus + '</b> ' + (aus === 1 ? 'bleibt' : 'bleiben') + ' stehen</span>' : '');
+  }
+
+  /* ---------------- Phase 3: Prüfen & kopieren ---------------- */
+  function kontext(markieren) {
     return {
       replacements: state.replacements,
       anonymizeInstitutions: state.anonymizeInstitutions,
       institutionMap: state.institutionMap,
-      studentNameMap: student ? [{ name: student.name, anonLabel: student.anonLabel }] : []
+      kind: kindKontext(),
+      studentNameMap: [],
+      markieren: !!markieren,
+      stat: { ersetzungen: 0 }
     };
   }
-
-  function previewHtml() {
-    var entries = scopedEntries();
-    var ctx = buildAnonymizationContext();
-    var screeningText = '';
+  function screeningText() {
     try {
       if (window.KB_SCREENING && window.KB_SCREENING.detail && state.studentId) {
         var sd = window.KB_SCREENING.detail(state.studentId);
-        if (sd && sd.text) screeningText = sd.text;
+        if (sd && sd.text) return sd.text;
       }
     } catch (e) {}
-    state.builtText = buildAiExportText({
-      scopeLabel: scopeLabel(),
-      taskText: taskText(),
-      entries: entries,
-      ctx: ctx,
-      screeningText: screeningText
-    });
-    return '<div class="card export-config no-print">' +
-      '<h3 style="margin-top:0;">4. Vorschau &amp; Übergabe</h3>' +
-      '<div class="warn-banner"><strong>Hinweis:</strong> Dieser Text verlässt die App nur, wenn Sie ihn selbst in eine externe KI einfügen. ' +
-        'Er wird ausschließlich in Ihre Zwischenablage kopiert — niemals automatisch versendet. Bitte prüfen Sie ihn sorgfältig auf verbliebene Namen, bevor Sie ihn weitergeben.</div>' +
-      '<div class="preview-box" id="ai-preview-text">' + escapeHtml(state.builtText) + '</div>' +
-      '<div class="page-head" style="margin:14px 0 0;">' +
-        '<button type="button" class="btn" id="ai-back-names">&larr; Zurück zu den Namen</button>' +
-        '<button type="button" class="btn btn-primary" id="ai-copy">In Zwischenablage kopieren</button>' +
-      '</div>' +
-    '</div>';
+    return '';
+  }
+  function bauen() {
+    namenVorbereiten();
+    var entries = scopedEntries();
+    var ctx = kontext(true);
+    var scr = screeningText();
+    state.markText = buildAiExportText({ scopeLabel: scopeLabel(), taskText: taskText(ctx), entries: entries, ctx: ctx, screeningText: scr });
+    state.builtText = state.markText.replace(/[]/g, '');
+    state.stat = { eintraege: entries.length, ersetzungen: ctx.stat.ersetzungen, woerter: (state.builtText.match(/\S+/g) || []).length };
+    state.reste = resteFinden(entries, scr);
   }
 
-  var html =
-    '<div class="page-head no-print"><div><h2>An externe KI geben</h2><p class="muted">Anonymisierter Export — wählen Sie Umfang und Aufgabe, prüfen Sie die Namenserkennung, und kopieren Sie das Ergebnis selbst in das KI-Werkzeug Ihrer Wahl.</p></div></div>' +
-    '<div id="ai-phase-wrap">' + phaseHtml() + '</div>';
+  /* Letzte Kontrolle: stehen bekannte Namen noch im Text – klein
+     geschrieben, anders gebeugt oder bewusst abgeschaltet? Geprüft werden
+     nur die Einträge, die eigene Frage und das Screening, nicht die festen
+     Sätze der App. */
+  function resteFinden(entries, scr) {
+    var ctx = kontext(true);
+    ctx.stat = null;
+    var teile = [];
+    entries.forEach(function (e) {
+      teile.push(anonymizeText((e.category || '') + ' ' + (e.tags || []).join(', '), ctx));
+      teile.push(anonymizeText(e.text, ctx));
+    });
+    if (state.freeText.trim()) teile.push(anonymizeText(state.freeText, ctx));
+    if (scr) teile.push(anonymizeText(scr, ctx));
+    var text = teile.join('\n').replace(/[^]*/g, ' ');
+
+    var liste = [], gesehen = {};
+    function dazu(wort, ersatz, wer, grossKlein) {
+      wort = String(wort || '').trim();
+      var key = wort.toLowerCase() + (grossKlein === false ? '' : '|' + wort);
+      if (wort.length < 2 || gesehen[key]) return;
+      gesehen[key] = 1;
+      liste.push({ wort: wort, ersatz: ersatz, wer: wer, grossKlein: grossKlein });
+    }
+    var kind = kindKontext();
+    if (kind) {
+      dazu(kind.name, kind.label, 'Name des Kindes', false);
+      kind.formen.teile.forEach(function (t) {
+        dazu(t.wort, t.rolle === 'vorname' ? kind.label : '[Nachname]', t.rolle === 'vorname' ? 'Vorname des Kindes' : 'Nachname des Kindes', false);
+      });
+    }
+    var vornamen = {};
+    Repo.listStudents().forEach(function (s) {
+      var vn = kiNamensFormen(s.name).vorname.toLowerCase();
+      if (vn) vornamen[vn] = (vornamen[vn] || 0) + 1;
+    });
+    Repo.listStudents().forEach(function (s) {
+      if (!s.name || s.id === state.studentId) return;
+      var f = kiNamensFormen(s.name);
+      var ersatz = s.anonLabel || 'Mitschüler';
+      f.ganz.forEach(function (g) { dazu(g, ersatz, 'anderes Kind'); });
+      if (kind && f.vorname.toLowerCase() === kind.formen.vorname.toLowerCase()) return;
+      dazu(f.vorname, vornamen[f.vorname.toLowerCase()] > 1 ? 'Mitschüler' : ersatz, 'anderes Kind');
+    });
+    state.replacements.forEach(function (r) { if (r.active) dazu(r.name, r.placeholder, 'erkannter Name', false); });
+
+    var reste = [], schon = {};
+    liste.forEach(function (p) {
+      var re = kiWortRegex(p.wort, p.grossKlein);
+      var m;
+      while ((m = re.exec(text)) !== null) {
+        var f = m[2];
+        if (!schon[f]) { schon[f] = 1; reste.push({ wort: f, ersatz: p.ersatz, wer: p.wer }); }
+      }
+    });
+    return reste;
+  }
+
+  function markiertHtml(t) {
+    return t.split('\n').map(function (zeile) {
+      var h = escapeHtml(zeile).replace(/([^]*)/g, '<mark class="ki-ph">$1</mark>');
+      if (/^(===|---)/.test(zeile)) return '<span class="ki-l-h">' + h + '</span>';
+      if (/^\[\d{2}\.\d{2}\.\d{4}\]/.test(zeile)) return '<span class="ki-l-e">' + h + '</span>';
+      return h;
+    }).join('\n');
+  }
+
+  function statusHtml() {
+    if (state.reste.length) {
+      return '<div class="ki-status warn" role="status"><span class="ki-status-ic">' + kbIcon('triangle-alert') + '</span><div>' +
+        '<b>Hier steht vermutlich noch ein Name</b>' +
+        '<span>Ein Klick ersetzt ihn überall im Text. Oder zurück zu den Namen und selbst ergänzen.</span>' +
+        '<div class="ki-reste">' + state.reste.map(function (r, i) {
+          return '<button type="button" class="ki-rest" data-ki-rest="' + i + '" title="' + escapeAttr(r.wer) + '">' +
+            '<span class="ki-rest-w">' + escapeHtml(r.wort) + '</span>' + kbIcon('arrow-right', 'sm') + '<span>' + escapeHtml(r.ersatz) + '</span>' +
+            '<span class="ki-rest-go">ersetzen</span></button>';
+        }).join('') + '</div></div></div>';
+    }
+    return '<div class="ki-status ok" role="status"><span class="ki-status-ic">' + kbIcon('circle-check') + '</span><div>' +
+      '<b>Keine bekannten Namen mehr im Text</b>' +
+      '<span>Lies trotzdem kurz drüber: Freie Texte können Namen enthalten, die die App nicht kennt.</span></div></div>';
+  }
+
+  function previewHtml() {
+    bauen();
+    var s = state.stat;
+    function kachel(zahl, text) { return '<div class="ki-stat"><b>' + zahl.toLocaleString('de-LU') + '</b><span>' + escapeHtml(text) + '</span></div>'; }
+    return '<section class="ki-card">' +
+      kartenKopf('file-text', 'Prüfen & kopieren', 'So liest die KI den Text. <mark class="ki-ph">Markiert</mark> ist alles, was ersetzt wurde.') +
+      statusHtml() +
+      '<div class="ki-stats">' +
+        kachel(s.eintraege, s.eintraege === 1 ? 'Eintrag' : 'Einträge') +
+        kachel(s.ersetzungen, s.ersetzungen === 1 ? 'Ersetzung' : 'Ersetzungen') +
+        kachel(s.woerter, 'Wörter') +
+      '</div>' +
+      '<div class="ki-paper" id="ai-preview-text">' + markiertHtml(state.markText) + '</div>' +
+    '</section>' +
+    '<div class="ki-bar">' +
+      '<button type="button" class="btn" id="ai-back-names">' + kbIcon('arrow-left', 'sm') + ' <span>Zurück<span class="ki-lang"> zu den Namen</span></span></button>' +
+      '<div class="ki-bar-sum"><span class="ki-sum-item ki-safe">' + kbIcon('lock', 'sm') + ' Nichts wird versendet – nur deine Zwischenablage.</span></div>' +
+      '<button type="button" class="btn btn-primary ki-copy" id="ai-copy">' + kbIcon('copy', 'sm') + ' <span>Text kopieren</span></button>' +
+    '</div>';
+  }
 
   function phaseHtml() {
     if (state.phase === 'names') return namesHtml();
@@ -5793,14 +6422,53 @@ function viewAiExport(params, query) {
     return configHtml();
   }
 
+  var html =
+    '<div class="ki">' +
+      '<div class="ki-head no-print">' +
+        '<span class="ki-kicker">' + kbIcon('lock', 'sm') + ' Bleibt auf diesem Gerät</span>' +
+        '<h2>An externe KI geben</h2>' +
+        '<p>Namen raus, Platzhalter rein: Du wählst Einträge und Aufgabe, prüfst die erkannten Namen und kopierst den Text selbst in das KI-Werkzeug deiner Wahl.</p>' +
+      '</div>' +
+      '<ol class="ki-steps no-print" id="ai-steps" aria-label="Schritte">' + schritteHtml() + '</ol>' +
+      '<div id="ai-phase-wrap" class="no-print">' + phaseHtml() + '</div>' +
+    '</div>';
+
   return {
     navKey: 'ai-export',
     html: html,
     afterRender: function (root) {
       var wrap = qs('#ai-phase-wrap', root);
-      function rerender() { wrap.innerHTML = phaseHtml(); wire(); }
+      var steps = qs('#ai-steps', root);
+      var kopf = qs('.ki', root);
+      function rerender(nachOben) {
+        steps.innerHTML = schritteHtml();
+        wrap.innerHTML = phaseHtml();
+        wire();
+        if (nachOben && kopf && kopf.getBoundingClientRect().top < 0) {
+          try { kopf.scrollIntoView({ block: 'start' }); } catch (e) {}
+        }
+      }
       // mitten im Ablauf nicht zurueck auf Anfang, nur weil vom Team etwas kam
       ansichtAuffrischen = function () { return document.body.contains(wrap); };
+
+      function darfWeiter() {
+        if (!state.studentId || !Repo.getStudent(state.studentId)) { showToast('Bitte zuerst ein Kind wählen.', { error: true }); return false; }
+        if (!scopedEntries().length) { showToast('In dieser Auswahl ist noch kein Eintrag.', { error: true }); return false; }
+        return true;
+      }
+      function gehe(ziel) {
+        if (ziel === state.phase) return;
+        if (state.phase === 'config' && ziel !== 'config') {
+          if (!darfWeiter()) return;
+          kuerzelSichern();
+        }
+        state.phase = ziel;
+        rerender(true);
+      }
+      steps.addEventListener('click', function (ev) {
+        var b = ev.target.closest('[data-ki-goto]');
+        if (b) gehe(b.getAttribute('data-ki-goto'));
+      });
 
       function wire() {
         if (state.phase === 'config') wireConfig();
@@ -5808,25 +6476,33 @@ function viewAiExport(params, query) {
         else wirePreview();
       }
 
+      function zahlenAuffrischen() {
+        var sum = qs('#ai-scope-summary', wrap);
+        if (sum) sum.innerHTML = zusammenfassungHtml();
+        var sel = qs('[data-scope-n="selection"]', wrap);
+        if (sel) sel.textContent = auswahlZusatz();
+        var pc = qs('#ai-pick-count', wrap);
+        if (pc) pc.textContent = scopedEntriesFor('selection') + ' von ' + studentEntries().length + ' angehakt';
+      }
+
       function wireConfig() {
-        qs('#ai-student', wrap).addEventListener('change', function (e) {
+        var stu = qs('#ai-student', wrap);
+        if (!stu) return;
+        stu.addEventListener('change', function (e) {
           state.studentId = e.target.value;
+          state.category = '';
           state.tags = {};
           state.selectedEntries = {};
-          state.replacements = [];
-          state.institutionMap = [];
           rerender();
         });
         qsa('[data-scope]', wrap).forEach(function (btn) {
           btn.addEventListener('click', function () {
             state.scopeType = btn.getAttribute('data-scope');
-            state.replacements = [];
-            state.institutionMap = [];
             rerender();
           });
         });
         var catSel = qs('#ai-category', wrap);
-        if (catSel) catSel.addEventListener('change', function (e) { state.category = e.target.value; qs('#ai-scope-summary', wrap).textContent = scopeLabel(); });
+        if (catSel) catSel.addEventListener('change', function (e) { state.category = e.target.value; rerender(); });
         qsa('[data-tag]', wrap).forEach(function (btn) {
           btn.addEventListener('click', function () {
             var tag = btn.getAttribute('data-tag');
@@ -5838,23 +6514,27 @@ function viewAiExport(params, query) {
           cb.addEventListener('change', function () {
             var id = cb.getAttribute('data-entry-pick');
             if (cb.checked) state.selectedEntries[id] = true; else delete state.selectedEntries[id];
-            qs('#ai-scope-summary', wrap).textContent = scopeLabel();
+            cb.closest('.ki-entry').classList.toggle('is-on', cb.checked);
+            zahlenAuffrischen();
           });
         });
+        var alle = qs('#ai-pick-all', wrap), keine = qs('#ai-pick-none', wrap);
+        if (alle) alle.addEventListener('click', function () {
+          studentEntries().forEach(function (e) { state.selectedEntries[e.id] = true; });
+          rerender();
+        });
+        if (keine) keine.addEventListener('click', function () { state.selectedEntries = {}; rerender(); });
         qsa('[data-prompt]', wrap).forEach(function (cb) {
           cb.addEventListener('change', function () {
             var idx = cb.getAttribute('data-prompt');
             if (cb.checked) state.selectedPrompts[idx] = true; else delete state.selectedPrompts[idx];
+            cb.closest('.ki-task').classList.toggle('is-on', cb.checked);
+            zahlenAuffrischen();
           });
         });
         var freeEl = qs('#ai-free', wrap);
-        if (freeEl) freeEl.addEventListener('input', function () { state.freeText = freeEl.value; });
-        qs('#ai-step-names', wrap).addEventListener('click', function () {
-          if (!state.studentId) { showToast('Bitte zuerst einen Schüler wählen.', { error: true }); return; }
-          if (!scopedEntries().length) { showToast('Die aktuelle Auswahl enthält keine Einträge.', { error: true }); return; }
-          state.phase = 'names';
-          rerender();
-        });
+        if (freeEl) freeEl.addEventListener('input', function () { state.freeText = freeEl.value; zahlenAuffrischen(); });
+        qs('#ai-step-names', wrap).addEventListener('click', function () { gehe('names'); });
       }
 
       function wireNames() {
@@ -5868,6 +6548,12 @@ function viewAiExport(params, query) {
           cb.addEventListener('change', function () {
             var idx = Number(cb.getAttribute('data-replacement-active'));
             state.replacements[idx].active = cb.checked;
+            var row = cb.closest('.ki-row');
+            row.classList.toggle('is-off', !cb.checked);
+            cb.closest('.ki-switch').title = cb.checked ? 'wird ersetzt' : 'bleibt stehen';
+            var ph = qs('[data-replacement-idx]', row);
+            if (ph) ph.disabled = !cb.checked;
+            qs('#ai-names-summary', wrap).innerHTML = namenZusammenfassung();
           });
         });
         qsa('[data-institution-idx]', wrap).forEach(function (input) {
@@ -5880,25 +6566,47 @@ function viewAiExport(params, query) {
           state.anonymizeInstitutions = e.target.checked;
           rerender();
         });
-        qs('#ai-add-row', wrap).addEventListener('click', function () {
-          var nameEl = qs('#ai-add-name', wrap);
-          var phEl = qs('#ai-add-placeholder', wrap);
+        var nameEl = qs('#ai-add-name', wrap);
+        var phEl = qs('#ai-add-placeholder', wrap);
+        function ergaenzen() {
           var name = nameEl.value.trim();
           var placeholder = phEl.value.trim();
-          if (!name || !placeholder) { showToast('Bitte Name und Platzhalter angeben.', { error: true }); return; }
+          if (!name || !placeholder) { showToast('Bitte Name und Platzhalter angeben.', { error: true }); (name ? phEl : nameEl).focus(); return; }
           state.replacements.push({ name: name, category: 'manuell', placeholder: placeholder, active: true });
-          nameEl.value = ''; phEl.value = '';
           rerender();
+          var neu = qs('#ai-add-name', wrap);
+          if (neu) neu.focus();
+        }
+        qs('#ai-add-row', wrap).addEventListener('click', ergaenzen);
+        [nameEl, phEl].forEach(function (el) {
+          el.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); ergaenzen(); } });
         });
-        qs('#ai-back-config', wrap).addEventListener('click', function () { state.phase = 'config'; rerender(); });
-        qs('#ai-step-preview', wrap).addEventListener('click', function () { state.phase = 'preview'; rerender(); });
+        qs('#ai-back-config', wrap).addEventListener('click', function () { gehe('config'); });
+        qs('#ai-step-preview', wrap).addEventListener('click', function () { gehe('preview'); });
       }
 
       function wirePreview() {
-        qs('#ai-back-names', wrap).addEventListener('click', function () { state.phase = 'names'; rerender(); });
-        qs('#ai-copy', wrap).addEventListener('click', function () {
+        qs('#ai-back-names', wrap).addEventListener('click', function () { gehe('names'); });
+        qsa('[data-ki-rest]', wrap).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            var r = state.reste[Number(btn.getAttribute('data-ki-rest'))];
+            if (!r) return;
+            state.replacements.push({ name: r.wort, category: 'manuell', placeholder: r.ersatz, active: true });
+            rerender();
+            showToast('„' + r.wort + '“ wird jetzt ersetzt.');
+          });
+        });
+        var copyBtn = qs('#ai-copy', wrap);
+        copyBtn.addEventListener('click', function () {
           copyTextToClipboard(state.builtText).then(function (ok) {
-            showToast(ok ? 'In die Zwischenablage kopiert.' : 'Kopieren nicht möglich — bitte Text manuell markieren und kopieren.', { error: !ok });
+            if (!ok) { showToast('Kopieren nicht möglich — bitte Text manuell markieren und kopieren.', { error: true }); return; }
+            copyBtn.classList.add('is-done');
+            copyBtn.innerHTML = kbIcon('check', 'sm') + ' <span>Kopiert – jetzt in die KI einfügen</span>';
+            setTimeout(function () {
+              if (!document.body.contains(copyBtn)) return;
+              copyBtn.classList.remove('is-done');
+              copyBtn.innerHTML = kbIcon('copy', 'sm') + ' <span>Text kopieren</span>';
+            }, 2600);
           });
         });
       }
@@ -7956,7 +8664,10 @@ function viewReportImport(params, query) {
           if (!nm) { showToast('Bitte einen Namen für den neuen Schüler eingeben.'); return; }
           if (!window.KB_ROSTER || !window.KB_ROSTER.add) { showToast('Schülerliste nicht verfügbar.'); return; }
           sid = window.KB_ROSTER.add(nm);
-          try { if (window.KB_ROSTER.update) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() }); } catch (e) {}
+          try {
+            var angelegt = window.KB_ROSTER.byId ? window.KB_ROSTER.byId(sid) : null;
+            if (window.KB_ROSTER.update && !(angelegt && angelegt.anonLabel)) window.KB_ROSTER.update(sid, { anonLabel: kbGenAnonLabel() });
+          } catch (e) {}
         }
         if (!sid) { showToast('Bitte einen Schüler zuordnen.'); return; }
         var dateIso = st.dateIso || todayIso();

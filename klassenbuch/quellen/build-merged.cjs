@@ -1545,6 +1545,15 @@ window.KB_ROSTER=(function(){
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+  /* Kuerzel fuer die KI-Anonymisierung ("Schueler X"). Ohne Kuerzel wurde
+     der Name im KI-Export durch nichts ersetzt - neu Angelegte bekommen
+     darum gleich das naechste freie. */
+  function freiesKuerzel(){
+    var used={},i,L='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for(i=0;i<list.length;i++){if(list[i].anonLabel){used[list[i].anonLabel]=1;}}
+    for(i=0;i<L.length;i++){if(!used['Sch\u00fcler '+L[i]]){return 'Sch\u00fcler '+L[i];}}
+    for(i=list.length+1;;i++){if(!used['Sch\u00fcler '+i]){return 'Sch\u00fcler '+i;}}
+  }
   /* Wer aus der Liste verschwindet - hier geloescht oder per Abgleich -,
      dessen Name wird gemerkt. Sonst wuesste der Papierkorb spaeter nicht mehr,
      wem die abgeraeumten Eintraege gehoerten. */
@@ -1564,7 +1573,7 @@ window.KB_ROSTER=(function(){
        im Roster und in ids(), damit Absenzen und Dossier erhalten bleiben. */
     asAnwesenheit:function(){return list.filter(function(s){return s.active!==false;}).map(function(s){return {id:s.id,name:s.name,klasse:s.klasse||'',level:s.level||'L1',zyklus:s.zyklus||''};});},
     asDossier:function(){return list.map(function(s){return {id:s.id,name:s.name,anonLabel:s.anonLabel||'',active:s.active!==false,createdAt:s.createdAt||''};});},
-    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:'',klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
+    add:function(name,klasse,level,zyklus){var id=newId();list.push({id:id,name:String(name||'').trim(),anonLabel:freiesKuerzel(),klasse:klasse||'',level:level||'L1',zyklus:zyklus||'ES',active:true,createdAt:new Date().toISOString()});notify();return id;},
     update:function(id,fields){var s=find(id);if(s){for(var k in fields){s[k]=fields[k];}notify();}},
     setLevel:function(id,lv){var s=find(id);if(s&&s.level!==lv){s.level=lv;notify();}},
     remove:function(id){merkeNamen(list,list.filter(function(s){return s.id!==id;}));list=list.filter(function(s){return s.id!==id;});notify();},
