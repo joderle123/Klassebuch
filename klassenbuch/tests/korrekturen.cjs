@@ -6,7 +6,8 @@
 // „+ Schuljahr anlegen“ (K6), Texte und Einzahl, Retards in der Wochen-Sicherung, Fehlzeiten nach
 // Stundenplan, Dossier-Backup, Handy (Woche, Warnleisten, CSV mit Ehemaligen, Startdialog 320 px).
 // Dritte Runde: Retards eigens im Übersichts-Chip und in der Team-Datei, Backup-Import ersetzt nur
-// durch neuere Fassungen. Nur erfundene Personen.
+// durch neuere Fassungen. Vierte Runde: Retards in Zeitleiste, Löschfrage und Löschbremse.
+// Nur erfundene Personen.
 // Aufruf: node klassenbuch/tests/korrekturen.cjs   (Webserver auf Port 8099 für den Hauptordner)
 'use strict';
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
@@ -333,6 +334,17 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   const chips = await R.evaluate(ids => ids.map(sid => { const k = document.querySelector('article.st-card[data-route="#/student/' + sid + '"] .st-chips'); return k ? k.textContent.replace(/\s+/g, ' ').trim() : ''; }), [k4.tom, k4.lea]);
   check('Übersicht: „1 Absenz“ statt „1 Absenzen“', chips[0].includes('1 Absenz · 1 unent.') && !chips[0].includes('Absenzen'), chips[0]);
   check('Übersicht: der Retard hat einen eigenen Chip „1 Retard“ und zählt nicht als Absenz', chips[1] === '1 Retard', chips[1]);
+  const verlauf = {};
+  for (const [wer, sid] of [['lea', k4.lea], ['tom', k4.tom]]) {
+    await R.evaluate(sid => { window.__kbGo('students'); location.hash = '#/student/' + encodeURIComponent(sid) + '?hub=verlauf'; }, sid); await warte(700);
+    verlauf[wer] = await R.evaluate(() => ({ titel: [...document.querySelectorAll('.tl-item .tl-t')].map(t => t.textContent.trim()), filter: [...document.querySelectorAll('.tl-filters .tl-chip')].map(c => c.textContent.replace(/\s+/g, ' ').trim()) }));
+  }
+  await R.evaluate(() => window.__kbGo('klasse')); await warte(400);
+  ctx4.dialoge.length = 0; ctx4.antwort = false;
+  await R.click('#kb-roster-body tr[data-id="' + k4.lea + '"] .kb-rd'); await warte(300);
+  ctx4.antwort = null;
+  verlauf.loeschen = ((ctx4.dialoge.find(d => d.typ === 'confirm') || {}).text || '').split('\n').find(z => z.startsWith('Daran hängen')) || '';
+  check('Retards heißen Retards: Zeitleiste „Retard · 10 Min.“ (Absenzen bleiben „Absenz · …“), Filter „Anwesenheit“, Löschfrage „1 Retard“', verlauf.lea.titel.join() === 'Retard · 10 Min.' && verlauf.lea.filter.includes('Anwesenheit 1') && verlauf.tom.titel.includes('Absenz · Non-excusé') && verlauf.loeschen.startsWith('Daran hängen: 1 Retard.'), verlauf);
   await R.evaluate(() => { window.__kbGo('data'); const i = document.getElementById('kb-wk-date'); i.value = '2026-09-14'; i.dispatchEvent(new Event('change', { bubbles: true })); }); await warte(300);
   /* nur Absenzen und Retards prüfen – die eingebauten Daten der Annexe können in derselben Woche weitere Einträge haben */
   const wochenSich = await R.evaluate(() => ({ teile: document.getElementById('kb-wk-counts').textContent.replace(/\s+/g, ' ').trim().replace(/^.*?: /, '').split(' · '), bereiche: KB_WEEKLY.collect('2026-09-14', '2026-09-20').filter(r => /^(Absenzen|Retards)$/.test(r.bereich)).map(r => r.bereich + ':' + r.details).sort().join(' | ') }));
@@ -436,7 +448,7 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   check('Neues kommt dazu; die Meldung sagt, wie viel übernommen, ersetzt und behalten wurde', nachImp.neu && nachImp.reuNeu && nachImp.meldung.includes('Import abgeschlossen: 2 übernommen, 1 durch die neuere Fassung ersetzt (die alte liegt im Papierkorb), 3 vorhandene behalten'), nachImp.meldung);
   await ctx8.close();
 
-  console.log('18) Team-Datei: Retards eigens gezählt');
+  console.log('18) Team-Datei: Retards eigens gezählt, Löschbremse');
   const ctx9 = await kontext(browser, fehler, { teamDatei: true });
   const T = await ctx9.newPage(); await frisch(T);
   await T.evaluate(() => {
@@ -448,6 +460,16 @@ async function lies(dl) { const teile = []; for await (const t of await dl.creat
   await T.evaluate(() => window.__kbGo('data')); await warte(400);
   const team = await T.evaluate(() => { const t = document.getElementById('kb-sync-status').textContent.replace(/\s+/g, ' '), m = /In der gemeinsamen Datei: .*/.exec(t); return m ? m[0] : '(nicht verbunden)'; });
   check('Team-Datei: „2 Absenzen · 1 Retard“ statt „3 Absenzen“', team.includes(' 2 Absenzen · 1 Retard · '), team);
+  /* Löschbremse: 10 Anwesenheits-Einträge stehen in der Team-Datei, dann sind auf diesem Gerät alle weg */
+  await T.evaluate(async () => {
+    const tom = KB_ROSTER.list().find(s => s.name === 'Tom Muster').id;
+    const e = (id, date) => ({ id, studentId: tom, date, weekday: new Date(date + 'T12:00:00').getDay(), blockId: 'b3', subject: 'Mathe', status: 'unentschuldigt', hours: 1.5, note: '', byUser: 'Test', byUserAt: 1 });
+    KB_ANW.applyEntries(KB_ANW.exportEntries().concat([1, 2, 5, 6, 7, 8, 9].map(t => e('z' + t, '2026-10-0' + t))));
+    await KB_SYNC.syncNow();
+  }); await warte(1500);
+  await T.evaluate(() => { KB_ANW.applyEntries([]); return KB_SYNC.syncNow(); }); await warte(1500);
+  const bremse = await T.evaluate(() => { const b = document.getElementById('kb-wipewarn'); return b ? b.textContent : '(keine Löschbremse)'; });
+  check('Löschbremse nennt sie „Anwesenheits-Einträge“, nicht „Absenzen“', bremse.includes('würde 10 Anwesenheits-Einträge löschen') && !bremse.includes('Absenzen'), bremse);
   await ctx9.close();
 
   check('Keine Fehler in der Konsole', fehler.length === 0, fehler.slice(0, 5));

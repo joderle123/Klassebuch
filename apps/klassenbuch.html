@@ -9236,7 +9236,8 @@ Repo.init()
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
       var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:kbIcon('pin'),title:'Wochenziel(e)',body:'<ul class="tl-goals">'+window.kbZiele(g).map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li'+(fertig?' class="done"':'')+'>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+'</li>';}).join('')+'</ul>'});}
     });
-    if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:kbIcon('trending-down'),title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
+    /* Ein Retard ist keine Absenz: er heißt „Retard“, mit den Minuten, wenn welche erfasst sind */
+    if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:kbIcon('trending-down'),title:e.status==='verspaetet'?('Retard'+(+e.lateMin>0?' · '+(+e.lateMin)+' Min.':'')):('Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||''))),body:escapeHtml(e.subject||'')});});}catch(_){}}
     /* Frühere Screenings: nur Datum, Zahl der Beobachtungen und Krisenhinweis – keine Verdachtsachsen */
     if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
       var n=(s.symCount|0);
@@ -9247,7 +9248,7 @@ Repo.init()
     var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(rep&&rep.date){items.push({date:rep.date,type:'report',icon:kbIcon('stethoscope'),title:escapeHtml(rep.type||'Diagnostischer Bericht'),body:'Bericht im Dossier hinterlegt.'});}
     items.sort(function(a,b){return (a.date<b.date)?1:(a.date>b.date?-1:0);});
     var counts={}; items.forEach(function(it){counts[it.type]=(counts[it.type]||0)+1;});
-    var defs=[['all','Alles',items.length],['screening','Screening',counts.screening||0],['entry','Einträge',counts.entry||0],['reunion','Réunion',counts.reunion||0],['goal','Ziele',counts.goal||0],['absence','Absenzen',counts.absence||0]];
+    var defs=[['all','Alles',items.length],['screening','Screening',counts.screening||0],['entry','Einträge',counts.entry||0],['reunion','Réunion',counts.reunion||0],['goal','Ziele',counts.goal||0],['absence','Anwesenheit',counts.absence||0]];
     var chips=defs.filter(function(dd){return dd[0]==='all'||dd[2];}).map(function(dd){var r='#/student/'+encodeURIComponent(sid)+'?hub=verlauf&vf='+dd[0];return '<a class="tl-chip'+(vf===dd[0]?' is-on':'')+'" href="'+r+'" data-route="'+r+'">'+escapeHtml(dd[1])+' <span>'+dd[2]+'</span></a>';}).join('');
     var filtered=(vf==='all')?items:items.filter(function(it){return it.type===vf;});
     var body;
@@ -11880,8 +11881,9 @@ window.KB_SYNC=(function(){
     for(var i=0;i<w.teile.length;i++){var t=w.teile[i];if(t.anteil>=WIPE_ANTEIL)return true;}
     return false;
   }
+  /* anwEntries enthält Absenzen und Retards - darum neutral „Anwesenheits-Einträge“ */
   var NAMEN={roster:'Schüler',dosEntries:'Dossier-Einträge',dosReunions:'Réunionen',
-    anwEntries:'Absenzen',anwNotes:'Klassenbuch-Notizen',noten:'Noten',screening:'Screenings',
+    anwEntries:'Anwesenheits-Einträge',anwNotes:'Klassenbuch-Notizen',noten:'Noten',screening:'Screenings',
     bubble:'Helfernetz',terms:'Schuljahre',timetables:'Stundenpläne',blocks:'Stundenraster',anwSettings:'Einstellungen'};
   function wipeBar(w){
     var el=document.getElementById('kb-wipewarn');
@@ -12682,11 +12684,12 @@ window.KB_MATERIALS=(function(){
       tr.querySelector('.kb-rd').addEventListener('click',function(){
         var s=window.KB_ROSTER.byId(id);if(!s)return;
         /* Vor dem Loeschen sagen, was daran haengt - mit Zahlen. */
-        var nD=0,nA=0,nN=0;
+        var nD=0,nA=0,nR=0,nN=0;
         try{nD=window.KB_DOS_SYNC.exportEntries().filter(function(e){return e.studentId===id;}).length;}catch(e){}
-        try{nA=(window.KB_ANW&&window.KB_ANW.entriesForStudent)?window.KB_ANW.entriesForStudent(id).length:0;}catch(e){}
+        /* Retards eigens zählen - sie sind keine Absenzen */
+        try{var ae=(window.KB_ANW&&window.KB_ANW.entriesForStudent)?window.KB_ANW.entriesForStudent(id):[];nR=ae.filter(function(e){return e.status==='verspaetet';}).length;nA=ae.length-nR;}catch(e){}
         try{var nr=(window.KB_NOTEN&&window.KB_NOTEN.list)?window.KB_NOTEN.list(id):[];nN=(nr&&nr.length)||0;}catch(e){}
-        var was=[];if(nD)was.push(nD+(nD===1?' Dossier-Eintrag':' Dossier-Einträge'));if(nA)was.push(nA+(nA===1?' Absenz':' Absenzen'));if(nN)was.push(nN+(nN===1?' Note':' Noten'));
+        var was=[];if(nD)was.push(nD+(nD===1?' Dossier-Eintrag':' Dossier-Einträge'));if(nA)was.push(nA+(nA===1?' Absenz':' Absenzen'));if(nR)was.push(nR+(nR===1?' Retard':' Retards'));if(nN)was.push(nN+(nN===1?' Note':' Noten'));
         var txt='„'+s.name+'“ endgültig aus der Liste löschen?'+
           (was.length?('\n\nDaran hängen: '+was.join(', ')+'. Die Dossier-Einträge kommen in den Papierkorb (auf diesem Gerät), auf den anderen Geräten verschwinden sie.'):'')+
           '\n\nBesser: den Haken bei „Aktiv" entfernen — dann bleibt alles erhalten.';
