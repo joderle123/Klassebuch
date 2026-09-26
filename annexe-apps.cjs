@@ -8,9 +8,13 @@
 
    1. Pathologien (apps/pathologien.html) aus SAVOIR.html bauen: ohne
       Aufruf zu Google Fonts (nichts geht ins Netz), mit den eingebetteten
-      Schriften des Hubs statt der fehlenden Web-Schriften.
+      Schriften des Hubs statt der fehlenden Web-Schriften; im Kopf
+      „Pathologien“ wie im Hub statt „SAVOIR“.
    2. Toolbox (apps/toolbox.html): sichtbare Bezeichnungen ohne „ISA“.
       Interne Kennungen und Speicherschlüssel bleiben unverändert.
+   3. Lernen (apps/lernen.html): Module ohne „ISA“ und „CDSE Hub“. Die Quellen
+      in lern-app/ teilt die Annexe mit Unified – deshalb erst hier, und nach
+      jedem „python3 lern-app/baue.py“ dieses Skript wieder ausführen.
 
    Aufruf:  node annexe-apps.cjs
    ===================================================================== */
@@ -41,6 +45,15 @@ function ersetze(s, a, b, name, datei) {
        .replace(/font-family:\s*'DM Sans',\s*system-ui,\s*sans-serif/g, "font-family:'Inter var',system-ui,-apple-system,'Segoe UI',sans-serif")
        .replace(/font-family:\s*'IBM Plex Mono',\s*monospace/g, "font-family:'Inter var',system-ui,sans-serif");
   s = s.replace(/<title>[^<]*<\/title>/, '<title>Pathologien · Annexe Junglinster</title>');
+  // Sichtbarer Name wie im Hub: „Pathologien“ statt „SAVOIR“ (Kopf, Brotkrumen, Hinweis unten, Vorlese-Probe)
+  s = ersetze(s, '<span class="brand-logo">SAVOIR</span>', '<span class="brand-logo">Pathologien</span>', 'Kopfzeile', z);
+  s = ersetze(s, '<a id="bc-home-1">SAVOIR</a>', '<a id="bc-home-1">Pathologien</a>', 'Brotkrumen Liste', z);
+  s = ersetze(s, '<a id="bc-home-2">SAVOIR</a>', '<a id="bc-home-2">Pathologien</a>', 'Brotkrumen Artikel', z);
+  s = ersetze(s, '<p><strong>SAVOIR</strong> ist ein klinisches Reflexionswerkzeug',
+    '<p>Die App <strong>Pathologien</strong> ist ein klinisches Reflexionswerkzeug', 'Hinweis unten', z);
+  s = ersetze(s, 'Dies ist eine Vorlese-Probe von SAVOIR.', 'Dies ist eine Vorlese-Probe.', 'Vorlese-Probe', z);
+  var body = s.slice(s.indexOf('<body'), s.indexOf('<script', s.indexOf('<body')));
+  if (/\bSAVOIR\b/.test(body)) { console.error('✗ ' + z + ': „SAVOIR“ noch sichtbar'); fehler++; }
   var kopf = '<style>/*@@FONTS-START@@*//*@@FONTS-END@@*/\n' +
     ":root{--kb-font:'Inter var',system-ui,-apple-system,'Segoe UI',sans-serif;}</style>\n";
   s = s.replace(/<\/title>/, '</title>\n' + kopf);
@@ -90,6 +103,55 @@ function ersetze(s, a, b, name, datei) {
   var rest = (s.match(/[`'"][^`'"\n]{0,200}\bISA\b[^`'"\n]{0,200}[`'"]/g) || []).filter(function (t) { return !/^[`'"][A-Za-z0-9+/=]{40,}/.test(t); });
   if (rest.length) { console.error('✗ ' + z + ': noch „ISA“ in Texten: ' + rest.join(' | ')); fehler++; }
   else console.log('✓ ' + z + ': keine sichtbaren „ISA“-Bezeichnungen mehr (' + bloecke + ' komprimierte Blöcke geprüft, ' + geaendert + ' angepasst)');
+})();
+
+/* ---------- 3. Lernen ohne „ISA“ und „CDSE Hub“ ---------- */
+(function () {
+  var z = 'apps/lernen.html', s = lies(z), zlib = require('zlib');
+  /* Die Module liegen gzip-komprimiert in <script id="lern-daten"> (lern-app/baue.py). In Unified ist „ISA“ ein
+     Team, deshalb bleiben lern-app/module/*.json unverändert und es wird hier ersetzt. Sinn und richtige
+     Quiz-Antworten bleiben gleich. */
+  var ERSATZ = [
+    // Übertragung: Fall „Mara und zwei Erwachsene“ und die Fallfrage im Quiz
+    ['verbringt jede Pause bei der ISA, erzählt ihr', 'verbringt jede Pause bei der Kollegin aus dem ambulanten Team, erzählt ihr'],
+    ['Die ISA findet, der Klassenlehrer', 'Die Kollegin findet, der Klassenlehrer'],
+    ['der Klassenlehrer findet, die ISA verwöhne sie', 'der Klassenlehrer findet, die Kollegin verwöhne sie'],
+    ['feste Gesprächszeiten bei der ISA statt jeder Pause', 'feste Gesprächszeiten bei der Kollegin statt jeder Pause'],
+    ['in jeder Pause die ISA auf:', 'in jeder Pause die Kollegin aus dem ambulanten Team auf:'],
+    ['Die ISA hält ihn für zu streng, er hält die ISA für zu nachgiebig', 'Die Kollegin hält ihn für zu streng, er hält sie für zu nachgiebig'],
+    ['Die ISA übernimmt alle Gespräche mit Mara', 'Die Kollegin übernimmt alle Gespräche mit Mara'],   // falsche Antwort, bleibt falsch
+    ['dass die ISA sie verwöhnt', 'dass die Kollegin sie verwöhnt'],                               // falsche Antwort, bleibt falsch
+    // Inklusion in Luxemburg: Tabelle „Angebote des CDSE im Überblick“
+    ['["ISA","Begleitung von Schülerinnen', '["Ambulante Begleitung","Begleitung von Schülerinnen'],
+    // Bio-psycho-sozial, Deeskalation, Gesprächsführung, Abwehr und Coping
+    ['Lehrkräfte, Educateurs und ISA kennen', 'Lehrkräfte, Educateurs und das ambulante Team kennen'],
+    ['eine Kollegin aus dem ISA-Team des CDSE', 'eine Kollegin aus dem ambulanten Team des CDSE'],
+    ['Der ISA-Mitarbeiter spricht sie', 'Der Mitarbeiter des ambulanten Teams spricht sie'],
+    ['Im Gespräch mit der ISA stellt sich heraus', 'Im Gespräch mit dem ambulanten Team stellt sich heraus'],
+    ['Die Lehrerin bespricht mit der ISA, was', 'Die Lehrerin bespricht mit dem ambulanten Team, was'],
+    // Beobachten und Dokumentieren
+    ['Im CDSE Hub gibt es dafür', 'Im Hub gibt es dafür']
+  ];
+  var ZEICHEN = /\bISA\b|CDSE[ -]Hub/;
+  var m = /(<script type="application\/octet-stream" id="lern-daten">)([A-Za-z0-9+/=]+)(<\/script>)/.exec(s);
+  if (!m) { console.error('✗ ' + z + ': eingebettete Module nicht gefunden'); fehler++; return; }
+  var alt = zlib.gunzipSync(Buffer.from(m[2], 'base64')).toString('utf8'), neu = alt, anzahl = 0;
+  ERSATZ.forEach(function (e) {
+    var n = neu.split(e[0]).length - 1;
+    if (!n && neu.indexOf(e[1]) < 0) { console.error('✗ ' + z + ': nicht gefunden – ' + e[0]); fehler++; }
+    anzahl += n; neu = neu.split(e[0]).join(e[1]);
+  });
+  var rest = neu.match(new RegExp('.{0,50}(' + ZEICHEN.source + ').{0,50}', 'g')) || [];
+  if (rest.length) { console.error('✗ ' + z + ': noch „ISA“ oder „CDSE Hub“ in den Modulen: ' + rest.slice(0, 8).join(' | ')); fehler++; }
+  if (neu !== alt) {
+    s = s.slice(0, m.index) + m[1] + zlib.gzipSync(Buffer.from(neu, 'utf8'), { level: 9 }).toString('base64') + m[3] + s.slice(m.index + m[0].length);
+    schreib(z, s);
+  }
+  // Rest der Seite (ohne eingebettete Schriften und Module)
+  var seite = s.replace(/(id="lern-daten">)[A-Za-z0-9+/=]+/, '$1').replace(/base64,[A-Za-z0-9+/=]+/g, '');
+  var restSeite = seite.match(new RegExp('.{0,50}(' + ZEICHEN.source + ').{0,50}', 'g')) || [];
+  if (restSeite.length) { console.error('✗ ' + z + ': noch „ISA“ oder „CDSE Hub“ auf der Seite: ' + restSeite.slice(0, 8).join(' | ')); fehler++; }
+  if (!rest.length && !restSeite.length) console.log('✓ ' + z + ': kein „ISA“ und kein „CDSE Hub“ mehr (' + anzahl + ' Stellen angepasst)');
 })();
 
 if (fehler) { console.error(fehler + ' Fehler'); process.exit(1); }

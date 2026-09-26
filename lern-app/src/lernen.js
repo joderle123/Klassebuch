@@ -671,8 +671,15 @@
   function ausschnitt(t, n, q) {
     var i = n.indexOf(q);
     if (i < 0) { return esc(t.slice(0, 160)) + '…'; }
-    var a = Math.max(0, i - 70), b = Math.min(t.length, i + q.length + 110);
-    return (a ? '…' : '') + esc(t.slice(a, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length, b)) + (b < t.length ? '…' : '');
+    // Treffer von n (normalisiert) auf t (Original) umrechnen: norm() macht aus „ß“ zwei Zeichen („ss“)
+    var von = 0, bis = t.length, l = 0;
+    for (var j = 0; j < t.length && l < i + q.length; j++) {
+      l += t.charCodeAt(j) < 128 ? 1 : norm(t.charAt(j)).length;   // ASCII bleibt ein Zeichen
+      if (l <= i) { von = j + 1; }
+      bis = j + 1;
+    }
+    var a = Math.max(0, von - 70), b = Math.min(t.length, bis + 110);
+    return (a ? '…' : '') + esc(t.slice(a, von)) + '<mark>' + esc(t.slice(von, bis)) + '</mark>' + esc(t.slice(bis, b)) + (b < t.length ? '…' : '');
   }
   function seiteSuche(q) {
     var such = (q.q || '').trim(), n = norm(such);

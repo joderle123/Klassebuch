@@ -40,14 +40,17 @@ Konten, Daten und die Team-Datei legt der Hub selbst an: `konten/`, `daten/`, `t
 | Befundbericht | Repository `PEI-and-Compl-ment-` | `node update-apps.cjs screening` |
 | ELDiB-Generator | Repository `Eldib-Pleni-re` | `node update-apps.cjs eldib` |
 | Toolbox und Skills-Kurs | Repository `ISA-APP`, Branch `claude/focused-galileo-e2s63b` | `node update-apps.cjs toolbox` |
-| Lernen | `lern-app/` (hier) | `python3 lern-app/baue.py` |
+| Lernen | `lern-app/` (hier) | `python3 lern-app/baue.py`, danach `node annexe-apps.cjs` |
 | Pathologien | `SAVOIR.html` (hier) | `node annexe-apps.cjs` |
 
 Zu den Befehlen:
 
 - `update-apps.cjs` ruft danach selbst `annexe-apps.cjs` auf. Dieses Skript entfernt „ISA“ aus den sichtbaren Texten
   der Toolbox, auch aus den komprimierten Daten (Autor der Materialien), den Material-PDFs und den Dateinamen der
-  Downloads. Außerdem baut es die Pathologien ohne Web-Schriften.
+  Downloads. Außerdem baut es die Pathologien ohne Web-Schriften und mit „Pathologien“ im Kopf.
+- In der Lern-App ersetzt `annexe-apps.cjs` „ISA“ und „CDSE Hub“ in den eingebetteten Modulen (Fallbeispiele, Quiz,
+  Tabelle der CDSE-Angebote). `lern-app/module/` bleibt wie in Unified, wo „ISA“ ein Team ist – deshalb nach jedem
+  `python3 lern-app/baue.py` wieder `node annexe-apps.cjs` ausführen. Prüfen: `node hub-quellen/tests/annexe-apps.js`.
 - Den Hub baut `python3 hub-quellen/baue-hub.py` und schreibt `hub.html`.
 
 ## Verbesserungen aus Unified übernehmen
