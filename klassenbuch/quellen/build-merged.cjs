@@ -322,15 +322,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hint{margin:-2px 0 12px;color:var(--kb-muted);font-size:13px;line-height:1.5;}
 .kb-termpick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 .kb-termyear{max-width:160px;font-weight:800;cursor:pointer;}
-.kb-termtabs,.kb-ttlevels{display:inline-flex;gap:4px;background:var(--kb-bg,#f3f4fa);border:1px solid var(--kb-border);border-radius:11px;padding:3px;}
+.kb-termtabs,.kb-ttlevels{display:inline-flex;gap:4px;background:var(--kb-bg,#f3f4fa);border:1px solid var(--kb-border);border-radius:11px;padding:3px;max-width:100%;flex-wrap:wrap;}   /* Handy: die Reiter brechen um, statt abgeschnitten zu werden */
 .kb-tt-tab{font:inherit;font-weight:700;border:none;background:transparent;color:var(--kb-muted);padding:7px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 .kb-tt-tab:hover{color:var(--kb-text);}
 .kb-tt-tab.on{background:var(--kb-surface);color:var(--kb-accent,#4f5bd5);box-shadow:0 1px 3px rgba(20,25,45,.12);}
-.kb-termdates{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px;margin-top:14px;}
+.kb-termdates{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px;margin-top:14px;}
 .kb-termrow{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--kb-border);border-radius:11px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
 .kb-termrow.on{border-color:var(--kb-accent,#4f5bd5);box-shadow:0 0 0 1px var(--kb-accent,#4f5bd5);background:var(--kb-surface);}
 .kb-termrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;}
-.kb-termrow input{flex:1;min-width:0;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
+.kb-termrow input{flex:1;min-width:128px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}   /* schmal: das zweite Datum rutscht in die nächste Zeile, statt abgeschnitten zu werden */
 .kb-termfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--kb-border);}
 .kb-termnew,.kb-termacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .kb-ttbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
@@ -349,7 +349,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-ttgrid tr.kb-ttpause input{background:transparent;font-style:italic;}
 /* Fächer- und Stundenraster-Listen */
 .kb-btn-sm{padding:5px 11px;font-size:12.5px;border-radius:8px;}
-.kb-sublist,.kb-blklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:8px;}
+.kb-sublist,.kb-blklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:8px;}
 .kb-subrow,.kb-blkrow{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--kb-border);border-radius:10px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
 /* Bezeichnung auf eigene Zeile: lange Fachnamen und Uhrzeiten bleiben lesbar */
 .kb-subrow b,.kb-blkrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;word-break:break-word;}
@@ -357,6 +357,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
 .kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
 .kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+#kb-roster-body{overflow-x:auto;}   /* Handy: die Schülerliste scrollt in sich, nicht die Seite */
 .kb-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:12px;align-items:stretch;}
 .kb-tools .kb-tool{display:flex;flex-direction:column;margin:0;}
 .kb-tools .kb-tool h3{margin:0 0 6px;font-size:15.5px;}
@@ -727,6 +728,9 @@ var ACCENT_OVERRIDE = `
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
 #anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
+/* Die Person wählt die App links (Chip; wer im Hub angemeldet ist, bleibt diese Person). Der alte
+   Bediener-Knopf der Anwesenheit hätte sie daran vorbei überschrieben. */
+#anw-root #btn-user{ display:none; }
 /* Der alte Stundenplan-Dialog ist ausgeblendet: der Stundenplan wird jetzt
    je Trimester unter „Klasse & Stundenplan" bearbeitet. Zwei Editoren
    nebeneinander würden am Trimester-Speicher vorbeischreiben. */
@@ -973,7 +977,7 @@ var SHELL_PANELS_EXTRA = `
         </div>
         <div class="kb-card kb-tool">
           <h3>📑 Dossier-Bericht</h3>
-          <p class="kb-hint">Verlauf eines Schülers als Bericht: Einträge, Ziele und Verlaufskurven, wahlweise anonymisiert.</p>
+          <p class="kb-hint">Die Dossier-Einträge eines Schülers mit Datum, Kategorie, Autor und Tags, wahlweise nach Kategorie, Tags und Zeitraum gefiltert. Druckansicht mit Namen — im Dialog „Als PDF speichern".</p>
           <button class="kb-btn kb-btn-primary" data-kb-nav="export">Bericht erstellen</button>
         </div>
         <div class="kb-card kb-tool">
@@ -1542,6 +1546,13 @@ window.KB_ROSTER=(function(){
     return changed;
   }
   applyClass2627();
+  /* Zweites Fenster derselben App: geaenderte Klassenliste nachlesen - sonst schriebe dieses
+     Fenster beim naechsten Speichern seine alte Liste darueber. */
+  window.addEventListener('storage',function(e){
+    if(e.key!==LS)return;
+    list=loadList();
+    for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(x){}}
+  });
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
@@ -1912,7 +1923,11 @@ var DOS_OVERRIDES = `
           var rrN=function(){if(window.render){try{window.render();}catch(e){}}};
           root.querySelectorAll('[data-noten-mode]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.setMode(b.getAttribute('data-sid'),b.getAttribute('data-noten-mode'));rrN();});});
           root.querySelectorAll('[data-noten-del]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.remove(b.getAttribute('data-sid'),b.getAttribute('data-noten-del'));rrN();});});
-          root.querySelectorAll('[data-noten-add]').forEach(function(b){b.addEventListener('click',function(){var card=b.closest('.note-card');if(!card)return;var lbl=card.querySelector('[data-nf=label]').value;var pts=card.querySelector('[data-nf=points]').value;var max=card.querySelector('[data-nf=max]').value;if(pts===''||!(+max>0)){var pi=card.querySelector('[data-nf=points]');if(pi)pi.focus();return;}window.KB_NOTEN.add(b.getAttribute('data-sid'),{subject:b.getAttribute('data-noten-add'),period:b.getAttribute('data-per'),label:lbl,points:pts,max:max});rrN();});});
+          root.querySelectorAll('[data-noten-add]').forEach(function(b){b.addEventListener('click',function(){var card=b.closest('.note-card');if(!card)return;var lbl=card.querySelector('[data-nf=label]').value;var pts=card.querySelector('[data-nf=points]').value;var max=card.querySelector('[data-nf=max]').value;var pi=card.querySelector('[data-nf=points]'),mi=card.querySelector('[data-nf=max]');if(pts===''){if(pi)pi.focus();return;}
+            /* Punkte zwischen 0 und der Höchstpunktzahl, diese über 0 - sonst stand etwa „80 von 50“ als 96/60 da */
+            if(!(+max>0)){alert('Die Höchstpunktzahl muss größer als 0 sein.');if(mi)mi.focus();return;}
+            if(!(+pts>=0&&+pts<=+max)){alert('Die erreichten Punkte müssen zwischen 0 und '+String(+max).replace('.',',')+' liegen.');if(pi)pi.focus();return;}
+            window.KB_NOTEN.add(b.getAttribute('data-sid'),{subject:b.getAttribute('data-noten-add'),period:b.getAttribute('data-per'),label:lbl,points:pts,max:max});rrN();});});
           root.querySelectorAll('[data-mod-set]').forEach(function(b){b.addEventListener('click',function(){var n=+b.getAttribute('data-mod-set');var sid3=b.getAttribute('data-sid');var su=b.getAttribute('data-subj');var cur=window.KB_NOTEN.moduleOf(sid3,su).done;window.KB_NOTEN.setModule(sid3,su,(n===cur?n-1:n));rrN();});});
           root.querySelectorAll('[data-mod-more]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.addCap(b.getAttribute('data-sid'),b.getAttribute('data-mod-more'),4);rrN();});});
         }catch(e){}}
@@ -1959,7 +1974,8 @@ var DOS_OVERRIDES = `
             zeige('Speichert …','');
             var p=Promise.resolve();
             if(gNeu||!r2){
-              var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
+              /* neu angelegt wie auf der Réunion-Seite: offene Ziele der letzten Réunion kommen mit */
+              var base=r2?r2:neueReunionDaten(date2);
               base.goals=base.goals||{};
               var jetztG=Array.isArray(base.goals[sid2])?base.goals[sid2]:[];
               var goals2=zeilen2(gText);
@@ -2284,7 +2300,9 @@ var SHELL_CONTROLLER = `
         var p=el.getAttribute('data-ttc').split('|');
         if(window.KB_TIMETABLE)window.KB_TIMETABLE.setCell(p[0],+p[1],+p[2],el.value);
       });
-      el.addEventListener('change',function(){renderTTSubjects();});
+      /* Fertig geändert: auch das Klassenbuch neu zeichnen - sonst zeigte es bis zum nächsten Klick
+         das alte Fach, gespeichert wurde beim Klick aber schon das neue */
+      el.addEventListener('change',function(){renderTTSubjects();if(window.__anwRefresh){try{window.__anwRefresh();}catch(e){}}});
     });
   }
   function renderTTSubjects(){
@@ -2447,7 +2465,12 @@ var SHELL_CONTROLLER = `
     var trs=body.querySelectorAll('tr[data-id]');
     for(var i=0;i<trs.length;i++){(function(tr){
       var id=tr.getAttribute('data-id');
-      tr.querySelector('.kb-rn').addEventListener('change',function(e){window.KB_ROSTER.update(id,{name:e.target.value.trim()});});
+      tr.querySelector('.kb-rn').addEventListener('change',function(e){
+        var nm=e.target.value.trim();
+        /* Ohne Namen stand auf der Karte nur „?“ und die Löschfrage nannte niemanden - der bisherige bleibt */
+        if(!nm){var alt=window.KB_ROSTER.byId(id);e.target.value=alt?alt.name:'';alert('Der Name darf nicht leer sein – der bisherige Name bleibt stehen.');return;}
+        window.KB_ROSTER.update(id,{name:nm});
+      });
       tr.querySelector('.kb-rk').addEventListener('change',function(e){window.KB_ROSTER.update(id,{klasse:e.target.value.trim()});});
       tr.querySelector('.kb-rz').addEventListener('change',function(e){window.KB_ROSTER.update(id,{zyklus:e.target.value});});
       tr.querySelector('.kb-rl').addEventListener('change',function(e){window.KB_ROSTER.update(id,{level:e.target.value});});
@@ -2552,7 +2575,7 @@ var SHELL_CONTROLLER = `
       var wer=x.kind==='reunion'?('Réunion vom '+esc(d.date||'')):(esc(window.KB_TRASH.nameOf(d.studentId,d)||'Eintrag')+' · '+esc(d.date||''));
       var txt=x.kind==='reunion'
         ? ((d.orgItems||[]).length+' Orga-Punkte')
-        : String(d.text||'').replace(/\s+/g,' ').slice(0,120);
+        : String(d.text||'').replace(/\\s+/g,' ').slice(0,120);
       return '<div class="kb-trash-row">'+
         '<div class="kb-trash-main"><b>'+wer+'</b>'+(d.category?' <span class="kb-trash-cat">'+esc(d.category)+'</span>':'')+
           '<div class="kb-trash-txt">'+(txt?esc(txt)+(String(d.text||'').length>120?'…':''):'<i>ohne Text</i>')+'</div>'+
@@ -2736,6 +2759,9 @@ var SHELL_CONTROLLER = `
   if(window.KB_BLOCKS){try{window.KB_BLOCKS.init();}catch(e){}}
   if(window.KB_TIMETABLE){try{window.KB_TIMETABLE.init();}catch(e){}}
 
+  /* Réunionen und Wochenziele kommen erst nach dem Start aus der Browser-Datenbank. Steht dann
+     die Heute-Tafel offen, wird sie mit ihnen neu gezeichnet - vorher hieß es „Noch keine Réunion.“ */
+  window.addEventListener('kb-dossier-bereit',function(){var h=$('kb-heute');if(h&&h.classList.contains('active')&&window.KB_HEUTE){try{window.KB_HEUTE.render($('kb-heute-body'));}catch(e){}}});
   // Startseite: die Heute-Tafel (fürs Morning Meeting) – von dort ein Klick ins Klassenbuch
   go('heute');
 })();

@@ -236,6 +236,9 @@ svg.kb-i.lg{width:22px;height:22px;}
 @media (max-width:880px){
   #dos-root .reu-stats{flex-basis:100%;order:3;}
   #dos-root .reu-kbd{display:none;}
+  /* Hier klebt oben die App-Leiste: der Kopf rutschte darunter (Datum und Pfeile verdeckt) und
+     war auf dem Handy gut 230 px hoch - er scrollt darum mit */
+  #dos-root .reu-topbar{position:static;}
 }
 
 /* ---------- Seitenleiste: Person + Schuljahr ---------- */
@@ -511,6 +514,11 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
   #anw-root .layout{align-items:stretch;}
   #anw-root .wrap{width:100%;}
 }
+
+/* Hinweis „App in mehreren Fenstern offen“ (tabs-guard.js, Stil am Element): auf Handy und Tablet
+   unten statt oben - dort lag er über der Menü-Taste ☰ -, auf dem Handy auch kleiner */
+@media (max-width:880px){#kb-tabwarn{top:auto!important;bottom:0;box-shadow:0 -2px 10px rgba(0,0,0,.25)!important;}}
+@media (max-width:640px){#kb-tabwarn{font-size:12.5px!important;padding:7px 10px!important;gap:8px!important;}}
 
 /* ---------- Pathologien (SAVOIR): an die App angeglichen ---------- */
 #sav-root .achse-card{border-radius:14px;border-color:var(--kb-border);box-shadow:var(--kb-shadow-sm);transition:border-color .12s,box-shadow .12s;}

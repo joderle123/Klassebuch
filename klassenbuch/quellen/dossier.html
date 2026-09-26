@@ -1909,9 +1909,9 @@ function kiWortRegex(wort, grossKlein) {
 function kiEnthaeltWort(text, wort, grossKlein) {
   return !!(wort && String(wort).trim()) && kiWortRegex(wort, grossKlein).test(text);
 }
-function kiErsetzeWort(text, wort, ersatz) {
+function kiErsetzeWort(text, wort, ersatz, grossKlein) {
   if (!wort || !String(wort).trim()) return text;
-  return text.replace(kiWortRegex(wort), function (m, vor) { return vor + ersatz; });
+  return text.replace(kiWortRegex(wort, grossKlein), function (m, vor) { return vor + ersatz; });
 }
 
 /* Wie der Name eines Kindes im Text stehen kann.
@@ -2007,7 +2007,7 @@ function anonymizeText(text, ctx) {
      Ende – mit ctx.markieren zusätzlich eingerahmt für die Vorschau. */
   var platz = [];
   function marke(platzhalter) { return '' + (platz.push(platzhalter) - 1) + ''; }
-  function ersetze(wort, platzhalter) { if (wort) out = kiErsetzeWort(out, wort, marke(platzhalter)); }
+  function ersetze(wort, platzhalter, grossKlein) { if (wort) out = kiErsetzeWort(out, wort, marke(platzhalter), grossKlein); }
 
   // 1) Hochsensible, eindeutige Kennungen IMMER entfernen (unabhängig von der
   //    Namensprüfung): Matrikel-/Sozialversicherungsnummer, E-Mail, Telefon.
@@ -2015,9 +2015,10 @@ function anonymizeText(text, ctx) {
   //    Zuerst, weil E-Mail-Adressen oft den Namen enthalten.
   if (ctx.maskIdentifiers !== false) out = kiKennungenMaskieren(out, marke);
 
-  // 2) Das Kind in ganzer Form („Tom Muster“, „MUSTER Tom“) -> Kürzel
+  // 2) Das Kind in ganzer Form („Tom Muster“, „MUSTER Tom“) -> Kürzel. Mehrteilige Formen in
+  //    jeder Schreibweise („tom muster“); ein einzelnes Wort bleibt genau (sonst träfe „Will“ auch „will“)
   var kind = ctx.kind || null;
-  if (kind) kind.formen.ganz.forEach(function (f) { ersetze(f, kind.label); });
+  if (kind) kind.formen.ganz.forEach(function (f) { ersetze(f, kind.label, /\s/.test(f) ? false : undefined); });
   (ctx.studentNameMap || []).forEach(function (m) { if (!kind || m.name !== kind.name) ersetze(m.name, m.anonLabel); });
 
   // 3) erkannte und ergänzte Namen, längere zuerst (vermeidet Teil-Überlappungen)
@@ -2716,10 +2717,17 @@ function viewEntryForm(params) {
          neuesten Stand zusammengefuehrt. */
       ansichtAuffrischen = function () { return document.body.contains(form); };
 
+      /* Beim Austausch meldet der Browser „blur“ am Eingabefeld. Das darf den Tag nicht noch
+         einmal hinzufuegen (sonst Fehler, der Cursor war weg und Weitergetipptes verloren) -
+         und wer im Feld war, bleibt drin. */
+      var tagsTauschen = false;
       function rerenderTags() {
-        tagWrap.innerHTML = tagsWrapHtml();
+        var imFeld = document.activeElement && document.activeElement.id === 'tag-input';
+        tagsTauschen = true;
+        try { tagWrap.innerHTML = tagsWrapHtml(); } finally { tagsTauschen = false; }
         wireTagInput();
         entwurfMerken();
+        if (imFeld) { var neu = qs('#tag-input', tagWrap); if (neu) neu.focus(); }
       }
 
       function addTag(raw) {
@@ -2746,6 +2754,7 @@ function viewEntryForm(params) {
             }
           });
           input.addEventListener('blur', function () {
+            if (tagsTauschen) return;
             if (input.value.trim()) { addTag(input.value); input.value = ''; }
           });
         }
@@ -3543,9 +3552,11 @@ function viewAiExport(params, query) {
       '<div class="ki-kid-main"><span class="ki-kid-ic">' + kbIcon('shield-check', 'sm') + '</span>' +
         '<span class="ki-from">' + escapeHtml(kind.name) + '</span><span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
         '<span class="ki-to">' + escapeHtml(kind.label) + '</span>' +
-        '<span class="ki-badge">' + kbIcon('lock', 'sm') + ' immer ersetzt</span></div>' +
+        '<span class="ki-badge">' + kbIcon('lock', 'sm') + ' wird ersetzt</span></div>' +
       (einzeln ? '<div class="ki-kid-parts"><span>Auch einzeln:</span>' + einzeln +
         (nachname ? '<small>– auch in „Frau ' + escapeHtml(nachname.wort) + '“ und in GROSSBUCHSTABEN</small>' : '') + '</div>' : '') +
+      /* ehrlich: einzelne Namensteile klein geschrieben ersetzt die App nicht von selbst */
+      '<div class="ki-kid-parts"><small>Klein geschriebene Formen' + (kind.formen.vorname ? ' (z. B. „' + escapeHtml(kind.formen.vorname.toLowerCase()) + '“)' : '') + ' werden in Schritt 3 geprüft.</small></div>' +
     '</div>';
   }
 
@@ -3921,6 +3932,9 @@ function viewAiExport(params, query) {
         });
         var copyBtn = qs('#ai-copy', wrap);
         copyBtn.addEventListener('click', function () {
+          /* Stehen noch mögliche Namen im Text, erst nachfragen – ohne Reste bleibt es ein Klick. */
+          if (state.reste.length && !confirm('Im Text stehen noch mögliche Namen: ' +
+            state.reste.map(function (r) { return r.wort; }).join(', ') + '. Trotzdem kopieren?')) return;
           copyTextToClipboard(state.builtText).then(function (ok) {
             if (!ok) { showToast('Kopieren nicht möglich — bitte Text manuell markieren und kopieren.', { error: true }); return; }
             copyBtn.classList.add('is-done');
@@ -4261,6 +4275,27 @@ function nextMondayIso() {
   return d.getFullYear() + '-' + m + '-' + dd;
 }
 
+/* Eine neue Réunion: Reihenfolge der letzten, deren offene Ziele und das Gruppenziel werden
+   uebernommen. So legen sie „+ Nächste Réunion“ und der Réunion-Reiter beim Schüler an. */
+function neueReunionDaten(date) {
+  var last = Repo.listReunions()[0];
+  var carryGoals = {};
+  if (last && last.goals) {
+    Object.keys(last.goals).forEach(function (k) {
+      if (k === 'group') { carryGoals.group = (last.goals.group || []).slice(); return; }
+      var open = (last.goals[k] || []).map(function (g) {
+        return (g && typeof g === 'object') ? { text: String(g.text || ''), done: !!g.done } : { text: String(g), done: false };
+      }).filter(function (g) { return g.text.trim() && !g.done; }).map(function (g) { return { text: g.text, done: false }; });
+      if (open.length) carryGoals[k] = open;
+    });
+  }
+  return {
+    date: date, orgItems: [],
+    studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
+    goals: carryGoals, discussed: []
+  };
+}
+
 /* Ein Réunion-Update, an dem ausser dem automatischen Tag nichts haengt -
    keine eigenen Tags, kein Bericht, keine Verlaufs-Slider. */
 function reunionEintragNurText(entry) {
@@ -4385,11 +4420,20 @@ function viewReunion(params, query) {
   function inactiveStudents() {
     return Repo.listStudents().filter(function (s) { return s.active === false; });
   }
-  function rowsFor(r) {
+  /* Das Protokoll (fuerProtokoll) haelt fest, was an dem Tag zu jedem Kind steht: dort kommen
+     Ehemalige mit einem Update oder Zielen an diesem Datum immer mit - auch nach dem Neuladen,
+     wenn sie nicht mehr dazugeholt sind. */
+  function mitDabei(r, s, fuerProtokoll) {
+    if (s.active !== false || isExtra(s.id)) return true;
+    if (!fuerProtokoll) return false;
+    var e = Repo.reunionEntryFor(r.date, s.id);
+    return !!(e && e.text && e.text.trim()) || goalsFor(r, s.id).length > 0;
+  }
+  function rowsFor(r, fuerProtokoll) {
     var order = (r.studentOrder || []).slice();
     Repo.listStudents().forEach(function (s) {
       if (order.indexOf(s.id) !== -1) return;
-      if (s.active !== false || isExtra(s.id)) order.push(s.id);
+      if (mitDabei(r, s, fuerProtokoll)) order.push(s.id);
     });
     var discussed = r.discussed || [];
     var rows = [];
@@ -4397,7 +4441,7 @@ function viewReunion(params, query) {
       var s = Repo.getStudent(sid);
       if (!s) return;
       var entry = Repo.reunionEntryFor(r.date, sid);
-      if (s.active === false && !isExtra(sid)) return;
+      if (!mitDabei(r, s, fuerProtokoll)) return;
       var themes = entry ? analyzeText(entry.text) : [];
       var goals = goalsFor(r, sid);
       rows.push({
@@ -5126,20 +5170,7 @@ function viewReunion(params, query) {
       var createBtn = qs('#reu-create-next', wrap);
       if (createBtn) createBtn.addEventListener('click', function () {
         var nm = nextMondayIso();
-        var last = Repo.listReunions()[0];
-        var carryGoals = {};
-        if (last && last.goals) {
-          Object.keys(last.goals).forEach(function (k) {
-            if (k === 'group') { carryGoals.group = (last.goals.group || []).slice(); return; }
-            var open = normGoals(last.goals[k]).filter(function (g) { return !g.done; }).map(function (g) { return { text: g.text, done: false }; });
-            if (open.length) carryGoals[k] = open;
-          });
-        }
-        Repo.saveReunion({
-          date: nm, orgItems: [],
-          studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
-          goals: carryGoals, discussed: []
-        }).then(function () {
+        Repo.saveReunion(neueReunionDaten(nm)).then(function () {
           showToast('Réunion für ' + formatDate(nm) + ' angelegt (offene Ziele übernommen).');
           navigate('#/reunion?date=' + encodeURIComponent(nm), true);
         }).catch(function (err) { showToast('Fehler beim Anlegen: ' + err.message, { error: true }); });
@@ -5278,7 +5309,7 @@ function viewReunion(params, query) {
         if (!st) { st = document.createElement('style'); st.id = 'print-sheet-css'; document.head.appendChild(st); }
         st.textContent = protocolCss();
         var holder = document.createElement('div');
-        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r)) + '</div>';
+        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r, true)) + '</div>';
         document.body.appendChild(holder.firstChild);
         window.print();
       }
@@ -5315,7 +5346,7 @@ function viewReunion(params, query) {
         var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
           'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
           '<head><meta charset="utf-8"><title>Réunion-Protokoll ' + escapeHtml(r.date) + '</title>' +
-          '<style>' + css + '</style></head><body>' + protocolHtml(r, rowsFor(r)) + '</body></html>';
+          '<style>' + css + '</style></head><body>' + protocolHtml(r, rowsFor(r, true)) + '</body></html>';
         var blob = new Blob(['﻿' + doc], { type: 'application/msword' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
@@ -6337,6 +6368,9 @@ Repo.init()
     maybeShowPrivacyBanner();
     checkPersistenceAndWarn();
     render();
+    /* Jetzt sind Einträge und Réunionen da. Wer vorher schon gezeichnet hat (die Heute-Tafel
+       der gemeinsamen App), kann nachziehen; allein geöffnet hört niemand zu. */
+    try { window.dispatchEvent(new Event('kb-dossier-bereit')); } catch (e) {}
     /* etwas warten: erst muessen andere offene Fenster sich gemeldet haben */
     setTimeout(function () { try { entwuerfeZurueckholen(); } catch (e) {} }, 2500);
   })

@@ -72,15 +72,15 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-hint{margin:-2px 0 12px;color:var(--kb-muted);font-size:13px;line-height:1.5;}
 .kb-termpick{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
 .kb-termyear{max-width:160px;font-weight:800;cursor:pointer;}
-.kb-termtabs,.kb-ttlevels{display:inline-flex;gap:4px;background:var(--kb-bg,#f3f4fa);border:1px solid var(--kb-border);border-radius:11px;padding:3px;}
+.kb-termtabs,.kb-ttlevels{display:inline-flex;gap:4px;background:var(--kb-bg,#f3f4fa);border:1px solid var(--kb-border);border-radius:11px;padding:3px;max-width:100%;flex-wrap:wrap;}   /* Handy: die Reiter brechen um, statt abgeschnitten zu werden */
 .kb-tt-tab{font:inherit;font-weight:700;border:none;background:transparent;color:var(--kb-muted);padding:7px 15px;border-radius:8px;cursor:pointer;white-space:nowrap;}
 .kb-tt-tab:hover{color:var(--kb-text);}
 .kb-tt-tab.on{background:var(--kb-surface);color:var(--kb-accent,#4f5bd5);box-shadow:0 1px 3px rgba(20,25,45,.12);}
-.kb-termdates{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:10px;margin-top:14px;}
+.kb-termdates{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:10px;margin-top:14px;}
 .kb-termrow{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--kb-border);border-radius:11px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
 .kb-termrow.on{border-color:var(--kb-accent,#4f5bd5);box-shadow:0 0 0 1px var(--kb-accent,#4f5bd5);background:var(--kb-surface);}
 .kb-termrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;}
-.kb-termrow input{flex:1;min-width:0;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
+.kb-termrow input{flex:1;min-width:128px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}   /* schmal: das zweite Datum rutscht in die nächste Zeile, statt abgeschnitten zu werden */
 .kb-termfoot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--kb-border);}
 .kb-termnew,.kb-termacts{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
 .kb-ttbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px;align-items:center;}
@@ -99,7 +99,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-ttgrid tr.kb-ttpause input{background:transparent;font-style:italic;}
 /* Fächer- und Stundenraster-Listen */
 .kb-btn-sm{padding:5px 11px;font-size:12.5px;border-radius:8px;}
-.kb-sublist,.kb-blklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:8px;}
+.kb-sublist,.kb-blklist{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:8px;}
 .kb-subrow,.kb-blkrow{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--kb-border);border-radius:10px;background:var(--kb-bg,#f3f4fa);flex-wrap:wrap;}
 /* Bezeichnung auf eigene Zeile: lange Fachnamen und Uhrzeiten bleiben lesbar */
 .kb-subrow b,.kb-blkrow b{flex:0 0 100%;font-size:13.5px;margin-bottom:2px;word-break:break-word;}
@@ -107,6 +107,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helv
 .kb-blkrow input{flex:1;min-width:104px;font:inherit;font-size:13px;padding:6px 8px;border:1px solid var(--kb-border);border-radius:7px;background:#fff;color:var(--kb-text);}
 .kb-submeta{font-size:12px;color:var(--kb-muted);font-weight:700;white-space:nowrap;}
 .kb-rosterbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:2px 0 4px;}
+#kb-roster-body{overflow-x:auto;}   /* Handy: die Schülerliste scrollt in sich, nicht die Seite */
 .kb-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:12px;align-items:stretch;}
 .kb-tools .kb-tool{display:flex;flex-direction:column;margin:0;}
 .kb-tools .kb-tool h3{margin:0 0 6px;font-size:15.5px;}
@@ -1585,6 +1586,9 @@ textarea.kb-sp-on{position:relative; z-index:1; background-color:transparent;}
 /* Aktionen, die jetzt im Menü / in "Klasse" liegen, im anwesenheit-Kopf ausblenden */
 #anw-root #btn-students,#anw-root #btn-add-student,
 #anw-root #btn-cal,#anw-root #btn-pdf,#anw-root #btn-data{ display:none; }
+/* Die Person wählt die App links (Chip; wer im Hub angemeldet ist, bleibt diese Person). Der alte
+   Bediener-Knopf der Anwesenheit hätte sie daran vorbei überschrieben. */
+#anw-root #btn-user{ display:none; }
 /* Der alte Stundenplan-Dialog ist ausgeblendet: der Stundenplan wird jetzt
    je Trimester unter „Klasse & Stundenplan" bearbeitet. Zwei Editoren
    nebeneinander würden am Trimester-Speicher vorbeischreiben. */
@@ -2076,6 +2080,9 @@ svg.kb-i.lg{width:22px;height:22px;}
 @media (max-width:880px){
   #dos-root .reu-stats{flex-basis:100%;order:3;}
   #dos-root .reu-kbd{display:none;}
+  /* Hier klebt oben die App-Leiste: der Kopf rutschte darunter (Datum und Pfeile verdeckt) und
+     war auf dem Handy gut 230 px hoch - er scrollt darum mit */
+  #dos-root .reu-topbar{position:static;}
 }
 
 /* ---------- Seitenleiste: Person + Schuljahr ---------- */
@@ -2351,6 +2358,11 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
   #anw-root .layout{align-items:stretch;}
   #anw-root .wrap{width:100%;}
 }
+
+/* Hinweis „App in mehreren Fenstern offen“ (tabs-guard.js, Stil am Element): auf Handy und Tablet
+   unten statt oben - dort lag er über der Menü-Taste ☰ -, auf dem Handy auch kleiner */
+@media (max-width:880px){#kb-tabwarn{top:auto!important;bottom:0;box-shadow:0 -2px 10px rgba(0,0,0,.25)!important;}}
+@media (max-width:640px){#kb-tabwarn{font-size:12.5px!important;padding:7px 10px!important;gap:8px!important;}}
 
 /* ---------- Pathologien (SAVOIR): an die App angeglichen ---------- */
 #sav-root .achse-card{border-radius:14px;border-color:var(--kb-border);box-shadow:var(--kb-shadow-sm);transition:border-color .12s,box-shadow .12s;}
@@ -2876,7 +2888,7 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
         </div>
         <div class="kb-card kb-tool">
           <h3>Dossier-Bericht</h3>
-          <p class="kb-hint">Verlauf eines Schülers als Bericht: Einträge, Ziele und Verlaufskurven, wahlweise anonymisiert.</p>
+          <p class="kb-hint">Die Dossier-Einträge eines Schülers mit Datum, Kategorie, Autor und Tags, wahlweise nach Kategorie, Tags und Zeitraum gefiltert. Druckansicht mit Namen — im Dialog „Als PDF speichern".</p>
           <button class="kb-btn kb-btn-primary" data-kb-nav="export">Bericht erstellen</button>
         </div>
         <div class="kb-card kb-tool">
@@ -3319,6 +3331,13 @@ window.KB_ROSTER=(function(){
     return changed;
   }
   applyClass2627();
+  /* Zweites Fenster derselben App: geaenderte Klassenliste nachlesen - sonst schriebe dieses
+     Fenster beim naechsten Speichern seine alte Liste darueber. */
+  window.addEventListener('storage',function(e){
+    if(e.key!==LS)return;
+    list=loadList();
+    for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(x){}}
+  });
   function notify(){persist();for(var i=0;i<hooks.length;i++){try{hooks[i]();}catch(e){}}}
   function find(id){for(var i=0;i<list.length;i++){if(list[i].id===id){return list[i];}}return null;}
   function newId(){return 'stud_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
@@ -4586,9 +4605,9 @@ function kiWortRegex(wort, grossKlein) {
 function kiEnthaeltWort(text, wort, grossKlein) {
   return !!(wort && String(wort).trim()) && kiWortRegex(wort, grossKlein).test(text);
 }
-function kiErsetzeWort(text, wort, ersatz) {
+function kiErsetzeWort(text, wort, ersatz, grossKlein) {
   if (!wort || !String(wort).trim()) return text;
-  return text.replace(kiWortRegex(wort), function (m, vor) { return vor + ersatz; });
+  return text.replace(kiWortRegex(wort, grossKlein), function (m, vor) { return vor + ersatz; });
 }
 
 /* Wie der Name eines Kindes im Text stehen kann.
@@ -4684,7 +4703,7 @@ function anonymizeText(text, ctx) {
      Ende – mit ctx.markieren zusätzlich eingerahmt für die Vorschau. */
   var platz = [];
   function marke(platzhalter) { return '' + (platz.push(platzhalter) - 1) + ''; }
-  function ersetze(wort, platzhalter) { if (wort) out = kiErsetzeWort(out, wort, marke(platzhalter)); }
+  function ersetze(wort, platzhalter, grossKlein) { if (wort) out = kiErsetzeWort(out, wort, marke(platzhalter), grossKlein); }
 
   // 1) Hochsensible, eindeutige Kennungen IMMER entfernen (unabhängig von der
   //    Namensprüfung): Matrikel-/Sozialversicherungsnummer, E-Mail, Telefon.
@@ -4692,9 +4711,10 @@ function anonymizeText(text, ctx) {
   //    Zuerst, weil E-Mail-Adressen oft den Namen enthalten.
   if (ctx.maskIdentifiers !== false) out = kiKennungenMaskieren(out, marke);
 
-  // 2) Das Kind in ganzer Form („Tom Muster“, „MUSTER Tom“) -> Kürzel
+  // 2) Das Kind in ganzer Form („Tom Muster“, „MUSTER Tom“) -> Kürzel. Mehrteilige Formen in
+  //    jeder Schreibweise („tom muster“); ein einzelnes Wort bleibt genau (sonst träfe „Will“ auch „will“)
   var kind = ctx.kind || null;
-  if (kind) kind.formen.ganz.forEach(function (f) { ersetze(f, kind.label); });
+  if (kind) kind.formen.ganz.forEach(function (f) { ersetze(f, kind.label, /\s/.test(f) ? false : undefined); });
   (ctx.studentNameMap || []).forEach(function (m) { if (!kind || m.name !== kind.name) ersetze(m.name, m.anonLabel); });
 
   // 3) erkannte und ergänzte Namen, längere zuerst (vermeidet Teil-Überlappungen)
@@ -5393,10 +5413,17 @@ function viewEntryForm(params) {
          neuesten Stand zusammengefuehrt. */
       ansichtAuffrischen = function () { return document.body.contains(form); };
 
+      /* Beim Austausch meldet der Browser „blur“ am Eingabefeld. Das darf den Tag nicht noch
+         einmal hinzufuegen (sonst Fehler, der Cursor war weg und Weitergetipptes verloren) -
+         und wer im Feld war, bleibt drin. */
+      var tagsTauschen = false;
       function rerenderTags() {
-        tagWrap.innerHTML = tagsWrapHtml();
+        var imFeld = document.activeElement && document.activeElement.id === 'tag-input';
+        tagsTauschen = true;
+        try { tagWrap.innerHTML = tagsWrapHtml(); } finally { tagsTauschen = false; }
         wireTagInput();
         entwurfMerken();
+        if (imFeld) { var neu = qs('#tag-input', tagWrap); if (neu) neu.focus(); }
       }
 
       function addTag(raw) {
@@ -5423,6 +5450,7 @@ function viewEntryForm(params) {
             }
           });
           input.addEventListener('blur', function () {
+            if (tagsTauschen) return;
             if (input.value.trim()) { addTag(input.value); input.value = ''; }
           });
         }
@@ -6220,9 +6248,11 @@ function viewAiExport(params, query) {
       '<div class="ki-kid-main"><span class="ki-kid-ic">' + kbIcon('shield-check', 'sm') + '</span>' +
         '<span class="ki-from">' + escapeHtml(kind.name) + '</span><span class="ki-arrow">' + kbIcon('arrow-right', 'sm') + '</span>' +
         '<span class="ki-to">' + escapeHtml(kind.label) + '</span>' +
-        '<span class="ki-badge">' + kbIcon('lock', 'sm') + ' immer ersetzt</span></div>' +
+        '<span class="ki-badge">' + kbIcon('lock', 'sm') + ' wird ersetzt</span></div>' +
       (einzeln ? '<div class="ki-kid-parts"><span>Auch einzeln:</span>' + einzeln +
         (nachname ? '<small>– auch in „Frau ' + escapeHtml(nachname.wort) + '“ und in GROSSBUCHSTABEN</small>' : '') + '</div>' : '') +
+      /* ehrlich: einzelne Namensteile klein geschrieben ersetzt die App nicht von selbst */
+      '<div class="ki-kid-parts"><small>Klein geschriebene Formen' + (kind.formen.vorname ? ' (z. B. „' + escapeHtml(kind.formen.vorname.toLowerCase()) + '“)' : '') + ' werden in Schritt 3 geprüft.</small></div>' +
     '</div>';
   }
 
@@ -6598,6 +6628,9 @@ function viewAiExport(params, query) {
         });
         var copyBtn = qs('#ai-copy', wrap);
         copyBtn.addEventListener('click', function () {
+          /* Stehen noch mögliche Namen im Text, erst nachfragen – ohne Reste bleibt es ein Klick. */
+          if (state.reste.length && !confirm('Im Text stehen noch mögliche Namen: ' +
+            state.reste.map(function (r) { return r.wort; }).join(', ') + '. Trotzdem kopieren?')) return;
           copyTextToClipboard(state.builtText).then(function (ok) {
             if (!ok) { showToast('Kopieren nicht möglich — bitte Text manuell markieren und kopieren.', { error: true }); return; }
             copyBtn.classList.add('is-done');
@@ -6938,6 +6971,27 @@ function nextMondayIso() {
   return d.getFullYear() + '-' + m + '-' + dd;
 }
 
+/* Eine neue Réunion: Reihenfolge der letzten, deren offene Ziele und das Gruppenziel werden
+   uebernommen. So legen sie „+ Nächste Réunion“ und der Réunion-Reiter beim Schüler an. */
+function neueReunionDaten(date) {
+  var last = Repo.listReunions()[0];
+  var carryGoals = {};
+  if (last && last.goals) {
+    Object.keys(last.goals).forEach(function (k) {
+      if (k === 'group') { carryGoals.group = (last.goals.group || []).slice(); return; }
+      var open = (last.goals[k] || []).map(function (g) {
+        return (g && typeof g === 'object') ? { text: String(g.text || ''), done: !!g.done } : { text: String(g), done: false };
+      }).filter(function (g) { return g.text.trim() && !g.done; }).map(function (g) { return { text: g.text, done: false }; });
+      if (open.length) carryGoals[k] = open;
+    });
+  }
+  return {
+    date: date, orgItems: [],
+    studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
+    goals: carryGoals, discussed: []
+  };
+}
+
 /* Ein Réunion-Update, an dem ausser dem automatischen Tag nichts haengt -
    keine eigenen Tags, kein Bericht, keine Verlaufs-Slider. */
 function reunionEintragNurText(entry) {
@@ -7062,11 +7116,20 @@ function viewReunion(params, query) {
   function inactiveStudents() {
     return Repo.listStudents().filter(function (s) { return s.active === false; });
   }
-  function rowsFor(r) {
+  /* Das Protokoll (fuerProtokoll) haelt fest, was an dem Tag zu jedem Kind steht: dort kommen
+     Ehemalige mit einem Update oder Zielen an diesem Datum immer mit - auch nach dem Neuladen,
+     wenn sie nicht mehr dazugeholt sind. */
+  function mitDabei(r, s, fuerProtokoll) {
+    if (s.active !== false || isExtra(s.id)) return true;
+    if (!fuerProtokoll) return false;
+    var e = Repo.reunionEntryFor(r.date, s.id);
+    return !!(e && e.text && e.text.trim()) || goalsFor(r, s.id).length > 0;
+  }
+  function rowsFor(r, fuerProtokoll) {
     var order = (r.studentOrder || []).slice();
     Repo.listStudents().forEach(function (s) {
       if (order.indexOf(s.id) !== -1) return;
-      if (s.active !== false || isExtra(s.id)) order.push(s.id);
+      if (mitDabei(r, s, fuerProtokoll)) order.push(s.id);
     });
     var discussed = r.discussed || [];
     var rows = [];
@@ -7074,7 +7137,7 @@ function viewReunion(params, query) {
       var s = Repo.getStudent(sid);
       if (!s) return;
       var entry = Repo.reunionEntryFor(r.date, sid);
-      if (s.active === false && !isExtra(sid)) return;
+      if (!mitDabei(r, s, fuerProtokoll)) return;
       var themes = entry ? analyzeText(entry.text) : [];
       var goals = goalsFor(r, sid);
       rows.push({
@@ -7803,20 +7866,7 @@ function viewReunion(params, query) {
       var createBtn = qs('#reu-create-next', wrap);
       if (createBtn) createBtn.addEventListener('click', function () {
         var nm = nextMondayIso();
-        var last = Repo.listReunions()[0];
-        var carryGoals = {};
-        if (last && last.goals) {
-          Object.keys(last.goals).forEach(function (k) {
-            if (k === 'group') { carryGoals.group = (last.goals.group || []).slice(); return; }
-            var open = normGoals(last.goals[k]).filter(function (g) { return !g.done; }).map(function (g) { return { text: g.text, done: false }; });
-            if (open.length) carryGoals[k] = open;
-          });
-        }
-        Repo.saveReunion({
-          date: nm, orgItems: [],
-          studentOrder: last ? (last.studentOrder || []).slice() : Repo.listStudents().map(function (s) { return s.id; }),
-          goals: carryGoals, discussed: []
-        }).then(function () {
+        Repo.saveReunion(neueReunionDaten(nm)).then(function () {
           showToast('Réunion für ' + formatDate(nm) + ' angelegt (offene Ziele übernommen).');
           navigate('#/reunion?date=' + encodeURIComponent(nm), true);
         }).catch(function (err) { showToast('Fehler beim Anlegen: ' + err.message, { error: true }); });
@@ -7955,7 +8005,7 @@ function viewReunion(params, query) {
         if (!st) { st = document.createElement('style'); st.id = 'print-sheet-css'; document.head.appendChild(st); }
         st.textContent = protocolCss();
         var holder = document.createElement('div');
-        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r)) + '</div>';
+        holder.innerHTML = '<div class="print-sheet" id="print-sheet">' + protocolHtml(r, rowsFor(r, true)) + '</div>';
         document.body.appendChild(holder.firstChild);
         window.print();
       }
@@ -7992,7 +8042,7 @@ function viewReunion(params, query) {
         var doc = '<html xmlns:o="urn:schemas-microsoft-com:office:office" ' +
           'xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
           '<head><meta charset="utf-8"><title>Réunion-Protokoll ' + escapeHtml(r.date) + '</title>' +
-          '<style>' + css + '</style></head><body>' + protocolHtml(r, rowsFor(r)) + '</body></html>';
+          '<style>' + css + '</style></head><body>' + protocolHtml(r, rowsFor(r, true)) + '</body></html>';
         var blob = new Blob(['﻿' + doc], { type: 'application/msword' });
         var url = URL.createObjectURL(blob);
         var a = document.createElement('a');
@@ -9015,6 +9065,9 @@ Repo.init()
     checkPersistenceAndWarn();
     if(window.KB_DOS_RECONCILE){try{window.KB_DOS_RECONCILE();}catch(e){}}
     render();
+    /* Jetzt sind Einträge und Réunionen da. Wer vorher schon gezeichnet hat (die Heute-Tafel
+       der gemeinsamen App), kann nachziehen; allein geöffnet hört niemand zu. */
+    try { window.dispatchEvent(new Event('kb-dossier-bereit')); } catch (e) {}
     /* etwas warten: erst muessen andere offene Fenster sich gemeldet haben */
     setTimeout(function () { try { entwuerfeZurueckholen(); } catch (e) {} }, 2500);
   })
@@ -9351,7 +9404,11 @@ Repo.init()
           var rrN=function(){if(window.render){try{window.render();}catch(e){}}};
           root.querySelectorAll('[data-noten-mode]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.setMode(b.getAttribute('data-sid'),b.getAttribute('data-noten-mode'));rrN();});});
           root.querySelectorAll('[data-noten-del]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.remove(b.getAttribute('data-sid'),b.getAttribute('data-noten-del'));rrN();});});
-          root.querySelectorAll('[data-noten-add]').forEach(function(b){b.addEventListener('click',function(){var card=b.closest('.note-card');if(!card)return;var lbl=card.querySelector('[data-nf=label]').value;var pts=card.querySelector('[data-nf=points]').value;var max=card.querySelector('[data-nf=max]').value;if(pts===''||!(+max>0)){var pi=card.querySelector('[data-nf=points]');if(pi)pi.focus();return;}window.KB_NOTEN.add(b.getAttribute('data-sid'),{subject:b.getAttribute('data-noten-add'),period:b.getAttribute('data-per'),label:lbl,points:pts,max:max});rrN();});});
+          root.querySelectorAll('[data-noten-add]').forEach(function(b){b.addEventListener('click',function(){var card=b.closest('.note-card');if(!card)return;var lbl=card.querySelector('[data-nf=label]').value;var pts=card.querySelector('[data-nf=points]').value;var max=card.querySelector('[data-nf=max]').value;var pi=card.querySelector('[data-nf=points]'),mi=card.querySelector('[data-nf=max]');if(pts===''){if(pi)pi.focus();return;}
+            /* Punkte zwischen 0 und der Höchstpunktzahl, diese über 0 - sonst stand etwa „80 von 50“ als 96/60 da */
+            if(!(+max>0)){alert('Die Höchstpunktzahl muss größer als 0 sein.');if(mi)mi.focus();return;}
+            if(!(+pts>=0&&+pts<=+max)){alert('Die erreichten Punkte müssen zwischen 0 und '+String(+max).replace('.',',')+' liegen.');if(pi)pi.focus();return;}
+            window.KB_NOTEN.add(b.getAttribute('data-sid'),{subject:b.getAttribute('data-noten-add'),period:b.getAttribute('data-per'),label:lbl,points:pts,max:max});rrN();});});
           root.querySelectorAll('[data-mod-set]').forEach(function(b){b.addEventListener('click',function(){var n=+b.getAttribute('data-mod-set');var sid3=b.getAttribute('data-sid');var su=b.getAttribute('data-subj');var cur=window.KB_NOTEN.moduleOf(sid3,su).done;window.KB_NOTEN.setModule(sid3,su,(n===cur?n-1:n));rrN();});});
           root.querySelectorAll('[data-mod-more]').forEach(function(b){b.addEventListener('click',function(){window.KB_NOTEN.addCap(b.getAttribute('data-sid'),b.getAttribute('data-mod-more'),4);rrN();});});
         }catch(e){}}
@@ -9398,7 +9455,8 @@ Repo.init()
             zeige('Speichert …','');
             var p=Promise.resolve();
             if(gNeu||!r2){
-              var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
+              /* neu angelegt wie auf der Réunion-Seite: offene Ziele der letzten Réunion kommen mit */
+              var base=r2?r2:neueReunionDaten(date2);
               base.goals=base.goals||{};
               var jetztG=Array.isArray(base.goals[sid2])?base.goals[sid2]:[];
               var goals2=zeilen2(gText);
@@ -10440,7 +10498,7 @@ window.KB_BUBBLE=(function(){
      Die Minuten haengen am Eintrag, damit sie zur richtigen Stunde gehoeren. */
   var LATE_STEPS=[5,10,15,20,30,45];
   function lateOf(e){return (e&&e.status==='verspaetet')?(+e.lateMin||0):0;}
-  function closeLatePop(){var p=document.getElementById('late-pop');if(p&&p.parentNode)p.parentNode.removeChild(p);}
+  function closeLatePop(){var p=document.getElementById('late-pop');if(p&&p._weg)p._weg();if(p&&p.parentNode)p.parentNode.removeChild(p);}
   function setLate(sid,blockId,date,mins){
     var ent=entryFor(sid,date,blockId);if(!ent||ent.status!=='verspaetet')return;
     if(mins>0)ent.lateMin=mins;else delete ent.lateMin;
@@ -10450,7 +10508,8 @@ window.KB_BUBBLE=(function(){
   function openLatePop(sid,blockId,date){
     closeLatePop();
     var ent=entryFor(sid,date,blockId);if(!ent||ent.status!=='verspaetet')return;
-    var cell=document.querySelector('.wcell[data-blk="'+blockId+'"][data-sid="'+sid+'"][data-date="'+date+'"]');
+    var zelle='.wcell[data-blk="'+blockId+'"][data-sid="'+sid+'"][data-date="'+date+'"]';
+    var cell=document.querySelector(zelle);
     if(!cell)return;
     var cur=lateOf(ent),frei=(cur&&LATE_STEPS.indexOf(cur)<0)?cur:'';
     var p=document.createElement('div');p.id='late-pop';p.className='late-pop';
@@ -10459,12 +10518,23 @@ window.KB_BUBBLE=(function(){
       '</div><div class="lp-row"><input type="number" min="1" max="240" step="5" id="late-free" placeholder="andere" value="'+frei+'">'+
       '<button type="button" data-lm="free">OK</button>'+
       '<button type="button" data-lm="0"'+(cur?'':' class="on"')+' title="Retard ohne Minutenangabe">ohne Angabe</button></div>';
-    document.body.appendChild(p);
-    var r=cell.getBoundingClientRect();
-    var left=r.left+window.scrollX, top=r.bottom+window.scrollY+5;
-    left=Math.max(6,Math.min(left,window.scrollX+window.innerWidth-p.offsetWidth-6));
-    if(r.bottom+p.offsetHeight+12>window.innerHeight)top=r.top+window.scrollY-p.offsetHeight-5;
-    p.style.left=left+'px';p.style.top=top+'px';
+    /* In der gemeinsamen App gelten Stil und Farben nur unter #anw-root - also dort hinein, sonst
+       stand das Fenster ungestaltet am Seitenende. Fest am Bildschirm neben der Zelle; beim Scrollen
+       wandert es mit (die Zelle wird neu gesucht, ein Neuzeichnen tauscht sie aus). */
+    (document.getElementById('anw-root')||document.body).appendChild(p);
+    p.style.position='fixed';
+    function platz(){
+      if(!p.parentNode)return;
+      var c=document.querySelector(zelle);if(!c){closeLatePop();return;}
+      var r=c.getBoundingClientRect();
+      var left=Math.max(6,Math.min(r.left,window.innerWidth-p.offsetWidth-6)), top=r.bottom+5;
+      if(r.bottom+p.offsetHeight+12>window.innerHeight)top=r.top-p.offsetHeight-5;
+      p.style.left=left+'px';p.style.top=top+'px';
+    }
+    platz();
+    setTimeout(platz,350);   // die neu gezeichnete Woche gleitet noch 0,3 s herein (rise)
+    window.addEventListener('scroll',platz,true);window.addEventListener('resize',platz);
+    p._weg=function(){window.removeEventListener('scroll',platz,true);window.removeEventListener('resize',platz);};
     p.addEventListener('click',function(ev){
       var b=ev.target.closest('[data-lm]');if(!b)return;
       ev.stopPropagation();
@@ -10510,14 +10580,15 @@ window.KB_BUBBLE=(function(){
       var ex=entryFor(sid,date,o.b.id);
       if(!next){if(ex)state.entries=state.entries.filter(function(e){return e!==ex;});}
       else if(ex){ex.status=next;ex.byUser=state.currentUser||'';ex.byUserAt=Date.now();}
-      else{state.entries.push({id:uid(),studentId:sid,date:date,weekday:wd,blockId:o.b.id,subject:o.subj,status:next,hours:blockHours(o.b),note:'',byUser:state.currentUser||'',byUserAt:Date.now()});}
+      /* Pausen sind kein Unterricht: der ganze Tag legt dort keinen Eintrag an (fruehere bleiben lesbar) */
+      else if(!PAUSE_SUBJECTS[o.subj]){state.entries.push({id:uid(),studentId:sid,date:date,weekday:wd,blockId:o.b.id,subject:o.subj,status:next,hours:blockHours(o.b),note:'',byUser:state.currentUser||'',byUserAt:Date.now()});}
     });
     save();rerenderStudent(sid);renderSummary();
   }
   function clearWholeDay(sid,date){
     var before=state.entries.length;
     state.entries=state.entries.filter(function(e){return !(e.studentId===sid&&e.date===date);});
-    if(state.entries.length!==before){save();rerenderStudent(sid);renderSummary();renderWeekday();renderSubject();}
+    if(state.entries.length!==before){save();rerenderStudent(sid);renderSummary();}
   }
 
   function renderAll(){ensureStudentSelected();fillPeriods();renderSummary();renderViewTabs();renderStudents();renderMain();renderUserUI();if(state.students.length)firstRenderDone=true;}
@@ -10684,14 +10755,24 @@ window.KB_BUBBLE=(function(){
   function buildReport(){
     var p=curPeriod();var label=p?p.name:'Ganzes Schuljahr';var list=periodEntries();var d=new Date().toLocaleDateString('de-CH',{day:'2-digit',month:'2-digit',year:'numeric'});
     var gE=0,gU=0,gV=0,gVM=0;list.forEach(function(e){if(e.status==='entschuldigt')gE+=countHours(e);else if(e.status==='unentschuldigt')gU+=countHours(e);else{gV++;gVM+=lateOf(e);}});
-    var sRows=state.students.map(function(s){var sl=list.filter(function(e){return e.studentId===s.id;});var e1=0,u1=0,v1=0,vm1=0;sl.forEach(function(e){if(e.status==='entschuldigt')e1+=countHours(e);else if(e.status==='unentschuldigt')u1+=countHours(e);else{v1++;vm1+=lateOf(e);}});
+    /* Ehemalige (in der gemeinsamen App inaktiv oder aus der Liste genommen) stehen nicht in
+       state.students. Haben sie im Zeitraum Eintraege, bekommen sie eine eigene Zeile - sonst
+       passten die Summen oben nicht zur Tabelle. */
+    var ehem=[],R=window.KB_ROSTER;
+    list.forEach(function(e){
+      if(findStudent(e.studentId)||ehem.some(function(x){return x.id===e.studentId;}))return;
+      var r=R&&R.byId?R.byId(e.studentId):null;
+      ehem.push({id:e.studentId,name:r?r.name:((R&&R.removedName&&R.removedName(e.studentId))||'(gelöscht)'),level:r?r.level:'',ehemalig:true});
+    });
+    ehem.sort(function(a,b){return a.name.localeCompare(b.name);});
+    var sRows=state.students.concat(ehem).map(function(s){var sl=list.filter(function(e){return e.studentId===s.id;});var e1=0,u1=0,v1=0,vm1=0;sl.forEach(function(e){if(e.status==='entschuldigt')e1+=countHours(e);else if(e.status==='unentschuldigt')u1+=countHours(e);else{v1++;vm1+=lateOf(e);}});
       // Top-Fach
       var subj={};sl.forEach(function(e){if(STATUS[e.status].isAbsence)subj[e.subject]=(subj[e.subject]||0)+1;});var top=Object.keys(subj).sort(function(a,b){return subj[b]-subj[a];})[0];
-      return '<tr><td>'+esc(s.name)+' <span style="color:#999">'+(s.level||'')+'</span></td><td class="n">'+nf(e1)+'</td><td class="n">'+nf(u1)+'</td><td class="n b">'+nf(e1+u1)+'</td><td class="n">'+(v1?(v1+(vm1?' ('+vm1+' min)':'')):'–')+'</td><td>'+(top?esc(top)+' ('+subj[top]+'×)':'–')+'</td></tr>';}).join('')||'<tr><td colspan="6">Keine Schüler.</td></tr>';
+      return '<tr><td>'+esc(s.name)+' <span style="color:#999">'+(s.level||'')+(s.ehemalig?(s.level?' · ':'')+'ehemalig':'')+'</span></td><td class="n">'+nf(e1)+'</td><td class="n">'+nf(u1)+'</td><td class="n b">'+nf(e1+u1)+'</td><td class="n">'+(v1?(v1+(vm1?' ('+vm1+' min)':'')):'–')+'</td><td>'+(top?esc(top)+' ('+subj[top]+'×)':'–')+'</td></tr>';}).join('')||'<tr><td colspan="6">Keine Schüler.</td></tr>';
     var datesByWd={},sumByWd={};list.forEach(function(e){var w=e.weekday!=null?e.weekday:wdOf(e.date);(datesByWd[w]=datesByWd[w]||new Set()).add(e.date);if(STATUS[e.status].isAbsence)sumByWd[w]=(sumByWd[w]||0)+countHours(e);});
     var wRows='';WD_ORDER.forEach(function(w){if(!datesByWd[w])return;var dd=datesByWd[w].size,ss=sumByWd[w]||0;wRows+='<tr><td>'+WD[w]+'</td><td class="n">'+dd+'</td><td class="n">'+nf(ss)+'</td><td class="n b">'+nf(dd?ss/dd:0)+'</td></tr>';});if(!wRows)wRows='<tr><td colspan="4">Keine Einträge.</td></tr>';
     return '<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><title>Absenzen-Bericht</title><style>@page{margin:18mm 15mm;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:-apple-system,"Segoe UI",Arial,sans-serif;color:#1A1A2E;font-size:12px;}.h{display:flex;justify-content:space-between;border-bottom:2px solid #4f5bd5;padding-bottom:12px;margin-bottom:16px;}.h h1{font-size:20px;}.h .s{color:#777;font-size:12px;margin-top:3px;}.h .m{text-align:right;font-size:11px;color:#777;}.cards{display:flex;gap:10px;margin-bottom:16px;}.c{flex:1;border:1px solid #E8E8F0;border-radius:8px;padding:10px;}.c .l{font-size:9px;text-transform:uppercase;color:#999;font-weight:700;}.c .v{font-size:22px;font-weight:800;}h2{font-size:13px;margin:16px 0 7px;color:#3b46b8;}table{width:100%;border-collapse:collapse;font-size:11.5px;}th{background:#eef0fc;text-align:left;padding:7px 9px;font-size:9px;text-transform:uppercase;color:#555;}td{padding:6px 9px;border-bottom:1px solid #F0F0F6;}td.n,th.n{text-align:right;}td.b{font-weight:700;}.foot{margin-top:22px;border-top:1px solid #E8E8F0;padding-top:8px;font-size:10px;color:#999;}</style></head><body>'+
-      '<div class="h"><div><h1>Absenzen-Bericht</h1><div class="s">'+esc(label)+'</div></div><div class="m">Erstellt am '+d+'<br>'+state.students.length+' Schüler · '+list.length+' Einträge</div></div>'+
+      '<div class="h"><div><h1>Absenzen-Bericht</h1><div class="s">'+esc(label)+'</div></div><div class="m">Erstellt am '+d+'<br>'+state.students.length+' Schüler'+(ehem.length?' + '+ehem.length+' ehemalig':'')+' · '+list.length+' Einträge</div></div>'+
       '<div class="cards"><div class="c"><div class="l">Stunden total</div><div class="v">'+nf(gE+gU)+'</div></div><div class="c"><div class="l">Excusé</div><div class="v" style="color:#00B894">'+nf(gE)+'</div></div><div class="c"><div class="l">Non-excusé</div><div class="v" style="color:#C0392B">'+nf(gU)+'</div></div><div class="c"><div class="l">Retards</div><div class="v" style="color:#E8A317">'+gV+(gVM?'<span style="font-size:13px"> ('+gVM+' min)</span>':'')+'</div></div></div>'+
       '<h2>Absenzen je Schüler (Stunden)</h2><table><thead><tr><th>Schüler</th><th class="n">Excusé</th><th class="n">Non-exc.</th><th class="n">Total</th><th class="n">Retard (Min.)</th><th>Häufigstes Fach</th></tr></thead><tbody>'+sRows+'</tbody></table>'+
       '<h2>Ø Absenz-Stunden je Wochentag</h2><table><thead><tr><th>Wochentag</th><th class="n">Tage</th><th class="n">Summe</th><th class="n">Ø/Tag</th></tr></thead><tbody>'+wRows+'</tbody></table>'+
@@ -10703,7 +10784,8 @@ window.KB_BUBBLE=(function(){
   function dl(name,content,type){var b=new Blob([content],{type:type});var url=URL.createObjectURL(b);var a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},800);}
   function exportJSON(){dl('anwesenheit-backup-'+today()+'.json',JSON.stringify(state,null,2),'application/json');toast('⬇️ Backup gespeichert');}
   function csvCell(v){var s=String(v==null?'':v);return /[";\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
-  function exportCSV(){var lines=['Datum;Wochentag;Schueler;Niveau;Block;Fach;Status;Stunden;Minuten zu spaet'];state.entries.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(e){var s=state.students.find(function(x){return x.id===e.studentId;});var b=BLOCKS.find(function(x){return x.id===e.blockId;});lines.push([e.date,WD[e.weekday!=null?e.weekday:wdOf(e.date)],s?s.name:'(gelöscht)',s?(s.level||''):'',b?(b.start+'-'+b.end):'',e.subject||'',STATUS[e.status]?STATUS[e.status].label:e.status,String(entryHours(e)).replace('.',','),lateOf(e)?String(lateOf(e)):''].map(csvCell).join(';'));});dl('anwesenheit-'+today()+'.csv','﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('⬇️ CSV exportiert');}
+  /* Stunden wie in App und Bericht gezaehlt: Welcome, Morning Meeting, Pausen und Réckbléck zaehlen 0 */
+  function exportCSV(){var lines=['Datum;Wochentag;Schueler;Niveau;Block;Fach;Status;Stunden;Minuten zu spaet'];state.entries.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(e){var s=state.students.find(function(x){return x.id===e.studentId;});var b=BLOCKS.find(function(x){return x.id===e.blockId;});lines.push([e.date,WD[e.weekday!=null?e.weekday:wdOf(e.date)],s?s.name:'(gelöscht)',s?(s.level||''):'',b?(b.start+'-'+b.end):'',e.subject||'',STATUS[e.status]?STATUS[e.status].label:e.status,String(countHours(e)).replace('.',','),lateOf(e)?String(lateOf(e)):''].map(csvCell).join(';'));});dl('anwesenheit-'+today()+'.csv','﻿'+lines.join('\r\n'),'text/csv;charset=utf-8');toast('⬇️ CSV exportiert');}
   function importJSON(file){var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(!Array.isArray(d.students))throw 0;if(!confirm('Backup laden? Aktuelle Daten werden ersetzt.'))return;state.students=d.students||[];state.periods=Array.isArray(d.periods)?d.periods:[];state.entries=Array.isArray(d.entries)?d.entries:[];state.timetable=d.timetable||defaultTimetable();state.notes=Array.isArray(d.notes)?d.notes:[];state.ttVersion=d.ttVersion||0;ui={};migrate();save();renderStudentMgmt();renderAll();closeModals();toast('✅ Backup geladen');}catch(e){toast('⚠️ Datei nicht lesbar');}};r.readAsText(file);}
   function resetAll(){if(!confirm('Wirklich ALLE Daten löschen?'))return;if(!confirm('Letzte Warnung: alles wird gelöscht.'))return;state={students:[],periods:[],entries:[],timetable:defaultTimetable(),notes:[],currentUser:state.currentUser,ttVersion:2};ui={};ensurePeriods();save();renderStudentMgmt();renderAll();closeModals();toast('🗑 Alles gelöscht');}
 
@@ -10795,6 +10877,16 @@ window.KB_BUBBLE=(function(){
     layout.addEventListener('change',function(e){
       if(e.target.id==='cw-date'){(ui._klasse||(ui._klasse={date:today()})).date=e.target.value;renderMain();return;}
       var inp=e.target.closest('[data-date]');if(inp&&inp.dataset.date&&ui[inp.dataset.date]){ui[inp.dataset.date].date=inp.value;rerenderStudent(inp.dataset.date);}});
+
+    /* Zweites Fenster derselben App: jeder Klick speichert sofort. Hat das andere Fenster
+       gespeichert, liest dieses hier den Stand neu - sonst schriebe es beim naechsten Klick seinen
+       alten Stand darueber, und die Absenzen des anderen waeren weg. */
+    window.addEventListener('storage',function(e){
+      if(e.key!==KEY)return;
+      load();
+      if(window.KB_ROSTER){state.students=window.KB_ROSTER.asAnwesenheit();}
+      renderAll();
+    });
 
     // Bediener
     document.getElementById('btn-user').addEventListener('click',function(){renderUserGrid();openModal('modal-user');});
@@ -12364,7 +12456,9 @@ window.KB_MATERIALS=(function(){
         var p=el.getAttribute('data-ttc').split('|');
         if(window.KB_TIMETABLE)window.KB_TIMETABLE.setCell(p[0],+p[1],+p[2],el.value);
       });
-      el.addEventListener('change',function(){renderTTSubjects();});
+      /* Fertig geändert: auch das Klassenbuch neu zeichnen - sonst zeigte es bis zum nächsten Klick
+         das alte Fach, gespeichert wurde beim Klick aber schon das neue */
+      el.addEventListener('change',function(){renderTTSubjects();if(window.__anwRefresh){try{window.__anwRefresh();}catch(e){}}});
     });
   }
   function renderTTSubjects(){
@@ -12527,7 +12621,12 @@ window.KB_MATERIALS=(function(){
     var trs=body.querySelectorAll('tr[data-id]');
     for(var i=0;i<trs.length;i++){(function(tr){
       var id=tr.getAttribute('data-id');
-      tr.querySelector('.kb-rn').addEventListener('change',function(e){window.KB_ROSTER.update(id,{name:e.target.value.trim()});});
+      tr.querySelector('.kb-rn').addEventListener('change',function(e){
+        var nm=e.target.value.trim();
+        /* Ohne Namen stand auf der Karte nur „?“ und die Löschfrage nannte niemanden - der bisherige bleibt */
+        if(!nm){var alt=window.KB_ROSTER.byId(id);e.target.value=alt?alt.name:'';alert('Der Name darf nicht leer sein – der bisherige Name bleibt stehen.');return;}
+        window.KB_ROSTER.update(id,{name:nm});
+      });
       tr.querySelector('.kb-rk').addEventListener('change',function(e){window.KB_ROSTER.update(id,{klasse:e.target.value.trim()});});
       tr.querySelector('.kb-rz').addEventListener('change',function(e){window.KB_ROSTER.update(id,{zyklus:e.target.value});});
       tr.querySelector('.kb-rl').addEventListener('change',function(e){window.KB_ROSTER.update(id,{level:e.target.value});});
@@ -12632,7 +12731,7 @@ window.KB_MATERIALS=(function(){
       var wer=x.kind==='reunion'?('Réunion vom '+esc(d.date||'')):(esc(window.KB_TRASH.nameOf(d.studentId,d)||'Eintrag')+' · '+esc(d.date||''));
       var txt=x.kind==='reunion'
         ? ((d.orgItems||[]).length+' Orga-Punkte')
-        : String(d.text||'').replace(/s+/g,' ').slice(0,120);
+        : String(d.text||'').replace(/\s+/g,' ').slice(0,120);
       return '<div class="kb-trash-row">'+
         '<div class="kb-trash-main"><b>'+wer+'</b>'+(d.category?' <span class="kb-trash-cat">'+esc(d.category)+'</span>':'')+
           '<div class="kb-trash-txt">'+(txt?esc(txt)+(String(d.text||'').length>120?'…':''):'<i>ohne Text</i>')+'</div>'+
@@ -12816,6 +12915,9 @@ window.KB_MATERIALS=(function(){
   if(window.KB_BLOCKS){try{window.KB_BLOCKS.init();}catch(e){}}
   if(window.KB_TIMETABLE){try{window.KB_TIMETABLE.init();}catch(e){}}
 
+  /* Réunionen und Wochenziele kommen erst nach dem Start aus der Browser-Datenbank. Steht dann
+     die Heute-Tafel offen, wird sie mit ihnen neu gezeichnet - vorher hieß es „Noch keine Réunion.“ */
+  window.addEventListener('kb-dossier-bereit',function(){var h=$('kb-heute');if(h&&h.classList.contains('active')&&window.KB_HEUTE){try{window.KB_HEUTE.render($('kb-heute-body'));}catch(e){}}});
   // Startseite: die Heute-Tafel (fürs Morning Meeting) – von dort ein Klick ins Klassenbuch
   go('heute');
 })();
