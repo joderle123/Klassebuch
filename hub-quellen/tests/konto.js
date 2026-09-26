@@ -64,7 +64,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.evaluate(()=>{const r=document.querySelector('#g-resp');if(r&&!r.value){r.value='-';}}); await page.fill('#g-pw1', 'kurz'); await page.fill('#g-pw2', 'kurz'); await page.click('#g-los');
   check('Zu kurzes Passwort → Meldung', (await page.textContent('.meldung')).includes('10 Zeichen'));
   await page.evaluate(()=>{const r=document.querySelector('#g-resp');if(r&&!r.value){r.value='-';}}); await page.fill('#g-pw1', 'anna-ist-toll-2026'); await page.fill('#g-pw2', 'anna-ist-toll-2026'); await page.click('#g-los');
-  check('Name im Passwort → Meldung', (await page.textContent('.meldung')).includes('Namen'));
+  check('Vorname als Wort im Passwort → Meldung', (await page.textContent('.meldung')).includes('Vornamen'));
   await page.evaluate(()=>{const r=document.querySelector('#g-resp');if(r&&!r.value){r.value='-';}}); await page.fill('#g-pw1', 'sonnige Tage 2026'); await page.fill('#g-pw2', 'sonnige Tage 2027'); await page.click('#g-los');
   check('Ungleiche Passwörter → Meldung', (await page.textContent('.meldung')).includes('nicht gleich'));
   await page.screenshot({ path: OUT + '/g2-erstellen-fehler.png' });

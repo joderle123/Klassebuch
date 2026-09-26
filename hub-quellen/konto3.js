@@ -34,6 +34,8 @@ var S=window.CDSE_HUB||{};
 var SPERRE_MS=(S.sperreNachMinuten>0?S.sperreNachMinuten:60)*60000;
 var TEAMS=(window.CDSE_TEAMS||[]).filter(function(t){return t&&t.id&&t.name;});
 var ordner=null, konten=[], sitzung=null, cb={}, fehlversuche={}, letzteAktivitaet=Date.now(), gesperrt=false;
+/* Von der Verwaltung vorbereitete Konten (Startcode): Name, Team, Funktion, Responsable – noch ohne Schlüssel */
+var vorbereitete=[];
 var tresor={id:null,pub:null,priv:null};      /* Schlüssel der angemeldeten Person - nur im Arbeitsspeicher */
 var aktStatus={art:'aus'}, letzteSicherung=0;
 var $=function(id){return document.getElementById(id);};
@@ -148,7 +150,10 @@ function dateiInfo(dir,name){
       function(e){if(e&&e.name==='NotFoundError'){return null;}throw e;});
   });
 }
+function istVorbereitet(k){return !!(k&&k.format==='cdse-konto'&&k.id&&k.start&&k.start.ct&&!k.schluessel);}
+function nachName(a,b){return String(a.name).localeCompare(String(b.name),'de');}
 function ladeKonten(){
+  var vorb=[];
   return unterordner(['konten']).then(eintraege).then(function(dateien){
     var liste=[];
     /* mehrere Konto-Dateien gleichzeitig lesen (bei 100 und mehr Konten deutlich schneller) */
@@ -157,13 +162,15 @@ function ladeKonten(){
       if(i>=l.length){return Promise.resolve();}
       var h=l[i++];
       return nochmal(function(){return h.getFile().then(function(f){return f.text();});}).then(function(t){
-        try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}}catch(e){}
+        try{var k=JSON.parse(t);if(k&&k.format==='cdse-konto'&&k.id&&k.schluessel&&k.profil){liste.push(k);}else if(istVorbereitet(k)){vorb.push(k);}}catch(e){}
       },function(){}).then(weiter);
     }
     var w=[];for(var n=0;n<Math.min(8,l.length);n++){w.push(weiter());}
     return Promise.all(w).then(function(){return liste;});
-  }).then(function(l){l.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'de');});konten=l;return teamlisteLesen().then(function(){return l;});});
+  }).then(function(l){l.sort(nachName);konten=l;vorb.sort(nachName);vorbereitete=vorb;return teamlisteLesen().then(function(){return l;});});
 }
+function vorbereitetVon(id){for(var i=0;i<vorbereitete.length;i++){if(vorbereitete[i].id===id){return vorbereitete[i];}}return null;}
+function vorbereitetMitNamen(name){var k=namensSchluessel(name);for(var i=0;i<vorbereitete.length;i++){if(namensSchluessel(vorbereitete[i].name)===k){return vorbereitete[i];}}return null;}
 /* ---------- Teamliste: vorbereitete Konten ----------
    Die Verwaltung trägt alle Mitarbeitenden ein (Name, Team, Funktion, Rolle).
    Wer ein Konto erstellt, wählt seinen Namen aus der Liste: Team und Funktion
@@ -258,10 +265,15 @@ function kontoVon(id){for(var i=0;i<konten.length;i++){if(konten[i].id===id){ret
 
 /* ---------- Konten ---------- */
 function slug(n){return String(n).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ß/g,'ss').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,40)||'konto';}
+function neueKontoId(name){
+  var id;
+  do{id=slug(name)+'-'+Array.prototype.map.call(rnd(3),function(x){return ALPHA.charAt(x&31).toLowerCase();}).join('');}while(kontoVon(id)||vorbereitetVon(id));
+  return id;
+}
+/* extra: funktion, responsable; bei vorbereiteten Konten zusätzlich id (bleibt gleich) und start (bis zur Freischaltung) */
 function kontoErstellen(name,teamId,pw,extra){
   extra=extra||{};
-  var roh=rnd(32), code=neuerCode(), id;
-  do{id=slug(name)+'-'+Array.prototype.map.call(rnd(3),function(x){return ALPHA.charAt(x&31).toLowerCase();}).join('');}while(kontoVon(id));
+  var roh=rnd(32), code=neuerCode(), id=extra.id||neueKontoId(name);
   return Promise.all([umschlag(pw,roh),umschlag(codeNorm(code),roh),datenschluessel(roh),neuesPaar()]).then(function(r){
     var dek=r[2], kp=r[3];
     return Promise.all([crypto.subtle.exportKey('spki',kp.publicKey),crypto.subtle.exportKey('pkcs8',kp.privateKey)]).then(function(ex){
@@ -271,8 +283,11 @@ function kontoErstellen(name,teamId,pw,extra){
           var jetzt=new Date().toISOString();
           var k={format:'cdse-konto',version:1,id:id,name:name,team:teamId,funktion:prof.funktion,responsable:prof.responsable,erstellt:jetzt,geaendert:jetzt,
                  schluessel:{passwort:r[0],code:r[1]},oeffentlich:b64(ex[0]),privat:q[1],profil:profil};
+          if(extra.start){k.start=extra.start;}
           return schreibeKonto(k).then(function(){
-            konten.push(k);roh.fill(0);
+            konten=konten.filter(function(x){return x.id!==id;});konten.push(k);konten.sort(nachName);
+            vorbereitete=vorbereitete.filter(function(x){return x.id!==id;});
+            roh.fill(0);
             return {konto:k,code:code,s:{id:id,name:name,team:teamId,funktion:prof.funktion,responsable:prof.responsable,rg:true,konto:k,dek:dek,prof:prof,pub:kp.publicKey,priv:kp.privateKey,hash:q[0]}};
           });
         });
@@ -296,6 +311,8 @@ function anmeldenMit(k,geheim,art){
 function schluesselBereit(s){
   var k=s.konto, dek=s.dek, prof=s.prof;
   function profilSchreiben(){return versiegeln(dek,te.encode(JSON.stringify(prof))).then(function(pr){k.profil=pr;k.geaendert=new Date().toISOString();return schreibeKonto(k);});}
+  /* Rest einer Startcode-Einrichtung (Schreiben war unterbrochen): der verschlossene Schlüssel gehört nicht mehr in die Datei */
+  if(k.start&&k.schluessel){delete k.start;schreibeKonto(k).catch(function(){});}
   if(k.oeffentlich&&k.privat){
     return sha256(unb64(k.oeffentlich)).then(function(h){
       if(prof.schluessel&&prof.schluessel!==h){throw fehler('Deine Konto-Datei wurde verändert (der Schlüssel passt nicht). Bitte informiere die IT');}
@@ -326,7 +343,10 @@ function profilSetzen(k,dek,prof,werte){
 }
 function pwProblem(pw,name){
   if(pw.length<10){return 'Das Passwort braucht mindestens 10 Zeichen.';}
-  if(name&&pw.toLowerCase().indexOf(String(name).toLowerCase().split(/\s+/)[0])>=0){return 'Das Passwort darf deinen Namen nicht enthalten.';}
+  /* der Vorname als eigenes Wort (z. B. „Lea2026!“) – als Teil eines anderen Wortes („Leas Katze“) ist er erlaubt */
+  function woerter(t){return String(t||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').split(/[^a-z]+/).filter(function(x){return x.length>=2;});}
+  var vor=woerter(String(name||'').trim().split(/\s+/)[0]), pwW=woerter(pw);
+  if(vor.some(function(v){return pwW.indexOf(v)>=0;})){return 'Das Passwort darf deinen Vornamen nicht als eigenes Wort enthalten.';}
   if(/^(.)\1+$/.test(pw)){return 'Bitte kein Passwort aus lauter gleichen Zeichen.';}
   return '';
 }
@@ -863,13 +883,17 @@ function zeigeVerbinden(fehlerText,wiederkehr){
 
 function zeigeKonten(){
   tor(true);
-  if(!konten.length){zeigeErstellen(true);return;}
-  var viele=konten.length>8;
-  karte('<h2>Wer bist du?</h2><p class="sub">Wähle dein Konto.</p>'+
+  if(!konten.length&&!vorbereitete.length){zeigeErstellen(true);return;}
+  /* eingerichtete und vorbereitete Konten (Startcode) in einer Liste, nach Namen */
+  var alle=konten.map(function(k){return {k:k,neu:false};}).concat(vorbereitete.map(function(v){return {k:v,neu:true};}))
+    .sort(function(a,b){return nachName(a.k,b.k);});
+  var viele=alle.length>8;
+  karte('<h2>Wer bist du?</h2><p class="sub">Wähle dein Konto.'+(vorbereitete.length?' Neu hier? Klicke auf deinen Namen und gib den Startcode von deinem Zettel ein.':'')+'</p>'+
     (viele?'<div class="feld"><input id="g-suche" type="search" placeholder="Name suchen …" aria-label="Konto suchen" autocomplete="off" autofocus></div>':'')+
     '<div class="konto-liste" id="g-liste">'+
-    konten.map(function(k){return '<button class="konto" type="button" data-id="'+esc(k.id)+'">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+'</small></span>'+ic('right')+'</button>';}).join('')+
+    alle.map(function(x){var k=x.k;return '<button class="konto'+(x.neu?' neu':'')+'" type="button" '+(x.neu?'data-start':'data-id')+'="'+esc(k.id)+'">'+ava(k)+'<span><b>'+esc(k.name)+'</b><small>'+esc(team(k.team).name)+(x.neu?' · erste Anmeldung mit Startcode':'')+'</small></span>'+ic('right')+'</button>';}).join('')+
     '</div><p class="sub" id="g-leer" hidden>Kein Konto mit diesem Namen.</p><button class="btn voll" id="g-neu" type="button">'+ic('plus')+'Neues Konto erstellen</button>');
+  Array.prototype.forEach.call(document.querySelectorAll('#gate .konto[data-start]'),function(el){el.onclick=function(){var v=vorbereitetVon(el.getAttribute('data-start'));if(v){zeigeStartcode(v);}};});
   if(viele){$('g-suche').oninput=function(){
     var q=this.value.trim().toLowerCase(), n=0;
     Array.prototype.forEach.call(document.querySelectorAll('#g-liste .konto'),function(el){var an=!q||el.textContent.toLowerCase().indexOf(q)>=0;el.hidden=!an;if(an){n++;}});
@@ -908,8 +932,8 @@ function zeigeAnmelden(k,hinweis,fehlerText){
   $('g-vergessen').onclick=function(){zeigeVergessen(k);};
 }
 
-/* Personen der Teamliste, die noch kein Konto haben */
-function offeneTL(){return teamliste.filter(function(p){return !kontoMitNamen(p.name);});}
+/* Personen der Teamliste, die noch kein Konto haben (und für die keines vorbereitet ist) */
+function offeneTL(){return teamliste.filter(function(p){return !kontoMitNamen(p.name)&&!vorbereitetMitNamen(p.name);});}
 function zeigeErstellen(erstes,fehlerText,werte){
   werte=werte||{};tor(true);
   karte('<h2>'+(erstes?'Das erste Konto anlegen':'Neues Konto erstellen')+'</h2>'+
@@ -939,6 +963,8 @@ function zeigeErstellen(erstes,fehlerText,werte){
     var name=$('g-name').value.trim().replace(/\s+/g,' '), t=gewaehltesTeam(), pw1=$('g-pw1').value, pw2=$('g-pw2').value;
     var fu=$('g-funktion').value.trim().replace(/\s+/g,' '), re=gewaehlterResponsable(), w={name:name,team:t,funktion:fu,responsable:re};
     if(name.length<3){zeigeErstellen(erstes,'Bitte gib deinen Vor- und Nachnamen ein.',w);return;}
+    var vb=vorbereitetMitNamen(name);
+    if(vb){zeigeStartcode(vb,null,'Für dich hat die Verwaltung schon ein Konto vorbereitet. Gib den Startcode von deinem Zettel ein und wähle dein Passwort.');return;}
     if(konten.some(function(k){return k.name.toLowerCase()===name.toLowerCase();})){zeigeErstellen(erstes,'Es gibt schon ein Konto „'+esc(name)+'“. Melde dich dort an — oder ergänze z. B. einen zweiten Vornamen.',w);return;}
     if(!t&&TEAMS.length){zeigeErstellen(erstes,'Bitte wähle dein Team.',w);return;}
     if(re===null){zeigeErstellen(erstes,'Bitte wähle deine/n Responsable – oder „Ich habe keine/n Responsable“.',w);return;}
@@ -950,6 +976,91 @@ function zeigeErstellen(erstes,fehlerText,werte){
     });
   });
   if($('g-zurueck')){$('g-zurueck').onclick=zeigeKonten;}
+}
+
+/* ---------- Startcode: von der Verwaltung vorbereitete Konten ----------
+   Die Verwaltung legt für jede Person der Teamliste eine Konto-Datei ohne Schlüssel an (Name, Team, Funktion,
+   Responsable) und gibt ihr einen Startcode auf Papier. In der Datei liegt der gemeinsame Schlüssel des
+   Schülerbereichs – verschlossen mit einem Schlüssel aus dem Startcode (PBKDF2, 12 Zeichen = 60 Bit Zufall).
+   Beim ersten Anmelden gibt die Person den Code ein und wählt ihr eigenes Passwort; ihr Browser erzeugt das
+   Schlüsselpaar, trägt sie in den Schlüsselring ein (Freischaltung) und entfernt den verschlossenen Schlüssel
+   aus der Datei. Die Verwaltung kennt nie das Passwort; die Codes speichert der Hub nirgends. */
+var START_ITER=200000;
+function startUmschlag(code,bytes){
+  var salz=rnd(16);
+  return ableiten(codeNorm(code),salz,START_ITER).then(function(k){return versiegeln(k,bytes);})
+    .then(function(b){return {kdf:'PBKDF2-SHA256',iter:START_ITER,salz:b64(salz),iv:b.iv,ct:b.ct};});
+}
+function kontoDateiLesen(id){
+  return unterordner(['konten']).then(function(dir){return dateiLesen(dir,id+'.json');}).then(function(t){try{return JSON.parse(t||'null');}catch(e){return null;}});
+}
+/* Vorbereitete Konto-Datei schreiben – nie über ein eingerichtetes Konto */
+function kontoVorbereiten(pl,ueberschreiben){
+  if(!istVorbereitet(pl)){return Promise.reject(fehler('Ungültige Vorbereitung'));}
+  return ordnerDa().then(function(){return kontoDateiLesen(pl.id);}).then(function(alt){
+    if(alt&&!(ueberschreiben&&istVorbereitet(alt))){throw fehler('Für '+pl.name+' gibt es schon eine Konto-Datei.');}
+    return unterordner(['konten']).then(function(dir){return dateiSchreiben(dir,pl.id+'.json',JSON.stringify(pl,null,1));});
+  }).then(function(){vorbereitete=vorbereitete.filter(function(x){return x.id!==pl.id;}).concat([pl]).sort(nachName);return pl;});
+}
+function vorbereitungLoeschen(id){
+  return ordnerDa().then(function(){return kontoDateiLesen(id);}).then(function(alt){
+    if(alt&&!istVorbereitet(alt)){throw fehler('Dieses Konto ist schon eingerichtet.');}
+    if(!alt){return;}
+    return unterordner(['konten']).then(function(dir){return nochmal(function(){return dir.removeEntry(id+'.json');});});
+  }).then(function(){vorbereitete=vorbereitete.filter(function(x){return x.id!==id;});});
+}
+function zeigeStartcode(v,fehlerText,hinweis){
+  tor(true);
+  var r=v.responsable&&(kontoVon(v.responsable)||vorbereitetVon(v.responsable));
+  var info=[team(v.team).name,v.funktion,r?'Responsable: '+r.name:''].filter(Boolean).join(' · ');
+  karte(kontoKopf(v)+'<h2>Erste Anmeldung</h2><p class="sub">Die Verwaltung hat dein Konto vorbereitet. Gib den Startcode von deinem Zettel ein und wähle ein eigenes Passwort – nur du kennst es.</p>'+
+    (hinweis?meldung(hinweis,'info'):'')+(fehlerText?meldung(fehlerText):'')+
+    '<form id="g-form" novalidate>'+
+    '<div class="feld"><label for="g-start">Startcode</label><input id="g-start" autocomplete="off" spellcheck="false" autocapitalize="characters" autofocus placeholder="XXXX-XXXX-XXXX" aria-describedby="g-start-hilfe"><span class="hilfe" id="g-start-hilfe">Steht auf deinem Zettel. Bindestriche und Groß-/Kleinschreibung sind egal.</span></div>'+
+    '<div class="feld"><label for="g-pw1">Dein Passwort</label><input id="g-pw1" type="password" autocomplete="new-password" aria-describedby="g-pw-hilfe"><span class="hilfe" id="g-pw-hilfe">Mindestens 10 Zeichen. Ein kurzer Satz ist leicht zu merken und sicher.</span></div>'+
+    '<div class="feld"><label for="g-pw2">Passwort wiederholen</label><input id="g-pw2" type="password" autocomplete="new-password"></div>'+
+    (info?'<p class="hilfe">Aus der Teamliste: '+esc(info)+'. Das kannst du später unter „Profil ändern“ anpassen.</p>':'')+
+    '<button class="btn primary voll" type="submit" id="g-los">Konto einrichten</button></form>'+
+    '<div class="gate-links"><button type="button" id="g-zurueck">← Anderes Konto</button><span></span></div>');
+  formular('g-form',function(){
+    var code=$('g-start').value, pw1=$('g-pw1').value, pw2=$('g-pw2').value, b=$('g-los'), warten=gebremst('start:'+v.id);
+    if(warten){zeigeStartcode(v,'Zu viele Versuche. Bitte warte noch '+warten+' Sekunden.');return;}
+    if(codeNorm(code).length!==12){zeigeStartcode(v,'Der Startcode hat 12 Zeichen, zum Beispiel 7KQ4-M2XP-9HT3.');return;}
+    var pr=pwProblem(pw1,v.name);if(pr){zeigeStartcode(v,pr);return;}
+    if(pw1!==pw2){zeigeStartcode(v,'Die beiden Passwörter sind nicht gleich.');return;}
+    beschaeftigt(b,true,'Prüfe den Startcode …');
+    ordnerBereit().then(function(){return startEinloesen(v,code,pw1,knopfText(b));}).then(zeigeCode).catch(function(e){
+      if(e&&e.falsch){fehlversuch('start:'+v.id);zeigeStartcode(v,'Der Startcode stimmt nicht. Bitte genau abschreiben.');return;}
+      if(e&&e.eingerichtet){var k=kontoVon(v.id);if(k){zeigeAnmelden(k,'Dein Konto ist schon eingerichtet. Bitte melde dich mit deinem Passwort an.');return;}}
+      zeigeStartcode(v,text(e));
+    });
+  });
+  $('g-zurueck').onclick=zeigeKonten;
+}
+/* Startcode einlösen: Konto mit eigenem Passwort erstellen (gleiche ID), selbst freischalten, verschlossenen Schlüssel entfernen */
+function startEinloesen(v,code,pw,fortschritt){
+  return kontoDateiLesen(v.id).then(function(p){
+    if(p&&p.schluessel&&p.profil){
+      return ladeKonten().then(function(){var e=fehler('Dieses Konto ist schon eingerichtet.');e.eingerichtet=true;throw e;});
+    }
+    if(!istVorbereitet(p)){throw fehler('Die Vorbereitung für dieses Konto gibt es nicht mehr. Bitte bei der Verwaltung melden.');}
+    if(p.start.bis&&p.start.bis<datumIso(new Date())){throw fehler('Dein Startcode ist am '+p.start.bis.split('-').reverse().join('.')+' abgelaufen. Bitte hol dir bei der Verwaltung einen neuen.');}
+    return aufmachen(p.start,codeNorm(code)).then(function(roh){
+      var inhalt=JSON.parse(td.decode(roh));roh.fill(0);
+      if(fortschritt){fortschritt('Konto wird verschlüsselt …');}
+      return kontoErstellen(p.name,p.team,pw,{funktion:p.funktion||'',responsable:p.responsable||'',id:p.id,start:p.start}).then(function(res){
+        var orgRoh=inhalt.org?unb64(inhalt.org):null, T=window.CDSE_TEAM;
+        if(fortschritt){fortschritt('Freischalten …');}
+        var frei=(orgRoh&&T&&T.startFreischalten)
+          ?T.startFreischalten({id:res.konto.id,name:res.konto.name,pub:res.s.pub,orgRoh:orgRoh,gen:inhalt.gen|0,rolle:inhalt.rolle,von:p.start.von})
+            .then(function(){res.hinweis='Du bist freigeschaltet und kannst gleich mit den Schülerdaten arbeiten.';res.hinweisArt='info';},
+                  function(e){res.hinweis='Die Freischaltung für die Schülerdaten übernimmt die Verwaltung ('+((e&&e.message)||e)+').';res.hinweisArt='info';})
+          :Promise.resolve();
+        /* der verschlossene Schlüssel wird nur einmal gebraucht */
+        return frei.then(function(){if(orgRoh){orgRoh.fill(0);}delete res.konto.start;return schreibeKonto(res.konto);}).then(function(){return res;});
+      });
+    });
+  });
 }
 
 function druckeCode(k,code){
@@ -967,6 +1078,7 @@ function zeigeCode(res){
     '<p class="sub">Falls du dein Passwort vergisst, ist dieser Code der <b>einzige</b> Weg zurück zu deinen Daten. Drucke ihn aus oder schreib ihn ab und bewahre ihn sicher auf.</p>'+
     '<div class="codebox" id="g-code">'+esc(res.code)+'</div>'+
     '<div class="knopfreihe"><button class="btn" type="button" id="g-kopie">'+ic('copy')+'Kopieren</button><button class="btn" type="button" id="g-druck">'+ic('print')+'Drucken</button></div>'+
+    (res.hinweis?meldung(esc(res.hinweis),res.hinweisArt||'info'):'')+
     '<label class="check"><input type="checkbox" id="g-ok"> Ich habe den Code sicher aufbewahrt.</label>'+
     '<button class="btn primary voll" type="button" id="g-weiter" disabled>Weiter zum Hub</button>',true);
   $('g-kopie').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(res.code):Promise.reject()).then(function(){b.innerHTML=ic('check')+'Kopiert';},function(){b.innerHTML='Bitte abschreiben';});};
@@ -1346,6 +1458,13 @@ return {
   /* für den gemeinsamen Bereich */
   ich:function(){return sitzung?oeffentlich(sitzung):null;},
   konten:function(){return konten.map(oeffentlichesKonto);},
+  /* Startcode: vorbereitete Konten (ohne Schlüssel) – nur für die Verwaltung und die Anmeldung */
+  vorbereitete:function(){return vorbereitete.map(function(v){var t=team(v.team);return {id:v.id,name:v.name,team:v.team,teamName:t.name,teamFarbe:t.farbe,funktion:v.funktion||'',responsable:v.responsable||'',am:v.start.am||'',von:v.start.von||'',bis:v.start.bis||'',gen:(v.start.gen|0)||1};});},
+  neueKontoId:neueKontoId,
+  startUmschlag:startUmschlag,
+  kontoVorbereiten:kontoVorbereiten,
+  vorbereitungLoeschen:vorbereitungLoeschen,
+  codeNorm:codeNorm,
   /* Teamliste (vorbereitete Konten) */
   teamliste:function(){return teamliste.map(function(p){return Object.assign({},p);});},
   teamlisteNeu:function(){return ordnerDa().then(teamlisteLesen);},

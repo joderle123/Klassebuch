@@ -33,6 +33,18 @@ Alle arbeiten auf demselben Ordner (O:\). Damit keine Änderung verloren geht:
 - **Schlüssel erneuern** (Verwaltung, nach „Zugang entziehen“): neue Generation im Schlüsselring (`gen`), ältere Schlüssel mit dem neuen verschlossen in `alt`, alle Dateien werden neu verschlüsselt; die anderen PCs übernehmen den neuen Schlüssel beim nächsten Speichern. Im Dateikopf steht die Generation, mit der verschlüsselt wurde.
 - **`HUB_STAND`** (`team.js`) erhöhen, wenn sich das Schreiben gemeinsamer Dateien ändert: Ältere, noch offene Hub-Fenster speichern dann nicht mehr, sondern bitten um Neuladen (F5).
 
+## Konten mit Startcode (Verwaltung)
+
+Verwaltung → Teamliste → **„Konten vorbereiten“**: Für jede ausgewählte Person ohne Konto legt der Hub
+`konten/<id>.json` ohne Schlüssel an (Name, Team, Funktion, Responsable aus der Teamliste) und darin den gemeinsamen
+Schlüssel des Schülerbereichs, verschlossen mit einem Schlüssel aus dem **Startcode** (12 Zeichen, PBKDF2 200 000
+Runden, `start` im Konto). Die Codes stehen nur auf den gedruckten Zetteln (drei pro A4-Seite) – gespeichert werden
+sie nirgends; „Neuer Code“ macht den alten ungültig, ein Code gilt 60 Tage. Beim ersten Anmelden klickt die Person auf
+ihren Namen, gibt den Code ein und wählt ihr eigenes Passwort: Der Browser erzeugt das Schlüsselpaar (gleiche Konto-ID),
+trägt die Person selbst in den Schlüsselring ein (`per:'startcode'`, Rolle aus der Teamliste, „Verwaltung“ nie
+automatisch) und entfernt den verschlossenen Schlüssel aus der Datei. Nach einem Schlüsselwechsel passt ein offener
+Startcode nicht mehr zum Ring: Das Konto entsteht trotzdem, freigeschaltet wird dann wie gewohnt von der Verwaltung.
+
 ## Tests
 
 Tests (Playwright, Chromium) liegen in `tests/`; sie erwarten einen Webserver auf Port 8099, der den Hauptordner ausliefert

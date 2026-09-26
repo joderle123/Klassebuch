@@ -437,6 +437,104 @@ function neuSchreiben(schreib,aufgabe){
 }
 function anhangSperre(name){return 'anhang-'+String(name).replace(/\.cdsa$/,'');}
 function schluesselStand(){return {gen:aktGen(),erneuert:(ring&&ring.erneuert)||null,alteGenerationen:Object.keys((ring&&ring.alt)||{}).length};}
+
+/* =====================================================================
+   Startcode: Die Verwaltung bereitet Konten aus der Teamliste vor. Je Person eine Konto-Datei ohne
+   Schlüssel (Name, Team, Funktion, Responsable) und darin der gemeinsame Schlüssel, verschlossen mit
+   einem Schlüssel aus dem Startcode. Der Code steht nur auf dem Zettel – gespeichert wird er nirgends.
+   Beim ersten Anmelden trägt sich die Person selbst in den Schlüsselring ein (startFreischalten).
+   Nach einem Schlüsselwechsel passt der verschlossene Schlüssel nicht mehr: dann schaltet die
+   Verwaltung wie gewohnt frei (oder gibt einen neuen Startcode aus).
+   ===================================================================== */
+var START_TAGE=60;
+function startcodeNeu(){var b=rnd(12),s='';for(var i=0;i<12;i++){s+=ALPHA.charAt(b[i]&31).toUpperCase();if(i%4===3&&i<11){s+='-';}}return s;}
+function tagPlus(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+'-'+(d.getMonth()<9?'0':'')+(d.getMonth()+1)+'-'+(d.getDate()<10?'0':'')+d.getDate();}
+/* der gemeinsame Schlüssel als Bytes – nur kurz im Speicher, zum Verschließen mit den Startcodes */
+function orgRohHolen(grund){
+  var me=ich();
+  return K.privat(grund).then(function(priv){
+    return ringAktuell().then(function(r){
+      if(!r||!r.fuer||!r.fuer[me.id]){throw fehler('Dein eigener Zugang fehlt im Schlüsselring.');}
+      return crypto.subtle.decrypt(RSA,priv,unb64(r.fuer[me.id].k)).then(function(ab){return {roh:new Uint8Array(ab),gen:aktGen()};});
+    });
+  });
+}
+function startRolle(r){return r==='responsable'?'responsable':'mitarbeiter';}   /* „Verwaltung“ nie automatisch */
+function startInhalt(o,rolle){return te.encode(JSON.stringify({org:b64(o.roh),gen:o.gen,rolle:startRolle(rolle)}));}
+function platzhalter(p,id,resp,box,o){
+  var t=jetzt();
+  return {format:'cdse-konto',version:1,id:id,name:p.name,team:p.team||'',funktion:p.funktion||'',responsable:resp||'',erstellt:t,geaendert:t,
+    start:Object.assign(box,{v:1,am:t,von:ich().id,bis:tagPlus(START_TAGE),gen:o.gen})};
+}
+/* personen: Einträge der Teamliste. Ergebnis: [{id,name,team,funktion,code,bis}] – die Codes gibt es nur jetzt (zum Drucken). */
+function kontenVorbereiten(personen,fortschritt){
+  if(!istAdmin()){return Promise.reject(fehler('Konten vorbereiten darf die Verwaltung.'));}
+  var erg=[], fehlerListe=[];
+  return orgRohHolen('Zum Vorbereiten der Konten').then(function(o){
+    return K.speicher.sperre('konten-vorbereiten',function(){
+      return K.kontenNeu().then(function(){
+        var schon={}, neu={};
+        K.konten().concat(K.vorbereitete()).forEach(function(k){schon[K.namensSchluessel(k.name)]=k.id;});
+        var liste=(personen||[]).filter(function(p){return p&&p.name&&!schon[K.namensSchluessel(p.name)];});
+        liste.forEach(function(p){neu[K.namensSchluessel(p.name)]=K.neueKontoId(p.name);});
+        function idVon(name){var s=K.namensSchluessel(name);return schon[s]||neu[s]||'';}
+        var fertig=0;if(fortschritt){fortschritt(0,liste.length);}
+        return parallel(liste,2,function(p){
+          var code=startcodeNeu();
+          return K.startUmschlag(code,startInhalt(o,p.rolle)).then(function(box){
+            return K.kontoVorbereiten(platzhalter(p,idVon(p.name),p.responsable?idVon(p.responsable):'',box,o));
+          }).then(function(pl){erg.push({id:pl.id,name:pl.name,team:pl.team,funktion:pl.funktion,code:code,bis:pl.start.bis});},
+                  function(e){fehlerListe.push(p.name+': '+((e&&e.message)||e));})
+            .then(function(){fertig++;if(fortschritt){fortschritt(fertig,liste.length);}});
+        });
+      });
+    }).then(function(){o.roh.fill(0);},function(e){o.roh.fill(0);throw e;});
+  }).then(function(){
+    if(!erg.length){return null;}
+    return mitgliederAendern(function(){},'Konten vorbereitet (Startcode): '+erg.length+(fehlerListe.length?', '+fehlerListe.length+' nicht':''));
+  }).then(function(){erg.sort(function(a,b){return a.name.localeCompare(b.name,'de');});erg.fehler=fehlerListe;return erg;});
+}
+/* Neuer Startcode für ein vorbereitetes Konto (Zettel verloren, abgelaufen, nach Schlüsselwechsel) – der alte gilt nicht mehr */
+function startcodeErneuern(id){
+  if(!istAdmin()){return Promise.reject(fehler('Einen neuen Startcode gibt die Verwaltung aus.'));}
+  var v=K.vorbereitete().filter(function(x){return x.id===id;})[0];
+  if(!v){return Promise.reject(fehler('Für diese Person ist kein Konto vorbereitet.'));}
+  var tl=K.teamlisteEintrag(v.name)||{}, code=startcodeNeu();
+  return orgRohHolen('Für einen neuen Startcode').then(function(o){
+    return K.startUmschlag(code,startInhalt(o,tl.rolle)).then(function(box){
+      o.roh.fill(0);
+      return K.kontoVorbereiten(platzhalter({name:v.name,team:v.team,funktion:v.funktion},v.id,v.responsable,box,o),true);
+    },function(e){o.roh.fill(0);throw e;});
+  }).then(function(pl){
+    return mitgliederAendern(function(){},'Neuer Startcode: '+v.name).then(function(){return {id:pl.id,name:pl.name,team:pl.team,funktion:pl.funktion,code:code,bis:pl.start.bis};});
+  });
+}
+function vorbereitungEntfernen(id){
+  if(!istAdmin()){return Promise.reject(fehler('Das darf die Verwaltung.'));}
+  var v=K.vorbereitete().filter(function(x){return x.id===id;})[0];
+  return K.vorbereitungLoeschen(id).then(function(){return mitgliederAendern(function(){},'Vorbereitetes Konto gelöscht: '+(v?v.name:id));});
+}
+/* Erstes Anmelden mit Startcode (noch vor der Sitzung): sich selbst in den Schlüsselring eintragen, Rolle aus der Vorbereitung.
+   p = {id, name, pub (öffentlicher Schlüssel), orgRoh (gemeinsamer Schlüssel), gen, rolle, von (Verwaltung)} */
+function startFreischalten(p){
+  var gen=(p.gen|0)||1;
+  return ringAendern(function(r){
+    if(((r.gen|0)||1)!==gen){throw fehler('der Schlüssel wurde inzwischen erneuert');}
+    if(r.fuer&&r.fuer[p.id]){return false;}
+    return crypto.subtle.encrypt(RSA,p.pub,p.orgRoh).then(function(w){r.fuer=r.fuer||{};r.fuer[p.id]={k:b64(w),von:p.von||p.id,am:jetzt(),per:'startcode'};return true;});
+  }).then(function(){
+    return aesKey(p.orgRoh,false).then(function(k){orgKey=k;orgGen=gen;keys={};keys[gen]=k;});
+  }).then(function(){
+    var rolle=startRolle(p.rolle);
+    return sicherAendern({ziel:'mitglieder',lesen:mitgliederLesen,schreiben:mitgliederSchreiben,anwenden:function(m){
+      m.mitglieder=m.mitglieder||{};
+      if(m.mitglieder[p.id]){return false;}
+      m.mitglieder[p.id]={rolle:rolle,seit:jetzt(),von:p.von||p.id,per:'startcode'};
+      m.verlauf=(m.verlauf||[]).concat([{z:jetzt(),v:p.id,t:'Freigeschaltet mit Startcode: '+p.name+(rolle==='responsable'?' (Responsable laut Teamliste)':'')}]).slice(-300);
+      return true;
+    }}).then(function(x){mitgl=x.doc;});
+  });
+}
 function mitglieder(){
   var m=(mitgl&&mitgl.mitglieder)||{};
   return K.konten().map(function(k){var e=m[k.id];k.rolle=rolle(k.id);k.freigeschaltet=!!(ring&&ring.fuer&&ring.fuer[k.id]);k.seit=e&&e.seit;return k;});
@@ -1006,6 +1104,8 @@ return {
   pruefen:pruefen,
   /* Schlüssel erneuern (Verwaltung), Umschlüsseln fortsetzen, Stand */
   schluesselErneuern:schluesselErneuern, umschluesseln:function(f){return ringAktuell().then(function(){return umschluesseln(f);});}, schluesselStand:schluesselStand,
+  /* Startcode: Konten vorbereiten (Verwaltung), neuer Code, Vorbereitung löschen, erstes Anmelden */
+  kontenVorbereiten:kontenVorbereiten, startcodeErneuern:startcodeErneuern, vorbereitungEntfernen:vorbereitungEntfernen, startFreischalten:startFreischalten,
   planSpeichern:planSpeichern, meinPlan:meinPlan, lesbarePlaene:lesbarePlaene, empfaengerFuer:function(){return empfaengerFuer(ich());},
   name:name, neueId:neueId
 };

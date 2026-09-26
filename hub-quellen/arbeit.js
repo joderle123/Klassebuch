@@ -1523,25 +1523,36 @@ var tlFilter='';
 function T_NAME(id){return team(id).name;}
 function tlVon(name){return K.teamlisteEintrag?K.teamlisteEintrag(name):null;}
 function tlKonto(p,m){var s=K.namensSchluessel(p.name);return m.filter(function(k){return K.namensSchluessel(k.name)===s;})[0]||null;}
-var TL_STAND={aktiv:'Konto aktiv',wartet:'wartet auf Freischaltung',fehlt:'noch kein Konto'};
+var TL_STAND={aktiv:'Konto aktiv',wartet:'wartet auf Freischaltung',vorbereitet:'Startcode ausgegeben',fehlt:'noch kein Konto'};
+/* Vorbereitetes Konto (Startcode) zu einem Namen der Teamliste */
+function tlVorbereitet(p,vb){var s=K.namensSchluessel(p.name);return vb.filter(function(v){return K.namensSchluessel(v.name)===s;})[0]||null;}
+function tlStartText(v){
+  if(!v){return '';}
+  if(v.gen!==((T.schluesselStand?T.schluesselStand().gen:v.gen)||1)){return 'Startcode ungültig (Schlüssel erneuert)';}
+  if(v.bis&&v.bis<heuteIso()){return 'Startcode abgelaufen';}
+  return 'Startcode bis '+datum(v.bis);
+}
 function teamlisteKarte(admin,ROLLEN){
   if(!K.teamliste){return '';}
-  var tl=K.teamliste(), m=T.mitglieder();
-  var z=tl.map(function(p,i){var k=tlKonto(p,m);return {p:p,i:i,k:k,st:!k?'fehlt':(k.freigeschaltet?'aktiv':'wartet')};});
-  var n={aktiv:0,wartet:0,fehlt:0};z.forEach(function(x){n[x.st]++;});
+  var tl=K.teamliste(), m=T.mitglieder(), vb=K.vorbereitete?K.vorbereitete():[];
+  var z=tl.map(function(p,i){var k=tlKonto(p,m), v=k?null:tlVorbereitet(p,vb);return {p:p,i:i,k:k,v:v,st:k?(k.freigeschaltet?'aktiv':'wartet'):(v?'vorbereitet':'fehlt')};});
+  var n={aktiv:0,wartet:0,vorbereitet:0,fehlt:0};z.forEach(function(x){n[x.st]++;});
   var ohne=m.filter(function(k){return !tlVon(k.name);});
   var teams=TEAMS.filter(function(t){return tl.some(function(p){return p.team===t.id;});});
   var sicht=z.filter(function(x){return !tlFilter||(tlFilter==='_'?!x.p.team:x.p.team===tlFilter);});
   var reihe=TEAMS.map(function(t){return t.id;});function rang(p){var i=reihe.indexOf(p.team);return i<0?999:i;}
   sicht.sort(function(a,b){return (rang(a.p)-rang(b.p))||a.p.name.localeCompare(b.p.name,'de');});
   var h='<div class="ar-kartenkopf"><h2>Teamliste'+(tl.length?' <span class="ar-zahl">'+tl.length+'</span>':'')+'</h2>'+
-    (admin?'<div class="ar-knopfreihe"><button class="btn" type="button" data-ar="tl-einfuegen">'+svg('hoch')+'Liste einfügen</button><button class="btn" type="button" data-ar="tl-neu">'+svg('plus')+'Person</button>'+(tl.length?'<button class="btn" type="button" data-ar="tl-export">'+svg('runter')+'Als Tabelle</button>':'')+'</div>':'')+'</div>'+
-    '<p class="ar-klein">Alle Mitarbeitenden mit Team, Funktion und Rolle. Wer ein Konto erstellt, wählt seinen Namen aus dieser Liste – Team und Funktion sind dann schon eingetragen, das Passwort wählt jede Person selbst. '+
-      'Beim Freischalten durch die Verwaltung übernimmt der Hub die Rolle „Responsable“ aus der Liste; die Rolle „Verwaltung“ vergibt er nie von selbst.</p>';
+    (admin?'<div class="ar-knopfreihe">'+(n.fehlt&&T.kontenVorbereiten?'<button class="btn primary" type="button" data-ar="tl-vorbereiten">'+svg('key')+'Konten vorbereiten ('+n.fehlt+')</button>':'')+
+      '<button class="btn" type="button" data-ar="tl-einfuegen">'+svg('hoch')+'Liste einfügen</button><button class="btn" type="button" data-ar="tl-neu">'+svg('plus')+'Person</button>'+(tl.length?'<button class="btn" type="button" data-ar="tl-export">'+svg('runter')+'Als Tabelle</button>':'')+'</div>':'')+'</div>'+
+    '<p class="ar-klein">Alle Mitarbeitenden mit Team, Funktion und Rolle. '+(T.kontenVorbereiten?'Mit <b>„Konten vorbereiten“</b> legt die Verwaltung die Konten aller Personen ohne Konto an und druckt für jede Person einen Zettel mit ihrem <b>Startcode</b>. Beim ersten Anmelden klickt die Person auf ihren Namen, gibt den Code ein und wählt ihr eigenes Passwort – danach ist sie sofort freigeschaltet. ':'')+
+      'Wer selbst ein Konto erstellt, wählt seinen Namen aus dieser Liste – Team und Funktion sind dann schon eingetragen. '+
+      'Die Rolle „Responsable“ übernimmt der Hub aus der Liste; die Rolle „Verwaltung“ vergibt er nie von selbst.</p>';
   if(!tl.length){
     return karte(h+'<p class="ar-leise">Noch leer. '+(admin?'Mit „Liste einfügen“ lässt sich die Teamliste aus Excel oder einer Textliste übernehmen – eine Person pro Zeile.':'Die Verwaltung pflegt die Liste.')+'</p>','ar-tl');
   }
-  h+='<div class="ar-tl-stand"><span><b>'+n.aktiv+'</b> '+(n.aktiv===1?'Konto':'Konten')+' aktiv</span><span><b>'+n.wartet+'</b> '+(n.wartet===1?'wartet':'warten')+' auf Freischaltung</span><span><b>'+n.fehlt+'</b> noch ohne Konto</span></div>'+
+  h+='<div class="ar-tl-stand"><span><b>'+n.aktiv+'</b> '+(n.aktiv===1?'Konto':'Konten')+' aktiv</span><span><b>'+n.wartet+'</b> '+(n.wartet===1?'wartet':'warten')+' auf Freischaltung</span>'+
+      (n.vorbereitet?'<span><b>'+n.vorbereitet+'</b> mit Startcode vorbereitet</span>':'')+'<span><b>'+n.fehlt+'</b> noch ohne Konto</span></div>'+
     '<div class="catbar" role="group" aria-label="Team"><button class="catchip'+(!tlFilter?' on':'')+'" type="button" data-ar="tl-filter" data-team="" aria-pressed="'+!tlFilter+'">Alle</button>'+
     teams.map(function(t){var c=tl.filter(function(p){return p.team===t.id;}).length;return '<button class="catchip'+(tlFilter===t.id?' on':'')+'" type="button" data-ar="tl-filter" data-team="'+esc(t.id)+'" aria-pressed="'+(tlFilter===t.id)+'">'+esc(t.name)+'<span class="n">'+c+'</span></button>';}).join('')+
     (tl.some(function(p){return !p.team;})?'<button class="catchip'+(tlFilter==='_'?' on':'')+'" type="button" data-ar="tl-filter" data-team="_" aria-pressed="'+(tlFilter==='_')+'">ohne Team</button>':'')+'</div>'+
@@ -1549,8 +1560,9 @@ function teamlisteKarte(admin,ROLLEN){
     sicht.map(function(x){
       return '<div class="ar-zeile"><span class="ar-name"><span class="ava" style="--tc:'+esc(team(x.p.team).farbe||'#8C96A8')+'">'+esc(ini(x.p.name))+'</span><b>'+esc(x.p.name)+'</b></span>'+
         '<span>'+esc([x.p.team?T_NAME(x.p.team):'ohne Team',x.p.funktion].filter(Boolean).join(' · '))+'</span><span>'+esc(ROLLEN[x.p.rolle]||'Mitarbeiter/in')+'</span>'+
-        '<span><span class="ar-tl-st '+x.st+'">'+TL_STAND[x.st]+'</span></span>'+
-        '<span>'+(admin?'<button class="ar-link" type="button" data-ar="tl-bearbeiten" data-i="'+x.i+'" aria-label="'+esc(x.p.name)+' bearbeiten">'+svg('edit')+'</button>':'')+'</span></div>';
+        '<span><span class="ar-tl-st '+x.st+'">'+(x.v?esc(tlStartText(x.v)):TL_STAND[x.st])+'</span></span>'+
+        '<span>'+(admin&&x.v&&T.startcodeErneuern?'<button class="ar-link" type="button" data-ar="tl-startneu" data-id="'+esc(x.v.id)+'">Neuer Code</button><button class="ar-link gefahr" type="button" data-ar="tl-startweg" data-id="'+esc(x.v.id)+'" aria-label="Vorbereitetes Konto von '+esc(x.p.name)+' löschen">Löschen</button>':'')+
+          (admin?'<button class="ar-link" type="button" data-ar="tl-bearbeiten" data-i="'+x.i+'" aria-label="'+esc(x.p.name)+' bearbeiten">'+svg('edit')+'</button>':'')+'</span></div>';
     }).join('')+'</div>'+
     (ohne.length?'<p class="ar-klein">Konten, die nicht in der Teamliste stehen: '+ohne.map(function(k){return esc(k.name);}).join(', ')+'.</p>':'');
   return karte(h,'ar-tl');
@@ -1609,10 +1621,81 @@ function tlEinfuegenDialog(text){
 }
 function tlExport(){
   var ROL={admin:'Verwaltung',responsable:'Responsable',mitarbeiter:'Mitarbeiter/in'}, m=T.mitglieder();
-  var zeilen=[['Name','Team','Funktion','Rolle','Responsable','Konto']].concat(K.teamliste().map(function(p){var k=tlKonto(p,m);return [p.name,p.team?T_NAME(p.team):'',p.funktion,ROL[p.rolle],p.responsable,!k?TL_STAND.fehlt:(k.freigeschaltet?TL_STAND.aktiv:TL_STAND.wartet)];}));
+  var vb=K.vorbereitete?K.vorbereitete():[];
+  var zeilen=[['Name','Team','Funktion','Rolle','Responsable','Konto']].concat(K.teamliste().map(function(p){var k=tlKonto(p,m), v=k?null:tlVorbereitet(p,vb);return [p.name,p.team?T_NAME(p.team):'',p.funktion,ROL[p.rolle],p.responsable,k?(k.freigeschaltet?TL_STAND.aktiv:TL_STAND.wartet):(v?tlStartText(v):TL_STAND.fehlt)];}));
   var csv='\ufeff'+zeilen.map(function(z){return z.map(function(c){c=String(c==null?'':c);return /[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c;}).join(';');}).join('\r\n');
   var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='CDSE-Teamliste.csv';document.body.appendChild(a);a.click();
   setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},4000);toast('Teamliste als Tabelle gespeichert (CSV)');
+}
+/* ---------- Startcode: Konten vorbereiten und Zettel drucken (Verwaltung) ---------- */
+function tlVorbereitenDialog(){
+  var m=T.mitglieder(), vb=K.vorbereitete(), reihe=TEAMS.map(function(t){return t.id;});
+  var offen=K.teamliste().filter(function(p){return !tlKonto(p,m)&&!tlVorbereitet(p,vb);});
+  if(!offen.length){toast('Für alle in der Teamliste gibt es schon ein Konto oder einen Startcode.');return;}
+  function rang(p){var i=reihe.indexOf(p.team);return i<0?999:i;}
+  offen.sort(function(a,b){return (rang(a)-rang(b))||a.name.localeCompare(b.name,'de');});
+  var inh='<p>Für <b>'+offen.length+'</b> '+(offen.length===1?'Person':'Personen')+' der Teamliste gibt es noch kein Konto. Der Hub legt die Konten mit Name, Team, Funktion und Responsable aus der Liste an und erzeugt für jede Person einen persönlichen <b>Startcode</b>.</p>'+
+    '<p class="ar-klein">Danach druckst du die Zettel und gibst sie persönlich weiter. Mit Namen und Startcode meldet sich die Person an und wählt ihr eigenes Passwort – dann ist sie sofort freigeschaltet. Die Codes speichert der Hub nicht; wer seinen Zettel verliert, bekommt einfach einen neuen Code. Ein Startcode gilt 60 Tage und nur einmal.</p>'+
+    '<div class="ar-knopfreihe"><button type="button" class="ar-link" data-tl-alle="1">Alle auswählen</button><button type="button" class="ar-link" data-tl-alle="0">Keine auswählen</button></div>'+
+    '<div class="ar-checkliste ar-tl-auswahl">'+offen.map(function(p,i){return '<label class="ar-haken"><input type="checkbox" name="p_'+i+'" checked> '+esc(p.name)+' <small>'+esc([p.team?T_NAME(p.team):'ohne Team',p.funktion].filter(Boolean).join(' · '))+'</small></label>';}).join('')+'</div>'+
+    '<p class="ar-klein" id="ar-tlv-stand" aria-live="polite"></p>';
+  dialog('Konten vorbereiten',inh,[{text:'Abbrechen',wert:''},{text:'Vorbereiten',wert:'ok',primaer:true}],{breit:true,
+    nachAufbau:function(dlg){Array.prototype.forEach.call(dlg.querySelectorAll('[data-tl-alle]'),function(b){b.onclick=function(){var an=b.getAttribute('data-tl-alle')==='1';Array.prototype.forEach.call(dlg.querySelectorAll('.ar-tl-auswahl input'),function(c){c.checked=an;});};});},
+    pruefen:function(w){if(w.aktion==='ok'&&!offen.some(function(p,i){return w.werte['p_'+i];})){return 'Bitte mindestens eine Person auswählen.';}return '';},
+    ausfuehren:function(w){
+      var gew=offen.filter(function(p,i){return w.werte['p_'+i];}), st=w.dialog.querySelector('#ar-tlv-stand');
+      return T.kontenVorbereiten(gew,function(n,g){if(st){st.textContent='Konten vorbereiten: '+n+' von '+g+' …';}});
+    }
+  }).then(function(r){
+    if(r.aktion!=='ok'||!r.ergebnis){return;}
+    verwaltungZeichnen();
+    startZettelDialog(r.ergebnis);
+  });
+}
+/* Die Codes gibt es nur in diesem Dialog: drucken (oder als PDF speichern), dann schließen */
+function startZettelDialog(liste){
+  var gedruckt=false, fehlerTeil=(liste.fehler&&liste.fehler.length)?'<div class="callout"><div><b>Nicht vorbereitet</b><ul>'+liste.fehler.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul></div></div>':'';
+  var inh='<p><b>'+liste.length+'</b> '+(liste.length===1?'Konto':'Konten')+' mit Startcode vorbereitet. Jetzt die Zettel drucken – drei pro Seite, zum Ausschneiden. Im Druckfenster geht auch „Als PDF speichern“.</p>'+
+    '<p class="ar-klein"><b>Wichtig:</b> Die Startcodes gibt es nur jetzt. Wird ein Zettel nicht gedruckt oder geht verloren: Teamliste → „Neuer Code“.</p>'+fehlerTeil+
+    '<p><button type="button" class="btn primary" data-zettel>'+svg('print')+'Zettel drucken</button></p>'+
+    '<div class="ar-tl-vorschau"><table><thead><tr><th>Name</th><th>Team</th><th>Startcode</th><th>gültig bis</th></tr></thead><tbody>'+liste.map(function(x){return '<tr><td>'+esc(x.name)+'</td><td>'+esc(x.team?T_NAME(x.team):'')+'</td><td><code>'+esc(x.code)+'</code></td><td>'+esc(datum(x.bis))+'</td></tr>';}).join('')+'</tbody></table></div>';
+  dialog('Startcodes drucken',inh,[{text:'Fertig',wert:'ok',primaer:true}],{breit:true,
+    nachAufbau:function(dlg){var b=dlg.querySelector('[data-zettel]');if(b){b.onclick=function(){gedruckt=true;zettelDrucken(liste);};}},
+    pruefen:function(){if(!gedruckt){gedruckt=true;return 'Die Zettel sind noch nicht gedruckt. Ohne Druck sind die Codes weg – zum Schließen trotzdem noch einmal auf „Fertig“.';}return '';}
+  });
+}
+function zettelDrucken(liste){
+  var f=document.createElement('iframe');f.setAttribute('aria-hidden','true');f.style.cssText='position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+  document.body.appendChild(f);var doc=f.contentWindow.document;doc.open();doc.write(startZettelHtml(liste));doc.close();
+  setTimeout(function(){try{f.contentWindow.focus();f.contentWindow.print();}catch(e){}setTimeout(function(){f.remove();},60000);},250);
+}
+function startZettelHtml(liste){
+  var pfad=K.pfad?K.pfad():'', ort=/^[A-Za-z]:\\|^\\\\/.test(pfad)?pfad+'\\hub.html':'die Datei hub.html im Hub-Ordner';
+  var css='@page{size:A4;margin:12mm}body{font:10.5pt/1.4 Arial,Helvetica,sans-serif;color:#111;margin:0}'+
+    '.z{border:1.5px dashed #9aa3b5;border-radius:10px;padding:12pt 16pt 26pt;margin:0 0 9mm;page-break-inside:avoid;min-height:78mm;box-sizing:border-box;position:relative}'+
+    '.k{font-size:8.5pt;color:#555;text-transform:uppercase;letter-spacing:.06em}.n{font-size:16pt;font-weight:700;margin:3pt 0 0}.t{color:#444;margin:0 0 8pt}'+
+    '.c{font:700 19pt/1 Consolas,"Courier New",monospace;letter-spacing:.08em;border:1.5px solid #23307a;border-radius:8px;display:inline-block;padding:6pt 12pt;color:#23307a;margin-left:6pt}'+
+    'ol{margin:9pt 0 0 15pt;padding:0}li{margin:1.5pt 0}.f{position:absolute;left:16pt;right:16pt;bottom:9pt;font-size:8pt;color:#555}';
+  return '<!doctype html><html lang="de"><head><meta charset="utf-8"><title>Startcodes – CDSE Hub</title><style>'+css+'</style></head><body>'+
+    liste.map(function(x){
+      return '<div class="z"><div class="k">CDSE Hub · dein Zugang · persönlich</div><div class="n">'+esc(x.name)+'</div><div class="t">'+esc([x.team?T_NAME(x.team):'',x.funktion].filter(Boolean).join(' · '))+'</div>'+
+        '<div>Dein Startcode:<span class="c">'+esc(x.code)+'</span></div>'+
+        '<ol><li>Öffne in <b>Microsoft Edge</b>: '+esc(ort)+'</li><li>Beim ersten Mal: den Hub-Ordner auswählen bzw. „Zugriff erlauben“.</li><li>Klicke auf deinen Namen.</li>'+
+        '<li>Gib den Startcode ein und wähle ein <b>eigenes Passwort</b> (mindestens 10 Zeichen, zum Beispiel ein kurzer Satz).</li><li>Drucke deinen <b>Wiederherstellungs-Code</b> aus und bewahre ihn sicher auf.</li></ol>'+
+        '<div class="f">Gültig bis '+esc(datum(x.bis))+' · nur einmal verwendbar · nicht weitergeben – nach dem ersten Anmelden vernichten.</div></div>';
+    }).join('')+'</body></html>';
+}
+function tlStartNeu(id){
+  var v=K.vorbereitete().filter(function(x){return x.id===id;})[0];if(!v){return;}
+  dialog('Neuer Startcode','<p>Für <b>'+esc(v.name)+'</b> wird ein neuer Startcode erzeugt. Der alte Zettel gilt dann nicht mehr.</p>',[{text:'Abbrechen',wert:''},{text:'Neuen Code erzeugen',wert:'ok',primaer:true}],{
+    ausfuehren:function(){return T.startcodeErneuern(id);}
+  }).then(function(r){if(r.aktion==='ok'&&r.ergebnis){verwaltungZeichnen();var l=[r.ergebnis];l.fehler=[];startZettelDialog(l);}});
+}
+function tlStartWeg(id){
+  var v=K.vorbereitete().filter(function(x){return x.id===id;})[0];if(!v){return;}
+  dialog('Vorbereitetes Konto löschen','<p>Das vorbereitete Konto von <b>'+esc(v.name)+'</b> wird gelöscht; der Startcode gilt dann nicht mehr. Die Person bleibt in der Teamliste.</p>',[{text:'Abbrechen',wert:''},{text:'Löschen',wert:'ok',primaer:true,gefahr:true}],{
+    ausfuehren:function(){return T.vorbereitungEntfernen(id);}
+  }).then(function(r){if(r.aktion==='ok'){toast('Vorbereitung gelöscht');verwaltungZeichnen();}});
 }
 /* Schlüssel des Schülerbereichs erneuern (nach dem Entziehen eines Zugangs) */
 function schluesselKarte(){
@@ -1702,6 +1785,9 @@ document.addEventListener('click',function(ev){
     case 'tl-bearbeiten':tlPersonDialog(+t.getAttribute('data-i'));break;
     case 'tl-einfuegen':tlEinfuegenDialog('');break;
     case 'tl-export':tlExport();break;
+    case 'tl-vorbereiten':tlVorbereitenDialog();break;
+    case 'tl-startneu':tlStartNeu(t.getAttribute('data-id'));break;
+    case 'tl-startweg':tlStartWeg(t.getAttribute('data-id'));break;
     case 'tl-filter':tlFilter=t.getAttribute('data-team')||'';verwaltungZeichnen();var fb=document.querySelector('[data-ar="tl-filter"][data-team="'+tlFilter+'"]');if(fb){fb.focus();}break;
     case 'tl-rolle':t.disabled=true;T.rolleSetzen(t.getAttribute('data-id'),t.getAttribute('data-rolle')).then(function(){toast('Rolle laut Teamliste übernommen');verwaltungZeichnen();navNeu();},function(e){t.disabled=false;toast((e&&e.message)||String(e));});break;
     case 'db-angaben':if(window.CDSE_DATENBANK){window.CDSE_DATENBANK.bearbeiten(d).then(function(neu){if(neu){aktDossier=neu;dossierZeichnen(neu);}});}break;
