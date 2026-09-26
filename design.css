@@ -475,3 +475,85 @@ svg.kb-emo{width:1.1em;height:1.1em;vertical-align:-.18em;stroke-width:1.9;}
 #dos-root #org-edit{max-height:42vh;overflow-y:auto;}
 
 #dos-root .reu-search{flex:0 1 300px;}
+
+/* ---------- Verbindung & Backup ---------- */
+.kb-term-now{background:var(--kb-accent-50);color:var(--kb-accent-dark);font-weight:600;font-size:12px;padding:2px 10px;}
+#kb-data .kb-card-h h3{margin:0;}
+.kb-sync-pill{margin-left:auto;font-size:12px;font-weight:600;border-radius:999px;padding:3px 10px;background:#eef0f3;color:var(--kb-muted);}
+.kb-sync-pill.ok{background:var(--kb-ok-50);color:var(--kb-ok);}
+.kb-sync-pill.warn{background:var(--kb-warn-50);color:var(--kb-warn);}
+.kb-sync-pill.bad{background:var(--kb-danger-50);color:var(--kb-danger-dark);}
+.kb-sync-pill:empty{display:none;}
+#kb-data .kb-sync-status{background:var(--kb-surface-2);border:1px solid #eef0f3;border-radius:10px;padding:10px 14px;}
+.kb-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.kb-rows{border:1px solid #eef0f3;border-radius:12px;overflow:hidden;}
+.kb-rowx{display:flex;align-items:center;gap:14px;padding:12px 14px;}
+.kb-rowx+.kb-rowx{border-top:1px solid #eef0f3;}
+.kb-rowx-ic{width:34px;height:34px;border-radius:10px;background:#f2f3f6;color:var(--kb-text-soft);display:grid;place-items:center;flex:0 0 auto;}
+.kb-rowx-ic svg.kb-emo{width:18px;height:18px;vertical-align:middle;}
+.kb-rowx-b{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;}
+.kb-rowx-b b{font-size:14px;font-weight:600;}
+.kb-rowx-b span{font-size:12.5px;color:var(--kb-muted);}
+.kb-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start;}
+.kb-grid2>.kb-card{margin:0;}
+@media (max-width:1100px){.kb-grid2{grid-template-columns:1fr;}}
+.kb-in{font-size:14px;padding:8px 11px;border-radius:9px;border-color:var(--kb-border-strong);}
+.kb-in:focus{outline:none;border-color:var(--kb-accent);box-shadow:var(--kb-ring);}
+#kb-data label{font-size:14px;}
+.kb-wkbar{gap:8px;}
+
+/* ---------- Klassenbuch auf schmalen Bildschirmen ----------
+   Das Wochenraster scrollt in sich, statt die ganze Seite nach rechts
+   zu schieben (vorher war der rechte Rand abgeschnitten). */
+#anw-root #main-area{min-width:0;}
+#anw-root .wrap{box-sizing:border-box;max-width:100%;}
+@media (max-width:900px){
+  #anw-root .layout{align-items:stretch;}
+  #anw-root .wrap{width:100%;}
+}
+
+/* ---------- Pathologien (SAVOIR): an die App angeglichen ---------- */
+#sav-root .achse-card{border-radius:14px;border-color:var(--kb-border);box-shadow:var(--kb-shadow-sm);transition:border-color .12s,box-shadow .12s;}
+#sav-root .achse-card:hover{border-color:var(--kb-accent-200);box-shadow:0 4px 14px rgba(16,24,40,.08);transform:none;}
+#sav-root .achse-card-id{letter-spacing:.04em;font-weight:600;}
+#sav-root .achse-card-name{font-weight:650;letter-spacing:-.01em;}
+#sav-root .achse-card-status{letter-spacing:0;text-transform:none;font-size:12.5px;font-weight:500;}
+
+/* ================================================================
+   ISA-Journal: Mein Tag und Terminplan (liegen ausserhalb des
+   Dossiers und hatten darum keine Knöpfe und Karten)
+   ================================================================ */
+:is(#isa-home,#isa-agenda) .card{background:#fff;border:1px solid var(--kb-border);border-radius:14px;box-shadow:var(--kb-shadow);}
+:is(#isa-home,#isa-agenda) .btn{display:inline-flex;align-items:center;gap:6px;font:inherit;font-weight:600;font-size:13.5px;line-height:1.2;
+  padding:8px 14px;border-radius:9px;border:1px solid var(--kb-border-strong);background:#fff;color:var(--kb-text);cursor:pointer;
+  box-shadow:var(--kb-shadow-sm);transition:background .12s,border-color .12s;}
+:is(#isa-home,#isa-agenda) .btn:hover{background:#f6f7f9;border-color:#c6cbd4;}
+:is(#isa-home,#isa-agenda) .btn-sm{padding:6px 11px;font-size:13px;}
+:is(#isa-home,#isa-agenda) .btn-primary{background:var(--kb-accent);border-color:var(--kb-accent);color:#fff;}
+:is(#isa-home,#isa-agenda) .btn-primary:hover{background:var(--kb-accent-dark);border-color:var(--kb-accent-dark);}
+:is(#isa-home,#isa-agenda) .muted{color:var(--kb-muted);}
+:is(#isa-home,#isa-agenda) p.muted{margin:0;font-size:14px;line-height:1.55;}
+:is(#isa-home,#isa-agenda) a{color:var(--kb-accent-dark);text-decoration:none;font-weight:500;}
+:is(#isa-home,#isa-agenda) a:hover{text-decoration:underline;}
+.home-hi{font-weight:700;}
+.home-card{padding:18px 20px;}
+.home-h{font-weight:650;font-size:15px;padding-bottom:12px;border-bottom:1px solid #eef0f3;}
+.home-h .muted{font-weight:500!important;}
+.home-h svg.kb-emo{color:var(--kb-muted);}
+.home-badge{font-weight:600;}
+.home-task-add .btn{padding:0 12px;}
+.home-chip{font-weight:500;}
+.ag-year{font-weight:600;background:var(--kb-accent-50);color:var(--kb-accent-dark);}
+.ag-col{border-radius:12px;box-shadow:var(--kb-shadow-sm);}
+.ag-col-h{background:#fbfbfc;font-weight:650;}
+.ag-add-day{font-weight:500;}
+/* Schuljahr-Auswahl in der Seitenleiste wie die Personen-Karte darüber */
+.kb-yearbar{background:#fff;border-color:var(--kb-border);box-shadow:var(--kb-shadow-sm);border-radius:11px;padding:8px 10px 10px;}
+.kb-yl{display:flex;align-items:center;gap:5px;font-weight:600;letter-spacing:.06em;color:var(--kb-muted-2);}
+.kb-ysel{font-size:14px;font-weight:600;border-color:var(--kb-border-strong);}
+.kb-ymgr{border-color:var(--kb-border-strong);}
+
+/* Beschreibungen in Karten überall gleich gross */
+.kb-card>p:not(.kb-hint){font-size:14px;line-height:1.55;}
+/* Felder im Dossier nicht grösser als der Text drumherum */
+#dos-root .main :where(input[type=text],input[type=date],input[type=search],input[type=number],select){font-size:14.5px;}

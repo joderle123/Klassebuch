@@ -296,6 +296,19 @@ window.KB_MATERIALS=(function(){
   }
 
   /* ---------- Material-Tab (ISA-App.html intakt im iframe) ---------- */
+  /* Die Bibliothek bleibt unveraendert; sie bekommt nur die eingebettete
+     Schrift der App und deren Akzentfarbe gereicht, damit sie nicht wie ein
+     Fremdkoerper aussieht. Nichts davon kommt aus dem Netz. */
+  function aussehen(){
+    var fc=document.getElementById('kb-font-css');
+    var cs=getComputedStyle(document.documentElement);
+    function v(n,d){var x=(cs.getPropertyValue(n)||'').trim();return x||d;}
+    var a=v('--kb-accent','#4453d6'),ad=v('--kb-accent-dark','#3441b5'),a1=v('--kb-accent-100','#e2e6fb');
+    return '<style>'+(fc?fc.textContent:'')+
+      ':root{--color-isa-blue-deep:'+a+';--color-isa-blue:'+a1+';--font-sans:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}'+
+      '.hover\\:bg-\\[\\#264a82\\]:hover{background-color:'+ad+'}'+
+      'body{font-family:var(--font-sans);font-feature-settings:"cv11","ss03";-webkit-font-smoothing:antialiased;}</style>';
+  }
   function loadTab(){
     var host=document.getElementById('isa-host');if(!host)return;
     if(host.getAttribute('data-loaded'))return;
@@ -307,6 +320,7 @@ window.KB_MATERIALS=(function(){
       var bin=atob(b64),bytes=new Uint8Array(bin.length);
       for(var i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);
       var html=new TextDecoder('utf-8').decode(bytes);
+      html=html.replace(/<\/head>/i,function(){return aussehen()+'</head>';});
       var ifr=document.createElement('iframe');ifr.className='isa-frame';ifr.title='ISA Material-Bibliothek';
       ifr.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-modals allow-downloads allow-forms allow-popups-to-escape-sandbox');
       host.innerHTML='';host.appendChild(ifr);

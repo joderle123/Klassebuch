@@ -154,7 +154,13 @@ function scopeCss(css, scope) {
 }
 var anwStyleScoped = scopeCss(anwStyle, '#anw-root');
 var dosStyleScoped = scopeCss(dosStyle, '#dos-root');
-var savStyleScoped = scopeCss(savStyle, '#sav-root');
+/* SAVOIR war fuer Fraunces (Serifen), IBM Plex Mono und DM Sans gebaut - Web-
+   Schriften, die offline fehlen. Ohne sie fiel es auf Times und Courier zurueck.
+   Alles laeuft jetzt ueber die eingebettete App-Schrift. */
+var savStyleScoped = scopeCss(savStyle, '#sav-root')
+  .replace(/font-family:\s*'Fraunces',\s*serif/g, 'font-family:var(--kb-font)')
+  .replace(/font-family:\s*'IBM Plex Mono',\s*monospace/g, 'font-family:var(--kb-font)')
+  .replace(/font-family:\s*'DM Sans',\s*system-ui,\s*sans-serif/g, 'font-family:var(--kb-font)');
 
 /* ============================================================
    Patches der anwesenheit-Engine
@@ -1113,15 +1119,20 @@ var SHELL_PANELS_EXTRA = `
     </section>
 
     <section class="kb-panel kb-pad" id="kb-data">
-      <div class="kb-pagehead"><h2>🔌 Verbindung &amp; Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Die gemeinsame Team-Datei, tägliche und wöchentliche Sicherungen, Papierkorb und Rechtschreibprüfung.</p></div>
+      <div class="kb-pagehead"><h2>🔌 Verbindung &amp; Backup</h2><p style="margin:0 0 16px;color:var(--kb-muted);">Die gemeinsame Team-Datei, Sicherungen, Papierkorb und Rechtschreibprüfung — alles bleibt auf euren Geräten.</p></div>
       <div class="kb-card" id="kb-sync-card">
-        <h3 style="margin:0 0 6px;">🗄️ Gemeinsamer Speicher (Team-Datei auf O:\\)</h3>
-        <p style="margin:0 0 10px;color:var(--kb-muted);">Eine gemeinsame Datei auf eurem Netzlaufwerk — alle Geräte schreiben hinein, Änderungen werden <b>pro Eintrag zusammengeführt</b> (nichts wird überschrieben). Nur in Chrome/Edge; jede Person verbindet die Datei einmal. Eine Person legt sie an, alle anderen wählen „Bestehende Datei öffnen".</p>
+        <div class="kb-card-h"><h3>🗄️ Team-Datei</h3><span class="kb-sync-pill" id="kb-sync-pill"></span></div>
+        <p class="kb-hint">Eine gemeinsame Datei auf eurem Netzlaufwerk (O:\\). Alle Geräte schreiben hinein; Änderungen werden <b>pro Eintrag zusammengeführt</b>, nichts wird überschrieben. Nur in Chrome/Edge. Eine Person legt die Datei an, alle anderen wählen „Bestehende Datei öffnen".</p>
         <div id="kb-sync-status" class="kb-sync-status">…</div>
-        <div id="kb-sync-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+        <div id="kb-sync-actions" class="kb-actions"></div>
       </div>
-      <div class="kb-card"><h3 style="margin:0 0 6px;">📋 Anwesenheit & Klassenbuch</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export, gemeinsame Datei.</p><button class="kb-btn kb-btn-primary" id="kb-data-anw">Anwesenheit-Daten öffnen</button></div>
-      <div class="kb-card"><h3 style="margin:0 0 6px;">🗂️ Dossiers & Réunion</h3><p style="margin:0 0 12px;color:var(--kb-muted);">Schüler-Dossiers, Réunionen und Organisation — Backup exportieren/importieren.</p><button class="kb-btn kb-btn-primary" id="kb-data-dos">Dossier-Backup öffnen</button></div>
+      <div class="kb-card">
+        <div class="kb-card-h"><h3>💾 Sicherungen</h3></div>
+        <div class="kb-rows">
+          <div class="kb-rowx"><span class="kb-rowx-ic">📋</span><div class="kb-rowx-b"><b>Klassenbuch</b><span>Absenzen, Stundenplan und Notizen — Backup, Excel/CSV-Export</span></div><button class="kb-btn" id="kb-data-anw">Öffnen</button></div>
+          <div class="kb-rowx"><span class="kb-rowx-ic">🗂️</span><div class="kb-rowx-b"><b>Dossiers &amp; Réunionen</b><span>Einträge, Réunionen und Organisation — exportieren und einlesen</span></div><button class="kb-btn" id="kb-data-dos">Öffnen</button></div>
+        </div>
+      </div>
       <div class="kb-card">
         <div class="kb-card-h"><h3>📅 Wochen-Sicherung</h3><span class="kb-term-now" id="kb-wk-range"></span></div>
         <p class="kb-hint">Alles, was in <b>einer Woche neu dazugekommen</b> ist — Réunionen, Wochenziele, Dossier-Einträge, Noten, Screenings, Absenzen und Klassenbuch-Notizen. Zum Archivieren, damit nie etwas verloren geht.</p>
@@ -1138,6 +1149,7 @@ var SHELL_PANELS_EXTRA = `
           <button class="kb-btn" id="kb-weekly-dl">🌐 HTML — letzte 5 Wochen</button>
         </div>
       </div>
+      <div class="kb-grid2">
       <div class="kb-card">
         <div class="kb-card-h"><h3>✍️ Rechtschreibprüfung (Lëtzebuergesch)</h3><span class="kb-term-now" id="kb-sp-n"></span></div>
         <p class="kb-hint">Unterstreicht in allen Schreibfeldern, was nicht im luxemburgischen Wörterbuch steht, und schlägt beim Anklicken das richtige Wort vor. Das Wörterbuch (spellchecker.lu) steckt in der App — nichts geht ins Internet.</p>
@@ -1154,6 +1166,7 @@ var SHELL_PANELS_EXTRA = `
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
           <button class="kb-btn" id="kb-trash-empty">Papierkorb leeren</button>
         </div>
+      </div>
       </div>
     </section>
   </main>
@@ -2720,6 +2733,9 @@ var SHELL_CONTROLLER = `
   function renderSync(){
     var st=$('kb-sync-status'),ac=$('kb-sync-actions'); if(!st||!ac||!window.KB_SYNC)return;
     var s=window.KB_SYNC.getStatus();
+    /* Plakette oben rechts: der Zustand auf einen Blick */
+    var pill=$('kb-sync-pill');
+    if(pill){var pz=!s.supported?['Browser passt nicht','bad']:(s.connected?['Verbunden','ok']:(s.error==='reconnect'?['Bitte bestätigen','warn']:['Nur dieses Gerät','']));pill.textContent=pz[0];pill.className='kb-sync-pill'+(pz[1]?' '+pz[1]:'');}
     if(!s.supported){st.innerHTML='<b style="color:#b3432d">Dieser Browser unterstützt die gemeinsame Datei nicht (z. B. Firefox).</b><br>Bitte die App in <b>Microsoft Edge</b> öffnen: Rechtsklick auf <i>index.html</i> → „Öffnen mit" → Microsoft Edge. Edge ist auf jedem Windows-PC vorinstalliert; eure Daten bleiben im Haus.';ac.innerHTML='';return;}
     var info;
     if(s.connected){info='<b style="color:#1d8a52">✓ Verbunden</b> · '+esc(s.fileName)+(s.lastSync?' · zuletzt '+new Date(s.lastSync).toLocaleTimeString():'')+(s.lastBy?' · zuletzt von '+esc(s.lastBy):'')+(s.pending?' · synchronisiert…':'')+(s.warten?' · <b style="color:#c9851f">wartet auf '+esc(s.warten)+'</b>':'');}
@@ -2729,8 +2745,8 @@ var SHELL_CONTROLLER = `
     if(s.connected&&s.counts){var k=s.counts;info+='<div style="margin-top:6px;color:var(--kb-muted);font-size:12.5px;">In der gemeinsamen Datei: <b>'+(k.roster||0)+'</b> Schüler · <b>'+(k.dosEntries||0)+'</b> Dossier-Einträge · <b>'+(k.anwEntries||0)+'</b> Absenzen · <b>'+(k.anwNotes||0)+'</b> Notizen · <b>'+(k.dosReunions||0)+'</b> Réunionen · <b>'+(k.bubble||0)+'</b> Helfernetz</div>';}
     if(s.connected){
       var bk;
-      if(s.backupName){bk='🗂️ Auto-Sicherung: Ordner <b>'+esc(s.backupName)+'</b> · letzte Kopie: '+(s.backupLast?esc(s.backupLast):'noch keine')+(s.backupErr==='reconnect'?' · <span style="color:#c9851f">bitte bestätigen</span>':'');}
-      else{bk='🗂️ <b>Tägliche Auto-Sicherung</b> noch nicht eingerichtet — Ordner auf O: wählen, dann legt die App 1×/Tag automatisch eine datierte Kopie an (die letzten 30 bleiben erhalten).';}
+      if(s.backupName){bk='Auto-Sicherung: Ordner <b>'+esc(s.backupName)+'</b> · letzte Kopie: '+(s.backupLast?esc(s.backupLast):'noch keine')+(s.backupErr==='reconnect'?' · <span style="color:#c9851f">bitte bestätigen</span>':'');}
+      else{bk='<b>Tägliche Auto-Sicherung</b> noch nicht eingerichtet — Ordner auf O: wählen, dann legt die App 1×/Tag automatisch eine datierte Kopie an (die letzten 30 bleiben erhalten).';}
       if(s.backupErr&&s.backupErr!=='reconnect'){bk+=' <span style="color:#b3432d">'+esc(s.backupErr)+'</span>';}
       info+='<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(0,0,0,.08);color:var(--kb-muted);font-size:12.5px;">'+bk+'</div>';
     }
@@ -4625,8 +4641,10 @@ var parts = [
   '<title>Klassebuch — Annexe Junglinster</title>',
   '<meta name="theme-color" content="#4f5bd5">',
   '<link rel="icon" href="' + FAVICON + '">',
+  /* Schrift in eigenem Block: die Material-Bibliothek (eigenes Dokument im
+     iframe) bekommt sie von hier gereicht */
+  '<style id="kb-font-css">', FONT_CSS, '</style>',
   '<style>',
-  '/* === Schrift (eingebettet) === */', FONT_CSS,
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,

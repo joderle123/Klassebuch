@@ -30002,7 +30002,7 @@ function renderPlanOutput(topic, ps, container) {
         ${planSubnavHtml()}
         <button class="test-back" data-tool="plan-back-faktoren">← Faktoren anpassen</button>
         <div class="plan-empty-match">
-          <strong style="display:block;font-family:'Fraunces',serif;font-size:20px;color:var(--ink);margin-bottom:8px;font-style:normal;">Kein klares Hauptmuster erkannt.</strong>
+          <strong style="display:block;font-family:var(--kb-font);font-size:20px;color:var(--ink);margin-bottom:8px;font-style:normal;">Kein klares Hauptmuster erkannt.</strong>
           Die Faktoren-Kombination passt zu keinem der hinterlegten Muster. Versuche, weitere Faktoren zu spezifizieren — oder fasse deinen Klienten in den Notizen unten frei zusammen.
         </div>
         <div class="plan-notizen">
@@ -33345,7 +33345,7 @@ function renderModusSchnellpruefung(topic, data, ts, container) {
     <section class="testen">
       <button class="test-back" data-tool="testen-back">← Übersicht</button>
       ${resultBlock}
-      <h3 style="font-family:'Fraunces',serif;font-size:28px;font-weight:500;margin-bottom:20px;letter-spacing:-0.01em;">Schnellprüfung</h3>
+      <h3 style="font-family:var(--kb-font);font-size:28px;font-weight:500;margin-bottom:20px;letter-spacing:-0.01em;">Schnellprüfung</h3>
       ${qs}
       <div class="quiz-actions">
         ${evaluated
@@ -33457,7 +33457,7 @@ function renderModusKarteikarten(topic, data, ts, container) {
       <div class="flashcard ${flipped ? 'flipped' : ''}" data-tool="flashcard-flip">
         <div class="flashcard-side">${flipped ? 'Antwort' : 'Frage'}</div>
         <div class="flashcard-text">${escHtml(flipped ? card.r : card.v)}</div>
-        ${!flipped ? `<div style="margin-top:18px;font-family:'IBM Plex Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);">Klicken zum Aufdecken</div>` : ''}
+        ${!flipped ? `<div style="margin-top:18px;font-family:var(--kb-font);font-size:9px;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);">Klicken zum Aufdecken</div>` : ''}
       </div>
       ${flipped ? `
         <div class="flashcard-buttons">
@@ -33531,7 +33531,7 @@ function renderModusSzenario(topic, data, ts, container) {
           <div class="quiz-result-score">${score} / ${totalSteps}</div>
           <div class="quiz-result-label">Beste Entscheidungen getroffen</div>
         </div>
-        <p style="font-family:'Fraunces',serif;font-size:17px;line-height:1.55;margin-bottom:18px;">${escHtml(verdict)}</p>
+        <p style="font-family:var(--kb-font);font-size:17px;line-height:1.55;margin-bottom:18px;">${escHtml(verdict)}</p>
         <div class="quiz-actions">
           <button class="quiz-restart" data-tool="szenario-restart">Nochmal durchgehen</button>
         </div>
@@ -33621,7 +33621,7 @@ function renderModusReflexion(topic, data, ts, container) {
   container.innerHTML = `
     <section class="testen">
       <button class="test-back" data-tool="testen-back">← Übersicht</button>
-      <h3 style="font-family:'Fraunces',serif;font-size:28px;font-weight:500;margin-bottom:8px;letter-spacing:-0.01em;">Reflexion</h3>
+      <h3 style="font-family:var(--kb-font);font-size:28px;font-weight:500;margin-bottom:8px;letter-spacing:-0.01em;">Reflexion</h3>
       <p style="color:var(--sage);font-size:14px;margin-bottom:24px;line-height:1.5;">Drei offene Fragen — deine Antworten bleiben lokal in deinem Browser.</p>
       ${qs}
       <div class="quiz-actions">

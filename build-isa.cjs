@@ -151,7 +151,13 @@ function scopeCss(css, scope) {
 }
 var anwStyleScoped = scopeCss(anwStyle, '#anw-root');
 var dosStyleScoped = scopeCss(dosStyle, '#dos-root');
-var savStyleScoped = scopeCss(savStyle, '#sav-root');
+/* SAVOIR war fuer Fraunces (Serifen), IBM Plex Mono und DM Sans gebaut - Web-
+   Schriften, die offline fehlen. Ohne sie fiel es auf Times und Courier zurueck.
+   Alles laeuft jetzt ueber die eingebettete App-Schrift. */
+var savStyleScoped = scopeCss(savStyle, '#sav-root')
+  .replace(/font-family:\s*'Fraunces',\s*serif/g, 'font-family:var(--kb-font)')
+  .replace(/font-family:\s*'IBM Plex Mono',\s*monospace/g, 'font-family:var(--kb-font)')
+  .replace(/font-family:\s*'DM Sans',\s*system-ui,\s*sans-serif/g, 'font-family:var(--kb-font)');
 
 /* ============================================================
    Patches der anwesenheit-Engine
@@ -1336,9 +1342,13 @@ var DOS_OVERRIDES = `
     var _origDash=viewDashboard;
     window.viewDashboard=function(){
       var r=_origDash.apply(this,arguments);
-      var bar='<div class="isa-dash-add"><button class="btn btn-primary" data-kb-act="add-student">➕ Neuer Schüler</button></div>';
-      if(r&&typeof r==='object'&&typeof r.html==='string'){r.html=bar+r.html;return r;}
-      if(typeof r==='string'){return bar+r;}
+      /* Der Knopf gehoert in die Kopfzeile neben "Neuer Eintrag", nicht als
+         eigene Zeile darueber */
+      var knopf='<button class="btn" data-kb-act="add-student">➕ Neuer Schüler</button>';
+      var bar='<div class="isa-dash-add">'+knopf+'</div>';
+      var rein=function(h){return h.indexOf('<div class="actions">')>=0?h.replace('<div class="actions">','<div class="actions">'+knopf):bar+h;};
+      if(r&&typeof r==='object'&&typeof r.html==='string'){r.html=rein(r.html);return r;}
+      if(typeof r==='string'){return rein(r);}
       return r;
     };
   }
@@ -4144,7 +4154,7 @@ window.KB_HOME=(function(){
     var recent=entries.slice(0,6);
 
     /* Kopf */
-    var hello='<div class="home-hero"><div><div class="home-hi">'+esc(u?('Moien, '+u+' 👋'):'Willkommen 👋')+'</div><div class="home-date">'+esc(fmtLong(today))+'</div></div>'+
+    var hello='<div class="home-hero"><div><div class="home-hi">'+esc(u?('Moien, '+u):'Willkommen')+'</div><div class="home-date">'+esc(fmtLong(today))+'</div></div>'+
       '<div class="home-quick"><button class="btn btn-sm" data-home="agenda">🗓️ Termin</button><button class="btn btn-sm" data-home="note">✍️ Notiz</button><button class="btn btn-sm" data-home="add-student">➕ Schüler</button></div></div>';
 
     /* Heute */
@@ -4403,8 +4413,10 @@ var parts = [
   '<title>ISA-Journal</title>',
   '<meta name="theme-color" content="#0f766e">',
   '<link rel="icon" href="' + FAVICON + '">',
+  /* Schrift in eigenem Block: die Material-Bibliothek (eigenes Dokument im
+     iframe) bekommt sie von hier gereicht */
+  '<style id="kb-font-css">', FONT_CSS, '</style>',
   '<style>',
-  '/* === Schrift (eingebettet) === */', FONT_CSS,
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,

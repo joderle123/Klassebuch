@@ -29,11 +29,12 @@
     '🕒': 'clock', '🕶': 'eye-off', '🕸': 'network', '🖨': 'printer', '🗂': 'folders', '🗄': 'database',
     '🗑': 'trash-2', '🗒': 'sticky-note', '🗓': 'calendar-days', '🗣': 'messages-square', '😉': 'smile',
     '😊': 'smile', '🚀': 'rocket', '🚗': 'car', '🚨': 'siren', '🤖': 'bot', '🤝': 'handshake', '🧑': 'user',
-    '🧠': 'brain', '🧭': 'compass', '🧰': 'library', '🩺': 'stethoscope', '🪜': 'layers'
+    '🧠': 'brain', '🧭': 'compass', '🧰': 'library', '🩺': 'stethoscope', '🪜': 'layers',
+    '⏰': 'alarm-clock', '⏳': 'hourglass', '⬇': 'download', '⬆': 'upload', '✨': 'sparkles', '🇱🇺': 'calendar-check'
   };
   /* Hier wird umgewandelt ... */
   var ZIEL = 'button,h1,h2,h3,h4,h5,label,summary,th,legend,a.btn,.btn,.kb-link,.hbtn,.chip,.badge,' +
-    '.mi,.ri,.kt-ic,.kb-tc-ic,.hub-empty-ic,.ic,.i,.ico,.icon,.wn-ic,.nb-ic,.nt-ic,.rec-hint,.sec-head,' +
+    '.mi,.ri,.kt-ic,.kb-tc-ic,.kb-rowx-ic,.lp-h,.kb-yl,.home-hi,.hub-empty-ic,.ic,.i,.ico,.icon,.wn-ic,.nb-ic,.nt-ic,.rec-hint,.sec-head,' +
     '.tab,.view-tab,.class-tab,.cw-title,.sync-title,.kb-card-h,.kb-navlabel,.kb-hint,.hint,.muted,.empty-state,.reunion-author,' +
     '[class$="-title"],[class*="-title "],[class$="-head"],[class*="-head "],[class$="-lbl"],[class*="-lbl "]';
   /* ... und hier nie: was jemand geschrieben hat, und Eingabefelder */

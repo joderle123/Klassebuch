@@ -1961,7 +1961,8 @@ function viewDashboard(params, query) {
       });
     });
     if (!filtered.length) {
-      return '<div class="empty-state">Keine Schüler oder Einträge gefunden für „' + escapeHtml(q) + '".</div>';
+      if (!students.length) return '<div class="empty-state">Noch keine Schüler angelegt.</div>';
+      return '<div class="empty-state">Nichts gefunden für „' + escapeHtml(q) + '".</div>';
     }
     return '<div class="card-grid">' + filtered.map(studentCardHtml).join('') + '</div>';
   }
