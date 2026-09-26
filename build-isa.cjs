@@ -1310,14 +1310,15 @@ var DOS_OVERRIDES = `
       if(r&&r.goals){Object.keys(r.goals).forEach(function(k){if(k!=='group'&&!keep[k]){delete r.goals[k];}});}
     });
     try{
-      if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){
-        Storage.clear('students').then(function(){return Storage.putAll('students',Repo.students);}).catch(function(){});
-        Storage.clear('entries').then(function(){return Storage.putAll('entries',Repo.entries);}).catch(function(){});
+      if(typeof Storage!=='undefined'&&Storage.replaceAll){
+        /* in einem Schritt - siehe Storage.replaceAll */
+        Storage.replaceAll('students',Repo.students).catch(function(){});
+        Storage.replaceAll('entries',Repo.entries).catch(function(){});
         Storage.putAll('reunions',Repo.reunions).catch(function(){});
       }
     }catch(e){}
   };
-  function kbDosPersist(store,arr){try{if(typeof Storage!=='undefined'&&Storage.clear&&Storage.putAll){Storage.clear(store).then(function(){return Storage.putAll(store,arr);}).catch(function(){});}}catch(e){}}
+  function kbDosPersist(store,arr){try{if(typeof Storage!=='undefined'&&Storage.replaceAll){Storage.replaceAll(store,arr).catch(function(){});}}catch(e){}}
   window.KB_DOS_SYNC={
     /* Erst wenn das Dossier wirklich geladen ist, darf sein Schweigen als
        "nichts da" gelten - sonst loescht der Abgleich alles. */
@@ -2074,12 +2075,39 @@ window.KB_SYNC=(function(){
         'border-radius:8px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap;';
       b.onclick=fn;el.appendChild(b);
     }
-    knopf('Nicht löschen — Seite neu laden',function(){location.reload();},true);
+    knopf('Aus der Team-Datei wiederherstellen',function(){
+      if(!confirm('Den Stand aus der Team-Datei zurückholen?\\n\\nWas dort steht, kommt auf dieses Gerät zurück. Nichts wird gelöscht.'))return;
+      el.parentNode&&el.parentNode.removeChild(el);
+      restoreFromFile();
+    },true);
+    knopf('Seite neu laden',function(){location.reload();});
     knopf('Trotzdem löschen',function(){
       if(!confirm('Wirklich? ' + was + ' werden dann auf ALLEN Geräten gelöscht.'))return;
       wipeOk=true;el.parentNode&&el.parentNode.removeChild(el);cycle();
     });
     (document.body||document.documentElement).appendChild(el);
+  }
+
+  /* Der Ausweg, wenn dieses Geraet "alles weg" meldet, die Team-Datei aber
+     noch voll ist (z. B. nach einem Absturz beim Speichern): Stand aus der
+     Datei uebernehmen. firstReconcile nimmt alles, was in der Datei steht,
+     und legt nur lokal NEUE Dinge dazu - Loeschmarken entstehen dabei nicht. */
+  function restoreFromFile(){
+    if(!fileHandle||busy)return Promise.resolve(false);
+    busy=true;setStatus({pending:true});
+    return readFile().then(function(remote){
+      if(!remote||remote==='INVALID'){busy=false;setStatus({pending:false,error:'Team-Datei nicht lesbar — nichts wiederhergestellt.'});return false;}
+      var now=Date.now(), live=collGet();
+      var nb=firstReconcile(live,remote,now);
+      applying=true;try{collSet(nb);}catch(e){}applying=false;
+      base=nb;saveBase(nb);wipeOk=false;
+      var changed=!sameDoc(nb,remote);
+      return (changed?writeFile(nb):Promise.resolve()).then(function(){
+        busy=false;
+        setStatus({pending:false,error:'',lastSync:Date.now(),counts:summarize(base)});
+        return true;
+      });
+    }).catch(function(e){busy=false;setStatus({pending:false,error:'Wiederherstellen fehlgeschlagen: '+((e&&e.message)||e)});return false;});
   }
 
   function cycle(){
@@ -2183,6 +2211,7 @@ window.KB_SYNC=(function(){
     clearBackupDir:function(){backupDir=null;idbDel('backupdir');setStatus({backupName:'',backupLast:'',backupErr:''});},
     disconnect:function(){stop();fileHandle=null;idbDel();setStatus({connected:false,fileName:'',error:''});},
     syncNow:function(){return cycle();},
+    restoreFromFile:function(){return restoreFromFile();},
     reconnect:function(){idbGet().then(function(h){if(h)return afterPick(h);}).then(function(){return idbGet('backupdir');}).then(function(d){if(!d)return;return verifyPermission(d,true).then(function(ok){if(ok){backupDir=d;setStatus({backupName:d.name||'Backup-Ordner',backupErr:''});maybeBackup();}});});},
     autoOn:autoOn,
     setAuto:function(v){setAuto(v);if(v&&!fileHandle)idbGet().then(function(h){if(h)armAuto(h);});},

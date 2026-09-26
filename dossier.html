@@ -860,6 +860,39 @@ var Storage = {
     });
   },
 
+  /* Alles ersetzen - in EINEM Schritt. Frueher hiess das clear() und danach
+     putAll(), zwei getrennte Transaktionen: starb der Browser dazwischen, war
+     der Speicher leer. Eine einzige Transaktion geschieht ganz oder gar nicht. */
+  replaceAll: function (store, items) {
+    var self = this;
+    if (this.mode === 'localstorage') {
+      try {
+        localStorage.setItem(LS_PREFIX + store, JSON.stringify(items || []));
+      } catch (e) {
+        reportStorageWriteError(e);
+        return Promise.reject(e);
+      }
+      return Promise.resolve();
+    }
+    return new Promise(function (resolve, reject) {
+      var tx = self._tx([store], 'readwrite');
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { reject(tx.error); };
+      tx.onabort = function () { reject(tx.error || new Error('abgebrochen')); };
+      /* Ein ungueltiger Eintrag wirft seinen Fehler SOFORT - das bricht die
+         Transaktion nicht von selbst ab, sie wuerde den halben Stand
+         festschreiben. Darum ausdruecklich abbrechen. */
+      try {
+        var os = tx.objectStore(store);
+        os.clear();
+        (items || []).forEach(function (item) { os.put(item); });
+      } catch (e) {
+        try { tx.abort(); } catch (e2) {}
+        reject(e);
+      }
+    });
+  },
+
   clear: function (store) {
     var self = this;
     if (this.mode === 'localstorage') {
@@ -1204,9 +1237,9 @@ var Repo = {
       });
     }
     return Promise.all([
-      Storage.clear('students').then(function () { return Storage.putAll('students', self.students); }),
-      Storage.clear('entries').then(function () { return Storage.putAll('entries', self.entries); }),
-      Storage.clear('reunions').then(function () { return Storage.putAll('reunions', self.reunions); }),
+      Storage.replaceAll('students', self.students),
+      Storage.replaceAll('entries', self.entries),
+      Storage.replaceAll('reunions', self.reunions),
       Storage.setMeta('seeded', true),
       Storage.setMeta('seeded_reunions', true),
       Storage.setMeta('seeded_reunions_v', REUNION_SEED_VERSION)
