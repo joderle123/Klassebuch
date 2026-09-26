@@ -103,7 +103,7 @@ window.CDSE_APPS = [
   {
     id: 'toolbox',
     name: 'Toolbox',
-    beschreibung: '287 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
+    beschreibung: '295 professionelle Arbeitsblätter (Spielschule bis Sekundarschule, mit Seite für die Lehrperson – auch zur Selbstreflexion mit Gläsern, Netzen und Kurven zum Ausmalen), über 600 Materialien, Team-Material zum Hochladen und gemeinsame Bewertungen – nach Cycle und ELDiB-Ziel filtern, als PDF drucken.',
     symbol: 'werkzeug',
     farbe: '#A8741A',
     bereich: 'Materialien',
@@ -112,7 +112,7 @@ window.CDSE_APPS = [
     /* Eigener Branch der Annexe: Skills-Kurs mit Kursjahr-Reitern und Fahrplan */
     quelle: { repo: 'ISA-APP', branch: 'claude/focused-galileo-e2s63b', pfad: 'offline/ISA-App.html',
               zusatz: [{ pfad: 'offline/toolbox-index.js', datei: 'apps/toolbox-index.js' }] },
-    stichworte: 'material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf'
+    stichworte: 'material bibliothek arbeitsblatt arbeitsblätter finder suche ablage eldib ziel pdf selbstreflexion bedürfnisse werte lebensnetz stimmung'
   },
 
   {

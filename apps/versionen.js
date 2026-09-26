@@ -16,10 +16,10 @@ window.CDSE_APP_VERSIONEN = {
   },
   "toolbox": {
     "stand": "2026-09-26",
-    "commit": "76ed378",
+    "commit": "99aa635",
     "quelle": "ISA-APP · claude/focused-galileo-e2s63b",
-    "aenderung": "PDF-Layout: Mappen ohne falschen Folgekopf, Material-PDFs ohne Überlappungen",
-    "groesse": 5744847
+    "aenderung": "Neuer Bereich „Selbstreflexion“: 8 Blätter mit Gläsern, Netz, Kurven und Kreisen",
+    "groesse": 5779050
   },
   "screening": {
     "stand": "2026-09-25",
