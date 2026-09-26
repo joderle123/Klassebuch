@@ -1,7 +1,8 @@
 // Test: Verlauf auf einen Blick – Zeitachse im Reiter „Profil & Verlauf“ (Bahnen für Tageskarte, Vorfälle,
 // Screening, Gespräche), Maßnahmen als nummerierte Linien mit Legende (Fokusziele, Tageskarte, Überprüfung,
-// Arztbrief mit Medikation), Zeitraum 3/6/12 Monate, Vorher-nachher-Vergleich, Zeile im Überblick mit
-// Sprung zum Verlauf, leerer Zustand, 390 px. Nur erfundene Personen.
+// Arztbrief mit Medikation), Zeitraum 3/6/12 Monate (Monatsnamen ohne Überlappung, Fokus bleibt), Wert per Tippen,
+// Zusammenfassung in einer Zeile, Vorher-nachher-Vergleich (auch wenn das Kind erst kurz da ist), Zeile im Überblick
+// mit Sprung zum Verlauf, leerer Zustand, 390 px (Grafik zeigt zuerst das Neueste). Nur erfundene Personen.
 // Aufruf: node tests/verlauf.js   (BASE=… für eine andere Hub-Datei)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -82,7 +83,19 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Vorher – nachher: Maßnahmen von heute „noch zu früh“', vgl.includes('noch zu früh'), vgl.slice(0, 200));
   check('Vorher – nachher: Medikation (vor 20 Tagen) mit Vorfällen pro Woche', vgl.includes('Medikation: Methylphenidat') && vgl.includes('Vorfälle pro Woche'), vgl.slice(0, 400));
   check('Hinweis: Richtung, kein Beweis', vgl.includes('keinen Beweis'));
+  const zus = await text('#vl-karte #vl-zus');
+  check('Zusammenfassung in einer Zeile (auch für Screenreader, mit der Grafik verknüpft)', /Tageskarte an 13 Tagen/.test(zus) && zus.includes('5 Vorfälle') && (await page.getAttribute('#vl-karte svg.vl-grafik', 'aria-describedby')) === 'vl-zus', zus);
+  await page.click('#vl-karte circle.vl-gut >> nth=0'); await warte(150);   // vor 6 Tagen: dort liegt keine Maßnahmen-Linie darüber
+  const wert = await text('#vl-karte #vl-wert');
+  check('Tippen auf einen Punkt zeigt den Wert unter der Grafik (Tablet: keine Tooltips)', /^\d\d\.\d\d\.: \d+ %$/.test(wert) && !!(await page.$('#vl-karte circle.vl-an')), wert);
+  // Monatsnamen dürfen sich nicht überschneiden (3, 6 und 12 Monate)
+  async function achse() { return page.$$eval('#vl-karte .vl-achse', l => l.map(t => { const r = t.getBoundingClientRect(); return { t: t.textContent, l: r.left, r: r.right }; })); }
+  const ueberlapp = a => a.some((x, i) => i > 0 && x.l < a[i - 1].r + 2);
+  let ax = await achse();
+  check('3 Monate: Monatsnamen am Monatsanfang, ohne Überschneidung, Jahr beim ersten', ax.length >= 3 && !ueberlapp(ax) && /\d{4}$/.test(ax[0].t), ax.map(x => x.t));
   await page.screenshot({ path: path.join(OUT, 'v1-verlauf.png'), clip: await page.$eval('#vl-karte', el => { const r = el.getBoundingClientRect(); return { x: r.x - 8, y: r.y - 8, width: r.width + 16, height: r.height + 16 }; }) });
+  const bahnL = await page.$eval('#vl-karte .vl-bahn', r => r.getBoundingClientRect().left);
+  check('Balken der angeschnittenen ersten Woche bleiben in der Bahn', (await page.$$eval('#vl-karte rect.vl-vorfall, #vl-karte rect.vl-schwer', l => l.map(r => r.getBoundingClientRect().left))).every(x => x >= bahnL - 0.5));
 
   console.log('2) Vergleich rechnet richtig (Fokusziele vor 21 Tagen)');
   const erg = await page.evaluate(() => {
@@ -96,10 +109,28 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Vorfälle pro Woche: 4 in den vier Wochen davor (1,0) → 1 in drei Wochen danach (0,33), günstiger', !!vf && vf[1] === 1 && vf[2] === 0.33 && vf[3] === true, erg);
   const to = erg && erg.zeilen.filter(z => z[0] === 'Time-out (Min. pro Woche)')[0];
   check('Time-out pro Woche: 40 Min. in vier Wochen (10) → 10 Min. in drei Wochen (3,33)', !!to && to[1] === 10 && to[2] === 3.33, to);
+  // Kind erst 31 Tage da (keine älteren Daten), Maßnahme vor 21 Tagen: „vorher“ sind nur 10 Tage
+  const kurzDa = await page.evaluate(ab => {
+    const d = JSON.parse(JSON.stringify(CDSE_ARBEIT.hilfen.aktDossier()));
+    d.erstellt = new Date(Date.now() - 31 * 864e5).toISOString(); d.screenings = []; d.berichte = []; d.profil = null; d.tageskarte = null; d.einschaetzungen = [];
+    d.eintraege = d.eintraege.filter(e => e.datum >= ab);
+    d.verlauf.forEach(v => { if (/^Begleitplan: Fokusziele/.test(v.t)) v.z = new Date(Date.now() - 21 * 864e5).toISOString(); });
+    const f = CDSE_VERLAUF.vergleich(d).filter(x => /^Fokusziele/.test(x.m.text))[0];
+    return f ? { vorTage: f.vorTage, z: f.zeilen.map(z => [z.was, Math.round(z.vor * 100) / 100, Math.round(z.nach * 100) / 100]) } : null;
+  }, tag(-31));
+  const kv = kurzDa && kurzDa.z.filter(z => z[0] === 'Vorfälle pro Woche')[0];
+  check('Kind erst kurz da: „vorher“ geteilt durch die echten 10 Tage (2 Vorfälle → 1,4 pro Woche, nicht 0,5)', !!kv && kurzDa.vorTage === 10 && kv[1] === 1.4 && kv[2] === 0.33, kurzDa);
 
   console.log('3) Zeitraum, Überblick, leerer Zustand');
   await page.click('#vl-karte [data-vl="182"]'); await warte(250);
   check('6 Monate: Knopf aktiv, beide Screenings sichtbar', (await page.getAttribute('#vl-karte [data-vl="182"]', 'aria-pressed')) === 'true' && (await page.$$('#vl-karte path[class^="vl-sc"]')).length === 2);
+  check('Fokus bleibt nach dem Wechsel auf dem Zeitraum-Knopf', await page.evaluate(() => (document.activeElement || {}).getAttribute && document.activeElement.getAttribute('data-vl') === '182'));
+  ax = await achse();
+  check('6 Monate: Monatsnamen ohne Überschneidung', ax.length >= 5 && !ueberlapp(ax), ax.map(x => x.t));
+  await page.click('#vl-karte [data-vl="365"]'); await warte(250);
+  ax = await achse();
+  check('12 Monate: kurze Monatsnamen ohne Überschneidung, Jahr im Januar', ax.length >= 10 && !ueberlapp(ax) && ax.some(x => /^Jan \d{4}$/.test(x.t)) && ax.every(x => x.t.length <= 8), ax.map(x => x.t));
+  await page.click('#vl-karte [data-vl="182"]'); await warte(250);
   await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(250);
   check('Überblick: „Vorfälle: 2 in den letzten vier Wochen (davor 3)“', (await text('.bp-kurzkarte')).includes('Vorfälle: 2 in den letzten vier Wochen (davor 3)'), await text('.bp-kurzkarte'));
   await page.click('.bp-kurzkarte [data-tab="profil"]'); await warte(300);
@@ -112,6 +143,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await reiter(tom, 'profil'); await page.waitForSelector('#vl-karte svg');
   check('390 px: Seite ohne seitliches Scrollen', (await quer()) <= 1, await quer());
   check('390 px: Grafik lässt sich im Rahmen wischen (lesbar statt winzig)', await page.$eval('#vl-karte .vl-rahmen', el => el.scrollWidth > el.clientWidth));
+  await warte(200);
+  check('390 px: der Rahmen zeigt zuerst das Neueste (ganz rechts)', await page.$eval('#vl-karte .vl-rahmen', el => el.scrollLeft > 0 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 2));
   await page.screenshot({ path: path.join(OUT, 'v2-schmal.png') });
 
   check('Keine Fehler in der Konsole', errors.length === 0, errors);

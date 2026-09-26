@@ -11,6 +11,18 @@
 .db-sj{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--muted);}
 .db-sj select,.db-schnell select{font:inherit;font-size:13.5px;color:var(--ink);background:var(--surface);border:1px solid var(--line-2);border-radius:9px;padding:7px 10px;max-width:100%;min-width:0;}
 .db-sj select:focus,.db-schnell select:focus{outline:0;border-color:var(--accent);box-shadow:var(--focus);}
+/* gewählter Schnellfilter: hervorgehoben */
+.db-schnell.an span{color:var(--accent-strong);}
+.db-schnell.an select{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-strong);font-weight:620;}
+/* Stand: Stichtag und welche Dossiers zählen */
+.db-standzeile{margin:-8px 0 16px;font-size:13px;color:var(--ink-2);line-height:1.5;overflow-wrap:anywhere;}
+.db-standzeile b{color:var(--ink);font-weight:650;}
+/* Kopf: Stand der Daten und „Neu laden“ */
+.db-kopfrechts{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:6px 12px;}
+.db-geladen{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+.db-geladen:empty{display:none;}
+.db-weg{white-space:nowrap;}
+.db-hinweislink{color:inherit;font-weight:650;text-decoration:underline;}
 /* Kennzahlen */
 .db-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin:0 0 18px;}
 .db-kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow-1);min-width:0;}
@@ -48,7 +60,7 @@
 .db-fchip button{display:grid;place-items:center;width:24px;height:24px;flex:0 0 auto;border:0;border-radius:50%;background:transparent;color:inherit;cursor:pointer;}
 .db-fchip button:hover{background:rgba(46,58,156,.12);}
 .db-fchip .ic{width:13px;height:13px;}
-.db-anzahl{margin:0 0 10px;font-size:13.5px;color:var(--ink-2);}
+.db-anzahl{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0 0 10px;font-size:13.5px;color:var(--ink-2);}
 .db-tabrahmen{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);overflow-x:auto;}
 .db-tab{width:100%;border-collapse:collapse;font-size:13.5px;}
 .db-tab th{background:var(--surface-2);text-align:left;padding:0;border-bottom:1px solid var(--line);font-size:11.5px;font-weight:650;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);}
@@ -266,3 +278,19 @@
 .db-spzutab select:focus{outline:0;border-color:var(--accent);box-shadow:var(--focus);}
 .db-spzutab tr.db-sp-aus td{color:var(--muted);}
 .db-blattwahl{max-width:380px;}
+/* Spalte „Name und Vorname“: Reihenfolge und Beispiele */
+.db-namen{margin:12px 0 4px;padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface-2);min-width:0;}
+.db-namen .ar-feld{max-width:420px;margin-bottom:4px;}
+.db-namenliste{list-style:none;margin:6px 0 0;padding:0;font-size:13.5px;}
+.db-namenliste li{margin:3px 0;overflow-wrap:anywhere;}
+/* Ergebnis einer Abfrage: kopieren, als CSV */
+.db-ergknoepfe{margin-top:12px;}
+.db-ergknoepfe .btn .ic{width:16px;height:16px;}
+.db-kopiertext{width:100%;font:13px/1.4 ui-monospace,monospace;border:1px solid var(--line-2);border-radius:9px;padding:8px;box-sizing:border-box;}
+/* schmale Bildschirme: Filterzeile im Baukasten untereinander (Feld, Bedingung, Wert) */
+@media (max-width:760px){
+  .db-fzeile,.db-fzeile.mehr{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"feld x" "op op" "wert wert";}
+  .db-fzeile.zwei{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"feld x" "op op" "wert wert" "wert2 wert2";}
+  .db-fzeile.ohnewert{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"feld x" "op op";}
+  .db-kopfrechts{justify-content:flex-start;}
+}

@@ -1,7 +1,9 @@
 // Test: Kindmodus (S1–S3) – Karte im Begleitplan, Einrichten (Vorschläge aus Tageskarte und Fokuszielen), Start mit Code,
-// geschützter Bildschirm (keine Dossierdaten, Escape schließt nicht), Ziel-Quest (Kind + Erwachsene, Extra-Stern, Welt wächst,
-// Belohnung), Stopp-Ampel (Szene, Thermometer, Körpersignale, Rot/Gelb/Grün, Übungen, danach), Atem-Raumschiff, Beenden nur
-// mit Code, Neuladen sperrt, zu viele Versuche, Abmelden, Karte/Überblick/Überprüfung/Verlauf, Nur-Lesen, 390 px.
+// geschützter Bildschirm (keine Dossierdaten, Escape schließt nicht, Dossier ausgeräumt, kein Kontextmenü), Ziel-Quest (Kind,
+// Übergabe, Erwachsene, Extra-Stern, Welt wächst, Belohnung, Doppeltippen zählt nicht), Stopp-Ampel (Szene, Thermometer,
+// Körpersignale, Rot/Gelb/Grün, Übungen, danach), Atem-Raumschiff (auch bei gesperrtem Schülerbereich: gemerkt, nachgeholt),
+// Beenden nur mit Code, Neuladen sperrt, zu viele Versuche, „Code vergessen? Hub sperren“ (mit Rückfrage, Kindmodus endet erst
+// nach dem Passwort), Karte/Überblick/Überprüfung/Verlauf, Nur-Lesen, 390 px.
 // Nur erfundene Personen. Aufruf: node tests/kindmodus.js   (BASE=… für eine andere Hub-Datei, AUS=… für die Bilder)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -36,6 +38,9 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   const kk = sel => page.click('#km-dialog ' + sel);
   const kmText = () => page.textContent('#km-dialog');
   async function tempo(t) { await page.evaluate(t => CDSE_KINDMODUS._test.tempo(t), t); }
+  // Im Kindmodus zählt Tippen kurz nach einem neuen Bildschirm nicht (Doppeltippen). Der Test klickt schneller als ein Kind:
+  // Pause aus (nach jedem Neuladen wieder), geprüft wird sie in Abschnitt 4 eigens.
+  async function schnell() { await page.evaluate(() => CDSE_KINDMODUS._test.tippPause(0)); }
   async function schirm() { return page.evaluate(() => CDSE_KINDMODUS._test.schirm()); }
   async function warteSchirm(n, ms) { const bis = Date.now() + (ms || 8000); while (Date.now() < bis) { if (await schirm() === n) return true; await warte(60); } return false; }
   async function starteKindmodus(pin) {
@@ -55,6 +60,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.evaluate(async () => { const r = await navigator.storage.getDirectory(); await r.getFileHandle('hub.html', { create: true }); });
   await page.reload();
   await page.click('#g-ordner'); await page.waitForSelector('#g-name');
+  await schnell();
 
   console.log('1) Tom: Fokusziele und Tageskarte, Karte „Kindmodus“ im Begleitplan');
   await erstelle('Mia Muster', 'diagnostique', 'ein sicheres Passwort 1');
@@ -91,6 +97,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.click('dialog.ar-dialog .km-e-welten input[value="burg"]', { force: true });
   await page.check('dialog.ar-dialog input[name="s_zaehlen"]');
   await page.fill('dialog.ar-dialog input[name="eigene"]', 'Knautschball drücken');
+  const sz = await page.evaluate(() => ({ t: document.querySelector('#km-e-zahl').textContent, zu: ['pausenkarte', 'druecken', 'trinken'].map(s => document.querySelector('dialog.ar-dialog input[name="s_' + s + '"]').disabled) }));
+  check('Strategien: Zähler „5 von höchstens 5“, weitere lassen sich nicht mehr anhaken', sz.t.startsWith('5 von höchstens 5') && sz.zu.every(Boolean), sz);
   await page.selectOption('dialog.ar-dialog select[name="schwelle"]', '5');
   await page.fill('dialog.ar-dialog input[name="b0"]', '10 Minuten Lieblingsspiel');
   await page.fill('dialog.ar-dialog input[name="b1"]', 'Sticker aussuchen');
@@ -119,14 +127,22 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Code nur als Prüfwert gespeichert, nicht im Klartext', !!s0.sitz && !s0.sitz.includes('4711') && /sha256:|c53:/.test(s0.sitz), s0.sitz);
   await page.keyboard.press('Escape'); await warte(300); await page.keyboard.press('Escape'); await warte(300);
   check('Escape schließt den Kindmodus nicht', await page.evaluate(() => !!document.querySelector('#km-dialog[open]')));
+  const aus = await page.evaluate(() => { const ds = document.getElementById('ar-dossier'); return { da: !!ds, leer: !!ds && !ds.firstChild, text: document.getElementById('arbeit-body').textContent }; });
+  check('Dossier im Hub dahinter ausgeräumt (nicht nur unsichtbar)', aus.da && aus.leer && !/Muster|C3\.2/.test(aus.text), aus);
+  check('Kein Kontextmenü im Kindmodus (lange drücken, rechte Maustaste)', await page.evaluate(() => { const e = new MouseEvent('contextmenu', { bubbles: true, cancelable: true }); document.querySelector('#km-dialog .km-kachel').dispatchEvent(e); return e.defaultPrevented; }));
   await bild('03-start');
 
   console.log('4) Ziel-Quest');
   await kk('.km-kachel.quest'); await page.waitForSelector('#km-dialog .km-quest');
   check('Quest: Wochenziel und Welt Burg, Stufe 0', (await kmText()).includes('Ich warte, bis ich dran bin.') && !!(await page.$('#km-dialog .km-quest-welt svg[aria-label="Burg: Stufe 0 von 12"]')));
   await bild('04-quest');
-  await kk('.km-gesicht[data-k="q-kind"][data-p="2"]'); await page.waitForSelector('#km-dialog .km-wahl3.erw');
-  check('Nach dem Kind: Frage an die Erwachsenen', (await kmText()).includes('die oder der Erwachsene'));
+  // Doppeltippen: Das zweite Tippen direkt nach dem neuen Schritt zählt nicht (Pause wie im echten Betrieb)
+  await page.evaluate(() => CDSE_KINDMODUS._test.tippPause(500));
+  await kk('.km-gesicht[data-k="q-kind"][data-p="2"]'); await page.click('#km-dialog [data-k="q-uebergabe"]');
+  check('Nach dem Kind: eigener Übergabe-Schritt; ein Doppeltippen landet nicht bei den Erwachsenen', !!(await page.$('#km-dialog [data-k="q-uebergabe"]')) && !(await page.$('#km-dialog .km-wahl3.erw')) && (await kmText()).includes('Jetzt die oder der Erwachsene'));
+  await warte(600); await schnell();
+  await kk('[data-k="q-uebergabe"]'); await page.waitForSelector('#km-dialog .km-wahl3.erw');
+  check('Nach der Übergabe: Frage an die Erwachsenen', (await kmText()).includes('die oder der Erwachsene'));
   await kk('.km-gesicht[data-k="q-erw"][data-p="2"]'); await page.waitForSelector('#km-dialog .km-ergebnis .km-plus', { timeout: 10000 });
   let qt = await kmText();
   check('Einig: +3 Sterne mit Extra-Stern', qt.includes('+3 Sterne') && qt.includes('Ihr seid euch einig'), qt.slice(0, 300));
@@ -137,7 +153,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await bild('05-quest-sterne');
   await kk('[data-k="start"]'); await kk('.km-kachel.quest');
   check('Später am Tag: „Heute schon eingetragen“', (await kmText()).includes('Heute schon eingetragen'));
-  await kk('[data-k="q-neu"]'); await kk('[data-k="q-kind"][data-p="1"]'); await kk('[data-k="q-erw"][data-p="2"]');
+  await kk('[data-k="q-neu"]'); await kk('[data-k="q-kind"][data-p="1"]'); await kk('[data-k="q-uebergabe"]'); await kk('[data-k="q-erw"][data-p="2"]');
   await page.waitForSelector('#km-dialog .km-ergebnis .km-plus', { timeout: 10000 });
   qt = await kmText();
   check('Verschieden eingeschätzt: +2 Sterne, Hinweis zum Gespräch', qt.includes('+2 Sterne') && qt.includes('verschieden gesehen'), qt.slice(0, 300));
@@ -175,7 +191,9 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await kk('[data-k="rot"]');
   check('Rot: Stopp! Erst anhalten.', (await kmText()).includes('Stopp!') && (await kmText()).includes('Füße fest auf den Boden'));
   await bild('10-rot');
-  check('Rot geht nach vier Sekunden von selbst zu Gelb', await warteSchirm('gelb', 7000));
+  await warte(4500);
+  check('Rot bleibt länger als vier Sekunden (Zeit zum Lesen und Zuhören)', (await schirm()) === 'rot', await schirm());
+  check('Rot geht nach etwa sechs Sekunden von selbst zu Gelb', await warteSchirm('gelb', 5000));
   const st = await page.$$eval('#km-dialog .km-strategie', l => l.map(x => x.textContent));
   check('Gelb: nur die fünf Strategien des Teams, mit der eigenen', st.length === 5 && st.includes('Knautschball drücken') && !st.some(x => /Pausenkarte|Wasser/.test(x)), st);
   await bild('11-gelb');
@@ -223,12 +241,17 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Atem: Dauer wählen (1, 2, 3 Minuten)', (await page.$$('#km-dialog [data-k="atem-los"]')).length === 3);
   await bild('14-atem-wahl');
   await tempo(0.01);
+  // Schülerbereich gerade gesperrt (wie nach 60 Minuten ohne Aktivität): speichern wirft sofort
+  await page.evaluate(() => { window.__zustand = CDSE_TEAM.zustand; window.__runde = CDSE_TEAM.ops.kindRunde; CDSE_TEAM.zustand = () => ({ art: 'gesperrt' }); CDSE_TEAM.ops.kindRunde = () => { throw new Error('Der Schülerbereich ist nicht geöffnet'); }; });
   await kk('[data-k="atem-los"][data-min="1"]');
   await page.waitForSelector('#km-dialog .km-lob', { timeout: 15000 });
   await warte(600);
   check('Atem: „1 Minute ruhig geatmet“', (await kmText()).includes('Du hast 1 Minute ruhig geatmet'), (await kmText()).slice(0, 200));
+  check('Bereich gesperrt: das Raumschiff hängt nicht, die Runde ist gemerkt („Gemerkt!“, Weg zum Start)', (await kmText()).includes('Gemerkt!') && !!(await page.$('#km-dialog [data-k="start"]')) && (await page.evaluate(() => CDSE_KINDMODUS._test.offen())) === 1, await kmText());
+  await page.evaluate(() => { CDSE_TEAM.zustand = window.__zustand; CDSE_TEAM.ops.kindRunde = window.__runde; CDSE_KINDMODUS._test.nachholen(); });
+  await page.waitForFunction(() => CDSE_KINDMODUS._test.offen() === 0, null, { timeout: 10000 }).catch(() => {});
   d = await km();
-  check('Atem-Runde gespeichert (60 s)', d.runden.some(r => r.spiel === 'atem' && r.dauer === 60), d.runden.map(r => r.spiel + ':' + (r.dauer || '')));
+  check('Wieder offen: gemerkte Atem-Runde nachgeholt und gespeichert (60 s)', d.runden.some(r => r.spiel === 'atem' && r.dauer === 60), d.runden.map(r => r.spiel + ':' + (r.dauer || '')));
   await tempo(1);
 
   console.log('7) Beenden nur mit Code');
@@ -247,7 +270,11 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   const kt2 = await text('#km-karte');
   check('Karte: Runden, häufigste Strategie, Thermometer, Körpersignal, Atem', kt2.includes('3 Runden Stopp-Ampel') && kt2.includes('Am häufigsten gewählt') && kt2.includes('ohne Strategie Ø 4') && kt2.includes('Mein Herz klopft schnell') && kt2.includes('Atem-Raumschiff: 1×'), kt2);
   check('Karte: Sterne der Woche und gewählte Belohnung', kt2.includes('Diese Woche: 5 Sterne') && kt2.includes('gewählt: 10 Minuten Lieblingsspiel'), kt2);
+  check('Nach dem Beenden: Dossier wieder da', await page.evaluate(() => !!document.querySelector('#ar-dossier .ar-tabs')));
   await page.screenshot({ path: path.join(OUT, '16-karte-danach.png') });
+  await page.click('#km-karte [data-km="einrichten"]'); await page.waitForSelector('dialog.ar-dialog .km-e-figuren');
+  check('Einstellungen mitten in der Woche: Wahl „ab heute“ oder „ab nächster Woche“', !!(await page.$('dialog.ar-dialog input[name="ab"][value="heute"]:checked')) && !!(await page.$('dialog.ar-dialog input[name="ab"][value="woche"]')) && (await text('dialog.ar-dialog .km-e-ab')).includes('Belohnung ab 5'));
+  await dialogKnopf('Abbrechen');
 
   console.log('8) Überblick, Überprüfung, Verlauf');
   const kz = await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id); const k = CDSE_BEGLEITPLAN.kennzahlen(d); return { k: k.kindmodus, t: CDSE_KINDMODUS.kennzahlText(k.kindmodus) }; }, tom);
@@ -260,11 +287,12 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Verlauf: Bahn „Kindmodus“ mit Sternen und Runden', vl.titel.includes('Kindmodus') && vl.sterne === 2 && vl.runden === 4, vl);
   check('Verlauf: Marke „Kindmodus eingerichtet“', vl.legende.includes('Kindmodus eingerichtet'), vl.legende);
 
-  console.log('9) Neuladen sperrt, zu viele Versuche, Abmelden');
+  console.log('9) Neuladen sperrt, zu viele Versuche, Code vergessen: Hub sperren');
   await reiter(tom, 'begleitplan');
   await starteKindmodus('2468');
   await page.reload();
   await page.waitForSelector('#km-dialog[open] .km-pin-karte', { timeout: 15000 });
+  await schnell();
   const nl = await page.evaluate(() => ({ t: document.getElementById('km-dialog').textContent, hub: getComputedStyle(document.querySelector('.hub')).visibility }));
   check('Nach dem Neuladen: „Der Kindmodus ist noch an“, Hub verborgen', nl.t.includes('Der Kindmodus ist noch an') && nl.hub === 'hidden', nl);
   check('Nach dem Neuladen: kein „Zurück“ am Code-Feld', !(await page.$('#km-dialog [data-k="pin-ab"]')));
@@ -274,18 +302,34 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await starteKindmodus('1357');
   await page.reload();
   await page.waitForSelector('#km-dialog[open] .km-pin-karte', { timeout: 15000 });
+  await schnell();
   for (let i = 0; i < 5; i++) await codeEingeben('0000');
   const gesperrt = await kmText();
   check('Fünf falsche Versuche: 30 Sekunden gesperrt', gesperrt.includes('Zu viele Versuche') && await page.$eval('#km-dialog .km-taste[data-z="1"]', b => b.disabled), gesperrt.slice(0, 200));
   await bild('17-gesperrt');
-  await kk('[data-k="abmelden"]'); await warte(800);
-  check('„Code vergessen? Abmelden“: Kindmodus weg, Anmeldung erscheint', await page.evaluate(() => !document.querySelector('#km-dialog') && !sessionStorage.getItem('cdse_kindmodus')) && await page.isVisible('#gate'));
+  check('Kein „Abmelden“ mehr am Code-Feld, sondern „Code vergessen? Hub sperren“', !(await page.$('#km-dialog [data-k="abmelden"]')) && gesperrt.includes('Code vergessen? Hub sperren'));
+  await kk('[data-k="sperren-frage"]');
+  check('„Hub sperren“ fragt erst nach (nur für Erwachsene, mit Passwort)', (await kmText()).includes('Hub mit Passwort sperren') && !!(await page.$('#km-dialog [data-k="sperren-ja"]')));
+  await kk('[data-k="sperren-nein"]');
+  check('„Abbrechen“ führt zurück zur Code-Eingabe', !!(await page.$('#km-dialog .km-pin-tasten')));
+  await kk('[data-k="sperren-frage"]'); await kk('[data-k="sperren-ja"]'); await warte(800);
+  const gs = () => page.evaluate(() => { const z = JSON.parse(sessionStorage.getItem('cdse_kindmodus') || 'null'), ds = document.getElementById('ar-dossier'); return { dlg: !!document.querySelector('#km-dialog'), sperre: !!(z && z.sperre), pw: !!document.querySelector('#gate:not([hidden]) #g-pw'), hub: getComputedStyle(document.querySelector('.hub')).visibility, leer: !ds || !ds.firstChild }; });
+  let g1 = await gs();
+  check('Hub gesperrt: Anmeldung mit Passwort vorn, Kindmodus-Vermerk bleibt bis zur Anmeldung, Hub unsichtbar, Dossier leer', !g1.dlg && g1.sperre && g1.pw && g1.hub === 'hidden' && g1.leer, g1);
+  await bild('17b-hub-gesperrt');
+  await page.reload();
+  await page.waitForSelector('#gate:not([hidden]) #g-pw, #gate:not([hidden]) .konto[data-id]', { timeout: 30000 }); await warte(1500);
+  g1 = await gs();
+  check('Neu laden während der Sperre: die Anmeldung bleibt vorn (keine Code-Eingabe darüber), Vermerk bleibt', !g1.dlg && g1.sperre && g1.hub === 'hidden', g1);
+  await schnell();
 
   console.log('10) Nur-Lesen und 390 px');
   await page.waitForSelector('#gate .konto[data-id], #g-pw', { timeout: 30000 });
   if (!(await page.$('#g-pw'))) { await page.click('#gate .konto:has-text("Mia Muster")'); }
   await page.fill('#g-pw', 'ein sicheres Passwort 1'); await page.click('#g-los');
   await page.waitForSelector('#me:not([hidden])', { timeout: 30000 });
+  await page.waitForFunction(() => !sessionStorage.getItem('cdse_kindmodus') && !document.body.classList.contains('km-an'), null, { timeout: 10000 }).catch(() => {});
+  check('Nach der Anmeldung mit Passwort: Kindmodus beendet, Hub wieder sichtbar', await page.evaluate(() => !sessionStorage.getItem('cdse_kindmodus') && !document.body.classList.contains('km-an') && getComputedStyle(document.querySelector('.hub')).visibility !== 'hidden'));
   await reiter(tom, 'begleitplan');
   await page.evaluate(() => { window.__r = CDSE_TEAM.rechte; CDSE_TEAM.rechte = d => Object.assign({}, window.__r(d), { bearbeiten: false, weitergeben: false }); CDSE_ARBEIT.hilfen.dossierZeichnen(CDSE_ARBEIT.hilfen.aktDossier()); }); await warte(200);
   check('Nur-Lesen: Karte ohne Start- und Einstellungsknopf', !(await page.$('#km-karte [data-km]')) && (await text('#km-karte')).includes('Kindmodus'));

@@ -26,9 +26,12 @@ var REVIEW_TAGE=42, ELTERN_TAGE=28, ZIEL_TAGE=14, SC_WDH=90, ELDIB_WDH=183, NACH
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function svg(n){return H?H.svg(n):'';}
 function datum(i){return H?H.datum(i):i;}
-function heute(){return H?H.heuteIso():new Date().toISOString().slice(0,10);}
+/* Datum nach der Uhr dieses PCs (nicht UTC) */
+function lokalIso(t){return t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);}
+function heute(){return H?H.heuteIso():lokalIso(new Date());}
 function tageSeit(iso){if(!iso){return 1e9;}var t=new Date(String(iso).slice(0,10)+'T12:00:00').getTime();return isNaN(t)?1e9:Math.floor((Date.now()-t)/864e5);}
-function plusTage(iso,n){var t=new Date(String(iso||heute()).slice(0,10)+'T12:00:00');t.setDate(t.getDate()+n);return t.getFullYear()+'-'+('0'+(t.getMonth()+1)).slice(-2)+'-'+('0'+t.getDate()).slice(-2);}
+function plusTage(iso,n){var t=new Date(String(iso||heute()).slice(0,10)+'T12:00:00');t.setDate(t.getDate()+n);return lokalIso(t);}
+var FRIST_MAX=730, SPAETER_MAX=365;   /* Tippfehler wie „2062“ abfangen: Fristen höchstens zwei Jahre, „später“ höchstens ein Jahr voraus */
 function vorname(d){return ((d&&d.person)||{}).vorname||'dem Kind';}
 function iso(v){return String(v||'').slice(0,10);}
 
@@ -56,12 +59,12 @@ function schritte(d,r){
   function profilNamen(ids){return (kl?kl.profile:[]).filter(function(x){return ids.indexOf(x.id)>=0;}).map(function(x){return (x.art==='diagnose'||x.art==='verdacht')?x.def.name:(x.def.thema||x.def.name);});}
 
   /* ---------- Sofort: Warnsignale der letzten drei Monate ---------- */
-  var warn90=[];
+  var warn90=[], warnLetzt='';   /* Datum des neuesten Warnsignals: Auslöser für den Krisenplan */
   if(S&&S.auswerten){
     (d.screenings||[]).filter(function(s){return tageSeit(s.datum)<=90;}).forEach(function(s){
       var e;try{e=S.auswerten(s);}catch(x){return;}
       e.warn.forEach(function(w){
-        warn90.push(w.id);
+        warn90.push(w.id);if(iso(s.datum)>warnLetzt){warnLetzt=iso(s.datum);}
         var kurz=((window.CDSE_KOMPASS_WISSEN||{}).warnKurz||{})[w.id]||w.text;
         add({key:'warn:'+s.id+':'+w.id,phase:'sofort',prio:1,titel:'Warnsignal vom '+datum(s.datum)+': '+kurz,warum:w.tun,aktion:{tab:'screening',text:'Zum Screening'}});
       });
@@ -132,7 +135,9 @@ function schritte(d,r){
   var risiko=kl?profilNamen(['instabil','selbstverletzung']):[];
   if(warn90.length||vorf90>=2||risiko.length){
     var akut=warn90.some(function(w){return w==='suizid'||w==='selbstverletzung'||w==='gefahr';});
-    add({key:'krisenplan',phase:'planen',prio:akut?1:2,titel:'Krisen- und Sicherheitsplan erstellen',
+    /* neuSeit: Eine Entscheidung des Teams (erledigt, später, passt nicht) vor dem neuesten Warnsignal gilt
+       nicht mehr – kommt Monate später ein neues Warnsignal, ist der Plan wieder offen und wird überprüft. */
+    add({key:'krisenplan',phase:'planen',prio:akut?1:2,titel:'Krisen- und Sicherheitsplan erstellen',neuSeit:warnLetzt,
       warum:[warn90.length?'Warnsignal im Screening':'',vorf90>=2?vorf90+' Vorfälle in drei Monaten':'',risiko.length?'Kompass: '+risiko.join(', '):''].filter(Boolean).join(' · ')+
         '. Mit dem Kind (und den Eltern) festhalten: Frühwarnzeichen, was hilft, wer informiert wird. Bei Suizidgedanken mit Fachleuten.',
       material:['sicherheitsplan','nachgespraech-krise'],lernen:['deeskalation','selbstverletzung-suizid']});
@@ -224,6 +229,11 @@ function schritte(d,r){
     var e=(bp.schritte||{})[s.key];s.entscheidung=e||null;
     if(s.auto){s.status=s.laufend?'laufend':'erledigt';return;}
     if(s.ruht){s.status='geplant';return;}
+    if(e&&!s.eigen&&s.neuSeit&&e.status&&iso(e.z)<s.neuSeit){
+      /* vor dem neuesten Auslöser entschieden: wieder offen */
+      s.ueberholt=true;s.warum='Neues Warnsignal am '+datum(s.neuSeit)+' – den Plan überprüfen und anpassen (zuletzt „'+(STATUS_TEXT[e.status]||e.status)+'“ am '+datum(iso(e.z))+'). '+s.warum;
+      e=null;s.entscheidung=null;
+    }
     if(e&&!s.eigen){
       if(e.status==='erledigt'&&!s.wiederkehrend){s.status='erledigt';return;}
       if(e.status==='passt-nicht'){s.status='passt-nicht';return;}
@@ -299,6 +309,13 @@ function schrittHtml(s,r,kl){
     '<div class="bp-text"><b>'+esc(s.titel)+'</b>'+(s.warum&&s.status!=='erledigt'?'<span class="bp-warum">'+esc(s.warum)+'</span>':'')+meta(s)+(s.status!=='erledigt'?links(s,kl):'')+'</div>'+
     '<div class="bp-akt">'+(s.status==='erledigt'||s.status==='passt-nicht'?'':aktionKnopf(s.aktion,false))+entscheidKnoepfe(s,r)+'</div></li>';
 }
+/* Offene Schritte zuerst, laufende danach; erledigte eingeklappt („Erledigt (n) anzeigen“) */
+function schrittListe(l,r,kl){
+  var auf=l.filter(function(s){return s.status!=='erledigt'&&s.status!=='laufend';}).concat(l.filter(function(s){return s.status==='laufend';}));
+  var erl=l.filter(function(s){return s.status==='erledigt';});
+  return (auf.length?'<ol class="bp-liste">'+auf.map(function(s){return schrittHtml(s,r,kl);}).join('')+'</ol>':'<p class="ar-leise">'+(erl.length?'Alles erledigt.':'Keine Schritte.')+'</p>')+
+    (erl.length?'<details class="bp-erledigt"><summary>Erledigt ('+erl.length+') anzeigen</summary><ol class="bp-liste">'+erl.map(function(s){return schrittHtml(s,r,kl);}).join('')+'</ol></details>':'');
+}
 
 function tab(d,r){
   if(!bausteine()){return '<p>Der Begleitplan fehlt in dieser Hub-Datei.</p>';}
@@ -323,6 +340,9 @@ function tab(d,r){
   }else{
     h+='<section class="ar-karte bp-naechster fertig"><p class="overline">Als Nächstes</p><h3>Im Moment ist nichts offen.</h3><p>Die nächsten Schritte erscheinen hier, sobald sie anstehen – zum Beispiel die nächste Überprüfung.</p></section>';
   }
+  /* Sofort – direkt unter „Als Nächstes“, vor Fokuszielen, Tageskarte und Kindmodus */
+  var sofort=P.liste.filter(function(s){return s.phase==='sofort';});
+  if(sofort.length){h+='<section class="ar-karte bp-phase bp-sofort"><h3>'+svg('warn')+'Sofort</h3>'+schrittListe(sofort,r,P.kl)+'</section>';}
   /* Fokusziele */
   if(P.fokus.length){
     h+='<section class="ar-karte bp-fokus"><div class="ar-kartenkopf"><h3>Fokusziele'+(P.bp.fokusSeit?' <span class="ar-leise">seit '+esc(datum(P.bp.fokusSeit))+'</span>':'')+'</h3>'+(r.bearbeiten?'<button class="ar-link" type="button" data-bp="fokus">'+svg('edit')+'Ändern</button>':'')+'</div><ul>'+
@@ -332,16 +352,12 @@ function tab(d,r){
   }
   if(window.CDSE_TAGESKARTE){h+=window.CDSE_TAGESKARTE.karte(d,r);}
   if(window.CDSE_KINDMODUS){h+=window.CDSE_KINDMODUS.karte(d,r);}
-  /* Sofort */
-  var sofort=P.liste.filter(function(s){return s.phase==='sofort';});
-  if(sofort.length){h+='<section class="ar-karte bp-phase bp-sofort"><h3>'+svg('warn')+'Sofort</h3><ol class="bp-liste">'+sofort.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol></section>';}
   /* Phasen */
   PHASEN.forEach(function(p,i){
     var l=P.liste.filter(function(s){return s.phase===p[0]&&s.status!=='passt-nicht';});
-    var reihen=l.filter(function(s){return s.status!=='erledigt'&&s.status!=='laufend';}).concat(l.filter(function(s){return s.status==='laufend';})).concat(l.filter(function(s){return s.status==='erledigt';}));
     var x=P.phasen[p[0]];
     h+='<section class="ar-karte bp-phase" id="bp-phase-'+p[0]+'"><div class="bp-phasekopf"><h3><span class="bp-pnr">'+(i+1)+'</span>'+esc(p[1])+'</h3><span class="ar-leise">'+esc(p[2])+'</span><span class="bp-pzahl">'+(x.gesamt?x.fertig+' von '+x.gesamt:(x.termin?'nächster Termin '+esc(datum(x.termin)):''))+'</span></div>'+
-      (reihen.length?'<ol class="bp-liste">'+reihen.map(function(s){return schrittHtml(s,r,P.kl);}).join('')+'</ol>':'<p class="ar-leise">Keine Schritte.</p>')+'</section>';
+      schrittListe(l,r,P.kl)+'</section>';
   });
   /* Überprüfungen */
   var revs=(P.bp.reviews||[]).slice().sort(function(a,b){return String(b.datum).localeCompare(String(a.datum));});
@@ -434,12 +450,19 @@ function druckTeil(d){
    Aktionen
    ===================================================================== */
 function aktuell(){var d=H&&H.aktDossier&&H.aktDossier();return d||null;}
-function fertig(p,meldung){return p.then(function(neu){if(neu){H.dossierZeichnen(neu);}H.toast(meldung);return neu;},function(e){H.toast((e&&e.message)||String(e));});}
+/* knopf: der geklickte Knopf – nach einem Fehler wieder frei, die Meldung bleibt sichtbar */
+function fertig(p,meldung,knopf){
+  return p.then(function(neu){if(neu){H.dossierZeichnen(neu);}H.toast(meldung);return neu;},function(e){
+    var t=(e&&e.message)||String(e);
+    if(knopf){knopf.disabled=false;}
+    H.dialog('Nicht gespeichert','<p>'+esc(t)+'</p><p class="ar-leise">Bitte noch einmal versuchen. Bleibt der Fehler, das Dossier neu öffnen (F5).</p>',[{text:'Schließen',wert:'',primaer:true}]);
+  });
+}
 function schrittVon(d,key){var P=schritte(d,T.rechte(d));return P.liste.filter(function(s){return s.key===key;})[0]||null;}
 function spaeterDialog(d,s){
-  H.dialog('Auf später legen','<p><b>'+esc(s.titel)+'</b></p><div class="ar-raster2">'+H.feld('bis','Wieder zeigen am',plusTage(heute(),14),'date')+'</div>'+H.feld('notiz','Notiz (optional)','','text',' maxlength="200"'),
+  H.dialog('Auf später legen','<p><b>'+esc(s.titel)+'</b></p><div class="ar-raster2">'+H.feld('bis','Wieder zeigen am',plusTage(heute(),14),'date',' min="'+plusTage(heute(),1)+'" max="'+plusTage(heute(),SPAETER_MAX)+'"')+'</div>'+H.feld('notiz','Notiz (optional)','','text',' maxlength="200"'),
     [{text:'Abbrechen',wert:''},{text:'Später',wert:'ok',primaer:true}],
-    {pruefen:function(w){return w.werte.bis&&w.werte.bis>heute()?'':'Bitte ein Datum in der Zukunft wählen.';},
+    {pruefen:function(w){return !(w.werte.bis&&w.werte.bis>heute())?'Bitte ein Datum in der Zukunft wählen.':(w.werte.bis>plusTage(heute(),SPAETER_MAX)?'Bitte ein Datum innerhalb eines Jahres wählen.':'');},
      ausfuehren:function(w){return T.ops.planSchritt(d.id,s.key,{status:'spaeter',bis:w.werte.bis,notiz:w.werte.notiz,titel:s.titel});}})
     .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Auf später gelegt');}});
 }
@@ -469,22 +492,33 @@ function fokusDialog(d){
 function reviewDialog(d){
   var P=schritte(d,T.rechte(d)), k=kennzahlen(d,P), kt=kennzahlenText(k);
   var inhalt='<p>Seit '+(k.seit?datum(k.seit):'Beginn')+':'+(kt.length?' '+esc(kt.join(' · ')):' noch keine Zahlen')+'.</p>'+
-    '<div class="ar-raster2">'+H.feld('datum','Datum',heute(),'date')+'</div>'+
+    '<div class="ar-raster2">'+H.feld('datum','Datum',heute(),'date',' max="'+heute()+'"')+'</div>'+
     H.textfeld('notiz','Was hat sich verändert? Was behalten wir bei, was passen wir an?','',6);
   H.dialog('Überprüfung eintragen',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
-    pruefen:function(w){return String(w.werte.notiz||'').trim()?'':'Bitte kurz festhalten, was sich verändert hat.';},
+    /* eine Überprüfung in der Zukunft (Tippfehler) würde die nächste für Jahre verschieben */
+    pruefen:function(w){if(w.werte.datum&&w.werte.datum>heute()){return 'Das Datum liegt in der Zukunft – bitte korrigieren.';}return String(w.werte.notiz||'').trim()?'':'Bitte kurz festhalten, was sich verändert hat.';},
     ausfuehren:function(w){return T.ops.planUeberpruefung(d.id,{datum:w.werte.datum||heute(),notiz:w.werte.notiz,kennzahlen:k});}})
     .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Überprüfung gespeichert – die nächste ist in sechs Wochen');}});
 }
 /* Häufige Fristen: ein Klick füllt „Was ist zu tun?“, Frist in einer Woche, zuständig ich */
 var VORLAGEN=['Eltern zurückrufen','Lehrkraft kontaktieren','Helfernetz kontaktieren','PEI-Evaluation vorbereiten','Bericht schreiben','Réunion vorbereiten'];
+/* „Zuständig“: alphabetisch, die Fallverantwortlichen des Dossiers zuerst */
+function werAuswahl(d,wert){
+  var fv=(d&&d.verantwortlich)||[], konten=(K.konten?K.konten():[]).filter(function(k){return k&&k.id;})
+    .sort(function(a,b){return String(a.name||'').localeCompare(String(b.name||''),'de');});
+  var oben=konten.filter(function(k){return fv.indexOf(k.id)>=0;}), rest=konten.filter(function(k){return fv.indexOf(k.id)<0;});
+  function o(k){return '<option value="'+esc(k.id)+'"'+(k.id===wert?' selected':'')+'>'+esc(k.name)+'</option>';}
+  var fremd=wert&&!konten.some(function(k){return k.id===wert;})?'<option value="'+esc(wert)+'" selected>'+esc(H.kname(wert))+'</option>':'';
+  return '<label class="ar-feld"><span>Zuständig</span><select name="wer"><option value="">– offen –</option>'+fremd+
+    (oben.length?'<optgroup label="Fallverantwortlich">'+oben.map(o).join('')+'</optgroup>'+(rest.length?'<optgroup label="Weitere">'+rest.map(o).join('')+'</optgroup>':''):rest.map(o).join(''))+'</select></label>';
+}
 function eigenerDialog(d,x){
   x=x||{};
-  var konten=(K.konten?K.konten():[]).filter(function(k){return k&&k.id;}).map(function(k){return [k.id,k.name];}), me=(K.ich&&K.ich())||{};
+  var me=(K.ich&&K.ich())||{}, bisMax=plusTage(heute(),FRIST_MAX);
   var inhalt=(x.id?'':'<div class="bp-vorlagen" role="group" aria-label="Häufige Fristen">'+VORLAGEN.map(function(v){return '<button type="button" class="catchip" data-vorlage="'+esc(v)+'">'+esc(v)+'</button>';}).join('')+'</div>')+
     H.feld('titel','Was ist zu tun?',x.titel||'','text',' maxlength="200"')+H.textfeld('text','Details (optional)',x.text||'',3)+
     '<div class="ar-raster3">'+H.auswahl('phase','Phase',x.phase||'umsetzen',PHASEN.map(function(p){return [p[0],p[1]];}))+
-      H.auswahl('wer','Zuständig',x.id?(x.wer||''):(me.id||''),konten,'– offen –')+H.feld('bis','Bis wann? (optional)',x.bis||'','date')+'</div>';
+      werAuswahl(d,x.id?(x.wer||''):(me.id||''))+H.feld('bis','Bis wann? (optional)',x.bis||'','date',' max="'+bisMax+'"')+'</div>';
   H.dialog(x.id?'Schritt ändern':'Frist oder Schritt',inhalt,[{text:'Abbrechen',wert:''}].concat(x.id?[{text:'Löschen',wert:'loeschen',gefahr:true}]:[]).concat([{text:'Speichern',wert:'ok',primaer:true}]),{breit:true,
     nachAufbau:function(dlg){
       dlg.addEventListener('click',function(ev){
@@ -496,7 +530,11 @@ function eigenerDialog(d,x){
         f.elements.titel.focus();
       });
     },
-    pruefen:function(w){return w.aktion==='loeschen'||String(w.werte.titel||'').trim()?'':'Bitte angeben, was zu tun ist.';},
+    pruefen:function(w){
+      if(w.aktion==='loeschen'){return '';}
+      if(!String(w.werte.titel||'').trim()){return 'Bitte angeben, was zu tun ist.';}
+      return w.werte.bis&&w.werte.bis>bisMax?'Die Frist liegt mehr als zwei Jahre voraus – bitte das Datum prüfen.':'';
+    },
     ausfuehren:function(w){
       if(w.aktion==='loeschen'){return T.ops.planEigenerLoeschen(d.id,x.id);}
       var v={titel:w.werte.titel,text:w.werte.text,phase:w.werte.phase,wer:w.werte.wer,bis:w.werte.bis};
@@ -510,20 +548,27 @@ document.addEventListener('click',function(ev){
   var a=t.getAttribute('data-bp'), key=t.getAttribute('data-key')||'', sid=t.getAttribute('data-sid')||'';
   var eigen=sid?((d.begleitplan||{}).eigene||[]).filter(function(x){return x.id===sid;})[0]:null;
   if(a==='phase'){var el=document.getElementById('bp-phase-'+t.getAttribute('data-phase'));if(el){el.scrollIntoView({block:'start',behavior:'smooth'});}return;}
-  if(a==='drucken'){document.body.classList.add('bp-druck');setTimeout(function(){window.print();},50);return;}
+  if(a==='drucken'){
+    /* eingeklappte erledigte Schritte kommen mit aufs Papier */
+    Array.prototype.forEach.call(document.querySelectorAll('#bp-plan details.bp-erledigt:not([open])'),function(x){x.open=true;x.setAttribute('data-bp-zu','1');});
+    document.body.classList.add('bp-druck');setTimeout(function(){window.print();},50);return;
+  }
   if(a==='fokus'){fokusDialog(d);return;}
   if(a==='review'){reviewDialog(d);return;}
   if(a==='eigen-neu'){eigenerDialog(d,null);return;}
   if(a==='eigen-aendern'&&eigen){eigenerDialog(d,eigen);return;}
-  if(a==='eigen-erledigt'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'erledigt'}),'Erledigt');return;}
-  if(a==='eigen-offen'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'offen'}),'Wieder offen');return;}
+  if(a==='eigen-erledigt'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'erledigt'}),'Erledigt',t);return;}
+  if(a==='eigen-offen'&&eigen){t.disabled=true;fertig(T.ops.planEigenerAendern(d.id,sid,{status:'offen'}),'Wieder offen',t);return;}
   var s=key?schrittVon(d,key):null;if(!s){return;}
-  if(a==='erledigt'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'erledigt',titel:s.titel}),'Erledigt: '+s.titel);return;}
-  if(a==='offen'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'',titel:s.titel}),'Wieder offen');return;}
+  if(a==='erledigt'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'erledigt',titel:s.titel}),'Erledigt: '+s.titel,t);return;}
+  if(a==='offen'){t.disabled=true;fertig(T.ops.planSchritt(d.id,key,{status:'',titel:s.titel}),'Wieder offen',t);return;}
   if(a==='spaeter'){spaeterDialog(d,s);return;}
   if(a==='passt-nicht'){passtNichtDialog(d,s);return;}
 });
-window.addEventListener('afterprint',function(){document.body.classList.remove('bp-druck');});
+window.addEventListener('afterprint',function(){
+  document.body.classList.remove('bp-druck');
+  Array.prototype.forEach.call(document.querySelectorAll('#bp-plan details[data-bp-zu]'),function(x){x.open=false;x.removeAttribute('data-bp-zu');});
+});
 
 return {tab:tab, kurzKarte:kurzKarte, druckTeil:druckTeil, schritte:function(d,r){bausteine();return schritte(d,r);}, kennzahlen:function(d){bausteine();return kennzahlen(d,schritte(d,{}));},
   faellig:function(d,meId,bis){bausteine();return faellig(d,meId,bis);}};

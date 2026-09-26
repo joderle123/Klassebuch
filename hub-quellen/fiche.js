@@ -177,10 +177,13 @@ function isoAus(t){
 }
 function datumText(iso){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso||'');return m?m[3]+'.'+m[2]+'.'+m[1]:String(iso||'');}
 function datumKurz(iso){var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(iso||'');return m?m[3]+'.'+m[2]+'.'+m[1].slice(2):String(iso||'');}
+/* Geschlecht: das erste Wort als Ganzes vergleichen – „Mädchen“ (madchen) beginnt mit „m“, ist aber kein Junge */
+var G_W=['f','w','fem','femme','feminin','feminine','fille','female','girl','weibl','weiblich','madchen','maedchen','meedchen'];
+var G_M=['m','h','masc','masculin','masculine','garcon','homme','male','boy','mannl','mannlich','maennlich','junge','jong'];
 function geschlechtAus(t){
-  var n=norm(t);if(!n){return '';}
-  if(/^(m|masc|masculin|garcon|homme|male|männlich|maennlich|junge)/.test(n)){return 'm';}
-  if(/^(f|w|fem|feminin|fille|femme|female|weiblich|madchen|maedchen)/.test(n)){return 'w';}
+  var w=norm(t).replace(/[^a-z]+/g,' ').trim().split(' ')[0];if(!w){return '';}
+  if(G_W.indexOf(w)>=0){return 'w';}
+  if(G_M.indexOf(w)>=0){return 'm';}
   return '';
 }
 /* Luxemburger Matricule: 13 Ziffern, beginnt mit dem Geburtsdatum JJJJMMTT */
@@ -406,11 +409,14 @@ function setzePfad(o,pfad,wert){
   x[t[t.length-1]]=wert;
 }
 function holePfad(o,pfad){return pfad.split('.').reduce(function(x,k){return x==null?undefined:x[k];},o);}
+/* Angekreuzt (Kästchen als Zeichen, kein Ankreuzfeld): ☒ ⊠ ☑ ✓ ✔, „[x]“ oder ein einzelnes x/X –
+   z. B. von Hand neben das leere Kästchen geschrieben („☐ x autorité parentale“) */
+function angekreuzt(t){t=String(t||'');return /[☒⊠☑✓✔]|\[\s*x\s*\]/i.test(t)||/(^|[\s☐(\[])[xX](?=$|[\s☐)\]])/.test(t);}
 function slotLesen(s){
   if(!s){return '';}
   if(s.art==='sdt'){return s.sdt.wert;}
   if(s.art==='haken'){return !!s.sdt.wert;}
-  if(s.art==='hakentext'){return /☒|⊠|\[x\]/i.test(s.c.text);}
+  if(s.art==='hakentext'){return angekreuzt(s.c.text);}
   if(s.art==='zelle'){var t=s.c.text.trim();return PLATZHALTER.test(t)?'':t;}
   if(s.art==='absatz'){var a=textVon(s.p);var i=a.indexOf(':');return i>=0?a.slice(i+1).trim():'';}
   if(s.art==='titel'){var m=/(\d{2})\s*[-\/]\s*(\d{2})/.exec(textVon(s.p));return m?m[1]+'-'+m[2]:'';}
@@ -429,22 +435,37 @@ function aufraeumen(o){
   if(o&&typeof o==='object'){var r={};Object.keys(o).forEach(function(k){r[k]=aufraeumen(o[k]);});return r;}
   return o;
 }
+/* Namen der Maßnahmen für Hinweise */
+var M_NAMEN={diagnostic:'Diagnostic spécialisé',cgPro:'Conseil et guidance des professionnel·le·s',cgEltern:'Conseil et guidance parents',isa:'ISA',atelier:'Atelier',reeducation:'Rééducation',
+  annexe:'Annexe',cdp:'Classe de participation',cst:'CST',cloture:'Clôture du dossier',scol:'Scolarisation spécialisée'};
 function lesenAusDoc(doc){
   var k=karte(doc), roh={};
-  Object.keys(k.slots).forEach(function(p){var w=slotLesen(k.slots[p]);if(typeof w==='string'){w=w.trim();}if(!leer(w)){setzePfad(roh,p,w);}});
+  Object.keys(k.slots).forEach(function(p){
+    var w=slotLesen(k.slots[p]);if(typeof w==='string'){w=w.trim();}
+    if(!leer(w)){setzePfad(roh,p,w);}
+    /* Maßnahme steht in der Datei, ist aber nicht angekreuzt: aktiv:false ausdrücklich mitgeben –
+       sonst kann eine neuere Fiche beim Aktualisieren einen Haken nie entfernen */
+    else if(w===false&&/^fiche\.cdse\.[a-zA-Z]+\.aktiv$/.test(p)){setzePfad(roh,p,false);}
+  });
   var d={person:roh.person||{},fiche:roh.fiche||{}}, f=d.fiche, p=d.person, hinweise=[];
   /* Aufbereiten */
   if(f.datum){var di=isoAus(f.datum);if(di){f.datum=di;}else{hinweise.push('„Date Fiche“ ist kein Datum: '+f.datum);}}
   if(p.geschlecht){var g=geschlechtAus(p.geschlecht);if(!g){hinweise.push('Geschlecht nicht erkannt: '+p.geschlecht);}p.geschlecht=g;}
   if(p.matricule){p.matricule=String(p.matricule).replace(/\s+/g,' ').trim();}
-  if(p.geburtsdatum){p.geburtsdatum=isoAus(p.geburtsdatum)||'';}
+  if(p.geburtsdatum){var gd=isoAus(p.geburtsdatum);if(!gd){hinweise.push('„Date de naissance“ ist kein Datum („'+p.geburtsdatum+'“) – bitte das Geburtsdatum prüfen.');}p.geburtsdatum=gd||'';}
   if(!p.geburtsdatum&&p.matricule){var gb=gebAusMatricule(p.matricule);if(gb){p.geburtsdatum=gb;hinweise.push('Geburtsdatum aus der Matricule übernommen: '+datumText(gb));}}
   if(f.ankunft){var an=isoAus(f.ankunft);if(an){f.ankunft=an;}else{f.migration=f.ankunft;delete f.ankunft;}}
   if(f.schule){if(f.schule.name){p.schule=f.schule.name;}if(f.schule.klasse){p.klasse=f.schule.klasse;}}
+  /* Daten der Maßnahmen als Datum; was kein Datum ist („Sept. 2025“), bleibt als Text – mit Hinweis je Feld */
   if(f.cdse){Object.keys(f.cdse).forEach(function(m){var x=f.cdse[m];if(!x||typeof x!=='object'){return;}
-    (Array.isArray(x)?x:[x]).forEach(function(y){if(!y){return;}['von','bis'].forEach(function(k){if(y[k]){var iso=isoAus(y[k]);if(iso){y[k]=iso;}}});});});}
-  if(f.progression){f.progression=f.progression.map(function(x){return x==null?'':String(x).trim();});while(f.progression.length&&!f.progression[f.progression.length-1]){f.progression.pop();}}
+    (Array.isArray(x)?x:[x]).forEach(function(y){if(!y||typeof y!=='object'){return;}['von','bis'].forEach(function(k){if(y[k]){var iso=isoAus(y[k]);if(iso){y[k]=iso;}
+      else{hinweise.push((m==='sonstige'?(y.label||'Sonstige Maßnahme'):(M_NAMEN[m]||m))+': „'+(k==='von'?'Date de début':'Date de fin')+'“ ist kein Datum („'+y[k]+'“) – so zählt die Maßnahme als '+(k==='von'?'„ohne Beginn“':'„ohne Ende“ (laufend)')+'. Bitte im Reiter „Fiche“ als Datum eintragen.');}}});});});}
+  /* Lücken (leere Spalten) als '' – map() überspringt Lücken im Array, deshalb eine Schleife */
+  if(f.progression){var pr=[];for(var pi=0;pi<f.progression.length;pi++){var px=f.progression[pi];pr.push(px==null?'':String(px).trim());}while(pr.length&&!pr[pr.length-1]){pr.pop();}f.progression=pr;}
+  /* Schullaufbahn nicht verdichten: jede Angabe gehört zu ihrer Spalte (Schuljahr), Lücken bleiben leer */
+  var prog=f.progression;
   d.fiche=aufraeumen(f);d.person=p;
+  if(prog){d.fiche.progression=prog;}
   if(!p.nachname&&!p.vorname){hinweise.push('In der Datei wurde kein Name gefunden. Ist es eine Fiche de renseignement?');}
   return {daten:d,hinweise:hinweise,nichtZugeordnet:k.rest};
 }
@@ -601,5 +622,7 @@ function pfadeAusBlob(blob){return blob.arrayBuffer().then(zipLesen).then(functi
   return {pfade:Object.keys(k.slots).map(function(p){return p+' ['+k.slots[p].art+(k.slots[p].sdt?':'+k.slots[p].sdt.typ:'')+']';}),rest:k.rest};
 });}
 return {pfadeAusBlob:pfadeAusBlob, lesen:lesen, schreiben:schreiben, dateiname:dateiname, vorlageBlob:vorlageBlob, lesenAusBlob:lesenAusBlob,
-  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText, docxText:docxText};
+  isoAus:isoAus, gebAusMatricule:gebAusMatricule, schuljahr:schuljahr, massnahmen:MASSNAHMEN, datumText:datumText, docxText:docxText,
+  /* für Tests: Geschlecht aus dem Text, Kästchen als Zeichen angekreuzt? */
+  geschlechtAus:geschlechtAus, angekreuzt:angekreuzt};
 })();

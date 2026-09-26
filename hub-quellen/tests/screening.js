@@ -1,6 +1,7 @@
-// Test: Screening im Schülerdossier – Bogen je Stufe, Pflichtangaben, Auswertung (Ampel, Gesamteinschätzung,
-// nächste Schritte), Speichern verschlüsselt im Dossier, Warnsignale, Vergleich zweier Beobachtender, Entwurf,
-// Löschen, 390 px. Nur erfundene Personen.
+// Test: Screening im Schülerdossier – Bogen je Stufe, Pflichtangaben (auch „keine Angabe“), Auswertung (Ampel,
+// Gesamteinschätzung, nächste Schritte), Speichern verschlüsselt im Dossier, Warnsignale, Vergleich zweier
+// Beobachtender, Entwurf je Konto, Stufenwechsel, Löschen nur mit Schreibrecht, älteres Warnsignal in der Übersicht,
+// 390 px. Nur erfundene Personen.
 // Aufruf: node tests/screening.js   (BASE=… für eine andere Hub-Datei)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -62,13 +63,17 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   const nGS = await page.$$eval('.sc-item', l => l.length);
   check('Cycle 2–4: 68 Aussagen (60 + 8 Stärken, ohne reine C1/ES-Aussagen)', nGS === 68, nGS);
   await page.click('[data-sc="speichern"]'); await warte(300);
-  check('Speichern ohne Angaben: Hinweis, fehlende Aussagen markiert', (await page.$$('.sc-item.sc-fehlt')).length === nGS && (await page.$$('.sc-frage.sc-fehlt')).length === 2);
+  check('Speichern ohne Angaben: Hinweis, fehlende Aussagen und die sechs Pflichtfragen (Dauer, Orte, Beeinträchtigung) markiert', (await page.$$('.sc-item.sc-fehlt')).length === nGS && (await page.$$('.sc-frage.sc-fehlt')).length === 6, (await page.$$('.sc-frage.sc-fehlt')).length);
+  check('Beeinträchtigung: „keine Angabe“ bei den vier Fragen wählbar', (await page.$$('#sc-auswirkung input[value="ka"]')).length === 4 && !!(await page.$('#sc-f-leiden input[value="ka"]')));
+  check('Datum: höchstens heute (max)', (await page.getAttribute('input[name="sc-datum"]', 'max')) === await page.evaluate(() => CDSE_ARBEIT.hilfen.heuteIso()));
   await bereich('aufmerksamkeit', 3); await bereich('unruhe', 2); await bereich('angst', 0); await bereich('stimmung', 1); await bereich('regulation', 0);
   await bereich('verhalten', 0); await bereich('sozial', -1); await bereich('lernen', 1); await bereich('sprache', 0); await bereich('koerper', 0); await bereich('staerken', 2);
   check('Stand: alle Aussagen beantwortet', (await text('#sc-stand')).startsWith(nGS + ' von ' + nGS));
-  await frage('dauer', 'lang'); await frage('leiden', '2'); await frage('lernen', '3'); await frage('beziehungen', '1'); await frage('gruppe', '2'); await frage('orte', 'mehrere'); await frage('ereignis', 'nein');
+  await frage('dauer', 'lang'); await frage('leiden', '2'); await frage('lernen', '3'); await frage('beziehungen', '1'); await frage('gruppe', '2'); await frage('orte', 'mehrere');
+  await frage('ereignis', 'ja'); await page.fill('[data-sc-ereignis]', 'Umzug (erfunden)'); await frage('ereignis', 'nein');
   await page.fill('[data-sc-notiz]', 'Beobachtet im Unterricht und in der Pause.');
   check('Entwurf in sessionStorage (nur dieser Tab)', await page.evaluate(id => !!sessionStorage.getItem('cdse-screening-entwurf-' + id), tom));
+  check('Entwurf gehört dem angemeldeten Konto', await page.evaluate(id => JSON.parse(sessionStorage.getItem('cdse-screening-entwurf-' + id)).konto === CDSE_KONTO.ich().id, tom));
   await page.click('.ar-tabs [data-tab="ueberblick"]'); await warte(200); await page.click('.ar-tabs [data-tab="screening"]'); await warte(200);
   check('Reiter wechseln: der Bogen bleibt ausgefüllt', await page.isVisible('.sc-bogen') && (await text('#sc-stand')).startsWith(nGS + ' von'));
   await page.screenshot({ path: path.join(OUT, 's1-bogen.png') });
@@ -91,9 +96,13 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Bei deutlichen Bereichen: „Abklären“ und ELDiB-Ziele', (await text('.sc-schritt')).includes('Abklären:') && (await page.$$('.sc-schritt .sc-code')).length >= 5);
   check('Was beobachtet wurde: „sehr oft“ und Stärken', (await text('.sc-beob')).includes('sehr oft') && await page.isVisible('.sc-beob-staerken'));
   check('Hinweis „kein Test, keine Diagnose, nicht genormt“ und Quellen', (await text('.sc-kopf')).includes('kein Test und keine Diagnose') && (await page.$$('.sc-quellen li')).length >= 5);
+  check('Weitere (gelbe) Bereiche eingeklappt: „Weitere Bereiche zum Beobachten (2)“', !!(await page.$('#sc-ergebnis details.sc-weitere:not([open])')) && /Weitere Bereiche zum Beobachten \(2\).*Stimmung & Rückzug/.test(await text('#sc-ergebnis details.sc-weitere summary')));
+  check('ELDiB-Ziele mit Stichwort, wenn die ELDiB geladen ist', await page.evaluate(() => typeof ELDIB_BANK === 'undefined' || !!document.querySelector('#sc-ergebnis .sc-eldib .sc-code-text')));
+  check('Ereignis „nein“: der vorher getippte Text erscheint nicht', !(await text('#sc-ergebnis')).includes('Umzug (erfunden)'));
   await page.locator('#sc-ergebnis').screenshot({ path: path.join(OUT, 's2-ergebnis.png') });
   const gesp = await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id, true); return { s: d.screenings, v: d.verlauf.map(x => x.t) }; }, tom);
   check('Gespeichert im Dossier: Antworten, Auswirkungen, Kurzfassung, Protokoll', gesp.s.length === 1 && gesp.s[0].antworten.a1 === 3 && gesp.s[0].antworten.m1 === -1 && gesp.s[0].auswirkung.dauer === 'lang' && gesp.s[0].kurz.gesamt === 'planen' && gesp.s[0].kurz.bereiche.aufmerksamkeit.stufe === 'rot' && gesp.v.some(t => /^Screening vom/.test(t)), gesp.s[0] && gesp.s[0].kurz);
+  check('Nicht gespeichert: Ereignis-Text bei „nein“, Warnsignal-Notiz ohne Warnsignal', !('ereignisText' in gesp.s[0].auswirkung) && gesp.s[0].warnNotiz === '', gesp.s[0].auswirkung);
   check('Entwurf danach gelöscht', await page.evaluate(id => !sessionStorage.getItem('cdse-screening-entwurf-' + id), tom));
   const roh = await page.evaluate(async id => { const r = await navigator.storage.getDirectory(); const g = await (await r.getDirectoryHandle('gemeinsam')).getDirectoryHandle('schueler'); return await (await (await g.getFileHandle(id + '.cdse')).getFile()).text(); }, tom);
   check('Dossier-Datei bleibt verschlüsselt (keine Antworten im Klartext)', roh.includes('cdse-dossier') && !roh.includes('screenings') && !roh.includes('Unterricht und in der Pause'));
@@ -115,17 +124,27 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Warnsignal: „Heute handeln“ mit Schritten, Hilfenummern und wörtlicher Notiz', (await text('.sc-gesamt h3')) === 'Heute handeln' && (await text('.sc-warn')).includes('116 111') && (await text('.sc-warn')).includes('„Ich will nicht mehr da sein.“'));
   check('Belastendes Ereignis wird im Ergebnis genannt', (await text('#sc-ergebnis')).includes('Trennung der Eltern'));
 
-  console.log('5) Stufe C1: andere Texte, keine Schul-Aussagen');
+  console.log('5) Stufe C1: andere Texte, keine Schul-Aussagen; Entwurf einer anderen Person');
+  /* Entwurf einer anderen Person im selben Tab (z. B. vor dem Abmelden liegen geblieben): nie anzeigen */
+  await page.evaluate(id => sessionStorage.setItem('cdse-screening-entwurf-' + id, JSON.stringify({ konto: 'fremdes-konto', e: { datum: '2026-09-01', stufe: 'C1', rolle: 'lehrkraft', antworten: { a1: 3 }, auswirkung: {}, warn: ['gefahr'], warnNotiz: 'FREMD-NOTIZ (erfunden)', notiz: '' } })), ben);
   await screeningReiter(ben); await page.click('[data-sc="neu"]'); await page.waitForSelector('.sc-bogen');
+  check('Fremder Entwurf: nicht angezeigt, nicht übernommen, gelöscht', !(await text('.sc-bogen')).includes('FREMD-NOTIZ') && !(await page.$('#sc-i-a1 input:checked')) && await page.evaluate(id => { const x = JSON.parse(sessionStorage.getItem('cdse-screening-entwurf-' + id) || 'null'); return !x || x.konto === CDSE_KONTO.ich().id; }, ben));
   check('Ben (C1.2): Stufe C1 vorgewählt, C1-Text bei a1, ohne v7/l5/l7', await page.inputValue('select[name="sc-stufe"]') === 'C1' && (await text('#sc-i-a1')).includes('Bleibt nur kurz bei einem Spiel') && !(await page.$('#sc-i-v7')) && !(await page.$('#sc-i-l5')) && !(await page.$('#sc-i-l7')));
+  await page.$eval('#sc-i-g6 input[value="2"]', el => el.click()); await page.$eval('#sc-i-a2 input[value="1"]', el => el.click());
   await page.selectOption('select[name="sc-stufe"]', 'ES'); await warte(300);
   check('Stufe wechseln (ES): Texte und Aussagen passen sich an (l7, Warnsignal Sucht)', !!(await page.$('#sc-i-l7')) && (await text('#sc-warnsignale')).includes('Alkohol') && !(await page.$('#sc-i-k1')));
+  check('Stufe wechseln: g6 (dort anderer Text) entfernt und markiert, a2 bleibt; Hinweis in einer Zeile', !(await page.$('#sc-i-g6 input:checked')) && !!(await page.$('#sc-i-g6.sc-fehlt')) && !!(await page.$('#sc-i-a2 input[value="1"]:checked')) &&
+    (await text('.sc-stufehinweis')).includes('Stufe gewechselt: 1 Antwort passte nicht zur neuen Stufe und wurde entfernt'), await text('.sc-stufehinweis').catch(() => ''));
   await page.click('[data-sc="abbrechen"]'); await warte(300);
   check('Abbrechen: zurück zur Liste', await page.isVisible('.sc-einfuehrung') && !(await page.$('.sc-bogen')));
+  check('CDSE_SCREENING.vergessen() (Abmelden/Sperren): alle Entwürfe weg', await page.evaluate(ids => { ids.forEach(id => sessionStorage.setItem('cdse-screening-entwurf-' + id, JSON.stringify({ konto: CDSE_KONTO.ich().id, e: { stufe: 'GS', antworten: {}, auswirkung: {}, warn: [] } }))); CDSE_SCREENING.vergessen(); return !Object.keys(sessionStorage).some(k => k.indexOf('cdse-screening-entwurf-') === 0); }, [tom, ben]));
 
   console.log('6) Löschen');
   await screeningReiter(tom);
   await page.click('.sc-eintrag:has-text("24.09.2026")'); await page.waitForSelector('#sc-ergebnis');
+  await page.evaluate(() => { window.__r = CDSE_TEAM.rechte; CDSE_TEAM.rechte = d => Object.assign({}, window.__r(d), { bearbeiten: false, weitergeben: false }); CDSE_ARBEIT.hilfen.dossierZeichnen(CDSE_ARBEIT.hilfen.aktDossier()); }); await warte(200);
+  check('Ohne Schreibrecht kein „Löschen“ – auch nicht beim eigenen Screening', await page.isVisible('#sc-ergebnis') && !(await page.$('[data-sc="loeschen"]')));
+  await page.evaluate(() => { CDSE_TEAM.rechte = window.__r; CDSE_ARBEIT.hilfen.dossierZeichnen(CDSE_ARBEIT.hilfen.aktDossier()); }); await warte(200);
   await page.click('[data-sc="loeschen"]'); await page.waitForSelector('dialog.ar-dialog'); await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Löschen")');
   await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 20000 }); await warte(300);
   check('Screening gelöscht, Protokoll vermerkt es', (await page.$$('.sc-eintrag')).length === 1 && (await page.evaluate(async id => (await CDSE_TEAM.dossier(id, true)).verlauf.map(x => x.t).join('|'), tom)).includes('Screening vom 2026-09-24 gelöscht'));
@@ -149,6 +168,25 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await druck.close();
   const ds = await page.evaluate(async id => CDSE_DATENBANK.datensatz(await CDSE_TEAM.dossier(id, true)), tom);
   check('Datenbank: letztes Screening, Einschätzung, deutliche Bereiche, Warnsignal', ds.screeningDatum && ds.screeningStand === 'Unterstützung planen' && ds.screeningDeutlich.join() === 'Aufmerksamkeit & Ausdauer,Unruhe & Impulsivität' && ds.screeningWarn === 'nein', ds);
+
+  console.log('7b) Warnsignal älter als drei Monate: „Warnsignal am …“ statt „Heute handeln“');
+  const vor200 = await page.evaluate(() => { const t = new Date(Date.now() - 200 * 864e5); return t.getFullYear() + '-' + String(t.getMonth() + 1).padStart(2, '0') + '-' + String(t.getDate()).padStart(2, '0'); });
+  await page.evaluate(async ([id, datum]) => {
+    const B = CDSE_SCREENING_BOGEN, a = {};
+    B.bereiche.forEach(b => CDSE_SCREENING.items(b, 'C1').forEach(i => { a[i.id] = 0; }));
+    CDSE_SCREENING.items(B.staerken, 'C1').forEach(i => { a[i.id] = 2; });
+    const s = { datum, stufe: 'C1', rolle: 'lehrkraft', version: 1, antworten: a, auswirkung: { dauer: 'lang', leiden: '0', lernen: '0', beziehungen: '0', gruppe: '0', orte: 'mehrere', ereignis: 'nein' }, warn: ['gefahr'], warnNotiz: '', notiz: '' };
+    s.kurz = CDSE_SCREENING.kurz(s);
+    await CDSE_TEAM.ops.screening(id, s);
+  }, [ben, vor200]);
+  await gehe('#/'); await gehe('#/screening'); await page.waitForSelector('[data-scu="filter"][data-wert="alle"]');
+  /* vorher stand der Filter „Ohne Screening“ – Ben hat jetzt eins, die Liste wäre leer */
+  await page.click('[data-scu="filter"][data-wert="alle"]'); await page.waitForSelector('.sc-ub-tab'); await warte(150);
+  const zeileBen = (await page.$$eval('.sc-ub-tab .ar-zeile:not(.kopf)', l => l.map(x => x.textContent.replace(/\s+/g, ' ')))).find(t => /BEISPIEL Ben/.test(t)) || '';
+  check('Übersicht: Ben „Warnsignal am …“ (grau) und die Einschätzung ohne Warnsignal, kein „Heute handeln“', zeileBen.includes('Warnsignal am ' + vor200.split('-').reverse().join('.')) && zeileBen.includes('Unauffällig') && !zeileBen.includes('Heute handeln'), zeileBen);
+  const zahlen2 = await page.$$eval('.sc-ub-zahl b', l => l.map(x => x.textContent));
+  check('Zählt nicht als „Warnsignal (3 Monate)“', zahlen2[0] === '0', zahlen2);
+
   console.log('8) Handy (390 px)');
   await page.setViewportSize({ width: 390, height: 844 }); await warte(300);
   await gehe('#/screening'); await page.waitForSelector('.sc-ub-tab'); await warte(200);

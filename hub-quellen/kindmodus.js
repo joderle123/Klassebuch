@@ -34,12 +34,17 @@ function datum(i){return H?H.datum(i):i;}
 function plusTage(iso,n){var t=new Date(iso+'T12:00:00');t.setDate(t.getDate()+n);return isoVon(t);}
 function montag(iso){var w=new Date(iso+'T12:00:00').getDay();return plusTage(iso,-((w+6)%7));}
 function wtag(iso){return new Date(iso+'T12:00:00').getDay();}
+/* Tag eines Zeitstempels (z, in UTC gespeichert) in der Ortszeit – eine Runde kurz nach Mitternacht zählt zum richtigen Tag */
+function tagVon(z){z=String(z||'');if(z.length>10&&z.charAt(10)==='T'){var t=new Date(z);if(!isNaN(t)){return isoVon(t);}}return z.slice(0,10);}
 function zahl(x){return (Math.round(x*10)/10).toString().replace('.',',');}
 function P(n){return Math.round(n*10)/10;}
 var TAGE_KURZ=['So','Mo','Di','Mi','Do','Fr','Sa'], TAGE_LANG=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 var MONATE=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 var TEMPO=1;                 /* Zeitfaktor (Tests: kleiner) */
-var SITZ='cdse_kindmodus';   /* sessionStorage: Prüfwert des Codes, Dossier-Id, Fehlversuche */
+var TIPP_PAUSE=500;          /* ms nach jedem neuen Bildschirm, in denen Tippen nicht zählt (Doppeltippen) */
+var ROT_SEK=6;               /* Rot: so lange anhalten, bevor Gelb von selbst kommt (Zeit zum Lesen und Zuhören) */
+var MAX_STRAT=5;             /* höchstens so viele Strategien für die Stopp-Ampel (die eigene zählt mit) */
+var SITZ='cdse_kindmodus';   /* sessionStorage: Prüfwert des Codes, Dossier-Id, Fehlversuche, Vollbild, Sperre */
 var SPRACHE=typeof window!=='undefined'&&'speechSynthesis' in window&&typeof window.SpeechSynthesisUtterance==='function';
 
 /* =====================================================================
@@ -99,7 +104,7 @@ function questTage(km,ab,bis){
   });});
   return l.sort(function(a,b){return a.datum.localeCompare(b.datum);});
 }
-function rundenIn(km,ab,bis){return (km.runden||[]).filter(function(x){var t=String(x&&x.z||'').slice(0,10);return t&&(!ab||t>=ab)&&(!bis||t<=bis);});}
+function rundenIn(km,ab,bis){return (km.runden||[]).filter(function(x){var t=tagVon(x&&x.z);return t&&(!ab||t>=ab)&&(!bis||t<=bis);});}
 function auswertung(km,ab,bis){
   var q=questTage(km,ab,bis), rr=rundenIn(km,ab,bis), amp=rr.filter(function(x){return x.spiel==='ampel';}), atem=rr.filter(function(x){return x.spiel==='atem';});
   var paare=amp.filter(function(x){return x.vor&&x.nach;}), st={}, sig={};
@@ -408,7 +413,7 @@ function kurz(d){
 /* Kennzahlen für die Überprüfung im Begleitplan: im Zeitraum (Filter über das Datum) */
 function kennzahlen(d,imZeitraum){
   var km=kmVon(d);if(!km){return null;}
-  var q=questTage(km,'','').filter(function(x){return imZeitraum(x.datum);}), rr=(km.runden||[]).filter(function(x){return x&&imZeitraum(String(x.z||'').slice(0,10));});
+  var q=questTage(km,'','').filter(function(x){return imZeitraum(x.datum);}), rr=(km.runden||[]).filter(function(x){return x&&imZeitraum(tagVon(x.z));});
   var amp=rr.filter(function(x){return x.spiel==='ampel';}).length, atem=rr.filter(function(x){return x.spiel==='atem';}).length;
   if(!q.length&&!amp&&!atem){return null;}
   return {quest:q.length,sterne:q.length?Math.round(q.reduce(function(a,x){return a+x.sterne;},0)/q.length*10)/10:0,einig:q.filter(function(x){return x.einig;}).length,ampel:amp,atem:atem};
@@ -424,7 +429,7 @@ function kennzahlText(x){
 /* Für den Verlauf (D1): Sterne je Tag und geübte Runden */
 function verlaufDaten(d,ab,bis){
   var km=kmVon(d);if(!km){return null;}
-  return {tage:questTage(km,ab,bis),runden:rundenIn(km,ab,bis).map(function(x){return {datum:String(x.z).slice(0,10),spiel:x.spiel};})};
+  return {tage:questTage(km,ab,bis),runden:rundenIn(km,ab,bis).map(function(x){return {datum:tagVon(x.z),spiel:x.spiel};})};
 }
 
 /* =====================================================================
@@ -441,6 +446,8 @@ function einrichtenDialog(d){
   });
   var vn=String((d.person||{}).vorname||'').trim().split(/\s+/)[0]||'';
   var startZiel=km.ziel||(vs[0]&&vs[0].kind?vs[0].text:''), startCode=km.ziel?(km.code||''):(vs[0]&&vs[0].kind?vs[0].code:'');
+  /* Gibt es diese Woche schon Sterne, stehen Wochenziel und „Belohnung ab“ für die Woche fest (seit dem ersten Stern) */
+  var woJetzt=kmVon(d)?woche(km,montag(heute())):null;
   var inhalt='<p>Im Kindmodus übt das Kind selbst – immer zusammen mit einer erwachsenen Person. Es sieht nur seinen Spitznamen, seine Figur, sein Wochenziel und die Übungen, nichts aus dem Dossier. Gespeichert werden nur Sterne und geübte Runden.</p>'+
     '<div class="ar-raster2">'+H.feld('spitzname','Spitzname (so heißt das Kind im Spiel)',km.spitzname||vn,'text',' maxlength="20"')+
       H.auswahl('schwelle','Belohnung ab … Sternen pro Woche',String(km.schwelle||8),[4,5,6,7,8,9,10,11,12].map(function(n){return [String(n),n+' von '+MAX_WOCHE+' Sternen'];}))+'</div>'+
@@ -448,14 +455,29 @@ function einrichtenDialog(d){
     '<fieldset class="km-e-wahl km-e-welten"><legend>Welt der Ziel-Quest</legend>'+WELTEN.map(function(w){return '<label><input type="radio" name="welt" value="'+w[0]+'"'+((km.welt||'baum')===w[0]?' checked':'')+'>'+weltSvg(w[0],8)+'<span><b>'+esc(w[1])+'</b> '+esc(w[2])+'</span></label>';}).join('')+'</fieldset>'+
     (vs.length?H.auswahl('vorschlag','Wochenziel aus dem Begleitplan übernehmen','',vs.map(function(v,i){return [String(i),(v.kind?'Tageskarte: ':'Fokusziel '+v.code+': ')+v.text];}),'– selbst formulieren –'):'')+
     H.feld('ziel','Wochenziel, so wie das Kind es sagt',startZiel,'text',' maxlength="90" placeholder="z. B. Ich melde mich, bevor ich rede."')+'<input type="hidden" name="code" value="'+esc(startCode)+'">'+
-    '<fieldset class="km-e-strat"><legend>Strategien für die Stopp-Ampel <span class="ar-leise">(zwei bis vier, die im Alltag wirklich erlaubt sind)</span></legend><div class="km-e-haken">'+
+    (woJetzt?'<fieldset class="km-e-ab"><legend>Ab wann gelten ein neues Wochenziel und „Belohnung ab“?</legend>'+
+      '<label class="ar-haken"><input type="radio" name="ab" value="heute" checked> Ab heute – das Kind sieht es gleich</label>'+
+      '<label class="ar-haken"><input type="radio" name="ab" value="woche"> Ab nächster Woche (Montag)</label>'+
+      '<p class="ar-klein">Diese Woche gilt bisher: „'+esc(woJetzt.ziel||km.ziel)+'“, Belohnung ab '+(woJetzt.schwelle||km.schwelle||8)+' Sternen.</p></fieldset>':'')+
+    '<fieldset class="km-e-strat"><legend>Strategien für die Stopp-Ampel <span class="ar-leise">(zwei bis vier, die im Alltag wirklich erlaubt sind; höchstens '+MAX_STRAT+', die eigene zählt mit)</span></legend>'+
+      '<p class="km-e-zahl" id="km-e-zahl" aria-live="polite"></p><div class="km-e-haken">'+
       STRAT_REIHE.map(function(id){return '<label class="ar-haken"><input type="checkbox" name="s_'+id+'"'+((km.strategien||['atmen','weggehen','hilfe']).indexOf(id)>=0?' checked':'')+'> '+esc(STRATEGIEN[id].erw)+'</label>';}).join('')+'</div>'+
       H.feld('eigene','Eigene Strategie (optional)',km.eigene||'','text',' maxlength="60" placeholder="z. B. Knautschball drücken"')+'</fieldset>'+
     '<fieldset class="km-e-bel"><legend>Belohnungen zur Auswahl <span class="ar-leise">(optional, bis zu drei)</span></legend><div class="ar-raster2">'+[0,1,2].map(function(i){
       return H.feld('b'+i,'Belohnung '+(i+1),(km.belohnungen||[])[i]||'','text',' maxlength="60" placeholder="'+['z. B. 10 Minuten Lieblingsspiel','z. B. Den Ball für die Pause aussuchen','z. B. Einen Sticker aussuchen'][i]+'"');}).join('')+'</div></fieldset>';
   H.dialog(kmVon(d)?'Kindmodus ändern':'Kindmodus einrichten',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{breit:true,
     nachAufbau:function(dlg){
-      var f=dlg.querySelector('form');if(!f.elements.vorschlag){return;}
+      var f=dlg.querySelector('form');
+      /* Zähler: höchstens MAX_STRAT Strategien (die eigene zählt mit) – sind es genug, lassen sich keine weiteren anhaken */
+      function zaehlen(){
+        var n=stratZahl(f), voll=n>=MAX_STRAT, z=dlg.querySelector('#km-e-zahl');
+        STRAT_REIHE.forEach(function(id){var c=f.elements['s_'+id];c.disabled=voll&&!c.checked;var l=c.closest('label');if(l){l.classList.toggle('aus',c.disabled);}});
+        if(z){z.textContent=n+' von höchstens '+MAX_STRAT+' gewählt'+(n>MAX_STRAT?' – bitte eine weglassen':(voll?' – mehr geht nicht':''));z.classList.toggle('zuviel',n>MAX_STRAT);}
+      }
+      STRAT_REIHE.forEach(function(id){f.elements['s_'+id].addEventListener('change',zaehlen);});
+      f.elements.eigene.addEventListener('input',zaehlen);
+      zaehlen();
+      if(!f.elements.vorschlag){return;}
       f.elements.vorschlag.addEventListener('change',function(){
         var i=f.elements.vorschlag.value, v=vs[+i];if(i===''||!v){return;}
         f.elements.code.value=v.code||'';
@@ -464,17 +486,26 @@ function einrichtenDialog(d){
       f.elements.ziel.addEventListener('input',function(){if(f.elements.vorschlag.value===''){f.elements.code.value=km.ziel&&f.elements.ziel.value===km.ziel?(km.code||''):'';}});
     },
     pruefen:function(w){
-      var x=w.werte;
+      var x=w.werte, n=stratZahl(w.dialog.querySelector('form'));
       if(!String(x.spitzname||'').trim()){return 'Bitte einen Spitznamen eintragen.';}
       if(!String(x.ziel||'').trim()){return 'Bitte das Wochenziel so eintragen, wie das Kind es sagt.';}
-      if(!STRAT_REIHE.some(function(id){return x['s_'+id];})&&!String(x.eigene||'').trim()){return 'Bitte mindestens eine Strategie für die Stopp-Ampel wählen.';}
+      if(!n){return 'Bitte mindestens eine Strategie für die Stopp-Ampel wählen.';}
+      if(n>MAX_STRAT){return 'Bitte höchstens '+MAX_STRAT+' Strategien wählen (die eigene zählt mit).';}
       return '';
     },
+    /* ab = 'heute': Wochenziel und „Belohnung ab“ gelten schon für diese Woche (braucht team.js, siehe cfg.ab) */
     ausfuehren:function(w){var x=w.werte;
-      return T.ops.kindmodus(d.id,{spitzname:x.spitzname,figur:x.figur,welt:x.welt,ziel:x.ziel,code:x.code,schwelle:+x.schwelle,
-        belohnungen:[x.b0,x.b1,x.b2],strategien:STRAT_REIHE.filter(function(id){return x['s_'+id];}),eigene:x.eigene});}})
-  .then(function(res){if(res&&res.ergebnis){H.dossierZeichnen(res.ergebnis);H.toast('Kindmodus gespeichert');}});
+      return Promise.resolve().then(function(){return T.ops.kindmodus(d.id,{spitzname:x.spitzname,figur:x.figur,welt:x.welt,ziel:x.ziel,code:x.code,schwelle:+x.schwelle,
+        belohnungen:[x.b0,x.b1,x.b2],strategien:STRAT_REIHE.filter(function(id){return x['s_'+id];}),eigene:x.eigene,ab:x.ab||'woche'});});}})
+  .then(function(res){
+    if(!res||!res.ergebnis){return;}
+    H.dossierZeichnen(res.ergebnis);
+    /* „Ab heute“ gewählt, aber die Woche hat noch das alte Ziel: ehrlich sagen, ab wann das neue gilt */
+    var k=kmVon(res.ergebnis), wo=k&&woche(k,montag(heute())), alt=res.werte.ab==='heute'&&wo&&((wo.ziel||k.ziel)!==k.ziel||(wo.schwelle||8)!==(k.schwelle||8));
+    H.toast(alt?'Kindmodus gespeichert – das neue Wochenziel gilt ab Montag':'Kindmodus gespeichert');
+  });
 }
+function stratZahl(f){return STRAT_REIHE.filter(function(id){return f.elements['s_'+id]&&f.elements['s_'+id].checked;}).length+(String(f.elements.eigene.value||'').trim()?1:0);}
 function zufall(){var b=new Uint8Array(12);try{crypto.getRandomValues(b);}catch(e){for(var i=0;i<b.length;i++){b[i]=Math.floor(Math.random()*256);}}return Array.prototype.map.call(b,function(x){return (x<16?'0':'')+x.toString(16);}).join('');}
 function cyrb53(str){var h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<str.length;i++){var ch=str.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677);}
   h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (4294967296*(2097151&h2)+(h1>>>0)).toString(16);}
@@ -486,6 +517,15 @@ function pruefwert(pin,salz){
 function sitzLesen(){try{var z=JSON.parse(sessionStorage.getItem(SITZ)||'null');return z&&z.h&&z.s?z:null;}catch(e){return null;}}
 function sitzSetzen(z){try{sessionStorage.setItem(SITZ,JSON.stringify(z));}catch(e){}}
 function sitzLoeschen(){try{sessionStorage.removeItem(SITZ);}catch(e){}}
+/* Vollbild und Tastatursperre (Esc muss dann lange gedrückt werden); Fehler still übergehen */
+function tastaturSperren(){try{if(navigator.keyboard&&navigator.keyboard.lock){var p=navigator.keyboard.lock();if(p&&p.catch){p.catch(function(){});}}}catch(e){}}
+function tastaturFrei(){try{if(navigator.keyboard&&navigator.keyboard.unlock){navigator.keyboard.unlock();}}catch(e){}}
+function vollbild(){
+  var el=document.documentElement;
+  if(document.fullscreenElement){tastaturSperren();return;}
+  if(!el.requestFullscreen){return;}
+  try{var p=el.requestFullscreen();if(p&&p.then){p.then(tastaturSperren,function(){});}else{tastaturSperren();}}catch(e){}
+}
 function startDialog(d){
   var inhalt='<p>Das Kind sieht jetzt nur noch seinen Spitznamen, seine Figur, sein Wochenziel und die Übungen. <b>Bleib dabei</b> – die Quest schätzt ihr gemeinsam ein.</p>'+
     '<p>Zum Beenden brauchst du einen <b>Code mit vier Ziffern</b>. Denk dir einen aus und merk ihn dir; er gilt nur für diesen Kindmodus.</p>'+
@@ -494,15 +534,15 @@ function startDialog(d){
   H.dialog('Kindmodus starten',inhalt,[{text:'Abbrechen',wert:''},{text:'Starten',wert:'ok',primaer:true}],{
     pruefen:function(w){if(!/^\d{4}$/.test(w.werte.pin||'')){return 'Bitte einen Code mit genau vier Ziffern eingeben.';}if(w.werte.pin!==w.werte.pin2){return 'Die beiden Codes sind nicht gleich.';}return '';},
     ausfuehren:function(w){
-      if(w.werte.voll&&document.documentElement.requestFullscreen&&!document.fullscreenElement){try{var p=document.documentElement.requestFullscreen();if(p&&p.catch){p.catch(function(){});}}catch(e){}}
+      if(w.werte.voll){vollbild();}
       var salz=zufall();
-      return pruefwert(w.werte.pin,salz).then(function(h){sitzSetzen({h:h,s:salz,id:d.id,seit:new Date().toISOString(),fehl:0,bis:0});return true;});
+      return pruefwert(w.werte.pin,salz).then(function(h){sitzSetzen({h:h,s:salz,id:d.id,seit:new Date().toISOString(),fehl:0,bis:0,voll:!!w.werte.voll});return true;});
     }})
   .then(function(res){
     if(res&&res.ergebnis){
-      /* frischen Stand laden (z. B. wenn jemand anderes inzwischen eingetragen hat) */
-      T.dossier(d.id,true).then(function(frisch){starten(frisch||d);},function(){starten(d);});
-    }else if(document.fullscreenElement&&document.exitFullscreen){document.exitFullscreen().catch(function(){});}
+      /* frischen Stand laden (z. B. wenn jemand anderes inzwischen eingetragen hat); geht das nicht, mit dem Stand von eben */
+      Promise.resolve().then(function(){return T.dossier(d.id,true);}).then(function(frisch){starten(frisch||d);},function(){starten(d);});
+    }else{tastaturFrei();if(document.fullscreenElement&&document.exitFullscreen){document.exitFullscreen().catch(function(){});}}
   });
 }
 
@@ -512,9 +552,12 @@ function startDialog(d){
 var S={aktiv:false};
 function stopTimer(){if(S.timer){clearTimeout(S.timer);}if(S.intervall){clearInterval(S.intervall);}S.timer=S.intervall=null;}
 function warte(ms,fn){if(S.timer){clearTimeout(S.timer);}S.timer=setTimeout(fn,ms*TEMPO);}
+/* Einstellungen des Kindes als Kopie: gemerkte, noch nicht gespeicherte Sterne ändern so nicht den Zwischenspeicher */
+function kmKopie(d){var k=kmVon(d);return k?JSON.parse(JSON.stringify(k)):null;}
 function starten(d){
   if(!bausteine()){return;}
-  S={aktiv:true,d:d,km:kmVon(d),schirm:'start',quest:{},runde:null,uebung:null,atem:null,pin:null,meldung:'',neu:{runden:0,quest:false,atem:0}};
+  var z=sitzLesen()||{};
+  S={aktiv:true,d:d,km:kmKopie(d),schirm:'start',quest:{},runde:null,uebung:null,atem:null,pin:null,meldung:'',neu:{runden:0,quest:false,atem:0},voll:!!z.voll};
   if(!S.km){S.aktiv=false;sitzLoeschen();return;}
   oeffnen();
 }
@@ -526,32 +569,71 @@ function oeffnen(){
     dlg.addEventListener('cancel',function(e){e.preventDefault();});
     dlg.addEventListener('close',function(){if(S.aktiv){try{dlg.showModal();}catch(e){}}});
     dlg.addEventListener('click',klick);
+    /* kein Kontextmenü (lange drücken, rechte Maustaste) und kein Herausziehen von Bildern */
+    dlg.addEventListener('contextmenu',function(e){e.preventDefault();});
+    dlg.addEventListener('dragstart',function(e){e.preventDefault();});
     document.body.appendChild(dlg);
   }
   document.body.classList.add('km-an');
+  beobachten();
   if(!dlg.open){try{dlg.showModal();}catch(e){dlg.setAttribute('open','');}}
   zeichnen();
 }
-function schliessen(){
-  S.aktiv=false;stopTimer();
-  try{if(SPRACHE){window.speechSynthesis.cancel();}}catch(e){}
-  var dlg=dlgEl();if(dlg){try{dlg.close();}catch(e){}dlg.remove();}
+/* Solange der Kindmodus läuft (auch während der Sperre), steht im Hub dahinter nichts aus dem Dossier – auch
+   nicht im Seitenquelltext (lange drücken, F12). Zeichnet der Hub das Dossier neu (z. B. nach dem Neuladen),
+   wird es gleich wieder geleert. Beim Beenden zeichnet der Hub das Dossier neu (wiederherstellen). */
+var beobachter=null;
+function ausraeumen(){
+  if(!document.body.classList.contains('km-an')){return;}
+  var ds=document.getElementById('ar-dossier');
+  if(ds){if(ds.firstChild){ds.textContent='';}return;}
+  var b=document.getElementById('arbeit-body');if(b&&b.firstChild){b.textContent='';}
+}
+function beobachten(){
+  ausraeumen();
+  var b=document.getElementById('arbeit-body');
+  if(beobachter||!b||typeof MutationObserver!=='function'){return;}
+  beobachter=new MutationObserver(ausraeumen);beobachter.observe(b,{childList:true,subtree:true});
+}
+function aufraeumen(){
+  if(beobachter){beobachter.disconnect();beobachter=null;}
   document.body.classList.remove('km-an');
+  tastaturFrei();
   if(document.fullscreenElement&&document.exitFullscreen){document.exitFullscreen().catch(function(){});}
+}
+function wiederherstellen(d){
+  if(!bausteine()){return;}
+  var ak=H.aktDossier&&H.aktDossier();
+  if(d&&ak&&ak.id===d.id&&document.getElementById('ar-dossier')){H.dossierZeichnen(d);return;}
+  if(window.CDSE_ARBEIT&&window.CDSE_ARBEIT.neuLaden){window.CDSE_ARBEIT.neuLaden();}
+}
+function schliessen(){
+  S.aktiv=false;stopTimer();sprachStopp();
+  var dlg=dlgEl();if(dlg){try{dlg.close();}catch(e){}dlg.remove();}
+  aufraeumen();
 }
 function beenden(){
   var d=S.d, neu=S.neu||{};
   sitzLoeschen();schliessen();
-  if(d&&bausteine()){
-    H.dossierZeichnen(d);
+  if(bausteine()){
+    wiederherstellen(d);
     var t=[];if(neu.quest){t.push('Quest eingetragen');}if(neu.runden){t.push(neu.runden+(neu.runden===1?' Runde':' Runden')+' Stopp-Ampel');}if(neu.atem){t.push(neu.atem+'× Atem-Raumschiff');}
+    if(OFFEN.length){t.push(OFFEN.length+' gemerkt – wird gespeichert, sobald der Schülerbereich wieder offen ist');}
     H.toast('Kindmodus beendet'+(t.length?' · '+t.join(' · '):''));
   }
   S={aktiv:false};
 }
-function schirm(n){stopTimer();S.schirm=n;S.meldung='';zeichnen();}
+function schirm(n){stopTimer();S.schirm=n;S.meldung='';S.meldungInfo=false;zeichnen();}
 function vorlesen(t){return SPRACHE?'<button type="button" class="km-vorlesen" data-k="vorlesen" data-text="'+esc(t)+'" aria-label="Vorlesen" title="Vorlesen">'+I_LAUT+'</button>':'';}
-function sprich(t){if(!SPRACHE||!t){return;}try{window.speechSynthesis.cancel();var u=new window.SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=0.9;window.speechSynthesis.speak(u);}catch(e){}}
+function sprachStopp(){try{if(SPRACHE){window.speechSynthesis.cancel();}}catch(e){}}
+/* Vorlesen; fertig() kommt, wenn der Text zu Ende ist (spätestens nach einer Sicherheitszeit) */
+function sprich(t,fertig){
+  var einmal=false, f=function(){if(!einmal){einmal=true;if(fertig){fertig();}}};
+  if(!SPRACHE||!t){f();return;}
+  try{window.speechSynthesis.cancel();var u=new window.SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=0.9;
+    if(fertig){u.onend=f;u.onerror=f;setTimeout(f,Math.max(8000,t.length*120));}
+    window.speechSynthesis.speak(u);}catch(e){f();}
+}
 function kopf(titel,zurueck){
   return '<header class="km-kopf">'+(zurueck?'<button type="button" class="km-zurueck" data-k="'+zurueck+'">'+I_LINKS+'<span>Zurück</span></button>':'<span></span>')+
     '<h1 class="km-titel'+(titel?'':' km-sr')+'">'+esc(titel||'Kindmodus')+'</h1><button type="button" class="km-schloss" data-k="sperre" aria-label="Beenden – nur für Erwachsene" title="Beenden – nur für Erwachsene">'+I_SCHLOSS+'</button></header>';
@@ -576,23 +658,41 @@ function zeichnen(){
     }
     h='<div class="km-rahmen km-s-'+S.schirm+'">'+h+'</div>';
   }
-  h+=(S.meldung?'<p class="km-meldung" role="alert">'+esc(S.meldung)+'</p>':'')+(S.pin?pinHtml():'');
+  h+=(S.meldung?'<p class="km-meldung'+(S.meldungInfo?' info':'')+'" role="'+(S.meldungInfo?'status':'alert')+'">'+esc(S.meldung)+'</p>':'')+
+    (S.speichert?'<p class="km-speichert" role="status"><span class="km-kreisel" aria-hidden="true"></span>Einen Moment …</p>':'')+(S.pin?pinHtml():'');
   /* Welcher Knopf hatte den Fokus? Nach dem Neuzeichnen denselben wieder fokussieren */
   var ak=document.activeElement, merk=null;
   if(ak&&dlg.contains(ak)&&ak.getAttribute&&ak.getAttribute('data-k')){merk='[data-k="'+ak.getAttribute('data-k')+'"]'+['data-p','data-n','data-id','data-i','data-z','data-min'].map(function(x){var v=ak.getAttribute(x);return v==null?'':'['+x+'="'+v+'"]';}).join('');}
   dlg.innerHTML=h;
-  /* Fokus nur bei einem neuen Bildschirm setzen, damit die Tastatur-Position beim Auswählen bleibt */
-  var stand=(S.pin?'pin':'')+'|'+S.schirm+'|'+(S.uebung?S.uebung.i:'')+'|'+(S.quest&&S.quest.schritt||'');
-  if(stand!==S.stand){S.stand=stand;var f=dlg.querySelector(S.pin?'.km-pin-karte':'.km-titel');if(f){f.setAttribute('tabindex','-1');try{f.focus({preventScroll:true});}catch(e){}}}
+  /* Neuer Bildschirm oder neuer Schritt: Vorlesen hört auf, der Fokus geht auf die Überschrift, und einen Augenblick
+     zählt Tippen nicht – sonst trifft ein Doppeltippen den Knopf, der jetzt an derselben Stelle steht */
+  var q=S.quest||{}, a=S.atem||{};
+  var stand=(S.pin?'pin'+(S.pin.frage?'-frage':''):'')+'|'+S.schirm+'|'+(S.uebung?S.uebung.i:'')+'|'+(q.schritt||'')+(q.neu?'-neu':'')+'|'+(a.laeuft?'l':'')+(a.fertig?'f':'');
+  if(stand!==S.stand){
+    if(S.stand!=null){sprachStopp();}
+    S.stand=stand;S.ruheBis=Date.now()+TIPP_PAUSE;
+    var f=dlg.querySelector(S.pin?'.km-pin-karte':'.km-titel');if(f){f.setAttribute('tabindex','-1');try{f.focus({preventScroll:true});}catch(e){}}
+  }
   else if(merk){var w=dlg.querySelector(merk);if(w&&!w.disabled){try{w.focus({preventScroll:true});}catch(e){}}}
   if(!S.pin){nachZeichnen();}
 }
 /* Zeitgesteuerte Abläufe nach dem Zeichnen starten */
 function nachZeichnen(){
   stopTimer();   /* nach jedem Neuzeichnen höchstens ein laufender Ablauf */
-  if(S.schirm==='rot'){var ring=document.getElementById('km-ring');if(ring){ring.style.setProperty('--km-ring-dauer',(4*TEMPO)+'s');}warte(4000,function(){if(S.aktiv&&S.schirm==='rot'&&!S.pin){schirm('gelb');}});}
+  if(S.schirm==='rot'){ringNeu(ROT_SEK);warte(ROT_SEK*1000,function(){if(S.aktiv&&S.schirm==='rot'&&!S.pin){schirm('gelb');}});}
   if(S.schirm==='gruen'){uebungStarten();}
   if(S.schirm==='atem'&&S.atem&&S.atem.laeuft){atemStarten(S.atem.min*6,function(sek){atemFertig(sek);});}
+}
+/* Ring auf dem roten Bildschirm neu starten (sek = 0: anhalten, solange vorgelesen wird) */
+function ringNeu(sek){var r=document.getElementById('km-ring');if(!r){return;}r.style.animation='none';void r.offsetWidth;if(sek){r.style.setProperty('--km-ring-dauer',(sek*TEMPO)+'s');r.style.animation='';}}
+/* Rot: Wird vorgelesen, kommt Gelb erst nach dem Vorlesen und einer kurzen Pause */
+function rotVorlesen(t){
+  var nr=S.sprachNr=(S.sprachNr|0)+1;
+  stopTimer();ringNeu(0);
+  sprich(t,function(){
+    if(nr!==S.sprachNr||!S.aktiv||S.schirm!=='rot'||S.pin){return;}
+    ringNeu(3);warte(3000,function(){if(S.aktiv&&S.schirm==='rot'&&!S.pin){schirm('gelb');}});
+  });
 }
 
 /* ---------- Start ---------- */
@@ -604,7 +704,9 @@ function startHtml(){
       '<button type="button" class="km-kachel quest" data-k="quest">'+weltSvg(km.welt,st)+'<span class="km-k-text"><b>Meine Quest</b><span>'+st+(st===1?' Stern':' Sterne')+' diese Woche</span>'+(offen?'<span class="km-badge">Heute noch offen</span>':'')+'</span></button>'+
       '<button type="button" class="km-kachel ampel" data-k="szenen"><span class="km-k-bild">'+ampelSvg('alle','klein')+'</span><span class="km-k-text"><b>Stopp-Ampel</b><span>Gefühle steuern üben</span></span></button>'+
       '<button type="button" class="km-kachel atem" data-k="atem"><span class="km-k-bild">'+atemRaketeSvg('klein')+'</span><span class="km-k-text"><b>Atem-Raumschiff</b><span>Ruhig atmen</span></span></button>'+
-    '</div></div>';
+    '</div>'+
+    /* Schülerbereich gesperrt (z. B. nach 60 Minuten): Üben geht weiter, gespeichert wird später */
+    (!bereit()||OFFEN.length?'<p class="km-hinweis-erw">Für Erwachsene: Der Hub ist gerade gesperrt. Sterne und Runden werden gemerkt und gespeichert, sobald er wieder offen ist.</p>':'')+'</div>';
 }
 
 /* ---------- Ziel-Quest ---------- */
@@ -615,7 +717,13 @@ function questHtml(){
   var reihe='<ol class="km-woche" aria-label="Diese Woche">'+tage.map(function(t){var x=wo&&wo.tage&&wo.tage[t];
     return '<li class="'+(t===h0?'heute':'')+(x?' da':'')+'"><span class="km-wt">'+TAGE_KURZ[wtag(t)]+'</span><span class="km-ws">'+(x?(sterneTag(x)?sterneHtml(sterneTag(x)):'<span class="km-null">0</span>'):(t<h0?'–':''))+'</span></li>';}).join('')+'</ol>';
   var heuteX=wo&&wo.tage&&wo.tage[h0], block;
-  if(q.schritt==='erw'){
+  if(q.schritt==='uebergabe'){
+    /* Übergabe: Die Erwachsenen-Reihe kommt erst nach einem eigenen Tippen – ein Doppeltippen des Kindes landet so nicht dort */
+    block='<div class="km-uebergabe"><p class="km-klein">Du hast gewählt:</p><p class="km-gewaehlt">'+gesichtSvg(q.k)+'<b>'+esc(BEWERTUNG[q.k][0])+'</b></p>'+
+      '<p class="km-lead">Super! Jetzt ist die oder der Erwachsene dran.</p>'+
+      '<button type="button" class="km-knopf gross primaer" data-k="q-uebergabe">Jetzt die oder der Erwachsene</button>'+
+      '<button type="button" class="km-link" data-k="q-zurueck">Nochmal wählen</button></div>';
+  }else if(q.schritt==='erw'){
     block='<h3>Und wie sieht es die oder der Erwachsene?</h3><p class="km-klein">Jetzt tippt die erwachsene Person. Das Kind hat gewählt: <b>'+esc(BEWERTUNG[q.k][0])+'</b></p>'+
       '<div class="km-wahl3 erw" role="group" aria-label="Einschätzung der Erwachsenen">'+[2,1,0].map(function(p){return '<button type="button" class="km-gesicht" data-k="q-erw" data-p="'+p+'"'+(S.speichert?' disabled':'')+'>'+gesichtSvg(p)+'<span>'+esc(BEWERTUNG[p][0])+'</span></button>';}).join('')+'</div>'+
       '<button type="button" class="km-link" data-k="q-zurueck">Das Kind möchte nochmal wählen</button>';
@@ -723,7 +831,9 @@ function drueckenStarten(runden,fertig){
   S.intervall=setInterval(function(){s++;if(s>=runden*2*PH){stopTimer();fertig();return;}zeig();},1000*TEMPO);
 }
 function atemHtml(z){
+  /* km-atem-balken: bei „weniger Bewegung“ (prefers-reduced-motion) füllt sich ein Balken ruhig, statt dass die Rakete springt */
   return '<div class="km-atem" id="km-atem"><div class="km-atem-bahn">'+atemRaketeSvg()+'</div><div class="km-atem-info"><p class="km-atem-text" id="km-atem-text" aria-live="polite">Mach es dir bequem.</p>'+
+    '<div class="km-atem-balken" aria-hidden="true"><span></span></div>'+
     '<p class="km-atem-zahl" id="km-atem-zahl" aria-hidden="true"></p><p class="km-klein" id="km-atem-fort">Atemzug 1 von '+z+'</p></div></div>';
 }
 function atemStarten(z,fertig){
@@ -735,6 +845,7 @@ function atemStarten(z,fertig){
     var ein=(sek%(2*PH))<PH;el.classList.toggle('ein',ein);el.classList.toggle('aus',!ein);
     t.textContent=ein?'Einatmen …':'Ausatmen …';n.textContent=String((sek%PH)+1);f.textContent='Atemzug '+(Math.floor(sek/(2*PH))+1)+' von '+z;
   }
+  void el.offsetWidth;   /* Ausgangslage zeichnen, damit schon das erste Einatmen gleitet (Rakete bzw. Balken) */
   phase();
   S.intervall=setInterval(function(){sek++;S.atemSek=sek;if(sek>=z*2*PH){stopTimer();fertig(sek);return;}phase();},1000*TEMPO);
 }
@@ -762,19 +873,81 @@ function atemFertig(sek){
   stopTimer();
   if(sek<20){S.atem={};zeichnen();return;}
   S.atem={fertig:true,sek:sek};
-  speichern(T.ops.kindRunde(S.d.id,{spiel:'atem',dauer:sek}),function(){S.neu.atem++;});
+  if(!S.d){zeichnen();return;}
+  speichern({art:'runde',id:S.d.id,x:{spiel:'atem',dauer:sek}},function(){S.neu.atem++;});
 }
 
-/* ---------- Speichern ---------- */
-function speichern(p,danach){
-  S.speichert=true;S.meldung='';zeichnen();
-  return p.then(function(neu){S.speichert=false;if(!S.aktiv){return;}if(neu){S.d=neu;S.km=kmVon(neu)||S.km;}if(danach){danach();}zeichnen();},
-    function(e){S.speichert=false;if(!S.aktiv){return;}S.meldung='Das Speichern hat nicht geklappt. Bitte eine erwachsene Person holen. ('+((e&&e.message)||String(e))+')';zeichnen();});
+/* ---------- Speichern ----------
+   T.ops… nie direkt aufrufen: Ist der Schülerbereich gesperrt (z. B. nach 60 Minuten ohne Aktivität), wirft es sofort –
+   dann tat „Weiter“ nichts, die Runde war weg und das Raumschiff hing bei „Ausatmen …“. Deshalb immer im Promise; klappt
+   es nicht, wird die Runde (die Sterne, die Belohnung) gemerkt, gleich angezeigt und später gespeichert. */
+function bereit(){try{return !!(T&&T.zustand&&T.zustand().art==='bereit');}catch(e){return false;}}
+function opAusfuehren(op){
+  return Promise.resolve().then(function(){
+    if(!bausteine()||!bereit()){var e=new Error('Der Schülerbereich ist gerade nicht offen.');e.spaeter=true;throw e;}
+    if(op.art==='quest'){return T.ops.kindQuestTag(op.id,op.tag,op.w);}
+    if(op.art==='belohnung'){return T.ops.kindBelohnung(op.id,op.woche,op.text);}
+    return T.ops.kindRunde(op.id,op.x);
+  });
+}
+function speichern(op,danach){
+  if(S.speichert){return Promise.resolve();}
+  S.speichert=true;S.meldung='';S.meldungInfo=false;zeichnen();
+  return opAusfuehren(op).then(function(neu){
+    S.speichert=false;if(!S.aktiv){return;}
+    if(neu){S.d=neu;S.km=kmKopie(neu)||S.km;OFFEN.forEach(function(o){if(o.id===neu.id){lokalEintragen(o);}});}
+    if(danach){danach();}zeichnen();
+  },function(e){
+    S.speichert=false;
+    merken(op);
+    if(!S.aktiv){return;}
+    lokalEintragen(op);if(danach){danach();}
+    S.meldungInfo=true;
+    S.meldung=((e&&e.spaeter)||!bereit())?'Gemerkt! Es wird gespeichert, sobald der Hub wieder offen ist.':'Gemerkt! Das Speichern klappt gerade nicht – es wird gleich nochmal versucht.';
+    zeichnen();
+  });
+}
+/* Gemerktes gleich zeigen (Sterne, Welt, Belohnung) – gespeichert wird später */
+function lokalEintragen(op){
+  var km=S.km;if(!km){return;}
+  if(op.art==='quest'){
+    var mo=montag(op.tag);km.wochen=km.wochen||{};
+    var wo=km.wochen[mo]||(km.wochen[mo]={ziel:km.ziel,code:km.code||'',schwelle:km.schwelle||8,welt:km.welt||'baum',tage:{}});
+    wo.tage=wo.tage||{};wo.tage[op.tag]={k:op.w.k,e:op.w.e,gemerkt:true};
+  }else if(op.art==='belohnung'){var w2=(km.wochen||{})[op.woche];if(w2){w2.belohnung=op.text;}}
+}
+/* Gemerkte Einträge liegen nur im Speicher dieses Tabs (nichts davon im Browser-Speicher). Alle paar Sekunden
+   wird nachgeholt, sobald der Schülerbereich offen ist – auch nach dem Ende des Kindmodus. */
+var OFFEN=[], nachholUhr=null, nachholLaeuft=false, nachgeholt=0;
+function merken(op){op.versuche=0;OFFEN.push(op);if(!nachholUhr){nachholUhr=setInterval(nachholen,4000);}}
+function nachholen(){
+  if(nachholLaeuft){return;}
+  if(!OFFEN.length){
+    if(nachholUhr){clearInterval(nachholUhr);nachholUhr=null;}
+    if(nachgeholt&&!S.aktiv&&bausteine()){H.toast('Kindmodus: '+nachgeholt+(nachgeholt===1?' gemerkter Eintrag':' gemerkte Einträge')+' gespeichert');}
+    nachgeholt=0;return;
+  }
+  if(!bereit()){return;}
+  var op=OFFEN[0], fertig=function(){nachholLaeuft=false;if(!OFFEN.length){nachholen();}};nachholLaeuft=true;
+  opAusfuehren(op).then(function(neu){
+    OFFEN.shift();nachgeholt++;
+    if(neu&&S.aktiv&&S.d&&S.d.id===neu.id){S.d=neu;}   /* nicht neu zeichnen – vielleicht läuft gerade eine Übung */
+  },function(e){
+    if((e&&e.spaeter)||!bereit()){return;}
+    op.versuche=(op.versuche|0)+1;
+    if(op.versuche>=3){OFFEN.shift();if(bausteine()){H.toast('Kindmodus: Ein gemerkter Eintrag ließ sich nicht speichern ('+((e&&e.message)||String(e))+').');}}
+  }).then(fertig,fertig);
 }
 
 /* ---------- Code-Eingabe zum Beenden ---------- */
 function pinHtml(){
   var p=S.pin, z=sitzLesen()||{}, gesperrt=z.bis&&z.bis>Date.now();
+  if(p.frage){
+    return '<div class="km-pin"><div class="km-pin-karte" role="dialog" aria-modal="true" aria-labelledby="km-pin-t"><h2 id="km-pin-t">Hub sperren?</h2>'+
+      '<p>Nur für Erwachsene: Hub mit Passwort sperren?</p><p class="km-pin-klein">Danach meldest du dich mit deinem Passwort wieder an. Erst dann endet der Kindmodus.</p>'+
+      (p.fehler?'<p class="km-pin-fehler" role="alert">'+esc(p.fehler)+'</p>':'')+
+      '<div class="km-pin-knoepfe"><button type="button" class="km-knopf" data-k="sperren-nein">Abbrechen</button><button type="button" class="km-knopf primaer" data-k="sperren-ja">Ja, Hub sperren</button></div></div></div>';
+  }
   var taste=function(n){return '<button type="button" class="km-taste" data-k="pin-z" data-z="'+n+'"'+(gesperrt?' disabled':'')+'>'+n+'</button>';};
   return '<div class="km-pin"><div class="km-pin-karte" role="dialog" aria-modal="true" aria-labelledby="km-pin-t"><h2 id="km-pin-t">'+(S.neuGeladen?'Der Kindmodus ist noch an':'Kindmodus beenden')+'</h2>'+
     '<p>Nur für Erwachsene: Code eingeben.</p><div class="km-pin-punkte" aria-label="'+p.eingabe.length+' von 4 Ziffern">'+[0,1,2,3].map(function(i){return '<span class="'+(p.eingabe.length>i?'an':'')+'"></span>';}).join('')+'</div>'+
@@ -782,7 +955,7 @@ function pinHtml(){
     '<div class="km-pin-tasten">'+[1,2,3,4,5,6,7,8,9].map(taste).join('')+
       (S.neuGeladen?'<span></span>':'<button type="button" class="km-taste leise" data-k="pin-ab">Zurück</button>')+taste(0)+
       '<button type="button" class="km-taste leise" data-k="pin-weg" aria-label="Letzte Ziffer löschen">⌫</button></div>'+
-    '<button type="button" class="km-link" data-k="abmelden">Code vergessen? Vom Hub abmelden</button></div></div>';
+    '<button type="button" class="km-link" data-k="sperren-frage">Code vergessen? Hub sperren</button></div></div>';
 }
 function pinZiffer(n){
   var z=sitzLesen();if(!z||(z.bis&&z.bis>Date.now())||S.pin.prueft){return;}
@@ -799,40 +972,102 @@ function pinZiffer(n){
     if(z.bis){setTimeout(function(){if(S.pin){zeichnen();}},30000);}
   });
 }
-function abmelden(){
-  sitzLoeschen();schliessen();S={aktiv:false};
-  if(K&&K.abmelden){try{K.abmelden();}catch(e){}}
+/* ---------- Code vergessen: Hub sperren ----------
+   Früher meldete „Vom Hub abmelden“ mit einem Tippen ab, und der Kindmodus war vorher schon gelöscht – schlug die
+   Sicherung fehl, bot die Anmeldung „Zurück zum Hub“ an: Der Hub war ohne Code offen. Jetzt: Rückfrage, dann sperrt
+   CDSE_KONTO.sperren() den Hub (Passwort der erwachsenen Person). Der Kindmodus bleibt bestehen, bis die Anmeldung
+   mit Passwort geklappt hat (Vermerk „sperre“ in sessionStorage, Hub unsichtbar, Dossier ausgeräumt). Geht die
+   Anmeldeseite ohne echte Anmeldung zu (oder nach dem Neuladen gar nicht erst auf), kommt die Code-Eingabe zurück. */
+function anmeldungSichtbar(){var g=document.getElementById('gate');return !!(g&&!g.hidden&&g.querySelector('#g-pw,#g-name,#g-ordner,.konto'));}
+function hubEntsperrt(){
+  var g=document.getElementById('gate');if(g&&!g.hidden){return false;}
+  if(!K||!K.ich||!K.ich()){return false;}
+  if(typeof K.gesperrt==='function'){return !K.gesperrt();}           /* eindeutig, wenn konto3 es anbietet */
+  if(typeof K.privatDa==='function'){return !!K.privatDa();}          /* sonst: nach dem Sperren fehlt der Schlüssel, bis das Passwort stimmt */
+  return true;
+}
+var sperrUhr=null;
+function hubSperren(){
+  var z=sitzLesen();
+  if(!z||!K||typeof K.sperren!=='function'){S.pin.frage=false;S.pin.fehler='Sperren geht hier nicht. Bitte den Code eingeben.';zeichnen();return;}
+  var angemeldet=!!(K.ich&&K.ich());
+  if(!angemeldet&&!anmeldungSichtbar()){S.pin.fehler='Einen Moment – der Hub startet noch. Bitte gleich nochmal tippen.';zeichnen();return;}
+  z.sperre=Date.now();sitzSetzen(z);
+  stopTimer();sprachStopp();
+  var alt=S;S={aktiv:false,gesperrt:true};
+  var dlg=dlgEl();if(dlg){try{dlg.close();}catch(e){}dlg.remove();}
+  /* body.km-an bleibt: Der Hub bleibt unsichtbar und das Dossier ausgeräumt, bis das Passwort stimmt */
+  if(angemeldet){
+    try{K.sperren();}catch(e){
+      z.sperre=0;sitzSetzen(z);
+      S=alt;S.pin={eingabe:'',fehler:'Sperren ging nicht. Bitte den Code eingeben.'};oeffnen();return;
+    }
+  }
+  sperreBeobachten();
+}
+function sperreBeobachten(){
+  if(sperrUhr){clearInterval(sperrUhr);}
+  var gesehen=false, zuSeit=0;
+  document.body.classList.add('km-an');beobachten();
+  sperrUhr=setInterval(function(){
+    var z=sitzLesen();
+    if(!z||!z.sperre||S.aktiv){clearInterval(sperrUhr);sperrUhr=null;if(!z&&!S.aktiv){aufraeumen();}return;}   /* z. B. nach dem Abmelden geleert */
+    if(anmeldungSichtbar()){gesehen=true;zuSeit=0;return;}
+    var g=document.getElementById('gate');if(g&&!g.hidden){zuSeit=0;return;}   /* die Anmeldeseite lädt noch */
+    if(gesehen&&hubEntsperrt()){clearInterval(sperrUhr);sperrUhr=null;nachEntsperren();return;}
+    if(!zuSeit){zuSeit=Date.now();}
+    if(Date.now()-zuSeit>(gesehen?1500:4000)){clearInterval(sperrUhr);sperrUhr=null;wiederZeigen();}
+  },400);
+}
+/* Passwort war richtig: jetzt erst endet der Kindmodus */
+function nachEntsperren(){
+  sitzLoeschen();aufraeumen();S={aktiv:false};
+  if(bausteine()){wiederherstellen(null);H.toast('Kindmodus beendet – du bist wieder angemeldet');}
+}
+/* Anmeldeseite zu, aber niemand hat sich richtig angemeldet: Der Kindmodus ist wieder da (mit Code-Eingabe) */
+function wiederZeigen(){
+  var z=sitzLesen();if(!z){aufraeumen();return;}
+  z.sperre=0;sitzSetzen(z);bausteine();
+  S={aktiv:true,neuGeladen:true,pin:{eingabe:'',fehler:''},neu:{},voll:!!z.voll};
+  oeffnen();
 }
 
 /* ---------- Bedienung ---------- */
 function klick(ev){
+  /* Vollbild verlassen (z. B. mit Esc)? Beim nächsten Tippen geht es wieder an */
+  if(S.aktiv&&S.voll&&!document.fullscreenElement){vollbild();}
   var b=ev.target.closest&&ev.target.closest('[data-k]');if(!b||b.disabled){return;}
   var k=b.getAttribute('data-k');
+  /* Doppeltippen: Kurz nach einem neuen Bildschirm zählt Tippen nicht (Ziffern, Vorlesen und das Schloss schon) */
+  if(!/^(pin-z|pin-weg|vorlesen|sperre)$/.test(k)&&Date.now()<(S.ruheBis||0)){return;}
   if(S.pin){
     if(k==='pin-z'){pinZiffer(+b.getAttribute('data-z'));}
     else if(k==='pin-weg'){S.pin.eingabe=S.pin.eingabe.slice(0,-1);S.pin.fehler='';zeichnen();}
     else if(k==='pin-ab'&&!S.neuGeladen){S.pin=null;zeichnen();}
-    else if(k==='abmelden'){abmelden();}
+    else if(k==='sperren-frage'){S.pin.frage=true;S.pin.fehler='';zeichnen();}
+    else if(k==='sperren-nein'){S.pin.frage=false;S.pin.fehler='';zeichnen();}
+    else if(k==='sperren-ja'&&S.pin.frage){hubSperren();}
     return;
   }
   if(S.speichert&&/^(q-erw|belohnung|runde-fertig|atem-stopp)$/.test(k)){return;}
   switch(k){
-    case 'sperre':stopTimer();S.pin={eingabe:'',fehler:''};zeichnen();return;
-    case 'vorlesen':sprich(b.getAttribute('data-text'));return;
+    case 'sperre':stopTimer();sprachStopp();S.pin={eingabe:'',fehler:''};zeichnen();return;
+    case 'vorlesen':var tx=b.getAttribute('data-text');if(S.schirm==='rot'){rotVorlesen(tx);}else{sprich(tx);}return;
     case 'start':S.quest={};S.runde=null;S.uebung=null;S.atem=null;schirm('start');return;
     case 'quest':S.quest={};schirm('quest');return;
     case 'szenen':S.runde=null;schirm('szenen');return;
     case 'atem':S.atem={};schirm('atem');return;
     /* Ziel-Quest */
-    case 'q-kind':S.quest={schritt:'erw',k:+b.getAttribute('data-p')};zeichnen();return;
+    case 'q-kind':S.quest={schritt:'uebergabe',k:+b.getAttribute('data-p')};zeichnen();return;
+    case 'q-uebergabe':if(S.quest&&S.quest.k!=null){S.quest={schritt:'erw',k:S.quest.k};}zeichnen();return;
     case 'q-zurueck':S.quest={neu:true};zeichnen();return;
     case 'q-neu':S.quest={neu:true};zeichnen();return;
     case 'q-erw':
-      var kk=S.quest.k, e=+b.getAttribute('data-p');
-      speichern(T.ops.kindQuestTag(S.d.id,heute(),{k:kk,e:e}),function(){S.neu.quest=true;S.quest={schritt:'fertig',sterne:e+(kk===e?1:0),einig:kk===e};});return;
+      var kk=S.quest.k, e=+b.getAttribute('data-p');if(S.quest.schritt!=='erw'||kk==null||!S.d){return;}
+      speichern({art:'quest',id:S.d.id,tag:heute(),w:{k:kk,e:e}},function(){S.neu.quest=true;S.quest={schritt:'fertig',sterne:e+(kk===e?1:0),einig:kk===e};});return;
     case 'belohnung':
-      var bl=(S.km.belohnungen||[])[+b.getAttribute('data-i')];if(!bl){return;}
-      speichern(T.ops.kindBelohnung(S.d.id,montag(heute()),bl));return;
+      var bl=(S.km.belohnungen||[])[+b.getAttribute('data-i')];if(!bl||!S.d){return;}
+      speichern({art:'belohnung',id:S.d.id,woche:montag(heute()),text:bl});return;
     /* Stopp-Ampel */
     case 'szene':S.runde={szene:b.getAttribute('data-id'),signale:[],vor:null,nach:null,strategie:''};schirm('szene');return;
     case 'thermo':schirm('thermo');return;
@@ -852,15 +1087,16 @@ function klick(ev){
     case 'wen':S.uebung.wen=+b.getAttribute('data-i');uebungWeiter();return;
     case 'u-fertig':schirm('nach');return;
     case 'runde-fertig':
-      var r=S.runde;S.letzte={vor:r.vor,nach:r.nach,strategie:r.strategie};
-      speichern(T.ops.kindRunde(S.d.id,{spiel:'ampel',szene:r.szene,vor:r.vor,nach:r.nach,strategie:r.strategie,signale:r.signale}),function(){S.neu.runden++;S.schirm='lob';});return;
+      var r=S.runde;if(!r||!r.nach||!S.d){return;}
+      S.letzte={vor:r.vor,nach:r.nach,strategie:r.strategie};
+      speichern({art:'runde',id:S.d.id,x:{spiel:'ampel',szene:r.szene,vor:r.vor,nach:r.nach,strategie:r.strategie,signale:r.signale.slice()}},function(){S.neu.runden++;S.schirm='lob';});return;
     /* Atem-Raumschiff */
     case 'atem-los':S.atem={min:+b.getAttribute('data-min')||1,laeuft:true};schirm('atem');return;
     case 'atem-stopp':atemFertig(S.atemSek||0);return;
   }
 }
 function taste(ev){
-  if(!S.aktiv||!S.pin||ev.altKey||ev.ctrlKey||ev.metaKey){return;}
+  if(!S.aktiv||!S.pin||S.pin.frage||ev.altKey||ev.ctrlKey||ev.metaKey){return;}
   if(/^[0-9]$/.test(ev.key)){ev.preventDefault();pinZiffer(+ev.key);}
   else if(ev.key==='Backspace'){ev.preventDefault();S.pin.eingabe=S.pin.eingabe.slice(0,-1);zeichnen();}
 }
@@ -868,25 +1104,33 @@ function taste(ev){
 /* Tastatur für die Code-Eingabe (auf dem Dokument, weil der Fokus beim Neuzeichnen wechselt) */
 document.addEventListener('keydown',taste,true);
 
-/* Nach dem Neuladen: Ist der Kindmodus noch an, erscheint zuerst die Code-Eingabe */
+/* Nach dem Neuladen: Ist der Kindmodus noch an, erscheint zuerst die Code-Eingabe.
+   War der Hub gesperrt („Code vergessen?“), wird gewartet, bis sich jemand mit Passwort anmeldet. */
 function nachNeuladen(){
-  if(!sitzLesen()||S.aktiv){return;}
+  var z=sitzLesen();if(!z||S.aktiv){return;}
   bausteine();
-  S={aktiv:true,neuGeladen:true,pin:{eingabe:'',fehler:''},neu:{}};
+  if(z.sperre){S={aktiv:false,gesperrt:true};sperreBeobachten();return;}
+  S={aktiv:true,neuGeladen:true,pin:{eingabe:'',fehler:''},neu:{},voll:!!z.voll};
   oeffnen();
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',nachNeuladen);}else{setTimeout(nachNeuladen,0);}
 
-/* Knöpfe der Karte im Begleitplan */
+/* Knöpfe der Karte im Begleitplan; die Einstellungen öffnen mit dem neuesten Stand von der Festplatte */
+var holt=false;
 document.addEventListener('click',function(ev){
   var t=ev.target.closest&&ev.target.closest('#arbeit-body [data-km]');if(!t||!bausteine()){return;}
-  var d=aktuell();if(!d){return;}
+  var d=aktuell();if(!d||holt){return;}
   var a=t.getAttribute('data-km');
-  if(a==='einrichten'){einrichtenDialog(d);}
+  if(a==='einrichten'){
+    holt=true;t.setAttribute('aria-busy','true');
+    Promise.resolve().then(function(){return T.dossier(d.id,true);}).then(function(neu){return neu||d;},function(){return d;})
+      .then(function(neu){holt=false;t.removeAttribute('aria-busy');einrichtenDialog(neu);});
+  }
   else if(a==='start'){if(kmVon(d)){startDialog(d);}else{einrichtenDialog(d);}}
 });
 
 return {karte:karte, kurz:kurz, kennzahlen:kennzahlen, kennzahlText:kennzahlText, verlauf:verlaufDaten, auswertung:auswertung, kmVon:kmVon,
   szeneSvg:szeneSvg, weltSvg:weltSvg, figurSvg:figurSvg, SZENEN:SZENEN,
-  _test:{tempo:function(t){TEMPO=t;}, aktiv:function(){return !!S.aktiv;}, schirm:function(){return S.schirm||'';}}};
+  _test:{tempo:function(t){TEMPO=t;}, aktiv:function(){return !!S.aktiv;}, schirm:function(){return S.schirm||'';},
+    tippPause:function(ms){TIPP_PAUSE=ms;}, offen:function(){return OFFEN.length;}, nachholen:function(){nachholen();}}};
 })();

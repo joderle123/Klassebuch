@@ -1,7 +1,10 @@
 // Test: Tageskarte im Begleitplan – einrichten aus den Fokuszielen, Tag eintragen (0/1/2 je Abschnitt, Stimmung,
 // Rückmeldung), Prozent und Tagesziel, Verstärkerplan-Schritt erledigt, „Fortschritt beobachten“ läuft über die
 // Karte, Plan passt sich an (Ziele kleiner machen / ausschleichen), Überprüfung mit Kennzahl, Überblick,
-// Wochenkarte zum Drucken, beenden und wieder aufnehmen, Ziele ändern, Nur-Lesen, 390 px. Nur erfundene Personen.
+// Wochenkarte zum Drucken, beenden und wieder aufnehmen, Ziele ändern, Nur-Lesen, 390 px; dazu: Dialog mit dem
+// neuesten Stand, zwei Personen gleichzeitig (nur Änderungen), nächster Abschnitt, große Knöpfe, Ziel entfernen /
+// neues Ziel, Schutz beim Ändern der Ziele, alte Tage mit ihren Abschnitten, letzter Schultag, Woche wählen.
+// Nur erfundene Personen.
 // Aufruf: node tests/tageskarte.js   (BASE=… für eine andere Hub-Datei)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -30,7 +33,11 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   }
   async function reiter(id, tab) { await gehe('#/'); await gehe('#/schueler/' + id); await page.waitForSelector('.ar-tabs [data-tab="' + tab + '"]', { timeout: 20000 }); await page.click('.ar-tabs [data-tab="' + tab + '"]'); await warte(250); }
   async function neuLaden(id) { await page.evaluate(async id => { CDSE_ARBEIT.hilfen.dossierZeichnen(await CDSE_TEAM.dossier(id)); }, id); await warte(200); }
-  async function dialogKnopf(t) { await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("' + t + '")'); await warte(500); }
+  async function dialogKnopf(t) {
+    await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("' + t + '")'); await warte(500);
+    /* Abbrechen mit geschriebenem Text: der Hub fragt einmal nach – zweites Abbrechen verwirft */
+    if (t === 'Abbrechen' && await page.$('dialog.ar-dialog[data-verwerfen="1"]')) { await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Abbrechen")'); await warte(300); }
+  }
   async function schritt(key) { return page.evaluate(k => { const el = document.querySelector('.bp-schritt[data-key="' + k + '"]'); if (!el) return null; return { status: el.className.replace('bp-schritt', '').replace('wichtig', '').trim(), text: el.textContent }; }, key); }
   async function quer() { return page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth); }
   const tag = n => { const d = new Date(Date.now() + n * 864e5); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -151,6 +158,70 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('390 px: Dialog „Tag eintragen“ ohne seitliches Scrollen des Dialogs', dlgQuer <= 1, dlgQuer);
   await page.screenshot({ path: path.join(OUT, 't2-tag-schmal.png') });
   await dialogKnopf('Abbrechen');
+
+  console.log('8) Neuester Stand, zwei Personen gleichzeitig, alte Tage, große Knöpfe, Woche wählen');
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await reiter(tom, 'begleitplan');
+  const A5 = ['Morgen', 'Pause', 'Vormittag', 'Mittag', 'Nachmittag'], leer4 = [null, null, null, null];
+  // Heute steht nur der Morgen – so sieht Person A die Karte
+  await page.evaluate(async ([id, h, z, l]) => { await CDSE_TEAM.ops.tageskarteTag(id, h, { p: { [z]: [2].concat(l) }, s: 'gut', notiz: 'Start' }); }, [tom, tag(0), ids[0], leer4]);
+  await neuLaden(tom);
+  // Person B trägt inzwischen die Rückmeldung ein (die Ansicht von A ist jetzt veraltet)
+  await page.evaluate(async ([id, h, z, l, a]) => { await CDSE_TEAM.ops.tageskarteTag(id, h, { p: { [z]: [2].concat(l) }, s: 'gut', notiz: 'Von Person B', a }, { p: { [z]: [2].concat(l) }, s: 'gut', notiz: 'Start', a }); }, [tom, tag(0), ids[0], leer4, A5]);
+  await page.click('.tk-karte [data-tk="tag"]'); await page.waitForSelector('dialog.ar-dialog .tk-tabelle');
+  const offen = await page.evaluate(() => { const d = document.querySelector('dialog.ar-dialog'), a = document.activeElement, r = d.querySelector('.tk-wahl button').getBoundingClientRect();
+    return { notiz: d.querySelector('textarea[name="notiz"]').value, naechst: (d.querySelector('th.tk-naechst') || {}).textContent || '', fokus: a && a.getAttribute ? a.getAttribute('data-j') + '/' + a.getAttribute('data-p') : '', w: r.width, h: r.height }; });
+  check('Dialog öffnet mit dem neuesten Stand von der Festplatte (Rückmeldung von Person B)', offen.notiz === 'Von Person B', offen);
+  check('Nächster Abschnitt („Pause“) hervorgehoben und fokussiert', offen.naechst.startsWith('Pause') && offen.fokus === '1/2', offen);
+  check('Knöpfe groß genug für Finger (44 px breit)', offen.w >= 44 && offen.h >= 40, offen);
+  // Während A den Dialog offen hat, ändert B die Stimmung; A trägt die Pause ein und speichert
+  await page.evaluate(async ([id, h, z, l, a]) => { await CDSE_TEAM.ops.tageskarteTag(id, h, { p: { [z]: [2].concat(l) }, s: 'mittel', notiz: 'Von Person B', a }, { p: { [z]: [2].concat(l) }, s: 'gut', notiz: 'Von Person B', a }); }, [tom, tag(0), ids[0], leer4, A5]);
+  await page.click('dialog.ar-dialog .tk-wahl button[data-z="' + ids[0] + '"][data-j="1"][data-p="2"]');
+  await dialogKnopf('Speichern');
+  const zwei = await page.evaluate(async ([id, h, z]) => { const t = (await CDSE_TEAM.dossier(id, true)).tageskarte.tage[h]; return { p: t.p[z], s: t.s, notiz: t.notiz }; }, [tom, tag(0), ids[0]]);
+  check('Zwei Personen: nur die eigene Änderung (Pause) gespeichert, Stimmung und Rückmeldung von B bleiben', !!zwei.p && zwei.p[0] === 2 && zwei.p[1] === 2 && zwei.s === 'mittel' && zwei.notiz === 'Von Person B', zwei);
+
+  // Ziele ändern: stark umgeschriebenes Ziel = neues Ziel?, Ziel entfernen, Schutz vor dem Überschreiben
+  await page.click('.tk-karte details.ar-mehr > summary'); await page.click('.tk-karte [data-tk="einrichten"]'); await page.waitForSelector('dialog.ar-dialog input[name="z0"]');
+  const z0alt = await page.inputValue('dialog.ar-dialog input[name="z0"]');
+  await page.fill('dialog.ar-dialog input[name="z0"]', 'Ich räume meinen Tisch auf.');
+  check('Ziel stark umgeschrieben: Frage „neues Ziel?“ erscheint (vorbelegt)', await page.isVisible('dialog.ar-dialog .tk-neuziel') && await page.isChecked('dialog.ar-dialog input[name="zneu0"]'));
+  await page.fill('dialog.ar-dialog input[name="z0"]', z0alt + ' Immer.');
+  check('Nur leicht geändert: keine Frage', !(await page.isVisible('dialog.ar-dialog .tk-neuziel')));
+  await page.click('dialog.ar-dialog .tk-weg[data-weg="0"]');
+  check('„Ziel entfernen“ leert Text, Kennung und Code', await page.evaluate(() => { const f = document.querySelector('dialog.ar-dialog form'); return f.elements.z0.value === '' && f.elements.zid0.value === '' && f.elements.zcode0.value === ''; }));
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Abbrechen")');
+  check('Abbrechen mit geändertem Text: erst Rückfrage', !!(await page.$('dialog.ar-dialog[data-verwerfen="1"]')));
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Abbrechen")');   /* zweites Abbrechen verwirft */
+  await page.click('.tk-karte details.ar-mehr > summary'); await page.click('.tk-karte [data-tk="einrichten"]'); await page.waitForSelector('dialog.ar-dialog input[name="z0"]');
+  await page.evaluate(async id => { const x = (await CDSE_TEAM.dossier(id, true)).tageskarte; await CDSE_TEAM.ops.tageskarte(id, { ziele: x.ziele.filter(z => !z.aus), abschnitte: x.abschnitte, ziel: x.ziel, belohnung: 'Neu von Person B', heim: x.heim }); }, tom);
+  await page.fill('dialog.ar-dialog input[name="belohnung"]', 'Von Person A');
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Speichern")'); await warte(800);
+  check('Ziele ändern: Hat jemand anderes inzwischen geändert, wird nichts überschrieben (Hinweis)', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('Inzwischen hat jemand anderes') && (await page.evaluate(async id => (await CDSE_TEAM.dossier(id, true)).tageskarte.belohnung, tom)) === 'Neu von Person B');
+  await dialogKnopf('Abbrechen');
+
+  // Abschnitt „Pause“ fällt weg: alte Tage behalten ihre Abschnitte, das beendete Ziel mit Punkten bleibt sichtbar
+  await page.evaluate(async id => { const x = (await CDSE_TEAM.dossier(id, true)).tageskarte; await CDSE_TEAM.ops.tageskarte(id, { ziele: x.ziele.filter(z => !z.aus), abschnitte: ['Morgen', 'Vormittag', 'Mittag', 'Nachmittag'], ziel: x.ziel, belohnung: x.belohnung, heim: x.heim }); }, tom);
+  await neuLaden(tom);
+  await page.click('.tk-karte details.ar-mehr > summary'); await page.click('.tk-karte [data-tk="nachtragen"]'); await page.waitForSelector('dialog.ar-dialog .tk-tabelle');
+  const vorgabe = await page.inputValue('dialog.ar-dialog input[name="tag"]');
+  check('„Anderen Tag eintragen“ schlägt den letzten Schultag vor (am Montag den Freitag)', vorgabe === await page.evaluate(h => CDSE_TAGESKARTE._test.schultagVor(h), tag(0)) && (await page.evaluate(() => CDSE_TAGESKARTE._test.schultagVor('2026-09-28'))) === '2026-09-25', vorgabe);
+  await page.fill('dialog.ar-dialog input[name="tag"]', tag(-2)); await warte(200);
+  const altTag = await page.evaluate(() => { const d = document.querySelector('dialog.ar-dialog');
+    return { kopf: [...d.querySelectorAll('.tk-tabelle thead th[scope="col"]')].slice(1).map(t => t.textContent), zeilen: d.querySelectorAll('.tk-tabelle tbody tr').length, aus: d.querySelectorAll('.tk-tabelle tbody tr.aus').length,
+      hinweis: !!d.querySelector('.tk-althinweis'), pause: [...d.querySelectorAll('.tk-wahl button.an[data-j="1"]')].map(b => b.getAttribute('data-p')) }; });
+  check('Alter Tag: seine eigenen Abschnitte (mit „Pause“, Werte an der richtigen Stelle), beendetes Ziel mit Punkten markiert dabei', altTag.kopf.length === 5 && altTag.kopf[1].startsWith('Pause') && altTag.zeilen === 2 && altTag.aus === 1 && altTag.hinweis && altTag.pause.join() === '0,1', altTag);
+  await dialogKnopf('Abbrechen');
+
+  // Woche drucken: Woche wählen (mit Datum), Wochenkarte einer gewählten Woche
+  await page.click('.tk-karte [data-tk="drucken"]'); await page.waitForSelector('dialog.ar-dialog input[name="woche"]');
+  const wochen = await page.$$eval('dialog.ar-dialog .tk-wochen label', l => l.map(x => x.textContent));
+  check('„Woche drucken“: diese / letzte / nächste Woche zur Wahl, jeweils mit Datum', wochen.length === 3 && ['Letzte Woche', 'Diese Woche', 'Nächste Woche'].every(w => wochen.some(x => x.startsWith(w))) && wochen.every(w => /Mo \d\d\.\d\d\. bis Fr \d\d\.\d\d\./.test(w)), wochen);
+  await dialogKnopf('Abbrechen');
+  const moL = await page.evaluate(h => CDSE_TAGESKARTE._test.montag(h), tag(-7));
+  const wl = await page.evaluate(async ([id, mo]) => CDSE_TAGESKARTE.wocheHtml(await CDSE_TEAM.dossier(id, true), mo), [tom, moL]);
+  fs.writeFileSync(path.join(OUT, 'woche-letzte.html'), wl);
+  check('Wochenkarte der letzten Woche: richtige Woche, frühere Spalte „Pause“ und beendetes Ziel mit seinen Punkten', wl.includes('Woche vom ' + moL.split('-').reverse().join('.')) && /<th class="alt"[^>]*>Pause<\/th>/.test(wl) && wl.includes('(beendet)'), wl.slice(0, 300));
 
   check('Keine Fehler in der Konsole', errors.length === 0, errors);
   await browser.close();

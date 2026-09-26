@@ -19,6 +19,12 @@
 .ber-p small{grid-column:1/-1;color:var(--muted);font-size:12.5px;line-height:1.45;padding-left:24px;}
 .ber-p.aus label b{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--line-2);}
 .ber-aus{grid-column:1/-1;padding-left:24px;font-size:12px;font-weight:700;color:#8A6414;}
+.ber-p.unklar .ber-aus{color:#9A3A26;}
+.ber-p small i{font-style:normal;font-weight:650;color:var(--ink-2);}
+/* Hinweis unter dem Freitext: was übernommen wird oder „keinem Profil zugeordnet“ */
+.ber-frei{margin:4px 0 0!important;font-size:12.5px;line-height:1.45;color:var(--muted);}
+.ber-frei:empty{display:none;}
+.ber-frei.ohne{color:#8A6414;font-weight:650;}
 .ber-warn{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;margin:0 0 10px;border-radius:10px;background:#FDF6E4;border:1px solid #F0DDAA;font-size:14px;}
 .ber-warn .ic{width:16px;height:16px;flex:0 0 auto;color:#8A6414;margin-top:2px;}
 .ber-hinweis{display:flex;gap:8px;align-items:center;margin:12px 0 0!important;font-size:13px;color:var(--ink-2);}

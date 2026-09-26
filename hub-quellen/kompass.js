@@ -23,6 +23,8 @@ var RANG={diagnose:4,verdacht:3,hypothese:2,beobachtet:1};
 var ART_NAME={diagnose:'Diagnose',verdacht:'Verdacht',hypothese:'Arbeitshypothese',beobachtet:'Beobachtet'};
 var ART_TEXT={diagnose:'Eine Diagnose ist dokumentiert.',verdacht:'Ein Verdacht ist dokumentiert – noch nicht abgeklärt.',
   hypothese:'Eine Arbeitshypothese aus dem DS oder der Lebensgeschichte – keine Diagnose.',beobachtet:'Aus Beobachtungen (Screening, DS, Einträge) – keine Diagnose.'};
+/* Kurze Zeile auf der Profilkarte, damit „Beobachtet“ nicht wie eine Diagnose wirkt */
+var KEINE_DIAGNOSE={verdacht:'Keine gesicherte Diagnose – Verdacht, noch nicht abgeklärt',hypothese:'Keine Diagnose – Arbeitshypothese des Teams',beobachtet:'Keine Diagnose – Beobachtungen des Teams'};
 var ROEM=['','I','II','III','IV','V'];
 var ABSCHNITTE=[['verstehen','Verstehen'],['umgang','Umgang'],['konkret','Konkret im Alltag'],['lassen','Was eher schadet'],['krise','In der Krise'],['zusammenarbeit','Zusammenarbeit']];
 var HYP_AB=5, SC_TAGE=365, WARN_TAGE=90, VORFALL_TAGE=90, NEU_TAGE=730;
@@ -40,20 +42,52 @@ function vorname(d){return ((d&&d.person)||{}).vorname||'das Kind';}
 var reCache=null;
 function profilDef(id){var w=W();if(!w){return null;}for(var i=0;i<w.profile.length;i++){if(w.profile[i].id===id){return w.profile[i];}}return null;}
 function profilIndex(id){var w=W();for(var i=0;i<w.profile.length;i++){if(w.profile[i].id===id){return i;}}return 999;}
+/* Muster je Profil: „re“ findet, „nicht“ und „nichtKlein“ nehmen Fehltreffer wieder heraus */
+function muster(){
+  var w=W();if(!w){return [];}
+  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){
+    return {id:p.id,re:new RegExp(p.re,'gi'),nicht:[p.nicht?new RegExp(p.nicht,'gi'):null,p.nichtKlein?new RegExp(p.nichtKlein,'g'):null].filter(Boolean)};});}
+  return reCache;
+}
+/* Treffer eines Profils im Text: [{index, text}], ohne Fehltreffer („ASS 100 mg“ ist kein Autismus) */
+function treffer(x,t){
+  var weg=[], o=[], m;
+  x.nicht.forEach(function(re){re.lastIndex=0;while((m=re.exec(t))){weg.push([m.index,m.index+m[0].length]);if(!m[0].length){re.lastIndex++;}}});
+  x.re.lastIndex=0;
+  while((m=x.re.exec(t))){
+    var a=m.index, e=a+m[0].length;if(!m[0].length){x.re.lastIndex++;continue;}
+    if(!weg.some(function(z){return a<z[1]&&e>z[0];})){o.push({index:a,text:m[0]});}
+  }
+  return o;
+}
 /* Diagnose- oder Verdachtstext → passende Profile (ICD-10, ICD-11, Namen DE/FR/EN) */
 function passende(text){
-  var w=W();if(!w||!text){return [];}
-  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
+  if(!W()||!text){return [];}
   var t=String(text).normalize?String(text).normalize('NFC'):String(text);
-  return reCache.filter(function(x){return x.re.test(t);}).map(function(x){return x.id;});
+  return muster().filter(function(x){return treffer(x,t).length>0;}).map(function(x){return x.id;});
 }
 /* Fundstellen im Text: [{id, index, text}] – für das Auslesen von Berichten */
 function fundstellen(text){
-  var w=W();if(!w||!text){return [];}
-  if(!reCache){reCache=w.profile.filter(function(p){return p.re;}).map(function(p){return {id:p.id,re:new RegExp(p.re,'i')};});}
+  if(!W()||!text){return [];}
   var o=[];
-  reCache.forEach(function(x){var re=new RegExp(x.re.source,'gi'),m;while((m=re.exec(text))){o.push({id:x.id,index:m.index,text:m[0]});if(!m[0].length){re.lastIndex++;}}});
+  muster().forEach(function(x){treffer(x,String(text)).forEach(function(f){o.push({id:x.id,index:f.index,text:f.text});});});
   return o.sort(function(a,b){return a.index-b.index;});
+}
+/* Text aus DS oder Datenbank einordnen – mit Verneinung, Verdacht und Familie wie beim Auslesen
+   von Berichten („ADHS ausgeschlossen“ ist keine Diagnose, „V.a. Autismus“ ein Verdacht).
+   fuer: Profil, um das es im Text geht (Details zu einem angekreuzten Feld im DS). */
+function einordnen(t,fuer){
+  var B=window.CDSE_BERICHTE;
+  if(B&&B.einordnen){try{return B.einordnen(t,fuer);}catch(e){}}
+  var l=passende(t).map(function(id){return {id:id,art:'erwaehnt',grund:''};});
+  if(fuer&&!l.some(function(x){return x.id===fuer;})){l.push({id:fuer,art:'erwaehnt',grund:''});}
+  return l;
+}
+/* Einstufung aus dem Feld (diagnose/verdacht) und dem Text; null = verneint oder nicht das Kind */
+function standAus(x,feld){
+  if(x.art==='aus'||x.grund==='familie'){return null;}
+  if(feld==='verdacht'||x.art==='verdacht'||x.art==='unklar'||x.grund==='test'||x.grund==='frage'){return 'verdacht';}
+  return 'diagnose';
 }
 function dsFrage(k){var a=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.a)||{};return (a[k]&&a[k].q)||k;}
 function chipName(g,k){var c=(typeof DS_TEXTE!=='undefined'&&DS_TEXTE&&DS_TEXTE.de&&DS_TEXTE.de.chips&&DS_TEXTE.de.chips[g])||{};return (c[k]&&c[k][0])||k;}
@@ -82,27 +116,32 @@ function lesen(d){
   var ch=st.chips||{}, f=st.f||{};
   var geklaert={};Object.keys(team).forEach(function(k){if(team[k]&&team[k].bezug){geklaert[team[k].bezug]=1;}if(team[k]&&team[k].art==='geklaert'){geklaert[k]=1;}});
 
-  /* 1) DS: Diagnosen */
+  /* 1) DS: Diagnosen – Verneintes („kein Hinweis auf …“) wird kein Profil, „V. a.“ wird Verdacht */
   (ch.diagnosen||[]).forEach(function(k){
     var det=String(((f.diagnosen_details||{})[k])||'').trim();
     if(k==='andere'){
       var t=[String((st.frei||{}).diagnose_andere||'').trim(),det].filter(Boolean).join(' – ');if(!t){return;}
-      var ids=passende(t);ids.forEach(function(id){grund(id,'diagnose','Im DS eingetragen: „'+t+'“','ds');});
-      if(!ids.length&&!geklaert['ds-text:'+t.slice(0,50)]){offen.push({text:t,quelle:'DS',art:'diagnose'});}
+      var l=einordnen(t);
+      l.forEach(function(x){var a=standAus(x,'diagnose');if(a){grund(x.id,a,'Im DS eingetragen: „'+t+'“','ds');}});
+      if(!l.length&&!geklaert['ds-text:'+t.slice(0,50)]){offen.push({text:t,quelle:'DS',art:'diagnose'});}
       return;
     }
-    var pid=w.ds.diagnosen[k], aus=det?passende(det):[];
-    if(pid){grund(pid,'diagnose','Im DS eingetragen: '+chipName('diagnosen',k)+(det?' ('+det+')':''),'ds');}
-    aus.forEach(function(id){if(id!==pid){grund(id,'diagnose','Im DS eingetragen: '+chipName('diagnosen',k)+' ('+det+')','ds');}});
+    var pid=w.ds.diagnosen[k], l2=det?einordnen(det,pid||null):[], weitere=[];
+    if(pid){
+      var eigen=l2.filter(function(x){return x.id===pid;})[0], a=eigen?standAus(eigen,'diagnose'):'diagnose';
+      if(a){grund(pid,a,'Im DS eingetragen: '+chipName('diagnosen',k)+(det?' ('+det+')':''),'ds');}
+    }
+    l2.forEach(function(x){if(x.id===pid){return;}var a2=standAus(x,'diagnose');if(a2){weitere.push(x.id);grund(x.id,a2,'Im DS eingetragen: '+chipName('diagnosen',k)+' ('+det+')','ds');}});
     var ob=w.ds.oberbegriff[k];
-    if(ob&&!aus.length&&!geklaert['ds:'+k]){klaeren.push({key:'ds:'+k,name:ob.name,auswahl:ob.auswahl});}
+    if(ob&&!weitere.length&&!geklaert['ds:'+k]){klaeren.push({key:'ds:'+k,name:ob.name,auswahl:ob.auswahl});}
   });
   /* 2) Datenbank: Diagnosen und Verdacht (nur Responsables und Verwaltung) */
   if(resp&&d.db){
     [['diagnosen','diagnose','Datenbank'],['verdacht','verdacht','Datenbank, Verdacht']].forEach(function(z){
       zeilen(d.db[z[0]]).forEach(function(t){
-        var ids=passende(t);ids.forEach(function(id){grund(id,z[1],z[2]+': „'+t+'“','db',true);});
-        if(!ids.length&&!geklaert['db:'+t.slice(0,50)]){offen.push({text:t,quelle:z[2],art:z[1],nurResp:true});}
+        var l=einordnen(t);
+        l.forEach(function(x){var a=standAus(x,z[1]);if(a){grund(x.id,a,z[2]+': „'+t+'“','db',true);}});
+        if(!l.length&&!geklaert['db:'+t.slice(0,50)]){offen.push({text:t,quelle:z[2],art:z[1],nurResp:true});}
       });
     });
   }
@@ -365,7 +404,8 @@ function wichtigstes(d,L,ctx,Q,r){
 
 function profilKarte(d,x,ctx,Q,r,offen){
   var p=x.def, vn=vorname(d), h='<details class="ar-karte ko-profil '+x.art+'" id="ko-p-'+esc(p.id)+'"'+(offen?' open':'')+'>'+
-    '<summary><span class="ko-pkopf"><span class="ko-pname">'+esc(anzeigeName(x))+'</span>'+artChip(x.art)+(x.teilen?'<span class="ko-nurresp" title="'+esc(x.nurResp?'Steht nur in der Datenbank – sichtbar für Responsables und Verwaltung':'Diese Einstufung beruht auf der Datenbank – das Team sieht hier „'+ART_NAME[x.artTeam]+'“')+'">nur Responsables</span>':'')+'</span>'+
+    '<summary><span class="ko-pkopf"><span class="ko-pname">'+esc(anzeigeName(x))+'</span>'+artChip(x.art)+(x.teilen?'<span class="ko-nurresp" title="'+esc(x.nurResp?'Steht nur in der Datenbank – sichtbar für Responsables und Verwaltung':'Diese Einstufung beruht auf der Datenbank – das Team sieht hier „'+ART_NAME[x.artTeam]+'“')+'">nur Responsables</span>':'')+
+      (KEINE_DIAGNOSE[x.art]?'<span class="ko-keinediag">'+esc(KEINE_DIAGNOSE[x.art])+'</span>':'')+'</span>'+
     (x.umfasst&&x.umfasst.length?'<span class="ko-umfasst">umfasst: '+esc(x.umfasst.join(', '))+'</span>':'')+svg('right')+'</summary><div class="ko-pinhalt">';
   h+='<div class="ko-warum"><b>Warum für '+esc(vn)+'?</b><ul>'+x.gruende.map(function(g){return '<li>'+esc(g.text)+(g.nurResp?' <span class="ko-nurresp">nur Responsables</span>':'')+'</li>';}).join('')+'</ul></div>';
   if(p.kurz){h+='<p class="ko-kurz">'+esc(p.kurz)+'</p>';}
@@ -410,16 +450,21 @@ function kurzKarte(d){
 function druckTeil(d){
   if(!bausteine()||!W()){return '';}
   var L;try{L=lesen(d);}catch(e){return '';}
-  if(!L.profile.length){return '';}
+  /* Gedruckt wird nur, was alle im Team sehen: Profile allein aus der Datenbank (nur Responsables)
+     bleiben weg, sonst gilt die Einstufung ohne die Datenbank-Angaben */
+  var prof=L.profile.filter(function(x){return !x.nurResp;}).map(function(x){return {x:x,art:(x.teilen&&x.artTeam)?x.artTeam:x.art};});
+  if(!prof.length){return '';}
+  var ids={};prof.forEach(function(p){ids[p.x.id]=1;});
+  function name(p){return (p.art==='diagnose'||p.art==='verdacht')?p.x.def.name:(p.x.def.thema||p.x.def.name);}
   var w=W(), ctx=L.ctx, l=[], warn=Object.keys(L.beob.warn);
   if(warn.length){l.push(['Warnsignal im Screening: '+warn.map(function(k){return L.beob.warn[k].text;}).join(', ')+'. Die Schritte im Screening gehen vor.','dringend']);}
-  L.profile.slice(0,4).forEach(function(x){
-    var um=x.def.umgang||[], it=um.filter(function(i){var p=passt(i,ctx);return p&&p.warum;})[0]||um.filter(function(i){return passt(i,ctx);})[0];
-    if(it){l.push([it.t,anzeigeName(x)]);}
+  prof.slice(0,4).forEach(function(p){
+    var um=p.x.def.umgang||[], it=um.filter(function(i){var q=passt(i,ctx);return q&&q.warum;})[0]||um.filter(function(i){return passt(i,ctx);})[0];
+    if(it){l.push([it.t,name(p)]);}
   });
-  w.kombinationen.filter(function(k){return k.wenn.every(function(id){return L.ids[id];});}).slice(0,2).forEach(function(k){l.push([k.t,'Kombination']);});
+  w.kombinationen.filter(function(k){return k.wenn.every(function(id){return ids[id];});}).slice(0,2).forEach(function(k){l.push([k.t,'Kombination']);});
   if(ctx.stufen){var s=w.stufen[ctx.stufen.rolle];if(s&&s.umgang[0]){l.push([s.umgang[0].t,'ETEP-Stufe '+ROEM[ctx.stufen.rolle]+': '+s.rolle]);}}
-  return '<h2>Kompass</h2><p>'+L.profile.map(function(x){return '<b>'+esc(anzeigeName(x))+'</b> ('+esc(ART_NAME[x.art])+')';}).join(' · ')+'</p>'+
+  return '<h2>Kompass</h2><p>'+prof.map(function(p){return '<b>'+esc(name(p))+'</b> ('+esc(ART_NAME[p.art])+(p.art==='beobachtet'||p.art==='hypothese'?', keine Diagnose':'')+')';}).join(' · ')+'</p>'+
     '<h3>Das Wichtigste im Umgang</h3><ul>'+l.map(function(z){return '<li>'+esc(z[0])+' <small>('+esc(z[1])+')</small></li>';}).join('')+'</ul>'+
     '<p class="klein">Entwurf, fachlich zu prüfen – keine Diagnose. Alle Hinweise mit Fachquellen: Hub → Dossier → Kompass.</p>';
 }
@@ -437,10 +482,11 @@ function ergaenzenDialog(d,vorgabe){
   var hinweis=vorgabe.resp?'<p class="ko-dialog-hinweis">'+svg('users')+'Danach sehen alle, die das Dossier lesen dürfen, dieses Profil im Kompass.</p>':'';
   var inhalt=(vorgabe.text?'<p>Zuordnen: <b>„'+esc(vorgabe.text)+'“</b></p>':'<p>Zum Beispiel aus einem Arztbrief, einem Befund oder einem Bericht der Diagnostique. Der Kompass zeigt dann Umgang, Material und Quellen dazu.</p>')+
     H.auswahl('profil','Profil',vorgabe.id||'',profilOptionen(),'– bitte wählen –')+
-    '<fieldset class="ko-dialog-art"><legend>Stand</legend><label><input type="radio" name="art" value="diagnose"'+(vorgabe.art!=='verdacht'?' checked':'')+'> Diagnose liegt vor</label><label><input type="radio" name="art" value="verdacht"'+(vorgabe.art==='verdacht'?' checked':'')+'> Verdacht (noch nicht abgeklärt)</label></fieldset>'+
+    /* Nichts vorausgewählt: „Diagnose liegt vor“ nur, wenn jemand das bewusst wählt (beim Zuordnen gilt der Stand aus DS oder Datenbank) */
+    '<fieldset class="ko-dialog-art"><legend>Stand</legend><label><input type="radio" name="art" value="diagnose"'+(vorgabe.art==='diagnose'?' checked':'')+'> Diagnose liegt vor</label><label><input type="radio" name="art" value="verdacht"'+(vorgabe.art==='verdacht'?' checked':'')+'> Verdacht (noch nicht abgeklärt)</label></fieldset>'+
     H.feld('quelle','Woher? (z. B. „Bericht Kinderpsychiatrie, 03/2026“)',vorgabe.quelle||'','text',' maxlength="300"')+hinweis;
   H.dialog(vorgabe.text?'Profil zuordnen':'Profil ergänzen',inhalt,[{text:'Abbrechen',wert:''},{text:'Speichern',wert:'ok',primaer:true}],{
-    pruefen:function(x){return x.werte.profil?'':'Bitte ein Profil wählen.';},
+    pruefen:function(x){if(!x.werte.profil){return 'Bitte ein Profil wählen.';}return (x.werte.art==='diagnose'||x.werte.art==='verdacht')?'':'Bitte den Stand wählen: Diagnose liegt vor oder Verdacht.';},
     ausfuehren:function(x){
       var p=profilDef(x.werte.profil), q=String(x.werte.quelle||'').trim();
       var werte={art:x.werte.art==='verdacht'?'verdacht':'diagnose',quelle:q,name:p.name};

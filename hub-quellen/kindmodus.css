@@ -40,6 +40,13 @@
 .km-e-welten label span{font-size:12.5px;color:var(--muted);line-height:1.35;}
 .km-e-welten label b{display:block;color:var(--ink);font-size:13.5px;}
 .km-e-haken{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 16px;margin-bottom:6px;}
+.km-e-haken label.aus{opacity:.5;cursor:default;}
+.km-e-zahl{margin:2px 0 6px;font-size:13px;color:var(--muted);}
+.km-e-zahl.zuviel{color:#9A3A26;font-weight:650;}
+.km-e-ab{border:1px solid var(--line);border-radius:12px;padding:8px 12px 4px;margin:0 0 12px;min-width:0;}
+.km-e-ab legend{font-weight:650;padding:0 6px;}
+.km-e-ab .ar-haken{margin:6px 0;}
+.km-e-ab .ar-klein{margin:4px 0 6px;}
 @media (max-width:560px){.km-e-figuren{grid-template-columns:repeat(3,minmax(0,1fr));}.km-e-welten{grid-template-columns:1fr;}.km-e-haken{grid-template-columns:1fr;}}
 
 /* ---------- Bildschirm für das Kind ---------- */
@@ -47,7 +54,9 @@ body.km-an .hub{visibility:hidden;}
 @media print{body.km-an .hub{display:none;}}
 dialog.km{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;overflow:auto;
   --km-bg:#F6F2EA;--km-ink:#1D2433;--km-leise:#5C6475;--km-linie:#E4DDCF;--km-akzent:#2E3A9C;--km-gruen:#2E9D6A;--km-gelb:#C98F00;--km-rot:#D9483B;--km-stern:#F5B700;
-  background:var(--km-bg);color:var(--km-ink);font-family:var(--font-ui);font-size:19px;line-height:1.45;}
+  background:var(--km-bg);color:var(--km-ink);font-family:var(--font-ui);font-size:19px;line-height:1.45;
+  /* kein Markieren, kein Kontextmenü beim langen Drücken (iPad), kein Zoomen durch Doppeltippen */
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;}
 dialog.km::backdrop{background:#F6F2EA;}
 .km *{box-sizing:border-box;}
 .km svg{display:block;}
@@ -59,7 +68,7 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-zurueck{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:52px;padding:8px 18px 8px 12px;border-radius:16px;border:2px solid var(--km-linie);background:#FFF;font:inherit;font-size:18px;font-weight:600;color:var(--km-ink);cursor:pointer;}
 .km-zurueck svg,.km-schloss svg,.km-vorlesen svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
 .km-schloss{justify-self:end;width:46px;height:46px;border-radius:50%;border:1px solid var(--km-linie);background:rgba(255,255,255,.6);color:#8C8574;display:grid;place-items:center;cursor:pointer;}
-.km-schloss:hover{color:var(--km-ink);background:#FFF;}
+@media (hover:hover){.km-schloss:hover{color:var(--km-ink);background:#FFF;}}
 .km button{font-family:inherit;}
 .km button:focus-visible{outline:3px solid var(--km-akzent);outline-offset:3px;box-shadow:none;}
 .km-knopf{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:12px 24px;border-radius:18px;border:2px solid var(--km-linie);background:#FFF;font-size:19px;font-weight:650;color:var(--km-ink);cursor:pointer;transition:transform .12s;}
@@ -74,6 +83,12 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-satz{font-family:var(--font-display);font-weight:760;letter-spacing:-.015em;font-size:clamp(24px,3.2vw,34px);line-height:1.2;margin:10px 0 8px;}
 .km-vorlesen{display:inline-grid;place-items:center;vertical-align:middle;width:40px;height:40px;margin-left:10px;border-radius:50%;border:1px solid var(--km-linie);background:#FFF;color:var(--km-leise);cursor:pointer;}
 .km-meldung{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);max-width:min(640px,92vw);margin:0;padding:12px 18px;border-radius:14px;background:#FFF4E5;border:1px solid #F0C27A;color:#6B4A00;font-size:16px;}
+.km-meldung.info{background:#EAF6EE;border-color:#A9D3B5;color:#1E5B38;}
+/* Speichern dauert: „Einen Moment …“ (erscheint erst nach einem kurzen Augenblick, damit es nicht flackert) */
+.km-speichert{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:4;display:flex;align-items:center;gap:10px;margin:0;padding:10px 18px;border-radius:14px;background:#FFF;border:1px solid var(--km-linie);box-shadow:0 12px 30px -18px rgba(29,36,51,.5);font-size:17px;font-weight:650;animation:km-einblenden .2s ease-out .35s both;}
+.km-kreisel{width:20px;height:20px;border-radius:50%;border:3px solid var(--km-linie);border-top-color:var(--km-akzent);animation:km-drehen .8s linear infinite;}
+@keyframes km-einblenden{from{opacity:0;}to{opacity:1;}}
+@keyframes km-drehen{to{transform:rotate(360deg);}}
 
 /* Start */
 .km-start{flex:1;display:flex;flex-direction:column;gap:26px;justify-content:center;}
@@ -83,7 +98,8 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-datum{margin:0 0 4px;color:var(--km-leise);font-size:17px;}
 .km-kacheln{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
 .km-kachel{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding:14px;border-radius:24px;border:2px solid var(--km-linie);background:#FFF;cursor:pointer;text-align:left;color:var(--km-ink);font-size:18px;box-shadow:0 10px 26px -18px rgba(29,36,51,.45);transition:transform .15s;}
-.km-kachel:hover{transform:translateY(-2px);}
+/* Anheben nur mit Maus – auf dem Tablet bliebe die Kachel nach dem Tippen „hängen“ */
+@media (hover:hover){.km-kachel:hover{transform:translateY(-2px);}}
 .km-kachel .km-welt{border-radius:16px;}
 .km-k-bild{display:grid;place-items:center;height:0;padding-bottom:68.75%;position:relative;border-radius:16px;overflow:hidden;}
 .km-kachel.ampel .km-k-bild{background:#EDE6F3;}
@@ -92,6 +108,7 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-k-text{display:flex;flex-direction:column;gap:2px;padding:0 4px 4px;}
 .km-k-text b{font-family:var(--font-display);font-size:24px;font-weight:780;letter-spacing:-.015em;}
 .km-k-text span{color:var(--km-leise);}
+.km-hinweis-erw{margin:0;text-align:center;font-size:15px;color:var(--km-leise);}
 .km-badge{align-self:flex-start;margin-top:6px;padding:3px 12px;border-radius:20px;background:#FFF1C9;color:#7A5600 !important;font-size:15px;font-weight:650;}
 
 /* Quest */
@@ -122,6 +139,11 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-gesicht:active{transform:scale(.97);}
 .km-wahl3.erw .km-gesicht{border-style:dashed;}
 .km-ergebnis{text-align:center;padding:10px 0;}
+/* Übergabe an die Erwachsenen (eigener Schritt) */
+.km-uebergabe{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:4px 0;}
+.km-gewaehlt{display:inline-flex;flex-direction:column;align-items:center;gap:6px;margin:0 0 4px;font-size:19px;}
+.km-gewaehlt svg{width:clamp(62px,8vw,80px);height:auto;}
+.km-uebergabe .km-lead{margin:4px 0 12px;}
 .km-plus{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:clamp(28px,4vw,40px);margin:6px 0;}
 .km-plus .km-stern{width:36px;height:36px;}
 .km-belohnung{margin-top:18px;padding-top:14px;border-top:2px dashed var(--km-linie);}
@@ -195,6 +217,8 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-flamme{opacity:.55;transition:opacity 1s;}
 .km-atem.ein .km-flamme{opacity:1;}
 .km-atem-info{text-align:left;}
+.km-atem-balken{display:none;width:min(260px,70vw);height:18px;margin:10px 0 4px;border-radius:9px;background:#E7E1D5;overflow:hidden;}
+.km-atem-balken span{display:block;width:0;height:100%;border-radius:9px;background:var(--km-akzent);}
 .km-atem-text{font-family:var(--font-display);font-weight:800;font-size:clamp(32px,4.6vw,48px);margin:0;}
 .km-atem-zahl{font-family:var(--font-display);font-weight:800;font-size:64px;line-height:1;color:var(--km-akzent);margin:6px 0;min-height:64px;}
 .km-atem-wahl{flex-direction:row;gap:30px;text-align:left;justify-content:center;}
@@ -216,6 +240,9 @@ dialog.km::backdrop{background:#F6F2EA;}
 .km-taste.leise{font-size:17px;font-weight:600;color:var(--km-leise);}
 .km-taste:disabled{opacity:.4;}
 .km-pin-karte.wackelt{animation:km-wackeln .4s;}
+.km-pin-karte p.km-pin-klein{font-size:15px;}
+.km-pin-knoepfe{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:14px 0 8px;}
+.km-pin-knoepfe .km-knopf{min-height:56px;font-size:18px;}
 @keyframes km-wackeln{20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
 
 @media (max-width:900px){
@@ -242,7 +269,15 @@ dialog.km::backdrop{background:#F6F2EA;}
   .km-zurueck span{display:none;}
   .km-zurueck{padding:8px 12px;}
 }
+/* Hochformat (Tablet): die Welt der Quest höchstens etwa ein Drittel des Bildschirms hoch */
+@media (orientation:portrait){
+  .km-quest-welt .km-welt{max-width:calc(35vh * 320 / 220);margin:0 auto;}
+}
+/* Weniger Bewegung: Die Rakete bleibt stehen; ein Balken füllt sich ruhig beim Einatmen und leert sich beim Ausatmen */
 @media (prefers-reduced-motion:reduce){
   .km *,.km *::before,.km *::after{animation:none !important;transition:none !important;}
-  .km-atem.ein .km-atem-rakete{transform:translateY(-60px);}
+  .km-atem.ein .km-atem-rakete{transform:none;}
+  .km-atem-balken{display:block;}
+  .km .km-atem-balken span{transition:width var(--km-dauer,5s) linear !important;}
+  .km-atem.ein .km-atem-balken span{width:100%;}
 }

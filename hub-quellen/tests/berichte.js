@@ -109,6 +109,85 @@ function docx(zeilen) {
   check('Französisch: „pas de trouble anxieux“ verneint, F90.0 erkannt', e1.fr.includes('adhs:diagnose') && e1.fr.includes('angst:aus'), e1.fr);
   check('Verneinung gilt nur für den eigenen Satz: Autismus aus, ADHS Diagnose', e1.beide.includes('autismus:aus') && e1.beide.includes('adhs:diagnose'), e1.beide);
 
+  /* Fälle aus der Durchsicht (erfundene Sätze): Satz → Einstufung je Profil (id:art, Reihenfolge wie im Prüfdialog).
+     Vorausgewählt werden nur „diagnose“ und „verdacht“; „unklar“, „erwaehnt“ und „aus“ bleiben ohne Haken. */
+  const faelle = [ /* FAELLE-ANFANG */
+    // Verneinung in der Beurteilung gilt vor der Fragestellung; Widerspruch → nichts vorausgewählt; nur Fragestellung → nur erwähnt
+    ['Fragestellung: V. a. ADHS.\nBeurteilung: Eine ADHS konnte nicht bestätigt werden.', 'adhs:aus'],
+    ['Fragestellung: V. a. ADHS. Beurteilung: Eine ADHS konnte nicht bestätigt werden.', 'adhs:aus'],
+    ['Diagnosen:\nADHS (F90.0)\n\nBeurteilung: Eine ADHS liegt nicht vor.', 'adhs:unklar'],
+    ['Fragestellung: V. a. ADHS.\nBeurteilung: Die Symptome passen am ehesten zu einer Angststörung (F41.1).', 'angst:diagnose,adhs:erwaehnt'],
+    // nachgestellte Verneinung; „nicht ausgeschlossen“ ist ein Verdacht
+    ['Eine ADHS liegt nicht vor.', 'adhs:aus'],
+    ['Die Diagnose einer ADHS kann nicht gestellt werden.', 'adhs:aus'],
+    ['Suizidalität: keine.', 'selbstverletzung:aus'],
+    ['Autismus-Screening: keine Auffälligkeiten', 'autismus:aus'],
+    ["Le diagnostic de TDAH n'est pas retenu.", 'adhs:aus'],
+    ['ADHS kann nicht ausgeschlossen werden.', 'adhs:verdacht'],
+    // „Diagnostik“ ist keine Diagnose
+    ['Wir empfehlen eine ADHS-Diagnostik.', 'adhs:erwaehnt'],
+    ['Eine Autismus-Diagnostik ist geplant.', 'autismus:erwaehnt'],
+    // Familie – auch als Wortteil und über einen Zeilenumbruch; Muttersprache, Elterntraining und „Eltern“ zählen nicht
+    ['Die Kindsmutter leidet an einer Depression (F32.1).', 'depression:erwaehnt'],
+    ['Stiefvater: Alkoholabhängigkeit (F10.2)', 'sucht:erwaehnt'],
+    ['Halbbruder mit ADHS (F90.0)', 'adhs:erwaehnt'],
+    ['KM mit Borderline-Persönlichkeitsstörung (F60.3)', 'instabil:erwaehnt'],
+    ["Sa maman souffre d'une dépression.", 'depression:erwaehnt'],
+    ['Anamnese: psychische Erkrankung der Mutter\n(rezidivierende depressive Störung, F33.1)', 'depression:erwaehnt'],
+    ['Diagnosen:\nADHS (F90.0), Muttersprache Portugiesisch, Elterntraining empfohlen.', 'adhs:diagnose'],
+    ['Die Eltern berichten von Unruhe zu Hause.\nDiagnosen: ADHS (F90.0)', 'adhs:diagnose'],
+    // Fehltreffer der Muster: kein Profil
+    ['Tom sucht häufig die Nähe der Erwachsenen.', ''],
+    ['Dosierung in Abhängigkeit vom Körpergewicht.', ''],
+    ['Il vit avec ses parents.', ''],
+    ['Im Sozialverhalten zeigt er sich freundlich.', ''],
+    ['Beurteilung: altersgerechte Intelligenzentwicklung', ''],
+    ['Testung: IQ im Borderline-Bereich', ''],
+    ['Zustand nach Schädel-Hirn-Trauma 2019', ''],
+    ['Traumatherapie empfohlen', ''],
+    ['Er gerät in Panik, wenn es laut wird.', ''],
+    ['Medikation: ASS 100 mg täglich', ''],
+    ['Achse V: abnorme psychosoziale Umstände', ''],
+    // fehlende Namen der ADHS
+    ['Diagnose: Einfache Aktivitäts- und Aufmerksamkeitsstörung', 'adhs:diagnose'],
+    ['Diagnose: Aufmerksamkeitsstörung ohne Hyperaktivität (F98.8)', 'adhs:diagnose'],
+    // Reichweite der Verneinung: Gegensatz, Verb, Komma nach ICD-Code, Wortgrenzen, Aufzählung
+    ['Kein Hinweis auf Autismus, jedoch ADHS (F90.0).', 'adhs:diagnose,autismus:aus'],
+    ['Nach Ausschluss organischer Ursachen besteht eine ADHS.', 'adhs:diagnose'],
+    ['ADHS (F90.0), Autismus ausgeschlossen', 'adhs:diagnose,autismus:aus'],
+    ['Tom möchte weiter in der Wohngruppe wohnen bleiben, ADHS (F90.0).', 'adhs:diagnose'],
+    ['Kein Hinweis auf Autismus, ADHS oder Depression.', 'autismus:aus,adhs:aus,depression:aus'],
+    ['ADHS und Autismus wurden ausgeschlossen.', 'adhs:aus,autismus:aus']
+  ] /* FAELLE-ENDE */;
+  const e2 = await page.evaluate(l => l.map(x => CDSE_BERICHTE.erkennen(x[0], null).profile.map(p => p.id + ':' + p.art).join(',')), faelle);
+  faelle.forEach((x, i) => check('Erkennen: „' + x[0].replace(/\n/g, ' ⏎ ').slice(0, 70) + '“ → ' + (x[1] || 'kein Profil'), e2[i] === x[1], e2[i]));
+  const e3 = await page.evaluate(() => {
+    const E = t => CDSE_BERICHTE.erkennen(t, null), med = t => E(t).medikamente.map(m => m.name + ':' + m.status + (m.dosis ? ':' + m.dosis : '')).join(',');
+    return {
+      frueher: med('Früher Ritalin, abgesetzt wegen Appetitlosigkeit. Aktuell Medikinet retard 20 mg morgens.'),
+      klausel: med('Risperidon abgesetzt, Methylphenidat 20 mg fortgeführt.'),
+      empfohlen: med('Ein Therapieversuch mit Methylphenidat ist zu erwägen.'),
+      abgelehnt: med('Eine medikamentöse Behandlung mit Methylphenidat wurde von den Eltern abgelehnt.'),
+      geb: E('Arztbrief über Lea Beispiel, geb. 12.03.2014\nBericht vom 05.05.2026').datum,
+      empf: E('Empfehlungen:\n1. Ergotherapie 2x wöchentlich\n2) Kontrolle in 3 Monaten\n- Elterntraining zum Umgang mit\noppositionellem Verhalten\nSeite 2 von 3\n- Nachteilsausgleich bei Klassenarbeiten prüfen').empfehlungen,
+      kompass: ['ADHS ausgeschlossen', 'V.a. Autismus', 'Kein Hinweis auf Depression', 'F90.0 einfache Aktivitäts- und Aufmerksamkeitsstörung'].map(t => CDSE_BERICHTE.einordnen(t).map(x => x.id + ':' + x.art).join(','))
+    };
+  });
+  check('Medikation: „früher Ritalin, abgesetzt … aktuell Medikinet 20 mg“ → aktuell mit 20 mg', e3.frueher === 'Methylphenidat:aktuell:20 mg', e3.frueher);
+  check('Medikation: „abgesetzt“ gilt nur im eigenen Satzteil, Dosis beim richtigen Wirkstoff', e3.klausel === 'Risperidon:abgesetzt,Methylphenidat:aktuell:20 mg', e3.klausel);
+  check('Medikation: Therapieversuch erwägen → nur empfohlen (nicht vorausgewählt)', e3.empfohlen === 'Methylphenidat:empfohlen', e3.empfohlen);
+  check('Medikation: von den Eltern abgelehnt → abgelehnt (nicht vorausgewählt)', e3.abgelehnt === 'Methylphenidat:abgelehnt', e3.abgelehnt);
+  check('Datum: „geb. 12.03.2014“ ist kein Berichtsdatum (ohne Geburtsdatum im Dossier)', e3.geb === '2026-05-05', e3.geb);
+  check('Empfehlungen: Zahlen bleiben („2x“, „3 Monaten“), umbrochene Zeile zusammen, ohne „Seite 2 von 3“', JSON.stringify(e3.empf) === JSON.stringify(['Ergotherapie 2x wöchentlich', 'Kontrolle in 3 Monaten', 'Elterntraining zum Umgang mit oppositionellem Verhalten', 'Nachteilsausgleich bei Klassenarbeiten prüfen']), e3.empf);
+  check('Kompass-Texte (DS, Datenbank): ausgeschlossen, V.a., kein Hinweis, Diagnose', e3.kompass.join(' | ') === 'adhs:aus | autismus:verdacht | depression:aus | adhs:diagnose', e3.kompass);
+  /* PDF: kaputte Dateien dürfen den Hub nicht einfrieren (Hex-Text ohne „>“, „stream“ im Text eines Objekts) */
+  const pdfKaputt = await page.evaluate(async () => {
+    const buf = s => new TextEncoder().encode(s).buffer, frist = p => Promise.race([p.then(t => 'fertig', () => 'fertig'), new Promise(r => setTimeout(() => r('hängt'), 5000))]);
+    return [await frist(CDSE_BERICHTE.pdfText(buf('%PDF-1.4\n1 0 obj\n<< /Type /Page /Contents 2 0 R >>\nendobj\n2 0 obj\n<< /Length 20 >>\nstream\nBT (Hallo) Tj <4142\nendstream\nendobj\n'))),
+      await frist(CDSE_BERICHTE.pdfText(buf('%PDF-1.4\n1 0 obj\n<< /Length 5 >>\nstream\nhallo\nendstream\nendobj\n2 0 obj\n<< /Titel (mainstream) >>\nendobj\n')))];
+  });
+  check('PDF: Hex-Text ohne „>“ und „stream“ im Text eines Objekts – kein Einfrieren', pdfKaputt.join() === 'fertig,fertig', pdfKaputt);
+
   console.log('2) Arztbrief als PDF');
   const lea = await page.evaluate(async () => (await CDSE_TEAM.neuesDossier({ nachname: 'Beispiel', vorname: 'Lea', geschlecht: 'w', geburtsdatum: '2015-06-02', klasse: 'C4.1' }, { stelle: 'diagnostique' })).id);
   await reiter(lea, 'kompass');
@@ -162,7 +241,10 @@ function docx(zeilen) {
   console.log('4) Scan ohne Text');
   await hochladen(pfadScan);
   check('Scan: Hinweis „kaum lesbarer Text“ mit Bitte ums Eintragen', (await text('dialog.ar-dialog .ber-warn')).includes('kaum lesbarer Text'));
+  await page.fill('dialog.ar-dialog input[name="frei"]', 'Enuresis F98.0');
+  check('Freitext ohne passendes Profil: sichtbar „keinem Profil zugeordnet“ statt stillschweigend weg', (await text('dialog.ar-dialog .ber-frei')).includes('Keinem Profil zugeordnet'), await text('dialog.ar-dialog .ber-frei'));
   await page.fill('dialog.ar-dialog input[name="frei"]', 'Verdacht auf F84.0');
+  check('Freitext „Verdacht auf F84.0“: Hinweis „Autismus-Spektrum (Verdacht)“', (await text('dialog.ar-dialog .ber-frei')).includes('Autismus-Spektrum (Verdacht)'), await text('dialog.ar-dialog .ber-frei'));
   await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await warte(800);
   check('Freitext „Verdacht auf F84.0“: Autismus-Spektrum als Verdacht', (Object.fromEntries(await chips()))['Autismus-Spektrum'] === 'Verdacht');
   check('Drei Originaldateien verschlüsselt abgelegt (PDF-Brief, Word-Befund, Scan)', (await anhaenge()).length === 3, (await anhaenge()).length);

@@ -1,5 +1,6 @@
 // Test: Frühere Screenings aus dem alten Klassenbuch übernehmen – Hinweis in der Screening-Übersicht,
-// Zuordnung nach dem Namen (auch „Alex P.“), Übernahme verschlüsselt ins Dossier (Wortlaut, Umfeld,
+// Zuordnung nach dem Namen (vorgewählt nur mit Nachname/Initiale oder gleicher Klasse, sonst Hinweis „nur Vorname
+// passt“), Auswahl bleibt beim Hinzufügen von Dateien, Übernahme verschlüsselt ins Dossier (Wortlaut, Umfeld,
 // Dauer/Beeinträchtigung, Krisenhinweise, Rohdaten unverändert), keine Verdachtsachsen in der Anzeige,
 // nichts doppelt, Klassenbuch bleibt unverändert, falsche Zuordnung entfernen, 390 px.
 // Nur erfundene Personen.
@@ -84,11 +85,13 @@ const KB = {
   console.log('2) Zuordnung nach dem Namen');
   const alle = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => ({ id: d.id, person: d.person })));
   const z = await page.evaluate(l => ({
-    tom: CDSE_SCREENING.kbZuordnung('Tom', l), alexP: CDSE_SCREENING.kbZuordnung('Alex P.', l), alex: CDSE_SCREENING.kbZuordnung('Alex', l),
+    tom: CDSE_SCREENING.kbZuordnung('Tom', l), tomM: CDSE_SCREENING.kbZuordnung('Tom M.', l), tomKlasse: CDSE_SCREENING.kbZuordnung('Tom', l, 'L1'),
+    alexP: CDSE_SCREENING.kbZuordnung('Alex P.', l), alex: CDSE_SCREENING.kbZuordnung('Alex', l),
     noah: CDSE_SCREENING.kbZuordnung('Noah', l), voll: CDSE_SCREENING.kbZuordnung('Muster Tom', l), akzent: CDSE_SCREENING.kbZuordnung('Léa', l),
-    alexVor: CDSE_SCREENING.kbVorschlaege('Alex', l).length
+    akzentVor: CDSE_SCREENING.kbVorschlaege('Léa', l).map(v => v.d.id), alexVor: CDSE_SCREENING.kbVorschlaege('Alex', l).length
   }), alle);
-  check('„Tom“ → Tom Muster, „Muster Tom“ → Tom Muster, „Léa“ → Lea Beispiel', z.tom === ids.tom && z.voll === ids.tom && z.akzent === ids.lea, z);
+  check('Nur der Vorname („Tom“, „Léa“): kein Dossier vorgewählt – Lea Beispiel bleibt Vorschlag', z.tom === '' && z.akzent === '' && z.akzentVor.join() === ids.lea, z);
+  check('„Tom M.“ und „Muster Tom“ → Tom Muster; „Tom“ mit gleicher Klasse (L1) → Tom Muster', z.tomM === ids.tom && z.voll === ids.tom && z.tomKlasse === ids.tom, z);
   check('„Alex P.“ → Alex Probe (Initiale), „Alex“ allein: zwei Vorschläge, keiner vorgewählt', z.alexP === ids.alexP && z.alex === '' && z.alexVor === 2, z);
   check('„Noah“: kein Dossier, kein Vorschlag', z.noah === '');
 
@@ -96,12 +99,15 @@ const KB = {
   await uebersicht();
   check('Karte „Frühere Screenings“: 3 offene Screenings (Lea ohne Beobachtungen zählt nicht)', await page.isVisible('.sc-kb-karte') && (await text('.sc-kb-karte')).includes('3 frühere Screenings sind noch keinem Dossier zugeordnet'), await text('.sc-kb-karte').catch(() => ''));
   check('Texte werden erst bei Bedarf geladen', await page.evaluate(() => !window.CDSE_KB_TEXTE));
-  await page.click('.sc-kb-karte [data-scu="kb"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
+  await page.dblclick('.sc-kb-karte [data-scu="kb"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste'); await warte(300);
+  check('Doppelklick auf „Zuordnen und übernehmen“: nur ein Dialog', (await page.$$('dialog.ar-dialog')).length === 1, (await page.$$('dialog.ar-dialog')).length);
   const zeilen = await page.$$eval('dialog .sc-kb-zeile', l => l.map(x => ({ t: x.textContent.replace(/\s+/g, ' '), s: (x.querySelector('select') || {}).value })));
   check('Dialog: 3 Kinder, alphabetisch, mit Stufe, Zahl der Beobachtungen und Stand', zeilen.length === 3 && /^Alex P\..*L2.*1 Beobachtung.*Stand 04\.05\.2026/.test(zeilen[0].t) && /^Noah.*ehemalig/.test(zeilen[1].t) && /^Tom.*3 Beobachtungen/.test(zeilen[2].t), zeilen.map(x => x.t));
-  check('Vorauswahl: Alex P. → Alex Probe, Tom → Tom Muster, Noah → nicht übernehmen', zeilen[0].s === ids.alexP && zeilen[2].s === ids.tom && zeilen[1].s === '', zeilen.map(x => x.s));
+  check('Vorauswahl nur, wenn sicher: Alex P. → Alex Probe; Tom (nur Vorname) und Noah → nicht übernehmen', zeilen[0].s === ids.alexP && zeilen[2].s === '' && zeilen[1].s === '', zeilen.map(x => x.s));
+  check('Tom: Hinweis „nur Vorname passt“, Tom Muster steht unter „Passt zum Namen“', /nur Vorname passt – bitte selbst zuordnen/.test(zeilen[2].t) && await page.$eval('dialog select[name="kb:stud_tom"]', (s, id) => !!s.querySelector('optgroup[label="Passt zum Namen"] option[value="' + id + '"]'), ids.tom));
   check('Krisenhinweis bei Tom sichtbar, bei Alex P. nicht', (await text('dialog .sc-kb-zeile:has(select[name="kb:stud_tom"]) .sc-kb-wer')).includes('Krisenhinweis') && !(await text('dialog .sc-kb-zeile:has(select[name="kb:stud_alexp"]) .sc-kb-wer')).includes('Krisenhinweis'));
   await page.locator('dialog.ar-dialog').screenshot({ path: path.join(OUT, 'kb1-dialog.png') });
+  await page.selectOption('dialog select[name="kb:stud_tom"]', ids.tom);
   await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")');
   await dialogZu();
   check('Texte wurden für die Übernahme nachgeladen', await page.evaluate(() => !!(window.CDSE_KB_TEXTE && window.CDSE_KB_TEXTE.symptome['1.1'])));
@@ -190,7 +196,8 @@ const KB = {
   await uebersicht();
   check('Journal im selben Browser: Karte zeigt 2 offene (Alex P., Lea aus dem Journal)', (await text('.sc-kb-karte')).includes('2 frühere Screenings'));
   await page.click('.sc-kb-karte [data-scu="kb"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
-  check('Lea aus dem Journal: „Journal“ vermerkt, Lea Beispiel vorgewählt', (await text('dialog .sc-kb-zeile:has(select[name="kb:isa:isa_s1"]) .sc-kb-wer')).includes('Journal') && await page.inputValue('dialog select[name="kb:isa:isa_s1"]') === ids.lea);
+  check('Lea aus dem Journal: „Journal“ vermerkt, nur Vorname – nicht vorgewählt', (await text('dialog .sc-kb-zeile:has(select[name="kb:isa:isa_s1"]) .sc-kb-wer')).includes('Journal') && await page.inputValue('dialog select[name="kb:isa:isa_s1"]') === '' && (await text('dialog .sc-kb-zeile:has(select[name="kb:isa:isa_s1"])')).includes('nur Vorname passt'));
+  await page.selectOption('dialog select[name="kb:isa:isa_s1"]', ids.lea);
   await page.setInputFiles('dialog [data-kb-datei]', { name: 'notiz.json', mimeType: 'application/json', buffer: Buffer.from('{"hallo":1}') });
   await page.waitForSelector('dialog .ar-dialog-fehler:not([hidden])');
   check('Falsche Datei: verständlicher Hinweis, Dialog bleibt offen', (await text('dialog .ar-dialog-fehler')).includes('weder eine Team-Datei noch eine Sicherung'));
@@ -200,9 +207,11 @@ const KB = {
   await page.waitForSelector('dialog select[name="kb:stud_ella"]', { timeout: 20000 }); await warte(200);
   const ellaZeile = (await text('dialog .sc-kb-zeile:has(select[name="kb:stud_ella"]) .sc-kb-wer')).replace(/\s+/g, ' ');
   check('Nach dem Einlesen: Ella aus Team-Datei und Tageskopie (neuester Stand, beide Quellen genannt), gelöschte Einträge ignoriert',
-    ellaZeile.includes('2 Beobachtungen') && ellaZeile.includes('Stand 10.09.2026') && ellaZeile.includes('klassebuch-team.json') && ellaZeile.includes('klassebuch-2026-09-01.json') && !(await page.$('dialog select[name="kb:stud_weg"]')) && await page.inputValue('dialog select[name="kb:stud_ella"]') === ella, ellaZeile);
+    ellaZeile.includes('2 Beobachtungen') && ellaZeile.includes('Stand 10.09.2026') && ellaZeile.includes('klassebuch-team.json') && ellaZeile.includes('klassebuch-2026-09-01.json') && !(await page.$('dialog select[name="kb:stud_weg"]')) && await page.inputValue('dialog select[name="kb:stud_ella"]') === '', ellaZeile);
+  check('Die Auswahl von vorher (Lea → Lea Beispiel) bleibt nach „Datei hinzufügen“ erhalten', await page.inputValue('dialog select[name="kb:isa:isa_s1"]') === ids.lea);
   await page.locator('dialog.ar-dialog').screenshot({ path: path.join(OUT, 'kb4-dateien.png') });
   check('Dialog nennt die eingelesenen Dateien', (await text('dialog .sc-kb-datei')).includes('Schon gelesen: klassebuch-team.json, klassebuch-2026-09-01.json'));
+  await page.selectOption('dialog select[name="kb:stud_ella"]', ella);
   await page.selectOption('dialog select[name="kb:stud_alexp"]', '');
   await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await dialogZu();
   const [dE, dL] = await page.evaluate(async ([e, l]) => [await CDSE_TEAM.dossier(e, true), await CDSE_TEAM.dossier(l, true)], [ella, ids.lea]);

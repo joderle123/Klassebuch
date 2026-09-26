@@ -97,6 +97,25 @@ const FICHE = {
   check('Download enthält neue Maßnahme angekreuzt', zurueck.fiche.cdse.cgEltern && zurueck.fiche.cdse.cgEltern.aktiv === true && zurueck.fiche.cdse.cgEltern.von === '2026-09-01');
   check('Download: Name, Matricule, Vertreter', zurueck.person.nachname === 'Beispiel' && zurueck.person.matricule === '2013 0704 222 11' && zurueck.fiche.vertreter[1].name === 'Rui Beispiel');
 
+  console.log('4b) Lesen: Lücken der Schullaufbahn, unlesbare Daten, nicht angekreuzte Maßnahmen, Geschlecht, Kästchen mit x');
+  const lese = await page.evaluate(async (F) => {
+    const f = JSON.parse(JSON.stringify(F));
+    f.fiche.progression = ['C1.1', '', 'C2.1'];
+    f.person.geburtsdatum = 'Frühjahr 2013';
+    f.fiche.cdse.isa.von = 'Sept. 2025';
+    const r = await CDSE_FICHE.lesenAusBlob(await CDSE_FICHE.schreiben(f));
+    return { prog: r.daten.fiche.progression, geb: r.daten.person.geburtsdatum, hinweise: r.hinweise, cdse: r.daten.fiche.cdse,
+      g: ['Mädchen', 'Maedchen', 'fille', 'F', 'M', 'garçon', 'männlich', 'Masculin'].map(t => CDSE_FICHE.geschlechtAus(t)),
+      k: ['☐ x autorité parentale', 'X ☐', '✔ autorité parentale', '☐ autorité parentale', '☒'].map(t => CDSE_FICHE.angekreuzt(t)) };
+  }, FICHE);
+  check('Schullaufbahn mit Lücke bleibt an ihrer Stelle (C1.1, leer, C2.1) – beim Herunterladen keine verschobenen Spalten', JSON.stringify(lese.prog) === JSON.stringify(['C1.1', '', 'C2.1']), JSON.stringify(lese.prog));
+  /* Die CDSE-Vorlage hat kein Feld „Date de naissance“ (nur den Geburtsort): Das Geburtsdatum kommt aus der Matricule */
+  check('Geburtsdatum aus der Matricule, mit Hinweis in der Vorschau', lese.geb === '2013-07-04' && lese.hinweise.some(h => h.includes('aus der Matricule')), lese.hinweise.join(' | '));
+  check('Unlesbares Datum einer Maßnahme („Sept. 2025“): Hinweis je Feld', lese.hinweise.some(h => h.includes('ISA') && h.includes('Sept. 2025') && h.includes('ohne Beginn')), lese.hinweise.join(' | '));
+  check('Nicht angekreuzte Maßnahmen der Datei kommen als aktiv:false mit (so kann eine neuere Fiche einen Haken entfernen)', lese.cdse.isa.aktiv === true && lese.cdse.cgEltern && lese.cdse.cgEltern.aktiv === false, JSON.stringify(lese.cdse));
+  check('Geschlecht: „Mädchen“ und „Maedchen“ sind Mädchen (ganzes Wort, nicht „beginnt mit m“)', lese.g.join() === 'w,w,w,w,m,m,m,m', lese.g.join());
+  check('Kästchen als Zeichen: x, X, ✓, ✔ neben dem Kästchen zählen als angekreuzt', lese.k.join() === 'true,true,true,false,true', lese.k.join());
+
   console.log('5) Erneut hochladen (geänderte Telefonnummer) → aktualisieren statt doppelt');
   const F2 = JSON.parse(JSON.stringify(FICHE)); F2.fiche.vertreter[0].tel = '691 999 999'; F2.fiche.datum = '2026-09-20'; F2.fiche.depistage = {};
   const b64b = await page.evaluate(async (F) => { const blob = await CDSE_FICHE.schreiben(F); const u = new Uint8Array(await blob.arrayBuffer()); let s = ''; for (let i = 0; i < u.length; i += 32768) s += String.fromCharCode.apply(null, u.subarray(i, i + 32768)); return btoa(s); }, F2);
@@ -106,6 +125,7 @@ const FICHE = {
   await hochladen('[data-ar="fiche-hochladen"]', datei2);
   await page.waitForSelector('dialog input[name=modus][value=aktualisieren]', { timeout: 15000 });
   check('Treffer über die Matricule erkannt', (await page.textContent('dialog .ar-wahlgruppe')).includes('gleiche Matricule'));
+  check('Vorschau: im Dossier laufende Maßnahme, die in der Datei nicht angekreuzt ist, wird nicht still beendet (Häkchen „beenden“ aus)', await page.evaluate(() => { const c = document.querySelector('dialog input[name="ende_cgEltern"]'); return !!c && !c.checked; }));
   await dialogKnopf('Übernehmen');
   await page.waitForSelector('.ar-dkopf h1', { timeout: 20000 }); await warte(500);
   const nachher = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).length);
@@ -114,6 +134,7 @@ const FICHE = {
   check('Neue Telefonnummer übernommen', t2.includes('691 999 999'));
   check('Leere Felder der neuen Fiche löschen nichts (Dépistage bleibt)', t2.includes('Contrôle visuel 2024'));
   check('Handeingetragene Maßnahme bleibt', t2.includes('Clara Guide'));
+  check('… und bleibt aktiv (nicht bestätigt)', await page.evaluate(async () => { const d = await CDSE_TEAM.dossier(location.hash.split('/').pop(), true); return !!(d.fiche.cdse.cgEltern && d.fiche.cdse.cgEltern.aktiv === true); }));
   check('Stand der Fiche aktualisiert', t2.includes('Stand 20.09.2026'));
 
   console.log('6) Ungültige Datei');

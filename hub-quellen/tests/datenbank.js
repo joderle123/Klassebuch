@@ -17,6 +17,9 @@ function alter(geb) { const [y, m, d] = geb.split('-').map(Number); let a = jetz
 function sjVon(iso) { const y = +iso.slice(0, 4), m = +iso.slice(5, 7), t = +iso.slice(8, 10), s = (m > 8 || (m === 8 && t >= 15)) ? y : y - 1; return s + '/' + p2((s + 1) % 100); }
 const SJ = sjVon(HEUTE);
 const de1 = n => n.toLocaleString('de-DE', { maximumFractionDigits: 1 });
+/* Alter an einem Tag; Stichtag eines Dossiers: heute bzw. der Tag des Abschlusses, wenn der früher liegt */
+function alterAm(geb, tag) { const [y, m, d] = geb.split('-').map(Number), [ty, tm, td] = tag.split('-').map(Number); let a = ty - y; if (tm < m || (tm === m && td < d)) a--; return a; }
+function alterFall(f, tag) { tag = tag || HEUTE; return alterAm(f.person.geburtsdatum, f.inaktiv && f.inaktiv < tag ? f.inaktiv : tag); }
 
 /* ---------- Erfundene Dossiers ---------- */
 const FALL = [
@@ -189,12 +192,17 @@ const STATS = [
   check('Responsable: Menüpunkt „Datenbank“', await page.isVisible('#nav a[href="#/datenbank"]'));
   await db('');
   await page.waitForSelector('.db-kpis');
+  check('Standard wie in der Schülerliste: Filter „Aktiv“ (7 Dossiers), Zeile „Stand: … (heute) · aktive Dossiers“', await page.getAttribute('[data-db-f="status"][data-wert="aktiv"]', 'aria-pressed') === 'true' && await kpi('dossiers') === '7' &&
+    /Stand: \d\d\.\d\d\.\d{4} \(heute\) · aktive Dossiers/.test(await text('.db-standzeile')), [await kpi('dossiers'), await text('.db-standzeile')]);
+  check('Kopf: „Stand der Daten: hh:mm Uhr“ neben „Neu laden“', /Stand der Daten: \d\d:\d\d Uhr/.test(await text('[data-db-geladen]')) && await page.isVisible('[data-db="neu-laden"]'), await text('[data-db-geladen]'));
+  await page.click('[data-db-f="status"][data-wert="alle"]'); await warte(150);
   const aktive = FALL.filter(f => !f.inaktiv);
   check('Kennzahl Dossiers: 8 (7 aktiv · 1 inaktiv)', await kpi('dossiers') === '8' && (await text('[data-kpi="dossiers"] small')).includes('7 aktiv · 1 inaktiv'), await text('[data-kpi="dossiers"]'));
   const neuErw = FALL.filter(f => sjVon(beginn(f)) === SJ).length;
   check('Kennzahl „neu im Schuljahr ' + SJ + '“: ' + neuErw, await kpi('neu') === String(neuErw) && (await text('[data-kpi="neu"] span')).includes(SJ), await text('[data-kpi="neu"]'));
-  const altersMittel = FALL.reduce((s, f) => s + alter(f.person.geburtsdatum), 0) / FALL.length;
-  check('Durchschnittsalter ' + de1(altersMittel), await kpi('alter') === de1(Math.round(altersMittel * 10) / 10), await kpi('alter'));
+  /* inaktive Dossiers: Alter am Tag des Abschlusses (Sara) */
+  const altersMittel = FALL.reduce((s, f) => s + alterFall(f), 0) / FALL.length;
+  check('Durchschnittsalter ' + de1(altersMittel) + ' (bei inaktiven Dossiers am Tag des Abschlusses)', await kpi('alter') === de1(Math.round(altersMittel * 10) / 10), await kpi('alter'));
   check('Jungen / Mädchen: 4 / 4', await kpi('geschlecht') === '4 / 4', await kpi('geschlecht'));
   const lauf = zaehle(FALL.flatMap(laufende)), laufSumme = Object.values(lauf).reduce((a, b) => a + b, 0);
   check('Laufende Maßnahmen: ' + laufSumme + ' (' + JSON.stringify(lauf) + ')', await kpi('massnahmen') === String(laufSumme), await kpi('massnahmen'));
@@ -207,7 +215,7 @@ const STATS = [
   check('Diagramm Direction régionale stimmt (06 Esch/Alzette 3 …, ohne Angabe 2)', Object.keys(drErw).every(k => dr[k] === drErw[k]) && Object.keys(dr).length === Object.keys(drErw).length, dr);
   const cyc = Object.fromEntries(await balken('cycle')), cycErw = zaehle(FALL.map(f => f.cycle));
   check('Diagramm Cycle stimmt (C2 1, C3 3, C4 3, ES 1)', ['C1', 'C2', 'C3', 'C4', 'ES'].every(k => (cyc[k] || 0) === (cycErw[k] || 0)), cyc);
-  const alt = Object.fromEntries(await balken('alter')), altErw = zaehle(FALL.map(f => String(alter(f.person.geburtsdatum))));
+  const alt = Object.fromEntries(await balken('alter')), altErw = zaehle(FALL.map(f => String(alterFall(f))));
   check('Diagramm Alter stimmt (Säulen je Jahr)', Object.keys(altErw).every(k => alt[k] === altErw[k]) && Object.values(alt).reduce((a, b) => a + b, 0) === 8, alt);
   const ges = Object.fromEntries(await balken('geschlecht'));
   check('Diagramm Geschlecht: Jungen 4, Mädchen 4', ges.Jungen === 4 && ges['Mädchen'] === 4, ges);
@@ -240,6 +248,16 @@ const STATS = [
   const g0 = vorjahr.slice(0, 4) + '-08-15', g1 = (+vorjahr.slice(0, 4) + 1) + '-08-14';
   const imVorjahr = FALL.filter(f => beginn(f) <= g1 && (!f.inaktiv || f.inaktiv >= g0)).length;
   check('Filter Schuljahr ' + vorjahr + ': ' + imVorjahr + ' begleitete Dossiers', await kpi('dossiers') === String(imVorjahr), await kpi('dossiers'));
+  /* Schuljahr gewählt: Status „Alle“ (auch inzwischen inaktive), Stichtag 1. Oktober, Maßnahmen = alle, die im Schuljahr liefen */
+  check('Schuljahr gewählt: Status springt auf „Alle“, Zeile „Stand: 01.10.' + vorjahr.slice(0, 4) + ' (Stichtag …)“', await page.getAttribute('[data-db-f="status"][data-wert="alle"]', 'aria-pressed') === 'true' &&
+    (await text('.db-standzeile')).includes('Stand: 01.10.' + vorjahr.slice(0, 4) + ' (Stichtag im Schuljahr ' + vorjahr + ')'), await text('.db-standzeile'));
+  const stVor = vorjahr.slice(0, 4) + '-10-01', inVor = FALL.filter(f => beginn(f) <= g1 && (!f.inaktiv || f.inaktiv >= g0));
+  const altVor = inVor.map(f => alterFall(f, stVor)), altVorM = altVor.reduce((a, b) => a + b, 0) / altVor.length;
+  check('Schuljahr ' + vorjahr + ': Durchschnittsalter am Stichtag 01.10. (' + de1(altVorM) + ')', await kpi('alter') === de1(Math.round(altVorM * 10) / 10), await kpi('alter'));
+  const imVor = f => { const c = (f.fiche && f.fiche.cdse) || {}, ende = f.inaktiv && f.inaktiv < g1 ? f.inaktiv : g1; if (f.inaktiv && f.inaktiv <= g0) return [];
+    return Object.keys(c).filter(k => c[k].aktiv && !(c[k].bis && c[k].bis < g0) && !(c[k].von && c[k].von > ende)); };
+  const mVor = inVor.reduce((s, f) => s + imVor(f).length, 0);
+  check('Schuljahr ' + vorjahr + ': „Maßnahmen im Schuljahr“ zählt alle, die im Schuljahr liefen (' + mVor + ', auch bei inzwischen inaktiven)', await kpi('massnahmen') === String(mVor) && (await text('[data-kpi="massnahmen"] span')).includes('Maßnahmen im Schuljahr'), await text('[data-kpi="massnahmen"]'));
   await page.selectOption('select[data-db-sj]', ''); await warte(150);
 
   console.log('7) Klick auf einen Balken → Tabelle mit Filter');
@@ -259,6 +277,10 @@ const STATS = [
   await page.fill('#db-q', 'muster'); await warte(150);
   check('Suche „muster“: Tom und Sara', (await page.$$('.db-tab tbody tr')).length === 2 && (await text('.db-anzahl')).includes('2'));
   check('Suchfeld behält den Fokus', await page.evaluate(() => document.activeElement && document.activeElement.id === 'db-q'));
+  await page.fill('#db-q', 'Tom Muster'); await warte(150);
+  check('Suche Wort für Wort: „Tom Muster“ findet „MUSTER Tom“', (await page.$$('.db-tab tbody tr')).length === 1 && (await text('.db-tab tbody tr .db-name b')) === 'MUSTER Tom', await text('.db-anzahl'));
+  await page.fill('#db-q', 'ecole brill'); await warte(150);
+  check('Suche ohne Akzente: „ecole brill“ findet École Brill (Tom, Lina)', (await page.$$('.db-tab tbody tr')).length === 2, await text('.db-anzahl'));
   await page.fill('#db-q', ''); await warte(100);
   await page.click('[data-db-sort="alter"]'); await warte(100); await page.click('[data-db-sort="alter"]'); await warte(100);
   const aelteste = FALL.slice().sort((a, b) => a.person.geburtsdatum.localeCompare(b.person.geburtsdatum))[0];
@@ -266,6 +288,8 @@ const STATS = [
   await page.selectOption('select[data-db-schnell="geschlecht"]', 'Mädchen'); await warte(100);
   await page.selectOption('select[data-db-schnell="massnahme"]', 'ISA'); await warte(100);
   check('Schnellfilter Mädchen + laufende ISA: Lina und Mila', (await page.$$eval('.db-tab tbody .db-name b', l => l.map(x => x.textContent))).sort().join(',') === 'BEISPIEL Lina,TEST Mila');
+  check('Gewählte Schnellfilter hervorgehoben, „Alle Filter zurücksetzen“ steht bei der Anzahl', await page.isVisible('.db-schnell.an select[data-db-schnell="geschlecht"]') && await page.isVisible('.db-schnell.an select[data-db-schnell="massnahme"]') &&
+    !(await page.$('.db-schnell.an select[data-db-schnell="cycle"]')) && await page.isVisible('.db-anzahl [data-db="filter-weg"]'));
   await page.selectOption('select[data-db-schnell="geschlecht"]', ''); await page.selectOption('select[data-db-schnell="massnahme"]', ''); await warte(100);
   q = await querScroll();
   check('1280 px: Tabelle ohne waagrechtes Scrollen', ohneQuer(q) && await page.evaluate(() => { const r = document.querySelector('.db-tabrahmen'); return r.scrollWidth <= r.clientWidth + 1; }), q);
@@ -280,6 +304,8 @@ const STATS = [
   check('localStorage cdse-db-spalten-v1 hat die Auswahl unter Leas Konto', ls && Array.isArray(ls[konto.lea]) && ls[konto.lea].includes('iq') && !ls[konto.lea].includes('schule'), ls);
   await page.reload(); await page.waitForSelector('#me:not([hidden])', { timeout: 20000 });
   await db('tabelle'); await page.waitForSelector('.db-tab');
+  check('Nach dem Neuladen wieder der Standard: nur aktive Dossiers (7)', (await page.$$('.db-tab tbody tr')).length === 7, await text('.db-anzahl'));
+  await page.click('[data-db-f="status"][data-wert="alle"]'); await page.waitForSelector('.db-tab'); await warte(150);
   kopf2 = await page.$$eval('.db-tab thead th', l => l.map(x => x.textContent.replace(/[▲▼]/g, '').trim()));
   check('Nach dem Neuladen noch dieselben Spalten', kopf2.includes('IQ') && !kopf2.includes('Schule'), kopf2.join('|'));
   const tomZeile = await page.$eval('tr[data-id="' + ids.tom + '"]', tr => [...tr.querySelectorAll('td')].map(td => td.textContent));
@@ -335,11 +361,12 @@ const STATS = [
   await page.waitForFunction(() => window.__export, null, { timeout: 10000 });
   const csv = await page.evaluate(() => window.__export);
   const zeilenCsv = csvZeilen(csv.text), kopfCsv = zeilenCsv[0];
-  check('CSV: UTF-8 mit BOM, Dateiname cdse-datenbank-JJJJ-MM-TT.csv', csv.bom.join(',') === '239,187,191' && /^cdse-datenbank-\d{4}-\d{2}-\d{2}\.csv$/.test(csv.name), csv.name + ' ' + csv.bom);
+  check('CSV: UTF-8 mit BOM, Dateiname mit Uhrzeit und Auswahl: cdse-datenbank-JJJJ-MM-TT-hhmm-alle.csv', csv.bom.join(',') === '239,187,191' && /^cdse-datenbank-\d{4}-\d{2}-\d{2}-\d{4}-alle\.csv$/.test(csv.name), csv.name + ' ' + csv.bom);
   check('CSV: Semikolon, Zeilenende CRLF, Kopf mit Dossier-ID + allen Variablen', csv.text.includes('\r\n') && kopfCsv.length === 1 + (await page.evaluate(() => CDSE_DATENBANK.felder.length)) && kopfCsv[0] === 'Dossier-ID' && kopfCsv.includes('Direction régionale') && kopfCsv.includes('Laufende Maßnahmen'), kopfCsv.slice(0, 6));
   check('CSV: 8 Datenzeilen, jede so lang wie der Kopf', zeilenCsv.length === 9 && zeilenCsv.every(z => z.length === kopfCsv.length), zeilenCsv.map(z => z.length));
   const tomZ = zeilenCsv.find(z => z[0] === ids.tom) || [];
-  check('CSV: Werte für Tom (Matricule, DR, IQ 104, Diagnosen mit „; “)', tomZ[kopfCsv.indexOf('Matricule')] === '2014031000012' && tomZ[kopfCsv.indexOf('Direction régionale')] === '06 Esch/Alzette' && tomZ[kopfCsv.indexOf('IQ')] === '104' && tomZ[kopfCsv.indexOf('Diagnosen')] === 'F90.0 ADHS; F81.0 Legasthenie (Test)', tomZ.slice(0, 20));
+  check('CSV: Werte für Tom (Matricule, DR, IQ 104, Diagnosen mit „; “)', tomZ[kopfCsv.indexOf('Matricule')] === '=2014031000012' && tomZ[kopfCsv.indexOf('Direction régionale')] === '06 Esch/Alzette' && tomZ[kopfCsv.indexOf('IQ')] === '104' && tomZ[kopfCsv.indexOf('Diagnosen')] === 'F90.0 ADHS; F81.0 Legasthenie (Test)', tomZ.slice(0, 20));
+  check('CSV: Ziffernfolgen als Text für Excel (Matricule ="2014031000012", Klasse ="3.1") – Zahlen wie der IQ bleiben Zahlen', csv.text.includes(';="2014031000012";') && csv.text.includes(';="3.1";') && csv.text.includes(';104;'), csv.text.slice(0, 400));
   check('CSV: Liste mit „; “ steht in Anführungszeichen (Excel liest sie als eine Zelle)', csv.text.includes('"F90.0 ADHS; F81.0 Legasthenie (Test)"'));
   check('CSV: keine Formeln für Excel („=1+1“ → „\'=1+1“)', csv.text.includes(";'=1+1;"));
   await page.evaluate(() => { window.showSaveFilePicker = undefined; });
@@ -534,6 +561,13 @@ const STATS = [
   await page.click('[data-db="import-los"]'); await page.waitForSelector('.db-imp-ergebnis', { timeout: 60000 });
   const nora = (await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => CDSE_DATENBANK.datensatz(d)))).find(r => r.vorname === 'Nora');
   check('CSV: Listen in Anführungszeichen getrennt (2 Diagnosen, Sorgerecht Mutter + Vater), DR 09 Remich, DE', nora && nora.diagnosen.length === 2 && nora.sorgerecht.join() === 'Mutter,Vater' && nora.direction === '09 Remich' && nora.sprache === 'DE' && nora.beginn === '2025-02-01', nora);
+  /* Excel „CSV (Trennzeichen-getrennt)“ speichert unter Windows als Windows-1252 – nur Vorschau, dann verwerfen */
+  await page.click('[data-db="import-weg"]'); await warte(100);
+  await page.setInputFiles('#db-datei', { name: 'liste-excel.csv', mimeType: 'text/csv', buffer: Buffer.from('Nom et prénom;École;Date de naissance\r\nBEISPIEL Léa;École Brill;01.02.2016\r\n', 'latin1') });
+  await page.waitForSelector('.db-vorschau', { timeout: 20000 });
+  check('CSV aus Excel (Windows-1252): Zeichensatz erkannt und angezeigt, „École“ und „Léa“ richtig gelesen', (await text('.db-vorschau')).includes('Zeichensatz Windows-1252') && (await text('.db-spzutab')).includes('École Brill') &&
+    (await text('.db-imptab')).includes('BEISPIEL Léa') && !(await text('.db-vorschau')).includes(String.fromCharCode(0xFFFD)), (await text('.db-vorschau')).slice(0, 300));
+  await page.click('[data-db="import-weg"]'); await warte(100);
   await db('protokoll');
   const prot2 = await page.$$eval('[data-db-liste="eigene"] li', l => l.map(x => x.textContent));
   check('Protokoll: drei Importe mit Anzahl (1 angelegt · 2 ergänzt · 2 angelegt)', prot2.length === 5 && prot2[0].includes('Import CDSE Stats · 1 Datensatz') && prot2[1].includes('2 ergänzt') && prot2[2].includes('2 angelegt'), prot2.slice(0, 3));
@@ -555,7 +589,10 @@ const STATS = [
   check('0.5: Atelier mit „welches“ und Beginn, CST-Gruppe Moveo, Annexe mit Daten, CdP-Region Pétange', c05.atelier && c05.atelier.standort === 'Demo atelier A' && c05.atelier.von === '2025-02-01' &&
     c05.cst && c05.cst.standort === 'Moveo' && c05.cst.bis === '2025-07-15' && c05.annexe && c05.annexe.von === '2023-09-15' && c05.cdp && c05.cdp.standort === '03 Pétange', c05);
   check('0.5: C&G „Parents“ → C&G Eltern (nicht Fachkräfte), Rééducation mit Typ', c05.cgEltern && !c05.cgPro && c05.reeducation && c05.reeducation.standort === 'Demo rééducation B', Object.keys(c05));
-  check('0.5: andere CC als Liste → Kürzel „CDI; CL“, Sprache „Other“ → albanais, ELDiB-Stufe V 3, keine Warnung', neu05.db.autreCc === 'CDI; CL' && neu05.fiche.ersteSprache === 'albanais' && neu05.db.eldibStufen && neu05.db.eldibStufen.verhalten === 3 && neu05.warnungen.length === 0, [neu05.db.autreCc, neu05.fiche.ersteSprache, neu05.db.eldibStufen, neu05.warnungen]);
+  check('0.5: andere CC als Liste → Kürzel „CDI; CL“, Sprache „Other“ → albanais, ELDiB-Stufe V 3 – ohne Datum nur mit Hinweis „kein Vergleich“', neu05.db.autreCc === 'CDI; CL' && neu05.fiche.ersteSprache === 'albanais' && neu05.db.eldibStufen && neu05.db.eldibStufen.verhalten === 3 &&
+    neu05.warnungen.length === 1 && /ELDiB-Stufen ohne Datum/.test(neu05.warnungen[0]), [neu05.db.autreCc, neu05.fiche.ersteSprache, neu05.db.eldibStufen, neu05.warnungen]);
+  const eltern05 = await page.evaluate(() => CDSE_DATENBANK.cdseStats.abbilden({ id: 'stats-0501', nom: 'Probe', prenom: 'Emil', parents: 'Other', parents_autre: 'lebt bei der Tante (fiktiv)', remarque: 'Testnotiz' }).db);
+  check('0.5: parents_autre geht nicht verloren – „Elternsituation: …“ in der Notiz (nach der Bemerkung)', eltern05.eltern === 'anderes' && eltern05.notiz === 'Testnotiz\nElternsituation: lebt bei der Tante (fiktiv)', eltern05);
 
   console.log('17c) Import aus einer Excel-Tabelle (.xlsx): Spalten zuordnen, Vorschau, Import, Ergänzen');
   await db('import');
@@ -570,6 +607,12 @@ const STATS = [
   check('Excel: Vorschau 3 neu, 1 vorhanden (Tom über die Matricule), 1 ohne Namen', await kpi('imp-neu') === '3' && await kpi('imp-vorhanden') === '1' && await kpi('imp-aus') === '1', [await kpi('imp-neu'), await kpi('imp-vorhanden'), await kpi('imp-aus')]);
   check('Excel: unmögliches Datum wird mit Zeilennummer gemeldet (Zeile 7: „31.02.2015“)', (await text('.db-vorschau')).includes('Zeile 7: „31.02.2015“ ist kein Datum'), (await text('.db-vorschau')).slice(0, 400));
   check('Excel: Beispiele aus der Tabelle, Excel-Datum als Datum (15.06.2016)', (await text('.db-spzutab')).includes('15.06.2016') && (await text('.db-spzutab')).includes('MUSTER Tom'));
+  check('Excel: Spalte „Nom et prénom“ – Reihenfolge wählbar, Beispiele getrennt gezeigt (Nachname / Vorname)', await page.inputValue('select[data-db-imp="namen"]') === 'nv' &&
+    (await text('.db-namen')).includes('Nachname MUSTER · Vorname Tom') && (await text('.db-namen')).includes('Nachname Probe · Vorname Jana'), await text('.db-namen'));
+  await page.selectOption('select[data-db-imp="namen"]', 'vn'); await warte(200);
+  check('Reihenfolge „Vorname Nachname“: „Fiktiv Max“ → Nachname Max; eindeutige Namen bleiben (MUSTER Tom, „Probe, Jana“)', (await text('.db-imptab')).includes('MAX Fiktiv') && (await text('.db-imptab')).includes('PROBE Jana') && (await text('.db-imptab')).includes('BEISPIEL Nina'), (await text('.db-imptab')).slice(0, 300));
+  await page.selectOption('select[data-db-imp="namen"]', 'nv'); await warte(200);
+  check('Excel ohne Spalte „Beginn der Begleitung“: Hinweise – der Beginn bleibt unbekannt, der Tag des Imports zählt nicht', (await text('.db-vorschau')).includes('Keine Spalte „Beginn der Begleitung“') && (await text('.db-vorschau')).includes('kein Datum für den Beginn der Begleitung') && (await text('.db-imptab')).includes('FIKTIV Max'));
   await page.selectOption('select[data-db-imp="spalte"][data-sp="17"]', ''); await warte(200);
   check('Zuordnung änderbar: „Remarques“ auf „nicht übernehmen“ → Zeile grau, Vorschau neu', await page.inputValue('select[data-db-imp="spalte"][data-sp="17"]') === '' && await page.isVisible('.db-spzutab tr.db-sp-aus:has-text("Remarques")') && await kpi('imp-neu') === '3');
   await page.selectOption('select[data-db-imp="spalte"][data-sp="17"]', 'remarque'); await warte(200);
@@ -585,6 +628,10 @@ const STATS = [
   check('Nina: Herkunft „Excel-Tabelle (import-test.xlsx)“, Protokoll „Import aus Excel-Tabelle“', nina.herkunft.quelle === 'Excel-Tabelle (import-test.xlsx)' && !nina.herkunft.id && nina.v.some(t => t.startsWith('Import aus Excel-Tabelle')), [nina.herkunft, nina.v]);
   check('Jana: „Probe, Jana“ geteilt, Datum als Text (12.02.2015), „Mersch“ → 12 Mersch, CST Gruppe Passo, Stelle CST, IQ 105', jana && jana.nach === 'Probe' && jana.r.geburtsdatum === '2015-02-12' && jana.r.geschlecht === 'Mädchen' && jana.r.direction === '12 Mersch' && jana.r.cstGruppe === 'Passo' && jana.stelle === 'cst' && jana.r.iq === 105, jana && jana.r);
   check('Max: unmögliches Datum bleibt leer, Junge, DS, Klasse C2.1', maxx && maxx.r.geburtsdatum === '' && maxx.r.geschlecht === 'Junge' && maxx.r.massnahmenAlle.join() === 'DS' && maxx.r.klasse === 'C2.1', maxx && maxx.r);
+  check('Übernommen ohne Datum: Beginn unbekannt (nicht der Tag des Imports), keine Dauer – zwei Schreibvorgänge je neuem Dossier', nina.r.beginn === '' && nina.r.dauerBegleitung === null && nina.herkunft.neu === true && nina.v.length === 2, [nina.r.beginn, nina.r.dauerBegleitung, nina.v]);
+  const teil = await page.evaluate(() => CDSE_DATENBANK.tabelle.zuRoh({ kopf: ['Mesures'], zeilen: [['ISA/Atelier'], ['ISA,Atelier'], ['isa, atelier'], ['ISA + Atelier'], ['ISA et atelier'], ['Logo']], nummern: [2, 3, 4, 5, 6, 7] }, ['mesures']));
+  check('Spalte „Maßnahmen“: „ISA/Atelier“, „ISA,Atelier“, „isa, atelier“, „ISA + Atelier“, „ISA et atelier“ → ISA und Atelier; Unbekanntes wird gemeldet', teil.roh.slice(0, 5).every(s => s.mesures.join() === 'isa,atelier') &&
+    teil.unbekannt.join() === 'Zeile 7: „Logo“' && teil.roh[5].autre_mesure === 'Logo', teil);
   await page.click('[data-db="import-weg"]'); await warte(100);
   await page.setInputFiles('#db-datei', XLSX);
   await page.waitForSelector('.db-vorschau .db-spzutab', { timeout: 20000 });
@@ -594,9 +641,14 @@ const STATS = [
   const tom3 = (await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).map(d => ({ vor: d.person.vorname, r: CDSE_DATENBANK.datensatz(d), notiz: (d.db || {}).notiz })))).find(x => x.vor === 'Tom');
   check('Ergänzen aus Excel: Tom bekommt das Atelier (ab 03.11.2025) und ELDiB-Stufen, behält IQ 104 und Klasse C4.1', tom3.r.atelierArt === 'Atelier Lecture (fictif)' && tom3.r.atelierBeginn === '2025-11-03' && tom3.r.eldibVerhalten === 3 && tom3.r.iq === 104 && tom3.r.klasse === 'C4.1' && tom3.notiz === 'fiktiver Testfall', tom3.r);
 
-  console.log('18) Was über die Fiche ins Dossier kommt, steht sofort in der Datenbank');
+  console.log('18) Reiterwechsel ohne Neuladen; was über die Fiche ins Dossier kommt, steht nach „Neu laden“ in der Datenbank');
+  await page.evaluate(() => { window.__laden = 0; const T = window.CDSE_TEAM, alt = T.alleDossiers; T.alleDossiers = function () { window.__laden++; return alt.apply(this, arguments); }; });
+  await db('tabelle'); await db('abfragen'); await db('');
+  check('Reiterwechsel in der Datenbank lädt die Dossiers nicht jedes Mal neu (Stand der Daten oben rechts)', await page.evaluate(() => window.__laden) === 0 && /Stand der Daten: \d\d:\d\d Uhr/.test(await text('[data-db-geladen]')), await page.evaluate(() => window.__laden));
   await page.evaluate(async id => { const d = await CDSE_TEAM.dossier(id, true); await CDSE_TEAM.ops.fiche(id, { fiche: { ef: Object.assign({}, d.fiche.ef, { dr: '07 Dudelange' }) } }, 'Test: Direction geändert'); }, ids.noah);
-  await db('');
+  await page.click('[data-db="neu-laden"]');
+  await page.waitForFunction(() => { const b = document.querySelector('[data-db="neu-laden"]'); return b && !b.disabled; }, null, { timeout: 20000 }); await warte(300);
+  check('„Neu laden“ holt den neuesten Stand', await page.evaluate(() => window.__laden) === 1);
   const dr2 = Object.fromEntries(await balken('direction'));
   check('Direction von Noah geändert → Diagramm zeigt 07 Dudelange, 01 Luxembourg jetzt nur Luca', dr2['07 Dudelange'] === 1 && dr2['01, Luxembourg'] === 1 && await kpi('dossiers') === '14', dr2);
   const elB = Object.fromEntries(await balken('eldib'));
@@ -631,6 +683,9 @@ const STATS = [
   await page.click('.db-fv [data-ar="db-angaben"]'); await page.waitForSelector('dialog.ar-dialog input[name="cc_CDI"]');
   check('Datenbank-Angaben: sieben Kompetenzzentren zum Ankreuzen und ELDiB-Stufen', (await page.$$('dialog.ar-dialog .db-ccliste input[type=checkbox]')).length === 7 && await page.isVisible('dialog.ar-dialog select[name="el_verhalten"]'));
   await page.check('dialog.ar-dialog input[name="cc_CDI"]'); await page.fill('dialog.ar-dialog input[name="cc_weitere"]', 'Service Test (fictif)');
+  await page.selectOption('dialog.ar-dialog select[name="el_verhalten"]', '2'); await dialogKnopf('Speichern'); await warte(200);
+  check('ELDiB-Stufe ohne Datum wird abgelehnt (ohne Datum kein Vergleich mit dem Alter)', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('Datum der ELDiB-Einschätzung'), await text('dialog.ar-dialog .ar-dialog-fehler'));
+  await page.selectOption('dialog.ar-dialog select[name="el_verhalten"]', '');
   await page.fill('dialog.ar-dialog input[name="el_datum"]', '2026-06-01'); await dialogKnopf('Speichern'); await warte(200);
   check('ELDiB-Datum ohne Stufe wird abgelehnt', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('Stufe'));
   await page.selectOption('dialog.ar-dialog select[name="el_verhalten"]', '2'); await page.selectOption('dialog.ar-dialog select[name="el_kognition"]', '4');
@@ -660,6 +715,46 @@ const STATS = [
     await page.isVisible('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Klinisches Profil")) [data-db-b="db"]') && !(await page.isVisible('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Entwicklung und Dossier")) .db-blatt-wo button')));
   await page.click('dialog.db-blatt .db-blatt-teil:has(h3:text-is("Person")) [data-db-b="fiche"]'); await page.waitForSelector('.ar-tabs [data-tab="fiche"].on', { timeout: 20000 });
   check('Vom Seitenblatt zurück in den Reiter „Fiche“ des Dossiers', (await text('.ar-dkopf h1')).includes('TEST Noah') && await page.isVisible('.db-fv'));
+
+  console.log('18c) Export „ohne Namen“, Datei noch in Excel offen, Abfrage-Ergebnis kopieren und als CSV, Import mit „Ende der Begleitung“');
+  await db('tabelle'); await page.waitForSelector('.db-tab');
+  await page.evaluate(() => { window.__export = null; window.showSaveFilePicker = async (opt) => ({ createWritable: async () => ({ write: async (b) => { window.__export = { name: opt.suggestedName, text: new TextDecoder('utf-8', { ignoreBOM: true }).decode(new Uint8Array(await b.arrayBuffer())) }; }, close: async () => {} }) }); });
+  await page.click('[data-db="export"]'); await page.waitForSelector('dialog.ar-dialog input[name="namen"][value="ohne"]');
+  await page.check('dialog.ar-dialog input[name="namen"][value="ohne"]'); await page.check('dialog.ar-dialog input[name="gelesen"]'); await dialogKnopf('Datei speichern');
+  await page.waitForFunction(() => window.__export, null, { timeout: 10000 });
+  const ohneN = await page.evaluate(() => window.__export), kopfOhne = csvZeilen(ohneN.text)[0];
+  check('Export „ohne Namen“: ohne Name, Matricule, M-Files, IAM und Geburtsdatum – mit Geburtsjahr; Dateiname mit Uhrzeit und Auswahl', !kopfOhne.includes('Nachname') && !kopfOhne.includes('Vorname') && !kopfOhne.includes('Matricule') && !kopfOhne.includes('Geburtsdatum') &&
+    !kopfOhne.includes('Dossier M-Files') && !kopfOhne.includes('Identité IAM') && kopfOhne.includes('Geburtsjahr') && !ohneN.text.includes('2014031000012') && !ohneN.text.includes('MF-1001') &&
+    /^cdse-datenbank-\d{4}-\d{2}-\d{2}-\d{4}-alle-ohne-namen\.csv$/.test(ohneN.name), [ohneN.name, kopfOhne.slice(0, 6)]);
+  await page.evaluate(() => { window.showSaveFilePicker = async () => ({ createWritable: async () => { throw new DOMException('The file could not be modified.', 'NoModificationAllowedError'); } }); });
+  await page.click('[data-db="export"]'); await page.waitForSelector('dialog.ar-dialog input[name="gelesen"]');
+  await page.check('dialog.ar-dialog input[name="gelesen"]'); await dialogKnopf('Datei speichern');
+  await page.waitForFunction(() => { const f = document.querySelector('dialog.ar-dialog .ar-dialog-fehler'); return f && !f.hidden && f.textContent; }, null, { timeout: 10000 });
+  check('Datei noch in Excel geöffnet: verständliche Meldung statt Fehler des Browsers', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('vermutlich noch in Excel geöffnet'), await text('dialog.ar-dialog .ar-dialog-fehler'));
+  await dialogKnopf('Abbrechen'); await warte(150);
+  await page.evaluate(() => { window.showSaveFilePicker = undefined; });
+  await ctx.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await db('abfragen'); await page.waitForSelector('#db-bau');
+  await page.click('[data-db-vorlage="beschulung"]'); await warte(200);
+  check('Vorlage „Spezialisierte Beschulung“ zählt nur laufende Annexe, CdP oder CST', (await text('#db-satz')).includes('mit Annexe, CdP oder CST'), await text('#db-satz'));
+  await page.click('[data-db-vorlage="stelle"]'); await warte(200);
+  await page.click('[data-db="erg-kopieren"]'); await warte(300);
+  const zwischen = await page.evaluate(() => navigator.clipboard.readText().catch(e => 'Fehler: ' + e.message));
+  check('Ergebnis „Tabelle kopieren“: Tabulator-getrennt für Excel (Abfrage, Stand, Stelle, Dossiers, Anteil, Gesamt)', zwischen.includes('Abfrage: Anzahl der Schüler, gruppiert nach Stelle.') && zwischen.includes('Stelle\tDossiers\tAnteil (%)') && /\r\nGesamt\t\d+\t100/.test(zwischen), zwischen.slice(0, 240));
+  const [dlErg] = await Promise.all([page.waitForEvent('download'), page.click('[data-db="erg-csv"]')]);
+  const ergCsv = fs.readFileSync(await dlErg.path(), 'utf8');
+  check('Ergebnis „Als CSV“: Semikolon, mit Abfrage und Stand, Dateiname cdse-abfrage-JJJJ-MM-TT-hhmm-alle.csv', /^cdse-abfrage-\d{4}-\d{2}-\d{2}-\d{4}-alle\.csv$/.test(dlErg.suggestedFilename()) && ergCsv.includes('Stelle;Dossiers;Anteil (%)') && ergCsv.includes('Abfrage: Anzahl der Schüler, gruppiert nach Stelle.') && ergCsv.includes('Stand '), [dlErg.suggestedFilename(), ergCsv.slice(0, 200)]);
+  await db('import');
+  const ENDE = ['Nom et prénom;Date de naissance;Début ISA;Fin de prise en charge', 'ALT Theo;03.03.2012;01.10.2019;30.06.2021', 'NEU Kim;04.04.2016;;'].join('\r\n') + '\r\n';
+  await page.setInputFiles('#db-datei', { name: 'alte-faelle.csv', mimeType: 'text/csv', buffer: Buffer.from(ENDE, 'utf8') });
+  await page.waitForSelector('.db-vorschau .db-spzutab', { timeout: 20000 });
+  check('Import-Ziel „Ende der Begleitung“ erkannt; Vorschau „inaktiv ab 30.06.2021“ und Hinweis auf fehlenden Beginn (Kim)', await page.inputValue('select[data-db-imp="spalte"][data-sp="3"]') === 'date_fin' &&
+    (await text('.db-imp-neu:has-text("ALT Theo")')).includes('inaktiv ab 30.06.2021') && (await text('.db-vorschau')).includes('kein Datum für den Beginn der Begleitung'), (await text('.db-imptab')).slice(0, 300));
+  await page.click('[data-db="import-los"]'); await page.waitForSelector('.db-imp-ergebnis', { timeout: 60000 });
+  const alt2 = await page.evaluate(async () => (await CDSE_TEAM.alleDossiers(true)).filter(d => d.person.nachname === 'ALT' || d.person.nachname === 'NEU').map(d => ({ name: d.person.nachname, status: d.status, seit: d.statusSeit, v: d.verlauf.map(x => x.t), r: CDSE_DATENBANK.datensatz(d) })));
+  const theo = alt2.find(x => x.name === 'ALT') || {}, kim = alt2.find(x => x.name === 'NEU') || {};
+  check('„Ende der Begleitung“: Theo inaktiv seit 30.06.2021, Beginn = Beginn der ISA (01.10.2019), keine laufende Maßnahme', theo.status === 'inaktiv' && theo.seit === '2021-06-30' && theo.r && theo.r.beginn === '2019-10-01' && theo.r.massnahmen.length === 0 && theo.v.some(t => /Inaktiv gesetzt/.test(t)), theo);
+  check('Ohne Datum: Kim aktiv, Beginn unbekannt – zählt nicht als „neu“ im Schuljahr des Imports', kim.status === 'aktiv' && kim.r && kim.r.beginn === '' && kim.v.length === 2, kim);
 
   console.log('19) Handy (390 px)');
   await page.setViewportSize({ width: 390, height: 844 }); await warte(300);

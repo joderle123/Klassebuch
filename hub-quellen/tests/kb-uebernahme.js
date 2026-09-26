@@ -1,7 +1,8 @@
 // Test: Übernahme aus Klassenbuch und Journal in die Hub-Dossiers – Einträge (Kategorie, Schlagwörter, Verfasser,
 // DS/PEI-Bericht, Herkunft), Wochenziele je Réunion, Helfernetz und Matricule, frühere Screenings in einem Durchgang;
-// Zuordnung nach dem Namen oder neues Dossier; nichts doppelt, Änderungen werden nachgetragen; Anzeige im Dossier;
-// verschlüsselt; Klassenbuch bleibt unverändert. Nur erfundene Personen.
+// Zuordnung nach dem Namen (nur mit Nachname/Initiale vorgewählt) oder neues Dossier; nichts doppelt, Änderungen
+// (auch am Helfernetz) werden nachgetragen; Ergebnis als Dialog; Anzeige im Dossier; verschlüsselt; Klassenbuch
+// bleibt unverändert. Nur erfundene Personen.
 // Aufruf: node tests/kb-uebernahme.js   (Webserver auf Port 8099 für den Hauptordner)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -23,6 +24,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   const text = sel => page.textContent(sel);
   async function gehe(hash) { await page.evaluate(h => { location.hash = h; }, hash); await warte(400); }
   async function dialogZu() { await page.waitForFunction(() => !document.querySelector('dialog.ar-dialog'), null, { timeout: 30000 }); await warte(400); }
+  /* nach „Übernehmen“: Ergebnis-Dialog lesen und schließen */
+  async function ergebnisZu() { await page.waitForSelector('dialog.ar-dialog .sc-kb-ergebnis', { timeout: 30000 }); const t = (await text('dialog.ar-dialog')).replace(/\s+/g, ' '); await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Schließen")'); await dialogZu(); return t; }
 
   await page.goto(ROOT + 'hub.html');
   await page.evaluate(async () => {
@@ -69,13 +72,18 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.bringToFront(); await gehe('#/'); await gehe('#/schueler');
   await page.waitForSelector('#ar-kbu .sc-kb-karte', { timeout: 20000 });
   check('Karte „Schülerdaten aus Klassenbuch oder Journal“ für 3 Kinder', (await text('#ar-kbu')).includes('Für 3 Kinder liegen'), await text('#ar-kbu'));
-  await page.click('#ar-kbu [data-kbu="oeffnen"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
+  await page.dblclick('#ar-kbu [data-kbu="oeffnen"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste'); await warte(300);
+  check('Doppelklick auf „Zuordnen und übernehmen“: nur ein Dialog', (await page.$$('dialog.ar-dialog')).length === 1, (await page.$$('dialog.ar-dialog')).length);
   const zeilen = await page.$$eval('dialog .sc-kb-zeile', l => l.map(x => ({ t: x.textContent.replace(/\s+/g, ' '), s: (x.querySelector('select') || {}).value })));
   check('Dialog: Lea B., Noah (ehemalig), Tom – mit Zahl der Einträge, Wochenziele, Helfernetz', zeilen.length === 3 && /^Lea B\..*1 Eintrag/.test(zeilen[0].t) && /^Noah.*ehemalig/.test(zeilen[1].t) && /^Tom.*3 Einträge.*1× Wochenziele.*Helfernetz/.test(zeilen[2].t), zeilen.map(z => z.t));
-  check('Vorauswahl: Lea B. → Lea Beispiel, Tom → Tom Muster, Noah → nicht übernehmen', zeilen[0].s === ids.lea && zeilen[2].s === ids.tom && zeilen[1].s === '', zeilen.map(z => z.s));
+  check('Vorauswahl nur bei Vor- und Nachname/Initiale: Lea B. → Lea Beispiel; Tom (nur Vorname) und Noah → nicht übernehmen', zeilen[0].s === ids.lea && zeilen[2].s === '' && zeilen[1].s === '', zeilen.map(z => z.s));
+  check('Tom: Hinweis „nur Vorname passt“', zeilen[2].t.includes('nur Vorname passt – bitte selbst zuordnen'), zeilen[2].t);
+  await page.selectOption('dialog select[name="kbu:' + kbIds.tom + '"]', ids.tom);
   await page.selectOption('dialog select[name="kbu:' + kbIds.noah + '"]', 'neu');
   await page.locator('dialog.ar-dialog').screenshot({ path: path.join(OUT, 'u1-dialog.png') });
-  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await dialogZu();
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")');
+  const erg1 = await ergebnisZu();
+  check('Ergebnis zum Nachlesen: je Kind das Ziel-Dossier, neues Dossier für Noah, früheres Screening', erg1.includes('Übernahme abgeschlossen') && /Tom \(Klassenbuch\) → MUSTER Tom: 4 Einträge neu/.test(erg1) && erg1.includes('Neues Dossier:') && erg1.includes('früheres Screening übernommen'), erg1);
 
   console.log('4) Im Dossier: vollständig, verschlüsselt');
   const d = await page.evaluate(async id => await CDSE_TEAM.dossier(id, true), ids.tom);
@@ -114,7 +122,8 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await gehe('#/'); await gehe('#/schueler'); await page.waitForSelector('#ar-kbu .sc-kb-karte', { timeout: 20000 });
   await page.click('#ar-kbu [data-kbu="oeffnen"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
   check('Geänderter Eintrag: Tom wieder offen, Dossier schon zugeordnet (1 neu oder geändert)', (await text('dialog .sc-kb-zeile:has(select[name="kbu:' + kbIds.tom + '"])')).includes('schon zugeordnet – 1 neu oder geändert'));
-  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await dialogZu();
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")');
+  check('Ergebnis nennt die Aktualisierung', (await ergebnisZu()).includes('1 aktualisiert'));
   const d2 = await page.evaluate(async id => await CDSE_TEAM.dossier(id, true), ids.tom);
   const s2 = d2.eintraege.filter(x => x.herkunft && x.herkunft.id === kbIds.e1);
   check('Eintrag aktualisiert statt verdoppelt', d2.eintraege.length === 4 && s2.length === 1 && s2[0].text === 'Tom war pünktlich (geändert, erfunden).' && d2.verlauf.some(v => /1 aktualisiert/.test(v.t)));
@@ -124,13 +133,25 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await kb.evaluate(async id => { const e = Repo.getEntry(id); await new Promise(r => setTimeout(r, 20)); return Repo.saveEntry(Object.assign({}, e, { text: 'Zweite Änderung im Klassenbuch (erfunden).' })); }, kbIds.e1);
   await gehe('#/'); await gehe('#/schueler'); await page.waitForSelector('#ar-kbu .sc-kb-karte', { timeout: 20000 });
   await page.click('#ar-kbu [data-kbu="oeffnen"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
-  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await dialogZu();
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")'); await ergebnisZu();
   const d3 = await page.evaluate(async id => await CDSE_TEAM.dossier(id, true), ids.tom);
   const s3 = d3.eintraege.filter(x => x.herkunft && x.herkunft.id === kbIds.e1).map(x => x.text + ' | ' + x.titel);
   check('Im Hub bearbeiteter Eintrag wird nicht überschrieben, der neue Stand kommt daneben', s3.length === 2 && s3.some(t => t.startsWith('Im Hub ergänzt')) && s3.some(t => t.startsWith('Zweite Änderung') && t.includes('neuer Stand aus dem Klassenbuch')), s3);
 
-  console.log('7) Team-Datei auswählen');
-  const team = { _format: 'klassebuch-shared-v1', _app: 'klassenbuch', colls: {
+  // Helfernetz später im Klassenbuch ergänzt: gilt als Änderung und wird nachgetragen
+  await kb.evaluate(id => { KB_BUBBLE.addNode(id, { name: 'Schulsozialarbeit (erfunden)', area: 'externe', freq: 'monatlich', relation: 'direkt', status: 'neu' }); }, kbIds.tom);
+  await gehe('#/'); await gehe('#/schueler'); await page.waitForSelector('#ar-kbu .sc-kb-karte', { timeout: 20000 });
+  check('Helfernetz geändert: Karte meldet Tom wieder', (await text('#ar-kbu')).includes('Für ein Kind liegen'), await text('#ar-kbu'));
+  await page.click('#ar-kbu [data-kbu="oeffnen"]'); await page.waitForSelector('dialog.ar-dialog .sc-kb-liste');
+  const zTom = await text('dialog .sc-kb-zeile:has(select[name="kbu:' + kbIds.tom + '"])');
+  check('Dialog: „Helfernetz geändert“, schon zugeordnet – 1 neu oder geändert', zTom.includes('Helfernetz geändert') && zTom.includes('schon zugeordnet – 1 neu oder geändert'), zTom);
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Übernehmen")');
+  const erg4 = await ergebnisZu();
+  const d4 = await page.evaluate(async id => await CDSE_TEAM.dossier(id, true), ids.tom);
+  check('Helfernetz im Dossier nachgetragen (3 Personen)', d4.helfernetz.klassenbuch.daten.nodes.length === 3 && erg4.includes('Helfernetz'), erg4);
+
+  console.log('7) Team-Datei auswählen („_app“ gilt, auch wenn Journal-Sammlungen darin stehen)');
+  const team = { _format: 'klassebuch-shared-v1', _app: 'klassenbuch', colls: { goals: [],
     roster: [{ id: 'stud_x1', _ts: 1, d: { id: 'stud_x1', name: 'Ella', level: 'L2', active: true } }],
     dosEntries: [{ id: 'e_x1', _ts: 1, d: { id: 'e_x1', studentId: 'stud_x1', date: '2026-09-15', author: 'LB', category: 'Familie & Eltern', tags: [], text: 'Elterngespräch (erfunden).', createdAt: '2026-09-15T10:00:00Z', updatedAt: '2026-09-15T10:00:00Z' } }, { id: 'e_weg', _ts: 2, _del: true }],
     dosReunions: [], bubble: [] } };

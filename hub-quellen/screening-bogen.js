@@ -262,13 +262,15 @@ window.CDSE_SCREENING_BOGEN = {
     ]
   },
 
-  /* Beeinträchtigung im Alltag: macht aus Beobachtungen eine Einschätzung des Handlungsbedarfs */
+  /* Beeinträchtigung im Alltag: macht aus Beobachtungen eine Einschätzung des Handlungsbedarfs.
+     Pflicht sind Dauer, Orte und die vier Fragen zur Beeinträchtigung; wer es nicht weiß, wählt
+     „keine Angabe“ ('ka') – das zählt nie als „gar nicht“. */
   auswirkung: [
     { id: 'dauer', frage: 'Seit wann bestehen die Schwierigkeiten?', optionen: [['keine', 'keine nennenswerten Schwierigkeiten'], ['kurz', 'seit weniger als einem Monat'], ['mittel', 'seit ein bis sechs Monaten'], ['lang', 'seit mehr als sechs Monaten']] },
-    { id: 'leiden', frage: 'Wie sehr leidet das Kind selbst darunter?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr']] },
-    { id: 'lernen', frage: 'Wie sehr beeinträchtigen die Schwierigkeiten das Lernen?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr']] },
-    { id: 'beziehungen', frage: 'Wie sehr beeinträchtigen sie Freundschaften und Beziehungen?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr']] },
-    { id: 'gruppe', frage: 'Wie sehr beeinträchtigen sie das Zusammenleben in der Klasse oder Gruppe?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr']] },
+    { id: 'leiden', frage: 'Wie sehr leidet das Kind selbst darunter?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr'], ['ka', 'keine Angabe']] },
+    { id: 'lernen', frage: 'Wie sehr beeinträchtigen die Schwierigkeiten das Lernen?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr'], ['ka', 'keine Angabe']] },
+    { id: 'beziehungen', frage: 'Wie sehr beeinträchtigen sie Freundschaften und Beziehungen?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr'], ['ka', 'keine Angabe']] },
+    { id: 'gruppe', frage: 'Wie sehr beeinträchtigen sie das Zusammenleben in der Klasse oder Gruppe?', optionen: [['0', 'gar nicht'], ['1', 'etwas'], ['2', 'deutlich'], ['3', 'sehr'], ['ka', 'keine Angabe']] },
     { id: 'orte', frage: 'Wo zeigen sich die Schwierigkeiten?', optionen: [['eine', 'nur in einer Situation oder bei einer Person'], ['mehrere', 'in mehreren Situationen'], ['ueberall', 'fast überall (auch zu Hause, soweit bekannt)']] },
     { id: 'ereignis', frage: 'Gab es in letzter Zeit belastende Ereignisse (Umzug, Trennung, Krankheit, Verlust, Flucht)?', optionen: [['nein', 'nein, nicht bekannt'], ['ja', 'ja']] }
   ],
@@ -296,6 +298,9 @@ window.CDSE_SCREENING_BOGEN = {
     },
     kind: { k_selbstwert: ['s5'], k_freunde: ['st4'] },
     eltern: { e_wut: ['r2'], e_rueckzug: ['s3'], e_angst: ['g1'], e_regeln: ['v1', 'st5'] },
+    /* In diesen Stufen meint die Aussage etwas anderes als die DS-Aussage – dort nicht vorausfüllen
+       (g6 in C1: „Trennt sich schwer von Bezugspersonen …“ statt „traut sich wenig zu“) */
+    nichtIn: { C1: ['g6'] },
     /* „Wie sehr leidet das Kind selbst darunter?“ aus dem Gespräch mit dem Kind */
     leiden: 'k_druck',
     /* nur für den Kompass (Bereich betroffen, aber keine gleichlautende Aussage im Bogen) */

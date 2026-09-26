@@ -2022,9 +2022,10 @@ function fsetz(o,pfad,w){var t=pfad.split('.'),x=o;for(var i=0;i<t.length-1;i++)
 function fleer(v){if(v==null||v===''||v===false){return true;}if(Array.isArray(v)){return v.every(fleer);}if(typeof v==='object'){return Object.keys(v).every(function(k){return fleer(v[k]);});}return false;}
 /* Hochgeladene Werte gewinnen, wo sie etwas enthalten; Listen werden ersetzt */
 function fmischen(alt,neu){
-  if(fleer(neu)){return alt;}
+  var beenden=!!(neu&&typeof neu==='object'&&neu.aktiv===false);   /* Maßnahme ausdrücklich beendet (beim Hochladen bestätigt) */
+  if(fleer(neu)&&!beenden){return alt;}
   if(Array.isArray(neu)||neu==null||typeof neu!=='object'||alt==null||typeof alt!=='object'||Array.isArray(alt)){return neu;}
-  var r=Object.assign({},alt);Object.keys(neu).forEach(function(k){r[k]=fmischen(alt[k],neu[k]);});return r;
+  var r=Object.assign({},alt);Object.keys(neu).forEach(function(k){if(k==='aktiv'&&neu[k]===false){r[k]=false;return;}r[k]=fmischen(alt[k],neu[k]);});return r;
 }
 function ohneLeere(l){return (l||[]).filter(function(x){return !fleer(x);});}
 function kontaktText(k){k=k||{};return [k.name,k.adresse,k.tel,k.mail].filter(Boolean).join(' · ');}
@@ -2089,6 +2090,11 @@ function ficheVorschau(erg,ziel,liste){
   if(treffer&&!treffer.d){aehnlich=treffer.aehnlich;treffer=null;}
   /* Aktualisieren nur mit Schreibrecht – sonst nicht aus Versehen ein zweites Dossier für dasselbe Kind */
   var darf=!treffer||T.rechte(treffer.d).bearbeiten;
+  /* Im Dossier laufende Maßnahmen, die in dieser Datei nicht angekreuzt sind: nicht still beenden – einzeln wählen */
+  var fc=(f&&f.cdse)||{}, altC=(treffer&&treffer.d&&treffer.d.fiche&&treffer.d.fiche.cdse)||{};
+  var nichtMehr=treffer?F_MASSN.filter(function(m){return altC[m[0]]&&altC[m[0]].aktiv===true&&fc[m[0]]&&fc[m[0]].aktiv===false;}):[];
+  var endeWahl=nichtMehr.length?'<fieldset class="ar-wahlgruppe"><legend>In dieser Fiche nicht (mehr) angekreuzt</legend><p class="ar-klein">Im Dossier laufen diese Maßnahmen noch. Nur ankreuzen, was wirklich beendet ist – sonst bleiben sie unverändert.</p>'+
+    nichtMehr.map(function(m){var x=altC[m[0]]||{};return '<label class="ar-haken"><input type="checkbox" name="ende_'+m[0]+'"> '+esc(m[1])+' beenden'+(x.von?' <small>(seit '+esc(datum(x.von))+')</small>':'')+'</label>';}).join('')+'</fieldset>':'';
   var inhalt='<p class="ar-klein">'+svg('datei')+' '+esc(erg.datei||'Fiche')+'</p>'+
     (aehnlich?hinweis('Es gibt schon ein Dossier <b>'+esc(schuelerName(aehnlich.person))+'</b> mit gleichem Namen, aber einer <b>anderen Matricule</b>. Bitte prüfen, ob es wirklich ein anderes Kind ist.'):'')+
     (treffer&&!darf?hinweis('Für <b>'+esc(schuelerName(treffer.d.person))+'</b> gibt es schon ein Dossier ('+esc(treffer.grund)+'). Du hast dort nur Leserechte. Bitte '+esc((treffer.d.verantwortlich||[]).map(kname).join(', ')||'die Fallverantwortlichen')+' um ein Schreibrecht und lade die Fiche dann noch einmal hoch.'):'')+
@@ -2102,6 +2108,7 @@ function ficheVorschau(erg,ziel,liste){
       feld('geburtsdatum','Geburtsdatum',p.geburtsdatum,'date')+auswahl('geschlecht','Geschlecht',p.geschlecht||'',[['m','Junge'],['w','Mädchen']],'–')+
       feld('matricule','Matricule',p.matricule)+feld('schule','Schule',p.schule)+feld('klasse','Klasse / Cycle',p.klasse)+
       (treffer&&ziel?'':auswahl('stelle','Zuständige Stelle (bei neuem Dossier)',stelleAusFiche(f),stellenOptionen()))+'</div>'+
+    endeWahl+
     '<h3 class="ar-zwischen">Außerdem in der Fiche</h3>'+ficheZusammenfassung(f);
   dialog('Fiche de renseignement übernehmen',inhalt,[{text:'Abbrechen',wert:''},{text:'Übernehmen',wert:'ok',primaer:true}],{breit:true,
     pruefen:function(w){
@@ -2113,6 +2120,12 @@ function ficheVorschau(erg,ziel,liste){
     ausfuehren:function(w){
       var v=w.werte, person={nachname:v.nachname.trim(),vorname:v.vorname.trim(),geburtsdatum:v.geburtsdatum,geschlecht:v.geschlecht,matricule:v.matricule.trim(),schule:v.schule.trim(),klasse:v.klasse.trim()};
       var fiche=Object.assign({},f,{quelle:{datei:erg.datei||'',gelesen:new Date().toISOString(),von:K.ich().id}});
+      /* „nicht angekreuzt“ aus der Datei nur übernehmen, wo es bestätigt wurde (sonst bleibt die Maßnahme, wie sie ist) */
+      if(fiche.cdse){fiche.cdse=Object.assign({},fiche.cdse);Object.keys(fiche.cdse).forEach(function(k){
+        var x=fiche.cdse[k];if(!x||typeof x!=='object'||x.aktiv!==false){return;}
+        if(v.modus==='aktualisieren'&&v['ende_'+k]){return;}
+        if(v.modus==='aktualisieren'){var y=Object.assign({},x);delete y.aktiv;fiche.cdse[k]=y;}
+      });}
       if(fiche.schule){fiche.schule=Object.assign({},fiche.schule,{name:person.schule||fiche.schule.name,klasse:person.klasse||fiche.schule.klasse});}
       if(v.modus==='aktualisieren'&&treffer){
         var alt=treffer.d;
@@ -2309,6 +2322,12 @@ function zuruecksetzen(){
   eldibWahl=null;kurzCache={};fremdNeu=null;entwuerfe={};if(fremdTimer){clearInterval(fremdTimer);fremdTimer=null;}clearInterval(uhrTimer);setzen('');
   ['CDSE_SCREENING','CDSE_BEGLEITPLAN','CDSE_BERICHTE','CDSE_KOMPASS','CDSE_TAGESKARTE','CDSE_VERLAUF','CDSE_KINDMODUS','CDSE_DATENBANK','CDSE_FICHE','CDSE_KB_UEBERNAHME'].forEach(function(n){
     var m=window[n];if(m&&typeof m.vergessen==='function'){try{m.vergessen();}catch(e){}}
+  });
+  /* noch offene Formulare und Blätter schließen (z. B. nach dem Abmelden in einem anderen Tab) – ohne zu speichern */
+  Array.prototype.forEach.call(document.querySelectorAll('dialog.ar-dialog,dialog.db-blatt'),function(dl){
+    try{dl.dispatchEvent(new Event('cdse-schliessen'));}catch(e){}
+    if(dl.open){try{dl.close();}catch(e){}}
+    if(dl.isConnected){dl.remove();}
   });
   return T.vergessen();
 }

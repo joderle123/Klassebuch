@@ -712,6 +712,8 @@ function kmMontag(iso){var t=new Date(iso+'T12:00:00'), w=t.getDay();t.setDate(t
   return t.getFullYear()+'-'+(t.getMonth()<9?'0':'')+(t.getMonth()+1)+'-'+(t.getDate()<10?'0':'')+t.getDate();}
 var MERKMAL_ART={diagnose:'als Diagnose eingetragen',verdacht:'als Verdacht eingetragen',aus:'ausgeblendet',geklaert:'zugeordnet'};
 var BERICHT_ART={arztbrief:'Arztbrief',befund:'Befund',therapie:'Therapiebericht',schule:'Schulbericht',bericht:'Bericht'};
+/* Stand einer Medikation laut Bericht (berichte.js): nur erwähnt, aktuell, nur empfohlen, abgelehnt, abgesetzt */
+var MED_STATUS=['aktuell','erwaehnt','empfohlen','abgelehnt','abgesetzt'];
 var ops={
   person:function(id,werte,basis){return aendern(id,function(d,r){
     brauche(r,'bearbeiten');
@@ -839,7 +841,7 @@ var ops={
       datum:String(b.datum||'').slice(0,10),text:String(b.text||'').slice(0,60000),
       datei:(b.datei&&b.datei.id)?{id:String(b.datei.id),name:String(b.datei.name||'').slice(0,200),typ:String(b.datei.typ||'').slice(0,100),groesse:+b.datei.groesse||0}:null,
       profile:(b.profile||[]).slice(0,20).map(function(p){return {id:String(p.id),art:p.art==='verdacht'?'verdacht':'diagnose',beleg:String(p.beleg||'').slice(0,300)};}),
-      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){var x={name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};if(m.abgesetzt){x.abgesetzt=true;}return x;}),
+      medikamente:(b.medikamente||[]).slice(0,20).map(function(m){var x={name:String(m.name||'').slice(0,80),dosis:String(m.dosis||'').slice(0,40),beleg:String(m.beleg||'').slice(0,300)};if(m.abgesetzt){x.abgesetzt=true;}if(MED_STATUS.indexOf(m.status)>=0){x.status=m.status;}return x;}),
       empfehlungen:(b.empfehlungen||[]).slice(0,20).map(function(e){return String(e).slice(0,500);}),eingetragenVon:me,z:t};
     var quelle=BERICHT_ART[x.art]+(x.von?' ('+x.von+')':'')+(x.datum?' vom '+x.datum.split('-').reverse().join('.'):'');
     d.berichte=(d.berichte||[]).concat([x]);
@@ -944,31 +946,34 @@ var ops={
     var tk=d.tageskarte;if(!tk||!Array.isArray(tk.ziele)){throw fehler('Für dieses Kind gibt es noch keine Tageskarte.');}
     tag=String(tag||'');if(!/^\d{4}-\d{2}-\d{2}$/.test(tag)){throw fehler('Ungültiger Tag.');}
     tk.tage=tk.tage||{};
-    var p={}, pkt=0, max=0, n=tk.abschnitte.length, alt=tk.tage[tag]||null, mischen=basis!==undefined;
-    var wa=Array.isArray(w.a)?w.a:tk.abschnitte, akt=JSON.stringify(tk.abschnitte);
-    /* Wo steht der i-te Abschnitt in einer anderen Abschnittsliste? Über den Namen (falls die Abschnitte inzwischen
-       geändert wurden); bei gleich lautenden Abschnitten die gleiche Wiederholung. -1: dort nicht vorhanden */
-    function stelle(a,i){
-      if(!Array.isArray(a)||JSON.stringify(a)===akt){return i;}
-      var name=tk.abschnitte[i], k=0, x;
-      for(x=0;x<i;x++){if(tk.abschnitte[x]===name){k++;}}
-      for(x=0;x<a.length;x++){if(a[x]===name){if(!k){return x;}k--;}}
-      return -1;
-    }
-    function zelle(e,zid,i,namen){
+    var alt=tk.tage[tag]||null, mischen=basis!==undefined;
+    /* Abschnitte dieses Tages: wie im Formular (w.a – bei einem älteren Tag dessen eigene), sonst die der Karte */
+    var gueltig=Array.isArray(w.a)&&w.a.length>0&&w.a.length<=12&&w.a.every(function(x){return typeof x==='string'&&x.trim()&&x.length<=40;});
+    var A=gueltig?w.a.map(function(x){return x.trim();}):tk.abschnitte.slice();
+    /* Stelle des i-ten Abschnitts einer Liste in einer anderen: über den Namen, bei gleich lautenden die gleiche Wiederholung */
+    function wievielte(l,i){var k=0;for(var x=0;x<i;x++){if(l[x]===l[i]){k++;}}return k;}
+    function stelle(l,name,k){for(var x=0;x<l.length;x++){if(l[x]===name){if(!k){return x;}k--;}}return -1;}
+    function punkt(v){return (v===0||v===1||v===2)?v:null;}
+    /* Wert eines Ziels im Abschnitt (name, k) eines gespeicherten Tages; ältere Einträge ohne a: nach Position */
+    function zelle(e,zid,name,k,i){
       if(!e||!e.p||!Array.isArray(e.p[zid])){return null;}
-      var j=stelle(namen!==undefined?namen:e.a,i), v=j<0?null:e.p[zid][j];
-      return (v===0||v===1||v===2)?v:null;
+      var j=Array.isArray(e.a)?stelle(e.a,name,k):i;
+      return j<0?null:punkt(e.p[zid][j]);
     }
+    /* was jemand anderes inzwischen in Abschnitten gespeichert hat, die das Formular nicht zeigte, bleibt erhalten */
+    var AA=A.slice();
+    if(mischen&&alt&&Array.isArray(alt.a)){alt.a.forEach(function(name,i){var k=wievielte(alt.a,i);if(stelle(AA,name,k)<0){AA.push(name);}});}
+    var p={}, pkt=0, max=0;
     tk.ziele.forEach(function(z){
-      var gesendet=!!(w.p&&Object.prototype.hasOwnProperty.call(w.p,z.id));
+      var gesendet=!!(w.p&&Object.prototype.hasOwnProperty.call(w.p,z.id)&&Array.isArray(w.p[z.id]));
       if(!mischen&&!gesendet){return;}
-      var l=tk.abschnitte.slice(0,n).map(function(name,i){
-        var neu=gesendet?zelle(w,z.id,i,wa):null;
-        if(!mischen){return neu;}
-        var jetztWert=zelle(alt,z.id,i);
-        if(!gesendet||stelle(wa,i)<0){return jetztWert;}   /* im Formular nicht zu sehen: nichts ändern */
-        return neu!==zelle(basis,z.id,i)?neu:jetztWert;
+      var l=AA.map(function(name,i){
+        var k=wievielte(AA,i), imFormular=i<A.length;
+        var neuWert=(gesendet&&imFormular)?punkt(w.p[z.id][i]):null;
+        if(!mischen){return neuWert;}
+        var jetztWert=zelle(alt,z.id,name,k,i);
+        if(!gesendet||!imFormular){return jetztWert;}
+        return neuWert!==zelle(basis,z.id,name,k,i)?neuWert:jetztWert;
       });
       if(l.some(function(v){return v!=null;})){p[z.id]=l;l.forEach(function(v){if(v!=null){pkt+=v;max+=2;}});}
     });
@@ -979,8 +984,8 @@ var ops={
       if(notiz===bn){notiz=String((alt&&alt.notiz)||'').trim();}
     }
     if(!max&&!s&&!notiz){if(!tk.tage[tag]){return false;}delete tk.tage[tag];return 'Tageskarte: Einträge vom '+tag.split('-').reverse().join('.')+' entfernt';}
-    if(mischen&&alt&&JSON.stringify(alt.p||{})===JSON.stringify(p)&&(alt.s||'')===s&&String(alt.notiz||'')===notiz&&JSON.stringify(alt.a||[])===JSON.stringify(tk.abschnitte)){return false;}
-    tk.tage[tag]={p:p,a:tk.abschnitte.slice(),s:s,notiz:notiz,von:ich().id,z:jetzt()};
+    if(mischen&&alt&&JSON.stringify(alt.p||{})===JSON.stringify(p)&&(alt.s||'')===s&&String(alt.notiz||'')===notiz&&JSON.stringify(alt.a||[])===JSON.stringify(AA)){return false;}
+    tk.tage[tag]={p:p,a:AA,s:s,notiz:notiz,von:ich().id,z:jetzt()};
     return 'Tageskarte '+tag.split('-').reverse().join('.')+': '+(max?pkt+' von '+max+' Punkten ('+Math.round(pkt/max*100)+' %)':'ohne Punkte');
   },'tageskarte');},
   tageskarteEnde:function(id,grund){return aendern(id,function(d,r){
@@ -1010,8 +1015,11 @@ var ops={
     if(km.eigene&&km.strategien.indexOf('eigene')<0){km.strategien.push('eigene');}
     if(!km.strategien.length){throw fehler('Bitte mindestens eine Strategie für die Stopp-Ampel wählen.');}
     km.geaendert=jetzt();km.geaendertVon=ich().id;
+    /* „ab heute“: die laufende Woche übernimmt Ziel, Code, Schwelle und Welt gleich (Sterne und Belohnung bleiben) */
+    var abHeute=false;
+    if(cfg.ab==='heute'&&km.wochen){var wo=km.wochen[kmMontag(heute())];if(wo){wo.ziel=km.ziel;wo.code=km.code||'';wo.schwelle=km.schwelle||8;wo.welt=km.welt||'baum';abHeute=true;}}
     d.kindmodus=km;
-    return (alt?'Kindmodus geändert':'Kindmodus eingerichtet')+': Ziel „'+km.ziel+'“, '+km.strategien.length+(km.strategien.length===1?' Strategie':' Strategien');
+    return (alt?'Kindmodus geändert':'Kindmodus eingerichtet')+': Ziel „'+km.ziel+'“, '+km.strategien.length+(km.strategien.length===1?' Strategie':' Strategien')+(abHeute?' (gilt schon für diese Woche)':'');
   },'kindmodus');},
   /* Ziel-Quest: ein Tag. w = {k:0|1|2 (Kind), e:0|1|2 (Erwachsene)}; Sterne = e + 1, wenn beide gleich einschätzen */
   kindQuestTag:function(id,tag,w){return aendern(id,function(d,r){

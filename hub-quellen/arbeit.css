@@ -42,7 +42,7 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-zurueck{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:13.5px;font-weight:600;margin-bottom:14px;}
 .ar-zurueck:hover{color:var(--accent);}
 .ar-zurueck .ic{width:16px;height:16px;}
-.ar-dkopf{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:start;padding-bottom:18px;margin-bottom:0;}
+.ar-dkopf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px 18px;align-items:start;padding-bottom:18px;margin-bottom:0;}
 .ar-fremd{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:10px 14px;border-radius:var(--radius);background:#FFF7E0;border:1px solid #F0D48A;color:#5B4300;font-size:14px;}
 .ar-fremd[hidden]{display:none;}
 .ar-fremd .ic{color:#9A6B00;}
@@ -57,7 +57,8 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 .ar-meinrecht{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;color:var(--muted);}
 .ar-meinrecht.ja{color:var(--accent);}
 .ar-meinrecht .ic{width:14px;height:14px;}
-.ar-daktionen{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;}
+/* Aktionen in einer eigenen Zeile unter dem Namen: der Name bekommt die ganze Breite */
+.ar-daktionen{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-start;grid-column:1/-1;}
 .ar-daktionen .btn .ic{width:16px;height:16px;}
 .ar-mehr{position:relative;}
 .ar-mehr summary{list-style:none;padding:9px 10px;}
@@ -427,8 +428,9 @@ a.ar-zeile:hover{background:var(--accent-soft);}
 @media (max-width:900px){.ar-fraster{grid-template-columns:minmax(0,1fr);}.ar-kontakt,.ar-kontakt:has(input[name$=".rolle"]){grid-template-columns:repeat(2,minmax(0,1fr));}.ar-laufbahn-felder{grid-template-columns:repeat(3,minmax(0,1fr));}}
 @media (max-width:560px){.ar-kontakt,.ar-kontakt:has(input[name$=".rolle"]),.ar-laufbahn-felder{grid-template-columns:minmax(0,1fr);}}
 /* ---- Bedienung und Lesbarkeit ---- */
-.ar-dtitel{min-width:0;}
-.ar-dtitel h1{word-spacing:.12em;overflow-wrap:anywhere;}
+.ar-dtitel h1{word-spacing:.12em;overflow-wrap:break-word;}
+/* Überschriften in der Anzeigeschrift: etwas mehr Wortabstand („Auf einen Blick“ statt „AufeinenBlick“) */
+.ar-karte h2,.ar-dialog h2,#arbeit-body .head h1{word-spacing:.1em;}
 .ar-eintrag p,.ar-dl dd,.ar-protokoll span,.ar-ftext,.ar-eintrag header b{overflow-wrap:anywhere;}
 .ar-entwurf{font-size:12.5px;font-weight:650;color:#8A5A00;background:#FFF4D6;border-radius:999px;padding:2px 9px;margin-left:10px;vertical-align:middle;font-family:var(--font-ui);letter-spacing:0;}
 .ar-entwurf[hidden]{display:none;}
@@ -453,6 +455,7 @@ a.ar-zeile:hover{background:var(--accent-soft);}
   .ar-zurueck{min-height:40px;}
   .ar-link{min-height:36px;display:inline-flex;align-items:center;}
   body .ko-q{min-width:32px;min-height:32px;}
+  #arbeit-body li>a{display:inline-block;padding:5px 0;}
 }
 /* Filter-Chips mit Symbol: Symbol und Text in einer Zeile */
 .catchip .ic{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:5px;}

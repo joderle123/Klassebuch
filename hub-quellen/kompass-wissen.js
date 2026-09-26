@@ -24,6 +24,11 @@
    Erkennen eines Profils:
      re     regulärer Ausdruck (ohne Groß-/Kleinschreibung) für Diagnosen und
             Verdacht – ICD-10, ICD-11 und Namen auf Deutsch, Französisch, Englisch
+     nicht  Fehltreffer (ohne Groß-/Kleinschreibung): Stellen, die „re“ trifft,
+            die aber nicht das Profil meinen – z. B. „ASS 100 mg“ (Aspirin),
+            „Schädel-Hirn-Trauma“, „IQ im Borderline-Bereich“
+     nichtKlein  Fehltreffer, bei denen die Schreibweise zählt: das Verb „sucht“
+            (nicht die Sucht), französisch „ses“ (nicht die Abkürzung SES)
      beob   aus Beobachtungen (keine Diagnose): Liste von Alternativen, jede
             eine Liste von Bedingungen, die alle erfüllt sein müssen:
             'sc:<bereich>' (Screening deutlich) · 'sc:<bereich>:gelb' (auch
@@ -40,7 +45,7 @@ status:'Entwurf – bitte vor dem Einsatz vom Fachteam (z. B. Diagnostique) prü
    --------------------------------------------------------------------- */
 profile:[
  {id:'adhs', name:'ADHS', thema:'Aufmerksamkeit und Unruhe',
-  re:'\\bF90|\\b6A05|\\badhs\\b|\\bads\\b|\\badhd\\b|\\btdah\\b|hyperkinet|aufmerksamkeitsdefizit',
+  re:'\\bF90|\\bF98\\.80|\\b6A05|\\badhs\\b|\\bads\\b|\\badhd\\b|\\btdah\\b|hyperkinet|aufmerksamkeitsdefizit|aufmerksamkeitsst[öo]rung|hyperaktivit[äa]tsst[öo]rung',
   beob:[['sc:aufmerksamkeit'],['sc:unruhe','sc:aufmerksamkeit:gelb']],
   kurz:'Anhaltende Schwierigkeiten mit Aufmerksamkeit, Unruhe und Impulssteuerung in mehreren Lebensbereichen – eine Störung der Selbststeuerung mit starker biologischer Grundlage, kein Erziehungsfehler.',
   verstehen:[
@@ -70,7 +75,8 @@ profile:[
   lernen:['adhs','verstaerkung']},
 
  {id:'sozialverhalten', name:'Oppositionelles und aggressives Verhalten', thema:'Regeln und Konflikte',
-  re:'\\bF9[12]|\\bF90\\.1|\\b6C9[01]|sozialverhalten|oppositionell|trotzverhalten|trouble (oppositionnel|des conduites)|conduct disorder|oppositional|\\bodd\\b',
+  re:'\\bF9[12]|\\bF90\\.1|\\b6C9[01]|st[öo]rung(?:en)? des sozialverhaltens|sozialverhaltensst[öo]rung|oppositionell|trotzverhalten|trouble (oppositionnel|des conduites)|conduct disorder|oppositional|\\bodd\\b',
+  nichtKlein:'\\bodd\\b',
   beob:[['sc:verhalten'],['vorfaelle:3+','sc:verhalten:gelb']],
   kurz:'Anhaltend oppositionelles, trotziges oder aggressives Verhalten, das über das Altersübliche hinausgeht. Entscheidend für den Umgang: Entsteht die Aggression aus Wut und Bedrohung (reaktiv) oder wird sie gezielt eingesetzt (proaktiv)?',
   verstehen:[
@@ -102,6 +108,7 @@ profile:[
  {id:'trauma', name:'Trauma und Traumafolgen', thema:'Belastende Erfahrungen',
   beob:[['warn:gewalt']],
   re:'\\bF43\\.[01]|\\b6B4[01]|\\bptbs\\b|\\bptsd\\b|\\btspt\\b|trauma|posttraumat|belastungsst[öo]rung|stress post',
+  nicht:'sch[äa]del-?hirn-?trauma|hirn-?trauma|poly-?trauma|knall-?trauma|(?:kopf|bauch|thorax|augen|zahn|geburts|schleuder|bagatell|sport|extremit[äa]ten|wirbels[äa]ulen)-?trauma|traumatolog|trauma(?:to)?-?(?:therap|p[äa]dagog|sensib|fokus|ambulanz|zentrum|beratung|informiert|spezifisch|gruppe)',
   kurz:'Folgen belastender Erlebnisse wie Gewalt, Vernachlässigung, Verlust oder Flucht. Das Verhalten ist oft eine früher sinnvolle Überlebensreaktion, die in der Schule nicht mehr passt.',
   verstehen:[
    {t:'Auslöser (Trigger), die an das Erlebte erinnern, lösen Kampf, Flucht oder Erstarren aus – oft ohne dass das Kind den Zusammenhang merkt.',q:['perry2006','vanDerKolk2014']},
@@ -202,6 +209,7 @@ profile:[
 
  {id:'instabil', name:'Emotionale Instabilität / Borderline-Züge', thema:'Starke Gefühlsschwankungen', umfasst:['regulation'],
   re:'\\bF60\\.3|\\b6D11\\.5|borderline|emotional instabil|emotionale instabilit|personnalit[ée] (limite|borderline)|emotionally unstable',
+  nicht:'borderline[- ]?(?:bereich|niveau|intelligenz|intellekt|iq|range|level|zone)|(?:\\biq|intelligenz\\w*|intellektuell\\w*|intellectual\\w*|kognitiv\\w*|leistung\\w*)[^.;\\n]{0,30}borderline',
   beob:[['sc:regulation','sc:stimmung','alter:12+'],['sc:regulation','warn:selbstverletzung','alter:12+']],
   kurz:'Sehr starke, schnell wechselnde Gefühle, Impulsivität, instabile Beziehungen und oft Selbstverletzung. Im Jugendalter ernst zu nehmen und früh zu behandeln – als Entwicklungsrisiko, nicht als Etikett.',
   verstehen:[
@@ -262,6 +270,7 @@ profile:[
 
  {id:'autismus', name:'Autismus-Spektrum',
   re:'\\bF84|\\b6A02|autis|\\bass\\b|asperger|\\btsa\\b|spectre de l.autisme',
+  nicht:'\\bass\\s*-?\\s*(?:\\d|ratio|protect|plus|hexal|stada|heumann)|(?:aspirin|acetylsalicyl\\w*)\\W{0,3}ass\\b',
   kurz:'Unterschiede in sozialer Kommunikation und Interaktion, wiederholende Verhaltensweisen, starke Interessen und eine besondere Reizverarbeitung – sehr unterschiedlich ausgeprägt.',
   verstehen:[
    {t:'Autismus ist ein Spektrum: Sprache, Intelligenz und Unterstützungsbedarf unterscheiden sich stark.',q:['lord2018','dsm5tr']},
@@ -287,7 +296,7 @@ profile:[
   lernen:['autismus']},
 
  {id:'angst', name:'Angststörung', thema:'Ängste und Sorgen',
-  re:'\\bF4[01]|\\bF93\\.[0-2]|\\b6B0[0-5]|angstst[öo]rung|trennungsangst|soziale (angst|phobie)|generalisierte angst|panik|trouble anxieux|anxi[ée]t[ée]|anxiety',
+  re:'\\bF4[01]|\\bF93\\.[0-2]|\\b6B0[0-5]|angstst[öo]rung|trennungsangst|soziale (angst|phobie)|generalisierte angst|panikst[öo]rung|panikattacke|panic disorder|panic attack|trouble panique|attaques? de panique|trouble anxieux|anxi[ée]t[ée]|anxiety',
   beob:[['sc:angst']],
   kurz:'Ängste, die stärker, häufiger oder länger sind als altersüblich und den Alltag einschränken – etwa Trennungsangst, soziale Angst oder anhaltende Sorgen.',
   verstehen:[
@@ -329,6 +338,7 @@ profile:[
 
  {id:'depression', name:'Depression', thema:'Stimmung und Rückzug',
   re:'\\bF3[23]|\\bF34\\.1|\\bF92\\.0|\\b6A7[0-3]|depress|d[ée]pressi|dysthym',
+  nicht:'anti-?d[ée]press\\w*',
   beob:[['sc:stimmung']],
   kurz:'Über Wochen gedrückte oder gereizte Stimmung, Freudlosigkeit und weitere Beschwerden, die den Alltag deutlich beeinträchtigen. Bei jungen Menschen oft übersehen.',
   verstehen:[
@@ -349,14 +359,14 @@ profile:[
   lernen:['depression','selbstverletzung-suizid']},
 
  /* weitere Profile: erkannt und mit Lernmodul und Material verbunden – ausführliche Bausteine folgen */
- {id:'lernstoerung', name:'Lese-, Rechtschreib- oder Rechenstörung', thema:'Lernen und Arbeitsorganisation', beob:[['sc:lernen']], re:'\\bF81|\\b6A03|legasthen|\\blrs\\b|dyslex|dyskalk|dyscalc|dysorthograph', lernen:['lernstoerungen'], blaetter:['wie-lerne-ich-am-besten','schritt-fuer-schritt','fehler-sind-helfer','noch-nicht','aus-rueckschlaegen-lernen']},
- {id:'sprache', name:'Sprachentwicklungsstörung', thema:'Sprache und Verständigung', beob:[['sc:sprache']], re:'\\bF80|\\b6A01|sprachentwicklungsst|\\bses\\b|trouble du langage|dysphasie|\\bdld\\b', lernen:['sprache-mutismus'], blaetter:['gefuehle-gesichter','regeln-in-bildern']},
+ {id:'lernstoerung', name:'Lese-, Rechtschreib- oder Rechenstörung', thema:'Lernen und Arbeitsorganisation', beob:[['sc:lernen']], re:'\\bF81|\\b6A03|legasthen|\\blrs\\b|dyslex|dyskalk|dyscalc|dysorthograph|rechtschreibst[öo]rung|rechenst[öo]rung|lesest[öo]rung', lernen:['lernstoerungen'], blaetter:['wie-lerne-ich-am-besten','schritt-fuer-schritt','fehler-sind-helfer','noch-nicht','aus-rueckschlaegen-lernen']},
+ {id:'sprache', name:'Sprachentwicklungsstörung', thema:'Sprache und Verständigung', beob:[['sc:sprache']], re:'\\bF80|\\b6A01|sprachentwicklungsst|\\bses\\b|trouble du langage|dysphasie|\\bdld\\b', nichtKlein:'\\b[Ss]es\\b', lernen:['sprache-mutismus'], blaetter:['gefuehle-gesichter','regeln-in-bildern']},
  {id:'mutismus', name:'Selektiver Mutismus', re:'\\bF94\\.0|\\b6B06|mutismus|mutisme', lernen:['sprache-mutismus','angst'], blaetter:['ich-kann-mutig-sein','mut-leiter']},
- {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btic|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
- {id:'essstoerung', name:'Essstörung', thema:'Auffälliges Essverhalten', beob:[['warn:essen']], re:'\\bF50|\\b6B8[0-5]|anorex|bulim|essst[öo]rung|\\barfid\\b|trouble alimentaire', lernen:['essstoerungen'], blaetter:['koerperbild','was-tut-mir-gut']},
- {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|intelligenzentwicklung|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
- {id:'sucht', name:'Sucht und problematische Mediennutzung', thema:'Hinweise auf Suchtmittel', beob:[['warn:sucht']], re:'\\bF1[0-9]\\.|\\b6C5[01]|\\bsucht|abh[äa]ngigkeit|cannabis|addiction|gaming disorder', lernen:['sucht-medien'], blaetter:['medien-tagebuch','mein-handy-und-ich','bildschirmzeit']},
- {id:'psychose', name:'Psychose oder bipolare Störung', thema:'Ungewöhnliche Wahrnehmungen', beob:[['warn:wahrnehmung']], re:'\\bF2[0-9]|\\bF31|\\b6A2|\\b6A6|psychos|schizophren|bipolar|manisch', lernen:['psychose-bipolar'], blaetter:[]}
+ {id:'ticszwang', name:'Tics oder Zwang', re:'\\bF95|\\bF42|\\b8A05|\\b6B20|\\btics?\\b|\\btic-|\\bticst[öo]rung|tourette|zwangsst|\\btoc\\b|\\bocd\\b', lernen:['zwang-tics'], blaetter:['stress-werkzeugkoffer']},
+ {id:'essstoerung', name:'Essstörung', thema:'Auffälliges Essverhalten', beob:[['warn:essen']], re:'\\bF50|\\b6B8[0-5]|anorex|bulim|essst[öo]rung|magersucht|ess-?brech-?sucht|\\barfid\\b|trouble alimentaire', lernen:['essstoerungen'], blaetter:['koerperbild','was-tut-mir-gut']},
+ {id:'intelligenz', name:'Störung der Intelligenzentwicklung', re:'\\bF7[0-9]|\\b6A00|intelligenzminder|st[öo]rung(?:en)? der intelligenzentwicklung|geistige behinderung|d[ée]ficience intellectuelle|intellectual disab', lernen:['intelligenz'], blaetter:['schritt-fuer-schritt','mein-tag-in-bildern']},
+ {id:'sucht', name:'Sucht und problematische Mediennutzung', thema:'Hinweise auf Suchtmittel', beob:[['warn:sucht']], re:'\\bF1[0-9]\\.|\\b6C5[01]|\\bsucht|(?:medien|spiel|internet|online|handy|computer|computerspiel|gaming|alkohol|drogen|nikotin|tabletten)-?sucht|abh[äa]ngigkeitssyndrom|abh[äa]ngigkeitserkrank|(?:alkohol|drogen|cannabis|nikotin|medikamenten|medien|internet|computerspiel|spiel|opiat|opioid|substanz|kokain|heroin)-?abh[äa]ngig|cannabis|addiction|gaming disorder', nichtKlein:'(?:^|[^A-Za-zÄÖÜäöüß-])sucht(?:e|en|est|et)?(?![A-Za-zÄÖÜäöüß])', lernen:['sucht-medien'], blaetter:['medien-tagebuch','mein-handy-und-ich','bildschirmzeit']},
+ {id:'psychose', name:'Psychose oder bipolare Störung', thema:'Ungewöhnliche Wahrnehmungen', beob:[['warn:wahrnehmung']], re:'\\bF2[0-9]|\\bF31|\\b6A2|\\b6A6|psychosen?\\b|psychotisch|psychotique|psychosis|psychotic|schizophren|bipolar|\\bmanisch|hypoman', lernen:['psychose-bipolar'], blaetter:[]}
 ],
 
 /* ---------------------------------------------------------------------

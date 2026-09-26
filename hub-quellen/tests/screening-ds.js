@@ -124,6 +124,16 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.click('[data-sc="abbrechen"]'); await warte(200);
   check('Abbrechen ohne eigene Antworten: keine Rückfrage', rueckfragen === 0 && !(await page.$('.sc-bogen')), rueckfragen);
 
+  console.log('5b) DS „traut sich etwas zu“: in Cycle 2–4 bei g6, in C1 nicht (dort meint g6 die Trennung von Bezugspersonen)');
+  const g6 = await page.evaluate(async ds => {
+    const T = CDSE_TEAM;
+    const d = await T.neuesDossier({ nachname: 'Muster', vorname: 'Mia', geschlecht: 'w', geburtsdatum: '2021-04-04', klasse: 'C1.2' }, { stelle: 'diagnostique' });
+    await T.ops.profil(d.id, { quelle: 'eldib', datum: CDSE_ARBEIT.hilfen.heuteIso(), ds: ds }, 'Test-DS C1');
+    const x = await T.dossier(d.id, true);
+    return { c1: CDSE_SCREENING.dsVorschlag(x, 'lehrkraft', 'C1').antworten, gs: CDSE_SCREENING.dsVorschlag(x, 'lehrkraft', 'GS').antworten };
+  }, Object.assign({}, DS, { bewertungen: Object.assign({}, DS.bewertungen, { s_selbstwert: 2 }) }));
+  check('C1: g6 nicht aus dem DS (st6 schon), Cycle 2–4: g6 aus dem DS', !('g6' in g6.c1) && ('st6' in g6.c1) && ('g6' in g6.gs), g6);
+
   console.log('6) Schmal (390 px)');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.click('[data-sc="neu"]'); await page.waitForSelector('.sc-bogen'); await warte(200);

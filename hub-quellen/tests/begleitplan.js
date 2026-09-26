@@ -1,7 +1,8 @@
 // Test: Begleitplan im Dossier – Schritte aus dem Dossier ableiten (Phasen, automatisch erledigt, dringend,
 // fällig, geplant), „Als Nächstes“, Entscheidungen des Teams (erledigt, später, passt nicht, wieder offen),
 // Fokusziele aus der ELDiB, Beobachtung zum Ziel, eigene Schritte, Überprüfung mit Kennzahlen, wiederkehrende
-// Schritte, Nur-Lesen, Kurzkarte im Überblick, Protokoll, 390 px. Nur erfundene Personen.
+// Schritte, Krisenplan nach neuem Warnsignal wieder offen, Erledigtes eingeklappt, Fehler beim Speichern, Nur-Lesen,
+// Kurzkarte im Überblick, Protokoll, 390 px. Nur erfundene Personen.
 // Aufruf: node tests/begleitplan.js   (BASE=… für eine andere Hub-Datei)
 const { chromium } = require('/opt/node22/lib/node_modules/playwright');
 const fs = require('fs'), path = require('path');
@@ -86,6 +87,9 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   check('Aus dem Kompass (ADHS): „Umgang im Team absprechen“ und „Verstärkerplan“', !!(await schritt('umgang')) && (await schritt('verstaerker')).text.includes('ADHS'));
   check('Fokusziele: offen, 3 Förderziele zur Auswahl', (await schritt('fokus')).status === 'offen' && (await schritt('fokus')).text.includes('3 Förderziele'));
   check('Screening: eine Einschätzung – zweite Person empfohlen', (await schritt('screening')).text.includes('Bisher eine Einschätzung'));
+  const reihe = await page.$$eval('#bp-plan > *', l => l.map(x => x.className));
+  check('„Sofort“ direkt unter „Als Nächstes“ (vor Fokuszielen, Tageskarte, Kindmodus)', reihe.findIndex(c => c.includes('bp-sofort')) === reihe.findIndex(c => c.includes('bp-naechster')) + 1, reihe);
+  check('Erledigte Schritte eingeklappt: „Erledigt (n) anzeigen“', !!(await page.$('#bp-phase-start details.bp-erledigt:not([open]) .bp-schritt[data-key="verantwortlich"]')) && /^Erledigt \(\d+\) anzeigen$/.test((await text('#bp-phase-start details.bp-erledigt summary')).trim()));
   await page.screenshot({ path: path.join(OUT, 'b1-plan.png') });
 
   console.log('3) Entscheidungen des Teams');
@@ -95,6 +99,15 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.fill('dialog.ar-dialog input[name="notiz"]', 'Termin mit Kinderpsychiatrie abwarten'); await dialogKnopf('Später');
   const kp = await schritt('krisenplan');
   check('Krisenplan auf später gelegt, mit Datum und Notiz', kp.status === 'spaeter' && kp.text.includes('auf später gelegt bis') && kp.text.includes('Kinderpsychiatrie'), kp);
+  const kp13 = await page.evaluate(() => {
+    const d = JSON.parse(JSON.stringify(CDSE_ARBEIT.hilfen.aktDossier()));
+    d.begleitplan.schritte.krisenplan = { status: 'erledigt', z: new Date(Date.now() - 20 * 864e5).toISOString(), von: CDSE_KONTO.ich().id };
+    const vorher = CDSE_BEGLEITPLAN.schritte(d, CDSE_TEAM.rechte(d)).liste.find(s => s.key === 'krisenplan');
+    d.begleitplan.schritte.krisenplan.z = new Date().toISOString();
+    const nachher = CDSE_BEGLEITPLAN.schritte(d, CDSE_TEAM.rechte(d)).liste.find(s => s.key === 'krisenplan');
+    return { vorher: vorher.status, warum: vorher.warum, nachher: nachher.status };
+  });
+  check('Krisenplan „erledigt“ vor dem neuesten Warnsignal → wieder dringend (mit Grund); danach erledigt', kp13.vorher === 'dringend' && /^Neues Warnsignal am /.test(kp13.warum) && kp13.nachher === 'erledigt', kp13);
   check('Kennenlerngespräch automatisch erledigt: Sicht des Kindes steht im DS', (await schritt('kind-erst')).status === 'erledigt' && (await schritt('kind-erst')).text.includes('Im DS erfasst'));
   await page.click('.bp-schritt[data-key="verstaerker"] [data-bp="passt-nicht"]'); await page.waitForSelector('dialog.ar-dialog');
   await page.fill('dialog.ar-dialog input[name="notiz"]', 'Läuft schon über die Klasse'); await dialogKnopf('Passt nicht');
@@ -127,6 +140,7 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
 
   console.log('5) Eigener Schritt, wiederkehrende Schritte, Überprüfung');
   await page.click('[data-bp="eigen-neu"]'); await page.waitForSelector('dialog.ar-dialog');
+  check('„Zuständig“: Fallverantwortliche zuerst (eigene Gruppe)', (await page.$eval('dialog.ar-dialog select[name="wer"]', s => { const g = s.querySelector('optgroup[label="Fallverantwortlich"] option'); return g ? g.textContent : ''; })) === 'Mia Muster');
   await page.fill('dialog.ar-dialog input[name="titel"]', 'Termin mit dem SCAS vereinbaren');
   await page.selectOption('dialog.ar-dialog select[name="phase"]', 'start');
   await page.fill('dialog.ar-dialog input[name="bis"]', tage(-7));
@@ -150,9 +164,22 @@ function check(name, cond, info) { if (cond) { ok++; console.log('  ✓ ' + name
   await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Speichern")'); await warte(200);
   check('Überprüfung ohne Notiz: Hinweis', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('festhalten'));
   await page.fill('dialog.ar-dialog textarea[name="notiz"]', 'Warten klappt besser. Punkteplan beibehalten, Pause strukturieren.');
+  const heuteLokal = await page.evaluate(() => CDSE_ARBEIT.hilfen.heuteIso());
+  check('Datum der Überprüfung höchstens heute (max)', (await page.getAttribute('dialog.ar-dialog input[name="datum"]', 'max')) === heuteLokal);
+  await page.fill('dialog.ar-dialog input[name="datum"]', '2062-01-01');
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Speichern")'); await warte(200);
+  check('Tippfehler 2062: Hinweis „Zukunft“, nicht gespeichert', (await text('dialog.ar-dialog .ar-dialog-fehler')).includes('Zukunft'));
+  await page.fill('dialog.ar-dialog input[name="datum"]', heuteLokal);
   await dialogKnopf('Speichern');
   check('Überprüfung gespeichert und angezeigt', (await text('.bp-reviews')).includes('Punkteplan beibehalten') && (await text('.bp-reviews')).includes('1 Vorfall'));
   check('Nächste Überprüfung wieder in sechs Wochen geplant', (await schritt('review')).status === 'geplant' && (await schritt('review')).text.includes('Letzte Überprüfung am'));
+
+  /* Speichern schlägt fehl: Knopf wieder frei, Meldung bleibt stehen */
+  await page.evaluate(() => { window.__ps = CDSE_TEAM.ops.planSchritt; CDSE_TEAM.ops.planSchritt = () => Promise.reject(new Error('Die Datei ist gerade belegt (Test).')); });
+  await page.click('.bp-schritt[data-key="umgang"] [data-bp="erledigt"]'); await page.waitForSelector('dialog.ar-dialog');
+  check('Fehler beim Speichern: Meldung im Dialog, Knopf wieder frei', (await text('dialog.ar-dialog')).includes('gerade belegt') && await page.isEnabled('.bp-schritt[data-key="umgang"] [data-bp="erledigt"]') && (await schritt('umgang')).status === 'offen');
+  await page.click('dialog.ar-dialog .ar-knoepfe button:has-text("Schließen")'); await warte(300);
+  await page.evaluate(() => { CDSE_TEAM.ops.planSchritt = window.__ps; });
 
   const ueb = await page.evaluate(() => CDSE_ARBEIT.hilfen.uebergabeHtml(CDSE_ARBEIT.hilfen.aktDossier()));
   check('Übergabeblatt: Begleitplan mit Fortschritt, Fokuszielen, offenen Schritten und letzter Überprüfung', ueb.includes('<h2>Begleitplan</h2>') && ueb.includes('Schritten erledigt') && ueb.includes('<h3>Fokusziele</h3>') && ueb.includes('Offene Schritte') && ueb.includes('Punkteplan beibehalten'));
