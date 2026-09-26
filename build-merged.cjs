@@ -34,6 +34,37 @@ var MERGE_JS = read('merge.js');
 var KB_DATUM_JS = "/* Heute als JJJJ-MM-TT nach der Uhr auf dem Geraet - toISOString() rechnet in UTC, und zwischen Mitternacht und 2 Uhr waere es in Luxemburg noch gestern. */window.kbLokalISO=function(d){d=d||new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);};";
 var SPELL_JS  = read('spell.js');
 var SPELL_ZUSATZ = read('spell-zusatz.js');
+/* ---- Gestaltung: Schrift, Symbole, einheitliche Formensprache ---- */
+var DESIGN_CSS = read('design.css');
+var SPRITE = read('vendor/lucide/sprite.svg');
+var SYMBOLE_JS = read('symbole.js');
+/* Inter steckt als Datei in der App (OFL, vendor/inter) - frueher kam sie
+   bei jedem Start von Google. Das verriet jedes Mal die Adresse des
+   Rechners und passte nicht zu "kein Internet-Zugriff". */
+var FONT_CSS = (function () {
+  function b64(f) { return fs.readFileSync(path.join(ROOT, 'vendor/inter/' + f)).toString('base64'); }
+  function face(f, bereich) {
+    return "@font-face{font-family:'Inter';font-style:normal;font-display:swap;font-weight:100 900;" +
+      "src:url(data:font/woff2;base64," + b64(f) + ") format('woff2');unicode-range:" + bereich + ";}";
+  }
+  return face('inter-latin-ext-wght-normal.woff2', 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF') +
+    face('inter-latin-wght-normal.woff2', 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD');
+})();
+/* Emoji als Symbole wirkten verspielt und sahen auf jedem Rechner anders
+   aus: im Menue durch Linien-Symbole ersetzt, vor Ueberschriften entfernt. */
+var NAV_ICONS = { '👥': 'users', '🔎': 'search', '📋': 'notebook-pen', '🤝': 'messages-square', '🧰': 'library',
+  '🧠': 'brain', '🏫': 'school', '🗒️': 'files', '🕶️': 'eye-off', '🔌': 'folder-sync' };
+function symbol(name, cls) { return '<svg class="' + (cls || 'kb-i') + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>'; }
+function mitSymbolen(t) {
+  Object.keys(NAV_ICONS).forEach(function (e) {
+    t = t.split('<span class="kb-ic">' + e + '</span>').join(symbol(NAV_ICONS[e], 'kb-ic'));
+  });
+  t = t.split('<span class="kb-logo">📘</span>').join('<span class="kb-logo">' + symbol('book-open') + '</span>');
+  return t;
+}
+function ohneEmojiInUeberschriften(t) {
+  return t.replace(/(<h[1-4][^>]*>)\s*(?:\p{Extended_Pictographic}|️|‍)+\s*/gu, '$1');
+}
 var SPELL_CSS = read('spell.css');
 var NSPELL_JS = read('vendor/nspell.bundle.js');
 /* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
@@ -205,10 +236,10 @@ anwScript = replaceOnce(anwScript, 'initSync();', '/* initSync deaktiviert (KB_S
 
 /* Klassenbuch-Beiträge der Woche klar NACH TAG gruppiert anzeigen (unter dem Raster). */
 anwScript = replaceOnce(anwScript,
-  `return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
+  `return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
   `var byDay={};list.forEach(function(n){(byDay[n.date]=byDay[n.date]||[]).push(n);});
     var dayHtml=days.map(function(d){var dl=byDay[d]||[];if(!dl.length){return '';}return '<div class="kb-day-notes"><div class="kb-day-h">'+DOW[wdOf(d)]+', '+fmtD(d)+' <span class="badge">'+dl.length+'</span></div>'+dl.map(function(n){var nt=NOTE_TYPES[n.type]||NOTE_TYPES.allgemein;var b=BLOCKS.find(function(x){return x.id===n.blockId;});var meta=(n.subject||'Allgemein')+(b?' · '+b.start+'–'+b.end:'');return '<div class="wk-note '+n.type+'" data-noteopen="'+n.id+'"><span class="wn-ic">'+nt.icon+'</span><div class="wn-body"><div class="wn-meta">'+nt.label+' · '+esc(meta)+(n.byUser?' · <span style="color:var(--primary-dark);">'+esc(n.byUser)+'</span>':'')+'</div><div class="wn-txt">'+esc(n.text)+'</div></div></div>';}).join('')+'</div>';}).join('');
-    return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — Beiträge nach Tag</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+(dayHtml||'<div class="wk-notes-empty">Keine Notizen diese Woche.</div>')+'</div></div>';`,
+    return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — Beiträge nach Tag</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+(dayHtml||'<div class="wk-notes-empty">Keine Notizen diese Woche.</div>')+'</div></div>';`,
   'anw:weeknotes-byday');
 
 /* ============================================================
@@ -1788,22 +1819,22 @@ var DOS_OVERRIDES = `
     var items=[];
     (Repo.entriesForStudent?Repo.entriesForStudent(sid):[]).forEach(function(e){
       var isReu=(e.category==='Team-Réunion');
-      items.push({date:e.date,type:isReu?'reunion':'entry',icon:isReu?'🗣️':'🗒️',title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
+      items.push({date:e.date,type:isReu?'reunion':'entry',icon:kbIcon(isReu?'messages-square':'sticky-note'),title:isReu?'Réunion-Beitrag':escapeHtml(e.category||'Eintrag'),author:(e.author||''),body:'<div class="entry-body">'+highlightThemesHtml(e.text||'')+'</div>'});
     });
     (Repo.listReunions?Repo.listReunions():[]).forEach(function(r){
-      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:'📌',title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+'</li>';}).join('')+'</ul>'});}
+      var g=(r.goals&&r.goals[sid])||[]; if(g.length){items.push({date:r.date,type:'goal',icon:kbIcon('pin'),title:'Wochenziel(e)',body:'<ul class="tl-goals">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li'+(fertig?' class="done"':'')+'>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+'</li>';}).join('')+'</ul>'});}
     });
-    if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:'📉',title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
+    if(window.KB_ANW&&window.KB_ANW.recentForStudent){try{window.KB_ANW.recentForStudent(sid,40).forEach(function(e){items.push({date:e.date,type:'absence',icon:kbIcon('trending-down'),title:'Absenz · '+escapeHtml(window.KB_ANW.statusLabel?window.KB_ANW.statusLabel(e.status):(e.status||'')),body:escapeHtml(e.subject||'')});});}catch(_){}}
     if(window.KB_SCREENING&&window.KB_SCREENING.history){window.KB_SCREENING.history(sid).forEach(function(s){
       var ax=(s.axes||[]).map(function(a){return escapeHtml(a.name)+' <em>'+escapeHtml(a.staerke)+'</em>';}).join(', ');
       var mu=(s.muster||[]).map(function(m){return escapeHtml(m.name);}).join(' · ');
       var b='';
-      if(s.acute)b+='<span class="sv-risk" style="background:var(--kb-danger);color:#fff;">🚨 Akute Krise</span> ';
-      else if(s.risk)b+='<span class="sv-risk">⚠ Risiko</span> ';
+      if(s.acute)b+='<span class="sv-risk" style="background:var(--kb-danger);color:#fff;">'+kbIcon('siren','sm')+' Akute Krise</span> ';
+      else if(s.risk)b+='<span class="sv-risk">'+kbIcon('triangle-alert','sm')+' Risiko</span> ';
       b+='<div class="tl-scr">'+(ax?('Achsen: '+ax):'keine über Schwelle')+(mu?('<br>Submuster: <strong>'+mu+'</strong>'):'')+(s.confidence?('<br>Einordnung: '+escapeHtml(s.confidence)):'')+'</div>';
-      items.push({date:s.date,type:'screening',icon:'🧠',title:'Screening',body:b});
+      items.push({date:s.date,type:'screening',icon:kbIcon('brain'),title:'Screening',body:b});
     });}
-    var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(rep&&rep.date){items.push({date:rep.date,type:'report',icon:'🩺',title:escapeHtml(rep.type||'Diagnostischer Bericht'),body:'Bericht im Dossier hinterlegt.'});}
+    var rep=window.KB_REPORTS?window.KB_REPORTS.summary(sid):null; if(rep&&rep.date){items.push({date:rep.date,type:'report',icon:kbIcon('stethoscope'),title:escapeHtml(rep.type||'Diagnostischer Bericht'),body:'Bericht im Dossier hinterlegt.'});}
     items.sort(function(a,b){return (a.date<b.date)?1:(a.date>b.date?-1:0);});
     var counts={}; items.forEach(function(it){counts[it.type]=(counts[it.type]||0)+1;});
     var defs=[['all','Alles',items.length],['screening','Screening',counts.screening||0],['entry','Einträge',counts.entry||0],['reunion','Réunion',counts.reunion||0],['goal','Ziele',counts.goal||0],['absence','Absenzen',counts.absence||0]];
@@ -1813,7 +1844,7 @@ var DOS_OVERRIDES = `
     if(!filtered.length){body='<div class="empty-state">'+(items.length?'Nichts in diesem Filter.':'Noch keine Aktivitäten — Einträge, Screenings, Absenzen und Ziele sammeln sich hier automatisch.')+'</div>';}
     else{
       body='<div class="tl">'+filtered.map(function(it){
-        return '<div class="tl-item tl-'+it.type+'"><div class="tl-ic">'+it.icon+'</div><div class="tl-c"><div class="tl-h"><span class="tl-t">'+it.title+(it.author?' <span class="tl-author">✍ '+escapeHtml(it.author)+'</span>':'')+'</span><span class="tl-d">'+escapeHtml(formatDate(it.date))+'</span></div><div class="tl-b">'+it.body+'</div></div></div>';
+        return '<div class="tl-item tl-'+it.type+'"><div class="tl-ic">'+it.icon+'</div><div class="tl-c"><div class="tl-h"><span class="tl-t">'+it.title+(it.author?' <span class="tl-author">'+kbIcon('pen-line','sm')+escapeHtml(it.author)+'</span>':'')+'</span><span class="tl-d">'+escapeHtml(formatDate(it.date))+'</span></div><div class="tl-b">'+it.body+'</div></div></div>';
       }).join('')+'</div>';
     }
     return '<div class="kb-hub-pad"><div class="tl-filters">'+chips+'</div>'+body+'</div>';
@@ -1821,15 +1852,11 @@ var DOS_OVERRIDES = `
   /* Ziele stehen als Text oder als {text, done} - die Réunion speichert die
      zweite Form. Ohne diese Umwandlung stand hier "[object Object]". */
   function zielTxt(g){return (g&&typeof g==='object')?String(g.text||''):String(g||'');}
+  /* Réunion-Reiter: oben das Feld fuer die naechste Réunion (speichert beim
+     Tippen wie die Réunion-Seite selbst), darunter, was frueher besprochen
+     wurde. */
   function hubReunion(student){
     var sid=student.id; var reu=Repo.listReunions(); var out=[];
-    reu.forEach(function(r){
-      var e=Repo.reunionEntryFor(r.date,sid); var g=(r.goals&&r.goals[sid])||[];
-      if(!e&&!g.length){return;}
-      out.push('<div class="card"><div class="muted" style="font-size:.85em;display:flex;justify-content:space-between;gap:8px;align-items:center;"><span>Réunion '+escapeHtml(formatDate(r.date))+'</span>'+(e&&e.author?'<span class="reunion-author" title="Verfasst von '+escapeAttr(e.author)+'">✍ '+escapeHtml(e.author)+'</span>':'')+'</div>'+
-        (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted">Kein Update.</p>')+
-        (g.length?'<div class="goal-box"><strong>Ziele:</strong><ul class="goal-list">'+g.map(function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li>'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+(fertig?' <span class="muted">(erreicht)</span>':'')+'</li>';}).join('')+'</ul></div>':'')+'</div>');
-    });
     var today=window.kbLokalISO();
     var up=reu.filter(function(r){return r.date>=today;}).sort(function(a,b){return a.date<b.date?-1:1;});
     function nextMondayISO(){var d=new Date();var add=(1-d.getDay()+7)%7;d.setDate(d.getDate()+add);return window.kbLokalISO(d);}
@@ -1838,32 +1865,56 @@ var DOS_OVERRIDES = `
     var ex=Repo.reunionEntryFor(nextDate,sid);
     var exGoals=(nObj&&nObj.goals&&nObj.goals[sid])?nObj.goals[sid]:[];
     var willCreate=!nObj;
+    var zielLi=function(x){var fertig=!!(x&&typeof x==='object'&&x.done);return '<li class="'+(fertig?'done':'')+'">'+(fertig?'✓ ':'')+escapeHtml(zielTxt(x))+(fertig?' <span class="muted">(erreicht)</span>':'')+'</li>';};
+    var vorher=null;
+    reu.slice().sort(function(a,b){return a.date<b.date?1:-1;}).forEach(function(r){
+      if(r.date===nextDate){return;}
+      var e=Repo.reunionEntryFor(r.date,sid); var g=(r.goals&&r.goals[sid])||[];
+      if(!e&&!g.length){return;}
+      if(!vorher&&r.date<nextDate&&e&&String(e.text||'').trim()){vorher={date:r.date,text:String(e.text)};}
+      out.push('<div class="hr-item"><div class="hr-item-h"><span class="hr-date">'+escapeHtml(formatDate(r.date))+'</span>'+(e&&e.author?'<span class="reunion-author" title="Verfasst von '+escapeAttr(e.author)+'">✍ '+escapeHtml(e.author)+'</span>':'')+'</div>'+
+        (e?'<div class="entry-body reunion-update">'+highlightThemesHtml(e.text)+'</div>':'<p class="muted hr-leer">Kein Update.</p>')+
+        (g.length?'<ul class="hr-ziele">'+g.map(zielLi).join('')+'</ul>':'')+'</div>');
+    });
+    var erreicht=exGoals.filter(function(x){return x&&typeof x==='object'&&x.done;});
     var writeBox='<div class="card reu-write">'+
-      '<h4 class="reu-h">✍️ Für die Réunion am '+escapeHtml(formatDate(nextDate))+(willCreate?' <span class="muted" style="font-weight:600;font-size:.8em;">(wird neu angelegt)</span>':'')+'</h4>'+
-      '<label class="reu-lbl">Beitrag / Update für die Réunion</label>'+
-      '<textarea class="reu-input" rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
-      '<label class="reu-lbl" style="margin-top:12px;">Wochenziel(e) <span class="muted" style="font-weight:600;">— optional, je Zeile eins</span></label>'+
-      '<textarea class="reu-goals" rows="2" placeholder="z. B. Pünktlich zur Schule kommen">'+escapeHtml(exGoals.map(zielTxt).join('\\n'))+'</textarea>'+
-      '<div class="kb-btn-row" style="margin-top:10px;"><button class="btn btn-primary reu-save" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextDate)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+'>'+((ex||exGoals.length)?'Aktualisieren':'Speichern')+'</button> <span class="reu-status muted" style="font-size:.85em;"></span></div>'+
-      '<p class="muted" style="font-size:.8em;margin-top:6px;">Beitrag wird als Réunion-Eintrag gespeichert, Wochenziele wandern in die Réunion-Ziele — alles synchronisiert automatisch (Team-Datei & überall).</p>'+
+      '<div class="rw-head"><div class="rw-title"><span class="rw-kick">Nächste Réunion</span><h3>'+escapeHtml(formatDate(nextDate))+'</h3></div>'+
+        (willCreate?'<span class="rw-new" title="Die Réunion wird angelegt, sobald hier etwas steht.">neu</span>':'')+
+        '<span class="rw-sp"></span><span class="reu-status" aria-live="polite"></span></div>'+
+      (vorher?'<div class="reu-prev" data-hr-prev title="Ganz anzeigen"><span class="reu-prev-lbl">'+kbIcon('history','sm')+'Letztes Mal · '+escapeHtml(formatDate(vorher.date))+'</span><div class="reu-prev-txt">'+escapeHtml(vorher.text)+'</div></div>':'')+
+      '<label class="rw-lbl" for="rw-text">Update</label>'+
+      '<textarea id="rw-text" class="reu-input" rows="4" placeholder="Was soll zu '+escapeAttr(student.name)+' besprochen werden?">'+escapeHtml(ex?ex.text:'')+'</textarea>'+
+      '<label class="rw-lbl" for="rw-goals">Wochenziele <span>optional · eins pro Zeile</span></label>'+
+      '<textarea id="rw-goals" class="reu-goals" rows="2" placeholder="z. B. Pünktlich zur Schule kommen">'+escapeHtml(exGoals.map(zielTxt).join('\\n'))+'</textarea>'+
+      (erreicht.length?'<ul class="hr-ziele rw-erreicht">'+erreicht.map(zielLi).join('')+'</ul>':'')+
+      '<div class="rw-foot"><span class="rw-note">Speichert beim Tippen und gleicht mit dem Team ab.</span><span class="rw-sp"></span>'+
+        '<span class="reu-kbd">Strg + Enter</span>'+
+        '<button class="btn btn-primary reu-save" data-sid="'+escapeAttr(sid)+'" data-date="'+escapeAttr(nextDate)+'"'+(ex?(' data-eid="'+escapeAttr(ex.id)+'"'):'')+'>'+kbIcon('check','sm')+'Speichern</button></div>'+
     '</div>';
-    return '<div class="kb-hub-pad">'+writeBox+'<h4 class="reu-h" style="margin-top:22px;">Bisherige Réunion-Beiträge</h4>'+(out.length?out.join(''):'<div class="empty-state">Noch keine Réunion-Beiträge.</div>')+'</div>';
+    return '<div class="kb-hub-pad">'+writeBox+'<div class="hr-sec">Frühere Réunionen'+(out.length?' <span class="hr-n">'+out.length+'</span>':'')+'</div>'+(out.length?'<div class="hr-list">'+out.join('')+'</div>':'<div class="empty-state">Noch keine Réunion-Beiträge.</div>')+'</div>';
+  }
+  /* Reiter "Schule": Absenzen und Aufgaben als zwei ruhige Karten */
+  function hubSchule(student){
+    return '<div class="kb-hub-pad hub-schule">'+
+      '<div class="card kb-mini"><h4><span class="mi">'+kbIcon('trending-down')+'</span><span class="mt">Absenzen</span></h4>'+hubAbsenzen(student)+'</div>'+
+      '<div class="card kb-mini"><h4><span class="mi">'+kbIcon('notebook-tabs')+'</span><span class="mt">Aufgaben &amp; Prüfungen</span></h4>'+hubAufgaben(student)+'</div></div>';
   }
   function hubAbsenzen(student){
     var sid=student.id;
-    if(!window.KB_ANW){return '<div class="empty-state">Anwesenheits-Modul nicht geladen.</div>';}
+    if(!window.KB_ANW){return '<p class="muted">Anwesenheits-Modul nicht geladen.</p>';}
     var sum=window.KB_ANW.summaryForStudent(sid); var recent=window.KB_ANW.recentForStudent(sid,15);
     var rows=recent.map(function(e){return '<tr><td>'+escapeHtml(window.KB_ANW.fmt(e.date))+'</td><td>'+escapeHtml(e.subject||'—')+'</td><td>'+escapeHtml(window.KB_ANW.statusLabel(e.status))+'</td></tr>';}).join('');
-    return '<div class="kb-hub-pad"><div class="kb-stat-row">'+stat(sum.entschuldigt,'Excusé')+stat(sum.unentschuldigt,'Non-excusé')+stat(sum.verspaetet,'Retard')+stat(sum.total,'Gesamt')+'</div>'+
-      '<button class="btn btn-primary" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">In Absenzen erfassen / bearbeiten</button>'+
-      (recent.length?'<table class="kb-table" style="margin-top:14px;"><thead><tr><th>Datum</th><th>Fach</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>':'<p class="muted" style="margin-top:14px;">Noch keine Absenzen erfasst.</p>')+'</div>';
+    var z=function(n,l,art){return '<div class="hs-stat'+(art&&n?' hs-'+art:'')+'"><b>'+(n||0)+'</b><span>'+escapeHtml(l)+'</span></div>';};
+    return '<div class="hs-stats">'+z(sum.entschuldigt,'Excusé','ok')+z(sum.unentschuldigt,'Non-excusé','bad')+z(sum.verspaetet,'Retard','warn')+z(sum.total,'Gesamt','')+'</div>'+
+      (recent.length?'<table class="kb-table hs-table"><thead><tr><th>Datum</th><th>Fach</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>':'<p class="muted hs-leer">Noch keine Absenzen erfasst.</p>')+
+      '<div class="hs-actions"><button class="btn btn-primary" data-kb-act="open-absenzen" data-kb-arg="'+escapeAttr(sid)+'">Im Klassenbuch erfassen</button></div>';
   }
   function hubAufgaben(student){
     var lvl=rosterLevel(student.id);
-    if(!window.KB_ANW){return '<div class="empty-state">Klassenbuch-Modul nicht geladen.</div>';}
+    if(!window.KB_ANW){return '<p class="muted">Klassenbuch-Modul nicht geladen.</p>';}
     var tasks=window.KB_ANW.tasksForLevel(lvl);
-    var rows=tasks.map(function(n){var icon=n.type==='pruefung'?'📝':'📒';return '<div class="card"><div class="muted" style="font-size:.85em;">'+icon+' '+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+'</div><div>'+escapeHtml(n.text)+'</div></div>';}).join('');
-    return '<div class="kb-hub-pad"><p class="muted">Hausaufgaben & Prüfungen aus dem Klassenbuch für Niveau '+escapeHtml(lvl)+'. (Individuell zugewiesene Aufgaben folgen später.)</p>'+(tasks.length?rows:'<div class="empty-state">Keine Aufgaben/Prüfungen hinterlegt.</div>')+'</div>';
+    var rows=tasks.map(function(n){return '<div class="hs-task"><span class="hs-task-ic">'+kbIcon(n.type==='pruefung'?'file-pen-line':'notebook-tabs','sm')+'</span><div><div class="hs-task-meta">'+escapeHtml(window.KB_ANW.fmt(n.date))+(n.subject?' · '+escapeHtml(n.subject):'')+(n.type==='pruefung'?' · Prüfung':'')+'</div><div class="hs-task-txt">'+escapeHtml(n.text)+'</div></div></div>';}).join('');
+    return '<p class="muted">Aus dem Klassenbuch, Niveau '+escapeHtml(lvl)+'.</p>'+(tasks.length?'<div class="hs-tasks">'+rows+'</div>':'<p class="muted hs-leer">Keine Aufgaben oder Prüfungen eingetragen.</p>');
   }
   function hubHelfernetz(student){
     if(window.KB_BUBBLE_RENDER){return window.KB_BUBBLE_RENDER(student);}
@@ -1940,7 +1991,7 @@ var DOS_OVERRIDES = `
         else if(tab==='verlauf'){sectionHtml=hubVerlauf(student);}
         else if(tab==='screening'){sectionHtml=hubScreening(student);}
         else if(tab==='noten'){sectionHtml=hubNoten(student);}
-        else if(tab==='schule'){sectionHtml='<h3 class="kb-subhead">📉 Absenzen</h3>'+hubAbsenzen(student)+'<h3 class="kb-subhead kb-subhead-mt">📒 Aufgaben &amp; Prüfungen</h3>'+hubAufgaben(student);}
+        else if(tab==='schule'){sectionHtml=hubSchule(student);}
         else if(tab==='reunion'){sectionHtml=hubReunion(student);}
         else if(tab==='helfernetz'){sectionHtml=hubHelfernetz(student);}
         else {tab='uebersicht';sectionHtml=hubOverview(student);}
@@ -1965,53 +2016,100 @@ var DOS_OVERRIDES = `
           /* Entwurf: was hier getippt, aber nicht gespeichert wurde, kommt
              beim naechsten Oeffnen zurueck (Fenster zu, Absturz, Akku leer). */
           var EW=(rbtn&&window.Entwurf)?('hub-reu:'+rbtn.getAttribute('data-date')+':'+rbtn.getAttribute('data-sid')):'';
-          var ewMerken=function(){if(EW){window.Entwurf.merke(EW,{t:rta?rta.value:'',g:rgta?rgta.value:'',b:rta?rta.defaultValue:''});}};
+          var ewMerken=function(){if(EW){window.Entwurf.merke(EW,{t:rta?rta.value:'',g:rgta?rgta.value:'',b:rta?(rta._kbStart!==undefined?rta._kbStart:rta.defaultValue):''});}};
           if(EW){
             var ew=window.Entwurf.hole(EW), rtaStart=rta?rta.defaultValue:'', rgStart=rgta?rgta.defaultValue:'';
             if(ew&&((ew.t||'')!==rtaStart||(ew.g||'')!==rgStart)){
               if(rta){rta.value=(window.KB_MERGE&&(ew.b||'')!==rtaStart)?window.KB_MERGE.text(ew.b||'',ew.t||'',rtaStart):(ew.t||'');}
               if(rgta){rgta.value=ew.g||'';}
-              if(rst){rst.textContent='↺ Nicht gespeicherter Entwurf wiederhergestellt — noch nicht gespeichert.';}
+              if(rst){rst.textContent='Entwurf von vorhin zurückgeholt — noch nicht gespeichert';rst.className='reu-status warn';}
             }
           }
-          if(rta){rta.addEventListener('input',ewMerken);}
-          if(rgta){rgta.addEventListener('input',ewMerken);}
-          if(rbtn){rbtn.addEventListener('click',function(){
-            var sid2=rbtn.getAttribute('data-sid'), date2=rbtn.getAttribute('data-date');
-            var zeilen2=function(v){return String(v||'').split('\\n').map(function(s){return s.trim();}).filter(Boolean);};
-            var text2=((rta&&rta.value)||'').trim();
-            var goals2=zeilen2(rgta&&rgta.value);
-            if(!text2 && !goals2.length){ if(rta){rta.focus();} return; }
-            rbtn.disabled=true; if(rst){rst.textContent='Speichert …';}
-            var M=window.KB_MERGE;
+          /* Speichern wie auf der Réunion-Seite: kurz nach dem letzten
+             Tastendruck von selbst, sofort beim Verlassen des Kastens, mit
+             Strg+Enter oder dem Knopf. Seit dem Oeffnen kann das Team schon
+             weitergeschrieben haben: gegen den Stand zusammenfuehren, von dem
+             das Feld ausging (_kbStart), nicht ueberschreiben. "Erreicht"
+             bleibt bei Zielen stehen, die es schon gab. */
+          var sid2=rbtn?rbtn.getAttribute('data-sid'):'', date2=rbtn?rbtn.getAttribute('data-date'):'';
+          var OFFEN='hub-reu:'+date2+':'+sid2;
+          var startW=function(el){return el._kbStart!==undefined?el._kbStart:el.defaultValue;};
+          var zeilen2=function(v){return String(v||'').split('\\n').map(function(s){return s.trim();}).filter(Boolean);};
+          var uhr=function(){var d=new Date();return ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);};
+          var zeige=function(t,art){if(rst){rst.textContent=t;rst.className='reu-status'+(art?' '+art:'');}};
+          var timer=null, laeuft=null, nochmal=false;
+          var speichern=function(neuAufbauen){
+            clearTimeout(timer);timer=null;
+            try{delete offeneSpeicher[OFFEN];}catch(e){}
+            if(laeuft){nochmal=nochmal||'x';if(neuAufbauen){nochmal='neu';}return laeuft;}
+            var text2=rta?rta.value:'', gText=rgta?rgta.value:'';
+            var startT=rta?startW(rta):'', startG=rgta?startW(rgta):'';
+            var tNeu=text2!==startT, gNeu=zeilen2(gText).join('\\n')!==zeilen2(startG).join('\\n');
             var r2=Repo.getReunionByDate?Repo.getReunionByDate(date2):null;
-            var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
-            base.goals=base.goals||{};
-            /* Seit dem Oeffnen kann das Team schon weitergeschrieben haben:
-               gegen den Stand beim Oeffnen zusammenfuehren, nicht ueberschreiben.
-               "Erreicht" bleibt bei Zielen stehen, die es schon gab. */
-            var jetztG=Array.isArray(base.goals[sid2])?base.goals[sid2]:[];
-            var texteG=M?M.liste(zeilen2(rgta&&rgta.defaultValue),goals2,jetztG.map(zielTxt)):goals2;
-            var neuG=texteG.map(function(t){var alt=jetztG.filter(function(g){return zielTxt(g)===t;})[0];return {text:t,done:!!(alt&&typeof alt==='object'&&alt.done)};});
-            if(neuG.length){base.goals[sid2]=neuG;}else if(base.goals[sid2]){delete base.goals[sid2];}
-            Repo.saveReunion(base).then(function(){
-              if(!text2){return;}
+            if((!tNeu&&!gNeu)||(!r2&&!text2.trim()&&!zeilen2(gText).length)){
+              if(neuAufbauen&&window.render){try{window.render();}catch(e){}}
+              return Promise.resolve();
+            }
+            var M=window.KB_MERGE;
+            zeige('Speichert …','');
+            var p=Promise.resolve();
+            if(gNeu||!r2){
+              var base=r2?r2:{date:date2,studentOrder:(Repo.listStudents?Repo.listStudents().map(function(s){return s.id;}):[]),orgItems:[],goals:{}};
+              base.goals=base.goals||{};
+              var jetztG=Array.isArray(base.goals[sid2])?base.goals[sid2]:[];
+              var goals2=zeilen2(gText);
+              var texteG=M?M.liste(zeilen2(startG),goals2,jetztG.map(zielTxt)):goals2;
+              var neuG=texteG.map(function(t){var alt=jetztG.filter(function(g){return zielTxt(g)===t;})[0];return {text:t,done:!!(alt&&typeof alt==='object'&&alt.done)};});
+              if(neuG.length){base.goals[sid2]=neuG;}else if(base.goals[sid2]){delete base.goals[sid2];}
+              if(rgta){rgta._kbStart=gText;}
+              p=Repo.saveReunion(base);
+            }
+            laeuft=p.then(function(){
+              if(!tNeu){return;}
               var ex2=Repo.reunionEntryFor(date2,sid2), da2=ex2?String(ex2.text||''):'';
-              var start2=((rta&&rta.defaultValue)||'').trim();
-              var t2=(ex2&&M&&da2!==start2)?M.text(start2,text2,da2):text2;
-              if(ex2&&t2===da2){return;}
-              var ich=((window.KB_USER&&window.KB_USER.get())||'');
-              var p2={studentId:sid2,date:date2,category:'Team-Réunion',text:t2,
-                author:(ex2&&ex2.author)||ich,updatedBy:ich,
-                tags:(ex2&&ex2.tags&&ex2.tags.length)?ex2.tags:['Réunion'],
-                sliders:ex2?ex2.sliders:null,createdAt:ex2?ex2.createdAt:undefined};
-              if(ex2){p2.id=ex2.id;if(ex2.report){p2.report=ex2.report;}if(ex2.source){p2.source=ex2.source;}}
-              return Repo.saveEntry(p2);
+              var t2=(ex2&&M&&da2!==startT)?M.text(startT,text2,da2):text2;
+              if(rta){rta._kbStart=text2;}
+              return reunionTextSpeichern(date2,sid2,t2);
             }).then(function(){
-              if(EW){window.Entwurf.weg(EW);}
+              laeuft=null;
+              if(EW){window.Entwurf.weg(EW,text2);}
+              zeige('Gespeichert · '+uhr(),'ok');
               if(window.KB_SYNC&&window.KB_SYNC.syncNow){try{window.KB_SYNC.syncNow();}catch(e){}}
-              if(window.render){try{window.render();}catch(e){}}
-            }).catch(function(){rbtn.disabled=false;if(rst){rst.textContent='Fehler beim Speichern';}});
+              var weiter=nochmal;nochmal=false;
+              if(weiter){return speichern(neuAufbauen||weiter==='neu');}
+              if(neuAufbauen&&window.render){try{window.render();}catch(e){}}
+            }).catch(function(){
+              laeuft=null;nochmal=false;
+              if(rta){rta._kbStart=startT;}
+              if(rgta){rgta._kbStart=startG;}
+              zeige('Nicht gespeichert — bitte nochmal','err');
+            });
+            return laeuft;
+          };
+          var spaeter=function(){
+            clearTimeout(timer);
+            try{offeneSpeicher[OFFEN]=function(){speichern(false);};}catch(e){}
+            zeige('','');
+            timer=setTimeout(function(){speichern(false);},900);
+          };
+          var tasten=function(ev){
+            if(ev.key==='Enter'&&(ev.ctrlKey||ev.metaKey)){ev.preventDefault();speichern(true);}
+          };
+          [rta,rgta].forEach(function(el){
+            if(!el){return;}
+            el.addEventListener('input',function(){ewMerken();spaeter();});
+            el.addEventListener('keydown',tasten);
+          });
+          var kasten=root.querySelector('.reu-write');
+          if(kasten){kasten.addEventListener('focusout',function(ev){
+            if(ev.relatedTarget&&kasten.contains(ev.relatedTarget)){return;}
+            if(timer){speichern(false);}
+          });}
+          var prev=root.querySelector('[data-hr-prev]');
+          if(prev){prev.addEventListener('click',function(){prev.classList.toggle('open');});}
+          if(rbtn){rbtn.addEventListener('click',function(){
+            if(!(rta&&rta.value.trim())&&!(rgta&&zeilen2(rgta.value).length)&&!Repo.reunionEntryFor(date2,sid2)){if(rta){rta.focus();}return;}
+            speichern(true);
           });}
         }catch(e){}}
       }
@@ -2202,7 +2300,7 @@ var SHELL_CONTROLLER = `
   function termChip(){
     var c=$('kb-termchip'); if(!c||!window.KB_TERMS)return;
     var a=window.KB_TERMS.active();
-    c.innerHTML='<span class="kb-tc-ic">🎓</span><span class="kb-tc-t">'+
+    c.innerHTML='<span class="kb-tc-ic"><svg class="kb-i" aria-hidden="true"><use href="#i-graduation-cap"/></svg></span><span class="kb-tc-t">'+
       '<span class="kb-tc-y">'+esc(a.year.label)+'</span>'+
       '<span class="kb-tc-s">'+esc(window.KB_TERMS.termLabel(a.term.key))+(a.auto?'':' · fest')+(a.year.closed?' · abgeschlossen':'')+'</span></span>';
     c.title='Schuljahr '+a.year.label+' · '+window.KB_TERMS.termLabel(a.term.key)+' — klicken zum Ändern';
@@ -2702,7 +2800,7 @@ var SHELL_CONTROLLER = `
   var gate=null;
   function buildGate(){
     gate=document.createElement('div');gate.className='kb-gate';gate.id='kb-gate';
-    gate.innerHTML='<div class="kb-gate-card"><div class="kb-gate-logo">📘</div><h2>Wer arbeitet hier?</h2><p>Wähle deinen Namen — er wird bei Einträgen, Réunionen und Notizen automatisch als Autor gespeichert.</p><div class="kb-gate-grid" id="kb-gate-grid"></div><button class="kb-gate-other" id="kb-gate-other">+ Andere Person</button></div>';
+    gate.innerHTML='<div class="kb-gate-card"><div class="kb-gate-logo"><svg class="kb-i" aria-hidden="true"><use href="#i-book-open"/></svg></div><h2>Wer arbeitet hier?</h2><p>Wähle deinen Namen — er wird bei Einträgen, Réunionen und Notizen automatisch als Autor gespeichert.</p><div class="kb-gate-grid" id="kb-gate-grid"></div><button class="kb-gate-other" id="kb-gate-other">+ Andere Person</button></div>';
     document.body.appendChild(gate);
     gate.addEventListener('click',function(e){
       var t=e.target.closest&&e.target.closest('[data-user]');
@@ -4511,6 +4609,11 @@ var ANW_SIDE_TOGGLE = `
 
 var FAVICON = "data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20100'%3E%3Ctext%20y='.9em'%20font-size='88'%3E%F0%9F%93%98%3C/text%3E%3C/svg%3E";
 
+SHELL_BODY_TOP = mitSymbolen(SHELL_BODY_TOP);
+SHELL_PANELS_EXTRA = ohneEmojiInUeberschriften(SHELL_PANELS_EXTRA);
+SHELL_CONTROLLER = ohneEmojiInUeberschriften(SHELL_CONTROLLER);
+anwBody = ohneEmojiInUeberschriften(anwBody);
+
 var parts = [
   '<!DOCTYPE html>',
   '<!-- GENERIERT von tools/build-merged.js aus anwesenheit.html + dossier.html.',
@@ -4522,10 +4625,8 @@ var parts = [
   '<title>Klassebuch — Annexe Junglinster</title>',
   '<meta name="theme-color" content="#4f5bd5">',
   '<link rel="icon" href="' + FAVICON + '">',
-  '<link rel="preconnect" href="https://fonts.googleapis.com">',
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">',
   '<style>',
+  '/* === Schrift (eingebettet) === */', FONT_CSS,
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
@@ -4533,9 +4634,11 @@ var parts = [
   '/* === savoir / screening (gescoped) === */', savStyleScoped,
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
   '/* === Material / Isa-Toolbox === */', MATERIAL_CSS,
+  '/* === Gestaltung (zuletzt, liegt ueber allem) === */', DESIGN_CSS,
   '</style>',
   '</head>',
   '<body>',
+  SPRITE,
   SHELL_BODY_TOP,
   '<section class="kb-panel" id="anw-root">', anwBody, '</section>',
   '<section class="kb-panel" id="dos-root">', dosBody, '</section>',
@@ -4568,6 +4671,7 @@ var parts = [
   '<script>' + TABS_GUARD + '</' + 'script>',
   '<script>' + SPELL_DATA + '</' + 'script>',
   '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SYMBOLE_JS + '</' + 'script>',
   '<script>' + SPELL_ZUSATZ + '</' + 'script>',
   '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',

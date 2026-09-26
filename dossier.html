@@ -218,10 +218,12 @@ mark{background:#ffe9a8; padding:0 2px; border-radius:2px;}
    protocolCss(), zusammen mit dem Bogen. */
 
 /* ---------- Themen-Analyse ---------- */
-.theme-mark{padding:0 2px; border-radius:3px; font-weight:600;}
-.theme-mark.sev-3{background:#f6dcd5; color:#7c2d1c; box-shadow:inset 0 -2px 0 #b3432d;}
-.theme-mark.sev-2{background:#f7ead2; color:#6b4a16; box-shadow:inset 0 -2px 0 #c07f1f;}
-.theme-mark.sev-1{background:#e3ecf4; color:#2a4257;}
+/* Themen im Text: dezent hinterlegt - keine Unterstreichung, die man mit
+   einem Rechtschreibfehler verwechseln koennte */
+.theme-mark{padding:0 2px; border-radius:4px; font-weight:inherit; color:inherit;}
+.theme-mark.sev-3{background:#fbe7e3;}
+.theme-mark.sev-2{background:#fbf0dc;}
+.theme-mark.sev-1{background:#eaf0f7;}
 .theme-chip{border:1px solid transparent; cursor:pointer;}
 .theme-chip.sev-3{background:#f6dcd5; color:#7c2d1c;}
 .theme-chip.sev-2{background:#f7ead2; color:#6b4a16;}
@@ -1357,6 +1359,12 @@ function nowIso() {
    Allgemeine Helfer: Escaping, Datumsformat, Farbskalen, Toasts
    ============================================================ */
 
+/* Linien-Symbol aus der eingebauten Sammlung (vendor/lucide, beim Bau
+   eingebettet). extra: 'sm' klein, 'lg' gross. */
+function kbIcon(name, extra) {
+  return '<svg class="kb-i' + (extra ? ' ' + extra : '') + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>';
+}
+
 function escapeHtml(str) {
   return String(str == null ? '' : str)
     .replace(/&/g, '&amp;')
@@ -1849,10 +1857,16 @@ function highlightThemesHtml(text) {
   if (!matches.length) return escapeHtml(text);
   var out = '';
   var pos = 0;
-  matches.forEach(function (m) {
-    out += escapeHtml(text.slice(pos, m.start));
-    out += '<mark class="theme-mark sev-' + m.severity + '" title="Thema: ' + escapeAttr(m.key) + '">' + escapeHtml(m.term) + '</mark>';
-    pos = m.end;
+  /* Das Stichwort ist oft nur ein Wortstamm ("Therap" in "Therapie") - hinterlegt
+     wird trotzdem das ganze Wort, sonst sieht es aus wie abgeschnitten. */
+  var BUCHSTABE = /[A-Za-zÀ-ÖØ-öø-ɏ]/;
+  matches.forEach(function (m, i) {
+    var von = m.start, bis = m.end, grenze = i + 1 < matches.length ? matches[i + 1].start : text.length;
+    while (von > pos && BUCHSTABE.test(text.charAt(von - 1))) von--;
+    while (bis < grenze && BUCHSTABE.test(text.charAt(bis))) bis++;
+    out += escapeHtml(text.slice(pos, von));
+    out += '<mark class="theme-mark sev-' + m.severity + '" title="Thema: ' + escapeAttr(m.key) + '">' + escapeHtml(text.slice(von, bis)) + '</mark>';
+    pos = bis;
   });
   out += escapeHtml(text.slice(pos));
   return out;
@@ -2087,12 +2101,12 @@ function viewStudentDetail(params) {
     var tagChips = (e.tags || []).map(function (t) { return '<span class="chip">' + escapeHtml(t) + '</span>'; }).join('');
     return '<div class="card entry-card" data-entry="' + e.id + '">' +
       '<div class="entry-head" data-action="toggle-entry" data-id="' + e.id + '">' +
-        '<span class="caret' + (open ? ' open' : '') + '">&#9656;</span>' +
+        '<span class="caret' + (open ? ' open' : '') + '">' + kbIcon('chevron-right', 'sm') + '</span>' +
         '<span class="date">' + escapeHtml(formatDate(e.date)) + '</span>' +
         '<span class="cat-badge" style="background:' + categoryColor(e.category) + '">' + escapeHtml(e.category) + '</span>' +
         '<span class="chip-row">' + tagChips + '</span>' +
         '<span class="spacer"></span>' +
-        (e.author ? '<span class="author">Kürzel: ' + escapeHtml(e.author) + '</span>' : '<span class="author muted">kein Autor erfasst</span>') +
+        (e.author ? '<span class="author" title="Verfasst von ' + escapeAttr(e.author) + '">' + kbIcon('pen-line', 'sm') + escapeHtml(e.author) + '</span>' : '') +
       '</div>' +
       '<div class="entry-body" ' + (open ? '' : 'hidden') + '>' +
         '<div class="text">' + highlightThemesHtml(e.text) + '</div>' +
@@ -2130,7 +2144,7 @@ function viewStudentDetail(params) {
 
   var html =
     '<div class="page-head">' +
-      '<div><a href="#/dashboard" class="muted">&larr; Zurück zum Dashboard</a><h2>' + escapeHtml(student.name) + '</h2></div>' +
+      '<div class="dos-titel"><a href="#/dashboard" class="muted">&larr; Zurück zum Dashboard</a><h2>' + escapeHtml(student.name) + '</h2></div>' +
       '<div class="actions">' +
         '<button type="button" class="btn" data-route="#/export?student=' + encodeURIComponent(student.id) + '">PDF-Export</button>' +
         '<button type="button" class="btn" data-route="#/ai-export?student=' + encodeURIComponent(student.id) + '">An externe KI geben</button>' +
@@ -3672,24 +3686,25 @@ function viewReunion(params, query) {
     var nm = nextMondayIso();
     var hasNext = !!Repo.getReunionByDate(nm);
     var opts = reunions.map(function (x) { return { value: x.date, label: formatDate(x.date) + (x.date === nm ? ' · nächste' : '') }; });
+    /* Eine ruhige Zeile: Datum, Fortschritt, Aktionen. */
     return '<div class="reu-topbar no-print">' +
       '<div class="reu-topbar-row">' +
         '<div class="reu-datewrap">' +
-          '<button class="reu-navbtn" data-act="goreu" data-date="' + (older ? escapeAttr(older.date) : '') + '"' + (older ? '' : ' disabled') + ' title="ältere Réunion">‹</button>' +
-          '<button class="reu-navbtn" data-act="goreu" data-date="' + (newer ? escapeAttr(newer.date) : '') + '"' + (newer ? '' : ' disabled') + ' title="jüngere Réunion">›</button>' +
+          '<button class="reu-navbtn" data-act="goreu" data-date="' + (older ? escapeAttr(older.date) : '') + '"' + (older ? '' : ' disabled') + ' title="ältere Réunion" aria-label="ältere Réunion">' + kbIcon('chevron-left') + '</button>' +
+          '<button class="reu-navbtn" data-act="goreu" data-date="' + (newer ? escapeAttr(newer.date) : '') + '"' + (newer ? '' : ' disabled') + ' title="jüngere Réunion" aria-label="jüngere Réunion">' + kbIcon('chevron-right') + '</button>' +
         '</div>' +
-        '<div class="reu-title"><span class="kick">Team-Réunion · Montags</span>' +
+        '<div class="reu-title"><span class="kick">Team-Réunion</span>' +
           '<select id="reu-date" aria-label="Réunion wählen">' + optionsHtml(opts, state.date) + '</select></div>' +
+        (r ? statsHtml(r, rows) : '') +
         '<div class="reu-actions">' +
           (hasNext
-            ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten</button>'
-            : '<button type="button" class="btn btn-sm btn-primary" id="reu-create-next">+ Nächste Réunion</button>') +
-          (r ? '<button type="button" class="btn btn-sm" data-act="orderedit">' + (state.orderEdit ? '✓ Reihenfolge' : '↕ Reihenfolge') + '</button>' : '') +
-          (r ? '<button type="button" class="btn btn-sm" data-act="print" title="Druckansicht — im Dialog „Als PDF speichern" wählen">🖨 PDF</button>' : '') +
-          (r ? '<button type="button" class="btn btn-sm" data-act="word" title="Protokoll als Word-Datei speichern">⬇ Word</button>' : '') +
+            ? '<button type="button" class="btn btn-sm" data-act="goreu" data-date="' + escapeAttr(nm) + '">Zur nächsten ' + kbIcon('arrow-right', 'sm') + '</button>'
+            : '<button type="button" class="btn btn-sm btn-primary" id="reu-create-next">' + kbIcon('plus', 'sm') + ' Nächste Réunion</button>') +
+          (r ? '<button type="button" class="btn btn-sm' + (state.orderEdit ? ' on' : '') + '" data-act="orderedit" title="Reihenfolge der Versammlung ändern">' + kbIcon(state.orderEdit ? 'check' : 'list-ordered', 'sm') + (state.orderEdit ? ' Fertig' : ' Reihenfolge') + '</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="print" title="Protokoll als PDF — im Druckdialog „Als PDF speichern" wählen">' + kbIcon('printer', 'sm') + ' PDF</button>' : '') +
+          (r ? '<button type="button" class="btn btn-sm" data-act="word" title="Protokoll als Word-Datei speichern">' + kbIcon('file-down', 'sm') + ' Word</button>' : '') +
         '</div>' +
       '</div>' +
-      (r ? statsHtml(r, rows) : '') +
     '</div>';
   }
   function statsHtml(r, rows) {
@@ -3698,16 +3713,16 @@ function viewReunion(params, query) {
     var upd = rows.filter(function (x) { return x.hasUpdate; }).length;
     var openG = rows.reduce(function (n, x) { return n + x.openGoals; }, 0);
     var pct = total ? Math.round(disc / total * 100) : 0;
-    function stat(cls, lab, val, sub, bar) {
-      return '<div class="reu-stat ' + cls + '"><div class="lab">' + lab + '</div>' +
-        '<div class="val">' + val + (sub ? ' <small>' + sub + '</small>' : '') + '</div>' +
-        (bar != null ? '<div class="reu-bar"><span style="width:' + bar + '%"></span></div>' : '') + '</div>';
-    }
+    var orga = (r.orgItems || []).length;
+    /* Statt vier grosser Kaesten: ein Fortschrittsbalken und eine leise Zeile. */
     return '<div class="reu-stats" id="reu-stats">' +
-      stat('good', 'Besprochen', disc + ' / ' + total, pct + ' %', pct) +
-      stat('accent', 'Mit Update', upd + ' / ' + total, '', null) +
-      stat('warn', 'Offene Ziele', String(openG), '', null) +
-      stat('', 'Orga-Punkte', String((r.orgItems || []).length), '', null) +
+      '<div class="reu-prog"><span class="reu-prog-lbl"><b>' + disc + '</b> von ' + total + ' besprochen</span>' +
+        '<div class="reu-bar" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div></div>' +
+      '<div class="reu-mini">' +
+        '<span title="Schüler mit Update">' + kbIcon('square-pen', 'sm') + upd + ' mit Update</span>' +
+        '<span title="Offene Ziele">' + kbIcon('target', 'sm') + openG + ' Ziel' + (openG === 1 ? '' : 'e') + ' offen</span>' +
+        '<span title="Orga-Punkte">' + kbIcon('list-checks', 'sm') + orga + ' Orga</span>' +
+      '</div>' +
     '</div>';
   }
 
@@ -3727,8 +3742,8 @@ function viewReunion(params, query) {
         return '<button data-filter="' + sg[0] + '"' + (state.filter === sg[0] ? ' class="active"' : '') + '>' +
           sg[1] + '<span class="n">' + counts[sg[0]] + '</span></button>';
       }).join('') + '</div>' +
-      '<button class="reu-collapse-all" data-act="collapseall">' + (anyExpanded ? 'Alle einklappen' : 'Alle ausklappen') + '</button>' +
-      '<label class="reu-search"><input type="search" id="reu-q" placeholder="Suche Name, Text, Thema…" value="' + escapeAttr(state.q) + '"></label>' +
+      '<button class="reu-collapse-all" data-act="collapseall">' + kbIcon(anyExpanded ? 'chevron-left' : 'chevron-down', 'sm') + (anyExpanded ? 'Alle einklappen' : 'Alle ausklappen') + '</button>' +
+      '<label class="reu-search">' + kbIcon('search', 'sm') + '<input type="search" id="reu-q" placeholder="Name, Text oder Thema suchen …" value="' + escapeAttr(state.q) + '"></label>' +
     '</div>';
   }
 
@@ -3742,11 +3757,11 @@ function viewReunion(params, query) {
     var groupTxt = gruppenziel(r);
     var text = items.join('\n\n');
     return '<section class="card reu-orgcard">' +
-      '<div class="reu-orgcard-head"><h3>Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
+      '<div class="reu-orgcard-head"><h3>' + kbIcon('list-checks') + 'Organisation</h3><span class="count" id="org-count">' + items.length + '</span><span class="sp"></span>' +
         '<span class="reu-saved" id="org-saved"></span></div>' +
-      '<p class="hint">Direkt reinschreiben — wird automatisch gespeichert. Ein Orga-Punkt pro Absatz, eine Leerzeile trennt die Punkte.</p>' +
-      '<textarea id="org-edit" class="reu-auto" rows="6" placeholder="Orga-Punkte der Réunion …">' + escapeHtml(text) + '</textarea>' +
-      '<div class="field" style="margin-top:12px;"><label for="org-group">Gruppenziel der Woche</label>' +
+      '<textarea id="org-edit" class="reu-auto" rows="4" placeholder="Orga-Punkte der Réunion — ein Punkt pro Absatz …">' + escapeHtml(text) + '</textarea>' +
+      '<p class="hint">Wird automatisch gespeichert · eine Leerzeile trennt die Punkte</p>' +
+      '<div class="reu-groupgoal"><label for="org-group">' + kbIcon('target', 'sm') + 'Gruppenziel der Woche</label>' +
         '<input type="text" id="org-group" value="' + escapeAttr(groupTxt) + '" placeholder="z. B. Wir schaffen ruhige Pausen."></div>' +
     '</section>';
   }
@@ -3757,16 +3772,21 @@ function viewReunion(params, query) {
     var themeChips = row.themes.slice(0, 3).map(function (t) {
       return '<span class="reu-minichip sev-' + t.severity + '">' + escapeHtml(t.key) + '</span>';
     }).join('');
-    var goalNote = row.goals.length
-      ? '<span class="reu-goalcount">' + (row.openGoals ? row.openGoals + ' offen' : 'Ziele ✓') + '</span>'
-      : '';
+    /* Eine leise Zeile unter dem Namen: wer geschrieben hat, Ziele, Themen. */
+    var meta = [];
+    if (row.entry && row.entry.author) {
+      var wer = row.entry.author + (row.entry.updatedBy && row.entry.updatedBy !== row.entry.author ? ', ' + row.entry.updatedBy : '');
+      meta.push('<span class="reu-by">' + escapeHtml(wer) + '</span>');
+    }
+    if (row.goals.length) meta.push('<span class="reu-goalcount' + (row.openGoals ? '' : ' fertig') + '">' + kbIcon('target', 'sm') + (row.openGoals ? row.openGoals + ' Ziel' + (row.openGoals === 1 ? '' : 'e') + ' offen' : 'Ziele erreicht') + '</span>');
+    if (themeChips) meta.push('<span class="reu-minichips">' + themeChips + '</span>');
     var ord = state.orderEdit
       ? '<div class="reu-ordbtns"><button data-act="up" data-sid="' + escapeAttr(row.sid) + '"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
         '<button data-act="down" data-sid="' + escapeAttr(row.sid) + '"' + (i === total - 1 ? ' disabled' : '') + '>▼</button></div>'
       : '<span class="reu-order">' + (i + 1) + '</span>';
     var head =
       '<div class="reu-row" data-act="toggle" data-sid="' + escapeAttr(row.sid) + '">' +
-        '<button class="reu-check' + (row.discussed ? ' on' : '') + '" data-act="discuss" data-sid="' + escapeAttr(row.sid) + '" title="als besprochen markieren" aria-label="besprochen">✓</button>' +
+        '<button class="reu-check' + (row.discussed ? ' on' : '') + '" data-act="discuss" data-sid="' + escapeAttr(row.sid) + '" title="' + (row.discussed ? 'besprochen — klicken zum Zurücknehmen' : 'als besprochen markieren') + '" aria-label="besprochen" aria-pressed="' + (row.discussed ? 'true' : 'false') + '">' + kbIcon('check') + '</button>' +
         ord +
         '<div class="reu-idblock">' +
           '<div class="reu-nameline">' +
@@ -3774,19 +3794,15 @@ function viewReunion(params, query) {
             (row.risk ? '<span class="reu-flag risk">Sorge</span>' : '') +
             '<span class="reu-flag ' + (row.hasUpdate ? 'upd' : 'noupd') + '">' + (row.hasUpdate ? 'Update' : 'kein Update') + '</span>' +
           '</div>' +
-          '<div class="reu-metaline">' +
-            (themeChips ? '<span class="reu-minichips">' + themeChips + '</span>' : '') +
-            (goalNote || (!themeChips && !row.hasUpdate ? '<span>—</span>' : '')) +
-            (row.entry && row.entry.author ? '<span>✍ ' + escapeHtml(row.entry.author) + '</span>' : '') +
-          '</div>' +
+          (meta.length ? '<div class="reu-metaline">' + meta.join('<span class="reu-dot">·</span>') + '</div>' : '') +
         '</div>' +
         '<div class="reu-rowactions">' +
           /* Der Text wird direkt in der Karte geschrieben. Dieser Knopf oeffnet
              nur noch die ausfuehrliche Maske (Tags, Verlaufs-Slider). Wohin er
              fuehrt, wird erst beim Klick entschieden - sonst wuerde er nach
              einer gerade inline angelegten Notiz eine zweite anlegen. */
-          '<button type="button" class="btn btn-sm" data-act="details" data-sid="' + escapeAttr(row.sid) + '" title="Tags und Verlaufs-Slider erfassen">⋯ Details</button>' +
-          '<span class="reu-chev">▶</span>' +
+          '<button type="button" class="reu-iconbtn" data-act="details" data-sid="' + escapeAttr(row.sid) + '" title="Details: Tags und Verlaufs-Slider" aria-label="Details">' + kbIcon('ellipsis') + '</button>' +
+          '<span class="reu-chev">' + kbIcon('chevron-down') + '</span>' +
         '</div>' +
       '</div>';
     var body = expanded ? '<div class="reu-body">' + cardBodyHtml(row, r) + '</div>' : '';
@@ -3830,41 +3846,63 @@ function viewReunion(params, query) {
        gespeichert. Die ausfuehrliche Maske (Tags, Verlaufs-Slider) bleibt
        ueber den Knopf in der Kopfzeile erreichbar. */
     var bul = bulletsOn(row.sid);
+    /* Was letztes Mal zu diesem Schueler stand - als Gedaechtnisstuetze fuer
+       die Runde, zwei Zeilen, ein Klick zeigt alles. */
+    var vorher = letztesUpdate(row.sid, r.date);
     out += '<div class="reu-updwrap">' +
       '<div class="reu-updhead">' +
+        '<span class="reu-updlbl">Update</span>' +
+        '<span class="reu-saved" data-saved="' + escapeAttr(row.sid) + '"></span>' +
+        '<span class="sp"></span>' +
         '<button type="button" class="reu-bul' + (bul ? ' on' : '') + '" data-act="bullets" data-sid="' + escapeAttr(row.sid) + '" ' +
-          'title="' + (bul ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben') + '">\u2022 Stichpunkte</button>' +
+          'title="' + (bul ? 'Zurück zu Fließtext' : 'Als Stichpunkte schreiben') + '">' + kbIcon('list', 'sm') + 'Stichpunkte</button>' +
       '</div>' +
+      (vorher ? '<div class="reu-prev" data-act="prevtoggle" title="Klicken: ganz anzeigen">' +
+        '<span class="reu-prev-lbl">' + kbIcon('history', 'sm') + 'Letztes Mal · ' + escapeHtml(formatDate(vorher.date)) + '</span>' +
+        '<div class="reu-prev-txt">' + escapeHtml(vorher.text) + '</div></div>' : '') +
       '<textarea class="reu-auto reu-updedit" data-upd="' + escapeAttr(row.sid) + '" rows="3" ' +
         'placeholder="Update zu ' + escapeAttr(row.s.name) + ' — einfach reinschreiben …">' +
         escapeHtml(row.entry && row.entry.text ? row.entry.text : '') + '</textarea>' +
-      '<span class="reu-saved" data-saved="' + escapeAttr(row.sid) + '"></span></div>';
-    if (row.hasUpdate && row.themes.length) {
-      out += '<div class="reu-chips">' + row.themes.slice(0, 8).map(function (t) {
-        return '<span class="chip theme-chip sev-' + t.severity + '" title="Treffer: ' + escapeAttr(t.terms.join(', ')) + '">' + escapeHtml(t.key) + '</span>';
-      }).join('') + '</div>';
-    }
+      '</div>';
+    // Themen stehen schon in der Kopfzeile der Karte - hier nicht noch einmal.
     // Ziele
     out += '<div class="reu-goals">' +
-      '<div class="reu-goals-head">🎯 Ziele<span class="sp"></span>' +
-        (row.goals.length ? '<span style="font-weight:500;text-transform:none;letter-spacing:0;color:#8a7b52;">' + (row.goals.length - row.openGoals) + ' / ' + row.goals.length + ' erreicht</span>' : '') +
+      '<div class="reu-goals-head">' + kbIcon('target', 'sm') + 'Ziele<span class="sp"></span>' +
+        (row.goals.length ? '<span class="reu-goals-count">' + (row.goals.length - row.openGoals) + ' von ' + row.goals.length + ' erreicht</span>' : '') +
       '</div>';
     if (row.goals.length) {
       out += row.goals.map(function (g, gi) {
         return '<div class="reu-goal' + (g.done ? ' done' : '') + '">' +
-          '<button class="reu-goal-check' + (g.done ? ' on' : '') + '" data-act="goal" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel erreicht">✓</button>' +
+          '<button class="reu-goal-check' + (g.done ? ' on' : '') + '" data-act="goal" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel erreicht" aria-pressed="' + (g.done ? 'true' : 'false') + '">' + kbIcon('check', 'sm') + '</button>' +
           '<span class="reu-goal-txt">' + escapeHtml(g.text) + '</span>' +
-          '<button class="reu-goal-del" data-act="goaldel" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel löschen">×</button>' +
+          '<button class="reu-goal-del" data-act="goaldel" data-sid="' + escapeAttr(row.sid) + '" data-gi="' + gi + '" title="Ziel löschen" aria-label="Ziel löschen">' + kbIcon('x', 'sm') + '</button>' +
         '</div>';
       }).join('');
     } else {
-      out += '<p class="muted" style="margin:2px 0 0;font-size:.85rem;">Noch keine Ziele.</p>';
+      out += '<p class="reu-goals-leer">Noch keine Ziele.</p>';
     }
     out += '<div class="reu-goal-add"><input type="text" data-add-sid="' + escapeAttr(row.sid) + '" placeholder="Neues Ziel für diese Woche…">' +
-      '<button type="button" class="btn btn-sm" data-act="goaladd" data-sid="' + escapeAttr(row.sid) + '">+ Ziel</button></div>';
+      '<button type="button" class="btn btn-sm" data-act="goaladd" data-sid="' + escapeAttr(row.sid) + '">' + kbIcon('plus', 'sm') + 'Ziel</button></div>';
     out += '</div>';
-    out += '<div class="reu-detaillinks"><a href="#/student/' + escapeAttr(row.sid) + '" data-route="#/student/' + escapeAttr(row.sid) + '">Dossier & Verlauf öffnen →</a></div>';
+    /* Weiter zum Naechsten: abhaken, speichern, naechste Karte oeffnen. */
+    out += '<div class="reu-cardfoot">' +
+      '<a class="reu-doslink" href="#/student/' + escapeAttr(row.sid) + '" data-route="#/student/' + escapeAttr(row.sid) + '">Dossier &amp; Verlauf' + kbIcon('arrow-right', 'sm') + '</a>' +
+      '<span class="sp"></span>' +
+      '<span class="reu-kbd" title="Tastenkürzel im Textfeld">Strg + Enter</span>' +
+      '<button type="button" class="btn btn-sm btn-primary" data-act="weiter" data-sid="' + escapeAttr(row.sid) + '">' + kbIcon('check', 'sm') + 'Besprochen &amp; weiter</button>' +
+    '</div>';
     return out;
+  }
+
+  /* Letztes Update dieses Schuelers vor dem gegebenen Réunion-Datum. */
+  function letztesUpdate(sid, vorDatum) {
+    var l = Repo.listReunions();
+    for (var i = 0; i < l.length; i++) {
+      if (l[i].date >= vorDatum) continue;
+      var e = Repo.reunionEntryFor(l[i].date, sid);
+      if (e && e.text && e.text.trim()) return { date: l[i].date, text: e.text };
+    }
+    return null;
   }
 
   function listHtml(r) {
@@ -4054,6 +4092,8 @@ function viewReunion(params, query) {
         }
         if (action === 'print') { printProtocol(); return; }
         if (action === 'word') { wordProtocol(); return; }
+        if (action === 'weiter') { e.preventDefault(); geheZu(act.getAttribute('data-sid'), 1, true); return; }
+        if (action === 'prevtoggle') { act.classList.toggle('open'); return; }
       });
 
       /* ---------- Direkt schreiben, automatisch speichern ----------
@@ -4150,6 +4190,53 @@ function viewReunion(params, query) {
         delete offeneSpeicher[state.date + ':' + key];
         fn();
       }
+
+      /* ---------- Besprochen & weiter ----------
+         In der Versammlung geht man Schueler fuer Schueler durch. Ein Klick
+         (oder Strg+Enter im Feld) speichert, hakt ab, klappt zu und oeffnet
+         gleich den naechsten noch offenen - der Cursor steht schon drin.
+         Alt+Pfeil springt nur weiter, ohne abzuhaken. */
+      function geheZu(sid, richtung, abhaken) {
+        var r = current(); if (!r || !sid) return;
+        var ta = qs('textarea[data-upd="' + cssEsc(sid) + '"]', wrap);
+        if (ta) sofortSpeichern('u' + sid, function () { saveUpd(sid, ta); });
+        if (abhaken) {
+          r.discussed = (r.discussed || []).slice();
+          if (r.discussed.indexOf(sid) < 0) r.discussed.push(sid);
+        }
+        var sichtbar = rowsFor(r).filter(function (x) { return matchesFilter(x) && matchesSearch(x); });
+        var pos = sichtbar.map(function (x) { return x.sid; }).indexOf(sid);
+        var ziel = null, k;
+        if (abhaken) {
+          for (k = pos + 1; k < sichtbar.length && !ziel; k++) if (!sichtbar[k].discussed && sichtbar[k].sid !== sid) ziel = sichtbar[k];
+          for (k = 0; k < pos && !ziel; k++) if (!sichtbar[k].discussed) ziel = sichtbar[k];
+        } else if (pos >= 0) {
+          ziel = sichtbar[pos + richtung] || null;
+        }
+        if (!ziel && !abhaken) return;
+        delete state.expanded[sid];
+        if (ziel) state.expanded[ziel.sid] = true;
+        var danach = function () {
+          rerenderList(); rerenderStats();
+          if (!ziel) { showToast('Alle Schüler sind besprochen.'); return; }
+          var karte = qs('.reu-card[data-card="' + cssEsc(ziel.sid) + '"]', wrap);
+          var feld = qs('textarea[data-upd="' + cssEsc(ziel.sid) + '"]', wrap);
+          if (karte && karte.scrollIntoView) karte.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          if (feld) {
+            try { feld.focus({ preventScroll: true }); } catch (e) { feld.focus(); }
+            try { feld.setSelectionRange(feld.value.length, feld.value.length); } catch (e) {}
+          }
+        };
+        if (abhaken) persist(r).then(danach); else danach();
+      }
+      wrap.addEventListener('keydown', function (e) {
+        var t = e.target, usid = t.getAttribute && t.getAttribute('data-upd');
+        if (!usid) return;
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); geheZu(usid, 1, true); return; }
+        if (e.altKey && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+          e.preventDefault(); geheZu(usid, e.key === 'ArrowDown' ? 1 : -1, false);
+        }
+      });
       wrap.addEventListener('input', function (e) {
         var t = e.target;
         if (t.id === 'org-edit' || t.id === 'org-group') {
@@ -4170,7 +4257,7 @@ function viewReunion(params, query) {
       });
       /* Enter beginnt im Stichpunkt-Modus den naechsten Punkt. */
       wrap.addEventListener('keydown', function (e) {
-        if (e.key !== 'Enter' || e.shiftKey) return;
+        if (e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
         var t = e.target;
         var usid = t.getAttribute && t.getAttribute('data-upd');
         if (!usid || !bulletsOn(usid)) return;
@@ -5433,7 +5520,7 @@ function maybeShowPrivacyBanner() {
   if (dismissed) return;
   root.innerHTML =
     '<div class="privacy-banner">' +
-      '<div><strong>🔒 Alle Daten bleiben lokal auf diesem Gerät.</strong> Keine Cloud, keine Telemetrie — Sicherungen erstellst du selbst über „Daten &amp; Backup".</div>' +
+      '<div><strong>' + kbIcon('lock', 'sm') + 'Alle Daten bleiben auf diesem Gerät.</strong> Keine Cloud, keine Telemetrie — Sicherungen und die gemeinsame Team-Datei findest du unter „Verbindung &amp; Backup".</div>' +
       '<button type="button" id="banner-dismiss-btn">Verstanden</button>' +
     '</div>';
   qs('#banner-dismiss-btn', root).addEventListener('click', function () {

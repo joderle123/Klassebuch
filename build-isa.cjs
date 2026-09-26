@@ -40,6 +40,29 @@ var KB_DATUM_JS = "/* Heute als JJJJ-MM-TT nach der Uhr auf dem Geraet - toISOSt
 var SPELL_JS  = read('spell.js');
 SPELL_JS = SPELL_JS.split("'kb_spell_eigen'").join("'isa_spell_eigen'").split("'kb_spell_an'").join("'isa_spell_an'");
 var SPELL_ZUSATZ = read('spell-zusatz.js');
+/* ---- Gestaltung: dieselbe Schrift, dieselben Symbole wie im Klassebuch ---- */
+var DESIGN_CSS = read('design.css');
+var SPRITE = read('vendor/lucide/sprite.svg');
+var SYMBOLE_JS = read('symbole.js');
+var FONT_CSS = (function () {
+  function b64(f) { return fs.readFileSync(path.join(ROOT, 'vendor/inter/' + f)).toString('base64'); }
+  function face(f, bereich) {
+    return "@font-face{font-family:'Inter';font-style:normal;font-display:swap;font-weight:100 900;" +
+      "src:url(data:font/woff2;base64," + b64(f) + ") format('woff2');unicode-range:" + bereich + ";}";
+  }
+  return face('inter-latin-ext-wght-normal.woff2', 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF') +
+    face('inter-latin-wght-normal.woff2', 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD');
+})();
+var NAV_ICONS = { '🌤️': 'sun', '🗓️': 'calendar-days', '👥': 'users', '🔎': 'search', '🏷️': 'tag', '🧠': 'brain',
+  '🧰': 'library', '📑': 'file-text', '🤖': 'eye-off', '💾': 'folder-sync' };
+function symbol(name, cls) { return '<svg class="' + (cls || 'kb-i') + '" aria-hidden="true"><use href="#i-' + name + '"/></svg>'; }
+function mitSymbolen(t) {
+  Object.keys(NAV_ICONS).forEach(function (e) {
+    t = t.split('<span class="kb-ic">' + e + '</span>').join(symbol(NAV_ICONS[e], 'kb-ic'));
+  });
+  t = t.split('<span class="kb-logo">📓</span>').join('<span class="kb-logo">' + symbol('notebook') + '</span>');
+  return t;
+}
 var SPELL_CSS = read('spell.css');
 var NSPELL_JS = read('vendor/nspell.bundle.js');
 /* Woerterbuch gepackt einbetten: ausgepackt wird es erst im Browser, und
@@ -181,10 +204,10 @@ anwScript = replaceOnce(anwScript, 'initSync();', '/* initSync deaktiviert (KB_S
 
 /* Klassenbuch-Beiträge der Woche klar NACH TAG gruppiert anzeigen (unter dem Raster). */
 anwScript = replaceOnce(anwScript,
-  `return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
+  `return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';`,
   `var byDay={};list.forEach(function(n){(byDay[n.date]=byDay[n.date]||[]).push(n);});
     var dayHtml=days.map(function(d){var dl=byDay[d]||[];if(!dl.length){return '';}return '<div class="kb-day-notes"><div class="kb-day-h">'+DOW[wdOf(d)]+', '+fmtD(d)+' <span class="badge">'+dl.length+'</span></div>'+dl.map(function(n){var nt=NOTE_TYPES[n.type]||NOTE_TYPES.allgemein;var b=BLOCKS.find(function(x){return x.id===n.blockId;});var meta=(n.subject||'Allgemein')+(b?' · '+b.start+'–'+b.end:'');return '<div class="wk-note '+n.type+'" data-noteopen="'+n.id+'"><span class="wn-ic">'+nt.icon+'</span><div class="wn-body"><div class="wn-meta">'+nt.label+' · '+esc(meta)+(n.byUser?' · <span style="color:var(--primary-dark);">'+esc(n.byUser)+'</span>':'')+'</div><div class="wn-txt">'+esc(n.text)+'</div></div></div>';}).join('')+'</div>';}).join('');
-    return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — Beiträge nach Tag</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+(dayHtml||'<div class="wk-notes-empty">Keine Notizen diese Woche.</div>')+'</div></div>';`,
+    return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — Beiträge nach Tag</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+(dayHtml||'<div class="wk-notes-empty">Keine Notizen diese Woche.</div>')+'</div></div>';`,
   'anw:weeknotes-byday');
 
 /* ============================================================
@@ -1592,7 +1615,7 @@ var SHELL_CONTROLLER = `
   var gate=null;
   function buildGate(){
     gate=document.createElement('div');gate.className='kb-gate';gate.id='kb-gate';
-    gate.innerHTML='<div class="kb-gate-card"><div class="kb-gate-logo">📓</div><h2>Wer arbeitet hier?</h2><p>Wähle deinen Namen — er wird bei deinen Notizen automatisch als Autor gespeichert. Beim ersten Mal legst du deinen Namen über „+ Andere Person" an.</p><div class="kb-gate-grid" id="kb-gate-grid"></div><button class="kb-gate-other" id="kb-gate-other">+ Andere Person</button></div>';
+    gate.innerHTML='<div class="kb-gate-card"><div class="kb-gate-logo"><svg class="kb-i" aria-hidden="true"><use href="#i-notebook"/></svg></div><h2>Wer arbeitet hier?</h2><p>Wähle deinen Namen — er wird bei deinen Notizen automatisch als Autor gespeichert. Beim ersten Mal legst du deinen Namen über „+ Andere Person" an.</p><div class="kb-gate-grid" id="kb-gate-grid"></div><button class="kb-gate-other" id="kb-gate-other">+ Andere Person</button></div>';
     document.body.appendChild(gate);
     gate.addEventListener('click',function(e){
       var t=e.target.closest&&e.target.closest('[data-user]');
@@ -4367,6 +4390,8 @@ var ISA_CSS = `
 @media(max-width:820px){ .home-grid{grid-template-columns:1fr;} .ag-week{grid-template-columns:1fr;} }
 `;
 
+SHELL_BODY_TOP = mitSymbolen(SHELL_BODY_TOP);
+
 var parts = [
   '<!DOCTYPE html>',
   '<!-- GENERIERT von build-isa.cjs aus dossier.html + SAVOIR.html + ISA-App.html.',
@@ -4378,10 +4403,8 @@ var parts = [
   '<title>ISA-Journal</title>',
   '<meta name="theme-color" content="#0f766e">',
   '<link rel="icon" href="' + FAVICON + '">',
-  '<link rel="preconnect" href="https://fonts.googleapis.com">',
-  '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
-  '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">',
   '<style>',
+  '/* === Schrift (eingebettet) === */', FONT_CSS,
   '/* === Gemeinsames Gerüst === */', SHELL_CSS,
   '/* === Rechtschreibpruefung === */', SPELL_CSS,
   '/* === dossier (gescoped) === */', dosStyleScoped,
@@ -4389,9 +4412,15 @@ var parts = [
   '/* === Akzent-Vereinheitlichung === */', ACCENT_OVERRIDE,
   '/* === Material / Isa-Toolbox === */', MATERIAL_CSS,
   '/* === ISA-Journal (Home · Terminplan · Notizen) === */', ISA_CSS,
+  '/* === Gestaltung (zuletzt, liegt ueber allem) === */', DESIGN_CSS,
+  /* ISA behaelt seinen Teal-Akzent - so sieht man sofort, in welcher App man ist. */
+  ':root{--kb-accent:#0f766e;--kb-accent-dark:#0b5b54;--kb-accent-light:#7dd3c8;--kb-accent-50:#e7f4f1;--kb-accent-100:#c9e8e2;--kb-accent-200:#a7dad1;--kb-ring:0 0 0 3px rgba(15,118,110,.18);}' +
+  '.kb-gate{background:radial-gradient(900px 500px at 50% -10%,#dff1ed,transparent 70%),#f3f5f5;}' +
+  '.kb-gate-logo{box-shadow:0 6px 16px rgba(15,118,110,.28);}',
   '</style>',
   '</head>',
   '<body>',
+  SPRITE,
   SHELL_BODY_TOP,
   '<section class="kb-panel" id="dos-root">', dosBody, '</section>',
   '<section class="kb-panel" id="sav-root">',
@@ -4424,6 +4453,7 @@ var parts = [
   '<script>' + TABS_GUARD + '</' + 'script>',
   '<script>' + SPELL_DATA + '</' + 'script>',
   '<script>' + NSPELL_JS + '</' + 'script>',
+  '<script>' + SYMBOLE_JS + '</' + 'script>',
   '<script>' + SPELL_ZUSATZ + '</' + 'script>',
   '<script>' + SPELL_JS + '</' + 'script>',
   '</body>',

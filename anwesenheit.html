@@ -408,7 +408,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
 
 <header>
   <div class="head-inner">
-    <h1>📋 Anwesenheit</h1>
+    <h1>Klassenbuch</h1>
     <div class="head-spacer"></div>
     <button class="hbtn user-btn" id="btn-user" title="Bediener wechseln"><span class="user-ic" id="user-ic">?</span><span id="user-name">Wer?</span></button>
     <select class="period-sel" id="period-sel" title="Zeitraum"></select>
@@ -430,8 +430,8 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     <div class="side-head">
       <div class="class-tabs" id="class-tabs" role="tablist" aria-label="Klasse"></div>
       <div class="view-tabs" id="view-tabs" role="tablist" aria-label="Ansicht">
-        <button class="view-tab" data-view="einzeln" role="tab">👤 Einzeln</button>
-        <button class="view-tab" data-view="klasse" role="tab">👥 Ganze Klasse</button>
+        <button class="view-tab" data-view="einzeln" role="tab"><svg class="kb-i sm" aria-hidden="true"><use href="#i-user"/></svg> Einzeln</button>
+        <button class="view-tab" data-view="klasse" role="tab"><svg class="kb-i sm" aria-hidden="true"><use href="#i-users"/></svg> Ganze Klasse</button>
       </div>
       <button class="btn btn-ghost btn-sm" id="btn-add-student" style="margin-top:10px;width:100%;">+ Schüler</button>
     </div>
@@ -481,7 +481,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
       <div class="modal-row">
         <select id="note-type" class="inp">
           <option value="bemerkung">💬 Bemerkung</option>
-          <option value="pruefung">📝 Prüfung</option>
+          <option value="pruefung">Prüfung</option>
           <option value="hausaufgabe">📒 Hausaufgabe</option>
           <option value="allgemein">📌 Allgemein</option>
         </select>
@@ -700,7 +700,9 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   var activeStudentId=null;
   var fileHandle=null,fileConnected=false,suppressWrite=false,writeTimer=null,pollTimer=null,lastContent='';
   var USERS=['Mireille','Carole','Sarah','Joey','Jean-Pierre','Sandy','Annick','Sandra','Miguel'];
-  var NOTE_TYPES={pruefung:{label:'Prüfung',icon:'📝',color:'#C0392B'},hausaufgabe:{label:'Hausaufgabe',icon:'📒',color:'#0CA678'},bemerkung:{label:'Bemerkung',icon:'💬',color:'#4f5bd5'},allgemein:{label:'Allgemein',icon:'📌',color:'#7A7A92'}};
+  /* Linien-Symbol aus der eingebauten Sammlung (siehe Gestaltung) */
+  function ic(n){return '<svg class="kb-i sm" aria-hidden="true"><use href="#i-'+n+'"/></svg>';}
+  var NOTE_TYPES={pruefung:{label:'Prüfung',icon:ic('file-text'),color:'#C0392B'},hausaufgabe:{label:'Hausaufgabe',icon:ic('book-open'),color:'#0CA678'},bemerkung:{label:'Bemerkung',icon:ic('messages-square'),color:'#4f5bd5'},allgemein:{label:'Allgemein',icon:ic('sticky-note'),color:'#7A7A92'}};
 
   /* ---- Persistenz / Migration ---- */
   function storageOK(){try{var k='__t'+Date.now();localStorage.setItem(k,'1');localStorage.removeItem(k);return true;}catch(e){return false;}}
@@ -1021,7 +1023,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     var list=visibleStudents();
 
     var top='<div class="rec-top">'+
-      '<div class="cw-title">👥 Ganze Klasse '+esc(classFilter)+' · '+list.length+' Schüler</div>'+
+      '<div class="cw-title">'+ic('users')+' Ganze Klasse '+esc(classFilter)+' · '+list.length+' Schüler</div>'+
       '<div class="head-spacer"></div>'+
       '<div class="wk-nav">'+
         '<button class="btn btn-ghost btn-sm" data-cweek="prev">←</button>'+
@@ -1040,7 +1042,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
       head+='<th'+(d===todayISO?' class="today"':'')+'>'+
         '<div class="dh"><span class="dn">'+SHORT[i]+'</span><span class="dt">'+fmtD(d).slice(0,5)+'</span></div>'+
         (hol?'<span class="hb">'+(hol.type==='ferien'?'🏖️':'🎉')+'</span>':
-          '<button class="day-btn note" data-noteact="day" data-date="'+d+'" data-lvl="'+esc(classFilter)+'" title="Notiz für die ganze Klasse">📝'+(cnt?' '+cnt:'')+'</button>')+
+          '<button class="day-btn note" data-noteact="day" data-date="'+d+'" data-lvl="'+esc(classFilter)+'" title="Notiz für die ganze Klasse">'+ic('sticky-note')+(cnt?' '+cnt:'')+'</button>')+
       '</th>';
     });
     head+='<th class="cw-sum">Woche</th></tr>';
@@ -1062,7 +1064,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
           chips+='<span class="cw-mk '+k+'">'+STATUS[k].short+(k==='verspaetet'&&lateM?' '+lateM+'′':'')+'</span>';
         });
         var eigene=state.notes.filter(function(n){return n.date===d&&n.studentId===st.id;}).length;
-        if(eigene)chips+='<span class="cw-note" title="'+eigene+' eigene Notiz(en)">📝'+(eigene>1?eigene:'')+'</span>';
+        if(eigene)chips+='<span class="cw-note" title="'+eigene+' eigene Notiz(en)">'+ic('sticky-note')+(eigene>1?eigene:'')+'</span>';
         zellen+='<td'+(d===todayISO?' class="todaycol"':'')+'>'+
           (hol?'<span class="cw-hol">–</span>':
             '<button class="cw-cell'+(h?' has':'')+'" data-cwopen="'+st.id+'" data-date="'+d+'" title="In der Einzelansicht öffnen">'+
@@ -1080,7 +1082,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
     }).length;
 
     return top+'<div class="cw-grid"><table><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>'+
-      '<div class="rec-hint">💡 Hier wird nur angezeigt. Zum Eintragen auf eine Zeile klicken — das öffnet die Einzelansicht derselben Woche. Das 📝 oben legt eine Notiz für die <b>ganze Klasse</b> an.</div>'+
+      '<div class="rec-hint">Hier wird nur angezeigt. Zum Eintragen auf eine Zeile klicken — das öffnet die Einzelansicht derselben Woche. Das Notiz-Symbol oben legt eine Notiz für die <b>ganze Klasse</b> an.</div>'+
       weekNotesHTML(days,classFilter,null)+
       (tage?'':'');
   }
@@ -1116,7 +1118,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   function weekNotesHTML(days,level,sid){
     var dset={};days.forEach(function(d){dset[d]=true;});
     var list=state.notes.filter(function(n){return dset[n.date]&&(!n.level||n.level===level)&&(!sid||noteForStudent(n,sid));});
-    if(!list.length)return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4></div><div class="wk-notes-empty">Noch keine Notizen in dieser Woche. Tippe das 📝 in einer Zelle, um eine Notiz anzulegen.</div></div>';
+    if(!list.length)return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — diese Woche</h4></div><div class="wk-notes-empty">Noch keine Notizen in dieser Woche. Tippe auf das Notiz-Symbol in einer Zelle, um eine Notiz anzulegen.</div></div>';
     var priority={pruefung:4,hausaufgabe:3,bemerkung:2,allgemein:1};
     list.sort(function(a,b){return (a.date.localeCompare(b.date))||((priority[b.type]||0)-(priority[a.type]||0));});
     var DOW=['So','Mo','Di','Mi','Do','Fr','Sa'];
@@ -1125,7 +1127,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
       var meta=DOW[wdOf(n.date)]+' '+fmtD(n.date).slice(0,5)+' · '+(n.subject||'')+(b?' · '+b.start+'–'+b.end:'')+' · '+wem;
       return '<div class="wk-note '+n.type+'" data-noteopen="'+n.id+'"><span class="wn-ic">'+nt.icon+'</span><div class="wn-body"><div class="wn-meta">'+nt.label+' · '+esc(meta)+(n.byUser?' · <span style="color:var(--primary-dark);">'+esc(n.byUser)+'</span>':'')+'</div><div class="wn-txt">'+esc(n.text)+'</div></div></div>';
     }).join('');
-    return '<div class="wk-notes"><div class="wk-notes-head"><h4>📔 Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';
+    return '<div class="wk-notes"><div class="wk-notes-head"><h4>Klassenbuch — diese Woche</h4><span class="badge">'+list.length+'</span></div><div class="wk-notes-list">'+items+'</div></div>';
   }
   function dayCounted(sid,date){var s=0;state.entries.forEach(function(e){if(e.studentId===sid&&e.date===date&&STATUS[e.status]&&STATUS[e.status].isAbsence)s+=countHours(e);});return s;}
 
@@ -1149,7 +1151,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
         '<input type="date" class="date-in" data-date="'+s.id+'" value="'+u.date+'" title="Zu Woche springen">'+
       '</div>'+
     '</div>';
-    var help='<div class="rec-hint">💡 Einfach eine Zelle <b>anklicken</b> = abwesend (Non-excusé). Nochmal klicken wechselt zu Excusé → Retard → wieder weg. Beim <b>Retard</b> fragt die App gleich nach den Minuten (z.B. 10 min) — wegklicken heisst „ohne Angabe". <b>„Tag"</b> macht das für die ganze Spalte. <b>📝</b> = Notiz/Prüfung.</div>';
+    var help='<div class="rec-hint">Einfach eine Zelle <b>anklicken</b> = abwesend (Non-excusé). Nochmal klicken wechselt zu Excusé → Retard → wieder weg. Beim <b>Retard</b> fragt die App gleich nach den Minuten (z.B. 10 min) — wegklicken heisst „ohne Angabe". <b>„Tag"</b> macht das für die ganze Spalte. <b>📝</b> = Notiz/Prüfung.</div>';
     // Kopfzeile mit „Tag markieren"
     var head='<tr><th class="th-time"></th>';
     days.forEach(function(d,i){var hol=holidayInfo(d);var wd=wdOf(d);var dayHrs=dayCounted(s.id,d);
@@ -1157,7 +1159,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
       var dayBtns=hol?'<span class="hb">'+(hol.type==='ferien'?'🏖️ Ferien':'🎉 Feiertag')+'</span>':
         '<div class="day-acts"><button class="day-btn" data-dayact="mark" data-sid="'+s.id+'" data-date="'+d+'" title="Ganzen Tag mit aktuellem Status markieren">Tag</button>'+
         '<button class="day-btn ghost" data-dayact="clear" data-sid="'+s.id+'" data-date="'+d+'" title="Tag leeren">✕</button>'+
-        '<button class="day-btn note" data-noteact="day" data-sid="'+s.id+'" data-date="'+d+'" title="Tages-Notizen">📝'+(dayNoteCnt?' '+dayNoteCnt:'')+'</button></div>';
+        '<button class="day-btn note" data-noteact="day" data-sid="'+s.id+'" data-date="'+d+'" title="Tages-Notizen">'+ic('sticky-note')+(dayNoteCnt?' '+dayNoteCnt:'')+'</button></div>';
       head+='<th'+(d===todayISO?' class="today"':'')+'>'+
         '<div class="dh"><span class="dn">'+SHORT[i]+'</span><span class="dt">'+fmtD(d).slice(0,5)+'</span>'+(dayHrs?'<span class="dhrs">'+nf(dayHrs)+'h</span>':'')+(dayNoteCnt?'<span class="day-notes-pill" title="'+dayNoteCnt+' Notiz(en)">📔 '+dayNoteCnt+'</span>':'')+'</div>'+
         dayBtns+
@@ -1188,7 +1190,7 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
         body+='<td'+(d===todayISO?' class="todaycol"':'')+'><div class="wcell-wrap"><button class="'+cls+'" data-blk="'+b.id+'" data-sid="'+s.id+'" data-date="'+d+'">'+
           '<span class="subj-lbl">'+esc(subj)+'</span>'+
           (ent?'<span class="mk">'+STATUS[ent.status].short+(lateOf(ent)?' '+lateOf(ent)+'′':'')+'</span>':'')+
-        '</button>'+noteBar+'<button class="note-btn" data-noteact="block" data-sid="'+s.id+'" data-date="'+d+'" data-blk="'+b.id+'" data-subj="'+esc(subj)+'" title="Klassenbuch-Notiz zu '+esc(subj)+'">📝</button></div></td>';
+        '</button>'+noteBar+'<button class="note-btn" data-noteact="block" data-sid="'+s.id+'" data-date="'+d+'" data-blk="'+b.id+'" data-subj="'+esc(subj)+'" title="Klassenbuch-Notiz zu '+esc(subj)+'">'+ic('sticky-note')+'</button></div></td>';
       });
       body+='</tr>';
     });
@@ -1335,9 +1337,9 @@ select.inp:focus{outline:none;border-color:var(--primary);box-shadow:var(--ring)
   function renderNoteTarget(){
     var sel=document.getElementById('note-target');if(!sel)return;
     var lv=noteCtx.level||classFilter;
-    var opts='<option value="">👥 Ganze Klasse'+(lv?' ('+lv+')':'')+'</option>';
+    var opts='<option value="">Ganze Klasse'+(lv?' ('+lv+')':'')+'</option>';
     state.students.filter(function(x){return !lv||x.level===lv;}).forEach(function(x){
-      opts+='<option value="'+x.id+'">👤 nur '+esc(x.name)+'</option>';
+      opts+='<option value="'+x.id+'">nur '+esc(x.name)+'</option>';
     });
     sel.innerHTML=opts;
     sel.value=noteCtx.fuer||'';
